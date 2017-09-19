@@ -1,0 +1,59 @@
+Link\ComunBundle\Entity\CertiRespuesta:
+    type: entity
+    table: certi_respuesta
+    indexes:
+        IDX_98EB1A4531A5801E:
+            columns:
+                - pregunta_id
+        IDX_98EB1A455BDBF2F:
+            columns:
+                - opcion_id
+        IDX_98EB1A45DB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        fechaRegistro:
+            type: datetime
+            nullable: true
+            column: fecha_registro
+    manyToOne:
+        pregunta:
+            targetEntity: CertiPregunta
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pregunta_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        opcion:
+            targetEntity: CertiOpcion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                opcion_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,45 @@
+Link\ComunBundle\Entity\CertiNivelPagina:
+    type: entity
+    table: certi_nivel_pagina
+    indexes:
+        nivel_pagina_ndx1:
+            columns:
+                - nivel_id
+                - pagina_empresa_id
+        IDX_EF46AB9EDA3426AE:
+            columns:
+                - nivel_id
+        IDX_EF46AB9EDCF6B7C4:
+            columns:
+                - pagina_empresa_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    manyToOne:
+        nivel:
+            targetEntity: AdminNivel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                nivel_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        paginaEmpresa:
+            targetEntity: CertiPaginaEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

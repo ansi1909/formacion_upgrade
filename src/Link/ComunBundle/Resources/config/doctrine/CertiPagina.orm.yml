@@ -1,0 +1,102 @@
+Link\ComunBundle\Entity\CertiPagina:
+    type: entity
+    table: certi_pagina
+    indexes:
+        IDX_CF1CDC9157991ECF:
+            columns:
+                - pagina_id
+        IDX_CF1CDC913397707A:
+            columns:
+                - categoria_id
+        IDX_CF1CDC91DB38439E:
+            columns:
+                - usuario_id
+        IDX_CF1CDC9164373B63:
+            columns:
+                - estatus_contenido_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        descripcion:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        contenido:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        foto:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        pdf:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        fechaCreacion:
+            type: date
+            nullable: true
+            column: fecha_creacion
+    manyToOne:
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        categoria:
+            targetEntity: CertiCategoria
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                categoria_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        estatusContenido:
+            targetEntity: CertiEstatusContenido
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estatus_contenido_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

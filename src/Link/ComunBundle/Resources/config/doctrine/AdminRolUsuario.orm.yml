@@ -1,0 +1,45 @@
+Link\ComunBundle\Entity\AdminRolUsuario:
+    type: entity
+    table: admin_rol_usuario
+    indexes:
+        rol_usuario_ndx1:
+            columns:
+                - rol_id
+                - usuario_id
+        IDX_F967B0D34BAB96C:
+            columns:
+                - rol_id
+        IDX_F967B0D3DB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    manyToOne:
+        rol:
+            targetEntity: AdminRol
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                rol_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

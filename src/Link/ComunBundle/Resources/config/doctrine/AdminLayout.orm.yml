@@ -1,0 +1,20 @@
+Link\ComunBundle\Entity\AdminLayout:
+    type: entity
+    table: admin_layout
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        twig:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

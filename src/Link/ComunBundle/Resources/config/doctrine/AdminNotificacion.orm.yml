@@ -1,0 +1,68 @@
+Link\ComunBundle\Entity\AdminNotificacion:
+    type: entity
+    table: admin_notificacion
+    indexes:
+        notificacion_ndx1:
+            columns:
+                - usuario_id
+                - usuario_tutor_id
+        IDX_BDBBB019B394FE3:
+            columns:
+                - tipo_notificacion_id
+        IDX_BDBBB01DB38439E:
+            columns:
+                - usuario_id
+        IDX_BDBBB01C84E9668:
+            columns:
+                - usuario_tutor_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        valorNotificacion:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: valor_notificacion
+        leido:
+            type: boolean
+            nullable: true
+    manyToOne:
+        tipoNotificacion:
+            targetEntity: AdminTipoNotificacion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_notificacion_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuarioTutor:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_tutor_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,40 @@
+Link\ComunBundle\Entity\CertiGrupo:
+    type: entity
+    table: certi_grupo
+    indexes:
+        grupo_ndx1:
+            columns:
+                - empresa_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

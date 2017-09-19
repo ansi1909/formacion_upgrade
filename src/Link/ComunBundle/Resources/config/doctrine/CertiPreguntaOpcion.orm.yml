@@ -1,0 +1,49 @@
+Link\ComunBundle\Entity\CertiPreguntaOpcion:
+    type: entity
+    table: certi_pregunta_opcion
+    indexes:
+        pregunta_opcion_ndx1:
+            columns:
+                - pregunta_id
+                - opcion_id
+        IDX_87EE792C31A5801E:
+            columns:
+                - pregunta_id
+        IDX_87EE792C5BDBF2F:
+            columns:
+                - opcion_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        correcta:
+            type: boolean
+            nullable: true
+    manyToOne:
+        pregunta:
+            targetEntity: CertiPregunta
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pregunta_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        opcion:
+            targetEntity: CertiOpcion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                opcion_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

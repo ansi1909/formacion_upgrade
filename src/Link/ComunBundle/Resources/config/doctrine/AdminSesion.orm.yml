@@ -1,0 +1,37 @@
+Link\ComunBundle\Entity\AdminSesion:
+    type: entity
+    table: admin_sesion
+    indexes:
+        sesion_ndx1:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        fechaIngreso:
+            type: datetime
+            nullable: true
+            column: fecha_ingreso
+        fechaRequest:
+            type: datetime
+            nullable: true
+            column: fecha_request
+    manyToOne:
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

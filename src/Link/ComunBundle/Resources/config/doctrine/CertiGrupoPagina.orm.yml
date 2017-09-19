@@ -1,0 +1,41 @@
+Link\ComunBundle\Entity\CertiGrupoPagina:
+    type: entity
+    table: certi_grupo_pagina
+    indexes:
+        IDX_7CD7695E9C833003:
+            columns:
+                - grupo_id
+        IDX_7CD7695E57991ECF:
+            columns:
+                - pagina_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    manyToOne:
+        grupo:
+            targetEntity: CertiGrupo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                grupo_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

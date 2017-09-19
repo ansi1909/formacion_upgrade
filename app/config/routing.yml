@@ -1,0 +1,3 @@
+link_comun:
+    resource: "@LinkComunBundle/Resources/config/routing.yml"
+    prefix:   /

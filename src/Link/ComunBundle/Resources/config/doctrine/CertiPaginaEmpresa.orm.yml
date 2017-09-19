@@ -1,0 +1,77 @@
+Link\ComunBundle\Entity\CertiPaginaEmpresa:
+    type: entity
+    table: certi_pagina_empresa
+    indexes:
+        pagina_empresa_ndx1:
+            columns:
+                - empresa_id
+                - pagina_id
+        IDX_5C87DB99521E1991:
+            columns:
+                - empresa_id
+        IDX_5C87DB9957991ECF:
+            columns:
+                - pagina_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        activo:
+            type: boolean
+            nullable: true
+        fechaInicio:
+            type: date
+            nullable: true
+            column: fecha_inicio
+        fechaVencimiento:
+            type: date
+            nullable: true
+            column: fecha_vencimiento
+        pruebaActiva:
+            type: boolean
+            nullable: true
+            column: prueba_activa
+        maxIntentos:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: max_intentos
+        puntajeAprueba:
+            type: decimal
+            nullable: true
+            precision: 3
+            scale: 2
+            column: puntaje_aprueba
+        muroActivo:
+            type: boolean
+            nullable: true
+            column: muro_activo
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

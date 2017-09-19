@@ -1,0 +1,73 @@
+Link\ComunBundle\Entity\CertiPaginaLog:
+    type: entity
+    table: certi_pagina_log
+    indexes:
+        pagina_log_ndx1:
+            columns:
+                - pagina_id
+                - usuario_id
+        IDX_AE97B9D657991ECF:
+            columns:
+                - pagina_id
+        IDX_AE97B9D6DB38439E:
+            columns:
+                - usuario_id
+        IDX_AE97B9D67D139FE4:
+            columns:
+                - estatus_pagina_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        fechaInicio:
+            type: datetime
+            nullable: true
+            column: fecha_inicio
+        fechaFin:
+            type: datetime
+            nullable: true
+            column: fecha_fin
+        porcentajeAvance:
+            type: decimal
+            nullable: true
+            precision: 3
+            scale: 2
+            column: porcentaje_avance
+    manyToOne:
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        estatusPagina:
+            targetEntity: CertiEstatusPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estatus_pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

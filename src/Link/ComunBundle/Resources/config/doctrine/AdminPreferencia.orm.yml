@@ -1,0 +1,79 @@
+Link\ComunBundle\Entity\AdminPreferencia:
+    type: entity
+    table: admin_preferencia
+    indexes:
+        preferencia_ndx1:
+            columns:
+                - empresa_id
+        IDX_2B27D1B8DB38439E:
+            columns:
+                - usuario_id
+        IDX_2B27D1B88C22AA1A:
+            columns:
+                - layout_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        title:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+        css:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        logo:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        favicon:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        layout:
+            targetEntity: AdminLayout
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                layout_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

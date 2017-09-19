@@ -1,0 +1,50 @@
+Link\ComunBundle\Entity\AdminAplicacion:
+    type: entity
+    table: admin_aplicacion
+    indexes:
+        IDX_70906ED63AF686C8:
+            columns:
+                - aplicacion_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        url:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        icono:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        activo:
+            type: boolean
+            nullable: true
+    manyToOne:
+        aplicacion:
+            targetEntity: AdminAplicacion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                aplicacion_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

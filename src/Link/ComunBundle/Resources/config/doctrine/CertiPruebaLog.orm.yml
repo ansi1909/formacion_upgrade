@@ -1,0 +1,81 @@
+Link\ComunBundle\Entity\CertiPruebaLog:
+    type: entity
+    table: certi_prueba_log
+    indexes:
+        prueba_log_ndx1:
+            columns:
+                - prueba_id
+                - usuario_id
+        IDX_B5265B3BE7DE889A:
+            columns:
+                - prueba_id
+        IDX_B5265B3BDB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        fechaInicio:
+            type: datetime
+            nullable: true
+            column: fecha_inicio
+        fechaFin:
+            type: datetime
+            nullable: true
+            column: fecha_fin
+        porcentajeAvance:
+            type: decimal
+            nullable: true
+            precision: 3
+            scale: 2
+            column: porcentaje_avance
+        correctas:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        erradas:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        nota:
+            type: decimal
+            nullable: true
+            precision: 3
+            scale: 2
+        estado:
+            type: string
+            nullable: true
+            length: 15
+            options:
+                fixed: false
+    manyToOne:
+        prueba:
+            targetEntity: CertiPrueba
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                prueba_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

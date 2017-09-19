@@ -1,0 +1,41 @@
+Link\ComunBundle\Entity\CertiPreguntaAsociacion:
+    type: entity
+    table: certi_pregunta_asociacion
+    indexes:
+        pregunta_asociacion_ndx1:
+            columns:
+                - pregunta_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        preguntas:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        opciones:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+    manyToOne:
+        pregunta:
+            targetEntity: CertiPregunta
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pregunta_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

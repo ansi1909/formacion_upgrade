@@ -1,0 +1,72 @@
+Link\ComunBundle\Entity\CertiPrueba:
+    type: entity
+    table: certi_prueba
+    indexes:
+        prueba_ndx1:
+            columns:
+                - pagina_id
+        IDX_B7E318BFDB38439E:
+            columns:
+                - usuario_id
+        IDX_B7E318BF64373B63:
+            columns:
+                - estatus_contenido_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 350
+            options:
+                fixed: false
+        cantidadPreguntas:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: cantidad_preguntas
+        duracion:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+    manyToOne:
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        estatusContenido:
+            targetEntity: CertiEstatusContenido
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estatus_contenido_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

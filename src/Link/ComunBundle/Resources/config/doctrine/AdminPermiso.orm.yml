@@ -1,0 +1,41 @@
+Link\ComunBundle\Entity\AdminPermiso:
+    type: entity
+    table: admin_permiso
+    indexes:
+        IDX_394629173AF686C8:
+            columns:
+                - aplicacion_id
+        IDX_394629174BAB96C:
+            columns:
+                - rol_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    manyToOne:
+        aplicacion:
+            targetEntity: AdminAplicacion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                aplicacion_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        rol:
+            targetEntity: AdminRol
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                rol_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

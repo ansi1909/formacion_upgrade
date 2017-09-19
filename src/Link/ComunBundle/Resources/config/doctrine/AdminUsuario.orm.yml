@@ -1,0 +1,128 @@
+Link\ComunBundle\Entity\AdminUsuario:
+    type: entity
+    table: admin_usuario
+    indexes:
+        IDX_E65932D4521E1991:
+            columns:
+                - empresa_id
+        IDX_E65932D4DA3426AE:
+            columns:
+                - nivel_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        login:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        clave:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        nombre:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        apellido:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        correoPersonal:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: correo_personal
+        correoCorporativo:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: correo_corporativo
+        activo:
+            type: boolean
+            nullable: true
+        fechaRegistro:
+            type: datetime
+            nullable: true
+            column: fecha_registro
+        fechaNacimiento:
+            type: date
+            nullable: true
+            column: fecha_nacimiento
+        pais:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        ciudad:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        region:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        foto:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        divisionFuncional:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: division_funcional
+        cargo:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        nivel:
+            targetEntity: AdminNivel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                nivel_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

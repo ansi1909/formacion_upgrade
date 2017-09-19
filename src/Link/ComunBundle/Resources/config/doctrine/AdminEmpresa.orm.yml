@@ -1,0 +1,59 @@
+Link\ComunBundle\Entity\AdminEmpresa:
+    type: entity
+    table: admin_empresa
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        rif:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        correoPrincipal:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: correo_principal
+        activo:
+            type: boolean
+            nullable: true
+        telefonoPrincipal:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: telefono_principal
+        fechaCreacion:
+            type: datetime
+            nullable: true
+            column: fecha_creacion
+        direccion:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        bienvenida:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

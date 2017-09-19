@@ -1,0 +1,71 @@
+Link\ComunBundle\Entity\CertiForo:
+    type: entity
+    table: certi_foro
+    indexes:
+        foro_ndx1:
+            columns:
+                - pagina_id
+        IDX_318634CCDB38439E:
+            columns:
+                - usuario_id
+        IDX_318634CCF5FF53F6:
+            columns:
+                - foro_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        mensaje:
+            type: string
+            nullable: true
+            length: 350
+            options:
+                fixed: false
+        fechaRegistro:
+            type: datetime
+            nullable: true
+            column: fecha_registro
+        pdf:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+    manyToOne:
+        pagina:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        foro:
+            targetEntity: CertiForo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                foro_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,115 @@
+Link\ComunBundle\Entity\CertiPregunta:
+    type: entity
+    table: certi_pregunta
+    indexes:
+        pregunta_ndx1:
+            columns:
+                - prueba_id
+                - tipo_elemento_id
+        IDX_FF8A1BE1E7DE889A:
+            columns:
+                - prueba_id
+        IDX_FF8A1BE1481AEE6:
+            columns:
+                - tipo_pregunta_id
+        IDX_FF8A1BE1F4868001:
+            columns:
+                - tipo_elemento_id
+        IDX_FF8A1BE1DB38439E:
+            columns:
+                - usuario_id
+        IDX_FF8A1BE164373B63:
+            columns:
+                - estatus_contenido_id
+        IDX_FF8A1BE131A5801E:
+            columns:
+                - pregunta_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        enunciado:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        imagen:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        valor:
+            type: decimal
+            nullable: true
+            precision: 3
+            scale: 2
+    manyToOne:
+        prueba:
+            targetEntity: CertiPrueba
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                prueba_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoPregunta:
+            targetEntity: CertiTipoPregunta
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_pregunta_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoElemento:
+            targetEntity: CertiTipoElemento
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_elemento_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        estatusContenido:
+            targetEntity: CertiEstatusContenido
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                estatus_contenido_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pregunta:
+            targetEntity: CertiPregunta
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pregunta_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

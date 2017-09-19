@@ -1,0 +1,72 @@
+Link\ComunBundle\Entity\AdminNoticia:
+    type: entity
+    table: admin_noticia
+    indexes:
+        noticia_ndx1:
+            columns:
+                - empresa_id
+        IDX_F51CDD1FDB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        tipo:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        fechaRegistro:
+            type: datetime
+            nullable: true
+            column: fecha_registro
+        resumen:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        contenido:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        fechaPublicacion:
+            type: date
+            nullable: true
+            column: fecha_publicacion
+        fechaVencimiento:
+            type: date
+            nullable: true
+            column: fecha_vencimiento
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
