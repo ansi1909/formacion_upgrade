@@ -1,3 +1,7 @@
+link_backend:
+    resource: "@LinkBackendBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
 link_comun:
     resource: "@LinkComunBundle/Resources/config/routing.yml"
     prefix:   /

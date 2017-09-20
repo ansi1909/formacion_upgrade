@@ -1,0 +1,3 @@
+_empresas:
+    path:     /listado
+    defaults: { _controller: LinkBackendBundle:Empresa:index }

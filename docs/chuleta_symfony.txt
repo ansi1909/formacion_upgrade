@@ -27,7 +27,7 @@ php bin/console doctrine:schema:update --force
 3. php bin/console doctrine:generate:entities LinkComunBundle --no-backup					(Bs/SisventBundle/Entity/NombreEntidad) => Si se quiere generar una sola entidad
 
 - Ver las rutas agregadas
-php bin/console router:debug
+php bin/console debug:router
 
 - Plantilla principal:
 app/Resources/views/base.html.twig

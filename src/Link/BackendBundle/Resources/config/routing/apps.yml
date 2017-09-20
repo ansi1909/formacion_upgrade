@@ -1,0 +1,3 @@
+_aplicaciones:
+    path:     /listado
+    defaults: { _controller: LinkBackendBundle:App:index }

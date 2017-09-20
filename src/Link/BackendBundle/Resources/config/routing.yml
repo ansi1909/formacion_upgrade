@@ -1,0 +1,15 @@
+_inicioAdmin:
+    path:     /index
+    defaults: { _controller: LinkBackendBundle:Default:index }
+
+roles:
+    resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
+    prefix: /rol
+
+apps:
+    resource: "@LinkBackendBundle/Resources/config/routing/apps.yml"
+    prefix: /app
+
+empresas:
+    resource: "@LinkBackendBundle/Resources/config/routing/empresas.yml"
+    prefix: /empresa
