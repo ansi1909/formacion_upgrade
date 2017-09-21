@@ -117,7 +117,7 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', '
 -- Data for Name: admin_aplicacion; Type: TABLE DATA; Schema: public;
 --
 
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (1, 'Roles de usuarios', '_roles', NULL, TRUE, NULL);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (1, 'Roles de usuarios', '_roles', 'fa-group', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (2, 'Usuarios', '_usuarios', NULL, TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (3, 'Aplicaciones', '_aplicaciones', 'fa-list-ul', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (4, 'Configuración de permisos', '_permisos', NULL, TRUE, NULL);
@@ -125,8 +125,8 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (6, 'Categorías', '_categorias', NULL, TRUE, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (7, 'Páginas', '_paginas', NULL, TRUE, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (8, 'Configuración de evaluaciones', '_paginasEvaluacion', NULL, TRUE, 5);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (9, 'Configuración de empresas', NULL, NULL, TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (10, 'Empresas', '_empresas', NULL, TRUE, 9);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (9, 'Configuración de empresas', NULL, 'fa-building', TRUE, NULL);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (10, 'Empresas', '_empresas', 'fa-industry', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (11, 'Asignación de páginas', '_empresasPaginas', NULL, TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (12, 'Niveles por empresa', '_empresasNiveles', NULL, TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (13, 'Agrupación de páginas', '_empresasGrupo', NULL, TRUE, 9);
