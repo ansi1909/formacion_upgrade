@@ -1,3 +1,7 @@
 link_comun_homepage:
     path:     /
     defaults: { _controller: LinkComunBundle:Default:index }
+
+_authException:
+    path:     /authException
+    defaults: { _controller: LinkComunBundle:Default:authException }

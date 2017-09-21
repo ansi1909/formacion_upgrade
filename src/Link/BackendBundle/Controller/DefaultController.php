@@ -12,7 +12,10 @@ class DefaultController extends Controller
     public function indexAction()
     {
 
-    	/*$session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+
+    	/*
       	if (!$session->get('ini'))
       	{
         	return $this->redirectToRoute('_loginAdmin');
@@ -26,6 +29,65 @@ class DefaultController extends Controller
       	else {
       		return $this->redirectToRoute('_loginAdmin');
       	}*/
+
+        /* **************************** BLOQUE ******************************************** */
+        // OJO: Quitar este bloque de código una vez que se desarrolle el login del backend
+        
+        // Datos de Usuario Administrador y sus autoservicios
+        $datosUsuario = array('id' => 1,
+                              'nombre' => 'Administrador',
+                              'apellido' => 'Sistema',
+                              'correo' => 'soporte_link_gerencial@gmail.com',
+                              'roles' => array(1));
+
+        // Opciones del menu (Asumiendo que el único rol es Administrador = 1)
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                    WHERE p.rol = :rol_id 
+                                    AND a.activo = :activo 
+                                    AND a.aplicacion IS NULL")
+                    ->setParameters(array('rol_id' => 1,
+                                          'activo' => true));
+        $permisos = $query->getResult();
+
+        $menu = array();
+        foreach ($permisos as $permiso)
+        {
+
+            $submenu = array();
+
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                        WHERE p.rol = :rol_id 
+                                        AND a.activo = :activo 
+                                        AND a.aplicacion = :app_id")
+                        ->setParameters(array('rol_id' => 1,
+                                              'activo' => true,
+                                              'app_id' => $permiso->getAplicacion()->getId()));
+            $subpermisos = $query->getResult();
+
+            foreach ($subpermisos as $subpermiso)
+            {
+                $submenu[] = array('id' => $subpermiso->getAplicacion()->getId(),
+                                   'url' => $subpermiso->getAplicacion()->getUrl(),
+                                   'nombre' => $subpermiso->getAplicacion()->getNombre(),
+                                   'icono' => $subpermiso->getAplicacion()->getIcono(),
+                                   'url_existente' => $subpermiso->getAplicacion()->getUrl() ? 1 : 0);
+            }
+
+            $menu[] = array('id' => $permiso->getAplicacion()->getId(),
+                            'url' => $permiso->getAplicacion()->getUrl(),
+                            'nombre' => $permiso->getAplicacion()->getNombre(),
+                            'icono' => $permiso->getAplicacion()->getIcono(),
+                            'url_existente' => $permiso->getAplicacion()->getUrl() ? 1 : 0,
+                            'submenu' => $submenu);
+        }
+
+
+        $session->set('ini', true);
+        $session->set('administrador', true);
+        $session->set('usuario', $datosUsuario);
+        $session->set('menu', $menu);
+
+        /* **************************** FIN BLOQUE ****************************************** */
 
         return $this->render('LinkBackendBundle:Default:index.html.twig');
 

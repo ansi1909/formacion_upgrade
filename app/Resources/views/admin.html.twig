@@ -55,7 +55,7 @@
                             <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="userpic">
                                     <img src="{{ asset('img/1034.png') }}" alt="Usuario"></span> 
-                                    <span class="text">Usuario</span>
+                                    <span class="text">{{ app.session.get('usuario').nombre }}</span>
                             </button>
                             <div class="dropdown-menu"> 
                                 <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
@@ -84,8 +84,8 @@
                             <img src="{{ asset('img/1034.png') }}" alt="Usuario" class="d-flex mr-3">
                         </span>
                         <span class="media-body info_user">
-                            <span class="mt-0 mb-1 us1">Usuario</span>
-                            <span class="us1">Empresa1</span>    
+                            <span class="mt-0 mb-1 us1">{{ app.session.get('usuario').nombre }}</span>
+                            <span class="us1">{{ app.session.get('usuario').apellido }}</span>    
                         </span>
                     </button>
                     <div class="dropdown-menu">
@@ -102,16 +102,26 @@
             {% block menu %}
                 <ul class="nav flex-column in" id="side-menu">
                     <li class="title-nav">MENU</li>
-                    <li class="nav-item"><a href="{{ path('_roles') }}" class="nav-link"><i class="fa fa-group"></i> Roles de usuarios</a></li>
-                    <li class="nav-item"><a href="{{ path('_aplicaciones') }}" class="nav-link"><i class="fa fa-list-ul"></i> Aplicaciones</a></li>
-                    <li class="nav-item">
-                        <a href="javascript:(0)" class="menudropdown nav-link"> 
-                            <span class="fa fa-building"></span> Configuración de Empresas <i class="fa fa-chevron-circle-down"></i>
-                        </a>
-                        <ul class="nav flex-column nav-second-level">
-                            <li class="nav-item"><a href="{{ path('_empresas') }}" class="nav-link"><i class="fa fa-industry"></i> Empresas</a></li>
-                        </ul>
-                    </li>
+                    {% for menu in app.session.get('menu') %}
+                        <li class="nav-item">
+                            <a href="{{ menu.url_existente ? path(menu.url, { 'app_id': menu.id }) : '#'~loop.index }}" class="{% if menu.submenu|length > 0 %}menudropdown {% endif %}nav-link">
+                                {% if menu.submenu|length > 0 %}
+                                    <span class="fa {{ menu.icono }}"></span> {{ menu.nombre }} <i class="fa fa-chevron-circle-down"></i>
+                                {% else %}
+                                    <i class="fa {{ menu.icono }}"></i> {{ menu.nombre }}
+                                {% endif %}
+                            </a>
+                            {% if menu.submenu|length > 0 %}
+                                <ul class="nav flex-column nav-second-level">
+                                    {% for submenu in menu.submenu %}
+                                        <li class="nav-item">
+                                            <a href="{{ submenu.url_existente ? path(submenu.url, { 'app_id': submenu.id }) : '#'~loop.index }}" class="nav-link"><i class="fa {{ submenu.icono }}"></i> {{ submenu.nombre }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
                 </ul>
             {% endblock %}
         </div>
