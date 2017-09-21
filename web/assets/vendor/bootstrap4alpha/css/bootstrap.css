@@ -54,11 +54,13 @@ pre {
 a {
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
+  outline: none;
 }
 
 a:active,
 a:hover {
   outline-width: 0;
+  outline: none;
 }
 
 abbr[title] {
