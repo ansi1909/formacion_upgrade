@@ -322,12 +322,13 @@ body.menuclose-right .wrapper-content {
 }
 
 .gradient, body > .sidebar-left .nav-link.active, body > .sidebar-left .nav-link:hover, body > .container > .sidebar-left .nav-link.active, body > .container > .sidebar-left .nav-link:hover, .dropdown-item:focus, .dropdown-item:hover, .media-list > .media:hover, .media-list > .media.active, .search-list > .media:hover, .member-list .media:hover, .message-container div .media:hover {
-  background: #22bfed;
-  background: -moz-linear-gradient(left, #22bfed 0%, #3f66e3 100%);
-  background: -webkit-linear-gradient(left, #22bfed 0%, #3f66e3 100%);
-  background: linear-gradient(to right, #22bfed 0%, #3f66e3 100%);
+  background: #00558D;
+  background: -moz-linear-gradient(left, #0084db 0%, #00558D 100%);
+  background: -webkit-linear-gradient(left, #0084db 0%, #00558D 100%);
+  background: linear-gradient(to right, #0084db 0%, #00558D 100%);
   color: black;
   color: #ffffff;
+  border-left: 5px solid #A3C300; 
 }
 
 /*======================================*/
