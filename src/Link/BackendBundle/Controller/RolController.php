@@ -17,9 +17,12 @@ class RolController extends Controller
                                         ORDER BY r.nombre ASC');
         $roles=$query->getResult();
        
-       return new Response(var_dump($roles));
+       //return new Response(var_dump($roles));
             
-      //return $this->render('LinkBackendBundle:Rol:index.html.twig',
-        //                       array('roles'=>$roles));
+       return $this->render('LinkBackendBundle:Rol:index.html.twig', array('roles'=>$roles));
+
     }
+
+
+
 }
