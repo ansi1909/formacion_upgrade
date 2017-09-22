@@ -4,40 +4,266 @@
 /*Clases*/
 
     /*Header*/
-    .sidebar-left img{
-        width: 200px;
-        height: auto;
-    }
-    
-    .sidebar-left button{
-        margin-top: 5px;
-    }
+        .sidebar-left img{
+            width: 200px;
+            height: auto;
+        }
 
-    .sidebar-left button span{
-        font-size: 25px;
-        cursor: pointer;
-    }
+        .sidebar-left button{
+            margin-top: 5px;
+        }
 
-    .bttn1 .ico_1{
-        font-size: 20px;
-        cursor: pointer;
-    }
+        .sidebar-left button span{
+            font-size: 25px;
+            cursor: pointer;
+        }
 
-    .bttn_user{
-        cursor: pointer;
-        outline: none;
-    }
-    
+        .bttn1 .ico_1{
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .bttn_user{
+            cursor: pointer;
+            outline: none;
+        }
+    /*fin header*/
+
     /*Sidebar*/
-    .info_user .us1{
-        font-size: 16px;
-    }
+        .info_user .us1{
+            font-size: 16px;
+        }
 
-    .rec_user{
-        padding-top: 10px;
-    }
+        .rec_user{
+            padding-top: 10px;
+        }
 
-    .space_icon{
-        padding: 0px 2px;
-    }
+        .space_icon{
+            padding: 0px 2px;
+        }
+    /*fin Sidebar*/
+
+    /*Estilos de formularios*/
+        .form_sty1, .form_sty2, .form_sty3, 
+        .form_sty4{
+            display: inline-block;
+            width: 100%;
+            padding: 10px 0px 10px 15px;
+            background: #efefef;
+            border: 0;
+            outline: 0;
+            text-indent: 0px;
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty1 + span{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 10px 15px;
+            background: #007bcd;
+            border-radius: 15px 0px 0px 15px;
+            color: #fff;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty1:focus, .form_sty1:active,
+        .form_sty2:focus, .form_sty2:active,
+        .form_sty3:focus, .form_sty3:active,
+        .form_sty4:focus, .form_sty4:active{
+            text-indent: 35px;
+            background: #fff;
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty1:focus + span, .form_sty1:active + span,
+        .form_sty2:focus + span, .form_sty2:active + span,
+        .form_sty3:focus + span, .form_sty3:active + span,
+        .form_sty4:focus + span, .form_sty4:active + span{
+            opacity: 1;
+            display: inline-block;
+            transform: translateX(28px);
+        }
+
+        .form_sty2 + span{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 10px 15px;
+            background: #A3C300;
+            border-radius: 15px 0px 0px 15px;
+            color: #333;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty3 + span{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 10px 15px;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            border-radius: 15px 0px 0px 15px;
+            color: #fff;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty4 + span{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 10px 15px;
+            background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%);
+            border-radius: 15px 0px 0px 15px;
+            color: #333;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty_date1, .form_sty_date2, .form_sty_date3, .form_sty_date4{
+            display: inline-block;
+            width: 100%;
+            padding: 10px 0px 10px 15px;
+            background: #efefef;
+            border: 0;
+            outline: 0;
+            text-indent: 0px;
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty_date1 + span.fa.fa-calendar{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 13px 15px;
+            background: #007bcd;
+            border-radius: 15px 0px 0px 15px;
+            color: #fff;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty_date2 + span.fa.fa-calendar{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 13px 15px;
+            background: #A3C300;
+            border-radius: 15px 0px 0px 15px;
+            color: #333;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty_date3 + span.fa.fa-calendar{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 13px 15px;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            border-radius: 15px 0px 0px 15px;
+            color: #fff;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty_date4 + span{
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: -14px;
+            padding: 13px 15px;
+            background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%);
+            border-radius: 15px 0px 0px 15px;
+            color: #333;
+            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty_date1:active, .form_sty_date1:focus, 
+        .form_sty_date2:active, .form_sty_date2:focus,
+        .form_sty_date3:active, .form_sty_date3:focus,
+        .form_sty_date4:active, .form_sty_date4:focus{
+            text-indent: 18px;
+            background: #fff;
+            transition: all .3s ease-in-out;
+        }
+
+        .form_sty_date1:active + span.fa.fa-calendar, .form_sty_date1:focus + span.fa.fa-calendar,
+        .form_sty_date2:active + span.fa.fa-calendar, .form_sty_date2:focus + span.fa.fa-calendar,
+        .form_sty_date3:active + span.fa.fa-calendar, .form_sty_date3:focus + span.fa.fa-calendar,
+        .form_sty_date4:active + span, .form_sty_date4:focus + span{
+            opacity: 1;
+            display: inline-block;
+            transform: translateX(28px);
+        }    
+
+        .bttn_down1{
+            display: inline-block;
+            width: 34px;
+            height: 40px;
+            opacity: 1;
+            position: absolute;
+            top: 0;
+            right: 14px;
+            background: #007bcd;
+            border-radius: 0px 15px 15px 0px;
+            transition: all .3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .bttn_down2{
+            display: inline-block;
+            width: 34px;
+            height: 40px;
+            opacity: 1;
+            position: absolute;
+            top: 0;
+            right: 14px;
+            background: #A3C300;
+            border-radius: 0px 15px 15px 0px;
+            transition: all .3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .bttn_down3{
+            display: inline-block;
+            width: 34px;
+            height: 40px;
+            opacity: 1;
+            position: absolute;
+            top: 0;
+            right: 14px;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            border-radius: 0px 15px 15px 0px;
+            transition: all .3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .bttn_down1 img, .bttn_down2 img, .bttn_down3 img{
+            width: 15px;
+            height: 15px;
+            margin: 13px 7px;
+            cursor: pointer;
+            background: transparent;
+        }
+    /*Fin Estilos de formularios*/
+
 /*Identificadores*/

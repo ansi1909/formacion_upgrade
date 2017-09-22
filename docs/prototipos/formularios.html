@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="shortcut icon" href="../../web/img/icono.png" type="image/png">
+        <!-- CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/main/reset.css">
+        <link rel="stylesheet" href="../../web/assets/css/main/style_main.css">
+
+        <!-- Fontawesome iconos CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap4alpha/css/bootstrap.css" type="text/css">
+
+        <!-- DataTables Responsive CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/dataTables.bootstrap4.css">
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/responsive.dataTables.min.css">
+
+        <!-- Adminux CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/light_adminux.css">
+        
+        <!-- date picker CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css" type="text/css">
+    </head>
+    <body class="rounded">
+        <!-- Cabecera del area de trabajo-->
+        <header class="navbar-fixed">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
+                <div class="sidebar-left">
+                    <a href="#" class="navbar-brand">
+                        <img src="../../web/img/logo_formacion.png" alt="Formación 2.0">
+                    </a>
+                    <button class="btn btn-link icon-header mr-sm-2 pull-right menu-collapse"><span class="fa fa-bars"></span></button>
+                </div>
+                <div class="d-flex mr-auto"> &nbsp;</div>
+                <ul class="navbar-nav content-right">
+                    <li class="v-devider"></li>
+                    <li class="nav-item active">
+                        <button class="btn btn-link icon-header bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-envelope-o ico_1"></span>
+                            <span class="badge-number bg-success"></span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link icon-header badgeCircle bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-bell-o ico_1"></span>
+                            <span class="badge-number bg-danger"></span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="sidebar-right pull-right">
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="userpic">
+                                    <img src="../../web/img/1034.png" alt="Usuario"></span> 
+                                <span class="text">Usuario</span>
+                            </button>
+                            <div class="dropdown-menu"> 
+                                <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
+                                <a class="dropdown-item" href="#"><span class="fa fa-pie-chart"> Estadísticas</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><span class="fa fa-cog"> Configuración</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-link icon-header bttn1">
+                                <span class="fa fa-sign-out ico_1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- fin de Cabecera del area de trabajo-->
+        <!-- Sidebar del area de trabajo-->
+        <div class="sidebar-left">
+            <div class="user-menu-items">
+                <div class="list-unstyled btn-group rec_user">
+                    <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="message_userpic">
+                            <img src="../../web/img/1034.png" alt="Usuario" class="d-flex mr-3">
+                        </span>
+                        <span class="media-body info_user">
+                            <span class="mt-0 mb-1 us1">Usuario</span>
+                            <span class="us1">Empresa1</span>    
+                        </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item"><span class="fa fa-user space_icon"></span> Perfil</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-envelope"></span> Correo</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-bar-chart"></span> Estadística</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item"><span class="fa fa-cog space_icon"></span> Configuración</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <ul class="nav flex-column in" id="side-menu">
+                <li class="title-nav">MENU</li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-building"></span> Administrar Empresas <i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-industry"></i> Empresas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-briefcase"></i> Empresas Asociadas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-users"></i> División Funcional</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-badge"></i> Cargo</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-card"></i> Nivel</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-certificate"></span> Administrar Certificados<i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-server"></i> Programas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"></i> Módulos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-folder-open"></i> Materias</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file"></i> Recursos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file-text"></i> Evaluaciones</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <br><br>
+        <div class="wrapper-content">
+            <div class="container">
+                <!-- Formulario -->
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12 col-sm-12 page-title">
+                        <h3>Formulario</h3>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm-16 col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title"> Inputs con estilos</h6>
+                            </div>
+                            <div class="card-block">
+                                <form action="">
+                                    <div class="form-group row justify-content-end">
+                                        <label for="texto" class="col-2 col-form-label">Texto</label>
+                                        <div class="col-14">
+                                            <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                            <span class="fa fa-user"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="buscar1" class="col-2 col-form-label">Buscar</label>
+                                        <div class="col-14">
+                                            <input type="search" class="form-control form_sty2" id="buscar1" placeholder="Buscar">
+                                            <span class="fa fa-search"></span>
+                                        </div>
+                                    </div>
+                                <!--<div class="form-group row justify-content-end">
+                                        <label for="buscar2" class="col-2 col-form-label">Buscar</label>
+                                        <div class="col-14">
+                                            <input type="text" class="form-control form_btn_sty" id="buscar2" placeholder="Buscar">
+                                            <div class="btn_sty"><span class="fa fa-search"> Buscar</span></div>
+                                        </div>
+                                    </div>-->
+                                    <div class="form-group row justify-content-end">
+                                        <label for="Correo" class="col-2 col-form-label">Correo</label>
+                                        <div class="col-14">
+                                            <input type="email" class="form-control form_sty3" id="Correo" placeholder="Correo">
+                                            <span class="fa fa-envelope"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="url" class="col-2 col-form-label">URL</label>
+                                        <div class="col-14">
+                                            <input type="url" class="form-control form_sty4" id="url" placeholder="Url">
+                                            <span class="fa fa-globe"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="telf" class="col-2 col-form-label">Teléfono</label>
+                                        <div class="col-14">
+                                            <input type="tel" class="form-control form_sty1" id="telf" placeholder="Teléfono">
+                                            <span class="fa fa-phone"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="pwd" class="col-2 col-form-label">Contraseña</label>
+                                        <div class="col-14">
+                                            <input type="password" class="form-control form_sty2" id="pwd" placeholder="Contraseña">
+                                            <span class="fa fa-lock"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="num" class="col-2 col-form-label">Número</label>
+                                        <div class="col-14">
+                                            <input type="number" class="form-control form_sty3" id="num" placeholder="Número">
+                                            <span class="fa fa-hashtag"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="" class="col-2 col-form-label">Fecha</label>
+                                        <div class="col-14">
+                                            <input type="text" class="form-control form_sty4" id="datepicker_month_disabled" placeholder="Fecha">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="dtl" class="col-2 col-form-label">Fecha y hora</label>
+                                        <div class="col-14">
+                                            <input type="datetime-local" class="form-control form_sty_date1" id="dtl" placeholder="Fecha y hora">
+                                            <span class="fa fa-calendar"></span>
+                                            <span class="bttn_down1"><img src="../../web/img/down-arrowwht.png" alt=""></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="dm" class="col-2 col-form-label">Mes</label>
+                                        <div class="col-14">
+                                            <input type="month" class="form-control form_sty_date2" id="dm" placeholder="Fecha y hora">
+                                            <span class="fa fa-calendar"></span>
+                                            <span class="bttn_down2"><img src="../../web/img/down-arrowbck.png" alt=""></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="ds" class="col-2 col-form-label">Semana</label>
+                                        <div class="col-14">
+                                            <input type="week" class="form-control form_sty_date3" id="ds" placeholder="Fecha y hora">
+                                            <span class="fa fa-calendar"></span>
+                                            <span class="bttn_down3"><img src="../../web/img/down-arrowwht.png" alt=""></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="time_s" class="col-2 col-form-label">Hora</label>
+                                        <div class="col-14">
+                                            <input type="time" class="form-control form_sty_date4" id="time_s" placeholder="">
+                                            <span class="fa fa-clock-o"></span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-16 col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title"> Otros tipos de inputs</h6>
+                            </div>
+                            <div class="card-block">
+                                <form action="">
+                                    <div class="form-group row justify-content-end">
+                                        <label for="eselect" class="col-4 col-form-label">Campo Select</label>
+                                        <div class="col-12">
+                                            <select class="form-control" id="eselect" style="border-radius: 5px;">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="emultselect" class="col-4 col-form-label">Campo select multiple</label>
+                                        <div class="col-12">
+                                            <select multiple class="form-control" id="emultselect" style="border-radius: 5px; height: 7em">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="eTextarea" class="col-4 col-form-label">Campo textarea</label>
+                                        <div class="col-12">
+                                            <textarea class="form-control" id="eTextarea" style="border-radius: 5px;" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="einputfile" class="col-4 col-form-label">Adjuntar archivo</label>
+                                        <div class="col-12">
+                                            <input type="file" class="form-control-file" id="einputfile" aria-describedby="fileHelp">
+                                            <small id="fileHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </small>
+                                        </div> 
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label class="custom-file">
+                                            <input type="file" id="file" class="custom-file-input" style="border-radius: 0px;">
+                                            <span class="custom-file-control"></span>
+                                        </label>
+                                    </div>
+                                    <h3>Radio buttons & Checkbox</h3>
+                                    <div class="form-group row justify-content-end">
+                                        <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span> <span class="custom-control-description">Este es un checkbox</span> 
+                                        </label>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label class="custom-control custom-radio">
+                                            <input id="radio1" name="radio" type="radio" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span> 
+                                            <span class="custom-control-description">Este es un radio button</span>
+                                        </label>
+                                        <label class="custom-control custom-radio">
+                                            <input id="radio2" name="radio" type="radio" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span> 
+                                            <span class="custom-control-description">O marca este otro radio button</span> 
+                                        </label>
+                                    </div>
+                                    <h3>Botones</h3>
+                                    <div class="form-group row justify-content-end">
+                                        <button type="button" class="btn btn-primary" style="border-radius: 5px;">Primary</button>
+                                        <button type="button" class="btn btn-secondary" style="border-radius: 5px;">Secondary</button>
+                                        <button type="button" class="btn btn-success" style="border-radius: 5px;">Success</button>
+                                        <button type="button" class="btn btn-info" style="border-radius: 5px;">Info</button>
+                                        <button type="button" class="btn btn-warning" style="border-radius: 5px;">Warning</button>
+                                        <button type="button" class="btn btn-danger" style="border-radius: 5px;">Danger</button>
+                                        <button type="button" class="btn btn-link" style="border-radius: 5px;">Link</button>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <button type="button" class="btn btn-outline-primary" style="border-radius: 5px;">Primary</button>
+                                        <button type="button" class="btn btn-outline-success" style="border-radius: 5px;">Success</button>
+                                        <button type="button" class="btn btn-outline-info" style="border-radius: 5px;">Info</button>
+                                        <button type="button" class="btn btn-outline-warning" style="border-radius: 5px;">Warning</button>
+                                        <button type="button" class="btn btn-outline-danger" style="border-radius: 5px;">Danger</button>
+                                    </div>
+                                    <h3>Switch</h3>
+                                    <div class="form-group row justify-content-end">
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-1">
+                                                <input id="d" type="checkbox">
+                                                <label for="d">
+                                                    <div class="can-toggle__switch" data-checked="Bien" data-unchecked="Mal"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="can-toggle">
+                                                <input id="a" type="checkbox">
+                                                <label for="a">
+                                                    <div class="can-toggle__switch" data-checked="On" data-unchecked="Off"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <div class="col-5">
+                                            <div class="can-toggle can-toggle--size-large">
+                                                <input id="c" type="checkbox" checked>
+                                                <label for="c">
+                                                    <div class="can-toggle__switch" data-checked="On" data-unchecked="Off"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2">
+                                                <input id="e" type="checkbox">
+                                                <label for="e">
+                                                    <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <div class="col-3">
+                                            <div class="can-toggle can-toggle--size-small">
+                                                <input id="b" type="checkbox">
+                                                <label for="b">
+                                                    <div class="can-toggle__switch" data-checked="On" data-unchecked="Off"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f" type="checkbox" checked>
+                                                <label for="f">
+                                                    <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- fin formulario -->
+            </div>
+        </div>
+        <!-- fin sidebar del area de trabajo-->
+        <!-- Jquery, Tether and Bootstrap JS. -->
+        <script src="../../web/assets/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/tether.min.js"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> 
+        <script src="../../web/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- Circular chart progress js -->
+        <script src="../../web/assets/vendor/cicular_progress/circle-progress.min.js" type="text/javascript"></script>
+
+        <!--sparklines js--> 
+        <script src="../../web/assets/vendor/sparklines/jquery.sparkline.min.js"></script>
+
+        <!-- chart js -->
+        <script src="../../web/assets/vendor/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/chartjs/utils.js" type="text/javascript"></script>
+
+        <!-- spincremente js -->
+        <script src="../../web/assets/vendor/spincrement/jquery.spincrement.min.js" type="text/javascript"></script>
+
+        <!-- DataTables JavaScript -->
+        <script src="../../web/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.bootstrap4.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.responsive.min.js"></script>
+        
+        <!-- color picker  js--> 
+        <script type="text/javascript" src="../../web/assets/vendor/colorpicker/js/colorpicker.js"></script> 
+        <script type="text/javascript" src="../../web/assets/vendor/colorpicker/js/eye.js"></script> 
+        <script type="text/javascript" src="../../web/assets/vendor/colorpicker/js/utils.js"></script>
+        
+        <!-- Date picker  js--> 
+        <script type="text/javascript" src="../../web/assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js"></script>
+        
+        <!-- custome template js -->
+        <script src="../../web/assets/js/adminux.js" type="text/javascript"></script>
+        
+        <!-- page level js --> 
+        <script src="../../web/assets/js/picker.js" type="text/javascript"></script>
+        
+    </body>
+</html>
