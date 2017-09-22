@@ -30,72 +30,34 @@ class AppController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $servicios = array();
-        $i = 0;
+        $aplicaciones = array();
         
-        // Todas los servicios principales
-        $query = $em->createQuery("SELECT s FROM PsTelemedBundle:Servicio s 
-                                    WHERE s.subservicio IS NULL 
-                                    ORDER BY s.id ASC");
-        $services = $query->getResult();
+        // Todas las aplicaciones principales
+        $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
+                                    WHERE a.aplicacion IS NULL 
+                                    ORDER BY a.id ASC");
+        $apps = $query->getResult();
 
-        foreach ($services as $service)
+        foreach ($apps as $app)
         {
 
-            $i++;
-            $mod = $i%4;
-            switch ($mod)
-            {
-                case 0:
-                    $context_class = 'danger';
-                    break;
-                case 1:
-                    $context_class = 'success';
-                    break;
-                case 2:
-                    $context_class = 'info';
-                    break;
-                case 3:
-                    $context_class = 'warning';
-                    break;
-            }
+            // Subaplicaciones
+            $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
+                                        WHERE a.aplicacion = :aplicacion_id  
+                                        ORDER BY a.id ASC")
+                        ->setParameter('aplicacion_id', $app->getId());
+            $subaplicaciones = $query->getResult();
 
-            switch ($service->getInterfaz())
-            {
-                case 1:
-                    $interfaz = 'Backend';
-                    break;
-                case 2:
-                    $interfaz = 'Frontend Especialistas';
-                    break;
-                case 3:
-                    $interfaz = 'Frontend Pacientes';
-                    break;
-                default:
-                    $interfaz = 'Backend';
-                    break;
-            }
-
-            // Subservicios
-            $query = $em->createQuery("SELECT s FROM PsTelemedBundle:Servicio s 
-                                        WHERE s.subservicio = :servicio_id  
-                                        ORDER BY s.id ASC")
-                        ->setParameter('servicio_id', $service->getId());
-            $subservicios = $query->getResult();
-
-            $servicios[] = array('id' => $service->getId(),
-                                 'nombre' => $service->getNombre(),
-                                 'costo' => $service->getCosto(),
-                                 'interfaz' => $interfaz,
-                                 'activo' => $service->getActivo(),
-                                 'context_class' => $context_class,
-                                 'subservicios' => $subservicios);
+            $aplicaciones[] = array('id' => $app->getId(),
+                                 	'nombre' => $app->getNombre(),
+                                 	'url' => $app->getUrl(),
+                                 	'icono' => $app->getIcono(),
+                                 	'activo' => $app->getActivo(),
+                                 	'subaplicaciones' => $subaplicaciones);
 
         }
 
-        return $this->render('PsTelemedBundle:Servicio:index.html.twig', array('servicios' => $servicios));
-
-        return $this->render('LinkBackendBundle:Default:index.html.twig');
+        return $this->render('LinkBackendBundle:App:index.html.twig', array('aplicaciones' => $aplicaciones));
 
     }
 }
