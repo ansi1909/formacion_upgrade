@@ -1,3 +1,7 @@
 _roles:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Rol:index }
+
+_RegistroRol:
+    path:     /registro
+    defaults: { _controller: LinkBackendBundle:Rol:registro }
