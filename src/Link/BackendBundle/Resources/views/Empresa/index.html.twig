@@ -2,27 +2,51 @@
 {% block body %}
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>Tablas</h3>
+        <h3>{{ 'Empresas'|trans }}</h3>
     </div>
-    <div class="row">
-    	<div class="col-sm-16">
-    		<div class="card-header">
-                <h5 class="card-title">Listado</h5>
-            </div>
-            <div class="card-block">
-            	<table class="table " id="dt">
-            		<thead>
-                        <tr>
-                            <th>Empresa</th>
-                            <th>Correo de Contacto</th>
-                            <th>Teléfono de Contacto</th>
-                            <th>Fecha Creación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-            	</table>
-            </div>
+</div>
+<div class="row">
+ 	<div class="col-sm-16">
+  		<div class="card">
+  			<div class="card-header">
+            	<h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
+        	</div>
+        	<div class="card-block">
+         		<table class="table " id="dt">
+          			<thead>
+                    	<tr>
+                        	<th>{{ 'Empresa'|trans }}</th>
+                        	<th>{{ 'Correo de Contacto'|trans }}</th>
+                        	<th>{{ 'Teléfono de Contacto'|trans }}</th>
+                        	<th>{{ 'Fecha Creación'|trans }}</th>
+                        	<th>{{ 'Activo'|trans }}</th>
+                        	<th>{{ 'Acciones'|trans }}</th>
+                    	</tr>
+                	</thead>
+                	<tbody>
+                		{% for empresa in empresas %}
+                			<tr class="odd">
+                				<td>{{ empresa.nombre }}</td>
+                				<td>{{ empresa.correoPrincipal }}</td>
+                				<td>{{ empresa.telefonoPrincipal }}</td>
+                				<td>{{ empresa.fechaCreacion|date("d/m/Y") }}</td>
+                				<td class="center">
+                                    <div class="can-toggle demo-rebrand-2 small">
+                                        <input id="f" type="checkbox" {% if empresa.activo %}checked{% endif %}>
+                                        <label for="f">
+                                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="center">
+                                    <a href="#" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm"><span class="fa fa-trash"></span></a>
+                                </td>
+                			</tr>
+                		{% endfor %}
+                	</tbody>
+         		</table>
+        	</div>
         </div>
     </div>
 </div>

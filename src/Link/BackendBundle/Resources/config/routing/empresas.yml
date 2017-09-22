@@ -1,3 +1,6 @@
 _empresas:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Empresa:index }
+_registro:
+    path:     /registro/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Empresa:registro, empresa_id: 0 }
