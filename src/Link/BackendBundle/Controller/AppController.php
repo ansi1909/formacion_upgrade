@@ -57,7 +57,8 @@ class AppController extends Controller
 
         }
 
-        return $this->render('LinkBackendBundle:App:index.html.twig', array('aplicaciones' => $aplicaciones));
+        return $this->render('LinkBackendBundle:App:index.html.twig', array('aplicaciones' => $aplicaciones,
+        																	'apps' =>$apps));
 
     }
 }
