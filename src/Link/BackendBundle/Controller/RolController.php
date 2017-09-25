@@ -48,33 +48,6 @@ class RolController extends Controller
        return $this->render('LinkBackendBundle:Rol:index.html.twig', array('roles'=>$roles));
 
     }
-
-
-   public function registroAction(Request $request)
-    {
-        $rol= new AdminRol();
-
-        $form= $this->createFormBuilder($rol)
-            ->setAction($this->generateUrl('_RegistroRol'))
-            ->add('nombre', TextType::class,array('label' => 'Nombre'))
-            ->add('descripcion', TextareaType::class,array('label' => 'Descripcion'))
-            ->add('save', SubmitType::class,array('label' => 'Registrar',
-                                                  'attr' =>array('class' => 'btn btn-default')))
-            ->getform();
-        $form->handleRequest($request);
-        if ($form->isValid()) 
-                {
-                    $em->persist($AdminRol);
-                    $em->flush();
-                    return $this->redirectToRoute('_FinRegistro');
-                }
-                return $this->render('LinkBackendBundle:Rol:registro.html.twig',
-                                                                array('form'=>$form->createView()));
-    }
-    public function finRegistroAction()
-    {
-        return $this->render('LinkBackendBundle:Rol:finRegistro.html.twig');
-    }
     
 
 }

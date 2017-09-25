@@ -5,6 +5,9 @@
     <div class="col-12 col-sm-12 page-title">
         <h3>Roles</h3>
     </div>
+   <div class="col text-right">
+       <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#formModal">Nuevo Registro</button>
+   </div>
 </div>
 <div class="row">
     <div class="col-sm-16">
@@ -13,19 +16,20 @@
                 <h5 class="card-title">{{ 'Listado de Roles' |trans}}</h5>
             </div>
             <div class="card-block">
-                <table class="table " id="dt">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Rol</th>
-                            <th class="center">{{'Descripcion' |trans}}</th>
-                            <th>{{'Acciones' |trans}}</th>
+                            <th>{{'Descripcion'|trans }}</th>
+                            <th>{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
                       {% for rol in roles %}
-                            <tr class="odd">
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{eo}}">
                                 <td>{{ rol.nombre }}</td>
-                                <td>{{ rol.descripcion }}</td>
+                                <td>{{ rol.descripcion|length > 130 ? rol.descripcion|slice(0,130) ~ '...' : rol.descripcion }}</td>
                                 <td class="center">
                                     <a href="#" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
                                     <a href="#" class="btn btn-link btn-sm"><span class="fa fa-trash"></span></a>
@@ -33,11 +37,29 @@
                             </tr>
                       {% endfor %}
                     </tbody>
-                </table>
-                <!-- /.table-responsive --> 
+                </table>                 
             </div>
         </div>
     </div>
 </div>
-            <!-- fin Listado -->
+
+{% endblock %}
+
+{% block formModal %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="formModalLabel">Datos Rol</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+    </div>
+    <div class="modal-body">
+        <form id="form" name="form" action="{{ path( '_ajaxUpdateRol')}}"  method="POST">
+            <div class="form-group">
+                <label for="recipient-name" class="form-control-label">{{ "Rol|trans" }}:</label>
+                <input type="text" class="form-control" id="rol" name="rol">
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="form-control-label">{{ "Descripción|trans" }}:</label>
+                <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+            </div>
+        </form>
+    </div>
 {% endblock %}
