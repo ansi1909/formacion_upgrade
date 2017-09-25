@@ -1,3 +1,9 @@
 _aplicaciones:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:App:index }
+
+_ajaxUpdateAplicacion:
+    path:     /ajaxUpdateAplicacion
+    defaults: { _controller: LinkBackendBundle:App:ajaxUpdateAplicacion }
+    requirements:
+        _method: POST
