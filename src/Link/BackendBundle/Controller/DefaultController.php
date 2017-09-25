@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 
 class DefaultController extends Controller
 {
@@ -14,6 +15,10 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
+
+        /* Nos permitirá acceder a los parámetros varios */
+        //$values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        //return new Response ($values['parameters']['database_host']);
 
     	/*
       	if (!$session->get('ini'))
