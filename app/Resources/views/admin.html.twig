@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Backend Formación 2.0{% endblock %}</title>
         {% block stylesheets %}
+
             <link rel="icon" type="image/x-icon" href="{{ asset('img/icono.png') }}" />
             {# CSS #}
             <link rel="stylesheet" href="{{ asset('assets/css/main/reset.css') }}">
@@ -21,6 +22,10 @@
             
             {# Adminux CSS #}
             <link rel="stylesheet" href="{{ asset('assets/css/light_adminux.css') }}">
+
+            {# Admin CSS #}
+            <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+
         {% endblock %}
     </head>
     <body class="rounded">

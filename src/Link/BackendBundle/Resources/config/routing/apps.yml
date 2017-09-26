@@ -7,3 +7,9 @@ _ajaxUpdateAplicacion:
     defaults: { _controller: LinkBackendBundle:App:ajaxUpdateAplicacion }
     requirements:
         _method: POST
+
+_ajaxEditAplicacion:
+    path:     /ajaxEditAplicacion
+    defaults: { _controller: LinkBackendBundle:App:ajaxEditAplicacion }
+    requirements:
+        _method: GET

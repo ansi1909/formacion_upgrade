@@ -1,114 +1,59 @@
 $(document).ready(function() {
 
 	$('#guardar').click(function(){
-		console.log('Cahoooo');
 		$("#form").valid();
 	});
 
+	$('.edit').click(function(){
+		var app_id = $(this).attr('data');
+		var url_edit = $('#url_edit').val();
+		$.ajax({
+			type: "GET",
+			url: url_edit,
+			async: false,
+			data: { app_id: app_id },
+			dataType: "json",
+			success: function(data) {
+				$('#app_id').val(app_id);
+				$('#nombre').val(data.nombre);
+				$('#url').val(data.url);
+				$('#icono').val(data.icono);
+				$('#activo').prop('checked', data.activo);
+				$('#subaplicacion_id').html(data.subaplicaciones);
+			},
+			error: function(){
+				console.log('Error al editar');
+				/*$( "#dialog-delete" ).dialog( "close" );
+				$("#texto-msg").html('Ha ocurrido un error al momento de eliminar el servicio. Contacte al Administrador del Sistema.');
+				$( "#dialog" ).dialog('option', 'width', 400);
+				$( "#dialog" ).dialog('option', 'title', 'Mensaje del Servidor');
+				$( "#dialog" ).dialog( "open" );*/
+			}
+		});
+	});
+
+	jQuery.validator.addMethod("noSpace", function(value, element) { 
+	 	return value.indexOf(" ") < 0 && value != ""; 
+	}, "No se permiten espacios en blanco");
+
 	$("#form").validate({
-		/*errorPlacement: function(error, element) { 
-            if (element.attr("name") == "tipoOrganizacion" ){
-            	error.insertAfter("#error-tipo");
-            }
-		    else {
-		    	error.insertAfter(element);
-		    }
-        },*/
 		rules: {
 			'nombre': {
 				required: true,
 				minlength: 3
-			}/*,
-			'rif': {
-				required: true,
-				minlength: 10,
-				maxlength: 12
 			},
-			'tipoOrganizacion': {
-				required: true
+			'url': {
+				noSpace: true
 			},
-			'countrycode': {
-				required: true
-			},
-			'city': {
-				required: true
-			},
-			'login': {
-				required: usuario_id == '' ? true : false
-			},
-			'clave': {
-				required: usuario_id == '' ? true : false
-			},
-			'clave2': {
-				required: usuario_id == '' ? true : false,
-				equalTo: "#clave"
-			},
-			'cedula': {
-				required: true,
-				digits: true
-			},
-			'nombre': {
-				required: true
-			},
-			'apellido': {
-				required: true
-			},
-			'telefono1': {
-				required: true,
-				minlength: 10,
-				maxlength: 15
-			},
-			'telefono2': {
-				minlength: 10,
-				maxlength: 15
-			},
-			'correo': {
-				required: true,
-				email: true
-			}*/
+			'icono': {
+				noSpace: true
+			}
 		},
 		messages: {
 			'nombre': {
-				required: "El nombre de la organización es requerido.",
-				minlength: "El nombre de la organización debe ser mínimo de 3 caracteres."
-			}/*,
-			'rif': {
-				required: "El RIF es requerido.",
-				minlength: "El RIF debe contener entre 10 y 12 caracteres.",
-				maxlength: "El RIF debe contener entre 10 y 12 caracteres."
-			},
-			'tipoOrganizacion': {
-				required: "El tipo de cliente es requerido."
-			},
-			'countrycode': {
-				required: "El país es requerido."
-			},
-			'city': {
-				required: "La ciudad es requerida."
-			},
-			'cedula': {
-				required: "La cédula es requerida.",
-				digits: "La cédula debe ser sólo dígitos"
-			},
-			'nombre': {
-				required: "El nombre es requerido."
-			},
-			'apellido': {
-				required: "El apellido es requerido."
-			},
-			'telefono1': {
-				required: "El celular es requerido.",
-				minlength: "El celular debe contener entre 10 y 12 caracteres.",
-				maxlength: "El celular debe contener entre 10 y 12 caracteres."
-			},
-			'telefono2': {
-				minlength: "El teléfono debe contener entre 10 y 12 caracteres.",
-				maxlength: "El teléfono debe contener entre 10 y 12 caracteres."
-			},
-			'correo': {
-				required: "El correo es requerido.",
-				email: "Formato de correo inválido."
-			}*/
+				required: "El nombre de la aplicación es requerido.",
+				minlength: "El nombre de la aplicación debe ser mínimo de 3 caracteres."
+			}
 		},
 		submitHandler: function(form, event) {
 
