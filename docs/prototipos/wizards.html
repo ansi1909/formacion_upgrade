@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/main/reset.css">
+        <link rel="stylesheet" href="../../web/assets/css/main/style_main.css">
+
+        <!-- Fontawesome iconos CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap4alpha/css/bootstrap.css" type="text/css">
+
+        <!-- DataTables Responsive CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/dataTables.bootstrap4.css">
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/responsive.dataTables.min.css">
+
+        <!-- Adminux CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/light_adminux.css">
+
+        <!-- date picker CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css" type="text/css">
+        
+    </head>
+    <body class="rounded">
+        <!-- Cabecera del area de trabajo-->
+        <header class="navbar-fixed">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
+                <div class="sidebar-left">
+                    <a href="#" class="navbar-brand">
+                        <img src="../../web/img/logo_formacion.png" alt="Formación 2.0">
+                    </a>
+                    <button class="btn btn-link icon-header mr-sm-2 pull-right menu-collapse"><span class="fa fa-bars"></span></button>
+                </div>
+                <div class="d-flex mr-auto"> &nbsp;</div>
+                <ul class="navbar-nav content-right">
+                    <li class="v-devider"></li>
+                    <li class="nav-item active">
+                        <button class="btn btn-link icon-header bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-envelope-o ico_1"></span>
+                            <span class="badge-number bg-success"></span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link icon-header badgeCircle bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-bell-o ico_1"></span>
+                            <span class="badge-number bg-danger"></span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="sidebar-right pull-right">
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="userpic">
+                                    <img src="../../web/img/1034.png" alt="Usuario"></span> 
+                                <span class="text">Usuario</span>
+                            </button>
+                            <div class="dropdown-menu"> 
+                                <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
+                                <a class="dropdown-item" href="#"><span class="fa fa-pie-chart"> Estadísticas</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><span class="fa fa-cog"> Configuración</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-link icon-header bttn1">
+                                <span class="fa fa-sign-out ico_1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- fin de Cabecera del area de trabajo-->
+        <!-- Sidebar del area de trabajo-->
+        <div class="sidebar-left">
+            <div class="user-menu-items">
+                <div class="list-unstyled btn-group rec_user">
+                    <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="message_userpic">
+                            <img src="../../web/img/1034.png" alt="Usuario" class="d-flex mr-3">
+                        </span>
+                        <span class="media-body info_user">
+                            <span class="mt-0 mb-1 us1">Usuario</span>
+                            <span class="us1">Empresa1</span>    
+                        </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item"><span class="fa fa-user space_icon"></span> Perfil</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-envelope"></span> Correo</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-bar-chart"></span> Estadística</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item"><span class="fa fa-cog space_icon"></span> Configuración</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <ul class="nav flex-column in" id="side-menu">
+                <li class="title-nav">MENU</li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-building"></span> Administrar Empresas <i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-industry"></i> Empresas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-briefcase"></i> Empresas Asociadas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-users"></i> División Funcional</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-badge"></i> Cargo</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-card"></i> Nivel</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-certificate"></span> Administrar Certificados<i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-server"></i> Programas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"></i> Módulos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-folder-open"></i> Materias</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file"></i> Recursos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file-text"></i> Evaluaciones</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div class="wrapper-content">
+            <div class="container">
+                <!-- Listado -->
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12 col-sm-12 page-title">
+                        <h3>Wizards</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-16">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h6>Style Wizard</h6>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="container_wizard wizard-thin">
+                                    <div class="stepwizard">
+                                        <div class="stepwizard-row setup-panel d-flex">
+                                            <div class="stepwizard-step col">
+                                                <a href="#det0" class="btn bttn__fndo pass">
+                                                    <span class="btn-round">1</span>
+                                                    <p>Detalles 1<small>Lorem ipsum dolor sit amet</small></p>
+                                                </a>
+                                            </div>
+                                            <div class="stepwizard-step col">
+                                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                                    <span class="btn-round">2</span>
+                                                    <p>Detalles 2<small>Lorem ipsum dolor sit amet</small></p>
+                                                </a>
+                                            </div>
+                                            <div class="stepwizard-step col">
+                                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                                    <span class="btn-round">3</span>
+                                                    <p>Detalles 3<small>Lorem ipsum dolor sit amet</small></p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form action="" class="container-fluid p-0">
+                                        <div class="row setup-content" id="det0">
+                                            <div class="col-sm-16">
+                                                <div class="row">
+                                                    <div class="col-sm-16">
+                                                        <h3 class="mb-2">Lorem1</h3>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="texto" class="col-2 col-form-label">Texto</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                                                <span class="fa fa-user"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="Correo" class="col-2 col-form-label">Correo</label>
+                                                            <div class="col-14">
+                                                                <input type="email" class="form-control form_sty3" id="Correo" placeholder="Correo">
+                                                                <span class="fa fa-envelope"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                       <div class="for-group">
+                                                           <label for="pwd" class="col-2 col-form-label">Contraseña</label>
+                                                           <div class="col-14">
+                                                               <input type="password" class="form-control form_sty2" id="pwd" placeholder="Contraseña">
+                                                               <span class="fa fa-lock"></span>
+                                                           </div>
+                                                       </div>
+                                                       <br>
+                                                        <div class="form-group">
+                                                            <label for="" class="col-2 col-form-label">Fecha</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty4" id="datepicker_month_disabled" placeholder="Fecha">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wizard-footer">
+                                                    <div class="col-sm-16 text-right">
+                                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row setup-content" id="det1">
+                                            <div class="col-sm-16">
+                                                <div class="row">
+                                                    <div class="col-sm-16">
+                                                        <h3 class="mb-2">Lorem2</h3>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="texto" class="col-2 col-form-label">Texto</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                                                <span class="fa fa-user"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="Correo" class="col-2 col-form-label">Correo</label>
+                                                            <div class="col-14">
+                                                                <input type="email" class="form-control form_sty3" id="Correo" placeholder="Correo">
+                                                                <span class="fa fa-envelope"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                        <div class="for-group">
+                                                            <label for="pwd" class="col-2 col-form-label">Contraseña</label>
+                                                            <div class="col-14">
+                                                                <input type="password" class="form-control form_sty2" id="pwd" placeholder="Contraseña">
+                                                                <span class="fa fa-lock"></span>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <label for="" class="col-2 col-form-label">Fecha</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty4" id="datepicker_month_disabled" placeholder="Fecha">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wizard-footer">
+                                                    <div class="col-sm-16 text-right">
+                                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row setup-content" id="det2">
+                                            <div class="col-sm-16">
+                                                <div class="row">
+                                                    <div class="col-sm-16">
+                                                        <h3 class="mb-2">Lorem3</h3>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="texto" class="col-2 col-form-label">Texto</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                                                <span class="fa fa-user"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="Correo" class="col-2 col-form-label">Correo</label>
+                                                            <div class="col-14">
+                                                                <input type="email" class="form-control form_sty3" id="Correo" placeholder="Correo">
+                                                                <span class="fa fa-envelope"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                        <div class="for-group">
+                                                            <label for="pwd" class="col-2 col-form-label">Contraseña</label>
+                                                            <div class="col-14">
+                                                                <input type="password" class="form-control form_sty2" id="pwd" placeholder="Contraseña">
+                                                                <span class="fa fa-lock"></span>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <label for="" class="col-2 col-form-label">Fecha</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty4" id="datepicker_month_disabled" placeholder="Fecha">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wizard-footer">
+                                                    <div class="col-sm-16 text-right">
+                                                        <button type="submit" class="bttn__end"><span class="text__end">Finalizar</span><span class="fa fa-check"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- fin sidebar del area de trabajo-->
+        <!-- Jquery, Tether and Bootstrap JS. -->
+        <script src="../../web/assets/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/tether.min.js"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> 
+        <script src="../../web/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- Circular chart progress js -->
+        <script src="../../web/assets/vendor/cicular_progress/circle-progress.min.js" type="text/javascript"></script>
+
+        <!--sparklines js--> 
+        <script src="../../web/assets/vendor/sparklines/jquery.sparkline.min.js"></script>
+
+        <!-- chart js -->
+        <script src="../../web/assets/vendor/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/chartjs/utils.js" type="text/javascript"></script>
+
+        <!-- spincremente js -->
+        <script src="../../web/assets/vendor/spincrement/jquery.spincrement.min.js" type="text/javascript"></script>
+
+        <!-- DataTables JavaScript -->
+        <script src="../../web/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.bootstrap4.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.responsive.min.js"></script>
+
+        <!-- color picker  js--> 
+        <script type="text/javascript" src="../../web/assets/vendor/colorpicker/js/colorpicker.js"></script> 
+        <script type="text/javascript" src="../../web/assets/vendor/colorpicker/js/eye.js"></script> 
+        <script type="text/javascript" src="../../web/assets/vendor/colorpicker/js/utils.js"></script>
+
+        <!-- Date picker  js--> 
+        <script type="text/javascript" src="../../web/assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js"></script>
+
+        <!-- custome template js -->
+        <script src="../../web/assets/js/adminux.js" type="text/javascript"></script>
+
+        <!-- page level js --> 
+        <script src="../../web/assets/js/picker.js" type="text/javascript"></script>
+        
+        <!--Agregar en el archivo js-->
+        <script>
+            $(document).on('ready', function () {
+                $(".container_wizard").each(function(){
+                    var navListItems = $(this).find('div.setup-panel div a'),
+                        allWells = $(this).find('.setup-content'),
+                        allNextBtn = $('.nextBtn');
+                    allWells.hide();
+                    navListItems.click(function (e) {
+                        e.preventDefault();
+                        var $target = $($(this).attr('href')),
+                            $item = $(this);
+                        navListItems.removeClass('bttn__fndo').addClass('btn-secondary');
+                        $item.addClass('bttn__fndo');
+                        $item.removeClass('btn-secondary');
+                        $item.removeClass('disabled');
+                        allWells.hide();
+                        $target.show();
+                        $target.find('input:eq(0)').focus();
+                    });
+                    allNextBtn.click(function(){
+                        var curStep = $(this).closest(".setup-content"),
+                            curStepBtn = curStep.attr("id"),
+                            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                            curInputs = curStep.find("input[type='text'],input[type='email']"),
+                            isValid = true;
+                        $(".form-group").removeClass("has-danger");
+                        for(var i=0; i<curInputs.length; i++){
+                            if (!curInputs[i].validity.valid){
+                                isValid = false;
+                                $(curInputs[i]).closest(".form-group").addClass("has-danger");
+                            }
+                        }
+                        if (isValid)
+                            nextStepWizard.removeAttr('disabled').trigger('click');
+                    });
+                    $(this).find('.setup-panel div a.bttn__fndo').trigger('click');
+                });
+            });
+        </script>
+    </body>
+</html>

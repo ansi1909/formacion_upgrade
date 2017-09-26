@@ -1,12 +1,13 @@
 {% extends '::admin.html.twig' %}
 
 {% block body %}
+<br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Aplicaciones'|trans }}</h3>
     </div>
     <div class="col text-right">
-        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#formModal">Nuevo Registro</button>
+        <button type="button" class="bttn__nr" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">Nuevo Registro</span></button>
     </div>
 </div>
 <div class="row">

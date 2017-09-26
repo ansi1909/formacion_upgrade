@@ -1,11 +1,12 @@
 {% extends '::admin.html.twig'%}
 {% block body %}
+<br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Empresas'|trans }}</h3>
     </div>
     <div class="col text-right ">
-        <a href="{{ path('_registro') }}" class="btn btn-outline-primary">{{ 'Nuevo Registro'|trans }}</a>
+        <button type="button" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></button>
     </div>
 </div>
 <div class="row">

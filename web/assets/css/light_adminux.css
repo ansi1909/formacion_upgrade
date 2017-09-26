@@ -4067,6 +4067,11 @@ table tr td img {
   background: #22bfed;
 }
 
+.container_wizard.wizard-box .stepwizard .stepwizard-step a.btn-secondary.pass {
+    opacity: 1;
+    background: #A3C300;
+}
+
 .container_wizard.wizard-box .stepwizard .stepwizard-step a.btn-secondary.disabled {
   opacity: 1;
   background: #ffffff;
@@ -4157,6 +4162,12 @@ table tr td img {
 .container_wizard.wizard-thin .stepwizard .stepwizard-step a.btn-secondary.info {
   opacity: 1;
   background: #22bfed;
+}
+
+.container_wizard.wizard-thin .stepwizard .stepwizard-step a.btn-secondary.pass {
+    opacity: 1;
+    background: #A3C300;
+    color: #333;
 }
 
 .container_wizard.wizard-thin .stepwizard .stepwizard-step a.btn-secondary.disabled {
