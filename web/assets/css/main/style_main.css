@@ -1,6 +1,5 @@
 /*Etiquetas*/
 
-
 /*Clases*/
 
     /*Header*/
@@ -265,5 +264,135 @@
             background: transparent;
         }
     /*Fin Estilos de formularios*/
+    /*Tipos de Botones*/
+        .bttn__nr{
+            width: 4em;
+            height: 4em;
+            border-radius: 50px;
+            background: #fff;
+            display: inline-block;
+            white-space: nowrap;
+            border: none;
+            color: #333;
+            box-sizing: border-box;
+            padding: 10px 15px 10px 15px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all .25s ease;
+            box-shadow: 2px 3px 5px 1px rgba(0, 0, 0, .2);
+            text-decoration: none;
+            cursor: pointer;
+            overflow: none;
+        }
+
+        .bttn__nr span.fa{
+            margin: 5px 10px 0px 5px;
+            font-size: 22px;
+            transition: margin .5s ease;
+        }
+
+        .bttn__nr .text__nr{
+            opacity: 0;
+            display: none;
+        }
+
+        .bttn__nr:hover{
+            width: 11em;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            color: #fff;
+        }
+
+        .bttn__nr:hover span.fa{
+            margin: 5px 7px 0 2px;
+        }
+
+        .bttn__nr:hover .text__nr{
+            opacity: 1;
+            display: inline-block;
+            position: relative;
+            top: -3px;
+            left: 0px;
+            overflow-x: none;
+        }
+
+        .bttn__nxt, .bttn__end{
+            width: 3em;
+            height: 3em;
+            border-radius: 50px;
+            background: #fff;
+            display: inline-block;
+            white-space: nowrap;
+            border: none;
+            color: #333;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all .25s ease;
+            box-shadow: 2px 3px 5px 1px rgba(0, 0, 0, .2);
+            text-decoration: none;
+            cursor: pointer;
+            overflow: none;
+        }
+
+        .bttn__nxt .text__nxt, .bttn__end .text__end{
+            opacity: 0;
+            display: none;
+        }
+
+        .bttn__nxt span.fa{
+            margin: 5px 10px 0px 8px;
+            font-size: 18px;
+            transition: margin .5s ease;
+        }
+
+        .bttn__end span.fa{
+            margin: 3px 8px 0px 4px;
+            font-size: 18px;
+            transition: margin .5s ease;
+        }
+
+        .bttn__nxt:hover, .bttn__end:hover{
+            width: 8em;
+            background: #d5ff00;
+        }
+
+        .bttn__nxt:hover span.fa{
+            margin: 5px 5px 0 8px;
+        }
+
+        .bttn__end:hover span.fa{
+            margin: 3px 5px 0 10px;
+        }
+        
+        .bttn__nxt:hover .text__nxt{
+            opacity: 1;
+            display: inline-block;
+            position: relative;
+            top: -3px;
+            left: 2px;
+            overflow-x: none;
+        }
+
+        .bttn__end:hover .text__end{
+            opacity: 1;
+            display: inline-block;
+            position: relative;
+            top: -1px;
+            left: 2px;
+            overflow-x: none;
+        }
+    /*Fin de Tipos de botones*/
+    /*Fondos*/
+        .bttn__fndo{
+            background: #00558D;
+            color: #fff;
+        }
+
+        .bttn__fndo:hover{
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            color: #fff;
+        }
+    /*fin de fondos*/
 
 /*Identificadores*/
