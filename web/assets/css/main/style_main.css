@@ -315,7 +315,7 @@
             overflow-x: none;
         }
 
-        .bttn__nxt, .bttn__end{
+        .bttn__nxt, .bttn__end, .bttn__bck{
             width: 3em;
             height: 3em;
             border-radius: 50px;
@@ -335,7 +335,7 @@
             overflow: none;
         }
 
-        .bttn__nxt .text__nxt, .bttn__end .text__end{
+        .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck{
             opacity: 0;
             display: none;
         }
@@ -346,7 +346,8 @@
             transition: margin .5s ease;
         }
 
-        .bttn__end span.fa{
+        .bttn__end span.fa, .bttn__bck span.fa, .bttn__edit span.fa,
+        .bttn__elim span.fa{
             margin: 3px 8px 0px 4px;
             font-size: 18px;
             transition: margin .5s ease;
@@ -357,12 +358,22 @@
             background: #d5ff00;
         }
 
+        .bttn__bck:hover{
+            width: 12em;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            color: #fff;
+        }
+
         .bttn__nxt:hover span.fa{
             margin: 5px 5px 0 8px;
         }
 
         .bttn__end:hover span.fa{
             margin: 3px 5px 0 10px;
+        }
+
+        .bttn__bck:hover span.fa{
+            margin: 3px 10px 0 -10px;
         }
         
         .bttn__nxt:hover .text__nxt{
@@ -374,7 +385,7 @@
             overflow-x: none;
         }
 
-        .bttn__end:hover .text__end{
+        .bttn__end:hover .text__end, .bttn__bck:hover .text__bck{
             opacity: 1;
             display: inline-block;
             position: relative;
@@ -382,6 +393,44 @@
             left: 2px;
             overflow-x: none;
         }
+
+        .bttn__edit, .bttn__elim{
+            width: 3em;
+            height: 3em;
+            border-radius: 50px;
+            background: #fff;
+            display: inline-block;
+            white-space: nowrap;
+            border: 0.5px solid #333;
+            color: #333;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 1em;
+            margin: 0px 5px;
+            font-weight: bold;
+            transition: all .25s ease;
+            box-shadow: 2px 3px 5px 1px rgba(0, 0, 0, .2);
+            text-decoration: none;
+            cursor: pointer;
+            overflow: none;
+        }
+
+        .bttn__edit:hover{
+            background: #0079c9;
+            color: #fff;
+            border: none;
+        }
+
+        .bttn__elim:hover{
+            background: #e04646;
+            color: #fff;
+            border: none;
+        }
+        
+        .bttn__edit:hover span.fa, .bttn__elim:hover span.fa{
+            margin-left: 5px;
+        }
+
     /*Fin de Tipos de botones*/
     /*Fondos*/
         .bttn__fndo{
@@ -393,6 +442,105 @@
             background: linear-gradient(to right, #0084db 0%, #00558D 100%);
             color: #fff;
         }
-    /*fin de fondos*/
 
+    /*fin de fondos*/
+    /*Textos*/
+
+        .show__details p, .show__details h5{
+            display: inline;
+        }
+
+        .show__details p{
+            font-size: 18px;
+            text-align: justify;
+            padding-left: 12px;
+        }
+
+        .show__details h5{
+            text-transform: uppercase;
+        }
+    /*Fin de textos*/
+        
+    /*Tabs*/
+        .tabs{
+            display: table;
+            table-layout: fixed;
+            width: 75%;
+            -webkit-Transform: translateY(5px);
+            transform: translateY(5px);
+        }
+
+        .tabs li{
+            transition: all .25s ease-in-out;
+            display: table-cell;
+            list-style: none;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            color: #333;
+            background: #f7f7f7;
+            border-radius: 10px 10px 0px 0px;
+            font-size: 1em;
+        }
+
+        .tabs li span{
+            font-size: 1.5em;
+            margin: 0px 10px 0px 5px;
+        }
+
+        .tabs li:hover{
+            color: #fff;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            border-bottom: 3px solid #333;
+            border-left: 3px solid #003f68;
+            border-right: 3px solid #003f68;
+        }
+
+        .tabs li:before{
+            z-index: -1;
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 120%;
+            top:0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.3);
+            -webkit-transform: translateY(100%);
+            transform: translateY(100%);
+            transition: all .25s;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tabs li:hover:before {
+            -webkit-transform: translateY(70%);
+            transform: translateY(70%);
+        }
+
+        .tabs li.active{
+            color: #fff;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            border-bottom: 3px solid #333;
+            border-left: 3px solid #003f68;
+            border-right: 3px solid #003f68;
+        }
+
+        .tabs li.active:before{
+            transition: all .5s;
+            background-color: #fff;
+            -webkit-transform: translateY(0);
+            transform: translateY(0);
+        }
+
+        .tab__content{
+            background-color: #eee;
+            position: relative;
+            width: 100%;
+            padding: 15px 0px 10px 0px;
+            border-radius: 5px;
+            margin-top: -11px;
+            box-shadow: 5px 5px 2px rgba(51, 51, 51, .5);
+        }
+
+        
+    /*Fin Tabs*/
 /*Identificadores*/
