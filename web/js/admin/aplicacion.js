@@ -11,13 +11,21 @@ $(document).ready(function() {
 				data: $("#form").serialize(),
 				dataType: "json",
 				success: function(data) {
-					console.log('Formulario enviado');
+					console.log('Formulario enviado. Id '+data.id);
+					$('#form').hide();
+					$('#alert-success').show();
+					$('#aceptar').show();
+					$('#guardar').hide();
 				},
 				error: function(){
 					console.log('Error al enviar el formulario');
 				}
 			});
 		}
+	});
+
+	$('#aceptar').click(function(){
+		window.location.replace($('#url_list').val());
 	});
 
 	$('.edit').click(function(){
@@ -55,6 +63,26 @@ $(document).ready(function() {
 		$('#url').val("");
 		$('#icono').val("");
 		$('#subaplicacion_id').html($('#aplicaciones_str').val());
+	});
+
+	$('.cb_activo').click(function(){
+		var checked = $(this).is(':checked') ? 1 : 0;
+		var id = $(this).attr('id');
+		var id_arr = id.split('f');
+		var app_id = id_arr[1];
+		$.ajax({
+			type: "POST",
+			url: $('#url_active').val(),
+			async: true,
+			data: { app_id: app_id, checked: checked },
+			dataType: "json",
+			success: function(data) {
+				console.log('Activación/Desactivación realizada. Id '+data.id);
+			},
+			error: function(){
+				console.log('Error al activar o desactivar la aplicación');
+			}
+		});
 	});
 
 });

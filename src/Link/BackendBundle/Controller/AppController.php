@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Link\ComunBundle\Entity\AdminAplicacion;
 
 class AppController extends Controller
 {
@@ -105,14 +106,57 @@ class AppController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         
-        $servicio_id = $request->request->get('servicio_id');
-        $ok = 1;
+        $app_id = $request->request->get('app_id');
+        $nombre = $request->request->get('nombre');
+        $url = $request->request->get('url');
+        $icono = $request->request->get('icono');
+        $activo = $request->request->get('activo');
+        $subaplicacion_id = $request->request->get('subaplicacion_id');
 
-        $servicio = $em->getRepository('PsTelemedBundle:Servicio')->find($servicio_id);
-        $em->remove($servicio);
+        if ($app_id)
+        {
+        	$aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
+        }
+        else {
+        	$aplicacion = new AdminAplicacion();
+        }
+
+        $aplicacion->setNombre($nombre);
+        $aplicacion->setUrl($url);
+        $aplicacion->setIcono($icono);
+        $aplicacion->setActivo($activo ? true : false);
+        if ($subaplicacion_id)
+        {
+        	$subaplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($subaplicacion_id);
+        	$aplicacion->setAplicacion($subaplicacion);
+        }
+        else {
+        	$aplicacion->setAplicacion(null);
+        }
+        $em->persist($aplicacion);
         $em->flush();
-            
-        $return = array('ok' => $ok);
+                    
+        $return = array('id' => $aplicacion->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxActiveAplicacionAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $app_id = $request->request->get('app_id');
+        $checked = $request->request->get('checked');
+
+        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
+        $aplicacion->setActivo($checked ? true : false);
+        $em->persist($aplicacion);
+        $em->flush();
+                    
+        $return = array('id' => $aplicacion->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

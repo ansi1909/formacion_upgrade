@@ -3,6 +3,10 @@
 {% block body %}
 <br>
 <input type="hidden" id="aplicaciones_str" name="aplicaciones_str" value="{{ aplicaciones_str }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_aplicaciones', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActiveAplicacion') }}">
+
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Aplicaciones'|trans }}</h3>
@@ -39,8 +43,8 @@
                                 </td>
                                 <td class="center">
                                     <div class="can-toggle demo-rebrand-2 small">
-                                        <input id="f" type="checkbox" {% if aplicacion.activo %}checked{% endif %}>
-                                        <label for="f">
+                                        <input id="f{{ aplicacion.id }}" class="cb_activo" type="checkbox" {% if aplicacion.activo %}checked{% endif %}>
+                                        <label for="f{{ aplicacion.id }}">
                                             <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                         </label>
                                     </div>
@@ -61,8 +65,8 @@
                                     </td>
                                     <td class="center">
                                         <div class="can-toggle demo-rebrand-2 small">
-                                            <input id="f" type="checkbox" {% if subaplicacion.activo %}checked{% endif %}>
-                                            <label for="f">
+                                            <input id="f{{ subaplicacion.id }}" class="cb_activo" type="checkbox" {% if subaplicacion.activo %}checked{% endif %}>
+                                            <label for="f{{ subaplicacion.id }}">
                                                 <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                             </label>
                                         </div>
@@ -90,7 +94,6 @@
     </div>
     <div class="modal-body">
         <form id="form" name="form" action="{{ path('_ajaxUpdateAplicacion') }}" method="POST">
-            <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
             <input type="hidden" id="app_id" name="app_id" value="">
             <div class="form-group">
                 <label for="nombre" class="form-control-label">{{ 'Nombre'|trans }}:</label>
@@ -119,6 +122,9 @@
                 </select>
             </div>
         </form>
+        <div class="alert alert-success" role="alert" style="display:none;" id="alert-success"> 
+            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+        </div>
     </div>
 {% endblock %}
 
