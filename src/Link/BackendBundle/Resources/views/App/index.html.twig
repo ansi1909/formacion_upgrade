@@ -2,12 +2,13 @@
 
 {% block body %}
 <br>
+<input type="hidden" id="aplicaciones_str" name="aplicaciones_str" value="{{ aplicaciones_str }}">
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Aplicaciones'|trans }}</h3>
     </div>
     <div class="col text-right">
-        <button type="button" class="bttn__nr" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">Nuevo Registro</span></button>
+        <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></button>
     </div>
 </div>
 <div class="row">
@@ -115,9 +116,6 @@
             <div class="form-group">
                 <label for="subaplicacion_id" class="form-control-label">{{ 'Sub-Aplicación de'|trans }}:</label>
                 <select class="form-control" id="subaplicacion_id" name="subaplicacion_id" style="border-radius: 5px;">
-                    {% for subapp in apps %}
-                        <option value="{{ subapp.id }}">{{ subapp.nombre }}</option>
-                    {% endfor %}
                 </select>
             </div>
         </form>
@@ -129,4 +127,31 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('js/admin/aplicacion.js') }}"></script>
+    <script type="text/javascript">
+
+        jQuery.validator.addMethod("noSpace", function(value, element) { 
+            return value.indexOf(" ") < 0; 
+        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'url': {
+                    noSpace: true
+                },
+                'icono': {
+                    noSpace: true
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+    </script>
 {% endblock %}

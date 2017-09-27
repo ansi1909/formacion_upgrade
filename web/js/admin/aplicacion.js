@@ -1,16 +1,33 @@
 $(document).ready(function() {
 
 	$('#guardar').click(function(){
-		$("#form").valid();
+		if ($("#form").valid())
+		{
+			$('#guardar').prop('disabled', true);
+			$.ajax({
+				type: "POST",
+				url: $('#form').attr('action'),
+				async: true,
+				data: $("#form").serialize(),
+				dataType: "json",
+				success: function(data) {
+					console.log('Formulario enviado');
+				},
+				error: function(){
+					console.log('Error al enviar el formulario');
+				}
+			});
+		}
 	});
 
 	$('.edit').click(function(){
 		var app_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
+		$('#guardar').prop('disabled', false);
 		$.ajax({
 			type: "GET",
 			url: url_edit,
-			async: false,
+			async: true,
 			data: { app_id: app_id },
 			dataType: "json",
 			success: function(data) {
@@ -32,68 +49,12 @@ $(document).ready(function() {
 		});
 	});
 
-	jQuery.validator.addMethod("noSpace", function(value, element) { 
-	 	return value.indexOf(" ") < 0 && value != ""; 
-	}, "No se permiten espacios en blanco");
-
-	$("#form").validate({
-		rules: {
-			'nombre': {
-				required: true,
-				minlength: 3
-			},
-			'url': {
-				noSpace: true
-			},
-			'icono': {
-				noSpace: true
-			}
-		},
-		messages: {
-			'nombre': {
-				required: "El nombre de la aplicación es requerido.",
-				minlength: "El nombre de la aplicación debe ser mínimo de 3 caracteres."
-			}
-		},
-		submitHandler: function(form, event) {
-
-			var error = 0;
-			event.preventDefault();
-			$('#btn').hide();
-			
-			if (usuario_id == '')
-			{
-				var login = $('#login').val();
-				$.ajax({
-					type: "GET",
-					url: url_validUser,
-					async: false,
-					data: { login: login },
-					dataType: "json",
-					success: function(data) {
-						if (data.ok != 1)
-						{
-							error = 1;
-							$('#usuario-error').html('Usuario existente');
-							$('#usuario-error').show();
-							$('#btn').show();
-						}
-					},
-					error: function(){
-						error = 1;
-						$('#usuario-error').html('Ha ocurrido un error validando el usuario. Contacte con el Administrador.');
-						$('#usuario-error').show();
-						$('#btn').show();
-					}
-				});
-			}
-			
-			if (error == 0)
-			{
-				form.submit();
-			}
-			
-		}
+	$('.new').click(function(){
+		$('#app_id').val("");
+		$('#nombre').val("");
+		$('#url').val("");
+		$('#icono').val("");
+		$('#subaplicacion_id').html($('#aplicaciones_str').val());
 	});
 
 });

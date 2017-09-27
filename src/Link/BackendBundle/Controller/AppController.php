@@ -37,9 +37,12 @@ class AppController extends Controller
                                     WHERE a.aplicacion IS NULL 
                                     ORDER BY a.id ASC");
         $apps = $query->getResult();
+        $aplicaciones_str = '<option value=""></option>';
 
         foreach ($apps as $app)
         {
+
+        	$aplicaciones_str .= '<option value="'.$app->getId().'">'.$app->getNombre().'</option>';
 
             // Subaplicaciones
             $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
@@ -58,7 +61,7 @@ class AppController extends Controller
         }
 
         return $this->render('LinkBackendBundle:App:index.html.twig', array('aplicaciones' => $aplicaciones,
-        																	'apps' =>$apps));
+        																	'aplicaciones_str' =>$aplicaciones_str));
 
     }
 
@@ -91,6 +94,25 @@ class AppController extends Controller
                         'icono' => $aplicacion->getIcono(),
                         'activo' => $aplicacion->getActivo(),
                         'subaplicaciones' => $subaplicaciones);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxUpdateAplicacionAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $servicio_id = $request->request->get('servicio_id');
+        $ok = 1;
+
+        $servicio = $em->getRepository('PsTelemedBundle:Servicio')->find($servicio_id);
+        $em->remove($servicio);
+        $em->flush();
+            
+        $return = array('ok' => $ok);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
