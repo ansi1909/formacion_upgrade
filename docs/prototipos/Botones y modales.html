@@ -23,6 +23,9 @@
 
         <!-- date picker CSS -->
         <link rel="stylesheet" href="../../web/assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css" type="text/css">
+        
+        <!--Sweet Alert "AGREGAR EN LA BASE.TWIG"-->
+        <link rel="stylesheet" href="../../web/assets/vendor/sweetalert/dist/sweetalert2.min.css">
 
     </head>
     <body class="rounded">
@@ -130,24 +133,42 @@
         <br>
         <div class="wrapper-content">
             <div class="container">
-                <!-- Listado -->
+               <br>
                 <div class="row align-items-center justify-content-between">
-                    <div class="col-12 col-sm-12 page-title">
+                    <div class="col-2 col-sm-2 push-2 page-title">
                         <h3>Modal</h3>
                     </div>
-                    <div class="col text-right">
-                        <button type="button" class="bttn__nr" data-toggle="modal" data-target="#emodal"><span class="fa fa-plus"></span><span class="text__nr">Nuevo Registro</span></button>
+                    <div class="col-3 col-sm-3 pull-8 text-center">
+                        <button type="button" class="bttn__nr" data-toggle="modal" data-target="#emodal"><span class="fa fa-window-maximize"></span><span class="text__nr">Modal</span></button>
                     </div>
                 </div>
-                
-                <div class="modal fade" id="emodal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            </div>
-                            <div class="modal-body"></div>
-                            <div class="modal-footer"></div>
-                        </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-3 col-sm-3 push-2 page-title">
+                        <h3>Modal de aviso</h3>
+                    </div>
+                    <div class="col-3 col-sm-3 pull-8 text-center">
+                        <button type="button" class="bttn__nr" onclick="Vent__Emerg()"><span class="fa fa-save"></span><span class="text__nr">Modal de aviso</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="emodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="color: #fff;">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="bttn__save"><span class="text__save">Guardar</span><span class="fa fa-save"></span></button>
+                        <button type="button" class="bttn__cancel" data-dismiss="modal"><span class="text__cancel">Cancelar</span><span class="fa fa-times"></span></button>
                     </div>
                 </div>
             </div>
@@ -193,5 +214,30 @@
         <!-- page level js --> 
         <script src="../../web/assets/js/picker.js" type="text/javascript"></script>
 
+        <!--Agregar archivo js-->
+        <script src="../../web/assets/vendor/sweetalert/dist/sweetalert2.min.js"></script>
+        
+        <script>
+                function Vent__Emerg(){
+                    swal({
+                        title: '¿Desea eliminar el registro?',
+                        text: "Si acepta no puede revertir el cambio",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#e04646',
+                        cancelButtonColor: '#97af21',
+                        confirmButtonText: ' Eliminar',
+                        confirmButtonClass: 'fa fa-trash',
+                        cancelButtonClass: 'fa fa-times',
+                        cancelButtonText: ' Cancelar'
+                    }).then(function () {
+                        swal(
+                            'Eliminado!',
+                            'Su registro ha sido eliminado',
+                            'success'
+                        )
+                    })
+                }
+        </script>
     </body>
 </html>

@@ -315,7 +315,7 @@
             overflow-x: none;
         }
 
-        .bttn__nxt, .bttn__end, .bttn__bck{
+        .bttn__nxt, .bttn__end, .bttn__bck, .bttn__save, .bttn__cancel{
             width: 3em;
             height: 3em;
             border-radius: 50px;
@@ -335,7 +335,8 @@
             overflow: none;
         }
 
-        .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck{
+        .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck,
+        .bttn__save .text__save, .bttn__cancel .text__cancel{
             opacity: 0;
             display: none;
         }
@@ -347,7 +348,7 @@
         }
 
         .bttn__end span.fa, .bttn__bck span.fa, .bttn__edit span.fa,
-        .bttn__elim span.fa{
+        .bttn__elim span.fa, .bttn__save span.fa, .bttn__cancel span.fa{
             margin: 3px 8px 0px 4px;
             font-size: 18px;
             transition: margin .5s ease;
@@ -368,7 +369,7 @@
             margin: 5px 5px 0 8px;
         }
 
-        .bttn__end:hover span.fa{
+        .bttn__end:hover span.fa, .bttn__save:hover span.fa, .bttn__cancel:hover span.fa{
             margin: 3px 5px 0 10px;
         }
 
@@ -385,7 +386,8 @@
             overflow-x: none;
         }
 
-        .bttn__end:hover .text__end, .bttn__bck:hover .text__bck{
+        .bttn__end:hover .text__end, .bttn__bck:hover .text__bck, 
+        .bttn__save:hover .text__save, .bttn__cancel:hover .text__cancel{
             opacity: 1;
             display: inline-block;
             position: relative;
@@ -421,10 +423,24 @@
             border: none;
         }
 
+        .bttn__save:hover{
+            width: 7em;
+            background: #97af21;
+            color: #fff;
+            border: none;
+        }
+
         .bttn__elim:hover{
             background: #e04646;
             color: #fff;
             border: none;
+        }
+
+        .bttn__cancel:hover{
+            background: #e04646;
+            color: #fff;
+            border: none;
+            width: 7em;
         }
         
         .bttn__edit:hover span.fa, .bttn__elim:hover span.fa{
@@ -459,6 +475,24 @@
         .show__details h5{
             text-transform: uppercase;
         }
+
+        .text__info h6, .text__info i{
+            display: inline;
+        }
+
+        .text__info h6{
+            padding-left: 10px
+        }
+
+        .text__info li{
+            margin: 5px 10px;
+        }
+
+        .text__info i{
+            font-size: 8px;
+            position: relative;
+            top: -4px;
+        }
     /*Fin de textos*/
         
     /*Tabs*/
@@ -490,7 +524,8 @@
 
         .tabs li:hover{
             color: #fff;
-            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            font-weight: bold;
+            background: #007ed0;
             border-bottom: 3px solid #333;
             border-left: 3px solid #003f68;
             border-right: 3px solid #003f68;
@@ -501,7 +536,7 @@
             position: absolute;
             content: "";
             width: 100%;
-            height: 120%;
+            height: 100%;
             top:0;
             left: 0;
             background: rgba(255, 255, 255, 0.3);
@@ -518,6 +553,7 @@
 
         .tabs li.active{
             color: #fff;
+            font-weight: bold;
             background: linear-gradient(to right, #0084db 0%, #00558D 100%);
             border-bottom: 3px solid #333;
             border-left: 3px solid #003f68;
@@ -532,15 +568,41 @@
         }
 
         .tab__content{
-            background-color: #eee;
+            background-color: #f9f9f9;
             position: relative;
             width: 100%;
-            padding: 15px 0px 10px 0px;
+            height: auto;
             border-radius: 5px;
             margin-top: -11px;
-            box-shadow: 5px 5px 2px rgba(51, 51, 51, .5);
+            box-shadow: 4px 4px 15px rgba(51, 51, 51, .5);
         }
 
-        
+        .tab__content li{
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            left: 0;
+            display: none;
+            list-style: none;
+        }
+
+        .tab__content li .content__wrapper {
+            border-radius: 5px;
+            width: 100%;
+            height: auto;
+            padding: 25px 40px 25px 40px;
+            background: #f9f9f9;
+        }
     /*Fin Tabs*/
+    /*Excepcion*/
+        .wsp img{
+            position: fixed;
+            left: 0em;
+            bottom: 0em;
+            margin-bottom: 0px;
+            overflow: none;
+            height: 50px; 
+            width: 100%;
+        }
+    /*Fin Excepcion*/
 /*Identificadores*/
