@@ -24,3 +24,8 @@ No se permiten espacios en blanco.: Blank spaces are not allowed.
 Nuevo Registro: New Item
 Bien hecho: Well done
 La aplicación ha sido almacenada con éxito: Application has been saved sucessfully
+Error en el servidor: Error on server
+Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
+No se pudo almacenar este registro.: It could not save this item.
+No se pudo editar este registro.: It could not edit this item.
+No se pudo activar/desactivar este registro.: It could not enable/disable this item.
