@@ -48,6 +48,59 @@ class RolController extends Controller
        return $this->render('LinkBackendBundle:Rol:index.html.twig', array('roles'=>$roles));
 
     }
-    
+
+   public function ajaxUpdateRolAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $rol_id = $request->request->get('rol_id');
+        $nombre = $request->request->get('rol');
+        $descripcion = $request->request->get('descripcion');
+
+        if ($rol_id)
+        {
+            $rol = $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+        }
+        else {
+            $rol = new AdminRol();
+        }
+
+        $rol->setNombre($nombre);
+        $rol->setDescripcion($descripcion);
+        
+        $em->persist($rol);
+        $em->flush();
+                    
+        $return = array('id' => $rol->getId(),
+                        'nombre' =>$rol->getNombre(),
+                        'descripcion' =>$rol->getDescripcion());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+   public function ajaxEditRolAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $rol_id = $request->query->get('rol_id');
+                
+        $rol = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+
+        $query = $em->createQuery("SELECT r FROM LinkComunBundle:AdminRol r 
+                                    WHERE r.nombre IS NULL 
+                                    ORDER BY r.id ASC");
+        $apps = $query->getResult();
+
+
+        $return = array('nombre' => $rol->getNombre(),
+                        'descripcion' => $rol->getDescripcion());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
 
 }

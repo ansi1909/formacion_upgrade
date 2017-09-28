@@ -1,6 +1,9 @@
 $(document).ready(function() {
 
+	$('#div-active-alert').hide();
+
 	$('#guardar').click(function(){
+		$('#div-alert').hide();
 		if ($("#form").valid())
 		{
 			$('#guardar').prop('disabled', true);
@@ -11,14 +14,30 @@ $(document).ready(function() {
 				data: $("#form").serialize(),
 				dataType: "json",
 				success: function(data) {
-					console.log('Formulario enviado. Id '+data.id);
+					$('#p-nombre').html(data.nombre);
+					$('#p-url').html(data.url);
+					$('#p-icono').html(data.icono);
+					$('#p-activo').html(data.activo);
+					$('#p-subaplicacion').html(data.subaplicacion);
+					if (data.subaplicacion_id)
+					{
+						$('#div-subaplicacion').show();
+					}
+					else {
+						$('#div-subaplicacion').hide();
+					}
+					$( "#detail-edit" ).attr( "data", data.id );
+					$( "#detail-delete" ).attr( "data", data.id );
 					$('#form').hide();
 					$('#alert-success').show();
+					$('#detail').show();
 					$('#aceptar').show();
 					$('#guardar').hide();
+					$('#cancelar').hide();
 				},
 				error: function(){
-					console.log('Error al enviar el formulario');
+					$('#alert-error').html($('#error_msg-save').val());
+					$('#div-alert').show();
 				}
 			});
 		}
@@ -32,6 +51,14 @@ $(document).ready(function() {
 		var app_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
 		$('#guardar').prop('disabled', false);
+		$('label.error').hide();
+		$('#form').show();
+		$('#alert-success').hide();
+		$('#detail').hide();
+		$('#aceptar').hide();
+		$('#guardar').show();
+		$('#cancelar').show();
+		$('#div-alert').hide();
 		$.ajax({
 			type: "GET",
 			url: url_edit,
@@ -47,17 +74,21 @@ $(document).ready(function() {
 				$('#subaplicacion_id').html(data.subaplicaciones);
 			},
 			error: function(){
-				console.log('Error al editar');
-				/*$( "#dialog-delete" ).dialog( "close" );
-				$("#texto-msg").html('Ha ocurrido un error al momento de eliminar el servicio. Contacte al Administrador del Sistema.');
-				$( "#dialog" ).dialog('option', 'width', 400);
-				$( "#dialog" ).dialog('option', 'title', 'Mensaje del Servidor');
-				$( "#dialog" ).dialog( "open" );*/
+				$('#alert-error').html($('#error_msg-edit').val());
+				$('#div-alert').show();
 			}
 		});
 	});
 
 	$('.new').click(function(){
+		$('label.error').hide();
+		$('#form').show();
+		$('#alert-success').hide();
+		$('#detail').hide();
+		$('#aceptar').hide();
+		$('#guardar').show();
+		$('#cancelar').show();
+		$('#div-alert').hide();
 		$('#app_id').val("");
 		$('#nombre').val("");
 		$('#url').val("");
@@ -70,6 +101,7 @@ $(document).ready(function() {
 		var id = $(this).attr('id');
 		var id_arr = id.split('f');
 		var app_id = id_arr[1];
+		$('#div-alert').hide();
 		$.ajax({
 			type: "POST",
 			url: $('#url_active').val(),
@@ -80,7 +112,8 @@ $(document).ready(function() {
 				console.log('Activación/Desactivación realizada. Id '+data.id);
 			},
 			error: function(){
-				console.log('Error al activar o desactivar la aplicación');
+				$('#active-error').html($('#error_msg-active').val());
+				$('#div-active-alert').show();
 			}
 		});
 	});

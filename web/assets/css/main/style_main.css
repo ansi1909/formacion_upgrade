@@ -443,7 +443,7 @@
             width: 7em;
         }
         
-        .bttn__edit:hover span.fa, .bttn__elim:hover span.fa{
+        .bttn__edit:hover span.fa, .bttn__elim:hover, span.fa{
             margin-left: 5px;
         }
 

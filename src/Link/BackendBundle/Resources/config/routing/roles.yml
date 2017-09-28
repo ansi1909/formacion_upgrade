@@ -11,3 +11,9 @@ _ajaxUpdateRol:
     defaults: { _controller: LinkBackendBundle:Rol:ajaxUpdateRol }
     requirements:
         method: POST
+
+_ajaxEditRol:
+    path:     /ajaxEditRol
+    defaults: { _controller: LinkBackendBundle:Rol:ajaxEditRol }
+    requirements:
+        method: GET
