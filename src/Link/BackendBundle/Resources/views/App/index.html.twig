@@ -51,7 +51,7 @@
                                 </td>
                                 <td class="center">
                                     <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm"><span class="fa fa-trash"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm delete" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                             {% for subaplicacion in aplicacion.subaplicaciones %}
@@ -73,7 +73,7 @@
                                     </td>
                                     <td class="center">
                                         <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ subaplicacion.id }}"><span class="fa fa-pencil"></span></a>
-                                        <a href="#" class="btn btn-link btn-sm"><span class="fa fa-trash"></span></a>
+                                        <a href="#" class="btn btn-link btn-sm delete" data="{{ subaplicacion.id }}"><span class="fa fa-trash"></span></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -122,8 +122,57 @@
                 </select>
             </div>
         </form>
-        <div class="alert alert-success" role="alert" style="display:none;" id="alert-success"> 
+        <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
             <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+        </div>
+        <div class="card" id="detail" style="display:none;">
+            <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+                <h4 class="card-title" style="color: #fff; text-transform: uppercase">Datos Básicos</h4>
+            </div>
+            <div class="card-block">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Nombre'|trans }}:</h5>
+                            <p id="p-nombre">Lorem Ipsum</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>Url:</h5>
+                            <p id="p-url">https://Loremipsumdolorsitamet.domain/</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Icono'|trans }}:</h5>
+                            <p id="p-icono"><span class="fa fa-users"></span></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Activo'|trans }}:</h5>
+                            <p id="p-activo">Si</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between" id="div-subaplicacion">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Sub-Aplicación de'|trans }}:</h5>
+                            <p id="p-subaplicacion">5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-sm-16 col-md-16 text-right">
+                    <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="Editar" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                    <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="Eliminar" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

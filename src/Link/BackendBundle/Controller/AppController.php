@@ -136,7 +136,13 @@ class AppController extends Controller
         $em->persist($aplicacion);
         $em->flush();
                     
-        $return = array('id' => $aplicacion->getId());
+        $return = array('id' => $aplicacion->getId(),
+        				'nombre' => $aplicacion->getNombre(),
+        				'url' => $aplicacion->getUrl(),
+        				'icono' => '<span class="fa '.$aplicacion->getIcono().'"></span> '.$aplicacion->getIcono(),
+        				'activo' => $aplicacion->getActivo() ? $this->get('translator')->trans('Si') : 'No',
+        				'subaplicacion_id' => $aplicacion->getAplicacion() ? 1 : 0,
+        				'subaplicacion' => $aplicacion->getAplicacion() ? $aplicacion->getAplicacion()->getNombre() : '');
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

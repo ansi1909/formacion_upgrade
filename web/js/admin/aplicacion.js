@@ -11,11 +11,26 @@ $(document).ready(function() {
 				data: $("#form").serialize(),
 				dataType: "json",
 				success: function(data) {
-					console.log('Formulario enviado. Id '+data.id);
+					$('#p-nombre').html(data.nombre);
+					$('#p-url').html(data.url);
+					$('#p-icono').html(data.icono);
+					$('#p-activo').html(data.activo);
+					$('#p-subaplicacion').html(data.subaplicacion);
+					if (data.subaplicacion_id)
+					{
+						$('#div-subaplicacion').show();
+					}
+					else {
+						$('#div-subaplicacion').hide();
+					}
+					$( "#detail-edit" ).attr( "data", data.id );
+					$( "#detail-delete" ).attr( "data", data.id );
 					$('#form').hide();
 					$('#alert-success').show();
+					$('#detail').show();
 					$('#aceptar').show();
 					$('#guardar').hide();
+					$('#cancelar').hide();
 				},
 				error: function(){
 					console.log('Error al enviar el formulario');
@@ -32,6 +47,13 @@ $(document).ready(function() {
 		var app_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
 		$('#guardar').prop('disabled', false);
+		$('label.error').hide();
+		$('#form').show();
+		$('#alert-success').hide();
+		$('#detail').hide();
+		$('#aceptar').hide();
+		$('#guardar').show();
+		$('#cancelar').show();
 		$.ajax({
 			type: "GET",
 			url: url_edit,
@@ -58,6 +80,13 @@ $(document).ready(function() {
 	});
 
 	$('.new').click(function(){
+		$('label.error').hide();
+		$('#form').show();
+		$('#alert-success').hide();
+		$('#detail').hide();
+		$('#aceptar').hide();
+		$('#guardar').show();
+		$('#cancelar').show();
 		$('#app_id').val("");
 		$('#nombre').val("");
 		$('#url').val("");

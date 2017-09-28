@@ -347,7 +347,7 @@
         }
 
         .bttn__end span.fa, .bttn__bck span.fa, .bttn__edit span.fa,
-        .bttn__elim span.fa{
+        .bttn__elim, span.fa{
             margin: 3px 8px 0px 4px;
             font-size: 18px;
             transition: margin .5s ease;
@@ -427,7 +427,7 @@
             border: none;
         }
         
-        .bttn__edit:hover span.fa, .bttn__elim:hover span.fa{
+        .bttn__edit:hover span.fa, .bttn__elim:hover, span.fa{
             margin-left: 5px;
         }
 
