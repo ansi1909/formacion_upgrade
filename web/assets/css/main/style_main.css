@@ -594,15 +594,5 @@
             background: #f9f9f9;
         }
     /*Fin Tabs*/
-    /*Excepcion*/
-        .wsp img{
-            position: fixed;
-            left: 0em;
-            bottom: 0em;
-            margin-bottom: 0px;
-            overflow: none;
-            height: 50px; 
-            width: 100%;
-        }
-    /*Fin Excepcion*/
+
 /*Identificadores*/
