@@ -21,7 +21,7 @@
 <div class="row">
     <div class="col-sm-16">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Listado de Aplicaciones'|trans }}</h5>
             </div>
             <div class="card-block">
@@ -67,7 +67,7 @@
                                 </td>
                                 <td class="center">
                                     <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm delete" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm delete {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                             {% for subaplicacion in aplicacion.subaplicaciones %}
@@ -89,7 +89,8 @@
                                     </td>
                                     <td class="center">
                                         <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ subaplicacion.id }}"><span class="fa fa-pencil"></span></a>
-                                        <a href="#" class="btn btn-link btn-sm delete" data="{{ subaplicacion.id }}"><span class="fa fa-trash"></span></a>
+                                        
+                                        <a href="#" class="btn btn-link btn-sm delete {{ subaplicacion.delete_disabled }}" data="{{ subaplicacion.id }}"><span class="fa fa-trash"></span></a>
                                     </td>
                                 </tr>
                             {% endfor %}

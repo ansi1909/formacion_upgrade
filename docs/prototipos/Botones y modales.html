@@ -229,14 +229,33 @@
                         confirmButtonText: ' Eliminar',
                         confirmButtonClass: 'fa fa-trash',
                         cancelButtonClass: 'fa fa-times',
-                        cancelButtonText: ' Cancelar'
+                        cancelButtonText: ' Cancelar',
+                        preConfirm: function (email) {
+                            return new Promise(function (resolve, reject) {
+                              setTimeout(function() {
+                                if (email === 'taken@example.com') {
+                                  reject('This email is already taken.')
+                                } else {
+                                  resolve()
+                                }
+                              }, 2000)
+                            })
+                        },
+                        allowOutsideClick: false
                     }).then(function () {
-                        swal(
-                            'Eliminado!',
-                            'Su registro ha sido eliminado',
-                            'success'
-                        )
-                    })
+                            console.log('Aqui puedo hacer lo que me da la gana...');
+                            var ok = 1;
+                            if (ok == 1){
+                                swal(
+                                    'Eliminado!',
+                                    'Su registro ha sido eliminado',
+                                    'success'
+                                );
+                            }
+                            else {
+                                console.log('No ok');
+                            }
+                        })
                 }
         </script>
     </body>
