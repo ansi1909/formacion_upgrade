@@ -1,3 +1,7 @@
 .error {
     color: #e60f0f;
 }
+
+.gradiente {
+	background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%) !important;
+}

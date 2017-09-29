@@ -22,42 +22,43 @@ class Functions
 	}
 
 	// Función que valida si un registro de una tabla puede ser eliminado dependiendo de su relación con otras tablas
-	// Parámteros: $idtabla = Valor del id del registro a comparar
-	//			   $tabla = Nombre de la tabla del que se va a eliminar el registro (formato entity)
-	//			   $tablas = Nombre de las tablas relacionada a $tabla (formato Nentity o Dentity)
-	public function linkEliminar($idtabla, $tabla, $relaciones, $frontend, $selector)
+	// Parámteros: $id = Valor del id del registro a comparar
+	//			   $entidad = Nombre de las tabla a comparar (formato Entity)
+	public function linkEliminar($id, $entidad)
 	{
 
 		$em = $this->em;
-		if ($frontend)
-		{
-			$html = '<a title="Eliminar" id="delete_'.$idtabla.'" class="txt-purple '.$selector.'">Eliminar</a>';
-		}
-		else {
-			$html = '<a title="Eliminar" id="delete_'.$idtabla.'"><i class="fa fa-times fa-fw delete-'.$tabla.'" id="delete_'.$idtabla.'"></i>&nbsp;</a>';
-		}
+		$html = '';
 
-        if ($relaciones)
+		// $entidades array('entidad destino' => 'atributo destino')
+    	switch ($entidad)
+    	{
+    		case 'AdminAplicacion':
+    			$entidades = array('AdminAplicacion' => 'aplicacion',
+    							   'AdminPermiso' => 'aplicacion');
+    			break;
+			case 'AdminRol':
+    			$entidades = array('AdminPermiso' => 'rol',
+    							   'AdminRolUsuario' => 'rol');
+    			break;    			
+    		default:
+    			$entidades = array();
+    	}
+		
+		foreach ($entidades as $entity => $attr)
         {
-
-        	$relaciones_arr = explode(",", $relaciones);
-
-	        foreach ($relaciones_arr as $relacion)
-	        {
-	        	$qb = $em->createQueryBuilder();
-				$qb->select('COUNT(tr.id)')
-		   		   ->from('LinkComunBundle:'.$relacion, 'tr')
-		   		   ->where('tr.'.$tabla.' = :id')
-		   		   ->setParameter('id',$idtabla);
-		   		$query = $qb->getQuery();
-		   		$cuenta = $query->getSingleScalarResult();
-				if ($cuenta)
-				{
-					$html = '';
-					break;
-				}
-	        }
-	        
+        	$qb = $em->createQueryBuilder();
+			$qb->select('COUNT(tr.id)')
+	   		   ->from('LinkComunBundle:'.$entity, 'tr')
+	   		   ->where('tr.'.$attr.' = :id')
+	   		   ->setParameter('id',$id);
+	   		$query = $qb->getQuery();
+	   		$cuenta = $query->getSingleScalarResult();
+			if ($cuenta)
+			{
+				$html = 'disabled';
+				break;
+			}
         }
         
         return $html;

@@ -50,13 +50,25 @@ class AppController extends Controller
                                         WHERE a.aplicacion = :aplicacion_id  
                                         ORDER BY a.id ASC")
                         ->setParameter('aplicacion_id', $app->getId());
-            $subaplicaciones = $query->getResult();
+            $subapps = $query->getResult();
+
+            $subaplicaciones = array();
+            foreach ($subapps as $subapp)
+            {
+            	$subaplicaciones[] = array('id' => $subapp->getId(),
+	                                	   'nombre' => $subapp->getNombre(),
+	                                 	   'url' => $subapp->getUrl(),
+	                                 	   'icono' => $subapp->getIcono(),
+	                                 	   'activo' => $subapp->getActivo(),
+	                                 	   'delete_disabled' => $f->linkEliminar($subapp->getId(), 'AdminAplicacion'));
+            }
 
             $aplicaciones[] = array('id' => $app->getId(),
                                  	'nombre' => $app->getNombre(),
                                  	'url' => $app->getUrl(),
                                  	'icono' => $app->getIcono(),
                                  	'activo' => $app->getActivo(),
+                                 	'delete_disabled' => $f->linkEliminar($app->getId(), 'AdminAplicacion'),
                                  	'subaplicaciones' => $subaplicaciones);
 
         }
