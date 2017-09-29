@@ -7,7 +7,7 @@ Activo: Active
 Si: Yes
 Acciones: Actions
 Listado de Roles: List of Roles
-Descripcion: Description
+Descripción: Description
 Datos de la Aplicación: Application Data
 Sub-Aplicación de: Sub-Application of
 Empresas: Companies
@@ -16,7 +16,6 @@ Fecha Creación: Creation Date
 Teléfono de contacto: Contact Number
 Email de contacto: Contact Email
 Empresa: Company
-Nuevo Registro: New Register
 Datos de la empresa: Company Data
 Este campo es requerido.: This field is required.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
@@ -30,3 +29,9 @@ No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.
 Datos del Rol: Role Details
+Datos Básicos: Basic data
+Guardar: Save
+Editar: Edit
+Aceptar: Accept
+Cancelar: Cancel
+Eliminar: Remove

@@ -23,7 +23,7 @@
                     <thead>
                         <tr>
                             <th>Rol</th>
-                            <th>{{'Descripcion'|trans }}</th>
+                            <th>{{'Descripción'|trans }}</th>
                             <th>{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
@@ -50,56 +50,56 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del Rol'|trans}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
 </div>
-    <div class="modal-body">
-        <form id="form" name="form" action="{{ path( '_ajaxUpdateRol')}}"  method="POST">
-            <input type="hidden" id="rol_id" name="rol_id" value="">
-            <div class="form-group">
-                <label for="recipient-name" class="form-control-label">{{ 'Rol'|trans }}:</label>
-                <input type="text" class="form-control" id="rol" name="rol" value="">
-            </div>
-            <div class="form-group">
-                <label for="message-text" class="form-control-label">{{ 'Descripción'|trans }}:</label>
-                <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
-            </div>
-        </form>
-        <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
-            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateRol')}}"  method="POST">
+        <input type="hidden" id="rol_id" name="rol_id" value="">
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Rol'|trans }}:</label>
+            <input type="text" class="form-control" id="rol" name="rol" value="">
         </div>
-        <div class="card" id="detail" style="display:none;">
-            <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
-                <h4 class="card-title" style="color: #fff; text-transform: uppercase">Datos Básicos</h4>
-            </div>
-            <div class="card-block">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Rol'|trans }}:</h5>
-                            <p id="p-nombre">Lorem Ipsum</p>
-                        </div>
+        <div class="form-group">
+            <label for="message-text" class="form-control-label">{{ 'Descripción'|trans }}:</label>
+            <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+        </div>
+    </form>
+    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+    </div>
+    <div class="card" id="detail" style="display:none;">
+        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
+        </div>
+        <div class="card-block">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Rol'|trans }}:</h5>
+                        <p id="p-nombre">Lorem Ipsum</p>
                     </div>
-                    <br>
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{'Descripcion'| trans}}</h5>
-                            <p id="p-des">https://Loremipsumdolorsitamet.domain/</p>
-                        </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{'Descripción'| trans}}</h5>
+                        <p id="p-des">https://Loremipsumdolorsitamet.domain/</p>
                     </div>
-                    <br>
                 </div>
+                <br>
             </div>
-            <div class="card-footer">
-                <div class="col-sm-16 col-md-16 text-right">
-                    <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="Editar" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                    <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="Eliminar" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
-                </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-sm-16 col-md-16 text-right">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
