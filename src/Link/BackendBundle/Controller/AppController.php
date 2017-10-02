@@ -188,7 +188,7 @@ class AppController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         
-        $app_id = $request->request->get('app_id');
+        $app_id = $request->request->get('id');
         $ok = 1;
 
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);

@@ -106,38 +106,52 @@
 {% endblock %}
 
 {% block formModal %}
-    <div class="modal-header">
+    <div class="modal-header gradiente">
         <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la Aplicación'|trans }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
     </div>
     <div class="modal-body">
         <form id="form" name="form" action="{{ path('_ajaxUpdateAplicacion') }}" method="POST">
             <input type="hidden" id="app_id" name="app_id" value="">
-            <div class="form-group">
-                <label for="nombre" class="form-control-label">{{ 'Nombre'|trans }}:</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" value="">
-            </div>
-            <div class="form-group">
-                <label for="url" class="form-control-label">Url:</label>
-                <input type="text" class="form-control" id="url" name="url" value="">
-            </div>
-            <div class="form-group">
-                <label for="icono" class="form-control-label">{{ 'Icono'|trans }}:</label>
-                <input type="text" class="form-control" id="icono" name="icono" value="">
-            </div>
-            <div class="form-group">
-                <label for="activo" class="form-control-label">{{ 'Activo'|trans }}:</label>
-                <div class="can-toggle demo-rebrand-2 small">
-                    <input id="activo" name="activo" type="checkbox" checked>
-                    <label for="activo">
-                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                    </label>
+            <div class="form-group row justify-content-end">
+                <label for="nombre" class="col-2 col-form-label">{{ 'Nombre'|trans }}:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="nombre" name="nombre" value="">
+                    <span class="fa fa-keyboard-o"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="subaplicacion_id" class="form-control-label">{{ 'Sub-Aplicación de'|trans }}:</label>
-                <select class="form-control" id="subaplicacion_id" name="subaplicacion_id" style="border-radius: 5px;">
-                </select>
+            <div class="form-group row justify-content-end">
+                <label for="url" class="col-2 col-form-label">Url:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="url" name="url" value="">
+                    <span class="fa fa-link"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="icono" class="col-2 col-form-label">{{ 'Icono'|trans }}:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="icono" name="icono" value="">
+                    <span class="fa fa-square"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="activo" class="col-4 col-form-label">{{ 'Activo'|trans }}:</label>
+                <div class="col-12">
+                    <div class="can-toggle demo-rebrand-2 small">
+                        <input id="activo" name="activo" type="checkbox" checked>
+                        <label for="activo">
+                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="subaplicacion_id" class="col-4 col-form-label">{{ 'Sub-Aplicación de'|trans }}:</label>
+                <div class="col-12">
+                    <select class="form-control form_sty1" id="subaplicacion_id" name="subaplicacion_id" style="border-radius: 5px;">
+                    </select>
+                    <span class="fa fa-dedent"></span>
+                </div>
             </div>
         </form>
         <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
@@ -226,48 +240,6 @@
                 }
             }
         });
-
-        function sweetAlertDelete(app_id)
-        {
-            swal({
-                title: "{{ '¿Desea eliminar el registro?'|trans }}",
-                text: "{{ 'Si acepta no puede revertir el cambio'|trans }}",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e04646',
-                cancelButtonColor: '#97af21',
-                confirmButtonText: "{{ 'Eliminar'|trans }}",
-                confirmButtonClass: 'fa fa-trash',
-                cancelButtonClass: 'fa fa-times',
-                cancelButtonText: "{{ 'Cancelar'|trans }}",
-                allowOutsideClick: false
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: $('#url_delete').val(),
-                    async: true,
-                    data: { app_id: app_id },
-                    dataType: "json",
-                    success: function(data) {
-                        swal(
-                            "{{ 'Eliminado'|trans }}!",
-                            "{{ 'Su registro ha sido eliminado'|trans }}",
-                            'success'
-                        );
-                        setTimeout(function() {
-                            location.reload();
-                        }, 3000);
-                    },
-                    error: function(){
-                        swal(
-                            "{{ 'Mensaje del servidor'|trans }}!",
-                            "{{ 'Ha ocurrido un error en la eliminación de este registro'|trans }}",
-                            'error'
-                        );
-                    }
-                });
-            });
-        }
 
     </script>
 {% endblock %}
