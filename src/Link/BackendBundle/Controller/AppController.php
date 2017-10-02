@@ -117,6 +117,7 @@ class AppController extends Controller
     {
         
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
         
         $app_id = $request->request->get('app_id');
         $nombre = $request->request->get('nombre');
@@ -154,7 +155,8 @@ class AppController extends Controller
         				'icono' => '<span class="fa '.$aplicacion->getIcono().'"></span> '.$aplicacion->getIcono(),
         				'activo' => $aplicacion->getActivo() ? $this->get('translator')->trans('Si') : 'No',
         				'subaplicacion_id' => $aplicacion->getAplicacion() ? 1 : 0,
-        				'subaplicacion' => $aplicacion->getAplicacion() ? $aplicacion->getAplicacion()->getNombre() : '');
+        				'subaplicacion' => $aplicacion->getAplicacion() ? $aplicacion->getAplicacion()->getNombre() : '',
+                        'delete_disabled' => $f->linkEliminar($aplicacion->getId(), 'AdminAplicacion'));
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -175,6 +177,25 @@ class AppController extends Controller
         $em->flush();
                     
         $return = array('id' => $aplicacion->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxDeleteAplicacionAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $app_id = $request->request->get('app_id');
+        $ok = 1;
+
+        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
+        $em->remove($aplicacion);
+        $em->flush();
+            
+        $return = array('ok' => $ok);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

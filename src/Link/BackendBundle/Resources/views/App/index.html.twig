@@ -6,6 +6,7 @@
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_aplicaciones', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActiveAplicacion') }}">
+<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteAplicacion') }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
 <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
 <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
@@ -67,7 +68,7 @@
                                 </td>
                                 <td class="center">
                                     <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm delete {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if aplicacion.delete_disabled == '' %}delete{% endif %} {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                             {% for subaplicacion in aplicacion.subaplicaciones %}
@@ -90,7 +91,7 @@
                                     <td class="center">
                                         <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ subaplicacion.id }}"><span class="fa fa-pencil"></span></a>
                                         
-                                        <a href="#" class="btn btn-link btn-sm delete {{ subaplicacion.delete_disabled }}" data="{{ subaplicacion.id }}"><span class="fa fa-trash"></span></a>
+                                        <a href="#" class="btn btn-link btn-sm {% if subaplicacion.delete_disabled == '' %}delete{% endif %} {{ subaplicacion.delete_disabled }}" data="{{ subaplicacion.id }}"><span class="fa fa-trash"></span></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -187,7 +188,7 @@
             <div class="card-footer">
                 <div class="col-sm-16 col-md-16 text-right">
                     <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="Editar" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                    <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="Eliminar" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                    <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="Eliminar" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
                 </div>
             </div>
         </div>
@@ -225,5 +226,48 @@
                 }
             }
         });
+
+        function sweetAlertDelete(app_id)
+        {
+            swal({
+                title: "{{ '¿Desea eliminar el registro?'|trans }}",
+                text: "{{ 'Si acepta no puede revertir el cambio'|trans }}",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e04646',
+                cancelButtonColor: '#97af21',
+                confirmButtonText: "{{ 'Eliminar'|trans }}",
+                confirmButtonClass: 'fa fa-trash',
+                cancelButtonClass: 'fa fa-times',
+                cancelButtonText: "{{ 'Cancelar'|trans }}",
+                allowOutsideClick: false
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: $('#url_delete').val(),
+                    async: true,
+                    data: { app_id: app_id },
+                    dataType: "json",
+                    success: function(data) {
+                        swal(
+                            "{{ 'Eliminado'|trans }}!",
+                            "{{ 'Su registro ha sido eliminado'|trans }}",
+                            'success'
+                        );
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000);
+                    },
+                    error: function(){
+                        swal(
+                            "{{ 'Mensaje del servidor'|trans }}!",
+                            "{{ 'Ha ocurrido un error en la eliminación de este registro'|trans }}",
+                            'error'
+                        );
+                    }
+                });
+            });
+        }
+
     </script>
 {% endblock %}

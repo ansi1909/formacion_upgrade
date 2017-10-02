@@ -27,7 +27,20 @@ $(document).ready(function() {
 						$('#div-subaplicacion').hide();
 					}
 					$( "#detail-edit" ).attr( "data", data.id );
-					$( "#detail-delete" ).attr( "data", data.id );
+					if (data.delete_disabled != '')
+					{
+						$( "#detail-delete" ).hide();
+						$( "#detail-delete" ).removeClass( "delete" );
+					}
+					else {
+						$( "#detail-delete" ).attr( "data", data.id );
+						$( "#detail-delete" ).addClass( "delete" );
+						$( "#detail-delete" ).show();
+						$('.delete').click(function(){
+							var app_id = $(this).attr('data');
+							sweetAlertDelete(app_id);
+						});
+					}
 					$('#form').hide();
 					$('#alert-success').show();
 					$('#detail').show();
@@ -116,6 +129,11 @@ $(document).ready(function() {
 				$('#div-active-alert').show();
 			}
 		});
+	});
+
+	$('.delete').click(function(){
+		var app_id = $(this).attr('data');
+		sweetAlertDelete(app_id);
 	});
 
 });

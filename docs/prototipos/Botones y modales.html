@@ -230,7 +230,7 @@
                         confirmButtonClass: 'fa fa-trash',
                         cancelButtonClass: 'fa fa-times',
                         cancelButtonText: ' Cancelar',
-                        preConfirm: function (email) {
+                        /*preConfirm: function (email) {
                             return new Promise(function (resolve, reject) {
                               setTimeout(function() {
                                 if (email === 'taken@example.com') {
@@ -240,7 +240,7 @@
                                 }
                               }, 2000)
                             })
-                        },
+                        },*/
                         allowOutsideClick: false
                     }).then(function () {
                             console.log('Aqui puedo hacer lo que me da la gana...');
@@ -251,9 +251,17 @@
                                     'Su registro ha sido eliminado',
                                     'success'
                                 );
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 3000);
                             }
                             else {
                                 console.log('No ok');
+                                swal(
+                                    'Mensaje del servidor!',
+                                    'Ha ocurrido un error en la eliminación de este registro',
+                                    'error'
+                                );
                             }
                         })
                 }

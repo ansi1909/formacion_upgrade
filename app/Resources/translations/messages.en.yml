@@ -1,37 +1,43 @@
-Hola mundo...: Hello world...
-Aplicaciones: Applications
-Listado de Aplicaciones: List of Applications
-Nombre: Name
-Icono: Icon
-Activo: Active
-Si: Yes
 Acciones: Actions
-Listado de Roles: List of Roles
-Descripción: Description
+Aceptar: Accept
+Activo: Active
+Aplicaciones: Applications
+Bien hecho: Well done
+Cancelar: Cancel
+Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
-Sub-Aplicación de: Sub-Application of
-Empresas: Companies
-Listado de Empresas: List of Companies
-Fecha Creación: Creation Date
-Teléfono de contacto: Contact Number
+Datos de la empresa: Company Data
+Datos del Rol: Role Details
+Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
+Descripción: Description
+¿Desea eliminar el registro?: Are you sure to delete this item?
+Editar: Edit
+Eliminado: Deleted
+Eliminar: Remove
 Email de contacto: Contact Email
 Empresa: Company
-Datos de la empresa: Company Data
-Este campo es requerido.: This field is required.
-Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
-No se permiten espacios en blanco.: Blank spaces are not allowed.
-Nuevo Registro: New Item
-Bien hecho: Well done
-La aplicación ha sido almacenada con éxito: Application has been saved sucessfully
+Empresas: Companies
 Error en el servidor: Error on server
+Este campo es requerido.: This field is required.
+Fecha Creación: Creation Date
+Guardar: Save
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
+Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
+Hola mundo...: Hello world...
+Icono: Icon
+La aplicación ha sido almacenada con éxito: Application has been saved sucessfully
+Listado de Aplicaciones: List of Applications
+Listado de Empresas: List of Companies
+Listado de Roles: List of Roles
+Mensaje del servidor: Server message
+No se permiten espacios en blanco.: Blank spaces are not allowed.
+No se pudo activar/desactivar este registro.: It could not enable/disable this item.
 No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
-No se pudo activar/desactivar este registro.: It could not enable/disable this item.
-Datos del Rol: Role Details
-Datos Básicos: Basic data
-Guardar: Save
-Editar: Edit
-Aceptar: Accept
-Cancelar: Cancel
-Eliminar: Remove
+Nombre: Name
+Nuevo Registro: New Item
+Si: Yes
+Si acepta no puede revertir el cambio: If you accept, you can not revert this change
+Su registro ha sido eliminado: The item has been deleted
+Sub-Aplicación de: Sub-Application of
+Teléfono de contacto: Contact Number

@@ -1,38 +1,43 @@
-Hola mundo...: Hola mundo...
-Aplicaciones: Aplicaciones
-Listado de Aplicaciones: Listado de Aplicaciones
-Nombre: Nombre
-Icono: Icono
-Activo: Activo
-Si: Si
 Acciones: Acciones
-Listado de Roles: Listado de Roles
-Descripción: Descripción
+Aceptar: Aceptar
+Activo: Activo
+Aplicaciones: Aplicaciones
+Bien hecho: Bien hecho
+Cancelar: Cancelar
+Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
-Sub-Aplicación de: Sub-Aplicación de
-Empresas: Empresas
-Listado de Empresas: Listado de Empresas
-Fecha Creación: Fecha Creacion
-Teléfono de contacto: Teléfono de Contacto
+Datos de la empresa: Datos de la empresa
+Datos del Rol: Datos del Rol
+Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
+Descripción: Descripción
+¿Desea eliminar el registro?: ¿Desea eliminar el registro?
+Editar: Editar
+Eliminado: Eliminado
+Eliminar: Eliminar
 Email de contacto: Email de Contacto
 Empresa: Empresa
-Nuevo Registro: Nuevo Registro
-Datos de la empresa: Datos de la empresa
-Este campo es requerido.: Este campo es requerido.
-Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
-No se permiten espacios en blanco.: No se permiten espacios en blanco.
-Nuevo Registro: Nuevo Registro
-Bien hecho: Bien hecho
-La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
+Empresas: Empresas
 Error en el servidor: Error en el servidor
+Este campo es requerido.: Este campo es requerido.
+Fecha Creación: Fecha Creación
+Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
+Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
+Hola mundo...: Hola mundo...
+Icono: Icono
+La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
+Listado de Aplicaciones: Listado de Aplicaciones
+Listado de Empresas: Listado de Empresas
+Listado de Roles: Listado de Roles
+Mensaje del servidor: Mensaje del servidor
+No se permiten espacios en blanco.: No se permiten espacios en blanco.
+No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.
 No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
-No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.
-Datos del Rol: Datos del Rol
-Datos Básicos: Datos Básicos
-Guardar: Guardar
-Editar: Editar
-Aceptar: Aceptar
-Cancelar: Cancelar
-Eliminar: Eliminar
+Nombre: Nombre
+Nuevo Registro: Nuevo Registro
+Si: Si
+Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
+Su registro ha sido eliminado: Su registro ha sido eliminado
+Sub-Aplicación de: Sub-Aplicación de
+Teléfono de contacto: Teléfono de Contacto
