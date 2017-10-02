@@ -45,30 +45,89 @@
                                 <div class="row">
                                 	<div class="col-sm-16 col-md-8 col-lg-6">
                                 		<div class="form-group">
-                                            <label for="texto" class="col-2 col-form-label">{{ 'Nombre Empresa'|trans }}</label>
+                                            <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
                                             <div class="col-14">
-                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                                <input type="text" class="form-control form_sty1" name="nombre" id="nombre">
                                                 <span class="fa fa-industry"></span>
-                                            </div>
+                                            </div>	
                                         </div>
                                         <div class="form-group">
-                                            <label for="texto" class="col-2 col-form-label">{{ 'Correo'|trans }}</label>
-                                            <div class="col-14">
-                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
-                                                <span class="fa fa-user"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Correo" class="col-2 col-form-label">Teléfono</label>
-                                            <div class="col-14">
-                                                <input type="email" class="form-control form_sty3" id="Correo" placeholder="Correo">
-                                                <span class="fa fa-envelope"></span>
+                                        	<label for="texto" class="col-2 col-form-label">{{ 'País'|trans }}</label>
+                                        	<div class="col-14">
+	                                        	<select class="form-control" name="pais" id="pais">
+	                                        		{% for pais in paises %}
+		                                                <option value={{pais.id}}>{{ pais.nombre }}</option>
+	                                                {% endfor %}
+	                                            </select>
                                             </div>
                                         </div>
                                 	</div>
                                 	<div class="col-sm-16 col-md-8 col-lg-6">
-                                		
+                                		<div class="form-group">
+                                			<label for="texto" class="col-2 col-form-label">{{ 'Activo'|trans }}</label>
+                                			<div class="col-4">
+	                                            <div class="can-toggle demo-rebrand-2 small">
+	                                                <input id="f" type="checkbox" name="activo" checked>
+	                                                <label for="f">
+	                                                    <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+	                                                </label>
+	                                            </div>
+                                        	</div>
+                                		</div>
                                 	</div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det1">
+                			<div class="col-sm-16">
+                				<div class="row">
+	                                <div class="col-sm-16">
+	                                    <h3 class="mb-2">Paso 2</h3>
+	                                </div>
+	                            </div>
+	                            <br>
+	                            <div class="row">
+                                    <div class="col-sm-16">
+                                    	<div class="form-group">
+                                    		<label for="texto" class="col-2 col-form-label">{{ 'Bienvenida'|trans }}</label>
+                                    		<div class="col-16">
+                                    			<textarea name="bienvenida" id="bienvenida" cols="30" rows="10"></textarea>
+                                    		</div>
+                                    	</div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det2">
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">Paso 3</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                    	<div class="alert alert-success" role="alert">
+				                          <h4 class="alert-heading">Buen trabajo!</h4>
+				                          <p>Presiona el botón finalizar para completar la creación del registro de la empresa.</p>
+				                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="submit" class="bttn__end"><span class="text__end">Finalizar</span><span class="fa fa-check"></span></button>
+                                    </div>
                                 </div>
                 			</div>
                 		</div>
@@ -79,4 +138,14 @@
 	</div>
 </div>
 {% endblock %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            CKEDITOR.config.skin = 'office2013';
+            CKEDITOR.replace('bienvenida');
+        });
+    </script>
+{% endblock %}

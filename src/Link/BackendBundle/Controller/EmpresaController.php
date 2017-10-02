@@ -70,24 +70,9 @@ class EmpresaController extends Controller
         $empresa = new AdminEmpresa();
       }
 
-      $form = $this->createFormBuilder($empresa)
-          ->setAction($this->generateUrl('_registro', array('empresa_id' => $empresa->getId())))
-          ->add('nombre', TextType::class)
-          ->add('activo', CheckboxType::class)
-          ->add('pais', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminPais',
-            'expanded' => false,               
-            'choice_label' => 'nombre',
-            'query_builder' => function(EntityRepository $er){
-                            return $er->createQueryBuilder('p')
-                                    ->orderBy('p.nombre', 'ASC');
-                            }))
-          ->add('bienvenida', TextareaType::class)
-          ->add('save', SubmitType::class)
-          ->getForm();
-
-    $form->handleRequest($request);
-
-      return $this->render('LinkBackendBundle:Empresa:registro.html.twig'); 
+      $r = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais');
+      $paises = $r->findAll();
+      return $this->render('LinkBackendBundle:Empresa:registro.html.twig', array('paises' => $paises));
 
     }
 
