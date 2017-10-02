@@ -39,13 +39,25 @@ class RolController extends Controller
 
 
         $em = $this->getDoctrine()->getManager();
+
+        $rolesdb= array();
+
         $query= $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r
                                         ORDER BY r.nombre ASC');
         $roles=$query->getResult();
-       
+        
        //return new Response(var_dump($roles));
-            
-       return $this->render('LinkBackendBundle:Rol:index.html.twig', array('roles'=>$roles));
+        
+        foreach ($roles as $rol)
+        {
+            $rolesdb[]= array('id'=>$rol->getId(),
+                              'nombre'=>$rol->getNombre(),
+                              'descripcion'=>$rol->getDescripcion(),
+                              'delete_disabled'=>$f->linkEliminar($rol->getId(),'AdminRol'));
+
+        }
+
+       return $this->render('LinkBackendBundle:Rol:index.html.twig', array('roles'=>$rolesdb));
 
     }
 
@@ -102,5 +114,25 @@ class RolController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
+
+   public function ajaxDeleteRolAction(Request $request)
+   {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $rol_id = $request->request->get('id');
+
+        $ok = 1;
+
+        $rol = $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+        $em->remove($rol);
+        $em->flush();
+
+        $return = array('ok' => $ok);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
+
+   }
 
 }

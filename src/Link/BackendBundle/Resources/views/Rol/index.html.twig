@@ -3,7 +3,10 @@
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditRol') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_roles', { 'app_id': app.session.get('app_id') }) }}">
-<br>
+<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteRol') }}">
+<input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
+<input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
+
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>Roles</h3>
@@ -35,7 +38,7 @@
                                 <td>{{ rol.descripcion|length > 130 ? rol.descripcion|slice(0,130) ~ '...' : rol.descripcion }}</td>
                                 <td class="center">
                                     <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ rol.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm"><span class="fa fa-trash"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if rol.delete_disabled == '' %}delete{% endif %} {{ rol.delete_disabled }}" data="{{rol.id}}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                       {% endfor %}
@@ -95,7 +98,7 @@
         <div class="card-footer">
             <div class="col-sm-16 col-md-16 text-right">
                 <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
@@ -127,5 +130,7 @@
                 }
             }
         });
+
+        
     </script>
 {% endblock %}
