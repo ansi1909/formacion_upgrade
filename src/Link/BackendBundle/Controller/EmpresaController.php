@@ -91,7 +91,7 @@ class EmpresaController extends Controller
 
     }
 
-    public function ajaxActiveAplicacionAction(Request $request)
+    public function ajaxActiveEmpresaAction(Request $request)
     {
         
         $em = $this->getDoctrine()->getManager();
