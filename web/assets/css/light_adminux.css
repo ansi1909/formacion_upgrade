@@ -2832,7 +2832,7 @@ header .navbar.sign-in-header {
 .side_signing_full {
   position: absolute;
   height: 100%;
-  background: rgba(16, 22, 40, 0.6);
+  background: rgba(251, 251, 251, 0.3);
   top: 0;
   right: 0;
 }
