@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminEmpresa
  *
- * @ORM\Table(name="admin_empresa")
+ * @ORM\Table(name="admin_empresa", indexes={@ORM\Index(name="IDX_7CEBD8D9C604D5C6", columns={"pais_id"})})
  * @ORM\Entity
  */
 class AdminEmpresa
@@ -77,6 +77,16 @@ class AdminEmpresa
      * @ORM\Column(name="bienvenida", type="text", nullable=true)
      */
     private $bienvenida;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminPais
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminPais")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
+     * })
+     */
+    private $pais;
 
 
 
@@ -280,5 +290,29 @@ class AdminEmpresa
     public function getBienvenida()
     {
         return $this->bienvenida;
+    }
+
+    /**
+     * Set pais
+     *
+     * @param \Link\ComunBundle\Entity\AdminPais $pais
+     *
+     * @return AdminEmpresa
+     */
+    public function setPais(\Link\ComunBundle\Entity\AdminPais $pais = null)
+    {
+        $this->pais = $pais;
+
+        return $this;
+    }
+
+    /**
+     * Get pais
+     *
+     * @return \Link\ComunBundle\Entity\AdminPais
+     */
+    public function getPais()
+    {
+        return $this->pais;
     }
 }

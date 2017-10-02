@@ -4,3 +4,8 @@ _empresas:
 _registro:
     path:     /registro/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Empresa:registro, empresa_id: 0 }
+_ajaxActiveAplicacion:
+    path:     /ajaxActiveAplicacion
+    defaults: { _controller: LinkBackendBundle:Empresa:ajaxActiveAplicacion }
+    requirements:
+        _method: POST

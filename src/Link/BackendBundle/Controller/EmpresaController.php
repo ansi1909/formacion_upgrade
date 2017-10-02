@@ -12,9 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+
 
 class EmpresaController extends Controller
 {
@@ -69,7 +70,44 @@ class EmpresaController extends Controller
         $empresa = new AdminEmpresa();
       }
 
+      $form = $this->createFormBuilder($empresa)
+          ->setAction($this->generateUrl('_registro', array('empresa_id' => $empresa->getId())))
+          ->add('nombre', TextType::class)
+          ->add('activo', CheckboxType::class)
+          ->add('pais', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminPais',
+            'expanded' => false,               
+            'choice_label' => 'nombre',
+            'query_builder' => function(EntityRepository $er){
+                            return $er->createQueryBuilder('p')
+                                    ->orderBy('p.nombre', 'ASC');
+                            }))
+          ->add('bienvenida', TextareaType::class)
+          ->add('save', SubmitType::class)
+          ->getForm();
+
+    $form->handleRequest($request);
+
       return $this->render('LinkBackendBundle:Empresa:registro.html.twig'); 
 
+    }
+
+    public function ajaxActiveAplicacionAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $empresa_id = $request->request->get('app_id');
+        $checked = $request->request->get('checked');
+
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $empresa->setActivo($checked ? true : false);
+        $em->persist($empresa);
+        $em->flush();
+                    
+        $return = array('id' => $empresa->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 }

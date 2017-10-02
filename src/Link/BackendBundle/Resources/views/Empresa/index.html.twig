@@ -1,12 +1,15 @@
 {% extends '::admin.html.twig'%}
 {% block body %}
 <br>
+<input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActiveAplicacion') }}">
+<input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
+
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Empresas'|trans }}</h3>
     </div>
     <div class="col text-right ">
-        <button type="button" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></button>
+        <a href="{{ path('_registro')}}" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></a>
     </div>
 </div>
 <div class="row">
@@ -16,12 +19,25 @@
             	<h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
         	</div>
         	<div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
          		<table class="table " id="dt">
           			<thead>
                     	<tr>
                         	<th>{{ 'Empresa'|trans }}</th>
-                        	<th>{{ 'Correo de Contacto'|trans }}</th>
-                        	<th>{{ 'Teléfono de Contacto'|trans }}</th>
+                            <th>{{ 'Correo de Contacto'|trans }}</th>
+                        	<th>{{ 'País'|trans }}</th>
                         	<th>{{ 'Fecha Creación'|trans }}</th>
                         	<th>{{ 'Activo'|trans }}</th>
                         	<th>{{ 'Acciones'|trans }}</th>
@@ -32,12 +48,12 @@
                 			<tr class="odd">
                 				<td>{{ empresa.nombre }}</td>
                 				<td>{{ empresa.correoPrincipal }}</td>
-                				<td>{{ empresa.telefonoPrincipal }}</td>
+                				<td>{{ empresa.pais.nombre }}</td>
                 				<td>{{ empresa.fechaCreacion|date("d/m/Y") }}</td>
                 				<td class="center">
                                     <div class="can-toggle demo-rebrand-2 small">
-                                        <input id="f" type="checkbox" {% if empresa.activo %}checked{% endif %}>
-                                        <label for="f">
+                                        <input id="f{{ empresa.id }}" class="cb_activo" type="checkbox" {% if empresa.activo %}checked{% endif %}>
+                                        <label for="f{{ empresa.id }}">
                                             <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                         </label>
                                     </div>
@@ -55,4 +71,9 @@
     </div>
 </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+{% endblock %}
+
 

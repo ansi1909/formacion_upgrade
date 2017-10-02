@@ -6,6 +6,7 @@ touch DEFINITION.SQL
 dia2code -t sql -cl admin_rol DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl admin_aplicacion DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl admin_permiso DClases.dia; cat DEFINITION.SQL >> definition.sql
+dia2code -t sql -cl admin_pais DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl admin_empresa DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl admin_nivel DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl admin_usuario DClases.dia; cat DEFINITION.SQL >> definition.sql

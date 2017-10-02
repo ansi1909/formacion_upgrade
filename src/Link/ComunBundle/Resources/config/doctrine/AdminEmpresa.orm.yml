@@ -1,6 +1,10 @@
 Link\ComunBundle\Entity\AdminEmpresa:
     type: entity
     table: admin_empresa
+    indexes:
+        IDX_7CEBD8D9C604D5C6:
+            columns:
+                - pais_id
     id:
         id:
             type: integer
@@ -56,4 +60,15 @@ Link\ComunBundle\Entity\AdminEmpresa:
             length: null
             options:
                 fixed: false
+    manyToOne:
+        pais:
+            targetEntity: AdminPais
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pais_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

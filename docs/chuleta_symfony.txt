@@ -24,7 +24,7 @@ php bin/console doctrine:schema:update --force
 - Regenerar el modelo de clases a partir de una BD existente:
 1. php bin/console doctrine:mapping:import --force LinkComunBundle yml --em=default			(--filter="NombreEntidad") => Si se quiere generar una sola entidad
 2. php bin/console doctrine:mapping:convert annotation ./src --em=default --force			(--filter="NombreEntidad") => Si se quiere generar una sola entidad
-3. php bin/console doctrine:generate:entities LinkComunBundle --no-backup					(Bs/SisventBundle/Entity/NombreEntidad) => Si se quiere generar una sola entidad
+3. php bin/console doctrine:generate:entities LinkComunBundle --no-backup					(Link/ComunBundle/Entity/NombreEntidad) => Si se quiere generar una sola entidad
 
 - Ver las rutas agregadas
 php bin/console debug:router

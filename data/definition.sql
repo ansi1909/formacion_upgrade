@@ -25,6 +25,17 @@ rol_id integer,
  FOREIGN KEY (aplicacion_id) REFERENCES admin_aplicacion (id),
  FOREIGN KEY (rol_id) REFERENCES admin_rol (id));
 
+CREATE TABLE admin_pais(
+-- Attributes --
+id character(3),
+nombre character(52),
+continente character(100),
+region character(26),
+nombre_local character(45),
+capital integer,
+id2 character(2),
+ PRIMARY KEY (id));
+
 CREATE TABLE admin_empresa(
 -- Attributes --
 id serial,
@@ -35,8 +46,10 @@ activo boolean,
 telefono_principal varchar(20),
 fecha_creacion timestamp without time zone,
 direccion text,
-bienvenida text,
- PRIMARY KEY (id));
+bienvenida text
+pais_id character(3) 
+ PRIMARY KEY (id)
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
 
 CREATE TABLE admin_nivel(
 -- Attributes --

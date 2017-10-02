@@ -1,76 +1,82 @@
 {% extends '::admin.html.twig'%}
 {% block body %}
+<br>
 <div class="row">
- 	<div class="col-sm-16">
-  		<div class="card">
-  			<div class="card-header">
-            	<h5 class="card-title">{{ 'Registrar Empresa'|trans }}</h5>
-        	</div>
-        	<div class="card-block">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header">
+                <div class="card-title">
+                    <h6>Registrar Empresa</h6>
+                </div>
+            </div>
+           	<div class="card-block">
                 <div class="container_wizard wizard-thin">
-                    <div class="stepwizard">
-                        <div class="stepwizard-row setup-panel d-flex">
-                          <div class="stepwizard-step col"> <a href="#step-12"  class="btn btn-primary danger"><span class="btn-round">1</span>
-                            <p>Datos básicos</p>
-                            </a> </div>
-                          <div class="stepwizard-step col"> <a href="#step-22"  class="btn btn-secondary danger disabled"  ><span class="btn-round">2</span>
-                            <p>Mensaje de bienvenida</p>
-                            </a> </div>
-                          <div class="stepwizard-step col"> <a href="#step-32"  class="btn btn-secondary danger disabled"  ><span class="btn-round">3</span>
-                            <p>Confirmar</p>
-                            </a> </div>
-                        </div>
-                    </div>
-                    <form class="container-fluid p-0">
-                        <div class="row setup-content" id="step-12">
-                            <div class="col-sm-16">
-                                <div class="row">
-                                    <div class="col-sm-16 col-md-8 col-lg-8">
-                                        <div class="form-group">
-                                            <label class="form-control-label">{{ 'Nombre'|trans }}</label>
-                                            <input  maxlength="100" type="text" name="nombre" id="nombre" required class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-control-label">{{ 'Rif'|trans }}</label>
-                                            <input maxlength="100" type="text" name="rif" id="rif" class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-control-label">{{ 'Correo'|trans }}</label>
-                                            <input maxlength="100" type="text" name="correoPrincipal" id="correoPrincipal" required class="form-control" />
-                                        </div>
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>Datos Básicos</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>Bienvenida</small></p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>Confirmar</small></p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+                	<form action="" class="container-fluid p-0">
+                		<div class="row setup-content" id="det0">	
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">Paso1</h3>
                                     </div>
-                                    <div class="col-sm-16 col-md-8 col-lg-8">
-                                        <div class="form-group">
-                                            <label class="form-control-label">{{ 'Teléfono'|trans }}</label>
-                                            <input  maxlength="100" type="text" name="nombre"class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="can-toggle demo-rebrand-2 small">
-                                                <label class="form-control-label">Activo</label>
-                                                <input id="activo" name="activo" type="checkbox" checked>
-                                                <label for="activo">
-                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                                                </label>
+                                </div>
+                                <br>
+                                <div class="row">
+                                	<div class="col-sm-16 col-md-8 col-lg-6">
+                                		<div class="form-group">
+                                            <label for="texto" class="col-2 col-form-label">{{ 'Nombre Empresa'|trans }}</label>
+                                            <div class="col-14">
+                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                                <span class="fa fa-industry"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="form-control-label">Dirección</label>
-                                            <textarea maxlength="100" type="text" name="direccion" id="direccion" required class="form-control"></textarea>
+                                            <label for="texto" class="col-2 col-form-label">{{ 'Correo'|trans }}</label>
+                                            <div class="col-14">
+                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                                <span class="fa fa-user"></span>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="Correo" class="col-2 col-form-label">Teléfono</label>
+                                            <div class="col-14">
+                                                <input type="email" class="form-control form_sty3" id="Correo" placeholder="Correo">
+                                                <span class="fa fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                	</div>
+                                	<div class="col-sm-16 col-md-8 col-lg-6">
+                                		
+                                	</div>
                                 </div>
-                                <div class="wizard-footer">
-                                    <div class="col-sm-16 ">
-                                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                			</div>
+                		</div>
+                	</form>
                 </div>
-        	</div>
-        </div>
-    </div>
+            </div>
+		</div>
+	</div>
 </div>
 {% endblock %}
 
