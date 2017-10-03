@@ -65,7 +65,8 @@ class RolController extends Controller
     {
         
         $em = $this->getDoctrine()->getManager();
-        
+        $f = $this->get('funciones');
+
         $rol_id = $request->request->get('rol_id');
         $nombre = $request->request->get('rol');
         $descripcion = $request->request->get('descripcion');
@@ -86,7 +87,8 @@ class RolController extends Controller
                     
         $return = array('id' => $rol->getId(),
                         'nombre' =>$rol->getNombre(),
-                        'descripcion' =>$rol->getDescripcion());
+                        'descripcion' =>$rol->getDescripcion(),
+                        'delete_disabled' =>$f->linkEliminar($rol->getId(),'AdminRol'));
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
