@@ -34,6 +34,10 @@ INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (1, 1, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (2, 3, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (3, 10, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (4, 9, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (5, 5, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (6, 6, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (7, 4, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (8, 2, 1);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_rol_usuario_seq;; Type: SEQUENCE SET; Schema: public;

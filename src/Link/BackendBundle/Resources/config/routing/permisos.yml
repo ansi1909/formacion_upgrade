@@ -1,0 +1,3 @@
+_permisos:
+    path:     /permisos/{app_id}
+    defaults: { _controller: LinkBackendBundle:Permiso:index }
