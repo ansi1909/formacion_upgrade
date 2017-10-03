@@ -13,3 +13,11 @@ apps:
 empresas:
     resource: "@LinkBackendBundle/Resources/config/routing/empresas.yml"
     prefix: /empresa
+
+categorias:
+    resource: "@LinkBackendBundle/Resources/config/routing/categorias.yml"
+    prefix: /categoria
+
+permisos:
+    resource: "@LinkBackendBundle/Resources/config/routing/permisos.yml"
+    prefix: /permiso
