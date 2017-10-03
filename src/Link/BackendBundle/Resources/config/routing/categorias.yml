@@ -1,25 +1,3 @@
-_roles:
+_categorias:
     path:     /listado/{app_id}
-    defaults: { _controller: LinkBackendBundle:Rol:index }
-
-_RegistroRol:
-    path:     /registro
-    defaults: { _controller: LinkBackendBundle:Rol:registro }
-
-_ajaxUpdateRol:
-    path:     /ajaxUpdateRol
-    defaults: { _controller: LinkBackendBundle:Rol:ajaxUpdateRol }
-    requirements:
-        method: POST
-
-_ajaxEditRol:
-    path:     /ajaxEditRol
-    defaults: { _controller: LinkBackendBundle:Rol:ajaxEditRol }
-    requirements:
-        method: GET
-
-_ajaxDeleteRol:
-    path:   /ajaxDeleteRol
-    defaults: {_controller: LinkBackendBundle:Rol:ajaxDeleteRol}
-    requirements:
-        _method: POST
+    defaults: { _controller: LinkBackendBundle:Categoria:index }
