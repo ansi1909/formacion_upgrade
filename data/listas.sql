@@ -365,9 +365,9 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', '
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (1, 'Roles de usuarios', '_roles', 'fa-group', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (2, 'Usuarios', '_usuarios', NULL, TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (3, 'Aplicaciones', '_aplicaciones', 'fa-list-ul', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (4, 'Configuración de permisos', '_permisos', NULL, TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (5, 'Configuración de páginas', NULL, NULL, TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (6, 'Categorías', '_categorias', NULL, TRUE, 5);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (4, 'Configuración de permisos', '_permisos', 'fa-key', TRUE, NULL);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (5, 'Configuración de páginas', NULL, 'fa-files-o', TRUE, NULL);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (6, 'Categorías', '_categorias', 'fa-tags', TRUE, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (7, 'Páginas', '_paginas', NULL, TRUE, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (8, 'Configuración de evaluaciones', '_paginasEvaluacion', NULL, TRUE, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (9, 'Configuración de empresas', NULL, 'fa-building', TRUE, NULL);

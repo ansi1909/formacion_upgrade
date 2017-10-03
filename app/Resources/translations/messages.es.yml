@@ -2,6 +2,7 @@ Acciones: Acciones
 Aceptar: Aceptar
 Activo: Activo
 Aplicaciones: Aplicaciones
+Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Bien hecho: Bien hecho
 Cancelar: Cancelar
 Datos Básicos: Datos Básicos
@@ -19,6 +20,7 @@ Empresa: Empresa
 Empresas: Empresas
 Error en el servidor: Error en el servidor
 Este campo es requerido.: Este campo es requerido.
+Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Fecha Creación: Fecha Creación
 Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
@@ -36,6 +38,9 @@ No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
 Nombre: Nombre
 Nuevo Registro: Nuevo Registro
+Permisos de Acceso: Permisos de Acceso
+Permisos por Rol: Permisos por Rol
+Rol: Rol
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Su registro ha sido eliminado: Su registro ha sido eliminado
