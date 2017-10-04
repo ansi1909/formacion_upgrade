@@ -76,6 +76,11 @@ class EmpresaController extends Controller
 
     }
 
+    public function guardarEmpresaAction(Request $request)
+    {
+      
+    }
+
     public function ajaxActiveEmpresaAction(Request $request)
     {
         

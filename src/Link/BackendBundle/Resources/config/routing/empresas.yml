@@ -4,8 +4,11 @@ _empresas:
 _registro:
     path:     /registro/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Empresa:registro, empresa_id: 0 }
+_guardarEmpresa:
+    path:     /guardarEmpresa
+    defaults: {_controller: LinkBackendBundle:Empresa:guardarEmpresa }
 _ajaxActiveEmpresa:
-    path:     /_ajaxActiveEmpresa
-    defaults: { _controller: LinkBackendBundle:Empresa:_ajaxActiveEmpresa }
+    path:     /ajaxActiveEmpresa
+    defaults: { _controller: LinkBackendBundle:Empresa:ajaxActiveEmpresa }
     requirements:
         _method: POST
