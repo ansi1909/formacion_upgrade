@@ -1,5 +1,11 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+
 {% block body %}
 <br>
 
@@ -29,30 +35,35 @@
                             <tr class="{{ eo }}">
                                 <td>{{ permiso.rol_nombre }}</td>
                                 <td>
-                                    <table>
-                                        <tbody>
-                                            {% for aplicacion in permiso.aplicaciones %}
-                                                <tr class="{{ eo }}">
-                                                    <td>{{ aplicacion.nombre }}</td>
-                                                </tr>
-                                                {% for subaplicacion in aplicacion.subaplicaciones %}
-                                                    <tr class="{{ eo }}">
-                                                        <td>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p class="fa fa-arrow-right"> {{ subaplicacion.nombre }}</p>
-                                                        </td>
-                                                    </tr>
+                                    {% if permiso.aplicaciones|length > 0 %}
+                                        <div id="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {% for aplicacion in permiso.aplicaciones %}
+                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ aplicacion.nombre }}
+                                                        {% if aplicacion.subaplicaciones|length %}
+                                                            <ul>
+                                                                {% for subaplicacion in aplicacion.subaplicaciones %}
+                                                                    <li data-jstree='{ "icon" : "fa fa-angle-right" }'>{{ subaplicacion.nombre }}</li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </li>
                                                 {% endfor %}
-                                            {% else %}
-                                                <tr class="{{ eo }}">
-                                                    <td>{{ 'Este rol aún no tiene permisos de acceso'|trans }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'Este rol aún no tiene permisos de acceso'|trans }}
+                                    {% endif %}
                                 </td>
                                 <td class="center">
-                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data=""><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm" data=""><span class="fa fa-trash"></span></a>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">{{ 'Configurar'|trans }}</a>
+                                        </div>
+                                    </div>
+                                    {#<a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data=""><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm" data=""><span class="fa fa-trash"></span></a>#}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -63,4 +74,10 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/permisos.js') }}"></script>
 {% endblock %}
