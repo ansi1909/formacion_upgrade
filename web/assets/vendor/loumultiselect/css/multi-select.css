@@ -82,7 +82,8 @@
   cursor: pointer;
   color: #fff;
   text-decoration: none;
-  background-color: #08c;
+  background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+  border-left: 3px solid #A3C300;
 }
 
 .ms-container .ms-selectable li.disabled,

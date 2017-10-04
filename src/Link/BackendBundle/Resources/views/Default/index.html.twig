@@ -5,6 +5,8 @@
 	<div class="row">
 		<div class="col-12">
 			<h3>{{ 'Hola mundo...'|trans }}</h3>
+            {% set uri = app.request.getbasepath %}
+            {{ uri }}
 		</div>
 	</div>
 {% endblock %}

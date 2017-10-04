@@ -18,6 +18,10 @@
         <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/dataTables.bootstrap4.css">
         <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/responsive.dataTables.min.css">
 
+        <!--Agregar a base admin-->
+        <link rel="stylesheet" href="../../web/assets/vendor/loumultiselect/css/multi-select.css" type="text/css">
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css" type="text/css">
+        
         <!-- Adminux CSS -->
         <link rel="stylesheet" href="../../web/assets/css/light_adminux.css">
         
@@ -244,6 +248,7 @@
                                     <div class="form-group row justify-content-end">
                                         <label for="txt__content" class="col-form-label col-sm-3 pull-13">Contenido:</label>
                                         <div class="col-md-16 col-sm-16">
+                                            <!--<input type="hidden" id="root_site" name="root_site" value="../formacion2.0/web">-->
                                             <textarea name="txt__content" id="txt__content" cols="30" rows="10"></textarea>
                                         </div>
                                     </div>
@@ -392,6 +397,50 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <h3>Multi Select list</h3>
+                                    <div class="form-group row justify-content-star">
+                                        <div class="col-sm-5 col-md-5">
+                                            <select id="ms1" multiple="multiple">
+                                                <option value="op1">Programa1</option>
+                                                <option value="op2">Programa2</option>
+                                                <option value="op3">Programa3</option>
+                                                <option value="op4">Programa4</option>
+                                                <option value="op5">Programa5</option>
+                                                <option value="op6">Programa6</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4 col-md-4">
+                                            <select id="ms2" >
+                                                <option value="opc1">Modelo1</option>
+                                                <option value="opc2">Modelo2</option>
+                                                <option value="opc3">Modelo3</option>
+                                                <option value="opc4">Modelo4</option>
+                                                <option value="opc5">Modelo5</option>
+                                                <option value="opc6">Modelo6</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5 col-sm-5">
+                                            <select id="mult__select" name="multiselect[]" multiple="multiple" style="">
+                                                <option value="1">Option 1</option>
+                                                <option value="2">Option 2</option>
+                                                <option value="3">Option 3</option>
+                                                <option value="4">Option 4</option>
+                                                <option value="5">Option 5</option>
+                                                <option value="6">Option 6</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-sm-8 col-md-8 pull-1">
+                                            <select name="mselect[]" id="mselect" class="form-control" multiple="multiple">
+                                                <option value="e0">Opcion1</option>
+                                                <option value="e1">Opcion2</option>
+                                                <option value="e2">Opcion3</option>
+                                                <option value="e3">Opcion4</option>
+                                                <option value="e4">Opcion5</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -442,10 +491,24 @@
         <script src="../../web/assets/js/picker.js" type="text/javascript"></script>
         
         <script src="../../web/assets/vendor/ckeditor/ckeditor.js"></script>
+        
+        <!--Agregar en la plantilla base Admin-->
+        <script type="text/javascript" src="../../web/assets/vendor/loumultiselect/js/jquery.multi-select.js"></script>
+        <script type="text/javascript" src="../../web/assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js"></script>
+        <script src="../../web/assets/vendor/rfm/filemanager/plugin.min.js"></script>
         <script>
             $(document).ready(function(){
+                /*var root_site = $('#root_site').val();*/
+                CKEDITOR.replace('txt__content',{
+                    filebrowserBrowseUrl : '../../web/assets/vendor/rfm/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos',
+                    filebrowserUploadUrl : '../../web/assets/vendor/rfm/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos',
+                    filebrowserImageBrowseUrl : '../../web/assets/vendor/rfm/filemanager/dialog.php?type=1&editor=ckeditor&fldr=recursos'
+                });
                 CKEDITOR.config.skin = 'office2013';
-                CKEDITOR.replace('txt__content');
+                /*Agregar js*/
+                $('#mselect').multiSelect();
+                $('#ms1, #ms2, #bootstrap_multiselect_optgroups').multiselect();
+                $('#mult__select').multiselect({includeSelectAllOption: true, enableFiltering: true, buttonWidth: '200px' });
             });
         </script>
     </body>
