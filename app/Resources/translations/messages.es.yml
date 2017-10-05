@@ -20,6 +20,9 @@ Descripción: Descripción
 Editar: Editar
 Eliminado: Eliminado
 Eliminar: Eliminar
+El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
+El nombre de la empresa es requerido.: El nombre de la empresa es requerido.
+El país es requerido.: El país es requerido.
 Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresas: Empresas

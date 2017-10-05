@@ -20,6 +20,9 @@ Descripción: Description
 Editar: Edit
 Eliminado: Deleted
 Eliminar: Remove
+El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.
+El nombre de la empresa es requerido.: Company name is required.
+El país es requerido.: Country is required.
 Email de contacto: Contact Email
 Empresa: Company
 Empresas: Companies

@@ -248,7 +248,7 @@
                                     <div class="form-group row justify-content-end">
                                         <label for="txt__content" class="col-form-label col-sm-3 pull-13">Contenido:</label>
                                         <div class="col-md-16 col-sm-16">
-                                            <!--<input type="hidden" id="root_site" name="root_site" value="../formacion2.0/web">-->
+                                            <input type="hidden" id="root_site" name="root_site" value="../../web">
                                             <textarea name="txt__content" id="txt__content" cols="30" rows="10"></textarea>
                                         </div>
                                     </div>
@@ -498,11 +498,11 @@
         <script src="../../web/assets/vendor/rfm/filemanager/plugin.min.js"></script>
         <script>
             $(document).ready(function(){
-                /*var root_site = $('#root_site').val();*/
+                var root_site = $('#root_site').val();
                 CKEDITOR.replace('txt__content',{
-                    filebrowserBrowseUrl : '../../web/assets/vendor/rfm/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos',
-                    filebrowserUploadUrl : '../../web/assets/vendor/rfm/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos',
-                    filebrowserImageBrowseUrl : '../../web/assets/vendor/rfm/filemanager/dialog.php?type=1&editor=ckeditor&fldr=recursos'
+                    filebrowserBrowseUrl : root_site + '/assets/vendor/rfm/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos',
+                    filebrowserUploadUrl : root_site + '/assets/vendor/rfm/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos',
+                    filebrowserImageBrowseUrl : root_site + '/assets/vendor/rfm/filemanager/dialog.php?type=1&editor=ckeditor&fldr=recursos'
                 });
                 CKEDITOR.config.skin = 'office2013';
                 /*Agregar js*/

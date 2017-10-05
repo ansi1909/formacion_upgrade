@@ -63,8 +63,8 @@ $config = array(
 	| without final / (DON'T TOUCH)
 	|
 	*/
-	'base_url' => ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && ! in_array(strtolower($_SERVER['HTTPS']), array( 'off', 'no' ))) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'],
-    /*'base_url' => 'https://recursos2puntocero.com',*/
+	/*'base_url' => ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && ! in_array(strtolower($_SERVER['HTTPS']), array( 'off', 'no' ))) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'],*/
+    'base_url' => 'https://recursos2puntocero.com',
 	/*
 	|--------------------------------------------------------------------------
 	| path from base_url to base of upload folder
@@ -73,7 +73,7 @@ $config = array(
 	| with start and final /
 	|
 	*/
-	'upload_dir' => '/uploads/',
+	'upload_dir' => '/recursos/',
 	/*
 	|--------------------------------------------------------------------------
 	| relative path from filemanager folder to upload folder
@@ -82,7 +82,7 @@ $config = array(
 	| with final /
 	|
 	*/
-    'current_path' => '../../../../../../uploads/',
+    'current_path' => 'https://recursos2puntocero.com/recursos',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -106,11 +106,11 @@ $config = array(
 	| upload dir will be ftp_base_folder + upload_dir so without final /
 	|
 	*/
-    'ftp_host'         => false,
-    'ftp_user'         => "",
-    'ftp_pass'         => "",
-	'ftp_base_folder'  => "",
-    'ftp_base_url'     => "",
+    'ftp_host'         => "recursos2puntocero.com",
+    'ftp_user'         => "sftp_formacise",
+    'ftp_pass'         => "SPgRPW26idlP87WRHB",
+	'ftp_base_folder'  => "/recursos",
+    'ftp_base_url'     => "https://recursos2puntocero.com/recursos",
 	/* --------------------------------------------------------------------------
 	| path from ftp_base_folder to base of thumbs folder with start and final |
 	|--------------------------------------------------------------------------*/

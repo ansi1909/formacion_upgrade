@@ -63,17 +63,32 @@ class EmpresaController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
+
         if ($empresa_id) 
         {
             $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         }
         else {
             $empresa = new AdminEmpresa();
+            $empresa->setPais($pais);
         }
 
-        $r = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais');
-        $paises = $r->findAll();
-        return $this->render('LinkBackendBundle:Empresa:registro.html.twig', array('paises' => $paises));
+        // Lista de paises
+        $qb = $em->createQueryBuilder();
+        $qb->select('p')
+           ->from('LinkComunBundle:AdminPais', 'p')
+           ->orderBy('p.nombre', 'ASC');
+        $query = $qb->getQuery();
+        $paises = $query->getResult();
+
+        if ($request->getMethod() == 'POST')
+        {
+            return new Response('listo men');
+        }
+        
+        return $this->render('LinkBackendBundle:Empresa:registro.html.twig', array('empresa' => $empresa,
+                                                                                   'paises' => $paises));
 
     }
 
