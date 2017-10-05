@@ -22,5 +22,17 @@ $(document).ready(function() {
 		});
 	});
 
-	
+    $('#finish').click(function(){
+    	$('#div-error').hide();
+    	var str_error = validarForm();
+    	if (str_error != '')
+    	{
+    		$('#alert-error').html(str_error);
+    		$('#div-error').show();
+    	}
+    	else {
+    		$('#form').submit();
+    	}
+    });
+
 });
