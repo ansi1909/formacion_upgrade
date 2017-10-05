@@ -1,0 +1,136 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditRol') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_roles', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteRol') }}">
+<input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
+<input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>Roles</h3>
+    </div>
+   <div class="col text-right">
+       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+   </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Listado de Roles' |trans}}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Rol</th>
+                            <th>{{'Descripción'|trans }}</th>
+                            <th>{{'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {# for rol in roles #}
+                            {# set eo = cycle(['odd', 'even'], loop.index) #}
+                            <tr class="{#eo#}">
+                                <td>{# rol.nombre #}</td>
+                                <td>{# rol.descripcion|length > 130 ? rol.descripcion|slice(0,130) ~ '...' : rol.descripcion #}</td>
+                                <td class="center">
+                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{# rol.id #}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {# if rol.delete_disabled == '' #}delete{# endif #} {# rol.delete_disabled #}" data="{#rol.id#}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                      {# endfor #}
+                    </tbody>
+                </table>                 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block formModal %}
+<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del Rol'|trans}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: #fff;">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateRol')}}"  method="POST">
+        <input type="hidden" id="rol_id" name="rol_id" value="">
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Rol'|trans }}:</label>
+            <input type="text" class="form-control" id="rol" name="rol" value="">
+        </div>
+        <div class="form-group">
+            <label for="message-text" class="form-control-label">{{ 'Descripción'|trans }}:</label>
+            <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+        </div>
+    </form>
+    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+    </div>
+    <div class="card" id="detail" style="display:none;">
+        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
+        </div>
+        <div class="card-block">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Rol'|trans }}:</h5>
+                        <p id="p-nombre">Lorem Ipsum</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{'Descripción'| trans}}</h5>
+                        <p id="p-des">https://Loremipsumdolorsitamet.domain/</p>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-sm-16 col-md-16 text-right">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('js/admin/rol.js') }}"></script>
+    <script type="text/javascript">
+
+        jQuery.validator.addMethod("noSpace", function(value, element) { 
+            return value.indexOf(" ") < 0; 
+        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
+
+        $("#form").validate({
+            rules: {
+                'rol': {
+                    required: true,
+                    minlength: 3
+                },
+            },
+            messages: {
+                'rol': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+
+        
+    </script>
+{% endblock %}

@@ -21,3 +21,7 @@ categorias:
 permisos:
     resource: "@LinkBackendBundle/Resources/config/routing/permisos.yml"
     prefix: /permiso
+
+niveles:
+    resource: "@LinkBackendBundle/Resources/config/routing/niveles.yml"
+    prefix: /nivel
