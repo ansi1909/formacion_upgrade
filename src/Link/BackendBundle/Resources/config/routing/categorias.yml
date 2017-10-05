@@ -1,3 +1,21 @@
 _categorias:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Categoria:index }
+
+_ajaxUpdateCategoria:
+    path:     /ajaxUpdateCategoria
+    defaults: { _controller: LinkBackendBundle:Categoria:ajaxUpdateCategoria }
+    requirements:
+        method: POST
+
+_ajaxEditCategoria:
+    path:     /ajaxEditCategoria
+    defaults: { _controller: LinkBackendBundle:Categoria:ajaxEditCategoria }
+    requirements:
+        method: GET
+
+_ajaxDeleteCategoria:
+    path:     /ajaxDeleteCategoria
+    defaults: { _controller: LinkBackendBundle:Categoria:ajaxDeleteCategoria }
+    requirements:
+        method: POST
