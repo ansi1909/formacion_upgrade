@@ -4,9 +4,12 @@ Aceptar: Aceptar
 Activo: Activo
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
+Bienvenida: Bienvenida
 Bien hecho: Bien hecho
+Buen trabajo: Buen trabajo
 Cancelar: Cancelar
 Configurar: Configurar
+Confirmar: Confirmar
 Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
 Datos de la empresa: Datos de la empresa
@@ -24,6 +27,7 @@ Error en el servidor: Error en el servidor
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Fecha Creación: Fecha Creación
+Finalizar: Finalizar
 Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
@@ -40,10 +44,13 @@ No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
 Nombre: Nombre
 Nuevo Registro: Nuevo Registro
+Paso: Paso
 Permisos de Acceso: Permisos de Acceso
 Permisos por Rol: Permisos por Rol
+Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Rol: Rol
 Si: Si
+Siguiente: Siguiente
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Su registro ha sido eliminado: Su registro ha sido eliminado
 Sub-Aplicación de: Sub-Aplicación de

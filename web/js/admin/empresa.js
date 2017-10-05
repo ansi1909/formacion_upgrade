@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
@@ -20,4 +21,6 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	
 });

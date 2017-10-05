@@ -16,19 +16,19 @@
             				<div class="stepwizard-step col">
                                 <a href="#det0" class="btn bttn__fndo pass">
                                     <span class="btn-round">1</span>
-                                    <p>Datos Básicos</p>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
                                 </a>
                             </div>
                             <div class="stepwizard-step col">
                                 <a href="#det1" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">2</span>
-                                    <p>Bienvenida</small></p>
+                                    <p>{{ 'Bienvenida'|trans }}</small></p>
                                 </a>
                             </div>
                             <div class="stepwizard-step col">
                                 <a href="#det2" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">3</span>
-                                    <p>Confirmar</small></p>
+                                    <p>{{ 'Confirmar'|trans }}</small></p>
                                 </a>
                             </div>
                 		</div>
@@ -38,7 +38,7 @@
                 			<div class="col-sm-16">
                 				<div class="row">
                                     <div class="col-sm-16">
-                                        <h3 class="mb-2">Paso1</h3>
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 1</h3>
                                     </div>
                                 </div>
                                 <br>
@@ -55,8 +55,9 @@
                                         	<label for="texto" class="col-2 col-form-label">{{ 'País'|trans }}</label>
                                         	<div class="col-14">
 	                                        	<select class="form-control" name="pais" id="pais">
+                                                    <option value=""></option>
 	                                        		{% for pais in paises %}
-		                                                <option value={{pais.id}}>{{ pais.nombre }}</option>
+		                                                <option value={{ pais.id }}>{{ pais.nombre }}</option>
 	                                                {% endfor %}
 	                                            </select>
                                             </div>
@@ -87,7 +88,7 @@
                 			<div class="col-sm-16">
                 				<div class="row">
 	                                <div class="col-sm-16">
-	                                    <h3 class="mb-2">Paso 2</h3>
+	                                    <h3 class="mb-2">{{ 'Paso'|trans }} 2</h3>
 	                                </div>
 	                            </div>
 	                            <br>
@@ -103,7 +104,7 @@
                                 </div>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
-                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
                                     </div>
                                 </div>
                 			</div>
@@ -112,21 +113,21 @@
                 			<div class="col-sm-16">
                 				<div class="row">
                                     <div class="col-sm-16">
-                                        <h3 class="mb-2">Paso 3</h3>
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-16">
                                     	<div class="alert alert-success" role="alert">
-				                          <h4 class="alert-heading">Buen trabajo!</h4>
-				                          <p>Presiona el botón finalizar para completar la creación del registro de la empresa.</p>
+				                          <h4 class="alert-heading">{{ 'Buen trabajo'|trans }}!</h4>
+				                          <p>{{ 'Presiona el botón finalizar para completar'|trans }}.</p>
 				                        </div>
                                     </div>
                                 </div>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
-                                        <button type="submit" class="bttn__end"><span class="text__end">Finalizar</span><span class="fa fa-check"></span></button>
+                                        <button type="submit" class="bttn__end"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
                                     </div>
                                 </div>
                 			</div>

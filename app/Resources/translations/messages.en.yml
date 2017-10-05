@@ -4,9 +4,12 @@ Aceptar: Accept
 Activo: Active
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
+Bienvenida: Welcome
 Bien hecho: Well done
+Buen trabajo: Good job
 Cancelar: Cancel
 Configurar: Configure
+Confirmar: Confirm
 Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
 Datos de la empresa: Company Data
@@ -24,6 +27,7 @@ Error en el servidor: Error on server
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Fecha Creación: Creation Date
+Finalizar: Finish
 Guardar: Save
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
@@ -40,10 +44,13 @@ No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
 Nombre: Name
 Nuevo Registro: New Item
+Paso: Step
 Permisos de Acceso: Access Permissions
 Permisos por Rol: Permissions by Role
+Presiona el botón finalizar para completar: Press finish button to complete
 Rol: Role
 Si: Yes
+Siguiente: Next
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
 Su registro ha sido eliminado: The item has been deleted
 Sub-Aplicación de: Sub-Application of

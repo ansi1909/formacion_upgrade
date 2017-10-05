@@ -15,6 +15,7 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
+        $f = $this->get('funciones');
 
         /* Nos permitirá acceder a los parámetros varios */
         //$values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -88,6 +89,7 @@ class DefaultController extends Controller
 
 
         $session->set('ini', true);
+        $session->set('code', $f->getLocaleCode());
         $session->set('administrador', true);
         $session->set('usuario', $datosUsuario);
         $session->set('menu', $menu);
