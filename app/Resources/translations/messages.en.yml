@@ -8,10 +8,13 @@ Bienvenida: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
 Cancelar: Cancel
+Categoría: Category
+Categorías: Categories
 Configurar: Configure
 Confirmar: Confirm
 Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
+Datos de la categoría: Category data
 Datos de la empresa: Company Data
 Datos del Rol: Role Details
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
@@ -38,9 +41,11 @@ Hola mundo...: Hello world...
 Icono: Icon
 La aplicación ha sido almacenada con éxito: Application has been saved sucessfully
 Listado de Aplicaciones: List of Applications
+Listado de categorías: Category List
 Listado de Empresas: List of Companies
 Listado de Roles: List of Roles
 Mensaje del servidor: Server message
+Niveles: Levels
 No se permiten espacios en blanco.: Blank spaces are not allowed.
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.
 No se pudo almacenar este registro.: It could not save this item.
@@ -48,6 +53,7 @@ No se pudo editar este registro.: It could not edit this item.
 Nombre: Name
 Nuevo Registro: New Item
 Paso: Step
+País: Country
 Permisos de Acceso: Access Permissions
 Permisos por Rol: Permissions by Role
 Presiona el botón finalizar para completar: Press finish button to complete

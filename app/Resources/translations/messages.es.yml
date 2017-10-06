@@ -8,10 +8,13 @@ Bienvenida: Bienvenida
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
 Cancelar: Cancelar
+Categoría: Categoría
+Categorías: Categorías
 Configurar: Configurar
 Confirmar: Confirmar
 Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
+Datos de la categoría: Datos de la categoría
 Datos de la empresa: Datos de la empresa
 Datos del Rol: Datos del Rol
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
@@ -38,6 +41,7 @@ Hola mundo...: Hola mundo...
 Icono: Icono
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 Listado de Aplicaciones: Listado de Aplicaciones
+Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
 Listado de Roles: Listado de Roles
 Mensaje del servidor: Mensaje del servidor

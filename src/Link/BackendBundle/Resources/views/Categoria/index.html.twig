@@ -7,9 +7,9 @@
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
 <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
 
-<div class="row align-items-center justify-content-between">
+<div class="row align-items-center justify-ccategoríantent-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>Categorias</h3>
+        <h3>{{'Categoría' |trans}}</h3>
     </div>
    <div class="col text-right">
        <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
@@ -19,13 +19,13 @@
     <div class="col-sm-12 offset-2">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Listado de categorias' |trans}}</h5>
+                <h5 class="card-title">{{ 'Listado de categorías' |trans}}</h5>
             </div>
             <div class="card-block">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Categorias</th>
+                            <th>{{'Categorías' |trans}}</th>
                             <th class="col text-right">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
@@ -51,7 +51,7 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos de la Categoria'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos de la categoría'|trans}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
@@ -60,7 +60,7 @@
     <form id="form" name="form" action="{{ path( '_ajaxUpdateCategoria')}}"  method="POST">
         <input type="hidden" id="categoria_id" name="categoria_id" value="">
         <div class="form-group">
-            <label for="recipient-name" class="form-control-label">{{ 'Categoria'|trans }}:</label>
+            <label for="recipient-name" class="form-control-label">{{ 'Categoría'|trans }}:</label>
             <input type="text" class="form-control" id="categoria" name="categoria" value="">
         </div>
     </form>
@@ -75,7 +75,7 @@
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{ 'Categoria'|trans }}:</h5>
+                        <h5>{{ 'Categoría'|trans }}:</h5>
                         <p id="p-nombre">Lorem Ipsum</p>
                     </div>
                 </div>

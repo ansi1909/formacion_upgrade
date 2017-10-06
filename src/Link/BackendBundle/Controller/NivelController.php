@@ -8,13 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNivel; 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Link\ComunBundle\Entity\AdminEmpresa; 
 
 class NivelController extends Controller
 {
@@ -43,13 +37,22 @@ class NivelController extends Controller
         $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
         $niveles = array();
-
+                
         foreach ($empresas as $empresa)
         {
-            $query = $em->createQuery(" SELECT n from LinkComunBundle:AdminNivel n");
+            $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
+                                       WHERE n.empresa = :empresa_id
+                                       ORDER BY n.id ASC")
+                        ->setParameter('empresa_id', $empresa->getId());
+            $nivel_empresa= $query->getResult();
+            $niveles[]= array('empresa_id'=>$empresa->getId(),
+                              'empresa_nombre'=>$empresa->getNombre(),
+                              'empresa_pais' =>$empresa->getPais(),
+                              'nivel'=>$nivel_empresa);
         }
 
-       return $this->render('LinkBackendBundle:Nivel:index.html.twig');
+        #return new Response(var_dump($niveles));
+       return $this->render('LinkBackendBundle:Nivel:index.html.twig', array ('niveles' => $niveles));
 
     }
 
