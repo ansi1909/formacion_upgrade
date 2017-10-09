@@ -1,5 +1,9 @@
 {% extends '::admin.html.twig'%}
 {% block body %}
+
+{% set uri = app.request.getbasepath %}
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<input type="hidden" id="deslen" name="deslen" value="0" />
 <br>
 <div class="row">
 	<div class="col-sm-16">
@@ -169,6 +173,7 @@
             var str_error = '';
             var nombre = $.trim($('#nombre').val());
             var pais_id = $('#pais_id').val();
+            var deslen = $('#deslen').val();
             
             if (nombre == '')
             {
@@ -184,6 +189,11 @@
             if (pais_id == '')
             {
                 str_error += "<li>- {{ 'El país es requerido.'|trans }}</li>";
+            }
+
+            if (deslen < {{ maxlenght_bienvenida }})
+            {
+                str_error += "<li>- {{ 'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ maxlenght_bienvenida }}</li>";
             }
 
             return str_error;
