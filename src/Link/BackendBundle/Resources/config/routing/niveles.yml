@@ -2,3 +2,8 @@ _empresasNiveles:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Nivel:index }
 
+_ajaxUpdateNivel:
+    path:     /ajaxUpdateNivel
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxUpdateNivel }
+    requirements:
+        method: POST

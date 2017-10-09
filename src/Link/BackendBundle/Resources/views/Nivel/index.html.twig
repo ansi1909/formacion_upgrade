@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_roles', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
 
 <div class="row align-items-center justify-content-between">
@@ -34,14 +34,14 @@
                       {% for empresa in empresas %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{eo}}">
-                                <td>{{ empresa.empresa_nombre }}</td>
-                                <td>{{ empresa.empresa_pais}}</td>
-                                <td>
+                                <td>{{ empresa.nombre }}</td>
+                                <td>{{ empresa.pais }}</td>
+                                <td id="td-{{ empresa.id }}">
                                     {%if empresa.niveles|length > 0%}
-                                        <div id="tree">
+                                        <div class="tree">
                                             <ul data-jstree='{ "opened" : true }'>
                                                 {% for nivel in empresa.niveles %}
-                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{nivel.nombre}}
+                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ nivel.nombre }}
                                                     </li>
                                                 {% endfor %}
                                             </ul>
@@ -55,7 +55,7 @@
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item" href="#">{{ 'Configurar'|trans }}</a>
-                                            <a class="dropdown-item" data-toggle="modal" data-target="#formModal" href="#">{{ 'Nuevo nivel'|trans }}</a>
+                                            <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
                                         </div>
                                     </div>
                                 </td>
@@ -78,11 +78,11 @@
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form" action="{{ path( '_ajaxUpdateCategoria')}}"  method="POST">
-        <input type="hidden" id="categoria_id" name="categoria_id" value="">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateNivel')}}" method="POST">
+        <input type="hidden" id="empresa_id" name="empresa_id" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nivel'|trans }}:</label>
-            <input type="text" class="form-control" id="categoria" name="categoria" value="">
+            <input type="text" class="form-control" id="nombre" name="nombre" value="">
         </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
@@ -116,7 +116,25 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/niveles.js') }}"></script>
+    <script type="text/javascript">
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+
+        
+    </script>
 {% endblock %}

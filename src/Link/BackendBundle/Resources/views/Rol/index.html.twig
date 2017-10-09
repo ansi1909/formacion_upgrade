@@ -112,10 +112,6 @@
     <script type="text/javascript" src="{{ asset('js/admin/rol.js') }}"></script>
     <script type="text/javascript">
 
-        jQuery.validator.addMethod("noSpace", function(value, element) { 
-            return value.indexOf(" ") < 0; 
-        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
-
         $("#form").validate({
             rules: {
                 'rol': {

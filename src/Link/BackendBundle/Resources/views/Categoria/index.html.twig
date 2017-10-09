@@ -99,16 +99,12 @@
     <script type="text/javascript" src="{{ asset('js/admin/categoria.js') }}"></script>
     <script type="text/javascript">
 
-        jQuery.validator.addMethod("noSpace", function(value, element) { 
-            return value.indexOf(" ") < 0; 
-        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
-
         $("#form").validate({
             rules: {
                 'categoria': {
                     required: true,
                     minlength: 3
-                },
+                }
             },
             messages: {
                 'categoria': {
