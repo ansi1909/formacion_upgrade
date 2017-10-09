@@ -1,11 +1,13 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
 {% block body %}
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditRol') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_roles', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteRol') }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
-<input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
 
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -18,7 +20,7 @@
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
                 <h5 class="card-title">{{ 'Listado de Empresas' |trans}}</h5>
             </div>
-            <div class="card-block">
+            <div class="card-block" style=" padding-bottom:45px; ">
                 <table class="table">
                     <thead>
                         <tr>
@@ -29,17 +31,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                      {% for nivel in niveles %}
+                      {% for empresa in empresas %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{eo}}">
-                                <td>{{ nivel.empresa_nombre }}</td>
-                                <td>{{ nivel.empresa_pais}}</td>
-                                <td></td>
+                                <td>{{ empresa.empresa_nombre }}</td>
+                                <td>{{ empresa.empresa_pais}}</td>
+                                <td>
+                                    {%if empresa.niveles|length > 0%}
+                                        <div id="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {% for nivel in empresa.niveles %}
+                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{nivel.nombre}}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'Esta empresa aún no tiene nivel asignado'|trans }}
+                                    {% endif %}
+                                </td>
                                 <td class="center">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item" href="#">{{ 'Configurar'|trans }}</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#formModal" href="#">{{ 'Nuevo nivel'|trans }}</a>
                                         </div>
                                     </div>
                                 </td>
@@ -54,34 +70,53 @@
 
 {% endblock %}
 
-
+{% block formModal %}
+<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del nivel'|trans}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: #fff;">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateCategoria')}}"  method="POST">
+        <input type="hidden" id="categoria_id" name="categoria_id" value="">
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Nivel'|trans }}:</label>
+            <input type="text" class="form-control" id="categoria" name="categoria" value="">
+        </div>
+    </form>
+    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+    </div>
+    <div class="card" id="detail" style="display:none;">
+        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
+        </div>
+        <div class="card-block">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Nivel'|trans }}:</h5>
+                        <p id="p-nombre">Lorem Ipsum</p>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-sm-16 col-md-16 text-right">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
-    <script type="text/javascript" src="{{ asset('js/admin/rol.js') }}"></script>
-    <script type="text/javascript">
-
-        jQuery.validator.addMethod("noSpace", function(value, element) { 
-            return value.indexOf(" ") < 0; 
-        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
-
-        $("#form").validate({
-            rules: {
-                'rol': {
-                    required: true,
-                    minlength: 3
-                },
-            },
-            messages: {
-                'rol': {
-                    required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
-                }
-            }
-        });
-
-        
-    </script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/niveles.js') }}"></script>
 {% endblock %}

@@ -34,25 +34,28 @@ class NivelController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        $empresasdb = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
-        $niveles = array();
+        $empresas = array();
                 
-        foreach ($empresas as $empresa)
+        foreach ($empresasdb as $empresadb)
         {
             $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
                                        WHERE n.empresa = :empresa_id
                                        ORDER BY n.id ASC")
-                        ->setParameter('empresa_id', $empresa->getId());
+                        ->setParameter('empresa_id', $empresadb->getId());
             $nivel_empresa= $query->getResult();
-            $niveles[]= array('empresa_id'=>$empresa->getId(),
-                              'empresa_nombre'=>$empresa->getNombre(),
-                              'empresa_pais' =>$empresa->getPais(),
-                              'nivel'=>$nivel_empresa);
-        }
+
+
+
+            $empresas[]= array('empresa_id'=>$empresadb->getId(),
+                              'empresa_nombre'=>$empresadb->getNombre(),
+                              'empresa_pais' =>$empresadb->getPais()->getNombre(),
+                              'niveles'=>$nivel_empresa);
+        } 
 
         #return new Response(var_dump($niveles));
-       return $this->render('LinkBackendBundle:Nivel:index.html.twig', array ('niveles' => $niveles));
+        return $this->render('LinkBackendBundle:Nivel:index.html.twig', array ('empresas' => $empresas));
 
     }
 
