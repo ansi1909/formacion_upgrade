@@ -36,8 +36,7 @@
           			<thead>
                     	<tr>
                         	<th>{{ 'Empresa'|trans }}</th>
-                            <th>{{ 'Correo de Contacto'|trans }}</th>
-                        	<th>{{ 'País'|trans }}</th>
+                            <th>{{ 'País'|trans }}</th>
                         	<th>{{ 'Fecha Creación'|trans }}</th>
                         	<th>{{ 'Activo'|trans }}</th>
                         	<th>{{ 'Acciones'|trans }}</th>
@@ -47,7 +46,6 @@
                 		{% for empresa in empresas %}
                 			<tr class="odd">
                 				<td>{{ empresa.nombre }}</td>
-                				<td>{{ empresa.correoPrincipal }}</td>
                 				<td>{{ empresa.pais.nombre }}</td>
                 				<td>{{ empresa.fechaCreacion|date("d/m/Y") }}</td>
                 				<td class="center">
@@ -59,7 +57,7 @@
                                     </div>
                                 </td>
                                 <td class="center">
-                                    <a href="#" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
                                     <a href="#" class="btn btn-link btn-sm"><span class="fa fa-trash"></span></a>
                                 </td>
                 			</tr>
@@ -73,7 +71,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/empresas.js') }}"></script>
 {% endblock %}
 
 

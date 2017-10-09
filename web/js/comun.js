@@ -66,7 +66,23 @@ $(document).ready(function() {
             });
             $(this).find('.setup-panel div a.bttn__fndo').trigger('click');
         });
-    });    
+    });
+
+
+    $("#edit, #list").click(function(){
+        var url = $(this).attr('id');
+        var parameter = $(this).attr('parameter');
+        var p = '';
+        if (typeof url === 'undefined')
+        {
+            url = $(this).attr('data');
+        }
+        if (typeof parameter !== 'undefined')
+        {
+            p = '/'+parameter;
+        }
+        window.location.replace($('#url_'+url).val()+p);
+    });
 
 
 });

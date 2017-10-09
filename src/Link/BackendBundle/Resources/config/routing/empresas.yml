@@ -15,3 +15,7 @@ _ajaxActiveEmpresa:
     defaults: { _controller: LinkBackendBundle:Empresa:ajaxActiveEmpresa }
     requirements:
         _method: POST
+
+_showEmpresa:
+    path:     /mostrar/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Empresa:mostrar }

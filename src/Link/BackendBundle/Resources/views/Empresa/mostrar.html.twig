@@ -1,0 +1,89 @@
+{% extends '::admin.html.twig'%}
+
+{% block body %}
+
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresas', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registro', { 'empresa_id': empresa.id }) }}">
+<br>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-right">
+        <button type="button" class="bttn__nr" id="edit"><span class="fa fa-pencil"></span><span class="text__nr">{{ 'Editar'|trans }}</span></button>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Datos de la empresa'|trans }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Bienvenida'|trans }}</small></p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+                	<div class="row setup-content" id="det0">	
+            			<div class="col-sm-16">
+            				<br>
+                            <div class="content__wrapper">
+                                <div class="container-fluid">
+                                    <div class="row justify-content-between">
+                                        <div class="col-sm-8 show__details">
+                                            <h5>{{ 'Empresa'|trans }}</h5>
+                                            <p>{{ empresa.nombre }}</p>
+                                        </div>
+                                        <div class="col-sm-8 show__details">
+                                            <h5>{{ 'Activo'|trans }}</h5>
+                                            <p>{% if empresa.activo %}{{ 'Si'|trans }}{% else %}No{% endif %}</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row justify-content-between">   
+                                        <div class="col-sm-16 show__details">
+                                            <h5>{{ 'País'|trans }}</h5>
+                                            <p>{{ empresa.pais.nombre }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+            		<div class="row setup-content" id="det1">
+            			<div class="col-sm-16">
+            				<br>
+                            <div class="row">
+                                <div class="col-sm-16">{{ empresa.bienvenida|raw }}</div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn" id="list"><span class="text__nxt">{{ 'Ir al listado'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -39,7 +39,18 @@ class EmpresaController extends Controller
         }
         
         $r = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa');
-        $empresas = $r->findAll();
+        $empresas_db = $r->findAll();
+
+        $empresas = array();
+        foreach ($empresas_db as $empresa)
+        {
+            $empresas[] = array('id' => $empresa->getId(),
+                                'nombre' => $empresa->getNombre(),
+                                'pais' => $empresa->getPais(),
+                                'fechaCreacion' => $empresa->getFechaCreacion(),
+                                'activo' => $empresa->getActivo(),
+                                'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminAplicacion'));
+        }
 
         return $this->render('LinkBackendBundle:Empresa:index.html.twig', array('empresas'=>$empresas));
 
@@ -72,6 +83,7 @@ class EmpresaController extends Controller
         else {
             $empresa = new AdminEmpresa();
             $empresa->setPais($pais);
+            $empresa->setFechaCreacion(new \DateTime('now'));
         }
 
         // Lista de paises
@@ -84,7 +96,23 @@ class EmpresaController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
-            return new Response('listo men');
+
+            $nombre = $request->request->get('nombre');
+            $pais_id = $request->request->get('pais_id');
+            $bienvenida = $request->request->get('bienvenida');
+            $activo = $request->request->get('activo');
+
+            $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id);
+
+            $empresa->setNombre($nombre);
+            $empresa->setActivo($activo ? true : false);
+            $empresa->setBienvenida($bienvenida);
+            $empresa->setPais($pais);
+            $em->persist($empresa);
+            $em->flush();
+
+            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
+
         }
         
         return $this->render('LinkBackendBundle:Empresa:registro.html.twig', array('empresa' => $empresa,
@@ -92,9 +120,27 @@ class EmpresaController extends Controller
 
     }
 
-    public function guardarEmpresaAction(Request $request)
+    public function mostrarAction($empresa_id)
     {
+        $session = new Session();
+        $f = $this->get('funciones');
       
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        return $this->render('LinkBackendBundle:Empresa:mostrar.html.twig', array('empresa' => $empresa));
+
     }
 
     public function ajaxActiveEmpresaAction(Request $request)

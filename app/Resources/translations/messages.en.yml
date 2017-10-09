@@ -40,6 +40,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Hola mundo...: Hello world...
 Icono: Icon
+Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved sucessfully
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
@@ -58,6 +59,7 @@ País: Country
 Permisos de Acceso: Access Permissions
 Permisos por Rol: Permissions by Role
 Presiona el botón finalizar para completar: Press finish button to complete
+Registrar Empresa: Add/Edit Company
 Rol: Role
 Si: Yes
 Siguiente: Next

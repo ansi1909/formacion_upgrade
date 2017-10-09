@@ -8,9 +8,9 @@
 <div class="row">
 	<div class="col-sm-16">
 		<div class="card">
-			<div class="card-header">
+			<div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>Registrar Empresa</h6>
+                    <h6>{{ 'Registrar Empresa'|trans }}</h6>
                 </div>
             </div>
            	<div class="card-block">
@@ -51,7 +51,7 @@
                                 		<div class="form-group">
                                             <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
                                             <div class="col-14">
-                                                <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="">
+                                                <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="{{ empresa.nombre }}">
                                                 <span class="fa fa-industry"></span>
                                             </div>	
                                         </div>
@@ -74,7 +74,7 @@
                                 			<label for="texto" class="col-2 col-form-label">{{ 'Activo'|trans }}</label>
                                 			<div class="col-4">
 	                                            <div class="can-toggle demo-rebrand-2 small">
-                                                    <input id="f" class="cb_activo" type="checkbox" {% if empresa.activo %}checked{% endif %}>
+                                                    <input id="f" id="activo" name="activo" type="checkbox" {% if empresa.activo %}checked{% endif %}>
 	                                                <label for="f">
 	                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
 	                                                </label>
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
-                                        <button type="button" class="bttn__nxt nextBtn save"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
                                     </div>
                                 </div>
                 			</div>
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
-                                        <button type="button" class="bttn__nxt nextBtn save"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
                                     </div>
                                 </div>
                 			</div>

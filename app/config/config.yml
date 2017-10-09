@@ -41,7 +41,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        maxlenght_bienvenida: 50
+        maxlenght_bienvenida: 5
 
 # Doctrine Configuration
 doctrine:
