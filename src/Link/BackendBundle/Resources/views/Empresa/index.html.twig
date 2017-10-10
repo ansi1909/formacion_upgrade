@@ -2,6 +2,7 @@
 {% block body %}
 <br>
 <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActiveEmpresa') }}">
+<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteEmpresa') }}">
 <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
 
 <div class="row align-items-center justify-content-between">
@@ -15,7 +16,7 @@
 <div class="row">
  	<div class="col-sm-16">
   		<div class="card">
-  			<div class="card-header">
+  			<div class="card-header gradiente">
             	<h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
         	</div>
         	<div class="card-block">
@@ -58,7 +59,7 @@
                                 </td>
                                 <td class="center">
                                     <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm"><span class="fa fa-trash"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if empresa.delete_disabled == '' %}delete{% endif %} {{ empresa.delete_disabled }}" data="{{ empresa.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                 			</tr>
                 		{% endfor %}

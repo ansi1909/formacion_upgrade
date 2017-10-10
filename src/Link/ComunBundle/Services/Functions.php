@@ -40,12 +40,21 @@ class Functions
 			case 'AdminRol':
     			$entidades = array('AdminPermiso' => 'rol',
     							   'AdminRolUsuario' => 'rol');
-    			break;    			
+    			break;
+    		case 'AdminEmpresa':
+    			$entidades = array('AdminNivel' => 'empresa',
+    							   'AdminUsuario' => 'empresa',
+    							   'CertiGrupo' => 'empresa',
+    							   'CertiPaginaEmpresa' => 'empresa',
+    							   'AdminNoticia' => 'empresa',
+    							   'AdminPreferencia' => 'empresa');
+    			break;
     		default:
     			$entidades = array();
+    			break;
     	}
-		
-		foreach ($entidades as $entity => $attr)
+
+    	foreach ($entidades as $entity => $attr)
         {
         	$qb = $em->createQueryBuilder();
 			$qb->select('COUNT(tr.id)')

@@ -49,7 +49,7 @@ class EmpresaController extends Controller
                                 'pais' => $empresa->getPais(),
                                 'fechaCreacion' => $empresa->getFechaCreacion(),
                                 'activo' => $empresa->getActivo(),
-                                'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminNivel,'));
+                                'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminEmpresa'));
         }
 
         return $this->render('LinkBackendBundle:Empresa:index.html.twig', array('empresas'=>$empresas));
@@ -157,6 +157,25 @@ class EmpresaController extends Controller
         $em->flush();
                     
         $return = array('id' => $empresa->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxDeleteEmpresaAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $empresa_id = $request->request->get('id');
+        $ok = 1;
+
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $em->remove($empresa);
+        $em->flush();
+            
+        $return = array('ok' => $ok);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
