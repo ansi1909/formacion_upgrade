@@ -1,57 +1,42 @@
 {% extends '::admin.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
-{% endblock %}
-
 {% block body %}
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{# path('_ajaxEditCategoria') #}">
+<input type="hidden" id="url_delete" name="url_delete" value="{# path('_ajaxDeleteCategoria') #}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_niveles',{ 'empresa_id': empresa.id }, { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
-<input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeNiveles') }}">
+<input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
 
-<div class="row align-items-center justify-content-between">
+<div class="row align-items-center justify-ccategoríantent-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>{{'Niveles por empresas' |trans}}</h3>
+        <h3>{{'Niveles' |trans}}</h3>
     </div>
+   <div class="col text-right">
+       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}""><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+   </div>
 </div>
 <div class="row">
-    <div class="col-sm-16">
+    <div class="col-sm-12 offset-2">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Listado de Empresas' |trans}}</h5>
+                <h5 class="card-title">{{ 'Listado de niveles' |trans}} {{ empresa.nombre }}</h5>
             </div>
-            <div class="card-block" style=" padding-bottom:45px; ">
-                <table class="table" id="dt">
+            <div class="card-block">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>{{'Empresa'|trans}}</th>
-                            <th>{{'País'|trans }}</th>
-                            <th>{{'Niveles'|trans}}</th>
-                            <th>{{'Acciones'|trans }}</th>
+                            <th>{{'Niveles' |trans}}</th>
+                            <th class="text-right">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody-empresas">
-                      {% for empresa in empresas %}
+                    <tbody>
+                      {% for nivel in niveles %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
-                            <tr class="{{eo}}" id="tr-{{ empresa.id }}">
-                                <td>{{ empresa.nombre }}</td>
-                                <td>{{ empresa.pais.nombre }}</td>
-                                <td id="td-{{ empresa.id }}">
-                                    &nbsp;
-                                </td>
-                                <td class="center">
-                                    {% if empresa.activo %}
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">{{ 'Configurar'|trans }}</a>
-                                                <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        <span class="error">{{ 'Empresa con estatus inactivo'|trans }}</span>
-                                    {% endif %}
+                            <tr class="{{eo}}">
+                                <td >{{ nivel.nombre }}</td>
+                                <td class="text-right ">
+                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ nivel.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if nivel.delete_disabled == '' %}delete{% endif %} {{ nivel.delete_disabled }}" data="{{ nivel.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                       {% endfor %}
@@ -66,17 +51,17 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Nuevo nivel de la empresa'|trans }} <span id="header-empresa"></span></h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del nivel'|trans}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form" action="{{ path( '_ajaxUpdateNivel')}}" method="POST">
+    <form id="form" name="form" action="{{ path( '_ajaxUploadNivel')}}"  method="POST">
         <input type="hidden" id="empresa_id" name="empresa_id" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nivel'|trans }}:</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" value="">
+            <input type="text" class="form-control" id="categoria" name="nombre" value="">
         </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
@@ -110,19 +95,19 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('js/admin/niveles.js') }}"></script>
     <script type="text/javascript">
 
         $("#form").validate({
             rules: {
-                'nombre': {
+                'nivel': {
                     required: true,
                     minlength: 3
                 }
             },
             messages: {
-                'nombre': {
+                'nivel': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
                 }

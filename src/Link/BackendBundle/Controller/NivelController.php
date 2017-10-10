@@ -94,4 +94,55 @@ class NivelController extends Controller
         
     }
 
+    public function NivelesAction($empresa_id, Request $request)
+    {
+        
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $nivelesdb = array();
+        $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
+                                   WHERE n.empresa = :empresa_id
+                                   ORDER BY n.id ASC")
+                    ->setParameter('empresa_id', $empresa_id);
+        $niveles = $query->getResult();
+
+        foreach ( $niveles as $nivel )
+        {
+            $nivelesdb[]= array('id'=>$nivel->getId(),
+                                'nombre'=>$nivel->getNombre(),
+                                'delete_disabled'=>$f->linkEliminar($nivel->getId(),'AdminNivel'));
+        }
+
+        return $this->render('LinkBackendBundle:Nivel:niveles.html.twig', array ('niveles' => $nivelesdb,
+                                                                                 'empresa' => $empresa));
+
+    }
+
+    public function ajaxUploadNivelAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $nombre = $request->request->get('nombre');
+        $empresa_id= $request->request->get('empresa_id');
+
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+    
+        $nivel = new AdminNivel();
+
+        $nivel->setNombre($nombre);
+        $nivel->setEmpresa($empresa);
+                
+        $em->persist($nivel);
+        $em->flush();
+
+        $return = array('id' => $nivel->getId(),
+                        'nombre' => $nivel->getNombre(),
+                        'delete_disabled' => $f->linkEliminar($nivel->getId(),'AdminNivel'));
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
 }

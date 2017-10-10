@@ -17,3 +17,9 @@ _ajaxTreeNiveles:
 _niveles:
     path:     /niveles/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Nivel:niveles }
+
+_ajaxUploadNivel:
+    path:     /ajaxUploadNivel
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxUploadNivel }
+    requirements:
+        method: POST

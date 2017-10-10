@@ -31,6 +31,11 @@ $(document).ready(function() {
 		window.location.replace($('#url_list').val());
 	});
 
+	$('.delete').click(function(){
+		var nivel_id = $(this).attr('data');
+		sweetAlertDelete(nivel_id);
+	});
+
 });
 
 function saveNivel()
