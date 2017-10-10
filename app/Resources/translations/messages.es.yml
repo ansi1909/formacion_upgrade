@@ -30,6 +30,7 @@ El país es requerido.: El país es requerido.
 Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresas: Empresas
+Empresa con estatus inactivo: Empresa con estatus inactivo
 Error en el servidor: Error en el servidor
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
@@ -53,6 +54,7 @@ No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este
 No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
 Nombre: Nombre
+Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo Registro: Nuevo Registro
 Paso: Paso
 País: País

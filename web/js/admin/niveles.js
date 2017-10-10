@@ -1,12 +1,19 @@
 $(document).ready(function() {
 
-	$('.tree').jstree();
+	$('#tbody-empresas tr').each(function(){
+		var tr = $(this).attr('id');
+		var tr_arr = tr.split('tr-');
+		var empresa_id = tr_arr[1];
+		treeNiveles(empresa_id);
+	});
 
 	$('#div-active-alert').hide();
 
 	$('.new').click(function(){
 		$('#empresa_id').val($(this).attr('data'));
+		$('#header-empresa').html($(this).attr('empresa'));
 		$('#nombre').val("");
+		$('#div-alert').hide();
 	});
 
 
@@ -40,10 +47,10 @@ function saveNivel()
 			data: $("#form").serialize(),
 			dataType: "json",
 			success: function(data) {
-				$('#td-'+data.empresa_id).html(data.html);
 				$('#guardar').prop('disabled', false);
 				$( "#cancelar" ).trigger( "click" );
-				$('.tree').jstree();
+				$('#td-'+data.empresa_id).jstree(true).settings.core.data.url = $('#url_tree').val()+'/'+data.empresa_id;
+  				$('#td-'+data.empresa_id).jstree(true).refresh();
 			},
 			error: function(){
 				$('#alert-error').html($('#error_msg-save').val());
@@ -52,4 +59,16 @@ function saveNivel()
 		});
 	}
 
+}
+
+function treeNiveles(empresa_id)
+{
+	$('#td-'+empresa_id).jstree({
+		'core' : {
+			'data' : {
+				"url" : $('#url_tree').val()+'/'+empresa_id,
+				"dataType" : "json"
+			}
+		}
+	});
 }

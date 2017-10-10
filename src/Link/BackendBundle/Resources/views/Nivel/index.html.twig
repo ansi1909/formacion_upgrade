@@ -8,6 +8,7 @@
 {% block body %}
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
+<input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeNiveles') }}">
 
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -30,34 +31,27 @@
                             <th>{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody-empresas">
                       {% for empresa in empresas %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
-                            <tr class="{{eo}}">
+                            <tr class="{{eo}}" id="tr-{{ empresa.id }}">
                                 <td>{{ empresa.nombre }}</td>
-                                <td>{{ empresa.pais }}</td>
+                                <td>{{ empresa.pais.nombre }}</td>
                                 <td id="td-{{ empresa.id }}">
-                                    {%if empresa.niveles|length > 0%}
-                                        <div class="tree">
-                                            <ul data-jstree='{ "opened" : true }'>
-                                                {% for nivel in empresa.niveles %}
-                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ nivel.nombre }}
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% else %}
-                                        {{ 'Esta empresa aún no tiene nivel asignado'|trans }}
-                                    {% endif %}
+                                    &nbsp;
                                 </td>
                                 <td class="center">
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">{{ 'Configurar'|trans }}</a>
-                                            <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
+                                    {% if empresa.activo %}
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">{{ 'Configurar'|trans }}</a>
+                                                <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% else %}
+                                        <span class="error">{{ 'Empresa con estatus inactivo'|trans }}</span>
+                                    {% endif %}
                                 </td>
                             </tr>
                       {% endfor %}
@@ -72,7 +66,7 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del nivel'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Nuevo nivel de la empresa'|trans }} <span id="header-empresa"></span></h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>

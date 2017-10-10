@@ -49,7 +49,7 @@ class EmpresaController extends Controller
                                 'pais' => $empresa->getPais(),
                                 'fechaCreacion' => $empresa->getFechaCreacion(),
                                 'activo' => $empresa->getActivo(),
-                                'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminAplicacion'));
+                                'delete_disabled' => $f->linkEliminar($empresa->getId(), 'AdminNivel,'));
         }
 
         return $this->render('LinkBackendBundle:Empresa:index.html.twig', array('empresas'=>$empresas));

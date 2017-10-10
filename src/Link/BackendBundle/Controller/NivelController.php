@@ -36,25 +36,7 @@ class NivelController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $empresasdb = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-
-        $empresas = array();
-                
-        foreach ($empresasdb as $empresadb)
-        {
-            $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
-                                       WHERE n.empresa = :empresa_id
-                                       ORDER BY n.id ASC")
-                        ->setParameter('empresa_id', $empresadb->getId());
-            $nivel_empresa= $query->getResult();
-
-
-
-            $empresas[]= array('id'=>$empresadb->getId(),
-                              'nombre'=>$empresadb->getNombre(),
-                              'pais' =>$empresadb->getPais()->getNombre(),
-                              'niveles'=>$nivel_empresa);
-        } 
+        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
         #return new Response(var_dump($niveles));
         return $this->render('LinkBackendBundle:Nivel:index.html.twig', array ('empresas' => $empresas));
@@ -80,23 +62,32 @@ class NivelController extends Controller
         $em->persist($nivel);
         $em->flush();
 
+        $return = array('empresa_id' => $empresa_id);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxTreeNivelesAction($empresa_id, Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
         $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
                                    WHERE n.empresa = :empresa_id
                                    ORDER BY n.id ASC")
                     ->setParameter('empresa_id', $empresa_id);
         $niveles = $query->getResult();
 
-        $html = '<div class="tree">
-                    <ul data-jstree=\'{ "opened" : true }\'>';
-        foreach ($niveles as $n)
+        $return = array();
+
+        foreach ($niveles as $nivel)
         {
-            $html .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\'>'.$n->getNombre().'</li>';
+            $return[] = array('text' => $nivel->getNombre(),
+                              'state' => array('opened' => true),
+                              'icon' => 'fa fa-angle-double-right');
         }
-        $html .= '</ul>
-                </div>';
-                    
-        $return = array('empresa_id' => $empresa_id,
-                        'html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

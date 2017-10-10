@@ -24,7 +24,7 @@ INSERT INTO admin_usuario (id, login, clave, nombre, apellido, correo_personal, 
 -- Name: idadmin_permiso_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_permiso', 'id'), 5, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_permiso', 'id'), 10, false);
 
 --
 -- Data for Name: admin_permiso; Type: TABLE DATA; Schema: public;

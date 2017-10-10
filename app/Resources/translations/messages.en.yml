@@ -30,6 +30,7 @@ El país es requerido.: Country is required.
 Email de contacto: Contact Email
 Empresa: Company
 Empresas: Companies
+Empresa con estatus inactivo: Company with inactive status
 Error en el servidor: Error on server
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
@@ -53,6 +54,7 @@ No se pudo activar/desactivar este registro.: It could not enable/disable this i
 No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
 Nombre: Name
+Nuevo nivel de la empresa: New level of company
 Nuevo Registro: New Item
 Paso: Step
 País: Country

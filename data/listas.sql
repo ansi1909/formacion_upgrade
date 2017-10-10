@@ -373,7 +373,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (9, 'Configuración de empresas', NULL, 'fa-building', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (10, 'Empresas', '_empresas', 'fa-industry', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (11, 'Asignación de páginas', '_empresasPaginas', NULL, TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (12, 'Niveles por empresa', '_empresasNiveles', fa-list-ol, TRUE, 9);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (12, 'Niveles por empresa', '_empresasNiveles', 'fa-list-ol', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (13, 'Agrupación de páginas', '_empresasGrupo', NULL, TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (14, 'Participantes', '_participantes', NULL, TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (15, 'Mural', '_filtroMuro', NULL, TRUE, NULL);
