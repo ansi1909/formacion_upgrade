@@ -59,11 +59,9 @@
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">{{ 'Configurar'|trans }}</a>
+                                            <a class="dropdown-item" href="{{ path('_permisosRol', { 'rol_id': permiso.rol_id }) }}">{{ 'Configurar'|trans }}</a>
                                         </div>
                                     </div>
-                                    {#<a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data=""><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm" data=""><span class="fa fa-trash"></span></a>#}
                                 </td>
                             </tr>
                         {% endfor %}

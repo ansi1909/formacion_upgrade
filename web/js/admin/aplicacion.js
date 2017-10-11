@@ -51,6 +51,7 @@ $(document).ready(function() {
 				error: function(){
 					$('#alert-error').html($('#error_msg-save').val());
 					$('#div-alert').show();
+					$('#guardar').prop('disabled', false);
 				}
 			});
 		}

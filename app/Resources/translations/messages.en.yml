@@ -31,6 +31,7 @@ Email de contacto: Contact Email
 Empresa: Company
 Empresas: Companies
 Empresa con estatus inactivo: Company with inactive status
+Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
@@ -39,7 +40,6 @@ Finalizar: Finish
 Guardar: Save
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
-Hola mundo...: Hello world...
 Icono: Icon
 Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved sucessfully
@@ -47,6 +47,7 @@ Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies
 Listado de Roles: List of Roles
+Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Mensaje del servidor: Server message
 Niveles: Levels
 Niveles por empresas: Levels by companies
@@ -62,6 +63,8 @@ País: Country
 Permisos de Acceso: Access Permissions
 Permisos por Rol: Permissions by Role
 Presiona el botón finalizar para completar: Press finish button to complete
+Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
+Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Registrar Empresa: Add/Edit Company
 Rol: Role
 Si: Yes
@@ -70,3 +73,4 @@ Si acepta no puede revertir el cambio: If you accept, you can not revert this ch
 Su registro ha sido eliminado: The item has been deleted
 Sub-Aplicación de: Sub-Application of
 Teléfono de contacto: Contact Number
+Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL

@@ -1,3 +1,7 @@
 _permisos:
     path:     /permisos/{app_id}
     defaults: { _controller: LinkBackendBundle:Permiso:index }
+
+_permisosRol:
+    path:     /permisosRol/{rol_id}
+    defaults: { _controller: LinkBackendBundle:Permiso:permisosRol }

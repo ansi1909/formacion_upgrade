@@ -99,4 +99,9 @@ class DefaultController extends Controller
         return $this->render('LinkBackendBundle:Default:index.html.twig');
 
     }
+
+    public function authExceptionAction()
+    {
+        return $this->render('LinkBackendBundle:Default:authException.html.twig');
+    }
 }
