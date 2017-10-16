@@ -363,7 +363,7 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', '
 --
 
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (1, 'Roles de usuarios', '_roles', 'fa-group', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (2, 'Usuarios', '_usuarios', NULL, TRUE, NULL);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (2, 'Usuarios', '_usuarios', 'fa-user', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (3, 'Aplicaciones', '_aplicaciones', 'fa-list-ul', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (4, 'Configuración de permisos', '_permisos', 'fa-key', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (5, 'Configuración de páginas', NULL, 'fa-files-o', TRUE, NULL);

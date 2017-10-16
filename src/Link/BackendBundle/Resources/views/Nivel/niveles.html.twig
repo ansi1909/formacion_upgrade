@@ -6,13 +6,13 @@
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_niveles',{ 'empresa_id': empresa.id }, { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
 <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
-
+<br><br>
 <div class="row align-items-center justify-ccategoríantent-between">
-    <div class="col-12 col-sm-12 page-title">
-        <h3>{{'Niveles' |trans}}</h3>
+    <div class="col text-left">
+        <a href="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') })}}" class="bttn__nr"><span class="fa fa-chevron-left"></span><span class="text__nr">{{ 'Ir al listado'|trans }}</span></a>
     </div>
    <div class="col text-right">
-       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}""><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
    </div>
 </div>
 <div class="row">

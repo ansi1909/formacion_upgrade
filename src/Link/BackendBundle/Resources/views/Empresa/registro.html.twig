@@ -7,7 +7,7 @@
 <br><br>
 <div class="row align-items-center justify-content-between">
     <div class="col text-right ">
-        <a href="{{ path('_empresas', { 'app_id': app.session.get('app_id') })}}" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Ir al listado'|trans }}</span></a>
+        <a href="{{ path('_empresas', { 'app_id': app.session.get('app_id') })}}" class="bttn__nr"><span class="fa fa-chevron-left"></span><span class="text__nr">{{ 'Ir al listado'|trans }}</span></a>
     </div>
 </div>
 <div class="row">
@@ -170,6 +170,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
     <script type="text/javascript">

@@ -5,3 +5,11 @@
 .gradiente {
 	background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%) !important;
 }
+
+.stronger {
+    font-weight: bold;
+}
+
+.sub {
+	padding-left: 50px !important;
+}

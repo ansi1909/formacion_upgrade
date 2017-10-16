@@ -1,0 +1,80 @@
+{% extends '::admin.html.twig' %}
+
+
+{% block body %}
+<br><br>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-right ">
+        <a href="{{ path('_permisos', { 'app_id': app.session.get('app_id') })}}" class="bttn__nr"><span class="fa fa-chevron-left"></span><span class="text__nr">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+</div>
+
+<form role="form" method="POST" id="form" action="{{ path('_permisosRol', { 'rol_id': rol.id }) }}">
+    <div class="row">
+        <div class="col-sm-16">
+            <div class="card">
+                <div class="card-header gradiente">
+                    <h5 class="card-title">{{ 'Permisos de Acceso para el rol'|trans }} {{ rol.nombre }}</h5>
+                </div>
+                <div class="card-block">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>{{ 'Conceder'|trans }}</th>
+                                <th>{{ 'Aplicación'|trans }}</th>
+                                <th>{{ 'Icono'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aplicacion in aplicaciones %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                <tr class="{{ eo }} stronger">
+                                    <td class="center">
+                                        <div class="can-toggle demo-rebrand-2 small">
+                                            <input id="f{{ aplicacion.id }}" class="aplicacion" name="aplicaciones[]" type="checkbox" {% if aplicacion.checked %}checked{% endif %}>
+                                            <label for="f{{ aplicacion.id }}">
+                                                <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{ aplicacion.nombre }}</td>
+                                    <td>
+                                        <p class="fa {{ aplicacion.icono }}"> {{ aplicacion.icono }} </p>
+                                    </td>
+                                </tr>
+                                {% for subaplicacion in aplicacion.subaplicaciones %}
+                                    <tr class="{{ eo }} tr-subaplicacion{{ aplicacion.id }}" {{ subaplicacion.display }}>
+                                        <td class="center">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f{{ subaplicacion.id }}" class="subaplicacion{{ aplicacion.id }} subaplicacion" name="aplicaciones[]" type="checkbox" {% if subaplicacion.checked %}checked{% endif %}>
+                                                <label for="f{{ subaplicacion.id }}">
+                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="sub">{{ subaplicacion.nombre }}</td>
+                                        <td>
+                                            <p class="fa {{ subaplicacion.icono }}"> {{ subaplicacion.icono }} </p>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="submit" id="save" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="Guardar"><span class="fa fa-save"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/permisosRol.js') }}"></script>
+{% endblock %}

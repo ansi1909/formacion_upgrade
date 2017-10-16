@@ -2,6 +2,7 @@ Acción: Action
 Acciones: Actions
 Aceptar: Accept
 Activo: Active
+Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Bienvenida: Welcome
@@ -11,6 +12,7 @@ Cancelar: Cancel
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Categoría: Category
 Categorías: Categories
+Conceder: Grant
 Configurar: Configure
 Confirmar: Confirm
 Datos Básicos: Basic data
@@ -61,6 +63,7 @@ Nuevo Registro: New Item
 Paso: Step
 País: Country
 Permisos de Acceso: Access Permissions
+Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
 Presiona el botón finalizar para completar: Press finish button to complete
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions

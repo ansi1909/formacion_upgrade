@@ -46,9 +46,9 @@ activo boolean,
 telefono_principal varchar(20),
 fecha_creacion timestamp without time zone,
 direccion text,
-bienvenida text
-pais_id character(3) 
- PRIMARY KEY (id)
+bienvenida text,
+pais_id character(3), 
+ PRIMARY KEY (id),
  FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
 
 CREATE TABLE admin_nivel(
