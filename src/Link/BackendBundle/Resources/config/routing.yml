@@ -29,3 +29,7 @@ permisos:
 niveles:
     resource: "@LinkBackendBundle/Resources/config/routing/niveles.yml"
     prefix: /nivel
+
+usuarios:
+    resource: "@LinkBackendBundle/Resources/config/routing/usuarios.yml"
+    prefix: /usuario

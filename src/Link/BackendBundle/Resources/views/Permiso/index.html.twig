@@ -36,7 +36,7 @@
                                 <td>{{ permiso.rol_nombre }}</td>
                                 <td>
                                     {% if permiso.aplicaciones|length > 0 %}
-                                        <div id="tree">
+                                        <div class="tree">
                                             <ul data-jstree='{ "opened" : true }'>
                                                 {% for aplicacion in permiso.aplicaciones %}
                                                     <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ aplicacion.nombre }}

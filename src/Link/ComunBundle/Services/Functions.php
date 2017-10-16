@@ -49,6 +49,23 @@ class Functions
     							   'AdminNoticia' => 'empresa',
     							   'AdminPreferencia' => 'empresa');
     			break;
+    		case 'AdminUsuario':
+    			$entidades = array('AdminRolUsuario' => 'usuario',
+    							   'AdminSesion' => 'usuario',
+    							   'CertiPagina' => 'usuario',
+    							   'CertiPrueba' => 'usuario',
+    							   'CertiPregunta' => 'usuario',
+    							   'CertiOpcion' => 'usuario',
+    							   'CertiRespuesta' => 'usuario',
+    							   'CertiPaginaLog' => 'usuario',
+    							   'CertiPruebaLog' => 'usuario',
+    							   'AdminNoticia' => 'usuario',
+    							   'CertiMuro' => 'usuario',
+    							   'CertiForo' => 'usuario',
+    							   'AdminNotificacion' => 'usuario',
+    							   'AdminNotificacion' => 'usuarioTutor',
+    							   'AdminPreferencia' => 'usuario');
+    			break;
     		default:
     			$entidades = array();
     			break;

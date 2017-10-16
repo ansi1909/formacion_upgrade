@@ -1,5 +1,5 @@
 $(document).ready(function() {
 
-	$('#tree').jstree();
+	$('.tree').jstree();
 
 });

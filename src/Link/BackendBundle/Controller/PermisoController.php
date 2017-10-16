@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Link\ComunBundle\Entity\AdminAplicacion;
+use Link\ComunBundle\Entity\AdminPermiso;
 
 class PermisoController extends Controller
 {
@@ -108,97 +108,45 @@ class PermisoController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
-            /*
-            // Se guardan los servicios seleccionados
-            $total = $request->request->get('total');
-            $servicios = $request->request->get('servicios');
-            $hoy = new \DateTime('now');
+            
+            // Se guardan las aplicaciones seleccionadas
+            $aplicaciones = $request->request->get('aplicaciones');
+            
+            // Se buscan las aplicaciones con acceso para eliminar las que no fueron seleccionadas
+            $permisos = $em->getRepository('LinkComunBundle:AdminPermiso')->findByRol($rol_id);
 
-            // Se buscan los servicio contratados para eliminar los que no fueron seleccionados
-            $scs = $em->getRepository('PsTelemedBundle:ServicioContratado')->findByOrganizacion($organizacion_id);
-
-            foreach ($scs as $sc)
+            foreach ($permisos as $permiso)
             {
-                if (!in_array($sc->getServicio()->getId(), $servicios))
+                if (!in_array($permiso->getAplicacion()->getId(), $aplicaciones))
                 {
-                    $em->remove($sc);
+                    $em->remove($permiso);
                     $em->flush();
                 }
             }
 
-            // Ordenamos el arreglo de servicios de menor a mayor
-            asort($servicios);
+            // Ordenamos el arreglo de aplicaciones de menor a mayor
+            asort($aplicaciones);
 
-            // Contrato de servicios
-            foreach ($servicios as $servicio)
+            foreach ($aplicaciones as $aplicacion_id)
             {
-                $indefinido = $request->request->get('indefinido'.$servicio);
-                $vencimiento = $request->request->get('vencimiento'.$servicio);
-                if ($vencimiento)
-                {
-                    $v_array = explode("/", $vencimiento);
-                    $d = $v_array[0];
-                    $m = $v_array[1];
-                    $a = $v_array[2];
-                    $vencimiento = "$a-$m-$d";
-                }
-
-                $servicio_bd = $em->getRepository('PsTelemedBundle:Servicio')->find($servicio);
-                $servicio_contratado = $em->getRepository('PsTelemedBundle:ServicioContratado')->findOneBy(array('servicio' => $servicio,
-                                                                                                                 'organizacion' => $organizacion_id));
                 
-                if (!$servicio_contratado)
+                $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($aplicacion_id);
+                $permiso = $em->getRepository('LinkComunBundle:AdminPermiso')->findOneBy(array('aplicacion' => $aplicacion_id,
+                                                                                               'rol' => $rol_id));
+                
+                if (!$permiso)
                 {
-                    $servicio_contratado = new ServicioContratado();
-                    $servicio_contratado->setServicio($servicio_bd);
-                    $servicio_contratado->setOrganizacion($organizacion);
-                    $servicio_contratado->setEmision($hoy);
-                }
-
-                if ($indefinido || !$vencimiento)
-                {
-                    $servicio_contratado->setVigenciaIndefinida(true);
-                    $servicio_contratado->setVencimiento(null);
-                }
-                else {
-                    $servicio_contratado->setVigenciaIndefinida(false);
-                    $servicio_contratado->setVencimiento(new \DateTime($vencimiento));
-                }
-
-                $em->persist($servicio_contratado);
-                $em->flush();
-
-                if ($servicio_bd->getSubservicio())
-                {
-                    // Se compara las fechas de vencimiento. Si el subservicio tiene fecha mayor que el servicio se actualiza éste último.
-                    $subservicio_contratado = $em->getRepository('PsTelemedBundle:ServicioContratado')->findOneBy(array('servicio' => $servicio_bd->getSubservicio()->getId(),
-                                                                                                                        'organizacion' => $organizacion_id));
-
-                    if ($subservicio_contratado)
-                    {
-                        if ($indefinido)
-                        {
-                            $subservicio_contratado->setVigenciaIndefinida(true);
-                            $subservicio_contratado->setVencimiento(null);
-                        }
-                        else {
-                            if ($vencimiento && !$subservicio_contratado->getVigenciaIndefinida())
-                            {
-                                if ($vencimiento > $subservicio_contratado->getVencimiento()->format('Y-m-d'))
-                                {
-                                    $subservicio_contratado->setVencimiento(new \DateTime($vencimiento));
-                                }
-                            }
-                        }
-                        $em->persist($subservicio_contratado);
-                        $em->flush();
-                    }
+                    $permiso = new AdminPermiso();
+                    $permiso->setAplicacion($aplicacion);
+                    $permiso->setRol($rol);
+                    $em->persist($permiso);
+                    $em->flush();
                 }
 
             }
 
-            return $this->redirectToRoute('_serviciosContratados', array('organizacion_id' => $organizacion->getId()));
-            */
+            return $this->redirectToRoute('_permisos', array('app_id' => $session->get('app_id')));
+            
         }
         else {
 

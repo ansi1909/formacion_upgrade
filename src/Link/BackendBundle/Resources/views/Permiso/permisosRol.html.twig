@@ -31,7 +31,7 @@
                                 <tr class="{{ eo }} stronger">
                                     <td class="center">
                                         <div class="can-toggle demo-rebrand-2 small">
-                                            <input id="f{{ aplicacion.id }}" class="aplicacion" name="aplicaciones[]" type="checkbox" {% if aplicacion.checked %}checked{% endif %}>
+                                            <input id="f{{ aplicacion.id }}" class="aplicacion" name="aplicaciones[]" value="{{ aplicacion.id }}" type="checkbox" {% if aplicacion.checked %}checked{% endif %}>
                                             <label for="f{{ aplicacion.id }}">
                                                 <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                             </label>
@@ -46,7 +46,7 @@
                                     <tr class="{{ eo }} tr-subaplicacion{{ aplicacion.id }}" {{ subaplicacion.display }}>
                                         <td class="center">
                                             <div class="can-toggle demo-rebrand-2 small">
-                                                <input id="f{{ subaplicacion.id }}" class="subaplicacion{{ aplicacion.id }} subaplicacion" name="aplicaciones[]" type="checkbox" {% if subaplicacion.checked %}checked{% endif %}>
+                                                <input id="f{{ subaplicacion.id }}" class="subaplicacion{{ aplicacion.id }} subaplicacion" name="aplicaciones[]" value="{{ subaplicacion.id }}" type="checkbox" {% if subaplicacion.checked %}checked{% endif %}>
                                                 <label for="f{{ subaplicacion.id }}">
                                                     <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                 </label>
