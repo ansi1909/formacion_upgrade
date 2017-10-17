@@ -31,11 +31,6 @@ class AppController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Roles asignados
-        /*$roles_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRolUsuario')->findBy(array('usuario' => 1,
-                                                                                                              'rol' => 1));
-        return new Response(var_dump($roles_usuario));*/
-
         $aplicaciones = array();
         
         // Todas las aplicaciones principales
