@@ -2,10 +2,6 @@ Link\ComunBundle\Entity\AdminRolUsuario:
     type: entity
     table: admin_rol_usuario
     indexes:
-        rol_usuario_ndx1:
-            columns:
-                - rol_id
-                - usuario_id
         IDX_F967B0D34BAB96C:
             columns:
                 - rol_id

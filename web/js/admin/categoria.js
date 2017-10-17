@@ -53,7 +53,7 @@ $(document).ready(function() {
 				$('#categoria').val(data.nombre);
 			},
 			error: function(){
-				$('alert-error').html($('#error_msg_edit').val());
+				$('#alert-error').html($('#error_msg-edit').val());
 				$('#div-alert').show();
 			}
 		});

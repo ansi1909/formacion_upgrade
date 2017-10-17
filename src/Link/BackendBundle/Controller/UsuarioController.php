@@ -31,19 +31,18 @@ class UsuarioController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        return new Response('por aca');
+        // Roles asignados
+        $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru 
+                                    WHERE ru.usuario = :usuario_id AND ru.rol = :rol_id')
+                    ->setParameters(array('usuario_id' => 1,
+                                          'rol_id' => $rol_id));
+        $roles_usuario = $query->getResult();
+        return new Response(var_dump($roles_usuario));
 
         $qb = $em->createQueryBuilder();
-        $qb->select('u, ru')
-           ->from('LinkComunBundle:AdminRolUsuario', 'ru')
-           ->leftJoin('ru.usuario', 'u');
+        $qb->select('u')
+           ->from('LinkComunBundle:AdminUsuario', 'u');
         
-        if ($rol_id)
-        {
-            $qb->andWhere('ru.rol = :rol_id');
-            $parametros['rol_id'] = $rol_id;
-        }
-
         if ($empresa_id)
         {
             $qb->andWhere('u.empresa = :empresa_id');
@@ -59,7 +58,7 @@ class UsuarioController extends Controller
         $qb->orderBy('u.nombre', 'ASC')
            ->orderBy('u.apellido', 'ASC');
         
-        if ($rol_id || $empresa_id || $nivel_id)
+        if ($empresa_id || $nivel_id)
         {
             $qb->setParameters($parametros);
         }
@@ -67,36 +66,54 @@ class UsuarioController extends Controller
         $query = $qb->getQuery();
         $usuarios_db = $query->getResult();
 
-        return new Response(var_dump($usuarios_db));
-
         $usuarios = array();
+        $incluir = 0;
         
-        /*foreach ($usuarios_db as $usuario)
+        foreach ($usuarios_db as $usuario)
         {
 
-            // Roles asignados
-        	$query = $em->createQuery("SELECT ru FROM LinkComunBundle:AdminRolUsuario ru 
-                                        WHERE ru.usuario = :usuario_id  
-                                        ORDER BY ru.id ASC")
-                        ->setParameter('usuario_id', $usuario->getUsuario()->getId());
-            $roles_usuario = $query->getResult();
+            // Filtro por rol
+            if ($rol_id)
+            {
+                /*$query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
+                                            WHERE ru.usuario = :usuario_id AND ru.rol = :rol_id')
+                            ->setParameters(array('usuario_id' => $usuario->getId(),
+                                                  'rol_id' => $rol_id));
+                $incluir = $query->getSingleScalarResult();*/
 
-            $usuarios[] = array('id' => $usuario->getUsuario()->getId(),
-                                'nombre' => $usuario->getUsuario()->getNombre(),
-                                'apellido' => $usuario->getUsuario()->getApellido(),
-                                'login' => $usuario->getUsuario()->getLogin(),
-                                'activo' => $usuario->getUsuario()->getActivo(),
-                                'empresa' => $usuario->getUsuario()->getEmpresa() ? $usuario->getUsuario()->getEmpresa()->getNombre() : '',
-                                'nivel' => $usuario->getUsuario()->getNivel() ? $usuario->getUsuario()->getNivel()->getNombre() : '',
-                                'roles' => $roles_usuario,
-                                'delete_disabled' => $f->linkEliminar($usuario->getUsuario()->getId(), 'AdminUsuario'));
+            }
+            else {
+                $incluir = 1;
+            }
+
+            if ($incluir)
+            {
+
+                return new Response('usuario_id: '.$usuario->getId());
+                // Roles asignados
+                $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru 
+                                            WHERE ru.usuario = :usuario_id')
+                            ->setParameter('usuario_id', $usuario->getId());
+                $roles_usuario = $query->getResult();
+
+                $usuarios[] = array('id' => $usuario->getId(),
+                                    'nombre' => $usuario->getNombre(),
+                                    'apellido' => $usuario->getApellido(),
+                                    'login' => $usuario->getLogin(),
+                                    'activo' => $usuario->getActivo(),
+                                    'empresa' => $usuario->getEmpresa() ? $usuario->getEmpresa()->getNombre() : '',
+                                    'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
+                                    'roles' => $roles_usuario,
+                                    'delete_disabled' => $f->linkEliminar($usuario->getId(), 'AdminUsuario'));
+
+            }
 
         }
 
-        $roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
-        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        //$roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
+        //$empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
-        return new Response(var_dump($usuarios));*/
+        return new Response(var_dump($usuarios));
 
         return $this->render('LinkBackendBundle:Usuario:index.html.twig', array('usuarios' => $usuarios,
         																	    'roles' =>$roles,

@@ -99,11 +99,6 @@ class CategoriaController extends Controller
                 
         $categoria = $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->find($categoria_id);
 
-        $query = $em->createQuery("SELECT c FROM LinkComunBundle:CertiCategoria c 
-                                    WHERE c.nombre IS NULL 
-                                    ORDER BY c.id ASC");
-
-
         $return = array('nombre' => $categoria->getNombre());
 
         $return = json_encode($return);

@@ -1,6 +1,3 @@
-DROP INDEX IF EXISTS rol_usuario_ndx1;
-CREATE INDEX rol_usuario_ndx1 on admin_rol_usuario (rol_id, usuario_id);
-
 DROP INDEX IF EXISTS sesion_ndx1;
 CREATE INDEX sesion_ndx1 on admin_sesion (usuario_id);
 
