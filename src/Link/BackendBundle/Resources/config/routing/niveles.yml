@@ -23,3 +23,9 @@ _ajaxUploadNivel:
     defaults: { _controller: LinkBackendBundle:Nivel:ajaxUploadNivel }
     requirements:
         method: POST
+        
+_ajaxEditNivel:
+    path:     /ajaxEditNivel
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxEditNivel }
+    requirements:
+        method: GET

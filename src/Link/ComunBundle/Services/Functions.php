@@ -66,6 +66,10 @@ class Functions
     							   'AdminNotificacion' => 'usuarioTutor',
     							   'AdminPreferencia' => 'usuario');
     			break;
+            case 'AdminNivel':
+                $entidades = array('AdminUsuario' => 'nivel',
+                                   'CertiNivelPagina' => 'nivel');
+                break;
     		default:
     			$entidades = array();
     			break;

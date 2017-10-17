@@ -11,6 +11,11 @@ use Link\ComunBundle\Entity\AdminNivel;
 use Link\ComunBundle\Entity\AdminEmpresa; 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class NivelController extends Controller
 {
@@ -94,7 +99,7 @@ class NivelController extends Controller
         
     }
 
-    public function NivelesAction($empresa_id, Request $request)
+    public function nivelesAction($empresa_id, Request $request)
     {
         
         $f = $this->get('funciones');
@@ -124,12 +129,18 @@ class NivelController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
+        $nivel_id = $request->request->get('nivel_id');
         $nombre = $request->request->get('nombre');
         $empresa_id= $request->request->get('empresa_id');
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-    
-        $nivel = new AdminNivel();
+        
+        if($nivel_id){
+            $nivel = $em -> getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+        }
+        else{
+            $nivel = new AdminNivel();
+        }
 
         $nivel->setNombre($nombre);
         $nivel->setEmpresa($empresa);
@@ -143,6 +154,20 @@ class NivelController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+    
+    public function ajaxEditNivelAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $nivel_id = $request->query->get('nivel_id');
+        
+        $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+        
+        $return = array('nombre' => $nivel->getNombre());
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }

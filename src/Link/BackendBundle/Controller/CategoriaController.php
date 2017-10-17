@@ -74,7 +74,7 @@ class CategoriaController extends Controller
             $categoria = $em->getRepository('LinkComunBundle:CertiCategoria')->find($categoria_id);
         }
         else {
-            $categoria = new Certicategoria();
+            $categoria = new CertiCategoria();
         }
 
         $categoria->setNombre($nombre);
