@@ -106,24 +106,4 @@ class CategoriaController extends Controller
         
     }
 
-    public function ajaxDeleteCategoriaAction(Request $request)
-    {
-
-        $em = $this->getDoctrine()->getManager();
-
-        $categoria_id = $request->request->get('id');
-
-        $ok = 1;
-
-        $categoria = $em->getRepository('LinkComunBundle:CertiCategoria')->find($categoria_id);
-        $em->remove($categoria);
-        $em->flush();
-
-        $return = array('ok' => $ok);
-
-        $return = json_encode($return);
-        return new Response($return,200,array('Content-Type' => 'application/json'));
-
-    }
-
 }

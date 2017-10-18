@@ -19,9 +19,3 @@ _ajaxActiveEmpresa:
 _showEmpresa:
     path:     /mostrar/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Empresa:mostrar }
-
-_ajaxDeleteEmpresa:
-    path:     /ajaxDeleteEmpresa
-    defaults: { _controller: LinkBackendBundle:Empresa:ajaxDeleteEmpresa }
-    requirements:
-        _method: POST

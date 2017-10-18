@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var empresa_id = $(this).attr('data');
-		sweetAlertDelete(empresa_id);
+		sweetAlertDelete(empresa_id, 'AdminEmpresa');
 	});
 
 });

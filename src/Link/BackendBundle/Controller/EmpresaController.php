@@ -162,23 +162,4 @@ class EmpresaController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
-
-    public function ajaxDeleteEmpresaAction(Request $request)
-    {
-        
-        $em = $this->getDoctrine()->getManager();
-        
-        $empresa_id = $request->request->get('id');
-        $ok = 1;
-
-        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $em->remove($empresa);
-        $em->flush();
-            
-        $return = array('ok' => $ok);
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
-    }
 }

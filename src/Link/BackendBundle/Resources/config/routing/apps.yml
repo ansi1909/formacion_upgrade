@@ -19,9 +19,3 @@ _ajaxActiveAplicacion:
     defaults: { _controller: LinkBackendBundle:App:ajaxActiveAplicacion }
     requirements:
         _method: POST
-
-_ajaxDeleteAplicacion:
-    path:     /ajaxDeleteAplicacion
-    defaults: { _controller: LinkBackendBundle:App:ajaxDeleteAplicacion }
-    requirements:
-        _method: POST

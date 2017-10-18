@@ -413,9 +413,10 @@
         }
 
         .bttn__bck:hover{
-            width: 12em;
+            width: 10em;
             background: linear-gradient(to right, #0084db 0%, #00558D 100%);
             color: #fff;
+            padding-right: 25px;
         }
 
         .bttn__nxt:hover span.fa{
@@ -672,4 +673,16 @@
         }
 
     /*fin login*/
+
+    .sty__title{
+        color: #fff; 
+        background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+        border-bottom: 3px solid #d5ff00;
+        box-shadow: 5px 5px 10px rgba(51, 51, 51, 0.5);
+    }
+
+    .sty__title .hd__title{
+        text-transform: uppercase; 
+        font-weight: bold;
+    }
 /*Identificadores*/

@@ -38,7 +38,7 @@ $(document).ready(function() {
 						$( "#detail-delete" ).show();
 						$('.delete').click(function(){
 							var app_id = $(this).attr('data');
-							sweetAlertDelete(app_id);
+							sweetAlertDelete(app_id, 'AdminAplicacion');
 						});
 					}
 					$('#form').hide();
@@ -134,7 +134,7 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var app_id = $(this).attr('data');
-		sweetAlertDelete(app_id);
+		sweetAlertDelete(app_id, 'AdminAplicacion');
 	});
 
 });

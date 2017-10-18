@@ -63,7 +63,7 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var rol_id = $(this).attr('data');
-		sweetAlertDelete(rol_id);
+		sweetAlertDelete(rol_id, 'AdminRol');
 	});
 
 });
@@ -98,7 +98,7 @@ function saveRol()
 						$('.delete').click(function()
 						{
 							var rol_id= $(this).attr('data');
-							sweetAlertDelete(rol_id);
+							sweetAlertDelete(rol_id, 'AdminRol');
 						});
 					}
 					$('#form').hide();

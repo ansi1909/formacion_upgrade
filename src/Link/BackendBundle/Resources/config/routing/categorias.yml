@@ -13,9 +13,3 @@ _ajaxEditCategoria:
     defaults: { _controller: LinkBackendBundle:Categoria:ajaxEditCategoria }
     requirements:
         method: GET
-
-_ajaxDeleteCategoria:
-    path:     /ajaxDeleteCategoria
-    defaults: { _controller: LinkBackendBundle:Categoria:ajaxDeleteCategoria }
-    requirements:
-        method: POST

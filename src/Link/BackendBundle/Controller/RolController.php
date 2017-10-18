@@ -117,24 +117,4 @@ class RolController extends Controller
         
     }
 
-   public function ajaxDeleteRolAction(Request $request)
-   {
-
-        $em = $this->getDoctrine()->getManager();
-
-        $rol_id = $request->request->get('id');
-
-        $ok = 1;
-
-        $rol = $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
-        $em->remove($rol);
-        $em->flush();
-
-        $return = array('ok' => $ok);
-
-        $return = json_encode($return);
-        return new Response($return,200,array('Content-Type' => 'application/json'));
-
-   }
-
 }

@@ -17,9 +17,3 @@ _ajaxEditRol:
     defaults: { _controller: LinkBackendBundle:Rol:ajaxEditRol }
     requirements:
         method: GET
-
-_ajaxDeleteRol:
-    path:   /ajaxDeleteRol
-    defaults: {_controller: LinkBackendBundle:Rol:ajaxDeleteRol}
-    requirements:
-        _method: POST

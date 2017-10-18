@@ -6,7 +6,6 @@
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_aplicaciones', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActiveAplicacion') }}">
-<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteAplicacion') }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
 <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
 <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
@@ -40,13 +39,13 @@
                     </div>
                 </div>
                 <table class="table ">
-                    <thead>
+                    <thead class="sty__title">
                         <tr>
-                            <th>{{ 'Nombre'|trans }}</th>
-                            <th>Url</th>
-                            <th>{{ 'Icono'|trans }}</th>
-                            <th>{{ 'Activo'|trans }}</th>
-                            <th>{{ 'Acciones'|trans }}</th>
+                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                            <th class="hd__title">Url</th>
+                            <th class="hd__title">{{ 'Icono'|trans }}</th>
+                            <th class="hd__title">{{ 'Activo'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>

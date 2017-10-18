@@ -61,7 +61,7 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var categoria_id = $(this).attr('data');
-		sweetAlertDelete(categoria_id);
+        sweetAlertDelete(categoria_id,'CertiCategoria');
 	});
 
 });
@@ -96,7 +96,7 @@ function saveCategoria()
 					$('.delete').click(function()
 					{
 						var categoria_id= $(this).attr('data');
-						sweetAlertDelete(categoria_id);
+                        sweetAlertDelete(categoria_id,'CertiCategoria');
 					});
 				}
 				$('#form').hide();

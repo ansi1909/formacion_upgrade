@@ -2134,7 +2134,7 @@ pre code {
 
 .table thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #eceeef;
+  border-bottom: 3px solid #eceeef;
 }
 
 .table tbody + tbody {
@@ -3135,7 +3135,7 @@ tbody.collapse.show {
 
 .dropdown-item {
   display: block;
-  width: 75%;
+  width: 17rem;
   padding: 3px 1.5rem;
   clear: both;
   font-weight: normal;

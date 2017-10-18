@@ -3,10 +3,9 @@
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditRol') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_roles', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteRol') }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
 <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
-
+<br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>Roles</h3>
@@ -23,11 +22,11 @@
             </div>
             <div class="card-block">
                 <table class="table">
-                    <thead>
+                    <thead class="sty__title">
                         <tr>
-                            <th>Rol</th>
-                            <th>{{'Descripción'|trans }}</th>
-                            <th>{{'Acciones'|trans }}</th>
+                            <th class="hd__title">Rol</th>
+                            <th class="hd__title">{{'Descripción'|trans }}</th>
+                            <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>

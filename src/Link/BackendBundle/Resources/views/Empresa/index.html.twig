@@ -2,7 +2,6 @@
 {% block body %}
 <br>
 <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActiveEmpresa') }}">
-<input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteEmpresa') }}">
 <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
 
 <div class="row align-items-center justify-content-between">
@@ -10,7 +9,7 @@
         <h3>{{ 'Empresas'|trans }}</h3>
     </div>
     <div class="col text-right ">
-        <a href="{{ path('_registro')}}" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></a>
+        <a href="{{ path('_registro')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></a>
     </div>
 </div>
 <div class="row">
@@ -34,13 +33,13 @@
                     </div>
                 </div>
          		<table class="table " id="dt">
-          			<thead>
+          			<thead class="sty__title">
                     	<tr>
-                        	<th>{{ 'Empresa'|trans }}</th>
-                            <th>{{ 'País'|trans }}</th>
-                        	<th>{{ 'Fecha Creación'|trans }}</th>
-                        	<th>{{ 'Activo'|trans }}</th>
-                        	<th>{{ 'Acciones'|trans }}</th>
+                        	<th class="hd__title">{{ 'Empresa'|trans }}</th>
+                            <th class="hd__title">{{ 'País'|trans }}</th>
+                        	<th class="hd__title">{{ 'Fecha Creación'|trans }}</th>
+                        	<th class="hd__title">{{ 'Activo'|trans }}</th>
+                        	<th class="hd__title">{{ 'Acciones'|trans }}</th>
                     	</tr>
                 	</thead>
                 	<tbody>
