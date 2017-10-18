@@ -19,6 +19,7 @@ Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
 Datos de la categoría: Category data
 Datos de la empresa: Company Data
+Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 Descripción: Description
@@ -26,6 +27,7 @@ Descripción: Description
 Editar: Edit
 Eliminado: Deleted
 Eliminar: Remove
+El nivel ha sido almacenado con éxito: Level has been saved successfully
 El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.
 El nombre de la empresa es requerido.: Company name is required.
 El país es requerido.: Country is required.
@@ -44,7 +46,8 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Icono: Icon
 Ir al listado: Go to list
-La aplicación ha sido almacenada con éxito: Application has been saved sucessfully
+La aplicación ha sido almacenada con éxito: Application has been saved successfully
+La categoría ha sido almacenada con éxito: Category has been saved successfully
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies

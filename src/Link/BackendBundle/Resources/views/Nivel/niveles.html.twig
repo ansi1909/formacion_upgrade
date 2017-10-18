@@ -2,8 +2,7 @@
 
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditNivel') }}">
-<input type="hidden" id="url_delete" name="url_delete" value="{# path('_ajaxDeleteCategoria') #}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_niveles',{ 'empresa_id': empresa.id }, { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_niveles',{ 'empresa_id': empresa.id }) }}">
 <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
 <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
 <br><br>
@@ -51,7 +50,7 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del nivel'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del nivel de la empresa'|trans}} <span id="header-empresa">{{ empresa.nombre }}</span></h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
@@ -66,7 +65,7 @@
         </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
-        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El nivel ha sido almacenado con éxito'|trans }}. 
     </div>
     <div class="card" id="detail" style="display:none;">
         <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
@@ -75,6 +74,10 @@
         <div class="card-block">
             <div class="container">
                 <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Empresa'|trans }}:</h5>
+                        <p id="p-empresa">Lorem Ipsum</p>
+                    </div>
                     <div class="col-sm-16 col-md-16 show__details">
                         <h5>{{ 'Nivel'|trans }}:</h5>
                         <p id="p-nombre">Lorem Ipsum</p>
@@ -104,13 +107,13 @@
             rules: {
                 'nombre': {
                     required: true,
-                    minlength: 6
+                    minlength: 3
                 }
             },
             messages: {
                 'nombre': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 6 caracteres.'|trans }}"
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
                 }
             }
         });

@@ -104,4 +104,25 @@ class DefaultController extends Controller
     {
         return $this->render('LinkBackendBundle:Default:authException.html.twig');
     }
+
+    public function ajaxDeleteAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->request->get('id');
+        $entity = $request->request->get('entity');
+
+        $ok = 1;
+
+        $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
+        $em->remove($object);
+        $em->flush();
+
+        $return = array('ok' => $ok);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
+
+    }
 }

@@ -46,7 +46,7 @@
                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">{{ 'Configurar'|trans }}</a>
-                                                <a class="dropdown-item" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
+                                                <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
                                             </div>
                                         </div>
                                     {% else %}
@@ -79,31 +79,6 @@
             <input type="text" class="form-control" id="nombre" name="nombre" value="">
         </div>
     </form>
-    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
-        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
-    </div>
-    <div class="card" id="detail" style="display:none;">
-        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
-            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
-        </div>
-        <div class="card-block">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{ 'Nivel'|trans }}:</h5>
-                        <p id="p-nombre">Lorem Ipsum</p>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="col-sm-16 col-md-16 text-right">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}
 
@@ -111,7 +86,7 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/niveles.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/empresasNiveles.js') }}"></script>
     <script type="text/javascript">
 
         $("#form").validate({

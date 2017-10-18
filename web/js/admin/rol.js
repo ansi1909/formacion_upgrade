@@ -3,18 +3,18 @@ $(document).ready(function() {
 	$('#div-active-alert').hide();
 
 	$('.new').click(function(){
-			$('label.error').hide();
-			$('#form').show();
-			$('#alert-success').hide();
-			$('#detail').hide();
-			$('#aceptar').hide();
-			$('#guardar').show();
-			$('#cancelar').show();
-			$('#rol_id').val("");
-			$('#rol').val("");
-			$('#descripcion').val("");
-			$('#div-alert').hide();
-			});
+		$('label.error').hide();
+		$('#form').show();
+		$('#alert-success').hide();
+		$('#detail').hide();
+		$('#aceptar').hide();
+		$('#guardar').show();
+		$('#cancelar').show();
+		$('#rol_id').val("");
+		$('#rol').val("");
+		$('#descripcion').val("");
+		$('#div-alert').hide();
+	});
 
 
 	$('#guardar').click(function(){

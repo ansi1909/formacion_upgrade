@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNivel; 
-use Link\ComunBundle\Entity\AdminEmpresa; 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -55,7 +54,7 @@ class NivelController extends Controller
         $f = $this->get('funciones');
 
         $nombre = $request->request->get('nombre');
-        $empresa_id= $request->request->get('empresa_id');
+        $empresa_id = $request->request->get('empresa_id');
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
     
@@ -114,9 +113,9 @@ class NivelController extends Controller
 
         foreach ( $niveles as $nivel )
         {
-            $nivelesdb[]= array('id'=>$nivel->getId(),
-                                'nombre'=>$nivel->getNombre(),
-                                'delete_disabled'=>$f->linkEliminar($nivel->getId(),'AdminNivel'));
+            $nivelesdb[] = array('id'=>$nivel->getId(),
+                                 'nombre'=>$nivel->getNombre(),
+                                 'delete_disabled' => $f->linkEliminar($nivel->getId(),'AdminNivel'));
         }
 
         return $this->render('LinkBackendBundle:Nivel:niveles.html.twig', array ('niveles' => $nivelesdb,
@@ -131,14 +130,14 @@ class NivelController extends Controller
 
         $nivel_id = $request->request->get('nivel_id');
         $nombre = $request->request->get('nombre');
-        $empresa_id= $request->request->get('empresa_id');
+        $empresa_id = $request->request->get('empresa_id');
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         
-        if($nivel_id){
+        if ($nivel_id){
             $nivel = $em -> getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
         }
-        else{
+        else {
             $nivel = new AdminNivel();
         }
 
@@ -150,6 +149,7 @@ class NivelController extends Controller
 
         $return = array('id' => $nivel->getId(),
                         'nombre' => $nivel->getNombre(),
+                        'empresa' => $empresa->getNombre(),
                         'delete_disabled' => $f->linkEliminar($nivel->getId(),'AdminNivel'));
 
         $return = json_encode($return);

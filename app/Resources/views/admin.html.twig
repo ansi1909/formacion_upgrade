@@ -32,6 +32,7 @@
         {% endblock %}
     </head>
     <body class="rounded">
+        <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDelete') }}">
         {# Cabecera del area de trabajo #}
         <header class="navbar-fixed">
             <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
@@ -220,7 +221,7 @@
             <script src="{{ asset('js/comun.js') }}" type="text/javascript"></script>
 
             <script type="text/javascript">
-                function sweetAlertDelete(id)
+                function sweetAlertDelete(id, entity)
                 {
                     swal({
                         title: "{{ '¿Desea eliminar el registro?'|trans }}",
@@ -239,7 +240,7 @@
                             type: "POST",
                             url: $('#url_delete').val(),
                             async: true,
-                            data: { id: id },
+                            data: { id: id, entity: entity },
                             dataType: "json",
                             success: function(data) {
                                 swal(

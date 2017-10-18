@@ -106,7 +106,7 @@ class CategoriaController extends Controller
         
     }
 
-   public function ajaxDeleteCategoriaAction(Request $request)
+    public function ajaxDeleteCategoriaAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();

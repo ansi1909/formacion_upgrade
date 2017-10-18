@@ -19,6 +19,7 @@ Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
 Datos de la categoría: Datos de la categoría
 Datos de la empresa: Datos de la empresa
+Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
 Descripción: Descripción
@@ -26,6 +27,7 @@ Descripción: Descripción
 Editar: Editar
 Eliminado: Eliminado
 Eliminar: Eliminar
+El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
 El nombre de la empresa es requerido.: El nombre de la empresa es requerido.
 El país es requerido.: El país es requerido.
@@ -45,6 +47,7 @@ Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error e
 Icono: Icono
 Ir al listado: Ir al listado
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
+La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas

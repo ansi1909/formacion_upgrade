@@ -6,6 +6,12 @@ _authException:
     path:     /authException
     defaults: { _controller: LinkBackendBundle:Default:authException }
 
+_ajaxDelete:
+    path:     /ajaxDelete
+    defaults: { _controller: LinkBackendBundle:Default:ajaxDelete }
+    requirements:
+        method: POST
+
 roles:
     resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
     prefix: /rol
