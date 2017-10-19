@@ -125,4 +125,25 @@ class DefaultController extends Controller
         return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
+
+    public function ajaxActiveAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $id = $request->request->get('id');
+        $entity = $request->request->get('entity');
+        $checked = $request->request->get('checked');
+
+        $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
+        $object->setActivo($checked ? true : false);
+        $em->persist($object);
+        $em->flush();
+                    
+        $return = array('id' => $object->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
 }

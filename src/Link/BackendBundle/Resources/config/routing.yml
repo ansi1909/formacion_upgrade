@@ -12,6 +12,12 @@ _ajaxDelete:
     requirements:
         method: POST
 
+_ajaxActive:
+    path:     /ajaxActive
+    defaults: { _controller: LinkBackendBundle:Default:ajaxActive }
+    requirements:
+        _method: POST
+
 roles:
     resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
     prefix: /rol

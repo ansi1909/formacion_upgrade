@@ -120,7 +120,7 @@ $(document).ready(function() {
 			type: "POST",
 			url: $('#url_active').val(),
 			async: true,
-			data: { app_id: app_id, checked: checked },
+			data: { id: app_id, entity: 'AdminAplicacion', checked: checked },
 			dataType: "json",
 			success: function(data) {
 				console.log('Activación/Desactivación realizada. Id '+data.id);

@@ -2,6 +2,7 @@ Acción: Action
 Acciones: Actions
 Aceptar: Accept
 Activo: Active
+Apellido: Last Name
 Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
@@ -54,6 +55,7 @@ Listado de Empresas: List of Companies
 Listado de Roles: List of Roles
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Mensaje del servidor: Server message
+Nivel: Level
 Niveles: Levels
 Niveles por empresas: Levels by companies
 No se permiten espacios en blanco.: Blank spaces are not allowed.
@@ -73,6 +75,7 @@ Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You ca
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Registrar Empresa: Add/Edit Company
 Rol: Role
+Roles: Roles
 Si: Yes
 Siguiente: Next
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change

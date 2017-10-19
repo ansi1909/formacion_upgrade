@@ -3,8 +3,6 @@
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditNivel') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_niveles',{ 'empresa_id': empresa.id }) }}">
-<input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
-<input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
 <br><br>
 <div class="row align-items-center justify-ccategoríantent-between">
     <div class="col text-left">

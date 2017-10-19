@@ -13,3 +13,8 @@
 .sub {
 	padding-left: 50px !important;
 }
+
+.tree a {
+    color: #666666;
+    text-decoration: none;
+}

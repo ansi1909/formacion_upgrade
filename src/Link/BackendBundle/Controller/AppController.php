@@ -163,26 +163,6 @@ class AppController extends Controller
         
     }
 
-    public function ajaxActiveAplicacionAction(Request $request)
-    {
-        
-        $em = $this->getDoctrine()->getManager();
-        
-        $app_id = $request->request->get('app_id');
-        $checked = $request->request->get('checked');
-
-        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
-        $aplicacion->setActivo($checked ? true : false);
-        $em->persist($aplicacion);
-        $em->flush();
-                    
-        $return = array('id' => $aplicacion->getId());
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
-    }
-
     public function ajaxDeleteAplicacionAction(Request $request)
     {
         

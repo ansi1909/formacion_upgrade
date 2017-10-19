@@ -1,3 +1,7 @@
 _usuarios:
     path:     /usuarios/{app_id}/{rol_id}/{empresa_id}/{nivel_id}
     defaults: { _controller: LinkBackendBundle:Usuario:index, rol_id: 1, empresa_id: 0, nivel_id: 0 }
+
+_usuario:
+    path:     /usuario/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:usuario, usuario_id: 0 }

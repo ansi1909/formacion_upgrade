@@ -2,6 +2,7 @@ Acción: Acción
 Acciones: Acciones
 Aceptar: Aceptar
 Activo: Activo
+Apellido: Apellido
 Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
@@ -54,6 +55,7 @@ Listado de Empresas: Listado de Empresas
 Listado de Roles: Listado de Roles
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Mensaje del servidor: Mensaje del servidor
+Nivel: Nivel
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
@@ -73,6 +75,7 @@ Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede 
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
 Registrar Empresa: Registrar Empresa
 Rol: Rol
+Roles: Roles
 Si: Si
 Siguiente: Siguiente
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio

@@ -5,10 +5,6 @@
 <input type="hidden" id="aplicaciones_str" name="aplicaciones_str" value="{{ aplicaciones_str }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_aplicaciones', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActiveAplicacion') }}">
-<input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
-<input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
-<input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
 
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">

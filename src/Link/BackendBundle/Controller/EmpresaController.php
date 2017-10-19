@@ -143,23 +143,4 @@ class EmpresaController extends Controller
 
     }
 
-    public function ajaxActiveEmpresaAction(Request $request)
-    {
-        
-        $em = $this->getDoctrine()->getManager();
-        
-        $empresa_id = $request->request->get('app_id');
-        $checked = $request->request->get('checked');
-
-        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $empresa->setActivo($checked ? true : false);
-        $em->persist($empresa);
-        $em->flush();
-                    
-        $return = array('id' => $empresa->getId());
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
-    }
 }

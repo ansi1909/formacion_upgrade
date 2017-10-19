@@ -1,16 +1,18 @@
 $(document).ready(function() {
-	
+
+	$('.tree').jstree();
+
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
 		var id_arr = id.split('f');
-		var app_id = id_arr[1];
+		var usuario_id = id_arr[1];
 		$('#div-alert').hide();
 		$.ajax({
 			type: "POST",
 			url: $('#url_active').val(),
 			async: true,
-			data: { id: app_id, entity: 'AdminEmpresa', checked: checked },
+			data: { id: usuario_id, entity: 'AdminUsuario', checked: checked },
 			dataType: "json",
 			success: function(data) {
 				console.log('Activación/Desactivación realizada. Id '+data.id);
@@ -20,11 +22,6 @@ $(document).ready(function() {
 				$('#div-active-alert').show();
 			}
 		});
-	});
-
-	$('.delete').click(function(){
-		var empresa_id = $(this).attr('data');
-		sweetAlertDelete(empresa_id, 'AdminEmpresa');
 	});
 
 });

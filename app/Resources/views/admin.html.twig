@@ -33,6 +33,10 @@
     </head>
     <body class="rounded">
         <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDelete') }}">
+        <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActive') }}">
+        <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
+        <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
+        <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
         {# Cabecera del area de trabajo #}
         <header class="navbar-fixed">
             <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">

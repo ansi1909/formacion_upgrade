@@ -31,14 +31,6 @@ class UsuarioController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Roles asignados
-        $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru 
-                                    WHERE ru.usuario = :usuario_id AND ru.rol = :rol_id')
-                    ->setParameters(array('usuario_id' => 1,
-                                          'rol_id' => $rol_id));
-        $roles_usuario = $query->getResult();
-        return new Response(var_dump($roles_usuario));
-
         $qb = $em->createQueryBuilder();
         $qb->select('u')
            ->from('LinkComunBundle:AdminUsuario', 'u');
@@ -75,11 +67,11 @@ class UsuarioController extends Controller
             // Filtro por rol
             if ($rol_id)
             {
-                /*$query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
+                $query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
                                             WHERE ru.usuario = :usuario_id AND ru.rol = :rol_id')
                             ->setParameters(array('usuario_id' => $usuario->getId(),
                                                   'rol_id' => $rol_id));
-                $incluir = $query->getSingleScalarResult();*/
+                $incluir = $query->getSingleScalarResult();
 
             }
             else {
@@ -89,7 +81,6 @@ class UsuarioController extends Controller
             if ($incluir)
             {
 
-                return new Response('usuario_id: '.$usuario->getId());
                 // Roles asignados
                 $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru 
                                             WHERE ru.usuario = :usuario_id')
@@ -110,10 +101,8 @@ class UsuarioController extends Controller
 
         }
 
-        //$roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
-        //$empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-
-        return new Response(var_dump($usuarios));
+        $roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
+        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
         return $this->render('LinkBackendBundle:Usuario:index.html.twig', array('usuarios' => $usuarios,
         																	    'roles' =>$roles,
