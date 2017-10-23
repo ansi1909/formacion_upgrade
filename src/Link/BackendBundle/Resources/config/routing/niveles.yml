@@ -29,3 +29,9 @@ _ajaxEditNivel:
     defaults: { _controller: LinkBackendBundle:Nivel:ajaxEditNivel }
     requirements:
         method: GET
+
+_ajaxNiveles:
+    path:     /ajaxNiveles
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxNiveles }
+    requirements:
+        method: GET

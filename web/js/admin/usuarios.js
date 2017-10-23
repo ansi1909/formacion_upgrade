@@ -7,7 +7,7 @@ $(document).ready(function() {
 		var id = $(this).attr('id');
 		var id_arr = id.split('f');
 		var usuario_id = id_arr[1];
-		$('#div-alert').hide();
+		$('#div-active-alert').hide();
 		$.ajax({
 			type: "POST",
 			url: $('#url_active').val(),
@@ -19,6 +19,25 @@ $(document).ready(function() {
 			},
 			error: function(){
 				$('#active-error').html($('#error_msg-active').val());
+				$('#div-active-alert').show();
+			}
+		});
+	});
+
+	$('#empresa_id').change(function(){
+		var empresa_id = $(this).val();
+		$('#div-active-alert').hide();
+		$.ajax({
+			type: "GET",
+			url: $('#url_niveles').val(),
+			async: true,
+			data: { empresa_id: empresa_id },
+			dataType: "json",
+			success: function(data) {
+				$('#nivel_id').html(data.options);
+			},
+			error: function(){
+				$('#active-error').html($('#error_msg-filter').val());
 				$('#div-active-alert').show();
 			}
 		});

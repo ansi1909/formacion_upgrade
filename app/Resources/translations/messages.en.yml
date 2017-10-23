@@ -9,6 +9,7 @@ Aplicaciones a la que tiene acceso: Applications it has access to
 Bienvenida: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
+Buscar: Search
 Cancelar: Cancel
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Categoría: Category
@@ -41,6 +42,7 @@ Error en el servidor: Error on server
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Fecha Creación: Creation Date
+Filtrar usuarios: Filter users
 Finalizar: Finish
 Guardar: Save
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
@@ -62,6 +64,7 @@ No se permiten espacios en blanco.: Blank spaces are not allowed.
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.
 No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
+No se pudo filtrar el listado.: It could not filter the list.
 Nombre: Name
 Nuevo nivel de la empresa: New level of company
 Nuevo Registro: New Item
@@ -76,6 +79,7 @@ Puede contactar con el Administrador del Sistema para otorgarle permisos de acce
 Registrar Empresa: Add/Edit Company
 Rol: Role
 Roles: Roles
+Seleccione la empresa para mostrar los niveles: Select the company to show its levels
 Si: Yes
 Siguiente: Next
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change

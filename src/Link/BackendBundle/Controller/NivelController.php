@@ -170,4 +170,25 @@ class NivelController extends Controller
         
     }
 
+    public function ajaxNivelesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        
+        $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
+                                                                                             array('nombre' => 'ASC'));
+
+        $options = '<option value="0"></option>';
+        foreach ($niveles as $nivel)
+        {
+            $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+        }
+        
+        $return = array('options' => $options);
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
 }

@@ -1,13 +1,8 @@
 parameters:
-    database_host: 'chicha'
-    database_driver: 'limonada'
-    database_path: null
-    database_port: '5432'
-    database_name: 'formacion'
-    database_user: 'desa'
-    database_password: 'desa1234'
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    rol:
+        administrador: 1
+        participante: 2
+        tutor: 3
+        reporte: 4
+        empresa: 5
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

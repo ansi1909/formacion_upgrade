@@ -6,11 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminAplicacion;
 
 class UsuarioController extends Controller
 {
-    public function indexAction($app_id, $rol_id, $empresa_id, $nivel_id, Request $request)
+    public function indexAction($app_id, Request $request)
     {
 
     	$session = new Session();
@@ -30,6 +31,26 @@ class UsuarioController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
+        $niveles = array();
+
+        if ($request->getMethod() == 'POST')
+        {
+            $rol_id = $request->request->get('rol_id');
+            $empresa_id = $request->request->get('empresa_id');
+            $nivel_id = $request->request->get('nivel_id');
+            $nombre = trim(strtolower($request->request->get('nombre')));
+            $apellido = trim(strtolower($request->request->get('apellido')));
+            $login = trim(strtolower($request->request->get('login')));
+        }
+        else {
+            $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $rol_id = $values['parameters']['rol']['administrador'];
+            $empresa_id = 0;
+            $nivel_id = 0;
+            $nombre = '';
+            $apellido = '';
+            $login = '';
+        }
 
         $qb = $em->createQueryBuilder();
         $qb->select('u')
@@ -37,8 +58,14 @@ class UsuarioController extends Controller
         
         if ($empresa_id)
         {
+
             $qb->andWhere('u.empresa = :empresa_id');
             $parametros['empresa_id'] = $empresa_id;
+
+            // Niveles de esta empresa
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
+                                                                                                 array('nombre' => 'ASC'));
+
         }
 
         if ($nivel_id)
@@ -46,11 +73,26 @@ class UsuarioController extends Controller
             $qb->andWhere('u.nivel = :nivel_id');
             $parametros['nivel_id'] = $nivel_id;
         }
+
+        if ($nombre != ''){
+            $qb->andWhere('LOWER(u.nombre) LIKE :nombre');
+            $parametros['nombre'] = '%'.$nombre.'%';
+        }
+
+        if ($apellido != ''){
+            $qb->andWhere('LOWER(u.apellido) LIKE :apellido');
+            $parametros['apellido'] = '%'.$apellido.'%';
+        }
+
+        if ($login != ''){
+            $qb->andWhere('LOWER(u.login) LIKE :login');
+            $parametros['login'] = '%'.$login.'%';
+        }
         
         $qb->orderBy('u.nombre', 'ASC')
            ->orderBy('u.apellido', 'ASC');
         
-        if ($empresa_id || $nivel_id)
+        if ($empresa_id || $nivel_id || $nombre || $apellido || $login)
         {
             $qb->setParameters($parametros);
         }
@@ -105,8 +147,15 @@ class UsuarioController extends Controller
         $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
         return $this->render('LinkBackendBundle:Usuario:index.html.twig', array('usuarios' => $usuarios,
-        																	    'roles' =>$roles,
-                                                                                'empresas' => $empresas));
+        																	    'roles' => $roles,
+                                                                                'rol_id' => $rol_id,
+                                                                                'empresas' => $empresas,
+                                                                                'empresa_id' => $empresa_id,
+                                                                                'niveles' => $niveles,
+                                                                                'nivel_id' => $nivel_id,
+                                                                                'nombre' => $nombre,
+                                                                                'apellido' => $apellido,
+                                                                                'login' => $login));
 
     }
 

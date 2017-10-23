@@ -9,6 +9,7 @@ Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Bienvenida: Bienvenida
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
+Buscar: Buscar
 Cancelar: Cancelar
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
 Categoría: Categoría
@@ -41,6 +42,7 @@ Error en el servidor: Error en el servidor
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Fecha Creación: Fecha Creación
+Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
 Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
@@ -62,6 +64,7 @@ No se permiten espacios en blanco.: No se permiten espacios en blanco.
 No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.
 No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
+No se pudo filtrar el listado.: No se pudo filtrar el listado.
 Nombre: Nombre
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo Registro: Nuevo Registro
@@ -76,6 +79,7 @@ Puede contactar con el Administrador del Sistema para otorgarle permisos de acce
 Registrar Empresa: Registrar Empresa
 Rol: Rol
 Roles: Roles
+Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostrar los niveles
 Si: Si
 Siguiente: Siguiente
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
