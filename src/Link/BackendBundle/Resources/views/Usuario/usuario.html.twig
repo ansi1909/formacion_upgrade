@@ -30,13 +30,13 @@
                             <div class="stepwizard-step col">
                                 <a href="#det1" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">2</span>
-                                    <p>{{ 'Perfil Empresarial'|trans }}</small></p>
+                                    <p>{{ 'Perfil Empresarial'|trans }}</p>
                                 </a>
                             </div>
                             <div class="stepwizard-step col">
                                 <a href="#det2" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">3</span>
-                                    <p>{{ 'Roles'|trans }}</small></p>
+                                    <p>{{ 'Roles'|trans }}</p>
                                 </a>
                             </div>
                 		</div>
@@ -51,97 +51,99 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                	<div class="col-sm-16 col-md-8 col-lg-6">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-sm-8 col-md-8 col-lg-8">
-                                                    <div class="input-group">
-                                                        <input class="form-control form_sty1" type="text" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
-                                                        <span class="input-group-addon">
-                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto" class="btn iframe-btn" type="button">
-                                                                <span class="fa fa-photo"></span>
-                                                            </a>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-8 col-md-8 col-lg-8">
-                                                    <div class="row">
-                                                        <label for="nombre" class="col-2 col-form-label">{{ 'Nombre'|trans }}</label>
-                                                        <div class="col-14">
-                                                            <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="{{ usuario.nombre }}">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <label for="apellido" class="col-2 col-form-label">{{ 'Apellido'|trans }}</label>
-                                                        <div class="col-14">
-                                                            <input type="text" class="form-control form_sty1" name="apellido" id="apellido" value="{{ usuario.apellido }}">
-                                                            <span class="fa fa-user"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
+                                            <span class="input-group-addon">
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto" class="btn iframe-btn" type="button">
+                                                    <span class="fa fa-photo"></span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <div class="row">
+                                            <label for="nombre" class="col-sm-2 col-md-2 col-lg-2 offset-sm-4 offset-md-4 offset-lg-4 col-form-label">{{ 'Nombre'|trans }}</label>
+                                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                                <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="{{ usuario.nombre }}">
+                                                <span class="fa fa-user-circle"></span>
                                             </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <div class="col-sm-5 col-md-5 col-lg-5">
-                                                        <label for="login" class="col-2 col-form-label">{{ 'Usuario'|trans }}</label>
-                                                        <div class="col-14">
-                                                            {% set readonly = usuario.id ? 'readonly="readonly"' : '' %}
-                                                            <input type="text" class="form-control form_sty1" name="login" id="login" value="{{ usuario.login }}" {{ readonly }}>
-                                                            <span class="fa fa-user-circle"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-5 col-md-5 col-lg-5">
-                                                        <label for="clave" class="col-2 col-form-label">{{ 'Contraseña'|trans }}</label>
-                                                        <div class="col-14">
-                                                            {% set disabled = usuario.id ? 'disabled="disabled"' : '' %}
-                                                            <input type="password" class="form-control form_sty1" name="clave" id="clave" {{ disabled }}>
-                                                            <span class="fa fa-key"></span>
-                                                        </div>
-                                                    </div>
-                                                    {% if not usuario.id %}
-                                                        <div class="col-sm-6 col-md-6 col-lg-6">
-                                                            <label class="custom-control custom-checkbox">
-                                                                <input type="checkbox" class="custom-control-input" id="cambiar" name="cambiar" value="1">
-                                                                <span class="custom-control-indicator"></span> <span class="custom-control-description">{{ 'Cambiar contraseña'|trans }}</span> 
-                                                            </label>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <label for="apellido" class="col-sm-2 col-md-2 col-lg-2 offset-sm-4 offset-md-4 offset-lg-4 col-form-label">{{ 'Apellido'|trans }}</label>
+                                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                                <input type="text" class="form-control form_sty1" name="apellido" id="apellido" value="{{ usuario.apellido }}">
+                                                <span class="fa fa-user-circle-o"></span>
                                             </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <div class="col-sm-5 col-md-5 col-lg-5">
-                                                        <label for="correo_personal" class="col-2 col-form-label">{{ 'Correo personal'|trans }}</label>
-                                                        <div class="col-14">
-                                                            <input type="email" class="form-control form_sty1" name="correo_personal" id="correo_personal" value="{{ usuario.correoPersonal }}">
-                                                            <span class="fa fa-envelope"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-5 col-md-5 col-lg-5">
-                                                        <label for="fecha_nacimiento" class="col-2 col-form-label">{{ 'Fecha de nacimiento'|trans }}</label>
-                                                        <div class="col-14">
-                                                            <div class="input-group date">
-                                                                <input type="text" class="form-control form_sty1" placeholder="DD/MM/YYYY" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ usuario.fechaNacimiento|date('d/m/Y') }}">
-                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-md-6 col-lg-6">
-                                                        <label for="activo" class="col-2 col-form-label">{{ 'Activo'|trans }}</label>
-                                                        <div class="col-14">
-                                                            <div class="can-toggle demo-rebrand-2 small">
-                                                                <input id="f" id="activo" name="activo" type="checkbox" {% if usuario.activo %}checked{% endif %}>
-                                                                <label for="f">
-                                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-5 col-lg-5 col-md-5">
+                                        <label for="login" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Usuario'|trans }}</label>
+                                        <div class="col-sm-14 col-md-14 col-lg-14">
+                                            {% set readonly = usuario.id ? 'readonly="readonly"' : '' %}
+                                            <input type="text" class="form-control form_sty1" name="login" id="login" value="{{ usuario.login }}" {{ readonly }}>
+                                            <span class="fa fa-id-badge"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                        <div class="form-group">
+                                            <label for="clave" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Contraseña'|trans }}</label>
+                                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                                {% set disabled = usuario.id ? 'disabled="disabled"' : '' %}
+                                                    <input type="password" class="form-control form_sty1" name="clave" id="clave" {{ disabled }}>
+                                                    <span class="fa fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if not usuario.id %}
+                                        <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top: 2.5em;">
+                                            <div class="form-group">
+                                                <label class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cambiar" name="cambiar" value="1">
+                                                    <span class="custom-control-indicator"></span> <span class="custom-control-description">{{ 'Cambiar contraseña'|trans }}</span> 
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                        <div class="form-group">
+                                            <label for="correo_personal" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Correo personal'|trans }}</label>
+                                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                                <input type="email" class="form-control form_sty1" name="correo_personal" id="correo_personal" value="{{ usuario.correoPersonal }}">
+                                                <span class="fa fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5 justify-content-end">
+                                        <div class="form-group">
+                                            <label for="fecha_nacimiento" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha de nacimiento'|trans }}</label>
+                                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                                <input type="date" class="form-control form_sty_date1" id="fecha_nacimiento" placeholder="DD/MM/YYYY" name="fecha_nacimiento" value="{{ usuario.fechaNacimiento|date('d/m/Y') }}">
+                                                <span class="fa fa-calendar"></span>
+                                                <span class="bttn_down1"><img src="{{ asset('img/down-arrowwht.png')}}" alt=""></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="activo" class="col-2 col-form-label">{{ 'Activo'|trans }}</label>
+                                            <div class="col-14">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f" id="activo" name="activo" type="checkbox" {% if usuario.activo %}checked{% endif %}>
+                                                    <label for="f">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
-                                	</div>
+                                    </div>
                                 </div>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
@@ -211,7 +213,7 @@
                     <ul id="alert-error">
                         <li>- Error 1</li>
                         <li>- Error 2</li>
-                    </p>
+                    </ul>
                 </div>
             </div>
             <div class="col-sm-4">
