@@ -71,7 +71,7 @@ correo_corporativo varchar(100),
 activo boolean,
 fecha_registro timestamp without time zone,
 fecha_nacimiento date,
-pais varchar(50),
+pais_id varchar(3),
 ciudad varchar(50),
 region varchar(50),
 empresa_id integer,
@@ -81,7 +81,8 @@ cargo varchar(100),
 nivel_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
- FOREIGN KEY (nivel_id) REFERENCES admin_nivel (id));
+ FOREIGN KEY (nivel_id) REFERENCES admin_nivel (id),
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
 
 CREATE TABLE admin_rol_usuario(
 -- Attributes --
