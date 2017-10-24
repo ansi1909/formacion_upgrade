@@ -8,6 +8,9 @@ Link\ComunBundle\Entity\AdminUsuario:
         IDX_E65932D4DA3426AE:
             columns:
                 - nivel_id
+        IDX_E65932D4C604D5C6:
+            columns:
+                - pais_id
     id:
         id:
             type: integer
@@ -67,12 +70,6 @@ Link\ComunBundle\Entity\AdminUsuario:
             type: date
             nullable: true
             column: fecha_nacimiento
-        pais:
-            type: string
-            nullable: true
-            length: 50
-            options:
-                fixed: false
         ciudad:
             type: string
             nullable: true
@@ -123,6 +120,16 @@ Link\ComunBundle\Entity\AdminUsuario:
             inversedBy: null
             joinColumns:
                 nivel_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pais:
+            targetEntity: AdminPais
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pais_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

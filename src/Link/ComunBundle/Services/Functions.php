@@ -375,6 +375,26 @@ class Functions
 
 	}
 
+	// Verifica si el usuario tiene el rol Empresa y devuelve empresa_id
+	public function rolEmpresa($usuario_id, $roles, $yml)
+	{
+
+		$empresa_id = 0;
+		$em = $this->em;
+		
+		foreach ($roles as $rol_id)
+        {
+        	if ($rol_id == $yml['parameters']['rol']['empresa'])
+        	{
+        		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+        		$empresa_id = $usuario->getEmpresa()->getId();
+        	}
+        }
+		
+		return $empresa_id;
+
+	}
+
 	// Retorna el código de dos caracteres del país (Ej. VE)
 	public function getLocaleCode()
 	{

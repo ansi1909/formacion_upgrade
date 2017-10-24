@@ -10,6 +10,7 @@ Bienvenida: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
 Buscar: Search
+Cambiar contraseña: Change password
 Cancelar: Cancel
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Categoría: Category
@@ -17,6 +18,8 @@ Categorías: Categories
 Conceder: Grant
 Configurar: Configure
 Confirmar: Confirm
+Contraseña: Password
+Correo personal: Personal email
 Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
 Datos de la categoría: Category data
@@ -42,6 +45,7 @@ Error en el servidor: Error on server
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Fecha Creación: Creation Date
+Fecha de nacimiento: Birthday
 Filtrar usuarios: Filter users
 Finalizar: Finish
 Guardar: Save
@@ -68,6 +72,7 @@ No se pudo filtrar el listado.: It could not filter the list.
 Nombre: Name
 Nuevo nivel de la empresa: New level of company
 Nuevo Registro: New Item
+Perfil Empresarial: Company Profile
 Paso: Step
 País: Country
 Permisos de Acceso: Access Permissions
@@ -77,6 +82,7 @@ Presiona el botón finalizar para completar: Press finish button to complete
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Registrar Empresa: Add/Edit Company
+Registrar Usuario: Add/Edit User
 Rol: Role
 Roles: Roles
 Seleccione la empresa para mostrar los niveles: Select the company to show its levels
@@ -87,3 +93,4 @@ Su registro ha sido eliminado: The item has been deleted
 Sub-Aplicación de: Sub-Application of
 Teléfono de contacto: Contact Number
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
+Usuario: User

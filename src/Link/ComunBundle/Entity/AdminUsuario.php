@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminUsuario
  *
- * @ORM\Table(name="admin_usuario", indexes={@ORM\Index(name="IDX_E65932D4521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_E65932D4DA3426AE", columns={"nivel_id"})})
+ * @ORM\Table(name="admin_usuario", indexes={@ORM\Index(name="IDX_E65932D4521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_E65932D4DA3426AE", columns={"nivel_id"}), @ORM\Index(name="IDX_E65932D4C604D5C6", columns={"pais_id"})})
  * @ORM\Entity
  */
 class AdminUsuario
@@ -88,13 +88,6 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="pais", type="string", length=50, nullable=true)
-     */
-    private $pais;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="ciudad", type="string", length=50, nullable=true)
      */
     private $ciudad;
@@ -146,6 +139,16 @@ class AdminUsuario
      * })
      */
     private $nivel;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminPais
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminPais")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
+     * })
+     */
+    private $pais;
 
 
 
@@ -376,30 +379,6 @@ class AdminUsuario
     }
 
     /**
-     * Set pais
-     *
-     * @param string $pais
-     *
-     * @return AdminUsuario
-     */
-    public function setPais($pais)
-    {
-        $this->pais = $pais;
-
-        return $this;
-    }
-
-    /**
-     * Get pais
-     *
-     * @return string
-     */
-    public function getPais()
-    {
-        return $this->pais;
-    }
-
-    /**
      * Set ciudad
      *
      * @param string $ciudad
@@ -565,5 +544,29 @@ class AdminUsuario
     public function getNivel()
     {
         return $this->nivel;
+    }
+
+    /**
+     * Set pais
+     *
+     * @param \Link\ComunBundle\Entity\AdminPais $pais
+     *
+     * @return AdminUsuario
+     */
+    public function setPais(\Link\ComunBundle\Entity\AdminPais $pais = null)
+    {
+        $this->pais = $pais;
+
+        return $this;
+    }
+
+    /**
+     * Get pais
+     *
+     * @return \Link\ComunBundle\Entity\AdminPais
+     */
+    public function getPais()
+    {
+        return $this->pais;
     }
 }

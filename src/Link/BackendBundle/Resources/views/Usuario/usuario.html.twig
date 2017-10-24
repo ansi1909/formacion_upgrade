@@ -1,0 +1,263 @@
+{% extends '::admin.html.twig'%}
+{% block body %}
+
+{% set uri = app.request.getbasepath %}
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<br><br>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-right ">
+        <a href="{{ path('_usuarios', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-chevron-left"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Registrar Usuario'|trans }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Perfil Empresarial'|trans }}</small></p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Roles'|trans }}</small></p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+                	<form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
+                		<div class="row setup-content" id="det0">	
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 1</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                	<div class="col-sm-16 col-md-8 col-lg-6">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                                    <div class="input-group">
+                                                        <input class="form-control form_sty1" type="text" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
+                                                        <span class="input-group-addon">
+                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto" class="btn iframe-btn" type="button">
+                                                                <span class="fa fa-photo"></span>
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                                    <div class="row">
+                                                        <label for="nombre" class="col-2 col-form-label">{{ 'Nombre'|trans }}</label>
+                                                        <div class="col-14">
+                                                            <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="{{ usuario.nombre }}">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label for="apellido" class="col-2 col-form-label">{{ 'Apellido'|trans }}</label>
+                                                        <div class="col-14">
+                                                            <input type="text" class="form-control form_sty1" name="apellido" id="apellido" value="{{ usuario.apellido }}">
+                                                            <span class="fa fa-user"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                                        <label for="login" class="col-2 col-form-label">{{ 'Usuario'|trans }}</label>
+                                                        <div class="col-14">
+                                                            {% set readonly = usuario.id ? 'readonly="readonly"' : '' %}
+                                                            <input type="text" class="form-control form_sty1" name="login" id="login" value="{{ usuario.login }}" {{ readonly }}>
+                                                            <span class="fa fa-user-circle"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                                        <label for="clave" class="col-2 col-form-label">{{ 'Contraseña'|trans }}</label>
+                                                        <div class="col-14">
+                                                            {% set disabled = usuario.id ? 'disabled="disabled"' : '' %}
+                                                            <input type="password" class="form-control form_sty1" name="clave" id="clave" {{ disabled }}>
+                                                            <span class="fa fa-key"></span>
+                                                        </div>
+                                                    </div>
+                                                    {% if not usuario.id %}
+                                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" id="cambiar" name="cambiar" value="1">
+                                                                <span class="custom-control-indicator"></span> <span class="custom-control-description">{{ 'Cambiar contraseña'|trans }}</span> 
+                                                            </label>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                                        <label for="correo_personal" class="col-2 col-form-label">{{ 'Correo personal'|trans }}</label>
+                                                        <div class="col-14">
+                                                            <input type="email" class="form-control form_sty1" name="correo_personal" id="correo_personal" value="{{ usuario.correoPersonal }}">
+                                                            <span class="fa fa-envelope"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                                        <label for="fecha_nacimiento" class="col-2 col-form-label">{{ 'Fecha de nacimiento'|trans }}</label>
+                                                        <div class="col-14">
+                                                            <div class="input-group date">
+                                                                <input type="text" class="form-control form_sty1" placeholder="DD/MM/YYYY" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ usuario.fechaNacimiento|date('d/m/Y') }}">
+                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                                        <label for="activo" class="col-2 col-form-label">{{ 'Activo'|trans }}</label>
+                                                        <div class="col-14">
+                                                            <div class="can-toggle demo-rebrand-2 small">
+                                                                <input id="f" id="activo" name="activo" type="checkbox" {% if usuario.activo %}checked{% endif %}>
+                                                                <label for="f">
+                                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                	</div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det1">
+                			<div class="col-sm-16">
+                				<div class="row">
+	                                <div class="col-sm-16">
+	                                    <h3 class="mb-2">{{ 'Paso'|trans }} 2</h3>
+	                                </div>
+	                            </div>
+	                            <br>
+	                            <div class="row">
+                                    <div class="col-sm-16">
+                                    	<div class="form-group">
+                                    		<label for="texto" class="col-2 col-form-label">{{ 'Bienvenida'|trans }}</label>
+                                    		<div class="col-16">
+                                                <textarea class="ckeditor" rows="3" id="bienvenida" name="bienvenida" cols="30" rows="10"></textarea>
+                                    		</div>
+                                    	</div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det2">
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                    	<div class="alert alert-success" role="alert">
+				                          <h4 class="alert-heading">{{ 'Buen trabajo'|trans }}!</h4>
+				                          <p>{{ 'Presiona el botón finalizar para completar'|trans }}.</p>
+				                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                	</form>
+                </div>
+            </div>
+		</div>
+        <div class="row" id="div-error" style="display:none;">
+            <div class="col-sm-4">
+                &nbsp;
+            </div>
+            <div class="col-sm-8">
+                <div class="alert alert-danger" role="alert"> 
+                    <ul id="alert-error">
+                        <li>- Error 1</li>
+                        <li>- Error 2</li>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                &nbsp;
+            </div>
+        </div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script type="text/javascript">
+        function validarForm()
+        {
+            var str_error = '';
+            var nombre = $.trim($('#nombre').val());
+            var pais_id = $('#pais_id').val();
+            var deslen = $('#deslen').val();
+            
+            if (nombre == '')
+            {
+                str_error += "<li>- {{ 'El nombre de la empresa es requerido.'|trans }}</li>";
+            }
+            else {
+                if (nombre.length < 3)
+                {
+                    str_error += "<li>- {{ 'El nombre de la empresa debe ser mínimo de 3 caracteres.'|trans }}</li>";
+                }
+            }
+
+            if (pais_id == '')
+            {
+                str_error += "<li>- {{ 'El país es requerido.'|trans }}</li>";
+            }
+
+            if (deslen < {{ maxlenght_bienvenida }})
+            {
+                str_error += "<li>- {{ 'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ maxlenght_bienvenida }}</li>";
+            }
+
+            return str_error;
+        }
+    </script>
+{% endblock %}
