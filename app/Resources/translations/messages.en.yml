@@ -13,12 +13,15 @@ Buscar: Search
 Cambiar contraseña: Change password
 Cancelar: Cancel
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
+Cargo: Appointment
 Categoría: Category
 Categorías: Categories
+Ciudad: City
 Conceder: Grant
 Configurar: Configure
 Confirmar: Confirm
 Contraseña: Password
+Correo corporativo: Company email
 Correo personal: Personal email
 Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
@@ -29,6 +32,7 @@ Datos del Rol: Role Details
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
+División funcional: Functional division
 Editar: Edit
 Eliminado: Deleted
 Eliminar: Remove
@@ -81,6 +85,7 @@ Permisos por Rol: Permissions by Role
 Presiona el botón finalizar para completar: Press finish button to complete
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
+Región: Region
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 Rol: Role

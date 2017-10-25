@@ -13,12 +13,15 @@ Buscar: Buscar
 Cambiar contraseña: Cambiar contraseña
 Cancelar: Cancelar
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
+Cargo: Cargo
 Categoría: Categoría
 Categorías: Categorías
+Ciudad: Ciudad
 Conceder: Conceder
 Configurar: Configurar
 Confirmar: Confirmar
 Contraseña: Contraseña
+Correo corporativo: Correo corporativo
 Correo personal: Correo personal
 Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
@@ -29,6 +32,7 @@ Datos del Rol: Datos del Rol
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
 Descripción: Descripción
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
+División funcional: División funcional
 Editar: Editar
 Eliminado: Eliminado
 Eliminar: Eliminar
@@ -81,6 +85,7 @@ Permisos por Rol: Permisos por Rol
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
+Región: Región
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
 Rol: Rol

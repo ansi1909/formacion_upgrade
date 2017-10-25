@@ -199,6 +199,19 @@ class UsuarioController extends Controller
         $query = $qb->getQuery();
         $paises = $query->getResult();
 
+        // Lista de empresas
+        $qb = $em->createQueryBuilder();
+        $qb->select('e')
+           ->from('LinkComunBundle:AdminEmpresa', 'e');
+        if ($empresa_asignada)
+        {
+            $qb->where('e.id = :empresa_asignada')
+               ->setParameter('empresa_asignada', $empresa_asignada);
+        }
+        $qb->orderBy('e.nombre', 'ASC');
+        $query = $qb->getQuery();
+        $empresas = $query->getResult();
+
         // Niveles de la empresa asignada
         $niveles = array();
         if ($empresa_asignada)
@@ -250,6 +263,8 @@ class UsuarioController extends Controller
         
         return $this->render('LinkBackendBundle:Usuario:usuario.html.twig', array('usuario' => $usuario,
                                                                                   'paises' => $paises,
+                                                                                  'empresas' => $empresas,
+                                                                                  'empresa_asignada' => $empresa_asignada,
                                                                                   'niveles' => $niveles,
                                                                                   'roles' => $roles));
 

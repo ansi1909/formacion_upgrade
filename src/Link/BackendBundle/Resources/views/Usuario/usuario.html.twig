@@ -1,4 +1,32 @@
 {% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .social-profile-pic img {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            -ms-border-radius: 6px;
+            border-radius: 6px;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 0 20px 0 10px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 
 {% set uri = app.request.getbasepath %}
@@ -51,17 +79,24 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <div class="input-group">
-                                            <input class="form-control" type="text" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
-                                            <span class="input-group-addon">
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto" class="btn iframe-btn" type="button">
-                                                    <span class="fa fa-photo"></span>
-                                                </a>
-                                            </span>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="row">
+                                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                                <figure class="social-profile-pic" id="figure"><img src="{{ asset('img/team.png') }}" alt=""></figure>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                                <div class="input-group">
+                                                    <input type="hidden" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
+                                                    <span class="input-group-addon">
+                                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&fldr=recursos/usuarios" class="btn iframe-btn" type="button">
+                                                            <span class="fa fa-photo"></span>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
                                         <div class="row">
                                             <label for="nombre" class="col-sm-2 col-md-2 col-lg-2 offset-sm-4 offset-md-4 offset-lg-4 col-form-label">{{ 'Nombre'|trans }}</label>
                                             <div class="col-sm-8 col-md-8 col-lg-8">
@@ -99,7 +134,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% if not usuario.id %}
+                                    {% if usuario.id %}
                                         <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top: 2.5em;">
                                             <div class="form-group">
                                                 <label class="custom-control custom-checkbox">
@@ -122,13 +157,11 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-5 col-md-5 col-lg-5 justify-content-end">
-                                        <div class="form-group">
-                                            <label for="fecha_nacimiento" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha de nacimiento'|trans }}</label>
-                                            <div class="col-sm-14 col-md-14 col-lg-14">
-                                                <input type="date" class="form-control form_sty_date1" id="fecha_nacimiento" placeholder="DD/MM/YYYY" name="fecha_nacimiento" value="{{ usuario.fechaNacimiento|date('d/m/Y') }}">
-                                                <span class="fa fa-calendar"></span>
-                                                <span class="bttn_down1"><img src="{{ asset('img/down-arrowwht.png')}}" alt=""></span>
-                                            </div>
+                                        <label for="fecha_nacimiento" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha de nacimiento'|trans }}</label>
+                                        <div class="col-sm-14 col-md-14 col-lg-14">
+                                            {% set fecha_nacimiento = usuario.fechaNacimiento ? usuario.fechaNacimiento|date('d/m/Y') : '' %}
+                                            <input type="text" class="form-control form_sty1" id="fecha_nacimiento" placeholder="DD/MM/YYYY" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" data-date-end-date="-18y">
+                                            <span class="fa fa-calendar"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-6 col-lg-6">
@@ -161,13 +194,97 @@
 	                            </div>
 	                            <br>
 	                            <div class="row">
-                                    <div class="col-sm-16">
-                                    	<div class="form-group">
-                                    		<label for="texto" class="col-2 col-form-label">{{ 'Bienvenida'|trans }}</label>
-                                    		<div class="col-16">
-                                                <textarea class="ckeditor" rows="3" id="bienvenida" name="bienvenida" cols="30" rows="10"></textarea>
-                                    		</div>
-                                    	</div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="correo_corporativo" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Correo corporativo'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="email" class="form-control form_sty1" name="correo_corporativo" id="correo_corporativo" value="{{ usuario.correoCorporativo }}">
+                                                <span class="fa fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 justify-content-start">
+                                        <label for="pais_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'País'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select class="form-control form_sty1" name="pais_id" id="pais_id">
+                                                <option value=""></option>
+                                                {% for pais in paises %}
+                                                    {% set selected = usuario.pais.id == pais.id ? 'selected="selected"' : '' %}
+                                                    <option value="{{ pais.id }}" {{ selected }} >{{ pais.nombre|trim }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span class="fa fa-globe"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="ciudad" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Ciudad'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="ciudad" id="ciudad" value="{{ usuario.ciudad }}">
+                                                <span class="fa fa-map-marker"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="region" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Región'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="region" id="region" value="{{ usuario.region }}">
+                                                <span class="fa fa-map-signs"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 justify-content-start">
+                                        <label for="empresa_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Empresa'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select class="form-control form_sty1" name="empresa_id" id="empresa_id">
+                                                {% if empresa_asignada %}
+                                                    {% for empresa in empresas %}
+                                                        <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option value=""></option>
+                                                    {% for empresa in empresas %}
+                                                        {% set selected = usuario.empresa ? usuario.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
+                                                        <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                            <span class="fa fa-industry"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="nivel_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Nivel'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select class="form-control form_sty1" name="nivel_id" id="nivel_id">
+                                                <option value="0">{{ 'Seleccione la empresa para mostrar los niveles'|trans }}</option>
+                                                {% for nivel in niveles %}
+                                                    {% set selected = usuario.nivel ? usuario.nivel.id == nivel.id ? 'selected="selected"' : '' : '' %}
+                                                    <option value="{{ nivel.id }}" {{ selected }} >{{ nivel.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span class="fa fa-list-ol"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="division_funcional" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'División funcional'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="division_funcional" id="division_funcional" value="{{ usuario.divisionFuncional }}">
+                                                <span class="fa fa-building"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="cargo" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Cargo'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="cargo" id="cargo" value="{{ usuario.cargo }}">
+                                                <span class="fa fa-user"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="wizard-footer">
@@ -226,10 +343,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
     <script type="text/javascript">
         function validarForm()
         {
