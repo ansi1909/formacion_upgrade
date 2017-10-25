@@ -5,9 +5,17 @@
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <br><br>
-<div class="row align-items-center justify-content-between">
-    <div class="col text-right ">
-        <a href="{{ path('_empresas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-chevron-left"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+<div class="row align-items-center justify-content-start">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="{{ path('_empresas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8" id="div-error" style="display:none;">
+        <div class="alert alert-danger" role="alert"> 
+            <ul id="alert-error">
+                <li>- Error 1</li>
+                <li>- Error 2</li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -31,13 +39,13 @@
                             <div class="stepwizard-step col">
                                 <a href="#det1" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">2</span>
-                                    <p>{{ 'Bienvenida'|trans }}</small></p>
+                                    <p>{{ 'Bienvenida'|trans }}</p>
                                 </a>
                             </div>
                             <div class="stepwizard-step col">
                                 <a href="#det2" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">3</span>
-                                    <p>{{ 'Confirmar'|trans }}</small></p>
+                                    <p>{{ 'Confirmar'|trans }}</p>
                                 </a>
                             </div>
                 		</div>
@@ -63,7 +71,7 @@
                                         <div class="form-group">
                                         	<label for="texto" class="col-2 col-form-label">{{ 'País'|trans }}</label>
                                         	<div class="col-14">
-	                                        	<select class="form-control form_sty1" name="pais_id" id="pais_id">
+	                                        	<select class="form-control form_sty_select" name="pais_id" id="pais_id">
                                                     <option value=""></option>
                                                     {% for pais in paises %}
                                                         {% set selected = empresa.pais.id == pais.id ? 'selected="selected"' : '' %}
@@ -147,22 +155,6 @@
                 </div>
             </div>
 		</div>
-        <div class="row" id="div-error" style="display:none;">
-            <div class="col-sm-4">
-                &nbsp;
-            </div>
-            <div class="col-sm-8">
-                <div class="alert alert-danger" role="alert"> 
-                    <ul id="alert-error">
-                        <li>- Error 1</li>
-                        <li>- Error 2</li>
-                    </p>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                &nbsp;
-            </div>
-        </div>
 	</div>
 </div>
 {% endblock %}
@@ -173,6 +165,8 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/notification.js') }}"></script>-->
     <script type="text/javascript">
         function validarForm()
         {

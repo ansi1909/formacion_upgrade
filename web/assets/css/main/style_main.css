@@ -43,8 +43,7 @@
     /*fin Sidebar*/
 
     /*Estilos de formularios*/
-        .form_sty1, .form_sty2, .form_sty3, 
-        .form_sty4{
+        .form_sty1, .form_sty_modal, .form_sty_select{
             display: inline-block;
             width: 100%;
             padding: 10px 0px 10px 15px;
@@ -53,6 +52,13 @@
             outline: 0;
             text-indent: 0px;
             transition: all .3s ease-in-out;
+        }
+
+        .form_sty1:focus, .form_sty1:active, .form_sty_modal:focus, .form_sty_modal:active,
+        .form_sty_select:focus, .form_sty_select:active{
+            text-indent: 35px;
+            background: #fff;
+            transition: all .25s ease-in-out;
         }
 
         .form_sty1 + span{
@@ -69,67 +75,50 @@
             transition: all .3s ease-in-out;
         }
 
-        .form_sty1:focus, .form_sty1:active,
-        .form_sty2:focus, .form_sty2:active,
-        .form_sty3:focus, .form_sty3:active,
-        .form_sty4:focus, .form_sty4:active{
-            text-indent: 35px;
-            background: #fff;
-            transition: all .3s ease-in-out;
-        }
-
-        .form_sty1:focus + span, .form_sty1:active + span,
-        .form_sty2:focus + span, .form_sty2:active + span,
-        .form_sty3:focus + span, .form_sty3:active + span,
-        .form_sty4:focus + span, .form_sty4:active + span{
-            opacity: 1;
-            display: inline-block;
-            transform: translateX(22px);
-        }
-
-        .form_sty2 + span{
+        .form_sty_modal + span {
             display: inline-block;
             opacity: 0;
             position: absolute;
-            top: 0;
-            left: -14px;
+            top: 2.75rem;
+            left: -2.1rem;
             padding: 10px 15px;
-            background: #A3C300;
-            border-radius: 15px 0px 0px 15px;
-            color: #333;
-            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
-            transition: all .3s ease-in-out;
-        }
-
-        .form_sty3 + span{
-            display: inline-block;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: -14px;
-            padding: 10px 15px;
-            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            background: #007bcd;
             border-radius: 15px 0px 0px 15px;
             color: #fff;
             text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
             transition: all .3s ease-in-out;
         }
 
-        .form_sty4 + span{
+        .form_sty_select + span{
             display: inline-block;
             opacity: 0;
             position: absolute;
             top: 0;
-            left: -14px;
-            padding: 10px 15px;
-            background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%);
+            left: -1rem;
+            padding: 8.8px 15px;
+            background: #007bcd;
             border-radius: 15px 0px 0px 15px;
-            color: #333;
+            color: #fff;
             text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
             transition: all .3s ease-in-out;
         }
 
-        .form_sty_date1, .form_sty_date2, .form_sty_date3, .form_sty_date4{
+        .form_sty1:focus + span {
+            opacity: 1;
+            transform: translateX(22px);
+        }
+
+        .form_sty_modal:focus + span{
+            opacity: 1;
+            transform: translateX(2.75rem);
+        }
+
+        .form_sty_select:focus + span {
+            opacity: 1;
+            transform: translateX(1.87rem);
+        }
+
+        .form_sty_date1 {
             display: inline-block;
             width: 100%;
             padding: 10px 0px 10px 15px;
@@ -140,7 +129,7 @@
             transition: all .3s ease-in-out;
         }
 
-        .form_sty_date1 + span.fa.fa-calendar{
+        .form_sty_date1 + span.fa.fa-calendar {
             display: inline-block;
             opacity: 0;
             position: absolute;
@@ -154,67 +143,19 @@
             transition: all .3s ease-in-out;
         }
 
-        .form_sty_date2 + span.fa.fa-calendar{
-            display: inline-block;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: -14px;
-            padding: 13px 15px;
-            background: #A3C300;
-            border-radius: 15px 0px 0px 15px;
-            color: #333;
-            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
-            transition: all .3s ease-in-out;
-        }
-
-        .form_sty_date3 + span.fa.fa-calendar{
-            display: inline-block;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: -14px;
-            padding: 13px 15px;
-            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
-            border-radius: 15px 0px 0px 15px;
-            color: #fff;
-            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
-            transition: all .3s ease-in-out;
-        }
-
-        .form_sty_date4 + span{
-            display: inline-block;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: -14px;
-            padding: 13px 15px;
-            background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%);
-            border-radius: 15px 0px 0px 15px;
-            color: #333;
-            text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
-            transition: all .3s ease-in-out;
-        }
-
-        .form_sty_date1:active, .form_sty_date1:focus, 
-        .form_sty_date2:active, .form_sty_date2:focus,
-        .form_sty_date3:active, .form_sty_date3:focus,
-        .form_sty_date4:active, .form_sty_date4:focus{
+        .form_sty_date1:active, .form_sty_date1:focus {
             text-indent: 18px;
             background: #fff;
             transition: all .3s ease-in-out;
         }
 
-        .form_sty_date1:active + span.fa.fa-calendar, .form_sty_date1:focus + span.fa.fa-calendar,
-        .form_sty_date2:active + span.fa.fa-calendar, .form_sty_date2:focus + span.fa.fa-calendar,
-        .form_sty_date3:active + span.fa.fa-calendar, .form_sty_date3:focus + span.fa.fa-calendar,
-        .form_sty_date4:active + span, .form_sty_date4:focus + span{
+        .form_sty_date1:active + span.fa.fa-calendar, .form_sty_date1:focus + span.fa.fa-calendar {
             opacity: 1;
             display: inline-block;
             transform: translateX(22px);
         }    
 
-        .bttn_down1{
+        .bttn_down1 {
             display: inline-block;
             width: 34px;
             height: 40px;
@@ -228,35 +169,7 @@
             pointer-events: none;
         }
 
-        .bttn_down2{
-            display: inline-block;
-            width: 34px;
-            height: 40px;
-            opacity: 1;
-            position: absolute;
-            top: 0;
-            right: 14px;
-            background: #A3C300;
-            border-radius: 0px 15px 15px 0px;
-            transition: all .3s ease-in-out;
-            pointer-events: none;
-        }
-
-        .bttn_down3{
-            display: inline-block;
-            width: 34px;
-            height: 40px;
-            opacity: 1;
-            position: absolute;
-            top: 0;
-            right: 14px;
-            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
-            border-radius: 0px 15px 15px 0px;
-            transition: all .3s ease-in-out;
-            pointer-events: none;
-        }
-
-        .bttn_down1 img, .bttn_down2 img, .bttn_down3 img{
+        .bttn_down1 img {
             width: 15px;
             height: 15px;
             margin: 13px 7px;
@@ -289,7 +202,7 @@
             transition: all .3s ease-in-out;
         }
 
-        .form_login_style2 + span{
+        .form_login_style2 + span {
             display: inline-block;
             opacity: 0;
             position: absolute;
@@ -318,7 +231,7 @@
         }
     /*Fin Estilos de formularios*/
     /*Tipos de Botones*/
-        .bttn__nr{
+        .bttn__nr, .bttn__bck{
             width: 4em;
             height: 4em;
             border-radius: 50px;
@@ -338,28 +251,59 @@
             overflow: none;
         }
 
-        .bttn__nr span.fa{
-            margin: 5px 10px 0px 5px;
+        .bttn__bck::after{
+            content: '';
+            position: absolute;
+            top: .75rem;
+            left: 1.6rem;
+            border: 2px solid rgba(0, 85, 141, 1);
+            opacity: 0;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            border-radius: 50%;
+            width: 2.3em;
+            height: 2.3em;
+            animation: sonar 1.5s infinite;
+            -moz-animation: sonar 1.5s infinite;
+            -ms-animation: sonar 1.5s infinite;
+            -webkit-animation: sonar 1.5s infinite;
+        }
+        
+        .bttn__nr span.fa, .bttn__bck span.fa{
             font-size: 22px;
             transition: margin .5s ease;
         }
 
-        .bttn__nr .text__nr{
-            opacity: 0;
-            display: none;
+        .bttn__nr span.fa{
+            margin: 5px 10px 0px 5px;
         }
 
-        .bttn__nr:hover{
+        .bttn__bck span.fa{
+            margin: 8px 10px 0px 5px;
+        }
+
+        .bttn__nr:hover, .bttn__bck:hover {
             width: 11em;
             background: linear-gradient(to right, #0084db 0%, #00558D 100%);
             color: #fff;
+        }
+
+        .bttn__bck:hover::after{
+            animation-play-state: paused;
+            border: none;
         }
 
         .bttn__nr:hover span.fa{
             margin: 5px 7px 0 2px;
         }
 
-        .bttn__nr:hover .text__nr{
+        .bttn__bck:hover span.fa {
+            margin-top: 8px;
+            padding-left: .6rem;
+        }
+
+        .bttn__nr:hover .text__nr, .bttn__bck:hover .text__bck{
             opacity: 1;
             display: inline-block;
             position: relative;
@@ -368,7 +312,7 @@
             overflow-x: none;
         }
 
-        .bttn__nxt, .bttn__end, .bttn__bck, .bttn__save, .bttn__cancel{
+        .bttn__nxt, .bttn__end, .bttn__save, .bttn__cancel{
             width: 3em;
             height: 3em;
             border-radius: 50px;
@@ -388,7 +332,7 @@
             overflow: none;
         }
 
-        .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck,
+        .bttn__nr .text__nr, .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck,
         .bttn__save .text__save, .bttn__cancel .text__cancel{
             opacity: 0;
             display: none;
@@ -400,7 +344,7 @@
             transition: margin .5s ease;
         }
 
-        .bttn__end span.fa, .bttn__bck span.fa, .bttn__edit span.fa,
+        .bttn__end span.fa, .bttn__edit span.fa,
         .bttn__elim span.fa, .bttn__save span.fa, .bttn__cancel span.fa{
             margin: 3px 8px 0px 4px;
             font-size: 18px;
@@ -412,23 +356,12 @@
             background: #d5ff00;
         }
 
-        .bttn__bck:hover{
-            width: 10em;
-            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
-            color: #fff;
-            padding-right: 25px;
-        }
-
         .bttn__nxt:hover span.fa{
             margin: 5px 5px 0 8px;
         }
 
         .bttn__end:hover span.fa, .bttn__save:hover span.fa, .bttn__cancel:hover span.fa{
             margin: 3px 5px 0 10px;
-        }
-
-        .bttn__bck:hover span.fa{
-            margin: 3px 10px 0 -10px;
         }
         
         .bttn__nxt:hover .text__nxt{
@@ -440,7 +373,7 @@
             overflow-x: none;
         }
 
-        .bttn__end:hover .text__end, .bttn__bck:hover .text__bck, 
+        .bttn__end:hover .text__end, 
         .bttn__save:hover .text__save, .bttn__cancel:hover .text__cancel{
             opacity: 1;
             display: inline-block;
@@ -450,7 +383,7 @@
             overflow-x: none;
         }
 
-        .bttn__edit, .bttn__elim{
+        .bttn__edit, .bttn__elim, .bttn__saved{
             width: 3em;
             height: 3em;
             border-radius: 50px;
@@ -484,6 +417,12 @@
             border: none;
         }
 
+        .bttn__saved:hover{
+            background: #97af21;
+            color: #fff;
+            border: none;
+        }
+
         .bttn__elim:hover{
             background: #e04646;
             color: #fff;
@@ -497,7 +436,7 @@
             width: 7em;
         }
         
-        .bttn__edit:hover span.fa, .bttn__elim:hover, span.fa{
+        .bttn__edit:hover span.fa, .bttn__elim:hover span.fa{
             margin-left: 5px;
         }
         
@@ -677,7 +616,6 @@
     .sty__title{
         color: #fff; 
         background: linear-gradient(to right, #0084db 0%, #00558D 100%);
-        border-bottom: 3px solid #d5ff00;
         box-shadow: 5px 5px 10px rgba(51, 51, 51, 0.5);
     }
 
@@ -686,3 +624,22 @@
         font-weight: bold;
     }
 /*Identificadores*/
+
+/*Animations*/
+
+    @keyframes sonar {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        50%{
+            transform: scale(1.25);
+            opacity: 0.5;
+        }
+        
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }

@@ -4,8 +4,8 @@
 {% block body %}
 <br><br>
 <div class="row align-items-center justify-content-between">
-    <div class="col text-right ">
-        <a href="{{ path('_permisos', { 'app_id': app.session.get('app_id') })}}" class="bttn__nr"><span class="fa fa-chevron-left"></span><span class="text__nr">{{ 'Ir al listado'|trans }}</span></a>
+    <div class="col">
+        <a href="{{ path('_permisos', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
 </div>
 
@@ -18,11 +18,11 @@
                 </div>
                 <div class="card-block">
                     <table class="table ">
-                        <thead>
+                        <thead class="sty__title">
                             <tr>
-                                <th>{{ 'Conceder'|trans }}</th>
-                                <th>{{ 'Aplicación'|trans }}</th>
-                                <th>{{ 'Icono'|trans }}</th>
+                                <th class="hd__title">{{ 'Conceder'|trans }}</th>
+                                <th class="hd__title">{{ 'Aplicación'|trans }}</th>
+                                <th class="hd__title">{{ 'Icono'|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="card-footer">
                     <div class="col-sm-16 col-md-16 text-right">
-                        <button type="submit" id="save" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Guardar' |trans}}"><span class="fa fa-save"></span></button>
+                        <button type="submit" id="save" class="bttn__saved edit" data-toggle="tooltip" data-placement="bottom" title="{{'Guardar' |trans}}"><span class="fa fa-save"></span></button>
                     </div>
                 </div>
             </div>

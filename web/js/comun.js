@@ -84,5 +84,5 @@ $(document).ready(function() {
         window.location.replace($('#url_'+url).val()+p);
     });
 
-
+    $('[data-toggle="tooltip"]').tooltip();
 });
