@@ -33,8 +33,8 @@
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <br><br>
 <div class="row align-items-center justify-content-between">
-    <div class="col text-right ">
-        <a href="{{ path('_usuarios', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-chevron-left"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    <div class="col">
+        <a href="{{ path('_usuarios', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
 </div>
 <div class="row">
