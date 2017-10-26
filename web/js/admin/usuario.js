@@ -2,8 +2,31 @@ $(document).ready(function() {
 	
 	var root_site = $('#root_site').val();
 
+	$("#form").validate({
+        errorLabelContainer: "#alert-error",
+        wrapper: "li",
+        debug: true,
+        rules: {
+            'nombre': {
+                required: true,
+                minlength: 3
+            }
+        },
+        messages: {
+            'nombre': {
+                required: "Este campo es requerido",
+                minlength: "Debe ser mínimo de 3 caracteres."
+            }
+        }
+    });
+
     $('#finish').click(function(){
-    	$('#div-error').hide();
+    	console.log('llamando a validaaa');
+    	$('.validaaa').trigger('click');
+    });
+
+    $('#finish2').click(function(){
+    	/*$('#div-error').hide();
     	var str_error = validarForm();
     	if (str_error != '')
     	{
@@ -12,7 +35,10 @@ $(document).ready(function() {
     	}
     	else {
     		$('#form').submit();
-    	}
+    	}*/
+    	console.log('me llamaron');
+    	var valid = $("#form").valid();
+    	console.log('Validación: '+valid);
     });
 
     $('#fecha_nacimiento').datepicker({
@@ -29,6 +55,24 @@ $(document).ready(function() {
         'autoScale' : false,
 		'autoSize'	: false
     });
+
+    $('#empresa_id').change(function(){
+		var empresa_id = $(this).val();
+		$.ajax({
+			type: "GET",
+			url: $('#url_niveles').val(),
+			async: true,
+			data: { empresa_id: empresa_id },
+			dataType: "json",
+			success: function(data) {
+				$('#nivel_id').html(data.options);
+			},
+			error: function(){
+				$('#active-error').html($('#error_msg-filter').val());
+				$('#div-active-alert').show();
+			}
+		});
+	});
 
 });
 

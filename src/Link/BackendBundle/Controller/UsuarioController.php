@@ -178,12 +178,18 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
+        $roles_asignados = array();
 
         $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
 
         if ($usuario_id) 
         {
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+            $roles_usuario = $em->getRepository('LinkComunBundle:AdminRolUsuario')->findByUsuario($usuario_id);
+            foreach ($roles_usuario as $ru)
+            {
+                $roles_asignados[] = $ru->getRol()->getId();
+            }
         }
         else {
             $usuario = new AdminUsuario();
@@ -266,7 +272,8 @@ class UsuarioController extends Controller
                                                                                   'empresas' => $empresas,
                                                                                   'empresa_asignada' => $empresa_asignada,
                                                                                   'niveles' => $niveles,
-                                                                                  'roles' => $roles));
+                                                                                  'roles' => $roles,
+                                                                                  'roles_asignados' => $roles_asignados));
 
     }
 

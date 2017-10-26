@@ -4,6 +4,8 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -24,6 +26,11 @@
             box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
             margin: 0 20px 0 10px;
         }
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
     </style>
 {% endblock %}
 
@@ -32,9 +39,17 @@
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <br><br>
-<div class="row align-items-center justify-content-between">
-    <div class="col">
+<div class="row align-items-center justify-content-start">
+    <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_usuarios', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8" id="div-error">
+        <div class="alert alert-danger" role="alert"> 
+            <ul id="alert-error">
+                <li>- Error 1</li>
+                <li>- Error 2</li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -46,30 +61,31 @@
                 </div>
             </div>
            	<div class="card-block">
-                <div class="container_wizard wizard-thin">
-                	<div class="stepwizard">
-                		<div class="stepwizard-row setup-panel d-flex">
-            				<div class="stepwizard-step col">
-                                <a href="#det0" class="btn bttn__fndo pass">
-                                    <span class="btn-round">1</span>
-                                    <p>{{ 'Datos Básicos'|trans }}</p>
-                                </a>
-                            </div>
-                            <div class="stepwizard-step col">
-                                <a href="#det1" class="btn btn-secondary pass disabled">
-                                    <span class="btn-round">2</span>
-                                    <p>{{ 'Perfil Empresarial'|trans }}</p>
-                                </a>
-                            </div>
-                            <div class="stepwizard-step col">
-                                <a href="#det2" class="btn btn-secondary pass disabled">
-                                    <span class="btn-round">3</span>
-                                    <p>{{ 'Roles'|trans }}</p>
-                                </a>
-                            </div>
-                		</div>
-                	</div>
-                	<form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
+                <form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
+                    <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+                    <div class="container_wizard wizard-thin">
+                    	<div class="stepwizard">
+                    		<div class="stepwizard-row setup-panel d-flex">
+                				<div class="stepwizard-step col">
+                                    <a href="#det0" class="btn bttn__fndo pass">
+                                        <span class="btn-round">1</span>
+                                        <p>{{ 'Datos Básicos'|trans }}</p>
+                                    </a>
+                                </div>
+                                <div class="stepwizard-step col">
+                                    <a href="#det1" class="btn btn-secondary pass disabled">
+                                        <span class="btn-round">2</span>
+                                        <p>{{ 'Perfil Empresarial'|trans }}</p>
+                                    </a>
+                                </div>
+                                <div class="stepwizard-step col">
+                                    <a href="#det2" class="btn btn-secondary pass disabled">
+                                        <span class="btn-round">3</span>
+                                        <p>{{ 'Roles'|trans }}</p>
+                                    </a>
+                                </div>
+                    		</div>
+                    	</div>
                 		<div class="row setup-content" id="det0">	
                 			<div class="col-sm-16">
                 				<div class="row">
@@ -206,7 +222,7 @@
                                     <div class="col-sm-4 col-md-4 col-lg-4 justify-content-start">
                                         <label for="pais_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'País'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <select class="form-control form_sty1" name="pais_id" id="pais_id">
+                                            <select class="form-control form_sty_select" name="pais_id" id="pais_id">
                                                 <option value=""></option>
                                                 {% for pais in paises %}
                                                     {% set selected = usuario.pais.id == pais.id ? 'selected="selected"' : '' %}
@@ -239,13 +255,13 @@
                                     <div class="col-sm-4 col-md-4 col-lg-4 justify-content-start">
                                         <label for="empresa_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Empresa'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <select class="form-control form_sty1" name="empresa_id" id="empresa_id">
+                                            <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
                                                 {% if empresa_asignada %}
                                                     {% for empresa in empresas %}
                                                         <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
                                                     {% endfor %}
                                                 {% else %}
-                                                    <option value=""></option>
+                                                    <option value="0"></option>
                                                     {% for empresa in empresas %}
                                                         {% set selected = usuario.empresa ? usuario.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
                                                         <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
@@ -258,7 +274,7 @@
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <label for="nivel_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Nivel'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <select class="form-control form_sty1" name="nivel_id" id="nivel_id">
+                                            <select class="form-control form_sty_select" name="nivel_id" id="nivel_id">
                                                 <option value="0">{{ 'Seleccione la empresa para mostrar los niveles'|trans }}</option>
                                                 {% for nivel in niveles %}
                                                     {% set selected = usuario.nivel ? usuario.nivel.id == nivel.id ? 'selected="selected"' : '' : '' %}
@@ -273,7 +289,7 @@
                                             <label for="division_funcional" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'División funcional'|trans }}</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
                                                 <input type="text" class="form-control form_sty1" name="division_funcional" id="division_funcional" value="{{ usuario.divisionFuncional }}">
-                                                <span class="fa fa-building"></span>
+                                                <span class="fa fa-cubes"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -282,7 +298,7 @@
                                             <label for="cargo" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Cargo'|trans }}</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
                                                 <input type="text" class="form-control form_sty1" name="cargo" id="cargo" value="{{ usuario.cargo }}">
-                                                <span class="fa fa-user"></span>
+                                                <span class="fa fa-id-badge"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -303,11 +319,16 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-sm-16">
-                                    	<div class="alert alert-success" role="alert">
-				                          <h4 class="alert-heading">{{ 'Buen trabajo'|trans }}!</h4>
-				                          <p>{{ 'Presiona el botón finalizar para completar'|trans }}.</p>
-				                        </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <label for="nivel_id" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Roles asignados'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select name="roles[]" id="roles" class="form-control" multiple="multiple">
+                                                {% for rol in roles %}
+                                                    {% set selected = rol.id in roles_asignados ? 'selected' : ''  %}
+                                                    <option value="{{ rol.id }}" {{ selected }}>{{ rol.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="wizard-footer">
@@ -317,26 +338,11 @@
                                 </div>
                 			</div>
                 		</div>
-                	</form>
-                </div>
+                    </div>
+                    <input type="submit" value="Aceptar" class="validaaa" id="finish2">
+                </form>
             </div>
 		</div>
-        <div class="row" id="div-error" style="display:none;">
-            <div class="col-sm-4">
-                &nbsp;
-            </div>
-            <div class="col-sm-8">
-                <div class="alert alert-danger" role="alert"> 
-                    <ul id="alert-error">
-                        <li>- Error 1</li>
-                        <li>- Error 2</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                &nbsp;
-            </div>
-        </div>
 	</div>
 </div>
 {% endblock %}
@@ -347,18 +353,24 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript">
+
+        $('#roles').multiSelect({
+            selectableHeader: "<div class='sty__title'>{{ 'Roles a seleccionar'|trans }}</div>",
+            selectionHeader: "<div class='sty__title'>{{ 'Roles asignados'|trans }}</div>"
+        });
+
         function validarForm()
         {
             var str_error = '';
             var nombre = $.trim($('#nombre').val());
             var pais_id = $('#pais_id').val();
-            var deslen = $('#deslen').val();
             
             if (nombre == '')
             {
-                str_error += "<li>- {{ 'El nombre de la empresa es requerido.'|trans }}</li>";
+                str_error += "<li>- {{ 'El nombre del usuario es requerido.'|trans }}</li>";
             }
             else {
                 if (nombre.length < 3)
@@ -372,12 +384,8 @@
                 str_error += "<li>- {{ 'El país es requerido.'|trans }}</li>";
             }
 
-            if (deslen < {{ maxlenght_bienvenida }})
-            {
-                str_error += "<li>- {{ 'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ maxlenght_bienvenida }}</li>";
-            }
-
             return str_error;
         }
     </script>
+    <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
 {% endblock %}
