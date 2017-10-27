@@ -36,9 +36,16 @@ División funcional: División funcional
 Editar: Editar
 Eliminado: Eliminado
 Eliminar: Eliminar
+El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
+El apellido del usuario es requerido.: El apellido del usuario es requerido.
+El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
+El campo usuario es requerido.: El campo usuario es requerido.
+El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
 El nombre de la empresa es requerido.: El nombre de la empresa es requerido.
+El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
+El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 Email de contacto: Email de Contacto
 Empresa: Empresa
@@ -46,10 +53,12 @@ Empresas: Empresas
 Empresa con estatus inactivo: Empresa con estatus inactivo
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
+Errores de validación: Errores de validación
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Fecha Creación: Fecha Creación
 Fecha de nacimiento: Fecha de nacimiento
+Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
 Guardar: Guardar
@@ -59,6 +68,7 @@ Icono: Icono
 Ir al listado: Ir al listado
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
+La clave es requerida.: La clave es requerida.
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas

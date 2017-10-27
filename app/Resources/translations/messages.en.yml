@@ -36,9 +36,16 @@ División funcional: Functional division
 Editar: Edit
 Eliminado: Deleted
 Eliminar: Remove
+El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
+El apellido del usuario es requerido.: User last name is required.
+El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
+El campo usuario es requerido.: User field is required.
+El correo personal tiene un formato inválido.: Personal email has invalid format.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
 El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.
 El nombre de la empresa es requerido.: Company name is required.
+El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
+El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
 Email de contacto: Contact Email
 Empresa: Company
@@ -46,10 +53,12 @@ Empresas: Companies
 Empresa con estatus inactivo: Company with inactive status
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
+Errores de validación: Validation errors
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Fecha Creación: Creation Date
 Fecha de nacimiento: Birthday
+Fecha de nacimiento es requerida.: Birthday is required.
 Filtrar usuarios: Filter users
 Finalizar: Finish
 Guardar: Save
@@ -59,6 +68,7 @@ Icono: Icon
 Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
 La categoría ha sido almacenada con éxito: Category has been saved successfully
+La clave es requerida.: Password is required.
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies

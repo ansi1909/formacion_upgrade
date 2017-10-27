@@ -37,19 +37,13 @@
 {% block body %}
 
 {% set uri = app.request.getbasepath %}
-<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <br><br>
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_usuarios', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
-    <div class="col-sm-8 col-md-8 col-lg-8" id="div-error">
-        <div class="alert alert-danger" role="alert"> 
-            <ul id="alert-error">
-                <li>- Error 1</li>
-                <li>- Error 2</li>
-            </ul>
-        </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
     </div>
 </div>
 <div class="row">
@@ -63,6 +57,7 @@
            	<div class="card-block">
                 <form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
                     <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+                    <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
                     <div class="container_wizard wizard-thin">
                     	<div class="stepwizard">
                     		<div class="stepwizard-row setup-panel d-flex">
@@ -339,7 +334,6 @@
                 			</div>
                 		</div>
                     </div>
-                    <input type="submit" value="Aceptar" class="validaaa" id="finish2">
                 </form>
             </div>
 		</div>
@@ -362,30 +356,62 @@
             selectionHeader: "<div class='sty__title'>{{ 'Roles asignados'|trans }}</div>"
         });
 
-        function validarForm()
-        {
-            var str_error = '';
-            var nombre = $.trim($('#nombre').val());
-            var pais_id = $('#pais_id').val();
-            
-            if (nombre == '')
-            {
-                str_error += "<li>- {{ 'El nombre del usuario es requerido.'|trans }}</li>";
-            }
-            else {
-                if (nombre.length < 3)
-                {
-                    str_error += "<li>- {{ 'El nombre de la empresa debe ser mínimo de 3 caracteres.'|trans }}</li>";
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'apellido': {
+                    required: true,
+                    minlength: 3
+                },
+                'login': {
+                    required: true,
+                    minlength: 3
+                },
+                'clave': {
+                    required: {
+                        depends: function(element) {
+                            return $("#cambiar").is(":checked") || $('#usuario_id').val() == '';
+                        }
+                    }
+                },
+                'correo_personal': {
+                    email: true
+                },
+                'fecha_nacimiento': {
+                    required: true
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "- {{ 'El nombre del usuario es requerido.'|trans }}",
+                    minlength: "- {{ 'El nombre del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'apellido': {
+                    required: "- {{ 'El apellido del usuario es requerido.'|trans }}",
+                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'login': {
+                    required: "- {{ 'El campo usuario es requerido.'|trans }}",
+                    minlength: "- {{ 'El campo usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'clave': {
+                    required: "- {{ 'La clave es requerida.'|trans }}"
+                },
+                'correo_personal': {
+                    email: "- {{ 'El correo personal tiene un formato inválido.'|trans }}"
+                },
+                'fecha_nacimiento': {
+                    required: "- {{ 'Fecha de nacimiento es requerida.'|trans }}"
                 }
             }
+        });
 
-            if (pais_id == '')
-            {
-                str_error += "<li>- {{ 'El país es requerido.'|trans }}</li>";
-            }
-
-            return str_error;
-        }
     </script>
     <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
 {% endblock %}
