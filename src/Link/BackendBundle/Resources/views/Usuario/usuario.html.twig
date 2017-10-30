@@ -58,6 +58,7 @@
                 <form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
                     <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
                     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
+                    <input type="hidden" id="roles_empresa_str" name="roles_empresa_str" value="{{ roles_empresa_str }}">
                     <div class="container_wizard wizard-thin">
                     	<div class="stepwizard">
                     		<div class="stepwizard-row setup-panel d-flex">
@@ -356,6 +357,39 @@
             selectionHeader: "<div class='sty__title'>{{ 'Roles asignados'|trans }}</div>"
         });
 
+        $('#finish').click(function(){
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                notify($('#div-error').html());
+            }
+            else {
+
+                // Validaciones adicionales
+                var roles = $('#roles').val();
+                var empresa_id = $('#empresa_id').val();
+                var nivel_id = $('#nivel_id').val();
+                var roles_empresa_str = $('#roles_empresa_str').val();
+                for (i=0; i<roles.length; i++)
+                {
+                    if ((roles_empresa_str.indexOf(roles[i]) >= 0) && (empresa_id == 0 || nivel_id == 0))
+                    {
+                        valid = false;
+                    }
+                }
+
+                if (!valid){
+                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar tanto la empresa como el nivel.'|trans }}</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else {
+                    $('#form').submit();
+                }
+
+            }
+        });
+
         $("#form").validate({
             errorLabelContainer: "#div-error ul",
             wrapper: "li",
@@ -385,6 +419,10 @@
                 },
                 'fecha_nacimiento': {
                     required: true
+                },
+                'roles[]': {
+                    required: true,
+                    minlength: 1
                 }
             },
             messages: {
@@ -408,6 +446,16 @@
                 },
                 'fecha_nacimiento': {
                     required: "- {{ 'Fecha de nacimiento es requerida.'|trans }}"
+                },
+                'roles[]': {
+                    required: "- {{ 'Debe seleccionar al menos un rol.'|trans }}",
+                    minlength: "- {{ 'Debe seleccionar al menos un rol.'|trans }}"
+                },
+                'empresa_id': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
+                },
+                'nivel_id': {
+                    required: "- {{ 'El nivel es requerido.'|trans }}"
                 }
             }
         });

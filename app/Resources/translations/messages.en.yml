@@ -29,6 +29,8 @@ Datos de la categoría: Category data
 Datos de la empresa: Company Data
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
+Debe seleccionar al menos un rol.: You must select at least one role.
+Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
@@ -69,6 +71,7 @@ Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.
+La empresa es requerida.: Company is required.
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies

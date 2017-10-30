@@ -246,24 +246,78 @@ class UsuarioController extends Controller
         $query = $qb->getQuery();
         $roles = $query->getResult();
 
+        // Lista de roles de empresa
+        $qb = $em->createQueryBuilder();
+        $qb->select('r')
+           ->from('LinkComunBundle:AdminRol', 'r')
+           ->andWhere('r.id != :administrador')
+           ->setParameter('administrador', $yml['parameters']['rol']['administrador']);
+        $query = $qb->getQuery();
+        $roles_empresa_bd = $query->getResult();
+        $roles_empresa = array();
+        foreach ($roles_empresa_bd as $rol_empresa)
+        {
+            $roles_empresa[] = $rol_empresa->getId();
+        }
+        $roles_empresa_str = implode(",", $roles_empresa);
+       
+
         if ($request->getMethod() == 'POST')
         {
 
-            /*$nombre = $request->request->get('nombre');
-            $pais_id = $request->request->get('pais_id');
-            $bienvenida = $request->request->get('bienvenida');
+            $nombre = $request->request->get('nombre');
+            $apellido = $request->request->get('apellido');
+            $foto = $request->request->get('foto');
+            $login = $request->request->get('login');
+            $clave = $request->request->get('clave');
+            $correo_personal = $request->request->get('correo_personal');
+            $fecha_nacimiento = $request->request->get('fecha_nacimiento');
             $activo = $request->request->get('activo');
+            $correo_corporativo = $request->request->get('correo_corporativo');
+            $fecha_nacimiento = $request->request->get('fecha_nacimiento');
+            $pais_id = $request->request->get('pais_id');
+            $ciudad = $request->request->get('ciudad');
+            $region = $request->request->get('region');
+            $empresa_id = $request->request->get('empresa_id');
+            $nivel_id = $request->request->get('nivel_id');
+            $division_funcional = $request->request->get('division_funcional');
+            $cargo = $request->request->get('cargo');
+            $roles = $request->request->get('roles');
 
-            $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id);
+            $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
+            $empresa = $empresa_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id) : null;
+            $nivel = $nivel_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id) : null;
 
-            $empresa->setNombre($nombre);
-            $empresa->setActivo($activo ? true : false);
-            $empresa->setBienvenida($bienvenida);
-            $empresa->setPais($pais);
-            $em->persist($empresa);
+            $usuario->setNombre($nombre);
+            $usuario->setApellido($apellido);
+            $usuario->setLogin($login);
+            if (!$usuario_id)
+            {
+                $usuario->setClave($clave);
+            }
+            $usuario->setCorreoPersonal($correo_personal);
+            $usuario->setCorreoCorporativo($correo_corporativo);
+            $usuario->setActivo($activo ? true : false);
+            $fn_array = explode("/", $fecha_nacimiento);
+            $d = $fn_array[0];
+            $m = $fn_array[1];
+            $a = $fn_array[2];
+            $fecha_nacimiento = "$a-$m-$d";
+            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            $usuario->setPais($pais);
+            $usuario->setCiudad($ciudad);
+            $usuario->setRegion($region);
+            $usuario->setEmpresa($empresa);
+            $usuario->setFoto($foto);
+            $usuario->setDivisonFuncional($division_funcional);
+            $usuario->setCargo($cargo);
+            $usuario->setNivel($nivel);
+            $em->persist($usuario);
             $em->flush();
 
-            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));*/
+            // Roles seleccionados
+
+            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
 
         }
         
@@ -273,7 +327,8 @@ class UsuarioController extends Controller
                                                                                   'empresa_asignada' => $empresa_asignada,
                                                                                   'niveles' => $niveles,
                                                                                   'roles' => $roles,
-                                                                                  'roles_asignados' => $roles_asignados));
+                                                                                  'roles_asignados' => $roles_asignados,
+                                                                                  'roles_empresa_str' => $roles_empresa_str));
 
     }
 

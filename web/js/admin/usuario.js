@@ -1,12 +1,4 @@
 $(document).ready(function() {
-	
-	$('#finish').click(function(){
-    	var valid = $("#form").valid();
-    	if (!valid) 
-    	{
-    		notify($('#div-error').html());
-    	}
-    });
 
     $('#fecha_nacimiento').datepicker({
 	    startView: 1,
