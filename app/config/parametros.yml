@@ -5,4 +5,6 @@ parameters:
         tutor: 3
         reporte: 4
         empresa: 5
+    folders:
+        uploads: 'http://localhost/uploads/'
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

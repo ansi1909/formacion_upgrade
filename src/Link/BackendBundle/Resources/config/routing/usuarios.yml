@@ -5,3 +5,7 @@ _usuarios:
 _usuario:
     path:     /usuario/{usuario_id}
     defaults: { _controller: LinkBackendBundle:Usuario:usuario, usuario_id: 0 }
+
+_showUsuario:
+    path:     /showUsuario/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:showUsuario }

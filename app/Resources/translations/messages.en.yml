@@ -29,6 +29,7 @@ Datos de la categoría: Category data
 Datos de la empresa: Company Data
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
+Datos del usuario: User details
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
@@ -42,6 +43,7 @@ El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must h
 El apellido del usuario es requerido.: User last name is required.
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
 El campo usuario es requerido.: User field is required.
+El correo corporativo tiene un formato inválido.: Company email has invalid format.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
 El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.

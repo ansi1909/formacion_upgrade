@@ -33,6 +33,16 @@ $(document).ready(function() {
 		});
 	});
 
+	$('#cambiar').click(function(){
+		if ($(this).is(':checked'))
+		{
+			$('#clave').prop('disabled', false); // Se activa el campo de contraseña
+		}
+		else {
+			$('#clave').prop('disabled', true); // Se desactiva el campo de contraseña
+		}
+	});
+
 });
 
 function responsive_filemanager_callback(field_id){

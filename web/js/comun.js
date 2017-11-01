@@ -84,4 +84,10 @@ $(document).ready(function() {
 
     $('[data-toggle="tooltip"]').tooltip();
 
+    $('.no-check').click(function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    });
+
 });

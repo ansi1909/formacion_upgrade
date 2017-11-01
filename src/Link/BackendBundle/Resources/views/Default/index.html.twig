@@ -7,6 +7,9 @@
 			<h3>Dashboard</h3>
             {% set uri = app.request.getbasepath %}
             {{ uri }}
+            <br>{{ app.request.getBaseURL() }}
+            <br>{{ app.request.server.get('DOCUMENT_ROOT') }}
+            <br>{{ root_path }}
 		</div>
 	</div>
 {% endblock %}

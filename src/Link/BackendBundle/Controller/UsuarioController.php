@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminUsuario;
+use Link\ComunBundle\Entity\AdminRolUsuario;
 
 class UsuarioController extends Controller
 {
@@ -178,6 +179,7 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
+        $roles_usuario = array();
         $roles_asignados = array();
 
         $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
@@ -220,9 +222,10 @@ class UsuarioController extends Controller
 
         // Niveles de la empresa asignada
         $niveles = array();
-        if ($empresa_asignada)
+        if ($empresa_asignada || $usuario->getEmpresa())
         {
-            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_asignada),
+            $empresa_usuario = $usuario->getEmpresa() ? $usuario->getEmpresa()->getId() : $empresa_asignada;
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_usuario),
                                                                                                  array('nombre' => 'ASC'));
         }
 
@@ -270,6 +273,7 @@ class UsuarioController extends Controller
             $foto = $request->request->get('foto');
             $login = $request->request->get('login');
             $clave = $request->request->get('clave');
+            $cambiar = $request->request->get('cambiar');
             $correo_personal = $request->request->get('correo_personal');
             $fecha_nacimiento = $request->request->get('fecha_nacimiento');
             $activo = $request->request->get('activo');
@@ -282,7 +286,7 @@ class UsuarioController extends Controller
             $nivel_id = $request->request->get('nivel_id');
             $division_funcional = $request->request->get('division_funcional');
             $cargo = $request->request->get('cargo');
-            $roles = $request->request->get('roles');
+            $roles_seleccionados = $request->request->get('roles');
 
             $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
             $empresa = $empresa_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id) : null;
@@ -291,7 +295,7 @@ class UsuarioController extends Controller
             $usuario->setNombre($nombre);
             $usuario->setApellido($apellido);
             $usuario->setLogin($login);
-            if (!$usuario_id)
+            if (!$usuario_id || $cambiar)
             {
                 $usuario->setClave($clave);
             }
@@ -309,15 +313,44 @@ class UsuarioController extends Controller
             $usuario->setRegion($region);
             $usuario->setEmpresa($empresa);
             $usuario->setFoto($foto);
-            $usuario->setDivisonFuncional($division_funcional);
+            $usuario->setDivisionFuncional($division_funcional);
             $usuario->setCargo($cargo);
             $usuario->setNivel($nivel);
             $em->persist($usuario);
             $em->flush();
 
-            // Roles seleccionados
+            // Se buscan los roles asignados para eliminar los que no fueron seleccionados
+            foreach ($roles_usuario as $ru)
+            {
+                if (!in_array($ru->getRol()->getId(), $roles_seleccionados))
+                {
+                    $em->remove($ru);
+                    $em->flush();
+                }
+            }
 
-            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
+            foreach ($roles_seleccionados as $rs)
+            {
+
+                $rol_asignado = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRolUsuario')->findOneBy(array('rol' => $rs,
+                                                                                                                        'usuario' => $usuario->getId()));
+
+                if (!$rol_asignado)
+                {
+
+                    $rol = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->find($rs);
+
+                    $rol_usuario = new AdminRolUsuario();
+                    $rol_usuario->setRol($rol);
+                    $rol_usuario->setUsuario($usuario);
+                    $em->persist($rol_usuario);
+                    $em->flush();
+
+                }
+
+            }
+
+            return $this->redirectToRoute('_showUsuario', array('usuario_id' => $usuario->getId()));
 
         }
         
@@ -328,7 +361,62 @@ class UsuarioController extends Controller
                                                                                   'niveles' => $niveles,
                                                                                   'roles' => $roles,
                                                                                   'roles_asignados' => $roles_asignados,
-                                                                                  'roles_empresa_str' => $roles_empresa_str));
+                                                                                  'roles_empresa_str' => $roles_empresa_str,
+                                                                                  'uploads' => $yml['parameters']['folders']['uploads']));
+
+    }
+
+    public function showUsuarioAction($usuario_id, Request $request){
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $roles_asignados = array();
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+
+        $roles_usuario = $em->getRepository('LinkComunBundle:AdminRolUsuario')->findByUsuario($usuario_id);
+        foreach ($roles_usuario as $ru)
+        {
+            $roles_asignados[] = $ru->getRol()->getId();
+        }
+        
+        // Lista de roles
+        $qb = $em->createQueryBuilder();
+        $qb->select('r')
+           ->from('LinkComunBundle:AdminRol', 'r');
+
+        if ($usuario->getEmpresa() && !$session->get('administrador')){
+            $qb->andWhere('r.id != :administrador');
+            $parametros['administrador'] = $yml['parameters']['rol']['administrador'];
+        }
+        
+        $qb->orderBy('r.nombre', 'ASC');
+        
+        if ($usuario->getEmpresa() && !$session->get('administrador'))
+        {
+            $qb->setParameters($parametros);
+        }
+        
+        $query = $qb->getQuery();
+        $roles = $query->getResult();
+
+        return $this->render('LinkBackendBundle:Usuario:show.html.twig', array('usuario' => $usuario,
+                                                                               'roles' => $roles,
+                                                                               'roles_asignados' => $roles_asignados,
+                                                                               'uploads' => $yml['parameters']['folders']['uploads']));
 
     }
 

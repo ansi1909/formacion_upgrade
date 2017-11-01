@@ -29,6 +29,7 @@ Datos de la categoría: Datos de la categoría
 Datos de la empresa: Datos de la empresa
 Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
+Datos del usuario: Datos del usuario
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
@@ -42,6 +43,7 @@ El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuar
 El apellido del usuario es requerido.: El apellido del usuario es requerido.
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
 El campo usuario es requerido.: El campo usuario es requerido.
+El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.

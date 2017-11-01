@@ -42,6 +42,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         maxlenght_bienvenida: 5
+        root_path: %kernel.root_dir%
 
 # Doctrine Configuration
 doctrine:
