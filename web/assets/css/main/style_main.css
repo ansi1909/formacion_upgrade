@@ -243,7 +243,7 @@
         .form_login_style1:active + span, .form_login_style1:focus + span, .form_login_style2:active + span, .form_login_style2:focus + span{
             opacity: 1;
             display: inline-block;
-            transform: translateX(32px);
+            transform: translateX(24px);
         }
     /*Fin Estilos de formularios*/
     /*Tipos de Botones*/
@@ -462,7 +462,7 @@
         .bttn__login{
             position: absolute; 
             top: 15rem; 
-            left: .85rem; 
+            left: .80rem; 
             width: 93.4%; 
             padding: 10px 0px; 
             cursor: pointer; 

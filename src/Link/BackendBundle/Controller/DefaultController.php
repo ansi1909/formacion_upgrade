@@ -149,11 +149,31 @@ class DefaultController extends Controller
 
     public function loginAction(Request $request)
     {
+        $session = new session();
+        $f = $this->get('funciones');
+        $error = '';
 
         if ($request->getMethod() == 'POST')
         {
-            return new Response('Hizo submit');
+            $em = $this->getDoctrine()->getManager();
+            $login = $request->request->get('usuario');
+            $clave = $request->request->get('clave');
+            
+            $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login,
+                                                                                                            'clave' => $clave));
+    
+            if(!$usuario){
+                $error = 'Usuario o clave incorrecta';
+            }
+            else {
+                if (!$usuario->getActivo()){
+                    $error = 'Usuario inactivo. Contacte al administrador del sistema';
+                }
+            }
         }
-        return $this->render('LinkBackendBundle:Default:login.html.twig');
+        else {
+            $session->invalidate();
+        }
+        return $this->render('LinkBackendBundle:Default:login.html.twig', array( 'error' => $error));
     }
 }
