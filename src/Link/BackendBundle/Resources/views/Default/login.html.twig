@@ -1,0 +1,32 @@
+{% extends '::login_bck.html.twig' %}
+
+{% block body %}
+	<div class="col-md-14 offset-md-1 col-sm-14 offset-sm-1" style="margin-top: 5em">
+	    <form action="{{ path('_loginAdmin') }}" method="POST">
+	        <div class="card" style="border: none; background: rgba(0, 0, 0, .3)">
+	            <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+	                <h1 class="card-title text-left" style="font-weight: bold; color: #fff">
+	                    Login
+	                </h1>
+	            </div>
+	            <div class="card-block">
+	                <div class="form-group row justify-content-center">
+	                    <input type="text" placeholder="Usuario" class="form-control form_login_style1" id="usuario" name="usuario" style="background: #fff; width: 80%;"><span class="fa fa-user"></span>
+	                </div>
+	                <div class="form-group row justify-content-center" style="color: #fff;">
+	                    <input type="password" placeholder="Contraseña" class="form-control form_login_style2" id="clave" name="clave" style="background: #fff; width: 80%;"><span class="fa fa-lock"></span>
+	                </div>
+	                <div class="form-group row justify-content-start" style="margin-bottom: 0px; padding-left: 2.7rem; margin-bottom: .5rem">
+	                    <label class="custom-control custom-checkbox">
+	                        <input type="checkbox" class="custom-control-input">
+	                        <span class="custom-control-indicator"></span> <span class="custom-control-description" style="color: #fff">Recordarme</span> 
+	                    </label>
+	                </div>
+	            </div>
+	        </div>
+	        <button class="bttn__login" type="submit">
+	            <span>Iniciar Sesion</span>
+	        </button>
+	    </form>
+	</div>
+{% endblock %}

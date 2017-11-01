@@ -146,4 +146,14 @@ class DefaultController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
+
+    public function loginAction(Request $request)
+    {
+
+        if ($request->getMethod() == 'POST')
+        {
+            return new Response('Hizo submit');
+        }
+        return $this->render('LinkBackendBundle:Default:login.html.twig');
+    }
 }

@@ -2,6 +2,10 @@ _inicioAdmin:
     path:     /index
     defaults: { _controller: LinkBackendBundle:Default:index }
 
+_loginAdmin:
+    path:     /login
+    defaults: { _controller: LinkBackendBundle:Default:login }
+
 _authException:
     path:     /authException
     defaults: { _controller: LinkBackendBundle:Default:authException }
