@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\AdminAplicacion;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class AppController extends Controller
 {
@@ -75,6 +76,84 @@ class AppController extends Controller
 
         return $this->render('LinkBackendBundle:App:index.html.twig', array('aplicaciones' => $aplicaciones,
         																	'aplicaciones_str' =>$aplicaciones_str));
+
+        // Solicita el servicio de excel
+        /*   $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+
+           $phpExcelObject->getProperties()->setCreator("liuggio")
+               ->setLastModifiedBy("Giulio De Donato")
+               ->setTitle("Office 2005 XLSX Test Document")
+               ->setSubject("Office 2005 XLSX Test Document")
+               ->setDescription("Test document for Office 2005 XLSX, generado usando clases de PHP")
+               ->setKeywords("office 2005 openxml php")
+               ->setCategory("Archivo de ejemplo");
+           $phpExcelObject->setActiveSheetIndex(0)
+               ->setCellValue('A1', 'Hola')
+               ->setCellValue('B2', 'Mundo!');
+           $phpExcelObject->getActiveSheet()->setTitle('Simple');
+           // Define el indice de página al número 1, para abrir esa página al abrir el archivo
+           $phpExcelObject->setActiveSheetIndex(0);
+
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
+            // Envia la respuesta del controlador
+            $response = $this->get('phpexcel')->createStreamedResponse($writer);
+            // Agrega los headers requeridos
+            $dispositionHeader = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                'PhpExcelFileSample.xlsx'
+            );
+
+            $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+            $response->headers->set('Pragma', 'public');
+            $response->headers->set('Cache-Control', 'maxage=1');
+            $response->headers->set('Content-Disposition', $dispositionHeader);
+
+            return $response;*/
+
+
+
+
+
+        // estas lineas nos puede servir para comprobar que nuestro fichero
+      // que queremos cargar existe
+      // $fileWithPath - Es el nombre del fichero con el path completo
+      // if(file_exists($fileWithPath)) {
+      //      echo 'exist'."<br>";
+      // } else {
+      //      echo 'dont exist'."<br>";
+      //      die;
+      // }
+      //cargamos el archivo a procesar.
+    /*$fileWithPath = $this->get('kernel')->getRootDir()."/../web/balance_2017.xlsx";
+      //$objPHPExcel = $this->get('xls.load_xls2007')->load($fileWithPath);
+    $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+      //se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
+      $total_sheets=$objPHPExcel->getSheetCount();
+      $allSheetName=$objPHPExcel->getSheetNames();
+      $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+      //Se obtiene el número máximo de filas
+      $highestRow = $objWorksheet->getHighestRow();
+      //Se obtiene el número máximo de columnas
+      $highestColumn = $objWorksheet->getHighestColumn();
+      $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+      //$headingsArray contiene las cabeceras de la hoja excel. Llos titulos de columnas
+      $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
+      $headingsArray = $headingsArray[1];
+ 
+      //Se recorre toda la hoja excel desde la fila 2 y se almacenan los datos
+       $r = -1;
+       $namedDataArray = array();
+       for ($row = 2; $row <= $highestRow; ++$row) {
+            $dataRow = $objWorksheet->rangeToArray('A'.$row.':'.$highestColumn.$row,null, true, true, true);
+            if ((isset($dataRow[$row]['A'])) && ($dataRow[$row]['A'] > '')) {
+                  ++$r;
+                  foreach($headingsArray as $columnKey => $columnHeading) {
+                          $namedDataArray[$r][$columnHeading] = $dataRow[$row][$columnKey];
+                  } //endforeach
+            } //endif
+        }
+       return new Response(var_dump($namedDataArray));*/
 
     }
 
