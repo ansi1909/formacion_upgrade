@@ -45,6 +45,7 @@ El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser m�
 El campo usuario es requerido.: El campo usuario es requerido.
 El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
+El login ya existe.: El login ya existe.
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
 El nombre de la empresa es requerido.: El nombre de la empresa es requerido.
@@ -68,11 +69,13 @@ Finalizar: Finalizar
 Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
+Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Icono: Icono
 Ir al listado: Ir al listado
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
 La clave es requerida.: La clave es requerida.
+La empresa es requerida.: La empresa es requerida.
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
@@ -111,6 +114,7 @@ Si: Si
 Siguiente: Siguiente
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Su registro ha sido eliminado: Su registro ha sido eliminado
+Subir Archivo de Niveles: Subir Archivo de Niveles
 Sub-Aplicación de: Sub-Aplicación de
 Teléfono de contacto: Teléfono de Contacto
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta

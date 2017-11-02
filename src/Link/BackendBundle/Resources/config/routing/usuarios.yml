@@ -9,3 +9,9 @@ _usuario:
 _showUsuario:
     path:     /showUsuario/{usuario_id}
     defaults: { _controller: LinkBackendBundle:Usuario:showUsuario }
+
+_ajaxValidLogin:
+    path:     /ajaxValidLogin
+    defaults: { _controller: LinkBackendBundle:Usuario:ajaxValidLogin }
+    requirements:
+        _method: POST

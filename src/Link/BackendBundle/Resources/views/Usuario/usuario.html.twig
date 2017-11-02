@@ -57,6 +57,7 @@
            	<div class="card-block">
                 <form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
                     <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+                    <input type="hidden" id="url_login" name="url_login" value="{{ path('_ajaxValidLogin') }}">
                     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
                     <input type="hidden" id="roles_empresa_str" name="roles_empresa_str" value="{{ roles_empresa_str }}">
                     <div class="container_wizard wizard-thin">
@@ -222,7 +223,7 @@
                                             <select class="form-control form_sty_select" name="pais_id" id="pais_id">
                                                 <option value=""></option>
                                                 {% for pais in paises %}
-                                                    {% set selected = usuario.pais.id == pais.id ? 'selected="selected"' : '' %}
+                                                    {% set selected = usuario.pais ? usuario.pais.id == pais.id ? 'selected="selected"' : '' : '' %}
                                                     <option value="{{ pais.id }}" {{ selected }} >{{ pais.nombre|trim }}</option>
                                                 {% endfor %}
                                             </select>
@@ -371,6 +372,9 @@
                 var empresa_id = $('#empresa_id').val();
                 var nivel_id = $('#nivel_id').val();
                 var roles_empresa_str = $('#roles_empresa_str').val();
+                var usuario_id = $('#usuario_id').val();
+                var login = $('#login').val();
+
                 for (i=0; i<roles.length; i++)
                 {
                     if ((roles_empresa_str.indexOf(roles[i]) >= 0) && (empresa_id == 0 || nivel_id == 0))
@@ -385,7 +389,37 @@
                     notify($('#div-error').html());
                 }
                 else {
-                    $('#form').submit();
+
+                    // Validar si el login no existe cuando es un usuario nuevo
+                    if (!usuario_id)
+                    {
+                        $.ajax({
+                            type: "POST",
+                            url: $('#url_login').val(),
+                            async: true,
+                            data: { login: login },
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.ok != 0)
+                                {
+                                    $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
+                                    $('#div-error ul').show();
+                                    notify($('#div-error').html());
+                                }
+                                else {
+                                    $('#form').submit();
+                                }
+                            },
+                            error: function(){
+                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
+                                $('#div-error ul').show();
+                                notify($('#div-error').html());
+                            }
+                        });
+                    }
+                    else {
+                        $('#form').submit();
+                    }
                 }
 
             }

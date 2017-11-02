@@ -44,3 +44,7 @@ http://www.maestrosdelweb.com/editorial/curso-symfony2-seguridad-de-acceso/
 - Variables globales en TWIG
 {{ app.request.basepath }}<br>
 {{ app.request.baseurl }}<br>
+
+- Instalar el Bundle LiuggioExcelbundle
+1. Instalar composer
+2. Ejecutar: composer require liuggio/excelbundle

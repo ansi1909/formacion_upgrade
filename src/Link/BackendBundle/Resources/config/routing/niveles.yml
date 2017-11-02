@@ -18,6 +18,10 @@ _niveles:
     path:     /niveles/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Nivel:niveles }
 
+_uploadNiveles:
+    path:     /uploadNiveles/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Nivel:uploadNiveles }
+
 _ajaxUploadNivel:
     path:     /ajaxUploadNivel
     defaults: { _controller: LinkBackendBundle:Nivel:ajaxUploadNivel }

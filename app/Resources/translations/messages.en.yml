@@ -45,6 +45,7 @@ El campo usuario debe ser mínimo de 3 caracteres.: User field must have at leas
 El campo usuario es requerido.: User field is required.
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
+El login ya existe.: Login already exists.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
 El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.
 El nombre de la empresa es requerido.: Company name is required.
@@ -68,6 +69,7 @@ Finalizar: Finish
 Guardar: Save
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
+Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Icono: Icon
 Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
@@ -112,6 +114,7 @@ Si: Yes
 Siguiente: Next
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
 Su registro ha sido eliminado: The item has been deleted
+Subir Archivo de Niveles: Upload Levels File
 Sub-Aplicación de: Sub-Application of
 Teléfono de contacto: Contact Number
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL

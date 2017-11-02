@@ -1,12 +1,7 @@
 {% extends '::admin.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
-{% endblock %}
-
 {% block body %}
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') }) }}">
+
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeNiveles') }}">
 <br>
 <div class="row align-items-center justify-content-between">

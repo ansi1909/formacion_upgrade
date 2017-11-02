@@ -271,7 +271,7 @@ class UsuarioController extends Controller
             $nombre = $request->request->get('nombre');
             $apellido = $request->request->get('apellido');
             $foto = $request->request->get('foto');
-            $login = $request->request->get('login');
+            $login = strtolower($request->request->get('login'));
             $clave = $request->request->get('clave');
             $cambiar = $request->request->get('cambiar');
             $correo_personal = $request->request->get('correo_personal');
@@ -418,6 +418,25 @@ class UsuarioController extends Controller
                                                                                'roles_asignados' => $roles_asignados,
                                                                                'uploads' => $yml['parameters']['folders']['uploads']));
 
+    }
+
+    public function ajaxValidLoginAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $login = strtolower($request->request->get('login'));
+        
+        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                    WHERE u.login = :login')
+                    ->setParameter('login', $login);
+        $ok = $query->getSingleScalarResult();
+                    
+        $return = array('ok' => $ok);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }

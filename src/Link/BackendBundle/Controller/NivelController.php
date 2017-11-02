@@ -191,4 +191,16 @@ class NivelController extends Controller
         
     }
 
+    public function uploadNivelesAction($empresa_id, Request $request)
+    {
+        
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        
+        return $this->render('LinkBackendBundle:Nivel:uploadNiveles.html.twig', array ('empresa' => $empresa));
+
+    }
+
 }
