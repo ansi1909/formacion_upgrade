@@ -71,6 +71,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Icono: Icon
+Iniciar Sesión: Log in
 Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
 La categoría ha sido almacenada con éxito: Category has been saved successfully
@@ -80,6 +81,8 @@ Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies
 Listado de Roles: List of Roles
+Panel de acceso: Login
+Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: the roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Mensaje del servidor: Server message
 Nivel: Level
@@ -102,6 +105,7 @@ Permisos por Rol: Permissions by Role
 Presiona el botón finalizar para completar: Press finish button to complete
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
+Recordarme: Remember me
 Región: Region
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
@@ -117,5 +121,8 @@ Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
 Sub-Aplicación de: Sub-Application of
 Teléfono de contacto: Contact Number
+Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
 Usuario: User
+Usuario inactivo. Contacte al administrador del sistema.: Inactive user. Contact the system administrator.
+Usuario o clave incorrecta.: User or password incorrect.

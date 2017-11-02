@@ -1,65 +1,35 @@
 {% extends '::login_bck.html.twig' %}
 
 {% block body %}
-    <div class="row align-items-center justify-content-start">
-        <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
-            <ul><li><span class="error" style="color: #fff;">{{ error }}</span></li></ul>
-        </div>
-    </div>
 	<div class="col-md-14 offset-md-1 col-sm-14 offset-sm-1" style="margin-top: 5em">
 	    <form action="{{ path('_loginAdmin') }}" method="POST">
-	        <div class="card" style="border: none; background: rgba(0, 0, 0, .3)">
+	        <div class="card" style="border: none; background: rgba(0, 0, 0, .3); max-height: 18rem;">
 	            <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
 	                <h1 class="card-title text-left" style="font-weight: bold; color: #fff">
-	                    Login
+                        {{ 'Panel de acceso'|trans }}
 	                </h1>
 	            </div>
 	            <div class="card-block">
 	                <div class="form-group row justify-content-between">
-	                    <input type="text" placeholder="Usuario" class="form-control form_login_style1 offset-md-1" id="usuario" name="usuario" style="background: #fff; width: 85%;" value=""><span class="fa fa-user"></span>
+                        <input type="text" placeholder="{{ 'Usuario'|trans }}" class="form-control form_login_style1 offset-md-1" id="usuario" name="usuario" style="background: #fff; width: 85%;" value=""><span class="fa fa-user"></span>
 	                </div>
 	                <div class="form-group row justify-content-between">
-                        <input type="password" placeholder="Contraseña" class="form-control form_login_style2 offset-md-1" id="clave" name="clave" style="background: #fff; width: 85%;" value=""><span class="fa fa-lock"></span>
+                        <input type="password" placeholder="{{ 'Contraseña'|trans }}" class="form-control form_login_style2 offset-md-1" id="clave" name="clave" style="background: #fff; width: 85%;" value=""><span class="fa fa-lock"></span>
+                        <span class="error error__style">{{ error }}</span>
 	                </div>
-	                <div class="form-group row justify-content-start" style="margin-top: -15px; padding-left: 2rem; margin-bottom: 1.5rem">
+	                <div class="form-group row justify-content-start" style="margin-top: -15px; padding-left: 2rem; margin-bottom: 2rem">
 	                    <label class="custom-control custom-checkbox">
 	                        <input type="checkbox" class="custom-control-input">
-	                        <span class="custom-control-indicator"></span> <span class="custom-control-description" style="color: #fff">Recordarme</span> 
+                            <span class="custom-control-indicator"></span> <span class="custom-control-description" style="color: #fff">{{ 'Recordarme'|trans }}</span> 
 	                    </label>
 	                </div>
 	            </div>
 	        </div>
 	        <button class="bttn__login" type="submit" id="iniciar_sesion">
-	            <span>Iniciar Sesion</span>
+                <span>{{ 'Iniciar Sesión' |trans }}</span>
 	        </button>
 	    </form>
 	</div>
 {% endblock %}
 {% block javascripts %}
-    {{ parent()}}
-    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript">
-        $('#iniciar_sesion').click(function(){
-            var valid = $('#form').valid;
-            console.log('Entro');
-            if (!valid) 
-            {
-                $('#div-error').show();
-                notify($('#div-error').html());
-            }
-            $("#form").validate({
-                errorLabelContainer: "#div-error ul",
-                wrapper: "li",
-                ignore: "",
-                rules: {
-
-                },
-                messages: {
-                    'Usuario': {
-                        required: "- {{ error }}",
-                    }
-                }
-            });
-        });
-    </script>
 {% endblock%}

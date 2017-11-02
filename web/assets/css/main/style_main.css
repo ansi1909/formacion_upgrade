@@ -461,8 +461,8 @@
         
         .bttn__login{
             position: absolute; 
-            top: 15rem; 
-            left: .80rem; 
+            top: 15.8rem; 
+            left: .82rem; 
             width: 93.4%; 
             padding: 10px 0px; 
             cursor: pointer; 
@@ -652,6 +652,15 @@
         text-transform: uppercase; 
         font-weight: bold;
     }
+
+    /*Error Style*/
+
+    .error__style{
+        color: #fd5c63; 
+        margin: 5px 10px 0px 30px; 
+        text-align: left;
+    }
+
 /*Identificadores*/
 
 /*Animations*/

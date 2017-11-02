@@ -71,6 +71,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha 
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Icono: Icono
+Iniciar Sesión: Iniciar Sesión
 Ir al listado: Ir al listado
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
@@ -80,6 +81,8 @@ Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
 Listado de Roles: Listado de Roles
+Panel de acceso: Panel de acceso
+Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Mensaje del servidor: Mensaje del servidor
 Nivel: Nivel
@@ -102,6 +105,7 @@ Permisos por Rol: Permisos por Rol
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
+Recordarme: Recordarme
 Región: Región
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
@@ -117,5 +121,8 @@ Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir Archivo de Niveles: Subir Archivo de Niveles
 Sub-Aplicación de: Sub-Aplicación de
 Teléfono de contacto: Teléfono de Contacto
+Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usuario: Usuario
+Usuario inactivo. Contacte al administrador del sistema.: Usuario inactivo. Contacte al administrador del sistema.
+Usuario o clave incorrecta.: Usuario o clave incorrecta.

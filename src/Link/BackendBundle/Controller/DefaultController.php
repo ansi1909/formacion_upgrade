@@ -152,6 +152,7 @@ class DefaultController extends Controller
         $session = new session();
         $f = $this->get('funciones');
         $error = '';
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         if ($request->getMethod() == 'POST')
         {
@@ -163,11 +164,55 @@ class DefaultController extends Controller
                                                                                                             'clave' => $clave));
     
             if(!$usuario){
-                $error = 'Usuario o clave incorrecta';
+                $error = $this->get('translator')->trans('Usuario o clave incorrecta.');
             }
             else {
                 if (!$usuario->getActivo()){
-                    $error = 'Usuario inactivo. Contacte al administrador del sistema';
+                    $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
+                }
+                else{
+                    
+                    $roles_bk = array();
+                    $roles_usuario = array();
+                    $roles_bk[] = $yml['parameters']['rol']['administrador'];
+                    $roles_bk[] = $yml['parameters']['rol']['empresa'];
+                    $roles_ok = 0;
+                    
+                    $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru WHERE ru.usuario = :usuario_id')
+                                ->setParameter('usuario_id', $usuario->getId());
+                    $roles_usuario = $query->getResult();
+                    
+                    foreach ($roles_usuario as $rol_usuario)
+                    {
+                        
+                        // Verifico si el rol está dentro de los roles de backend
+                        if (in_array($rol_usuario->getRol()->getId(), $roles_bk))
+                        {
+                            $roles_ok = 1;
+                        }
+                        
+                        $roles_usuario[] = $rol_usuario->getRol()->getId();
+                        
+                    }
+                    
+                    if (!$roles_ok)
+                    {
+                        $error = $this->get('translator')->trans('Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.');
+                    }
+                    else {
+                        $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                    WHERE p.rol IN (:roles) AND a.activo = :activo')
+                            ->setParameters(array('roles' => $roles_usuario,
+                                                  'activo' => true));
+                        if (!$query->getSingleScalarResult())
+                        {
+                            $error = $this->get('translator')->trans('Usted no tiene aplicaciones asignadas para su rol.');
+                        }
+                        
+                        // Se setea la sesion y se prepara el menu
+                        
+                        
+                    }
                 }
             }
         }
