@@ -2,6 +2,7 @@
 
 {% block body %}
 
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeNiveles') }}">
 <br>
 <div class="row align-items-center justify-content-between">
@@ -13,45 +14,54 @@
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Listado de Empresas' |trans}}</h5>
+                <h5 class="card-title">{{ 'Subir Archivo de Niveles' |trans}} {{ empresa.nombre }}</h5>
             </div>
             <div class="card-block" style=" padding-bottom:45px; ">
-                <table class="table" id="dt">
-                    <thead class="sty__title">
-                        <tr>
-                            <th class="hd__title">{{'Empresa'|trans}}</th>
-                            <th class="hd__title">{{'País'|trans }}</th>
-                            <th class="hd__title">{{'Niveles'|trans}}</th>
-                            <th class="hd__title">{{'Acciones'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-empresas">
-                      {% for empresa in empresas %}
-                            {% set eo = cycle(['odd', 'even'], loop.index) %}
-                            <tr class="{{eo}}" id="tr-{{ empresa.id }}">
-                                <td>{{ empresa.nombre }}</td>
-                                <td>{{ empresa.pais.nombre }}</td>
-                                <td id="td-{{ empresa.id }}">
-                                    &nbsp;
-                                </td>
-                                <td class="center">
-                                    {% if empresa.activo %}
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">{{ 'Configurar'|trans }}</a>
-                                                <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
-                                                <a class="dropdown-item" href="{{ path('_uploadNiveles', { 'empresa_id': empresa.id }) }}">{{ 'Subir Archivo de Niveles'|trans }}</a>
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        <span class="error">{{ 'Empresa con estatus inactivo'|trans }}</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                      {% endfor %}
-                    </tbody>
-                </table>                 
+                <div class="row">
+                    <form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
+                        <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <div class="form-group">
+                                <label for="correo_corporativo" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Correo corporativo'|trans }}</label>
+                                <div class="col-sm-16 col-md-16 col-lg-16">
+                                    <input type="email" class="form-control form_sty1" name="correo_corporativo" id="correo_corporativo" value="{{ usuario.correoCorporativo }}">
+                                    <span class="fa fa-envelope"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4 justify-content-start">
+                            <label for="pais_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'País'|trans }}</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                <select class="form-control form_sty_select" name="pais_id" id="pais_id">
+                                    <option value=""></option>
+                                    {% for pais in paises %}
+                                        {% set selected = usuario.pais.id == pais.id ? 'selected="selected"' : '' %}
+                                        <option value="{{ pais.id }}" {{ selected }} >{{ pais.nombre|trim }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-globe"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <div class="form-group">
+                                <label for="ciudad" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Ciudad'|trans }}</label>
+                                <div class="col-sm-16 col-md-16 col-lg-16">
+                                    <input type="text" class="form-control form_sty1" name="ciudad" id="ciudad" value="{{ usuario.ciudad }}">
+                                    <span class="fa fa-map-marker"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <div class="form-group">
+                                <label for="region" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Región'|trans }}</label>
+                                <div class="col-sm-16 col-md-16 col-lg-16">
+                                    <input type="text" class="form-control form_sty1" name="region" id="region" value="{{ usuario.region }}">
+                                    <span class="fa fa-map-signs"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
