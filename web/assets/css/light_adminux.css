@@ -2085,11 +2085,11 @@ body > .sidebar-right, body > .sidebar-left, body > .container > .sidebar-right,
   padding: 0 15px;
 }
 
-.activity-block.success h5, .activity-block.success p, .activity-block.success .progress-heading, .activity-block.danger h5, .activity-block.danger p, .activity-block.danger .progress-heading, .activity-block.warning h5, .activity-block.warning p, .activity-block.warning .progress-heading, .activity-block.primary h5, .activity-block.primary p, .activity-block.primary .progress-heading, .activity-block.linkg1 h5, .activity-block.linkg1 p, .activity-block.linkg1 .progress-heading{
+.activity-block.success h5, .activity-block.success p, .activity-block.success .progress-heading, .activity-block.danger h5, .activity-block.danger p, .activity-block.danger .progress-heading, .activity-block.warning h5, .activity-block.warning p, .activity-block.warning .progress-heading, .activity-block.primary h5, .activity-block.primary p, .activity-block.primary .progress-heading, .activity-block.linkg1 h5, .activity-block.linkg1 p, .activity-block.linkg1 .progress-heading, .activity-block.linkg2 h5, .activity-block.linkg2 p, .activity-block.linkg2 .progress-heading{
   color: #ffffff;
 }
 
-.activity-block.success .media, .activity-block.danger .media, .activity-block.warning .media, .activity-block.primary .media, .activity-block.linkg1 .media {
+.activity-block.success .media, .activity-block.danger .media, .activity-block.warning .media, .activity-block.primary .media, .activity-block.linkg1 .media, .activity-block.linkg2 .media {
   position: relative;
   z-index: 1;
 }
@@ -2130,13 +2130,40 @@ body > .sidebar-right, body > .sidebar-left, body > .container > .sidebar-right,
     background: #97AF21;
 }
 
-/*Me quede aqui editando colores*/
 .activity-block.linkg1 .background-image:before {
-    background: rgba(45, 193, 201, 0.2);
-    background: -moz-linear-gradient(left, rgba(45, 193, 201, 0.2) 0%, rgba(33, 148, 193, 0.9) 30%, #252d47 100%);
-    background: -webkit-linear-gradient(left, rgba(45, 193, 201, 0.2) 0%, rgba(33, 148, 193, 0.9) 30%, #252d47 100%);
-    background: linear-gradient(to right, rgba(45, 193, 201, 0.2) 0%, rgba(33, 148, 193, 0.9) 30%, #252d47 100%);
+    background: rgba(0, 143, 238, 0.2);
+    background: -moz-linear-gradient(left, rgba(0, 143, 238, 0.2) 0%, rgba(1, 93, 151, 0.9) 30%, #252d47 100%);
+    background: -webkit-linear-gradient(left, rgba(0, 143, 238, 0.2) 0%, rgba(1, 93, 151, 0.9) 30%, #252d47 100%);
+    background: linear-gradient(to right, rgba(0, 143, 238, 0.2) 0%, rgba(1, 93, 151, 0.9) 30%, #252d47 100%);
     color: white;
+}
+
+.activity-block.linkg1 .background-image:before .progress-bar {
+    background: rgba(151, 175, 33, 0.2);
+}
+
+.activity-block.linkg2 {
+    background: #3e4b00;
+    background: -moz-linear-gradient(left, #89af27 0%, #677b00 30%, #4b5711 100%);
+    background: -webkit-linear-gradient(left, #89af27 0%, #677b00 30%, #4b5711 100%);
+    background: linear-gradient(left, #89af27 0%, #677b00 30%, #4b5711 100%);
+    color: white;
+}
+
+.activity-block.linkg2 .progress-bar {
+    background: #015D97;
+}
+
+.activity-block.linkg2 .background-image:before {
+    background: rgba(62, 75, 0, 0.2);
+    background: -moz-linear-gradient(left, rgba(62, 75, 0, 0.2) 0%, rgba(103, 123, 0, 0.9) 30%, #4b5711 100%);
+    background: -webkit-linear-gradient(left, rgba(62, 75, 0, 0.2) 0%, rgba(103, 123, 0, 0.9) 30%, #4b5711 100%);
+    background: linear-gradient(to right, rgba(62, 75, 0, 0.2) 0%, rgba(103, 123, 0, 0.9) 30%, #4b5711 100%);
+    color: white;
+}
+
+.activity-block.linkg2 .background-image:before .progress-bar {
+    background: rgba(1, 93, 151, 0.2);
 }
 
 .activity-block.danger {

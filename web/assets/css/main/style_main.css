@@ -661,6 +661,56 @@
         text-align: left;
     }
 
+    /*Panel*/
+
+    .mpanel{
+        max-height: 21.3rem;
+        background: #fff;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-radius: 15px;
+        border: 2px solid rgba(51, 51, 51, 0.3);
+        box-shadow: 5px 5px 10px #333;
+    }
+
+    .sec1_title{
+        width: 100%;
+        height: 3.5rem;
+        margin: 0px;
+        border-bottom: 1px solid #aaa;
+        background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+        padding: 1rem 2rem;
+        color: #fff;
+        text-transform: uppercase;
+    }
+
+    .sec1{
+        width: 100%;
+        max-height: 5rem;
+        margin-bottom: 0px;
+        border-bottom: 1px solid #aaa;
+        background: #eee;
+        color: #ef5956;
+        font-weight: bold;
+        padding: .3rem  1rem;
+        transition: all .3 ease;
+        text-align: justify;
+    }
+
+    .sec1 p{
+        margin: 0;
+        padding: 0;
+    }
+
+    .sec1:hover{
+        border-left: 50px solid #fff;
+        background: #ef5956;
+        transform: scale(1.09);
+        color: #fff;
+        padding-right: 4rem;
+        font-weight: 100;
+    }
+
 /*Identificadores*/
 
 /*Animations*/

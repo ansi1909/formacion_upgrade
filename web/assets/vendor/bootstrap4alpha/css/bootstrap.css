@@ -3654,6 +3654,7 @@ tbody.collapse.show {
   max-width: 100%;
   height: 2.5rem;
   margin: 0;
+  border: 1px solid rgba(0, 132, 219, 0.15);
   filter: alpha(opacity=0);
   opacity: 0;
 }
@@ -3667,11 +3668,11 @@ tbody.collapse.show {
   height: 2.5rem;
   padding: 0.5rem 1rem;
   line-height: 1.5;
-  color: #464a4c;
+  color: #333;
   pointer-events: none;
   user-select: none;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 132, 219, 0.15);
   border-radius: 0.25rem;
 }
 
@@ -3689,14 +3690,20 @@ tbody.collapse.show {
   height: 2.5rem;
   padding: 0.5rem 1rem;
   line-height: 1.5;
-  color: #464a4c;
-  background-color: #eceeef;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: #0084DB;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0 0.25rem 0.25rem 0;
 }
 
 .custom-file-control:lang(en)::before {
   content: "Browse";
+}
+
+.custom-file-control:lang(es)::before {
+    content: "Buscar";
 }
 
 .nav {
