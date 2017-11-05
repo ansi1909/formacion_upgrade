@@ -38,7 +38,7 @@
                             &nbsp;
                         </div>
                         <div class="col-sm-7 col-md-7 col-lg-7">
-                            <input type="text" class="form-control" name="file" id="file" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión xls o xlsx'|trans }}">
+                            <input type="text" class="form-control" name="file" id="file" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}">
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-3">
                             <div class="input-group">
@@ -51,6 +51,13 @@
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-3">
                             &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            {% for error in errores %}
+                                {{ error }}<br>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -68,145 +75,23 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript">
-
-        $('#finish').click(function(){
-            var valid = $("#form").valid();
-            if (!valid) 
-            {
-                notify($('#div-error').html());
-            }
-            else {
-
-                // Validaciones adicionales
-                var roles = $('#roles').val();
-                var empresa_id = $('#empresa_id').val();
-                var nivel_id = $('#nivel_id').val();
-                var roles_empresa_str = $('#roles_empresa_str').val();
-                var usuario_id = $('#usuario_id').val();
-                var login = $('#login').val();
-
-                for (i=0; i<roles.length; i++)
-                {
-                    if ((roles_empresa_str.indexOf(roles[i]) >= 0) && (empresa_id == 0 || nivel_id == 0))
-                    {
-                        valid = false;
-                    }
-                }
-
-                if (!valid){
-                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar tanto la empresa como el nivel.'|trans }}</li>");
-                    $('#div-error ul').show();
-                    notify($('#div-error').html());
-                }
-                else {
-
-                    // Validar si el login no existe cuando es un usuario nuevo
-                    if (!usuario_id)
-                    {
-                        $.ajax({
-                            type: "POST",
-                            url: $('#url_login').val(),
-                            async: true,
-                            data: { login: login },
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.ok != 0)
-                                {
-                                    $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
-                                    $('#div-error ul').show();
-                                    notify($('#div-error').html());
-                                }
-                                else {
-                                    $('#form').submit();
-                                }
-                            },
-                            error: function(){
-                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
-                                $('#div-error ul').show();
-                                notify($('#div-error').html());
-                            }
-                        });
-                    }
-                    else {
-                        $('#form').submit();
-                    }
-                }
-
-            }
-        });
-
         $("#form").validate({
-            errorLabelContainer: "#div-error ul",
-            wrapper: "li",
-            ignore: "",
             rules: {
-                'nombre': {
+                'file': {
                     required: true,
-                    minlength: 3
-                },
-                'apellido': {
-                    required: true,
-                    minlength: 3
-                },
-                'login': {
-                    required: true,
-                    minlength: 3
-                },
-                'clave': {
-                    required: {
-                        depends: function(element) {
-                            return $("#cambiar").is(":checked") || $('#usuario_id').val() == '';
-                        }
-                    }
-                },
-                'correo_personal': {
-                    email: true
-                },
-                'fecha_nacimiento': {
-                    required: true
-                },
-                'correo_corporativo': {
-                    email: true
-                },
-                'roles[]': {
-                    required: true,
-                    minlength: 1
+                    extension: "xls|xlsx|csv"
                 }
             },
             messages: {
-                'nombre': {
-                    required: "- {{ 'El nombre del usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El nombre del usuario debe ser mínimo de 3 caracteres.'|trans }}"
-                },
-                'apellido': {
-                    required: "- {{ 'El apellido del usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
-                },
-                'login': {
-                    required: "- {{ 'El campo usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El campo usuario debe ser mínimo de 3 caracteres.'|trans }}"
-                },
-                'clave': {
-                    required: "- {{ 'La clave es requerida.'|trans }}"
-                },
-                'correo_personal': {
-                    email: "- {{ 'El correo personal tiene un formato inválido.'|trans }}"
-                },
-                'fecha_nacimiento': {
-                    required: "- {{ 'Fecha de nacimiento es requerida.'|trans }}"
-                },
-                'correo_corporativo': {
-                    email: "- {{ 'El correo corporativo tiene un formato inválido.'|trans }}"
-                },
-                'roles[]': {
-                    required: "- {{ 'Debe seleccionar al menos un rol.'|trans }}",
-                    minlength: "- {{ 'Debe seleccionar al menos un rol.'|trans }}"
+                'file': {
+                    required: "- {{ 'Este campo es requerido.'|trans }}",
+                    extension: "- {{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}"
                 }
             }
         });
-
     </script>
     <script type="text/javascript" src="{{ asset('js/admin/upload.js') }}"></script>
 {% endblock %}

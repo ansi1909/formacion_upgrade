@@ -43,6 +43,7 @@ twig:
     globals:
         maxlenght_bienvenida: 5
         root_path: %kernel.root_dir%
+        uploads: 'http://localhost/uploads/'
 
 # Doctrine Configuration
 doctrine:

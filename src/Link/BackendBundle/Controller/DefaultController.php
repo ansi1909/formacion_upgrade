@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
+use Link\ComunBundle\Entity\AdminSesion;
 
 class DefaultController extends Controller
 {
@@ -17,84 +18,21 @@ class DefaultController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
 
-        /* Nos permitirá acceder a los parámetros varios */
-        //$values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        //return new Response ($values['parameters']['database_host']);
-
-    	/*
-      	if (!$session->get('ini'))
+        if (!$session->get('ini'))
       	{
         	return $this->redirectToRoute('_loginAdmin');
       	}
+        $f->setRequest($session->get('sesion_id'));
 
       	if ($this->container->get('session')->isStarted())
       	{
         	
         	// Lógica para mostrar el dashboard del backend
+
       	}
       	else {
       		return $this->redirectToRoute('_loginAdmin');
-      	}*/
-
-        /* **************************** BLOQUE ******************************************** */
-        // OJO: Quitar este bloque de código una vez que se desarrolle el login del backend
-        
-        // Datos de Usuario Administrador y sus autoservicios
-        $datosUsuario = array('id' => 1,
-                              'nombre' => 'Administrador',
-                              'apellido' => 'Sistema',
-                              'correo' => 'soporte_link_gerencial@gmail.com',
-                              'roles' => array(1));
-
-        // Opciones del menu (Asumiendo que el único rol es Administrador = 1)
-        $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
-                                    WHERE p.rol = :rol_id 
-                                    AND a.activo = :activo 
-                                    AND a.aplicacion IS NULL")
-                    ->setParameters(array('rol_id' => 1,
-                                          'activo' => true));
-        $permisos = $query->getResult();
-
-        $menu = array();
-        foreach ($permisos as $permiso)
-        {
-
-            $submenu = array();
-
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
-                                        WHERE p.rol = :rol_id 
-                                        AND a.activo = :activo 
-                                        AND a.aplicacion = :app_id")
-                        ->setParameters(array('rol_id' => 1,
-                                              'activo' => true,
-                                              'app_id' => $permiso->getAplicacion()->getId()));
-            $subpermisos = $query->getResult();
-
-            foreach ($subpermisos as $subpermiso)
-            {
-                $submenu[] = array('id' => $subpermiso->getAplicacion()->getId(),
-                                   'url' => $subpermiso->getAplicacion()->getUrl(),
-                                   'nombre' => $subpermiso->getAplicacion()->getNombre(),
-                                   'icono' => $subpermiso->getAplicacion()->getIcono(),
-                                   'url_existente' => $subpermiso->getAplicacion()->getUrl() ? 1 : 0);
-            }
-
-            $menu[] = array('id' => $permiso->getAplicacion()->getId(),
-                            'url' => $permiso->getAplicacion()->getUrl(),
-                            'nombre' => $permiso->getAplicacion()->getNombre(),
-                            'icono' => $permiso->getAplicacion()->getIcono(),
-                            'url_existente' => $permiso->getAplicacion()->getUrl() ? 1 : 0,
-                            'submenu' => $submenu);
-        }
-
-
-        $session->set('ini', true);
-        $session->set('code', $f->getLocaleCode());
-        $session->set('administrador', true);
-        $session->set('usuario', $datosUsuario);
-        $session->set('menu', $menu);
-
-        /* **************************** FIN BLOQUE ****************************************** */
+      	}
 
         return $this->render('LinkBackendBundle:Default:index.html.twig');
 
@@ -154,6 +92,11 @@ class DefaultController extends Controller
         $error = '';
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
+        if ($session->get('ini'))
+        {
+            return $this->redirectToRoute('_inicioAdmin');
+        }
+
         if ($request->getMethod() == 'POST')
         {
             $em = $this->getDoctrine()->getManager();
@@ -163,32 +106,41 @@ class DefaultController extends Controller
             $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login,
                                                                                                             'clave' => $clave));
     
-            if(!$usuario){
+            if (!$usuario)
+            {
                 $error = $this->get('translator')->trans('Usuario o clave incorrecta.');
             }
             else {
-                if (!$usuario->getActivo()){
+                
+                if (!$usuario->getActivo())
+                {
                     $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
                 }
-                else{
+                else {
                     
                     $roles_bk = array();
                     $roles_usuario = array();
                     $roles_bk[] = $yml['parameters']['rol']['administrador'];
                     $roles_bk[] = $yml['parameters']['rol']['empresa'];
                     $roles_ok = 0;
+                    $administrador = false;
                     
                     $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru WHERE ru.usuario = :usuario_id')
                                 ->setParameter('usuario_id', $usuario->getId());
-                    $roles_usuario = $query->getResult();
+                    $roles_usuario_db = $query->getResult();
                     
-                    foreach ($roles_usuario as $rol_usuario)
+                    foreach ($roles_usuario_db as $rol_usuario)
                     {
                         
                         // Verifico si el rol está dentro de los roles de backend
                         if (in_array($rol_usuario->getRol()->getId(), $roles_bk))
                         {
                             $roles_ok = 1;
+                        }
+
+                        if ($rol_usuario->getRol()->getId() == $yml['parameters']['rol']['administrador'])
+                        {
+                            $administrador = true;
                         }
                         
                         $roles_usuario[] = $rol_usuario->getRol()->getId();
@@ -200,25 +152,107 @@ class DefaultController extends Controller
                         $error = $this->get('translator')->trans('Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.');
                     }
                     else {
+                        
                         $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
                                     WHERE p.rol IN (:roles) AND a.activo = :activo')
                             ->setParameters(array('roles' => $roles_usuario,
                                                   'activo' => true));
+                        
                         if (!$query->getSingleScalarResult())
                         {
                             $error = $this->get('translator')->trans('Usted no tiene aplicaciones asignadas para su rol.');
                         }
                         
                         // Se setea la sesion y se prepara el menu
+                        $datosUsuario = array('id' => $usuario->getId(),
+                                              'nombre' => $usuario->getNombre(),
+                                              'apellido' => $usuario->getApellido(),
+                                              'correo' => $usuario->getCorreoPersonal(),
+                                              'foto' => $usuario->getFoto(),
+                                              'roles' => $roles_usuario);
+
+                        // Opciones del menu (Asumiendo que el único rol es Administrador = 1)
+                        $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                                    WHERE p.rol = :rol_id 
+                                                    AND a.activo = :activo 
+                                                    AND a.aplicacion IS NULL")
+                                    ->setParameters(array('rol_id' => 1,
+                                                          'activo' => true));
+                        $permisos = $query->getResult();
+
+                        $permisos_id = array();
+                        $menu = array();
                         
+                        foreach ($permisos as $permiso)
+                        {
+
+                            if (!in_array($permiso->getId(), $permisos_id))
+                            {
+
+                                $permisos_id[] = $permiso->getId();
+
+                                $submenu = array();
+
+                                $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                                            WHERE p.rol = :rol_id 
+                                                            AND a.activo = :activo 
+                                                            AND a.aplicacion = :app_id")
+                                            ->setParameters(array('rol_id' => 1,
+                                                                  'activo' => true,
+                                                                  'app_id' => $permiso->getAplicacion()->getId()));
+                                $subpermisos = $query->getResult();
+
+                                foreach ($subpermisos as $subpermiso)
+                                {
+
+                                    if (!in_array($subpermiso->getId(), $permisos_id))
+                                    {
+
+                                        $permisos_id[] = $subpermiso->getId();
+
+                                        $submenu[] = array('id' => $subpermiso->getAplicacion()->getId(),
+                                                           'url' => $subpermiso->getAplicacion()->getUrl(),
+                                                           'nombre' => $subpermiso->getAplicacion()->getNombre(),
+                                                           'icono' => $subpermiso->getAplicacion()->getIcono(),
+                                                           'url_existente' => $subpermiso->getAplicacion()->getUrl() ? 1 : 0);
+
+                                    }
+                                    
+                                }
+
+                                $menu[] = array('id' => $permiso->getAplicacion()->getId(),
+                                                'url' => $permiso->getAplicacion()->getUrl(),
+                                                'nombre' => $permiso->getAplicacion()->getNombre(),
+                                                'icono' => $permiso->getAplicacion()->getIcono(),
+                                                'url_existente' => $permiso->getAplicacion()->getUrl() ? 1 : 0,
+                                                'submenu' => $submenu);
+
+                            }
+                            
+                        }
+
+                        // Se crea la sesión en BD
+                        $admin_sesion = new AdminSesion();
+                        $admin_sesion->setFechaIngreso(new \DateTime('now'));
+                        $admin_sesion->setUsuario($usuario);
+                        $em->persist($admin_sesion);
+                        $em->flush();
+
+                        $session->set('ini', true);
+                        $session->set('sesion_id', $admin_sesion->getId());
+                        $session->set('code', $f->getLocaleCode());
+                        $session->set('administrador', $administrador);
+                        $session->set('usuario', $datosUsuario);
+                        $session->set('menu', $menu);
+
+                        return $this->redirectToRoute('_inicioAdmin');
                         
                     }
                 }
             }
         }
-        else {
-            $session->invalidate();
-        }
-        return $this->render('LinkBackendBundle:Default:login.html.twig', array( 'error' => $error));
+        
+        return $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $error));
+
     }
 }

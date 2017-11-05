@@ -82,7 +82,7 @@ Listado de categorías: Category List
 Listado de Empresas: List of Companies
 Listado de Roles: List of Roles
 Panel de acceso: Login
-Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: the roles that the user has are not allowed to enter the application. 
+Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Mensaje del servidor: Server message
 Nivel: Level
@@ -118,7 +118,7 @@ Seleccione la empresa para mostrar los niveles: Select the company to show its l
 Si: Yes
 Siguiente: Next
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
-Sólo archivos con extensión xls o xlsx: Only xls or xlsx extension
+Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
 Sub-Aplicación de: Sub-Application of

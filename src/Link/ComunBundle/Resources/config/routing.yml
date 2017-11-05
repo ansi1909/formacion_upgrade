@@ -1,3 +1,7 @@
 link_comun_homepage:
     path:     /
     defaults: { _controller: LinkComunBundle:Default:index }
+
+_logout:
+    path:     /logout/{ruta}
+    defaults: { _controller: LinkComunBundle:Default:logout }

@@ -30,6 +30,7 @@ class UsuarioController extends Controller
         		return $this->redirectToRoute('_authException');
         	}
         }
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
         $niveles = array();
@@ -175,6 +176,7 @@ class UsuarioController extends Controller
                 return $this->redirectToRoute('_authException');
             }
         }
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -361,8 +363,7 @@ class UsuarioController extends Controller
                                                                                   'niveles' => $niveles,
                                                                                   'roles' => $roles,
                                                                                   'roles_asignados' => $roles_asignados,
-                                                                                  'roles_empresa_str' => $roles_empresa_str,
-                                                                                  'uploads' => $yml['parameters']['folders']['uploads']));
+                                                                                  'roles_empresa_str' => $roles_empresa_str));
 
     }
 
@@ -381,6 +382,7 @@ class UsuarioController extends Controller
                 return $this->redirectToRoute('_authException');
             }
         }
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -415,8 +417,7 @@ class UsuarioController extends Controller
 
         return $this->render('LinkBackendBundle:Usuario:show.html.twig', array('usuario' => $usuario,
                                                                                'roles' => $roles,
-                                                                               'roles_asignados' => $roles_asignados,
-                                                                               'uploads' => $yml['parameters']['folders']['uploads']));
+                                                                               'roles_asignados' => $roles_asignados));
 
     }
 

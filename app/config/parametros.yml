@@ -7,4 +7,5 @@ parameters:
         empresa: 5
     folders:
         uploads: 'http://localhost/uploads/'
+        dir_uploads: 'C:/wamp/www/uploads/'
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

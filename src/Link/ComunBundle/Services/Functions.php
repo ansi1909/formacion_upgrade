@@ -458,4 +458,17 @@ class Functions
 
 	}
 
+	// Actualiza la fecha y hora del request de la sesión actual
+	public function setRequest($sesion_id)
+	{
+
+		$em = $this->em;
+		
+		$admin_sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($sesion_id);
+		$admin_sesion->setFechaRequest(new \DateTime('now'));
+        $em->persist($admin_sesion);
+        $em->flush();
+
+	}
+
 }

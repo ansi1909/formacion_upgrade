@@ -37,6 +37,7 @@ class EmpresaController extends Controller
                 return $this->redirectToRoute('_authException');
             }
         }
+        $f->setRequest($session->get('sesion_id'));
         
         $r = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa');
         $empresas_db = $r->findAll();
@@ -71,6 +72,7 @@ class EmpresaController extends Controller
                 return $this->redirectToRoute('_authException');
             }
         }
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
 
@@ -135,6 +137,7 @@ class EmpresaController extends Controller
                 return $this->redirectToRoute('_authException');
             }
         }
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);

@@ -28,6 +28,7 @@ class PermisoController extends Controller
         		return $this->redirectToRoute('_authException');
         	}
         }
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
 
@@ -101,6 +102,7 @@ class PermisoController extends Controller
                 return $this->redirectToRoute('_authException');
             }
         }
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
 

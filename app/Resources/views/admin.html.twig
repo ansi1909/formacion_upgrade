@@ -67,7 +67,8 @@
                         <li class="nav-item">
                             <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="userpic">
-                                    <img src="{{ asset('img/1034.png') }}" alt="Usuario"></span> 
+                                    {% set img = app.session.get('usuario').foto ? uploads~app.session.get('usuario').foto : asset('img/1034.png') %}
+                                    <img src="{{ img }}" alt="Usuario"></span> 
                                     <span class="text">{{ app.session.get('usuario').nombre }}</span>
                             </button>
                             <div class="dropdown-menu"> 
@@ -78,7 +79,7 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="btn btn-link icon-header bttn1">
+                            <a href="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}" class="btn btn-link icon-header bttn1">
                                 <span class="fa fa-sign-out ico_1"></span>
                             </a>
                         </li>

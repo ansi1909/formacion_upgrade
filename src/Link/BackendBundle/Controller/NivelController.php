@@ -7,14 +7,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
-use Link\ComunBundle\Entity\AdminNivel; 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Link\ComunBundle\Entity\AdminNivel;
+use Symfony\Component\Yaml\Yaml;
 
 class NivelController extends Controller
 {
@@ -36,7 +30,7 @@ class NivelController extends Controller
         		return $this->redirectToRoute('_authException');
         	}
         }
-
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
 
@@ -101,8 +95,23 @@ class NivelController extends Controller
     public function nivelesAction($empresa_id, Request $request)
     {
         
+        $session = new Session();
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
+
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $nivelesdb = array();
         $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
@@ -194,12 +203,78 @@ class NivelController extends Controller
     public function uploadNivelesAction($empresa_id, Request $request)
     {
         
+        $session = new Session();
         $f = $this->get('funciones');
+
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        
         $em = $this->getDoctrine()->getManager();
+        $errores = array();
         
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        if ($request->getMethod() == 'POST')
+        {
+
+            $file = $request->request->get('file');
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+            
+            if(!file_exists($fileWithPath)) 
+            {
+                $errores[] = 'El archivo '.$fileWithPath.' no existe';
+            } 
+            else {
+                
+                $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+              
+                // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
+                $total_sheets = $objPHPExcel->getSheetCount();
+                $allSheetName = $objPHPExcel->getSheetNames();
+                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+              
+                // Se obtiene el número máximo de filas y columnas
+                $highestRow = $objWorksheet->getHighestRow();
+                $highestColumn = $objWorksheet->getHighestColumn();
+                $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+              
+                // $headingsArray contiene las cabeceras de la hoja excel. Los titulos de columnas
+                $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
+                $headingsArray = $headingsArray[1];
+         
+                //Se recorre toda la hoja excel desde la fila 2
+                $r = -1;
+                $namedDataArray = array();
+                for ($row=2; $row<=$highestRow; ++$row) 
+                {
+                    $dataRow = $objWorksheet->rangeToArray('A'.$row.':'.$highestColumn.$row,null, true, true, true);
+                    if ((isset($dataRow[$row]['A'])) && ($dataRow[$row]['A'] > ''))
+                    {
+                        ++$r;
+                        foreach($headingsArray as $columnKey => $columnHeading)
+                        {
+                            $namedDataArray[$r][$columnHeading] = $dataRow[$row][$columnKey];
+                        }
+                    }
+                }
+                return new Response(var_dump($namedDataArray));
+
+            }
+        }
         
-        return $this->render('LinkBackendBundle:Nivel:uploadNiveles.html.twig', array ('empresa' => $empresa));
+        return $this->render('LinkBackendBundle:Nivel:uploadNiveles.html.twig', array('empresa' => $empresa,
+                                                                                      'errores' => $errores));
 
     }
 
