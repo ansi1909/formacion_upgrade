@@ -156,7 +156,7 @@
                             <br>
                             <div class="media">
                                 <div class="media-body">
-                                    <span class="progress-heading">Registros mensuales</span>
+                                    <span class="progress-heading">Ultimos 12</span>
                                 </div>
                                 <span><span class="dynamicsparkline3">Loading..</span></span>
                             </div>
@@ -180,7 +180,7 @@
                                 <i class="fa fa-industry"></i> </div>
                             <br>
                             <div class="media">
-                                <div class="media-body"><span class="progress-heading">Registros mensuales</span></div>
+                                <div class="media-body"><span class="progress-heading">Ultimos 12</span></div>
                                 <span><span class="dynamicsparkline3">Loading..</span> </span> </div>
                             <div class="row">
                                 <div class="progress ">
@@ -200,7 +200,7 @@
                                 <i class="fa fa-industry"></i> </div>
                             <br>
                             <div class="media">
-                                <div class="media-body"><span class="progress-heading">Registros mensuales</span></div>
+                                <div class="media-body"><span class="progress-heading">Ultimos 12</span></div>
                                 <span><span class="dynamicsparkline3">Loading..</span> </span> </div>
                             <div class="row">
                                 <div class="progress ">
@@ -236,39 +236,23 @@
                                        </tr>
                                        <tr class="odd">
                                            <td>Stark industry</td>
-                                           <td></td>
+                                           <td><div id="frmt2" class="demo"></div></td>
                                            <td class="text-center"><span>0023 <i class="fa fa-user"></i></span></td>
                                        </tr>
                                        <tr class="odd">
                                            <td>Roxxon</td>
-                                           <td></td>
+                                           <td><div id="frmt3" class="demo"></div></td>
                                            <td class="text-center"><span>1000 <i class="fa fa-user"></i></span></td>
                                        </tr>
                                        <tr class="odd">
                                            <td>Osborn Corp</td>
-                                           <td></td>
+                                           <td><div id="frmt4" class="demo"></div></td>
                                            <td class="text-center"><span>0500 <i class="fa fa-user"></i></span></td>
                                        </tr>
                                    </tbody>
                                </table>
                            </div>
                            <div class="card-footer">
-                               <form action="">
-                                   <div class="form-group row justify-content-end" style="margin-bottom: 0px;">
-                                       <label for="emp_select1" class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-form-label text-right">Empresa:</label>
-                                       <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8" style="padding: 0px 15px 0px 0px;">
-                                           <select class="form-control form_sty_sel" id="emp_select1" style="border-radius: 5px;">
-                                               <option>Seleccione una empresa</option>
-                                               <option>1</option>
-                                               <option>2</option>
-                                               <option>3</option>
-                                               <option>4</option>
-                                           </select>
-                                           <span class="fa fa-industry"></span>
-                                           <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
-                                       </div>
-                                   </div>
-                               </form>
                            </div>
                        </div>
                     </div>
@@ -287,10 +271,10 @@
                                         <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8" style="padding: 0px 15px 0px 0px;">
                                             <select class="form-control form_sty_sel" id="emp_select" style="border-radius: 5px;">
                                                 <option>Seleccione una empresa</option>
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
+                                                <option>Link Gerencial</option>
+                                                <option>Stark industry</option>
+                                                <option>Roxxon</option>
+                                                <option>Osborn Corp</option>
                                             </select>
                                             <span class="fa fa-industry"></span>
                                             <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
@@ -366,15 +350,69 @@
                     'core' : {
                         'data' : [
                             {
-                                "text" : "Programas",
+                                "text" : "Pensamiento Estrategico",
                                 "state" : { "opened" : true },
                                 "children" : [
                                     {
-                                        "text" : "Inteligencia emocional",
+                                        "text" : "Modulo1",
                                         "state" : { "selected" : true },
                                         "icon" : "jstree-file"
                                     },
-                                    { "text" : "Pensamiento estrategico", "state" : { "disabled" : true } }
+                                    { "text" : "Modulo2", "state" : { "disabled" : true } }
+                                ]
+                            }
+                        ]
+                    }
+                });
+                $('#frmt2').jstree({
+                    'core' : {
+                        'data' : [
+                            {
+                                "text" : "Inteligencia emocional",
+                                "state" : { "opened" : true },
+                                "children" : [
+                                    {
+                                        "text" : "Modulo1",
+                                        "state" : { "selected" : true },
+                                        "icon" : "jstree-file"
+                                    },
+                                    { "text" : "Modulo2", "state" : { "disabled" : true } }
+                                ]
+                            }
+                        ]
+                    }
+                });
+                $('#frmt3').jstree({
+                    'core' : {
+                        'data' : [
+                            {
+                                "text" : "Pensamiento estrategico",
+                                "state" : { "opened" : true },
+                                "children" : [
+                                    {
+                                        "text" : "Modulo1",
+                                        "state" : { "selected" : true },
+                                        "icon" : "jstree-file"
+                                    },
+                                    { "text" : "Modulo2", "state" : { "disabled" : true } }
+                                ]
+                            }
+                        ]
+                    }
+                });
+                $('#frmt4').jstree({
+                    'core' : {
+                        'data' : [
+                            {
+                                "text" : "Inteligencia emocional",
+                                "state" : { "opened" : true },
+                                "children" : [
+                                    {
+                                        "text" : "Modulo1",
+                                        "state" : { "selected" : true },
+                                        "icon" : "jstree-file"
+                                    },
+                                    { "text" : "Modulo2", "state" : { "disabled" : true } }
                                 ]
                             }
                         ]
