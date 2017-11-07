@@ -252,6 +252,11 @@ class NivelController extends Controller
                 // $headingsArray contiene las cabeceras de la hoja excel. Los titulos de columnas
                 $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
                 $headingsArray = $headingsArray[1];
+
+                $col = 0;
+                $row = 9;
+                $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                return new Response($cell->getValue());
          
                 //Se recorre toda la hoja excel desde la fila 2
                 $r = -1;
