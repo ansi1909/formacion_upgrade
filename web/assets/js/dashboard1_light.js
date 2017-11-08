@@ -188,11 +188,11 @@
 
         $(window).on('load',function(){
             setTimeout(function(){
-                var myvalues3 = [10,8,5,7,4,2,8,10,8,5,6,4,1,7,4,5,8,10,8,5,6,4,4,1,7,4,5,8,10,8,5,6,4,4];
-                $('.dynamicsparkline2').sparkline(myvalues3,{ type: 'bar', width: '200px', height: '60', barColor: '#7a99ff', barWidth:'3', barSpacing: 3});
+                var myvalues3 = [10,8,5,7,4,2,8,10,8,5,6,4];
+                $('.dynamicsparkline2').sparkline(myvalues3,{ type: 'bar', width: '100%', height: '20', barColor: '#ffffff', barWidth:'5', barSpacing: 5});
                 var myvalues4= [10,8,5,7,4,2,8,10,8,5,6,4,1,7,4,5,8,10,8,5,6,4,4,4,7,4,5,8,10,8,5,6,4];
                 $('.dynamicsparkline').sparkline(myvalues4,{ type: 'bar', width: '100px', height: '20', barColor: '#7a99ff', barWidth:'2', barSpacing: 2});
-                var myvalues5= [10,8,5,7,4,2,8,10,8,5,6,4,1,7,4,5,8,10,8,5,6,4,4,4,7,4,5,8,10,8,5,6,4];
-                $('.dynamicsparkline3').sparkline(myvalues5,{ type: 'bar', width: '100px', height: '20', barColor: '#ffffff', barWidth:'2', barSpacing: 2});
+                var myvalues5= [50,20,10,9,14,35,40,15,18,29,30,25];
+                $('.dynamicsparkline3').sparkline(myvalues5,{ type: 'bar', width: '100%', height: '20', barColor: '#ffffff', barWidth:'5', barSpacing: 5});
             }, 600);
         });

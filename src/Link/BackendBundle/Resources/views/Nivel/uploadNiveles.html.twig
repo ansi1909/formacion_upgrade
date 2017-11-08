@@ -27,17 +27,14 @@
 </div>
 <form id="form" name="form" action="{{ path('_uploadNiveles', { 'empresa_id': empresa.id }) }}" class="container-fluid p-0" method="POST" enctype="multipart/form-data">
     <div class="row">
-        <div class="col-sm-16">
+        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">
                 <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
                     <h5 class="card-title">{{ 'Subir Archivo de Niveles' |trans}} {{ empresa.nombre }}</h5>
                 </div>
-                <div class="card-block" style=" padding-bottom:45px; ">
+                <div class="card-block">
                     <div class="row">
-                        <div class="col-sm-3 col-md-3 col-lg-3">
-                            &nbsp;
-                        </div>
-                        <div class="col-sm-7 col-md-7 col-lg-7">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                             <input type="text" class="form-control" name="file" id="file" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}">
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-3">
@@ -49,15 +46,20 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-sm-3 col-md-3 col-lg-3">
-                            &nbsp;
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-16 col-md-16 col-lg-16">
-                            {% for error in errores %}
-                                {{ error }}<br>
-                            {% endfor %}
+                    <br>
+                    <div class="row" style="margin-bottom: 0px;">
+                        <div class="col-sm-8 col-md-8 col-lg-8 offset-sm-4 offset-md-4 offset-lg-4" style="margin-bottom: 0px;">
+                            <div class="alert alert-link">
+                                <h4 class="alert-heading">Tomar encuenta que:</h4>
+                                <ul class="sty__list__opc">
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> El nombre del archivo no debe contener acentos o caracteres especiales.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> Solo es necesaria una columna que tendrá los nombres de los niveles.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> No se permiten filas en blanco.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> Si un nivel ya está registrado en la base de datos no se tomará en cuenta.</span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,6 +68,34 @@
                         <button type="submit" id="save" class="bttn__saved edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Procesar'|trans }}"><span class="fa fa-upload"></span></button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="display: none;">
+        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+            <div class="card">
+                <div class="card-header"></div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8 offset-md-4  offset-sm-4  offset-lg-4  offset-xl-4">
+                            <div class="mpanel">
+                                <div class="sec1_title">
+                                    <h5>Errores</h5>
+                                </div>
+                                <div class="sec1">
+                                    
+                                </div>
+                                <div class="sec1">
+
+                                </div>
+                                <div class="sec1">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer"></div>
             </div>
         </div>
     </div>
