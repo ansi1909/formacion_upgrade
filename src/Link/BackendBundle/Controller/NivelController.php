@@ -233,7 +233,7 @@ class NivelController extends Controller
             
             if(!file_exists($fileWithPath)) 
             {
-                $errores[] = 'El archivo '.$fileWithPath.' no existe';
+                $errores[] = $this->get('translator')->trans('El archivo').' '.$fileWithPath.' '.$this->get('translator')->trans('no existe');
             } 
             else {
                 
@@ -260,17 +260,17 @@ class NivelController extends Controller
          
                 //Se recorre toda la hoja excel desde la fila 2
                 $r = -1;
-                $namedDataArray = array();
+                $niveles = array();
+                $col = 0;
                 for ($row=2; $row<=$highestRow; ++$row) 
                 {
-                    $dataRow = $objWorksheet->rangeToArray('A'.$row.':'.$highestColumn.$row,null, true, true, true);
-                    if ((isset($dataRow[$row]['A'])) && ($dataRow[$row]['A'] > ''))
+
+                    $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                    $nombre = trim($cell->getValue());
+
+                    if (!$nombre)
                     {
-                        ++$r;
-                        foreach($headingsArray as $columnKey => $columnHeading)
-                        {
-                            $namedDataArray[$r][$columnHeading] = $dataRow[$row][$columnKey];
-                        }
+                        $errores[] = ''
                     }
                 }
                 return new Response(var_dump($namedDataArray));

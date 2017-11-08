@@ -23,6 +23,7 @@ Confirmar: Confirmar
 Contraseña: Contraseña
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
+Dato en nulo.: Dato en nulo.
 Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
 Datos de la categoría: Datos de la categoría
@@ -41,6 +42,7 @@ Eliminado: Eliminado
 Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
 El apellido del usuario es requerido.: El apellido del usuario es requerido.
+El archivo: El archivo
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
 El campo usuario es requerido.: El campo usuario es requerido.
 El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
@@ -64,6 +66,7 @@ Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de ac
 Fecha Creación: Fecha Creación
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
+Fila: Fila
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
 Guardar: Guardar
@@ -88,6 +91,7 @@ Mensaje del servidor: Mensaje del servidor
 Nivel: Nivel
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
+no existe: no existe
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
 No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.
 No se pudo almacenar este registro.: No se pudo almacenar este registro.

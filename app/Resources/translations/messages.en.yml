@@ -23,6 +23,7 @@ Confirmar: Confirm
 Contraseña: Password
 Correo corporativo: Company email
 Correo personal: Personal email
+Dato en nulo.: Null value
 Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
 Datos de la categoría: Category data
@@ -41,6 +42,7 @@ Eliminado: Deleted
 Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
 El apellido del usuario es requerido.: User last name is required.
+El archivo: The file
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
 El campo usuario es requerido.: User field is required.
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
@@ -64,6 +66,7 @@ Este rol aún no tiene permisos de acceso: This role does not have access permis
 Fecha Creación: Creation Date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
+Fila: Row
 Filtrar usuarios: Filter users
 Finalizar: Finish
 Guardar: Save
@@ -88,6 +91,7 @@ Mensaje del servidor: Server message
 Nivel: Level
 Niveles: Levels
 Niveles por empresas: Levels by companies
+no existe: does not exit
 No se permiten espacios en blanco.: Blank spaces are not allowed.
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.
 No se pudo almacenar este registro.: It could not save this item.
