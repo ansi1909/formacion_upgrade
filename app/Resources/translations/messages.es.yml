@@ -60,6 +60,7 @@ Empresas: Empresas
 Empresa con estatus inactivo: Empresa con estatus inactivo
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
+Errores: Errores
 Errores de validación: Errores de validación
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
@@ -84,6 +85,7 @@ Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
 Listado de Roles: Listado de Roles
+Nuevos registros almacenados: Nuevos registros almacenados
 Panel de acceso: Panel de acceso
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
@@ -114,6 +116,7 @@ Recordarme: Recordarme
 Región: Región
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
+Resultado del archivo procesado: Resultado del archivo procesado
 Rol: Rol
 Roles: Roles
 Roles asignados: Roles asignados

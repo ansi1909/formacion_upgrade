@@ -116,7 +116,7 @@ class NivelController extends Controller
         $nivelesdb = array();
         $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
                                    WHERE n.empresa = :empresa_id
-                                   ORDER BY n.id ASC")
+                                   ORDER BY n.nombre ASC")
                     ->setParameter('empresa_id', $empresa_id);
         $niveles = $query->getResult();
 
@@ -221,6 +221,7 @@ class NivelController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $errores = array();
+        $nuevos_registros = 0;
         
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
@@ -253,14 +254,8 @@ class NivelController extends Controller
                 $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
                 $headingsArray = $headingsArray[1];
 
-                $col = 0;
-                $row = 9;
-                $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
-                return new Response($cell->getValue());
-         
                 //Se recorre toda la hoja excel desde la fila 2
                 $r = -1;
-                $niveles = array();
                 $col = 0;
                 for ($row=2; $row<=$highestRow; ++$row) 
                 {
@@ -270,16 +265,38 @@ class NivelController extends Controller
 
                     if (!$nombre)
                     {
-                        $errores[] = ''
+                        $errores[] = $this->get('translator')->trans('Fila').' '.$row.': '.$this->get('translator')->trans('Dato en nulo.');
                     }
+                    else {
+
+                        // Los nombres de niveles repetidos se omiten
+                        $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n 
+                                                    WHERE n.empresa = :empresa_id AND LOWER(n.nombre) = :nombre')
+                                    ->setParameters(array('empresa_id' => $empresa_id,
+                                                          'nombre' => strtolower($nombre)));
+                        
+                        if (!$query->getSingleScalarResult() && !count($errores))
+                        {
+                            // Lo agregamos
+                            $nuevos_registros++;
+                            $nivel = new AdminNivel();
+                            $nivel->setNombre($nombre);
+                            $nivel->setEmpresa($empresa);
+                            $em->persist($nivel);
+                            $em->flush();
+                        }
+
+                    }
+
                 }
-                return new Response(var_dump($namedDataArray));
 
             }
+            
         }
         
         return $this->render('LinkBackendBundle:Nivel:uploadNiveles.html.twig', array('empresa' => $empresa,
-                                                                                      'errores' => $errores));
+                                                                                      'errores' => $errores,
+                                                                                      'nuevos_registros' => $nuevos_registros));
 
     }
 

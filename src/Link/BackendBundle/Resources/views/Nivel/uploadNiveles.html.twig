@@ -19,6 +19,8 @@
 {% block body %}
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">
+<input type="hidden" id="errores" name="errores" value="{{ errores|length }}">
 <br><br>
 <div class="row align-items-center justify-content-between">
     <div class="col text-left">
@@ -71,7 +73,8 @@
             </div>
         </div>
     </div>
-    <div class="row" style="display: none;">
+    <a id="div-errores" data-toggle="modal" data-target="#formModal">&nbsp;</a>
+    <div class="row" {% if errores|length < 1 %}style="display: none;"{% endif %}>
         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">
                 <div class="card-header"></div>
@@ -80,17 +83,13 @@
                         <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8 offset-md-4  offset-sm-4  offset-lg-4  offset-xl-4">
                             <div class="mpanel">
                                 <div class="sec1_title">
-                                    <h5>Errores</h5>
+                                    <h5>{{ 'Errores'|trans }}</h5>
                                 </div>
-                                <div class="sec1">
-                                    
-                                </div>
-                                <div class="sec1">
-
-                                </div>
-                                <div class="sec1">
-
-                                </div>
+                                {% for error in errores %}
+                                    <div class="sec1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -102,12 +101,24 @@
 </form>
 {% endblock %}
 
+{% block formModal %}
+    <div class="modal-header gradiente">
+        <h5 class="modal-title" id="formModalLabel">{{ 'Resultado del archivo procesado'|trans }}</h5>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-success" role="alert" id="alert-success"> 
+            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'Nuevos registros almacenados'|trans }}: {{ nuevos_registros }}. 
+        </div>
+    </div>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript">
+        
         $("#form").validate({
             rules: {
                 'file': {
@@ -122,6 +133,11 @@
                 }
             }
         });
+
+        {% if nuevos_registros > 0 %}
+            $('#div-errores').trigger("click");
+        {% endif %}
     </script>
     <script type="text/javascript" src="{{ asset('js/admin/upload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/uploadNiveles.js') }}"></script>
 {% endblock %}
