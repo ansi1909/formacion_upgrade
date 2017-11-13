@@ -58,6 +58,7 @@ Email de contacto: Contact Email
 Empresa: Company
 Empresas: Companies
 Empresa con estatus inactivo: Company with inactive status
+Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
@@ -129,6 +130,7 @@ Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
 Sub-Aplicación de: Sub-Application of
+Sub-Aplicaciones de: Sub-Applications of
 Teléfono de contacto: Contact Number
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL

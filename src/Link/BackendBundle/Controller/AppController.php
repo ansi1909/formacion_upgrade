@@ -38,7 +38,7 @@ class AppController extends Controller
         // Todas las aplicaciones principales
         $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
                                     WHERE a.aplicacion IS NULL 
-                                    ORDER BY a.id ASC");
+                                    ORDER BY a.nombre ASC");
         $apps = $query->getResult();
         $aplicaciones_str = '<option value=""></option>';
 
@@ -47,23 +47,10 @@ class AppController extends Controller
 
         	$aplicaciones_str .= '<option value="'.$app->getId().'">'.$app->getNombre().'</option>';
 
-            // Subaplicaciones
-            $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
-                                        WHERE a.aplicacion = :aplicacion_id  
-                                        ORDER BY a.id ASC")
+            $query = $em->createQuery('SELECT COUNT(a.id) FROM LinkComunBundle:AdminAplicacion a 
+                                        WHERE a.aplicacion = :aplicacion_id')
                         ->setParameter('aplicacion_id', $app->getId());
-            $subapps = $query->getResult();
-
-            $subaplicaciones = array();
-            foreach ($subapps as $subapp)
-            {
-            	$subaplicaciones[] = array('id' => $subapp->getId(),
-	                                	   'nombre' => $subapp->getNombre(),
-	                                 	   'url' => $subapp->getUrl(),
-	                                 	   'icono' => $subapp->getIcono(),
-	                                 	   'activo' => $subapp->getActivo(),
-	                                 	   'delete_disabled' => $f->linkEliminar($subapp->getId(), 'AdminAplicacion'));
-            }
+            $tiene_subaplicaciones = $query->getSingleScalarResult();
 
             $aplicaciones[] = array('id' => $app->getId(),
                                  	'nombre' => $app->getNombre(),
@@ -71,7 +58,7 @@ class AppController extends Controller
                                  	'icono' => $app->getIcono(),
                                  	'activo' => $app->getActivo(),
                                  	'delete_disabled' => $f->linkEliminar($app->getId(), 'AdminAplicacion'),
-                                 	'subaplicaciones' => $subaplicaciones);
+                                    'tiene_subaplicaciones' => $tiene_subaplicaciones);
 
         }
 
@@ -256,6 +243,48 @@ class AppController extends Controller
         $em->flush();
             
         $return = array('ok' => $ok);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxSubAplicacionesAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $app_id = $request->query->get('app_id');
+        $html = '';
+        
+        $aplicacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
+        $subaplicaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminAplicacion')->findByAplicacion($app_id);
+
+        foreach ($subaplicaciones as $subaplicacion)
+        {
+            $checked = $subaplicacion->getActivo() ? 'checked' : '';
+            $delete_disabled = $f->linkEliminar($subaplicacion->getId(), 'AdminAplicacion');
+            $delete = $delete_disabled=='' ? 'delete' : '';
+            $html .= '<tr>
+                        <td>'.$subaplicacion->getNombre().'</td>
+                        <td>'.$subaplicacion->getUrl().'</td>
+                        <td class="center">
+                            <div class="can-toggle demo-rebrand-2 small">
+                                <input id="f'.$subaplicacion->getId().'" class="cb_activo" type="checkbox" '.$checked.'>
+                                <label for="f'.$subaplicacion->getId().'">
+                                    <div class="can-toggle__switch" data-checked="'.$this->get('translator')->trans('Si').'" data-unchecked="No"></div>
+                                </label>
+                            </div>
+                        </td>
+                        <td class="center">
+                            <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$subaplicacion->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$subaplicacion->getId().'"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>';
+        }
+
+        $return = array('html' => $html,
+                        'empresa' => $aplicacion->getNombre());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

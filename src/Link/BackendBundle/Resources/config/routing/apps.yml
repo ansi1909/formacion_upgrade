@@ -13,3 +13,9 @@ _ajaxEditAplicacion:
     defaults: { _controller: LinkBackendBundle:App:ajaxEditAplicacion }
     requirements:
         _method: GET
+
+_ajaxSubAplicaciones:
+    path:     /ajaxSubAplicaciones
+    defaults: { _controller: LinkBackendBundle:App:ajaxSubAplicaciones }
+    requirements:
+        _method: GET
