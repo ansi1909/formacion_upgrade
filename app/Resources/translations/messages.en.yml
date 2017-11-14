@@ -18,6 +18,8 @@ Categoría: Category
 Categorías: Categories
 Ciudad: City
 Conceder: Grant
+Conceder Permisos: Grant Access
+Conceder permisos de acceso: Granting access for
 Configurar: Configure
 Confirmar: Confirm
 Contraseña: Password
@@ -137,3 +139,4 @@ Usted no tiene permiso para acceder a esta ruta: You do not have permissions to 
 Usuario: User
 Usuario inactivo. Contacte al administrador del sistema.: Inactive user. Contact the system administrator.
 Usuario o clave incorrecta.: User or password incorrect.
+Ver Sub-Aplicaciones: See Sub-Applications

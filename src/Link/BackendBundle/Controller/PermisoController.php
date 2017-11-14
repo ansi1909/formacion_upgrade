@@ -184,7 +184,6 @@ class PermisoController extends Controller
 
                     $subaplicaciones[] = array('id' => $subapp->getId(),
                                                'nombre' => $subapp->getNombre(),
-                                               'icono' => $subapp->getIcono(),
                                                'checked' => $permiso_subaplicacion ? true : false,
                                                'display' => $permiso_aplicacion ? '' : 'style=display:none;');
 
@@ -192,7 +191,6 @@ class PermisoController extends Controller
 
                 $aplicaciones[] = array('id' => $app->getId(),
                                         'nombre' => $app->getNombre(),
-                                        'icono' => $app->getIcono(),
                                         'checked' => $permiso_aplicacion ? true : false,
                                         'subaplicaciones' => $subaplicaciones);
 

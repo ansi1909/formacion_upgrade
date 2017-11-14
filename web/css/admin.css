@@ -18,3 +18,7 @@
     color: #666666;
     text-decoration: none;
 }
+
+.right-pad {
+	padding-right: 30px !important;
+}

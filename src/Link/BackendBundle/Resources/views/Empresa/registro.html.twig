@@ -9,13 +9,8 @@
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_empresas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
-    <div class="col-sm-8 col-md-8 col-lg-8" id="div-error" style="display:none;">
-        <div class="alert alert-danger" role="alert"> 
-            <ul id="alert-error">
-                <li>- Error 1</li>
-                <li>- Error 2</li>
-            </ul>
-        </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
     </div>
 </div>
 <div class="row">
@@ -166,35 +161,63 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
     <script type="text/javascript">
-        function validarForm()
-        {
-            var str_error = '';
-            var nombre = $.trim($('#nombre').val());
-            var pais_id = $('#pais_id').val();
-            var deslen = $('#deslen').val();
-            
-            if (nombre == '')
-            {
-                str_error += "<li>- {{ 'El nombre de la empresa es requerido.'|trans }}</li>";
-            }
-            else {
-                if (nombre.length < 3)
+        $('#finish').click(function(){
+           var valid = $('#form').valid();
+           if(!valid){
+               notify($('#div-error').html());
+           }
+            else{
+                /*var str_error = '';
+                var nombre = $.trim($('#nombre').val());
+                var pais_id = $('#pais_id').val();
+                var deslen = $('#deslen').val();
+                if (nombre == '')
                 {
-                    str_error += "<li>- {{ 'El nombre de la empresa debe ser mínimo de 3 caracteres.'|trans }}</li>";
+                    $('#div-error ul').html("<li>- {# 'El nombre de la empresa es requerido.'|trans #}</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else if (pais_id == '')
+                {
+                    $('#div-error ul').html("<li>- {#'El país es requerido.'|trans #}</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else
+                {*/
+                    $('#form').submit();
+                //}
+            }
+        });
+        
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'pais_id': {
+                    required: true,
+                },
+                'deslen': {
+                    minlength: {{ maxlenght_bienvenida }}
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "- {{ 'El nombre de la empresa es requerido.'|trans }}",
+                    minlength: "- {{ 'El nombre de la empresa debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'pais_id': {
+                    required: "- {{ 'El país es requerido.'|trans }}",
+                },
+                'deslen': {
+                    minlength: "- {{ 'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ maxlenght_bienvenida }}"
                 }
             }
-
-            if (pais_id == '')
-            {
-                str_error += "<li>- {{ 'El país es requerido.'|trans }}</li>";
-            }
-
-            if (deslen < {{ maxlenght_bienvenida }})
-            {
-                str_error += "<li>- {{ 'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ maxlenght_bienvenida }}</li>";
-            }
-
-            return str_error;
-        }
+        });
     </script>
 {% endblock %}

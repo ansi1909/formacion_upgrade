@@ -77,27 +77,10 @@ $(document).ready(function() {
 		$('#subaplicacion_id').html($('#aplicaciones_str').val());
 	});
 
-	$('.see').click(function(){
-		var app_id = $(this).attr('data');
-		$('#div-active-alert').hide();
-		$.ajax({
-			type: "GET",
-			url: $('#url_subapps').val(),
-			async: true,
-			data: { app_id: app_id },
-			dataType: "json",
-			success: function(data) {
-				$('#tbody-subapps').html(data.html);
-				$('#appTitle').html(data.empresa);
-				$('#div-subapps').show();
-				observe();
-			},
-			error: function(){
-				$('#active-error').html($('#error_msg-subapps').val());
-				$('#div-active-alert').show();
-				$('#div-subapps').hide();
-			}
-		});
+	afterPaginate();
+
+	$('.paginate_button').click(function(){
+		afterPaginate();
 	});
 
 	observe();
@@ -167,4 +150,29 @@ function observe()
 		sweetAlertDelete(app_id, 'AdminAplicacion');
 	});
 
+}
+
+function afterPaginate(){
+	$('.see').click(function(){
+		var app_id = $(this).attr('data');
+		$('#div-active-alert').hide();
+		$.ajax({
+			type: "GET",
+			url: $('#url_subapps').val(),
+			async: true,
+			data: { app_id: app_id },
+			dataType: "json",
+			success: function(data) {
+				$('#tbody-subapps').html(data.html);
+				$('#appTitle').html(data.empresa);
+				$('#div-subapps').show();
+				observe();
+			},
+			error: function(){
+				$('#active-error').html($('#error_msg-subapps').val());
+				$('#div-active-alert').show();
+				$('#div-subapps').hide();
+			}
+		});
+	});
 }
