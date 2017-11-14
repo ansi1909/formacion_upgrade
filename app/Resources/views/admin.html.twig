@@ -37,6 +37,10 @@
         <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
         <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
         <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
+        <input type="hidden" id="sesion_time" name="sesion_time" value="{{sesion_time}}">
+        <input type="hidden" id="url_logout" name="url_logout" value="">
+        <button type="hidden" id="SModal" style="display: nome" data-toggle="modal" data-target="#MeModal" ></button>
+
         {# Cabecera del area de trabajo #}
         <header class="navbar-fixed">
             <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
@@ -185,6 +189,35 @@
                         <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{'Cancelar'|trans}}</span><span class="fa fa-times"></span></button>
                         <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{'Guardar'|trans}}</span><span class="fa fa-save"></span></button>
                         <button type="button" class="bttn__save" id="aceptar" style="display:none;" data-dismiss="modal"><span class="text__save">{{'Aceptar'|trans}}</span><span class="fa fa-check"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal dark_bg fade" id="MeModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formModalLabel">Ateción</h5>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    <div class="row" id="div-alert" style="display:none;">
+                        <div class="col-sm-2">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger" role="alert"> 
+                                <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="bttn__save" id="salir" style="display:none;" data-dismiss="modal"><span class="text__save">{{'Aceptar'|trans}}</span><span class="fa fa-check"></button>
                     </div>
                 </div>
             </div>
