@@ -60,10 +60,10 @@
                                     </div>
                                 </td>
                                 <td class="center">
-                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if aplicacion.delete_disabled == '' %}delete{% endif %} {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if aplicacion.delete_disabled == '' %}delete{% endif %} {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
                                     {% if aplicacion.tiene_subaplicaciones %}
-                                        <a href="#" class="btn btn-link btn-sm see" data="{{ aplicacion.id }}"><span class="fa fa-eye"></span></a>
+                                        <a href="#" title="{{ 'Ver Sub-Aplicaciones'|trans }}" class="btn btn-link btn-sm see" data="{{ aplicacion.id }}"><span class="fa fa-eye"></span></a>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-lg-6" style="display:none;" id="div-subapps">
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-6" style="display:none;" id="div-subapps">
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Sub-Aplicaciones de'|trans }} <span id="appTitle"></span></h5>
