@@ -67,7 +67,7 @@ $(document).ready(function() {
     });
 
 
-    $("#edit, #list").click(function(){
+    $("#edit, #list, #logout").click(function(){
         var url = $(this).attr('id');
         var parameter = $(this).attr('parameter');
         var p = '';
@@ -89,5 +89,11 @@ $(document).ready(function() {
         event.stopPropagation();
         return false;
     });
+
+    setTimeout(function()
+        { 
+            $('#SModal').trigger('click'); 
+
+        }, $('#sesion_time').val());
 
 });

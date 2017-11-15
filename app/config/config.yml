@@ -44,7 +44,7 @@ twig:
         maxlenght_bienvenida: 5
         root_path: %kernel.root_dir%
         uploads: 'http://localhost/uploads/'
-        sesion_time: 300
+        sesion_time: 3000
 
 # Doctrine Configuration
 doctrine:

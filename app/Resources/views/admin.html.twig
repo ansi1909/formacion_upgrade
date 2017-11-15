@@ -38,7 +38,7 @@
         <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
         <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
         <input type="hidden" id="sesion_time" name="sesion_time" value="{{sesion_time}}">
-        <input type="hidden" id="url_logout" name="url_logout" value="">
+        <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}">
         <button type="hidden" id="SModal" style="display: nome" data-toggle="modal" data-target="#MeModal" ></button>
 
         {# Cabecera del area de trabajo #}
@@ -198,7 +198,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="formModalLabel">Ateción</h5>
+                        <h5 class="modal-title" id="formModalLabel">Atención</h5>
                     </div>
                     <div class="modal-body">
                         
@@ -217,7 +217,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="bttn__save" id="salir" style="display:none;" data-dismiss="modal"><span class="text__save">{{'Aceptar'|trans}}</span><span class="fa fa-check"></button>
+                        <button type="button" class="bttn__save" id="logout"  data-dismiss="modal"><span class="text__save">{{'Aceptar'|trans}}</span><span class="fa fa-check"></button>
                     </div>
                 </div>
             </div>
@@ -304,6 +304,8 @@
                         });
                     });
                 }
+
+                
 
                 function notify(msg)
                 {
