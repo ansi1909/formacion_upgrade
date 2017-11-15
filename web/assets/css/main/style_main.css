@@ -538,6 +538,10 @@
             color: #fff;
         }
 
+        a.bttn__fndo, a.bttn__fndo:focus{
+            color: #9fbf00;
+        }
+
         .bttn__fndo:hover{
             background: linear-gradient(to right, #0084db 0%, #00558D 100%);
             color: #fff;
