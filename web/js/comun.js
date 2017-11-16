@@ -90,10 +90,4 @@ $(document).ready(function() {
         return false;
     });
 
-    setTimeout(function()
-        { 
-            $('#SModal').trigger('click'); 
-
-        }, $('#sesion_time').val());
-
 });

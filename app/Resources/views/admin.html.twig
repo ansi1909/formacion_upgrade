@@ -39,7 +39,6 @@
         <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
         <input type="hidden" id="sesion_time" name="sesion_time" value="{{sesion_time}}">
         <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}">
-        <button type="hidden" id="SModal" style="display: nome" data-toggle="modal" data-target="#MeModal" ></button>
 
         {# Cabecera del area de trabajo #}
         <header class="navbar-fixed">
@@ -194,35 +193,6 @@
             </div>
         </div>
 
-        <div class="modal dark_bg fade" id="MeModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="formModalLabel">Atención</h5>
-                    </div>
-                    <div class="modal-body">
-                        
-                    </div>
-                    <div class="row" id="div-alert" style="display:none;">
-                        <div class="col-sm-2">
-                            &nbsp;
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="alert alert-danger" role="alert"> 
-                                <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            &nbsp;
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="bttn__save" id="logout"  data-dismiss="modal"><span class="text__save">{{'Aceptar'|trans}}</span><span class="fa fa-check"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         {% block javascripts %}
             {# Jquery, Tether and Bootstrap JS. #}
             <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}" type="text/javascript"></script>
@@ -305,7 +275,24 @@
                     });
                 }
 
-                
+                setTimeout(function()
+                    { 
+                        var ruta = '/_loginAdmin';
+                        swal({
+                              title: 'Auto close alert!',
+                              text: 'I will close in 5 seconds.',
+                              timer: 5000,
+                              onOpen: function () {
+                                swal.showLoading()
+                              },
+                              allowOutsideClick: false
+                        }).then(function (result) {
+                              if (result.dismiss === 'timer') {
+                                console.log('I was closed by the timer')
+                              }
+                            })  
+                        window.location=($('#url_logout').val());
+                    }, $('#sesion_time').val());
 
                 function notify(msg)
                 {
