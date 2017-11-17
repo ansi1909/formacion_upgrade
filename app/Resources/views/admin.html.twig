@@ -276,23 +276,24 @@
                 }
 
                 setTimeout(function()
-                    { 
-                        var ruta = '/_loginAdmin';
-                        swal({
-                              title: 'Auto close alert!',
-                              text: 'I will close in 5 seconds.',
-                              timer: 5000,
-                              onOpen: function () {
-                                swal.showLoading()
-                              },
-                              allowOutsideClick: false
-                        }).then(function (result) {
-                              if (result.dismiss === 'timer') {
-                                console.log('I was closed by the timer')
-                              }
-                            })  
-                        window.location=($('#url_logout').val());
-                    }, $('#sesion_time').val());
+                { 
+                    swal({
+                          title: "{{'Aviso de cierre de sesión'|trans }}",
+                          text: "{{'No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos'|trans}}",
+                          onOpen: function () {
+                            swal.showLoading()
+                          },
+                          allowOutsideClick: false
+                    }).then(function (result) {
+                          if (result.dismiss === 'timer') {
+                            console.log('I was closed by the timer')
+                          }
+                        })  
+                    setTimeout(function()
+                        {
+                            window.location=($('#url_logout').val());
+                        },5000);
+                }, $('#sesion_time').val());
 
                 function notify(msg)
                 {
