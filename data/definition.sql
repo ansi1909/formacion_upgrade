@@ -99,6 +99,7 @@ id serial,
 fecha_ingreso timestamp without time zone,
 fecha_request timestamp without time zone,
 usuario_id integer,
+disponible boolean,
  PRIMARY KEY (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
 

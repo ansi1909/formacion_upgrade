@@ -18,7 +18,13 @@ class DefaultController extends Controller
     {
 
     	$session = new Session();
+        $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+
+        $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
+        $sesion->setDisponible(false);
+        $em->persist($sesion);
+        $em->flush();
 
         $f->setRequest($session->get('sesion_id'));
         $session->invalidate();

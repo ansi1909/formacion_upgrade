@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class AppController extends Controller
 {
-    public function indexAction($app_id)
+    public function indexAction($app_id, Request $request)
     {
 
     	$session = new Session();

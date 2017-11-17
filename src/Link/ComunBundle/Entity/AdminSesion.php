@@ -46,6 +46,12 @@ class AdminSesion
      */
     private $usuario;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disponible", type="boolean", nullable=true)
+     */
+    private $disponible;
 
 
     /**
@@ -128,5 +134,29 @@ class AdminSesion
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set disponible
+     *
+     * @param boolean $disponible
+     *
+     * @return AdminSesion
+     */
+    public function setDisponible($disponible)
+    {
+        $this->disponible = $disponible;
+
+        return $this;
+    }
+
+    /**
+     * Get disponible
+     *
+     * @return boolean
+     */
+    public function getDisponible()
+    {
+        return $this->disponible;
     }
 }

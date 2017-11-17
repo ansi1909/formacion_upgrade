@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
 {
@@ -34,7 +35,11 @@ class DefaultController extends Controller
       		return $this->redirectToRoute('_loginAdmin');
       	}
 
-        return $this->render('LinkBackendBundle:Default:index.html.twig');
+        $response = $this->render('LinkBackendBundle:Default:index.html.twig');
+
+        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+        return $response;
 
     }
 
@@ -102,6 +107,14 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $login = $request->request->get('usuario');
             $clave = $request->request->get('clave');
+
+            //$cookies = $request->cookies->all();
+            /*if (isset($cookies['Peter'])){
+                return new Response('Existe Peter 2');
+            }
+            else {
+                return new Response('No existe Peter');
+            }*/
             
             $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login,
                                                                                                             'clave' => $clave));
@@ -235,6 +248,7 @@ class DefaultController extends Controller
                         $admin_sesion = new AdminSesion();
                         $admin_sesion->setFechaIngreso(new \DateTime('now'));
                         $admin_sesion->setUsuario($usuario);
+                        $admin_sesion->setDisponible(true);
                         $em->persist($admin_sesion);
                         $em->flush();
 
@@ -252,7 +266,11 @@ class DefaultController extends Controller
             }
         }
         
-        return $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $error));
+        //return $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $error));
+        $response = $this->render('LinkBackendBundle:Default:login.html.twig', array('error' => $error));
+        //$response->headers->clearCookie('Peter');
+        //$response->headers->removeCookie('Peter');
+        return $response;
 
     }
 }

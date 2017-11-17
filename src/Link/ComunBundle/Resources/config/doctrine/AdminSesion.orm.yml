@@ -23,6 +23,9 @@ Link\ComunBundle\Entity\AdminSesion:
             type: datetime
             nullable: true
             column: fecha_request
+        disponible:
+            type: boolean
+            nullable: true
     manyToOne:
         usuario:
             targetEntity: AdminUsuario
