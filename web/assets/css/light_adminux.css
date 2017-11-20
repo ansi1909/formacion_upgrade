@@ -4437,6 +4437,7 @@ table tr td img {
 
 .can-toggle label .can-toggle__switch {
   position: relative;
+  cursor: pointer;
 }
 
 .can-toggle label .can-toggle__switch:before {

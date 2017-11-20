@@ -294,7 +294,7 @@
         }
     /*Fin Estilos de formularios*/
     /*Tipos de Botones*/
-        .bttn__nr, .bttn__bck{
+        .bttn__nr, .bttn__bck, .bttn__nre{
             width: 4em;
             height: 4em;
             border-radius: 50px;
@@ -333,12 +333,12 @@
             -webkit-animation: sonar 1.5s infinite;
         }*/
         
-        .bttn__nr span.fa, .bttn__bck span.fa{
+        .bttn__nr span.fa, .bttn__bck span.fa, .bttn__nre span.fa{
             font-size: 22px;
             transition: margin .5s ease;
         }
 
-        .bttn__nr span.fa{
+        .bttn__nr span.fa, .bttn__nre span.fa{
             margin: 5px 10px 0px 5px;
         }
 
@@ -354,12 +354,18 @@
             color: #fff;
         }
 
+        .bttn__nre:hover{
+            width: 12.5em;
+            background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+            color: #fff;
+        }
+
         /*.bttn__bck:hover::after{
             animation-play-state: paused;
             border: none;
         }*/
 
-        .bttn__nr:hover span.fa{
+        .bttn__nr:hover span.fa, .bttn__nre:hover span.fa{
             margin: 5px 7px 0 2px;
         }
 
@@ -369,7 +375,7 @@
             color: #fff;
         }
 
-        .bttn__nr:hover .text__nr, .bttn__bck:hover .text__bck{
+        .bttn__nr:hover .text__nr, .bttn__bck:hover .text__bck, .bttn__nre:hover .text__nre{
             opacity: 1;
             display: inline-block;
             position: relative;
@@ -399,7 +405,7 @@
         }
 
         .bttn__nr .text__nr, .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck,
-        .bttn__save .text__save, .bttn__cancel .text__cancel{
+        .bttn__save .text__save, .bttn__cancel .text__cancel, .bttn__nre .text__nre{
             opacity: 0;
             display: none;
         }
