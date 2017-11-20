@@ -244,6 +244,14 @@ class DefaultController extends Controller
                             
                         }
 
+                        // Cierre de sesiones activas
+                        $sesiones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
+                                                                                                                     'disponible' => true));
+                        foreach ($sesiones as $s)
+                        {
+                            $s->setDisponible(false);
+                        }
+
                         // Se crea la sesión en BD
                         $admin_sesion = new AdminSesion();
                         $admin_sesion->setFechaIngreso(new \DateTime('now'));

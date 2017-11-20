@@ -257,6 +257,7 @@ class NivelController extends Controller
                 //Se recorre toda la hoja excel desde la fila 2
                 $r = -1;
                 $col = 0;
+                $niveles = array();
                 for ($row=2; $row<=$highestRow; ++$row) 
                 {
 
@@ -275,19 +276,27 @@ class NivelController extends Controller
                                     ->setParameters(array('empresa_id' => $empresa_id,
                                                           'nombre' => strtolower($nombre)));
                         
-                        if (!$query->getSingleScalarResult() && !count($errores))
+                        if (!$query->getSingleScalarResult())
                         {
-                            // Lo agregamos
-                            $nuevos_registros++;
-                            $nivel = new AdminNivel();
-                            $nivel->setNombre($nombre);
-                            $nivel->setEmpresa($empresa);
-                            $em->persist($nivel);
-                            $em->flush();
+                            // Lo agregamos en el array de niveles
+                            $niveles[] = $nombre;
                         }
 
                     }
 
+                }
+
+                if (!count($errores) && count($niveles))
+                {
+                    foreach ($niveles as $n)
+                    {
+                        $nuevos_registros++;
+                        $nivel = new AdminNivel();
+                        $nivel->setNombre($n);
+                        $nivel->setEmpresa($empresa);
+                        $em->persist($nivel);
+                        $em->flush();
+                    }
                 }
 
             }
