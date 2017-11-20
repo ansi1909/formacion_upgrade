@@ -1,0 +1,50 @@
+1. Descomprimir todo el directorio formacion2.0 en la carpeta web del servidor.
+
+2. Otorgar permisos de usuarios sobre el diterctorio del proyecto:
+	chown -R www-data.www-data formacion2.0/
+	chmod -R 777 formacion2.0/
+
+3. En el servidor web debe existir adicionalmente los siguientes directorios, con permisos de escritura:
+	uploads/
+		recursos/			# Aquí se podrían almacenan imágenes y videos subidos desde el ckeditor en mensajes de bienvenida
+			usuarios/		# Aquí se almacenan las fotos de perfil de los usuarios
+			niveles/		# Aquí se almacenan los archivos Excel de los niveles por empresa
+
+4. Las constantes globales para twig están seteadas en app/config/config.yml:
+	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida
+    root_path: Directorio raíz del kernel (En este caso app/)
+    uploads: Dirección http del directorio uploads (Para las imágenes y videos)
+    sesion_time: Cantidad de segundos en que expira la sesión en caso de inactividad
+
+5. Las constantes para controllers están seteadas en app/config/parametros.yml
+
+6. Los parámetros de conexión a base de datos y servidor de correo están seteadas en app/config/parameters.yml
+
+7. Versión mínima de PHP que debe estar instalada: 5.6.25
+
+8. Base de datos con Postgres 9.4
+
+9. Activar las siguientes extensiones PHP:
+	- php_curl
+	- php_intl
+	- php_pdo_pgsql
+	- php_pgsql
+
+10. Instalar composer y correr el siguiente comando para incluir las librerías de PHPExcel:
+	composer require liuggio/excelbundle
+
+11. Importar los siguientes sql en la consola de postgres, siguiendo este orden:
+	- definition.sql
+	- indices.sql
+	- listas.sql
+
+12. Aumentar las cantidad de memoria PHP de las siguientes variables en php.ini:
+	memory_limit = 128M
+	post_max_size = 8M
+	upload_max_filesize = 2M
+	max_file_uploads = 20
+
+13. Para debugg se puede setear las siguientes variables en php.ini
+	xdebug.var_display_max_depth = -1 
+	xdebug.var_display_max_children = -1
+	xdebug.var_display_max_data = -1

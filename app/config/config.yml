@@ -41,7 +41,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        maxlenght_bienvenida: 5
+        minlenght_bienvenida: 5
         root_path: %kernel.root_dir%
         uploads: 'http://localhost/uploads/'
         sesion_time: 300000

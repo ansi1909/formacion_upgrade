@@ -49,3 +49,7 @@ niveles:
 usuarios:
     resource: "@LinkBackendBundle/Resources/config/routing/usuarios.yml"
     prefix: /usuario
+
+paginas:
+    resource: "@LinkBackendBundle/Resources/config/routing/paginas.yml"
+    prefix: /pagina

@@ -1,0 +1,3 @@
+_paginas:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:index }

@@ -15,3 +15,11 @@ _ajaxValidLogin:
     defaults: { _controller: LinkBackendBundle:Usuario:ajaxValidLogin }
     requirements:
         _method: POST
+
+_participantes:
+    path:     /participantes/{app_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:participantes }
+
+_participantesEmpresa:
+    path:     /participantesEmpresa/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:participantesEmpresa }
