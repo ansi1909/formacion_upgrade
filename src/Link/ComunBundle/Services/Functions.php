@@ -471,4 +471,24 @@ class Functions
 
 	}
 
+	// Retorna un arreglo multidimensional de las subpaginas dada pagina_id
+	public function subPaginas($pagina_id)
+	{
+
+		$em = $this->em;
+		$subpaginas = array();
+		
+		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findByPagina($pagina_id);
+		
+		foreach ($subpages as $subpage)
+		{
+			$subpaginas[] = array('id' => $subpage->getId(),
+								  'nombre' => $subpage->getCategoria()->getNombre().': '.$subpage->getNombre(),
+								  'subpaginas' => $this->subPaginas($subpage->getId()));
+		}
+
+		return $subpaginas;
+
+	}
+
 }

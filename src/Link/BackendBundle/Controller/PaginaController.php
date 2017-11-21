@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPagina;
 
-class PermisoController extends Controller
+class PaginaController extends Controller
 {
     public function indexAction($app_id)
     {
@@ -32,56 +32,30 @@ class PermisoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                    WHERE p.pagina IS NULL
+                                    ORDER BY p.id ASC");
+        $pages = $query->getResult();
 
-        $permisos = array();
+        $paginas = array();
         
-        foreach ($roles as $rol)
+        foreach ($pages as $page)
         {
 
-        	// Accesos de cada rol
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p 
-            							JOIN p.aplicacion a 
-                                        WHERE p.rol = :rol_id AND a.aplicacion IS NULL
-                                        ORDER BY a.id ASC")
-                        ->setParameter('rol_id', $rol->getId());
-            $permisos_aplicacion = $query->getResult();
+        	$subpaginas = $f->subPaginas($page->getId());
 
-            $aplicaciones = array();
-            foreach ($permisos_aplicacion as $pa)
-            {
-
-            	// Subaplicaciones a la que el rol tiene acceso
-            	$query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p 
-	            							JOIN p.aplicacion a 
-	                                        WHERE p.rol = :rol_id AND a.aplicacion = :aplicacion_id
-	                                        ORDER BY a.id ASC")
-	                        ->setParameters(array('rol_id' => $rol->getId(),
-	                        					  'aplicacion_id'=> $pa->getAplicacion()->getId()));
-	            $permisos_subaplicacion = $query->getResult();
-
-	            $subaplicaciones = array();
-	            foreach ($permisos_subaplicacion as $psa)
-	            {
-	            	$subaplicaciones[] = array('id' => $psa->getAplicacion()->getId(),
-		                                	   'nombre' => $psa->getAplicacion()->getNombre());
-	            }
-            	
-            	$aplicaciones[] = array('id' => $pa->getAplicacion()->getId(),
-	                                	'nombre' => $pa->getAplicacion()->getNombre(),
-	                                	'subaplicaciones' => $subaplicaciones);
-
-            }
-
-            $permisos[] = array('rol_id' => $rol->getId(),
-                                'rol_nombre' => $rol->getNombre(),
-                                'aplicaciones' => $aplicaciones);
+            $paginas[] = array('id' => $page->getId(),
+                               'nombre' => $page->getNombre(),
+                               'categoria' => $page->getCategoria()->getNombre(),
+                               'creacion' => $page->getFechaCreacion()->format('d/m/Y'),
+                               'status' => $page->getEstatusContenido()->getNombre(),
+                               'subpaginas' => $subpaginas);
 
         }
 
-        //return new Response(var_dump($permisos));
+        return new Response(var_dump($paginas));
 
-        return $this->render('LinkBackendBundle:Permiso:index.html.twig', array('permisos' => $permisos));
+        //return $this->render('LinkBackendBundle:Permiso:index.html.twig', array('permisos' => $permisos));
 
     }
 
