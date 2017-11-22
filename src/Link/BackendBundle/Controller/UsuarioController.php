@@ -461,7 +461,13 @@ class UsuarioController extends Controller
 
         $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll(); 
 
-        return $this->render('LinkBackendBundle:Usuario:participantes.html.twig', array('empresas' =>$empresas));
+        return $this->render('LinkBackendBundle:Usuario:participantes.html.twig', array('empresas' =>$empresas,
+                                                                                        'empresa_id' =>$empresas));
+    }
+
+    public function participantesEmpresaAction($empresa_id, Request $request)
+    {
+        return $this->render('LinkBackendBundle:Usuario:participantesEmpresa.html.twig');
     }
 
 }
