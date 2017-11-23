@@ -1,0 +1,78 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+<br>
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Configuración de páginas'|trans }}</h3>
+    </div>
+    <div class="col text-right ">
+        <a href="{{ path('_newPagina')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nueva página'|trans }}</span></a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Páginas principales'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                            <th class="hd__title">{{ 'Categoría'|trans }}</th>
+                            <th class="hd__title">{{ 'Modificado el'|trans }}</th>
+                            <th class="hd__title">{{ 'Modificado por'|trans }}</th>
+                            <th class="hd__title">{{ 'Estatus'|trans }}</th>
+                            <th class="hd__title">{{ 'Sub-páginas'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pagina in paginas %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>{{ pagina.nombre }}</td>
+                                <td>{{ pagina.categoria }}</td>
+                                <td>{{ pagina.modificacion }}</td>
+                                <td>{{ pagina.usuario }}</td>
+                                <td>{{ pagina.status }}</td>
+                                <td>
+                                    {% if pagina.subpaginas.tiene > 0 %}
+                                        <div class="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {{ pagina.subpaginas.str|raw }}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'No tiene sub-páginas'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td class="center">
+                                    <a href="{{ path('_pagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Configurar página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if pagina.delete_disabled == '' %}delete{% endif %} {{ pagina.delete_disabled }}" data="{{ pagina.id }}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/paginas.js') }}"></script>
+{% endblock %}

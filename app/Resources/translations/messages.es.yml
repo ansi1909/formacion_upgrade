@@ -21,7 +21,9 @@ Ciudad: Ciudad
 Conceder: Conceder
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
+Configuración de páginas: Configuración de páginas
 Configurar: Configurar
+Configurar página: Configurar página
 Confirmar: Confirmar
 Contraseña: Contraseña
 Correo corporativo: Correo corporativo
@@ -66,6 +68,7 @@ Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
 Errores: Errores
 Errores de validación: Errores de validación
+Estatus: Estatus
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Fecha Creación: Fecha Creación
@@ -94,6 +97,8 @@ Panel de acceso: Panel de acceso
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Mensaje del servidor: Mensaje del servidor
+Modificado el: Modificado el
+Modificado por: Modificado por
 Nivel: Nivel
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
@@ -104,9 +109,12 @@ No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este
 No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
 No se pudo filtrar el listado.: No se pudo filtrar el listado.
+No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
+Nueva página: Nueva página
 Nuevo Registro: Nuevo Registro
+Páginas principales: Páginas principales
 Perfil Empresarial: Perfil Empresarial
 Paso: Paso
 País: País
@@ -135,6 +143,7 @@ Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir Archivo de Niveles: Subir Archivo de Niveles
 Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
+Sub-páginas: Sub-páginas
 Teléfono de contacto: Teléfono de Contacto
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta

@@ -60,7 +60,7 @@ class CertiPagina
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_creacion", type="date", nullable=true)
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
      */
     private $fechaCreacion;
 
@@ -103,6 +103,13 @@ class CertiPagina
      * })
      */
     private $estatusContenido;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
 
 
 
@@ -354,5 +361,29 @@ class CertiPagina
     public function getEstatusContenido()
     {
         return $this->estatusContenido;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiPagina
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
     }
 }

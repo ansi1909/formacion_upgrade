@@ -70,6 +70,14 @@ class Functions
                 $entidades = array('AdminUsuario' => 'nivel',
                                    'CertiNivelPagina' => 'nivel');
                 break;
+            case 'CertiPagina':
+                $entidades = array('CertiPagina' => 'pagina',
+                                   'CertiPaginaEmpresa' => 'pagina',
+                                   'CertiPrueba' => 'pagina',
+                                   'CertiGrupoPagina' => 'pagina',
+                                   'CertiPaginaLog' => 'pagina',
+                                   'CertiForo' => 'pagina');
+                break;
     		default:
     			$entidades = array();
     			break;
@@ -477,15 +485,27 @@ class Functions
 
 		$em = $this->em;
 		$subpaginas = array();
+		$tiene = 0;
+		$str = '';
 		
 		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findByPagina($pagina_id);
 		
 		foreach ($subpages as $subpage)
 		{
-			$subpaginas[] = array('id' => $subpage->getId(),
-								  'nombre' => $subpage->getCategoria()->getNombre().': '.$subpage->getNombre(),
-								  'subpaginas' => $this->subPaginas($subpage->getId()));
+			$tiene++;
+			$str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\'>'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre();
+			$subPaginas = $this->subPaginas($subpage->getId());
+			if ($subPaginas['tiene'] > 0)
+			{
+				$str .= '<ul>';
+				$str .= $subPaginas['str'];
+				$str .= '</ul>';
+			}
+			$str .= '</li>';
 		}
+
+		$subpaginas = array('tiene' => $tiene,
+							'str' => $str);
 
 		return $subpaginas;
 

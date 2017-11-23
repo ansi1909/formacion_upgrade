@@ -1,3 +1,11 @@
 _paginas:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Pagina:index }
+
+_pagina:
+    path:     /configure/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:pagina }
+
+_newPagina:
+    path:     /new
+    defaults: { _controller: LinkBackendBundle:Pagina:new }

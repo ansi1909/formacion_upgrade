@@ -21,7 +21,9 @@ Ciudad: City
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
+Configuración de páginas: Pages setting
 Configurar: Configure
+Configurar página: Configure page
 Confirmar: Confirm
 Contraseña: Password
 Correo corporativo: Company email
@@ -66,6 +68,7 @@ Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
 Errores de validación: Validation errors
+Estatus: Status
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Fecha Creación: Creation Date
@@ -94,6 +97,8 @@ Panel de acceso: Login
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Mensaje del servidor: Server message
+Modificado el: Modified at
+Modificado por: Modified by
 Nivel: Level
 Niveles: Levels
 Niveles por empresas: Levels by companies
@@ -104,9 +109,12 @@ No se pudo activar/desactivar este registro.: It could not enable/disable this i
 No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
 No se pudo filtrar el listado.: It could not filter the list.
+No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nuevo nivel de la empresa: New level of company
+Nueva página: New page
 Nuevo Registro: New Item
+Páginas principales: Main pages
 Perfil Empresarial: Company Profile
 Paso: Step
 País: Country
@@ -135,6 +143,7 @@ Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
 Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
+Sub-páginas: Sub-pages
 Teléfono de contacto: Contact Number
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL

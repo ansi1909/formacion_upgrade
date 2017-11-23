@@ -47,15 +47,17 @@ class PaginaController extends Controller
             $paginas[] = array('id' => $page->getId(),
                                'nombre' => $page->getNombre(),
                                'categoria' => $page->getCategoria()->getNombre(),
-                               'creacion' => $page->getFechaCreacion()->format('d/m/Y'),
+                               'modificacion' => $page->getFechaModificacion()->format('d/m/Y H:i a'),
+                               'usuario' => $page->getUsuario()->getNombre().' '.$page->getUsuario()->getApellido(),
                                'status' => $page->getEstatusContenido()->getNombre(),
-                               'subpaginas' => $subpaginas);
+                               'subpaginas' => $subpaginas,
+                               'delete_disabled' => $f->linkEliminar($page->getId(), 'CertiPagina'));
 
         }
 
-        return new Response(var_dump($paginas));
+        //return new Response(var_dump($paginas));
 
-        //return $this->render('LinkBackendBundle:Permiso:index.html.twig', array('permisos' => $permisos));
+        return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' => $paginas));
 
     }
 

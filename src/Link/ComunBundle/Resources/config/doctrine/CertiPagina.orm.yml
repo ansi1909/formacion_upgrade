@@ -55,9 +55,13 @@ Link\ComunBundle\Entity\CertiPagina:
             options:
                 fixed: false
         fechaCreacion:
-            type: date
+            type: datetime
             nullable: true
             column: fecha_creacion
+        fechaModificacion:
+            type: datetime
+            nullable: true
+            column: fecha_modificacion
     manyToOne:
         pagina:
             targetEntity: CertiPagina
