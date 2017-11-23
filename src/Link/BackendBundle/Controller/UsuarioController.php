@@ -444,32 +444,25 @@ class UsuarioController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-        
-        if (!$session->get('ini'))
+        $session->set('app_id', $app_id);
+        if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
         {
-            return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
-
-            $session->set('app_id', $app_id);
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
-                return $this->redirectToRoute('_authException');
-            }
+            return $this->redirectToRoute('_authException');
         }
         $f->setRequest($session->get('sesion_id'));
+
+        $niveles = array();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+
+        if ($usuario->getEmpresa()) {
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($usuario->getEmpresa()->getId()); 
+        }
 
         $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll(); 
 
         return $this->render('LinkBackendBundle:Usuario:participantes.html.twig', array('empresas' =>$empresas,
-                                                                                        'empresa_id' =>$empresas));
-    }
-
-    public function participantesEmpresaAction($empresa_id, Request $request)
-    {
-        return $this->render('LinkBackendBundle:Usuario:participantesEmpresa.html.twig');
+                                                                                        'niveles' =>$niveles,
+                                                                                        'usuario' =>$usuario));
     }
 
 }
-
-    
