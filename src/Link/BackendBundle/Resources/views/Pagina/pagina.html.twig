@@ -1,0 +1,165 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+<br>
+<br>
+<div class="row align-items-center justify-content-between">
+    {% if pagina.pagina %}
+        {% set padre = pagina.pagina.nombre %}
+        <div class="col text-left">
+            <a href="{{ path('_pagina', { 'pagina_id': pagina.pagina.id })}}" class="bttn__bck"><span class="fa fa-level-up"></span><span class="text__bck">{{ 'Página padre'|trans }}</span></a>
+        </div>
+    {% else %}
+        {% set padre = '' %}
+        <div class="col text-left">
+            <a href="{{ path('_paginas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Detalles de la página'|trans }}</h6>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="container_wizard wizard-thin">
+                    <div class="stepwizard">
+                        <div class="stepwizard-row setup-panel d-flex">
+                            <div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Contenido'|trans }}</small></p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det0">   
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="content__wrapper">
+                                <div class="container-fluid">
+                                    <div class="row justify-content-between">
+                                        <div class="col-sm-8 show__details">
+                                            <h5>{{ 'Nombre'|trans }}</h5>
+                                            <p>{{ pagina.nombre }}</p>
+                                        </div>
+                                        <div class="col-sm-8 show__details">
+                                            <h5>{{ 'Página padre'|trans }}</h5>
+                                            <p>{{ padre }}</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row justify-content-between">   
+                                        <div class="col-sm-8 show__details">
+                                            <h5>{{ 'Categoría'|trans }}</h5>
+                                            <p>{{ pagina.categoria.nombre }}</p>
+                                        </div>
+                                        <div class="col-sm-8 show__details">
+                                            <h5>{{ 'Estatus'|trans }}</h5>
+                                            <p>{{ pagina.estatusContenido.nombre }}</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row justify-content-between">   
+                                        <div class="col-sm-5 show__details">
+                                            <h5>{{ 'Creado el'|trans }}</h5>
+                                            <p>{{ pagina.fechaCreacion|date('d/m/Y H:i a') }}</p>
+                                        </div>
+                                        <div class="col-sm-5 show__details">
+                                            <h5>{{ 'Modificado el'|trans }}</h5>
+                                            <p>{{ pagina.fechaModificacion|date('d/m/Y H:i a') }}</p>
+                                        </div>
+                                        <div class="col-sm-6 show__details">
+                                            <h5>{{ 'Modificado por'|trans }}</h5>
+                                            <p>{{ pagina.usuario.nombre~' '~pagina.usuario.apellido }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det1">
+                        <div class="col-sm-16">
+                            <br>
+                            {% if pagina.foto %}
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        {% set img = uploads~pagina.foto %}
+                                        <img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    {{ pagina.descripcion|raw }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    {{ pagina.contenido|raw }}
+                                </div>
+                            </div>
+                            {% if pagina.pdf %}
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        {% set pdf = uploads~pagina.pdf %}
+                                        <p class="fa fa-file-pdf-o">
+                                            <a href="{{ pdf }}#" target="_blank">{{ 'Descargue material complementario|trans' }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-sm-16 col-md-16 text-right">
+                    <a href="{{ path('_editPagina', { 'pagina_id': pagina.id })}}" class="bttn__bck"><span class="fa fa-pencil"></span><span class="text__bck">{{ 'Editar página'|trans }}</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Sub-páginas'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                {{ include('LinkBackendBundle:Pagina:listado.html.twig', { 'paginas': subpaginas }) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/paginas.js') }}"></script>
+{% endblock %}

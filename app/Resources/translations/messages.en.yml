@@ -28,6 +28,7 @@ Confirmar: Confirm
 Contraseña: Password
 Correo corporativo: Company email
 Correo personal: Personal email
+Creado el: Created at
 Dato en nulo.: Null value
 Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
@@ -39,10 +40,13 @@ Datos del usuario: User details
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
+Descargue material complementario: Download complementary content
 Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
+Detalles de la página: Page details
 División funcional: Functional division
 Editar: Edit
+Editar página: Edit page
 Eliminado: Deleted
 Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
@@ -77,6 +81,7 @@ Fecha de nacimiento es requerida.: Birthday is required.
 Fila: Row
 Filtrar usuarios: Filter users
 Finalizar: Finish
+Foto de la página: Page picture
 Guardar: Save
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
@@ -114,6 +119,7 @@ Nombre: Name
 Nuevo nivel de la empresa: New level of company
 Nueva página: New page
 Nuevo Registro: New Item
+Página padre: Father page
 Páginas principales: Main pages
 Perfil Empresarial: Company Profile
 Paso: Step

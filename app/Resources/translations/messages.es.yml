@@ -28,6 +28,7 @@ Confirmar: Confirmar
 Contraseña: Contraseña
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
+Creado el: Creado el
 Dato en nulo.: Dato en nulo.
 Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
@@ -39,10 +40,13 @@ Datos del usuario: Datos del usuario
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
+Descargue material complementario: Descargue material complementario
 Descripción: Descripción
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
+Detalles de la página: Detalles de la página
 División funcional: División funcional
 Editar: Editar
+Editar página: Editar página
 Eliminado: Eliminado
 Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
@@ -77,6 +81,7 @@ Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
 Fila: Fila
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
+Foto de la página: Foto de la página
 Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
@@ -114,6 +119,7 @@ Nombre: Nombre
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nueva página: Nueva página
 Nuevo Registro: Nuevo Registro
+Página padre: Página padre
 Páginas principales: Páginas principales
 Perfil Empresarial: Perfil Empresarial
 Paso: Paso

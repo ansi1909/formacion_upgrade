@@ -37,27 +37,39 @@ class PaginaController extends Controller
                                     ORDER BY p.id ASC");
         $pages = $query->getResult();
 
-        $paginas = array();
-        
-        foreach ($pages as $page)
-        {
-
-        	$subpaginas = $f->subPaginas($page->getId());
-
-            $paginas[] = array('id' => $page->getId(),
-                               'nombre' => $page->getNombre(),
-                               'categoria' => $page->getCategoria()->getNombre(),
-                               'modificacion' => $page->getFechaModificacion()->format('d/m/Y H:i a'),
-                               'usuario' => $page->getUsuario()->getNombre().' '.$page->getUsuario()->getApellido(),
-                               'status' => $page->getEstatusContenido()->getNombre(),
-                               'subpaginas' => $subpaginas,
-                               'delete_disabled' => $f->linkEliminar($page->getId(), 'CertiPagina'));
-
-        }
+        $paginas = $f->paginas($pages);
 
         //return new Response(var_dump($paginas));
 
         return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' => $paginas));
+
+    }
+
+    public function paginaAction($pagina_id)
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findByPagina($pagina_id);
+        $subpaginas = $f->paginas($subpages);
+
+        return $this->render('LinkBackendBundle:Pagina:pagina.html.twig', array('pagina' => $pagina,
+                                                                                'subpaginas' => $subpaginas));
 
     }
 

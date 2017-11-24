@@ -9,3 +9,7 @@ _pagina:
 _newPagina:
     path:     /new
     defaults: { _controller: LinkBackendBundle:Pagina:new }
+
+_editPagina:
+    path:     /edit/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:edit }

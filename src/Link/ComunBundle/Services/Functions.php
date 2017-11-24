@@ -479,6 +479,32 @@ class Functions
 
 	}
 
+	// Retorna un arreglo con la estructura completa de las páginas con sus sub-páginas
+	public function paginas($pages)
+	{
+
+		$paginas = array();
+        
+        foreach ($pages as $page)
+        {
+
+        	$subpaginas = $this->subPaginas($page->getId());
+
+            $paginas[] = array('id' => $page->getId(),
+                               'nombre' => $page->getNombre(),
+                               'categoria' => $page->getCategoria()->getNombre(),
+                               'modificacion' => $page->getFechaModificacion()->format('d/m/Y H:i a'),
+                               'usuario' => $page->getUsuario()->getNombre().' '.$page->getUsuario()->getApellido(),
+                               'status' => $page->getEstatusContenido()->getNombre(),
+                               'subpaginas' => $subpaginas,
+                               'delete_disabled' => $this->linkEliminar($page->getId(), 'CertiPagina'));
+
+        }
+
+        return $paginas;
+
+	}
+
 	// Retorna un arreglo multidimensional de las subpaginas dada pagina_id
 	public function subPaginas($pagina_id)
 	{
@@ -493,7 +519,7 @@ class Functions
 		foreach ($subpages as $subpage)
 		{
 			$tiene++;
-			$str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\'>'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre();
+			$str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' class="pepa" data="'.$subpage->getId().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre();
 			$subPaginas = $this->subPaginas($subpage->getId());
 			if ($subPaginas['tiene'] > 0)
 			{
