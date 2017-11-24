@@ -148,7 +148,8 @@
                                     <thead class="sty__title">
                                         <tr>
                                             <th class="hd__title">Nombre</th>
-                                            <th class="hd__title">Tipo</th>
+                                            <th class="hd__title">Pagina</th>
+                                            <th class="hd__title">Preguntas</th>
                                             <th class="hd__title">Activo</th>
                                             <th class="hd__title">Acciones</th>
                                         </tr>
@@ -157,6 +158,17 @@
                                         <tr class="odd">
                                             <td>Inteligencia Emocional</td>
                                             <td>Programa</td>
+                                            <td>
+                                                <div class="tree">
+                                                    <ul data-jstree='{ "opened" : true }'>
+                                                        <li data-jstree='{ "icon": "fa fa-angle-double-right" }'><span> Programa 1</span>
+                                                            <ul>
+                                                                <li data-jstree='{ "icon" : "fa fa-angle-right" }'><span> Modulo 1</span></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                             <td class="center">
                                                 <div class="can-toggle demo-rebrand-2 small">
                                                     <input id="f" type="checkbox" checked>
@@ -173,6 +185,17 @@
                                         <tr class="even ">
                                             <td>Legitimación de capitales</td>
                                             <td>Leccion</td>
+                                            <td>
+                                                <div class="tree">
+                                                    <ul data-jstree='{ "opened" : true }'>
+                                                        <li data-jstree='{ "icon": "fa fa-angle-double-right" }'><span> Programa 2</span>
+                                                            <ul>
+                                                                <li data-jstree='{ "icon" : "fa fa-angle-right" }'><span> Modulo 1</span></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                             <td class="center">
                                                 <div class="can-toggle demo-rebrand-2 small">
                                                     <input id="f1" type="checkbox" checked>
@@ -222,6 +245,9 @@
         <script src="../../web/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
         <script src="../../web/assets/vendor/datatables/js/dataTables.bootstrap4.js"></script>
         <script src="../../web/assets/vendor/datatables/js/dataTables.responsive.min.js"></script>
+        
+        <!--jstree js--> 
+        <script type="text/javascript" src="../../web/assets/vendor/jstree/dist/jstree.min.js"></script> 
 
         <!-- custome template js -->
         <script src="../../web/assets/js/adminux.js" type="text/javascript"></script>
@@ -243,6 +269,7 @@
                         }
                     }
                 });
+                $('.tree').jstree();
             });
         </script>
     </body>

@@ -3647,18 +3647,22 @@ dl.full-width dt {
 /*==============================================*/
 .accordion {
   background: transparent;
+  margin: 1.5rem 0 1.5rem 0;
 }
 
 .accordion .card {
   background: transparent;
+  margin: .2rem 0 0 0;
 }
 
 .accordion .card-header {
-  background: rgba(230, 230, 230, 0.4);
+  background: rgba(0, 96, 159, 0.4);
 }
 
 .accordion .card-header a {
   display: block;
+  color: #fff;
+  font-weight: bold;
 }
 
 .accordion .card-block {
