@@ -2,10 +2,12 @@ Acción: Acción
 Acciones: Acciones
 Aceptar: Aceptar
 Activo: Activo
+Agregar sub-página: Agregar sub-página
 Apellido: Apellido
 Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
+Archivos: Archivos
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Bienvenida: Bienvenida
 Bien hecho: Bien hecho
@@ -25,6 +27,7 @@ Configuración de páginas: Configuración de páginas
 Configurar: Configurar
 Configurar página: Configurar página
 Confirmar: Confirmar
+Contenido: Contenido
 Contraseña: Contraseña
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
@@ -88,6 +91,7 @@ Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error e
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Icono: Icono
 Iniciar Sesión: Iniciar Sesión
+Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
@@ -97,6 +101,7 @@ Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
 Listado de Roles: Listado de Roles
+Material complementario: Material complementario
 Nuevos registros almacenados: Nuevos registros almacenados
 Panel de acceso: Panel de acceso
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.

@@ -136,7 +136,9 @@
             </div>
             <div class="card-footer">
                 <div class="col-sm-16 col-md-16 text-right">
-                    <a href="{{ path('_editPagina', { 'pagina_id': pagina.id })}}" class="bttn__bck"><span class="fa fa-pencil"></span><span class="text__bck">{{ 'Editar página'|trans }}</span></a>
+                    <a href="{{ path('_editPagina', { 'pagina_padre_id': pagina.id })}}" class="bttn__bck"><span class="fa fa-plus"></span><span class="text__bck">{{ 'Agregar sub-página'|trans }}</span></a>&nbsp;&nbsp;
+                    {% set pagina_padre_id = pagina.pagina ? pagina.pagina.id : 0 %}
+                    <a href="{{ path('_editPagina', { 'pagina_padre_id': pagina_padre_id, 'pagina_id': pagina.id })}}" class="bttn__bck"><span class="fa fa-pencil"></span><span class="text__bck">{{ 'Editar página'|trans }}</span></a>
                 </div>
             </div>
         </div>
