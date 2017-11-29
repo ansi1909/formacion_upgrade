@@ -26,6 +26,12 @@ Link\ComunBundle\Entity\CertiGrupo:
             nullable: true
             options:
                 unsigned: false
+        imagenCertificado:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

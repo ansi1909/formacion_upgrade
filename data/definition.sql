@@ -109,6 +109,7 @@ id serial,
 nombre varchar(20),
 orden integer,
 empresa_id integer,
+imagen_certificado varchar(250),
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
 
@@ -155,6 +156,7 @@ prueba_activa boolean,
 max_intentos integer,
 puntaje_aprueba numeric(3,2),
 muro_activo boolean,
+imagen_certificado varchar(250),
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id));

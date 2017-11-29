@@ -53,6 +53,12 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
             type: boolean
             nullable: true
             column: muro_activo
+        imagenCertificado:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

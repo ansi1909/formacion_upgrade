@@ -91,6 +91,13 @@ class CertiPaginaEmpresa
      */
     private $pagina;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
+     */
+    private $imagenCertificado;
+
 
 
     /**
@@ -317,5 +324,29 @@ class CertiPaginaEmpresa
     public function getPagina()
     {
         return $this->pagina;
+    }
+
+    /**
+     * Set imagenCertificado
+     *
+     * @param string $imagenCertificado
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setImagenCertificado($imagenCertificado)
+    {
+        $this->imagenCertificado = $imagenCertificado;
+
+        return $this;
+    }
+
+    /**
+     * Get imagenCertificado
+     *
+     * @return string
+     */
+    public function getImagenCertificado()
+    {
+        return $this->imagenCertificado;
     }
 }
