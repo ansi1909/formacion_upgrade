@@ -57,12 +57,16 @@ El apellido del usuario es requerido.: User last name is required.
 El archivo: The file
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
 El campo usuario es requerido.: User field is required.
+El contenido es requerido.: Content is required.
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El login ya existe.: Login already exists.
+El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
 El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.
 El nombre de la empresa es requerido.: Company name is required.
+El nombre de la página debe ser mínimo de 3 caracteres.: Page name must have at leat 3 characters.
+El nombre de la página es requerido.: Page name is required.
 El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
@@ -94,8 +98,10 @@ Iniciar Sesión: Log in
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
+La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.
+La descripción es requerida.: Description is required.
 La empresa es requerida.: Company is required.
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
@@ -149,6 +155,7 @@ Seleccione la empresa para mostrar los niveles: Select the company to show its l
 Si: Yes
 Siguiente: Next
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
+Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File

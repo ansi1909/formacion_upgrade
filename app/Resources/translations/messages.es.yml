@@ -57,12 +57,16 @@ El apellido del usuario es requerido.: El apellido del usuario es requerido.
 El archivo: El archivo
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
 El campo usuario es requerido.: El campo usuario es requerido.
+El contenido es requerido.: El contenido es requerido.
 El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
 El login ya existe.: El login ya existe.
+El material complementario debe ser sólo archivo con extensión pdf.: El material complementario debe ser sólo archivo con extensión pdf.
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
 El nombre de la empresa es requerido.: El nombre de la empresa es requerido.
+El nombre de la página debe ser mínimo de 3 caracteres.: El nombre de la página debe ser mínimo de 3 caracteres.
+El nombre de la página es requerido.: El nombre de la página es requerido.
 El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
@@ -94,8 +98,10 @@ Iniciar Sesión: Iniciar Sesión
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
+La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
 La clave es requerida.: La clave es requerida.
+La descripción es requerida.: La descripción es requerida.
 La empresa es requerida.: La empresa es requerida.
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
@@ -149,6 +155,7 @@ Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostr
 Si: Si
 Siguiente: Siguiente
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
+Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
 Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir Archivo de Niveles: Subir Archivo de Niveles

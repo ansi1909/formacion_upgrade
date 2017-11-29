@@ -153,9 +153,7 @@ class PaginaController extends Controller
             ->add('estatusContenido', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiEstatusContenido',
                                                                'choice_label' => 'nombre',
                                                                'expanded' => false,
-                                                               'label' => $this->get('translator')->trans('Estatus'),
-                                                               'placeholder' => ''))
-            ->add('save', SubmitType::class, array('label' => $this->get('translator')->trans('Finalizar')))
+                                                               'label' => $this->get('translator')->trans('Estatus')))
             ->getForm();
        
 
