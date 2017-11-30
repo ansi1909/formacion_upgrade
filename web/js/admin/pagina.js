@@ -56,6 +56,6 @@ function responsive_filemanager_callback(field_id){
 	var new_image = arr[arr.length-1];
 	$('#'+field_id).val(new_image);
 	
-	$('#figure').html('<img src="'+url+'">');
+	$('#figure').html('<img src="'+url+'" width="100%">');
 	
 }

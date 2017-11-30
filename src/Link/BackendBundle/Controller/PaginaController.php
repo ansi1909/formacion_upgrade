@@ -155,18 +155,29 @@ class PaginaController extends Controller
                                                                'expanded' => false,
                                                                'label' => $this->get('translator')->trans('Estatus')))
             ->getForm();
-       
 
+        $form->handleRequest($request);
+       
         if ($request->getMethod() == 'POST')
         {
-            $em->persist($plan);
+
+            $em->persist($pagina);
             $em->flush();
-            return $this->redirectToRoute('_showPagina', array('pagina_padre_id' => $pagina_padre_id,
-                                                               'pagina_id' => $pagina->getId(),
-                                                               'categoria_id' => $categoria_id,
-                                                               'estatus_contenido_id' => $estatus_contenido_id,
-                                                               'cantidad' => $cantidad,
-                                                               'total' => $total));
+
+            if ($cantidad < $total)
+            {
+                $cantidad++;
+                return $this->redirectToRoute('_editPagina', array('pagina_padre_id' => $pagina_padre_id,
+                                                                   'pagina_id' => 0,
+                                                                   'categoria_id' => $categoria_id,
+                                                                   'estatus_contenido_id' => $estatus_contenido_id,
+                                                                   'cantidad' => $cantidad,
+                                                                   'total' => $total));
+            }
+            else {
+                return $this->redirectToRoute('_pagina', array('pagina_id' => $pagina_padre_id ? $pagina_padre_id : $pagina->getId()));
+            }
+            
         }
         
         return $this->render('LinkBackendBundle:Pagina:edit.html.twig', array('form' => $form->createView(),

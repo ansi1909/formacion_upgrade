@@ -79,11 +79,11 @@
                                     <div class="row justify-content-between">   
                                         <div class="col-sm-5 show__details">
                                             <h5>{{ 'Creado el'|trans }}</h5>
-                                            <p>{{ pagina.fechaCreacion|date('d/m/Y H:i a') }}</p>
+                                            <p>{{ pagina.fechaCreacion|date('d/m/Y h:i a') }}</p>
                                         </div>
                                         <div class="col-sm-5 show__details">
                                             <h5>{{ 'Modificado el'|trans }}</h5>
-                                            <p>{{ pagina.fechaModificacion|date('d/m/Y H:i a') }}</p>
+                                            <p>{{ pagina.fechaModificacion|date('d/m/Y h:i a') }}</p>
                                         </div>
                                         <div class="col-sm-6 show__details">
                                             <h5>{{ 'Modificado por'|trans }}</h5>
@@ -106,7 +106,7 @@
                                 <div class="row">
                                     <div class="col-sm-16">
                                         {% set img = uploads~pagina.foto %}
-                                        <img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}">
+                                        <img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" width="100%">
                                     </div>
                                 </div>
                             {% endif %}
@@ -125,7 +125,7 @@
                                     <div class="col-sm-16">
                                         {% set pdf = uploads~pagina.pdf %}
                                         <p class="fa fa-file-pdf-o">
-                                            <a href="{{ pdf }}#" target="_blank">{{ 'Descargue material complementario|trans' }}</a>
+                                            <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
                                         </p>
                                     </div>
                                 </div>

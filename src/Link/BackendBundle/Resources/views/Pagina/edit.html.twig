@@ -184,11 +184,20 @@
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-sm-16 col-lg-16 col-md-16">
+                                <div class="col-sm-8 col-lg-8 col-md-8">
                                     <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.pdf) }}</label>
-                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <div class="col-sm-16 col-md-16 col-lg-16">
                                         {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF' } }) }}
                                         <span class="fa fa-file-pdf-o"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=form_pdf&fldr=recursos/paginas" class="btn iframe-btn" type="button">
+                                                <span class="fa fa-file-pdf-o"></span>
+                                            </a>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -241,69 +250,14 @@
                     $('#div-error ul').html("<li>- {{ 'El contenido es requerido.'|trans }}</li>");
                 }
 
-                if (error = 1)
+                if (error == 1)
                 {
                     $('#div-error ul').show();
                     notify($('#div-error').html());
                 }
                 else {
-                    console.log('Ya va espérate.');
-                    //$('#form').submit();
+                    $('#form').submit();
                 }
-                // Validaciones adicionales
-                /*var roles = $('#roles').val();
-                var empresa_id = $('#empresa_id').val();
-                var nivel_id = $('#nivel_id').val();
-                var roles_empresa_str = $('#roles_empresa_str').val();
-                var usuario_id = $('#usuario_id').val();
-                var login = $('#login').val();
-
-                for (i=0; i<roles.length; i++)
-                {
-                    if ((roles_empresa_str.indexOf(roles[i]) >= 0) && (empresa_id == 0 || nivel_id == 0))
-                    {
-                        valid = false;
-                    }
-                }
-
-                if (!valid){
-                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar tanto la empresa como el nivel.'|trans }}</li>");
-                    $('#div-error ul').show();
-                    notify($('#div-error').html());
-                }
-                else {
-
-                    // Validar si el login no existe cuando es un usuario nuevo
-                    if (!usuario_id)
-                    {
-                        $.ajax({
-                            type: "POST",
-                            url: $('#url_login').val(),
-                            async: true,
-                            data: { login: login },
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.ok != 0)
-                                {
-                                    $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
-                                    $('#div-error ul').show();
-                                    notify($('#div-error').html());
-                                }
-                                else {
-                                    $('#form').submit();
-                                }
-                            },
-                            error: function(){
-                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
-                                $('#div-error ul').show();
-                                notify($('#div-error').html());
-                            }
-                        });
-                    }
-                    else {
-                        $('#form').submit();
-                    }
-                }*/
 
             }
         });
