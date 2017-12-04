@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/main/reset.css">
+        <link rel="stylesheet" href="../../web/assets/css/main/style_main.css">
+
+        <!-- Fontawesome iconos CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap4alpha/css/bootstrap.css" type="text/css">
+
+        <!-- DataTables Responsive CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/dataTables.bootstrap4.css">
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/responsive.dataTables.min.css">
+
+        <!-- Adminux CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/light_adminux.css">
+        <link rel="stylesheet" href="../../web/css/admin.css">
+
+    </head>
+
+    <body class="rounded">
+        <!-- Cabecera del area de trabajo-->
+        <header class="navbar-fixed">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
+                <div class="sidebar-left">
+                    <a href="#" class="navbar-brand">
+                        <img src="../../web/img/logo_formacion.png" alt="Formación 2.0">
+                    </a>
+                    <button class="btn btn-link icon-header mr-sm-2 pull-right menu-collapse"><span class="fa fa-bars"></span>
+                    </button>
+                </div>
+                <div class="d-flex mr-auto">&nbsp;</div>
+                <ul class="navbar-nav content-right">
+                    <li class="v-devider"></li>
+                    <li class="nav-item active">
+                        <button class="btn btn-link icon-header bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-envelope-o ico_1"></span>
+                            <span class="badge-number bg-success"></span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link icon-header badgeCircle bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-bell-o ico_1"></span>
+                            <span class="badge-number bg-danger"></span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="sidebar-right pull-right">
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <button class="btn-link btn userprofile bttn_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="userpic">
+                                    <img src="../../web/img/1034.png" alt="Usuario"></span> 
+                                <span class="text">Usuario</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
+                                <a class="dropdown-item" href="#"><span class="fa fa-pie-chart"> Estadísticas</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><span class="fa fa-cog"> Configuración</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-link icon-header bttn1">
+                                <span class="fa fa-sign-out ico_1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- fin de Cabecera del area de trabajo-->
+        <!-- Sidebar del area de trabajo-->
+        <div class="sidebar-left">
+            <div class="user-menu-items">
+                <div class="list-unstyled btn-group rec_user">
+                    <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="message_userpic">
+                            <img src="../../web/img/1034.png" alt="Usuario" class="d-flex mr-3">
+                        </span>
+                        <span class="media-body info_user">
+                            <span class="mt-0 mb-1 us1">Usuario</span>
+                            <span class="us1">Empresa1</span> 
+                        </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item"><span class="fa fa-user space_icon"></span> Perfil</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-envelope"></span> Correo</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-bar-chart"></span> Estadística</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item"><span class="fa fa-cog space_icon"></span> Configuración</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <ul class="nav flex-column in" id="side-menu">
+                <li class="title-nav">MENU</li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link">
+                        <span class="fa fa-building"></span> Administrar Empresas <i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-industry"></i> Empresas</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-briefcase"></i> Empresas Asociadas</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-users"></i> División Funcional</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-badge"></i> Cargo</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-card"></i> Nivel</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link">
+                        <span class="fa fa-certificate"></span> Administrar Certificados<i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-server"></i> Programas</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"></i> Módulos</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-folder-open"></i> Materias</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file"></i> Recursos</a>
+                        </li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file-text"></i> Evaluaciones</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <br>
+        <div class="wrapper-content">
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-16 text-right ">
+                        <button type="button" class="bttn__nre" data-toggle="modal" data-target="#agrOpc"><span class="fa fa-plus"></span><span class="text__nre">Agregar opciones</span></button>
+                    </div>
+                    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <div class="card-title">
+                                    <h6>Opción multiple asociada a la pregunta "nombre de la pregunta"</h6>
+                                </div>
+                            </div>
+                            <div class="card-block fnd__wzd">
+                                <table class="table">
+                                    <thead class="sty__title">
+                                        <tr>
+                                            <th class="hd__title">Opción</th>
+                                            <th class="hd__title">Imagen</th>
+                                            <th class="hd__title">Opción Correcta</th>
+                                            <th class="hd__title">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="odd">
+                                            <td>El contacto visual debe ser en el momento del saludo, la despedida, en el momento en que estamos explicando algo al visitante, escuchándole y cuando se cruce con él o ella.</td>
+                                            <td><img src="../../web/img/foto4.png" alt="" class="img__opc"></td>
+                                            <td>
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="activo" name="activo" type="checkbox">
+                                                    <label for="activo">
+                                                        <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="center">
+                                                <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="" data=""><span class="fa fa-pencil"></span></a>
+                                                <a href="#" class="btn btn-link btn-sm" data=""><span class="fa fa-trash"></span></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="even">
+                                            <td>Únicamente cuando el cliente nos pide una ayuda. La mirada debe ir acompañada de una sonrisa falsa y de un tono de voz molesto.</td>
+                                            <td><img src="../../web/img/im8.jpg" alt="" class="img__opc"></td>
+                                            <td>
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="activo" name="activo" type="checkbox">
+                                                    <label for="activo">
+                                                        <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="center">
+                                                <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="" data=""><span class="fa fa-pencil"></span></a>
+                                                <a href="#" class="btn btn-link btn-sm" data=""><span class="fa fa-trash"></span></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="odd">
+                                            <td>Cada vez que hablamos el contacto visual debe ser en otras partes del cuerpo que no sean la cara del cliente.</td>
+                                            <td><img src="../../web/img/img1011.png" alt="" class="img__opc"></td>
+                                            <td>
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="activo" name="activo" type="checkbox">
+                                                    <label for="activo">
+                                                        <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="center">
+                                                <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="" data=""><span class="fa fa-pencil"></span></a>
+                                                <a href="#" class="btn btn-link btn-sm" data=""><span class="fa fa-trash"></span></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>    
+                            </div>
+                            <div class="card-footer" style="background: #e6e6e6;">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__end"><span class="text__end">Finalizar</span><span class="fa fa-check"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--Modal-->
+        <div class="modal dark_bg fade" id="agrOpc" tabindex="-1" role="dialog" aria-labelledby="agrOreg" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                        <h5 class="modal-title" id="formModalLabel">Agregar nueva opción</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="preg" class="col-16 col-form-label">Opción nro#:</label>
+                                <div class="col-16">
+                                    <input type="text" class="form-control form_sty1" id="preg">
+                                    <span class="fa fa-commenting"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <div class="row">
+                                    <label for="num_resp" class="col-8 col-form-label">Adjuntar imagen a la opción</label>
+                                    <label for="num_resp" class="col-8 col-form-label">Opción correcta</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-9 col-md-9 col-lg-9">
+                                        <div class="input-group">
+                                            <figure class="social-profile-pic" id="figure"><img src="../../web/img/images-interface-symbol.png" alt="" style="background: transparent; width: 150px; height: auto;"></figure>
+                                            <input type="hidden" id="foto" name="foto" value="" readonly="readonly">
+                                            <span class="input-group-addon" style="border: none;">
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&fldr=recursos/usuarios" class="btn iframe-btn" type="button">
+                                                    <span class="fa fa-photo"></span>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 col-md-7 col-lg-7">
+                                        <div class="form-group">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="activo" name="activo" type="checkbox">
+                                                <label for="activo">
+                                                    <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">Cancelar</span><span class="fa fa-times"></span>
+                        </button>
+                        <button type="button" class="bttn__save" id="guardar"><span class="text__save">Guardar</span><span class="fa fa-save"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- fin sidebar del area de trabajo-->
+        <!-- Jquery, Tether and Bootstrap JS. -->
+        <script src="../../web/assets/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/tether.min.js"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../../web/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- Circular chart progress js -->
+        <script src="../../web/assets/vendor/cicular_progress/circle-progress.min.js" type="text/javascript"></script>
+
+        <!--sparklines js-->
+        <script src="../../web/assets/vendor/sparklines/jquery.sparkline.min.js"></script>
+
+        <!-- chart js -->
+        <script src="../../web/assets/vendor/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/chartjs/utils.js" type="text/javascript"></script>
+
+        <!-- spincremente js -->
+        <script src="../../web/assets/vendor/spincrement/jquery.spincrement.min.js" type="text/javascript"></script>
+
+        <!-- DataTables JavaScript -->
+        <script src="../../web/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.bootstrap4.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.responsive.min.js"></script>
+
+        <!--jstree js-->
+        <script type="text/javascript" src="../../web/assets/vendor/jstree/dist/jstree.min.js"></script>
+
+        <!-- custome template js -->
+        <script src="../../web/assets/js/adminux.js" type="text/javascript"></script>
+
+        <!-- Script de funcionalidad-->
+        <script>
+            $(document).on('ready', function() {
+
+            });
+        </script>
+    </body>
+
+</html>
