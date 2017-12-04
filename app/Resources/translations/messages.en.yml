@@ -15,9 +15,11 @@ Buen trabajo: Good job
 Buscar: Search
 Cambiar contraseña: Change password
 Cancelar: Cancel
+Cantidad de sub-páginas: Quantity of sub-pages
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cargo: Appointment
 Categoría: Category
+Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
 Ciudad: City
 Conceder: Grant
@@ -80,8 +82,10 @@ Error en el servidor: Error on server
 Errores: Errors
 Errores de validación: Validation errors
 Estatus: Status
+Estatus de las sub-paginas: Sub-pages status
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
+Estructura: Structure
 Fecha Creación: Creation Date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
@@ -98,6 +102,7 @@ Iniciar Sesión: Log in
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
+La cantidad de sub-páginas es requerida.: Quantity of sub-pages is required.
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.

@@ -14,7 +14,7 @@ Link\ComunBundle\Entity\AdminTipoNotificacion:
         nombre:
             type: string
             nullable: true
-            length: 20
+            length: 100
             options:
                 fixed: false
     lifecycleCallbacks: {  }

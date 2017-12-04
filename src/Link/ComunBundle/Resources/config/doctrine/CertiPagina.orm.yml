@@ -27,7 +27,7 @@ Link\ComunBundle\Entity\CertiPagina:
         nombre:
             type: string
             nullable: true
-            length: 20
+            length: 100
             options:
                 fixed: false
         descripcion:

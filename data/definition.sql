@@ -106,7 +106,7 @@ disponible boolean,
 CREATE TABLE certi_grupo(
 -- Attributes --
 id serial,
-nombre varchar(20),
+nombre varchar(100),
 orden integer,
 empresa_id integer,
 imagen_certificado varchar(250),
@@ -128,7 +128,7 @@ nombre varchar(20),
 CREATE TABLE certi_pagina(
 -- Attributes --
 id serial,
-nombre varchar(20),
+nombre varchar(100),
 pagina_id integer,
 categoria_id integer,
 descripcion text,
@@ -339,7 +339,7 @@ pdf varchar(250),
 CREATE TABLE admin_tipo_notificacion(
 -- Attributes --
 id serial,
-nombre varchar(20),
+nombre varchar(100),
  PRIMARY KEY (id));
 
 CREATE TABLE admin_notificacion(

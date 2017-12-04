@@ -187,4 +187,89 @@ class PaginaController extends Controller
 
     }
 
+    public function newAction(Request $request){
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $pagina = new CertiPagina();
+        $pagina->setFechaCreacion(new \DateTime('now'));
+
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $pagina->setUsuario($usuario);
+        $pagina->setFechaModificacion(new \DateTime('now'));
+
+        $form = $this->createFormBuilder($pagina)
+            ->setAction($this->generateUrl('_newPagina'))
+            ->setMethod('POST')
+            ->add('nombre', TextType::class, array('label' => $this->get('translator')->trans('Nombre')))
+            ->add('categoria', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiCategoria',
+                                                        'choice_label' => 'nombre',
+                                                        'expanded' => false,
+                                                        'label' => $this->get('translator')->trans('Categoría'),
+                                                        'placeholder' => ''))
+            ->add('descripcion', TextareaType::class, array('label' => $this->get('translator')->trans('Descripción')))
+            ->add('contenido', TextareaType::class, array('label' => $this->get('translator')->trans('Contenido')))
+            ->add('foto', HiddenType::class, array('label' => $this->get('translator')->trans('Foto de la página'),
+                                                   'required' => false))
+            ->add('pdf', TextType::class, array('label' => $this->get('translator')->trans('Material complementario'),
+                                                'required' => false))
+            ->add('estatusContenido', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiEstatusContenido',
+                                                               'choice_label' => 'nombre',
+                                                               'expanded' => false,
+                                                               'label' => $this->get('translator')->trans('Estatus')))
+            ->getForm();
+
+        $form->handleRequest($request);
+       
+        if ($request->getMethod() == 'POST')
+        {
+
+            $em->persist($pagina);
+            $em->flush();
+
+            $subpaginas = $request->request->get('subpaginas');
+            $categoria_subpaginas = $request->request->get('categoria_subpaginas');
+            $status_subpaginas = $request->request->get('status_subpaginas');
+
+            if ($subpaginas > 0)
+            {
+                $cantidad = 1;
+                $total = $subpaginas;
+                return $this->redirectToRoute('_editPagina', array('pagina_padre_id' => $pagina->getId(),
+                                                                   'pagina_id' => 0,
+                                                                   'categoria_id' => $categoria_subpaginas,
+                                                                   'estatus_contenido_id' => $status_subpaginas,
+                                                                   'cantidad' => $cantidad,
+                                                                   'total' => $total));
+            }
+            else {
+                return $this->redirectToRoute('_pagina', array('pagina_id' => $pagina->getId()));
+            }
+            
+        }
+
+        $categorias = $em->getRepository('LinkComunBundle:CertiCategoria')->findAll();
+        $status = $em->getRepository('LinkComunBundle:CertiEstatusContenido')->findAll();
+        
+        return $this->render('LinkBackendBundle:Pagina:new.html.twig', array('form' => $form->createView(),
+                                                                             'categorias' => $categorias,
+                                                                             'status' => $status));
+
+    }
+
 }

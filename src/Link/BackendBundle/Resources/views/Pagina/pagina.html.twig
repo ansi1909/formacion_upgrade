@@ -16,7 +16,7 @@
             <a href="{{ path('_pagina', { 'pagina_id': pagina.pagina.id })}}" class="bttn__bck"><span class="fa fa-level-up"></span><span class="text__bck">{{ 'Página padre'|trans }}</span></a>
         </div>
     {% else %}
-        {% set padre = '' %}
+        {% set padre = 'No' %}
         <div class="col text-left">
             <a href="{{ path('_paginas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
         </div>

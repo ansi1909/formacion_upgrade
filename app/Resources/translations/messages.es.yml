@@ -15,9 +15,11 @@ Buen trabajo: Buen trabajo
 Buscar: Buscar
 Cambiar contraseña: Cambiar contraseña
 Cancelar: Cancelar
+Cantidad de sub-páginas: Cantidad de sub-páginas
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
 Cargo: Cargo
 Categoría: Categoría
+Categoría de las sub-paginas: Categoría de las sub-paginas
 Categorías: Categorías
 Ciudad: Ciudad
 Conceder: Conceder
@@ -80,8 +82,10 @@ Error en el servidor: Error en el servidor
 Errores: Errores
 Errores de validación: Errores de validación
 Estatus: Estatus
+Estatus de las sub-paginas: Estatus de las sub-paginas
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
+Estructura: Estructura
 Fecha Creación: Fecha Creación
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
@@ -98,6 +102,7 @@ Iniciar Sesión: Iniciar Sesión
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
+La cantidad de sub-páginas es requerida.: La cantidad de sub-páginas es requerida.
 La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
 La clave es requerida.: La clave es requerida.
