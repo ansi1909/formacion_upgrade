@@ -168,22 +168,22 @@
                                                 <label for="punt" class="col-16 col-form-label">Tipo de pregunta</label>
                                                 <div class="col-16">
                                                     <select class="form-control form_sty_select" name="" id="" style="border-radius: 5px;">
-                                                        <option value="0" selected>Seleccione una opción</option>
+                                                        <option value="0">Seleccione una opción</option>
                                                         <option value="1">Selección Simple</option>
                                                         <option value="2">Selección Multiple</option>
                                                         <option value="3">Asociación</option>
                                                     </select>
                                                     <span class="fa fa-pencil"></span>
-                                                    <span class="bttn_d"><img src="../../web/img/down-arrowbck.png" alt=""></span>
+                                                    <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                            <div class="input-group" align="center">
-                                                <figure class="social-profile-pic" id="figure"><img src="../../web/img/images-interface-symbol.png" alt="" style="background: transparent; width: auto; height: 150px; border: 1px solid #00558d; padding: 1rem; margin: 0;"></figure>
+                                            <div class="input-group">
+                                                <figure class="social-profile-pic" id="figure"><img src="../../web/img/images-interface-symbol.png" alt="" style="background: transparent; width: 150px; height: auto;"></figure>
                                                 <input type="hidden" id="foto" name="foto" value="" readonly="readonly">
-                                                <span class="">
-                                                    <a href="../../web/jq/ResponsiveFilemanager/filemanager/dialog.php type=1&field_id=foto&fldr=recursos/usuarios" class="btn iframe-btn" type="button">
+                                                <span class="input-group-addon" style="border: none;">
+                                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&fldr=recursos/usuarios" class="btn iframe-btn" type="button">
                                                         <span class="fa fa-photo"></span>
                                                     </a>
                                                 </span>
@@ -200,7 +200,7 @@
                                                         <option value="1">Texto</option>
                                                     </select>
                                                     <span class="fa fa-file-text-o"></span>
-                                                    <span class="bttn_d"><img src="../../web/img/down-arrowbck.png" alt=""></span>
+                                                    <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -215,14 +215,16 @@
                                         </div>
                                         <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                             <div class="form-group">
-                                                <label for="act" class="col-16 col-form-label">Activo</label>
+                                                <label for="act" class="col-16 col-form-label">Estatus de contenido</label>
                                                 <div class="col-16">
-                                                    <div class="can-toggle demo-rebrand-2 small">
-                                                        <input id="f1" type="checkbox" checked>
-                                                        <label for="f1">
-                                                            <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
-                                                        </label>
-                                                    </div>
+                                                    <select class="form-control form_sty_sel" style="border-radius: 5px;" name="" id="">
+                                                        <option value="0" selected>Seleccione una opción</option>
+                                                        <option value="1">Borrador</option>
+                                                        <option value="2">Inactivo</option>
+                                                        <option value="3">Activo</option>
+                                                    </select>
+                                                    <span class="fa fa-check"></span>
+                                                    <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
                                                 </div>
                                             </div>
                                         </div>

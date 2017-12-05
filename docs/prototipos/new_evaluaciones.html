@@ -148,7 +148,7 @@
                     <div class="card">
                         <div class="card-header gradiente">
                             <div class="card-title">
-                                <h6>Configuracion de la evaluación "nombre de la evaluación"</h6>
+                                <h6>Configuración de la evaluación</h6>
                             </div>
                         </div>
                         <div class="card-block fnd__wzd">
@@ -156,22 +156,33 @@
                                 <div class="row">
                                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                         <div class="form-group">
-                                            <label for="cant_preg" class="col-16 col-form-label">Cantidad de preguntas de la evalución</label>
+                                            <label for="cant_preg" class="col-16 col-form-label">Nombre de la evaluación</label>
                                             <div class="col-16">
-                                                <input type="number" class="form-control form_sty1" id="cant_preg">
+                                                <input type="text" class="form-control form_sty1" id="cant_preg">
+                                                <span class="fa fa-file-text-o"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                                        <div class="form-group">
+                                            <label for="Cant_preg_most" class="col-16 col-form-label">Cantidad de preguntas de la evalución</label>
+                                            <div class="col-16">
+                                                <input type="number" class="form-control form_sty1" id="Cant_preg_most">
                                                 <span class="fa fa-align-justify"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                         <div class="form-group">
-                                            <label for="Cant_preg_most" class="col-16 col-form-label">Cantidad de preguntas a mostrar</label>
+                                            <label for="numbr" class="col-16 col-form-label">Cantidad de preguntas a mostrar</label>
                                             <div class="col-16">
-                                                <input type="number" class="form-control form_sty1" id="Cant_preg_most">
+                                                <input type="number" class="form-control form_sty1" id="numbr">
                                                 <span class="fa fa-list"></span>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                         <div class="form-group">
                                             <label for="numbr" class="col-16 col-form-label">Tiempo de duración de la evaluación</label>
@@ -181,8 +192,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                         <div class="form-group">
                                             <label for="punt" class="col-16 col-form-label">Puntuación necesaria para aprobar la evalución</label>
@@ -194,14 +203,16 @@
                                     </div>
                                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                         <div class="form-group">
-                                            <label for="act" class="col-16 col-form-label">Activo</label>
+                                            <label for="act" class="col-16 col-form-label">Estatus</label>
                                             <div class="col-16">
-                                                <div class="can-toggle demo-rebrand-2 small">
-                                                    <input id="f1" type="checkbox" checked>
-                                                    <label for="f1">
-                                                        <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
-                                                    </label>
-                                                </div>
+                                                <select class="form-control form_sty_sel" style="border-radius: 5px;" name="" id="">
+                                                    <option value="0" selected>Seleccione una opción</option>
+                                                    <option value="1">Borrador</option>
+                                                    <option value="2">Inactivo</option>
+                                                    <option value="3">Activo</option>
+                                                </select>
+                                                <span class="fa fa-check"></span>
+                                                <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
                                             </div>
                                         </div>
                                     </div>

@@ -25,7 +25,7 @@
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         {% set pagina_id = pagina.id ? pagina.id : pagina.pagina.id %}
-        <a href="{{ path('_pagina', { 'pagina_id': pagina_id })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir a detalles de la página'|trans }}</span></a>
+        <a href="{{ path('_pagina', { 'pagina_id': pagina_id })}}" class="bttn__bck2"><span class="fa fa-clipboard"></span><span class="text__bck2">{{ 'Ir a detalles de la página'|trans }}</span></a>
     </div>
     <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
         <ul></ul>
