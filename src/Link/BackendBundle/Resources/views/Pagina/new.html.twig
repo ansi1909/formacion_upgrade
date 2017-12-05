@@ -223,18 +223,18 @@
                             <br>
                             <div class="row">
                                 <div class="col-sm-6 col-lg-6 col-md-6">
-                                    <label for="subpaginas" class="col-sm-8 col-md-8 col-lg-8 col-form-label">{{ 'Cantidad de sub-páginas'|trans }}</label>
+                                    <label for="subpaginas" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Cantidad de sub-páginas'|trans }}</label>
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <input type="text" class="form-control form_sty2" name="subpaginas" id="subpaginas" value="0">
                                          <span class="icon-stack">
                                              <i class="icon-sign-blank icon-stack-base"></i>
-                                             <span class="icon-fixed-width icon-light">3</span>
+                                             <span class="icon-fixed-width icon-light">#</span>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="col-sm-5 col-md-5 col-lg-5">
-                                    <label for="categoria_subpaginas" class="col-sm-8 col-md-8 col-lg-8 col-form-label">{{ 'Categoría de las sub-paginas'|trans }}</label>
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <label for="categoria_subpaginas" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Categoría de las sub-paginas'|trans }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
                                         <select class="form-control form_sty_select" name="categoria_subpaginas" id="categoria_subpaginas">
                                             <option value=""></option>
                                             {% for categoria in categorias %}
@@ -245,8 +245,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-5 col-md-5 col-lg-5">
-                                    <label for="status_subpaginas" class="col-sm-8 col-md-8 col-lg-8 col-form-label">{{ 'Estatus de las sub-paginas'|trans }}</label>
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <label for="status_subpaginas" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Estatus de las sub-paginas'|trans }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
                                         <select class="form-control form_sty_select" name="status_subpaginas" id="status_subpaginas">
                                             {% for s in status %}
                                                 <option value="{{ s.id }}">{{ s.nombre }}</option>
