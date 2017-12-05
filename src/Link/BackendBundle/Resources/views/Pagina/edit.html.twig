@@ -166,12 +166,12 @@
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-sm-14 col-md-14 col-lg-14">
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     {{ form_label(form.foto) }}
-                                    {% set img = pagina.foto ? uploads~pagina.foto : asset('img/foto4.png') %}
-                                    <div id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" width="100%"></div>
+                                    {% set img = pagina.foto ? uploads~pagina.foto : asset('img/images-interface-symbol.png') %}
+                                    <div id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" style="width: 680px; height: auto; margin: 0 1rem;"></div>
                                 </div>
-                                <div class="col-sm-2 col-md-2 col-lg-2">
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <div class="input-group">
                                         {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly' } }) }}
                                         <span class="input-group-addon">

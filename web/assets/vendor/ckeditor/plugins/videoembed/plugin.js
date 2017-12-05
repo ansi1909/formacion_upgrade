@@ -10,7 +10,7 @@
  */
 CKEDITOR.plugins.add('videoembed', {
     icons: 'videoembed',
-    lang: 'fr,en',
+    lang: 'fr,en,es',
     version: 1.1,
     init: function (editor) {
         // Command
@@ -23,5 +23,8 @@ CKEDITOR.plugins.add('videoembed', {
         });
         // Dialog window
         CKEDITOR.dialog.add('videoembedDialog', this.path + 'dialogs/videoembedDialog.js');
+        editor.addCommand( 'videoembed', new CKEDITOR.dialogCommand( 'videoembedDialog',
+            { allowedContent: 'iframe[*]' }
+        ) );
     }
 });
