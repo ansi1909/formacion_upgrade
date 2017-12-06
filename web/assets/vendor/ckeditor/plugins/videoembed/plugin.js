@@ -10,7 +10,7 @@
  */
 CKEDITOR.plugins.add('videoembed', {
     icons: 'videoembed',
-    lang: 'fr,en,es',
+    lang: 'fr,en',
     version: 1.1,
     init: function (editor) {
         // Command
