@@ -454,7 +454,7 @@ class UsuarioController extends Controller
         $niveles = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
-        if ($usuario->getEmpresa()) {
+            if ($usuario->getEmpresa()) {
             $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($usuario->getEmpresa()->getId()); 
         }
 
