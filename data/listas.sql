@@ -369,7 +369,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (5, 'Configuración de páginas', NULL, 'fa-files-o', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (6, 'Categorías', '_categorias', 'fa-tags', TRUE, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (7, 'Páginas', '_paginas', 'fa-file-text-o', TRUE, 5);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (8, 'Configuración de evaluaciones', '_paginasEvaluacion', NULL, TRUE, 5);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (8, 'Configuración de evaluaciones', '_paginasEvaluacion', 'fa-check-circle-o', TRUE, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (9, 'Configuración de empresas', NULL, 'fa-building', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (10, 'Empresas', '_empresas', 'fa-industry', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (11, 'Asignación de páginas', '_empresasPaginas', NULL, TRUE, 9);

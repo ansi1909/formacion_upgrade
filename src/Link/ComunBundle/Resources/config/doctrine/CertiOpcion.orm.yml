@@ -30,6 +30,14 @@ Link\ComunBundle\Entity\CertiOpcion:
             length: 500
             options:
                 fixed: false
+        fechaCreacion:
+            type: datetime
+            nullable: true
+            column: fecha_creacion
+        fechaModificacion:
+            type: datetime
+            nullable: true
+            column: fecha_modificacion
     manyToOne:
         prueba:
             targetEntity: CertiPrueba

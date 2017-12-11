@@ -39,7 +39,7 @@ class CertiPregunta
     /**
      * @var string
      *
-     * @ORM\Column(name="valor", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="valor", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $valor;
 
@@ -102,6 +102,20 @@ class CertiPregunta
      * })
      */
     private $pregunta;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
 
 
 
@@ -329,5 +343,53 @@ class CertiPregunta
     public function getPregunta()
     {
         return $this->pregunta;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return CertiPregunta
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+     /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiPregunta
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
     }
 }

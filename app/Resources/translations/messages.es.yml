@@ -8,6 +8,7 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Archivos: Archivos
+Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Bienvenida: Bienvenida
 Bien hecho: Bien hecho
@@ -25,8 +26,10 @@ Ciudad: Ciudad
 Conceder: Conceder
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
+Configuración de evaluaciones: Configuración de evaluaciones
 Configuración de páginas: Configuración de páginas
 Configurar: Configurar
+Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
 Confirmar: Confirmar
 Contenido: Contenido
@@ -111,6 +114,7 @@ La empresa es requerida.: La empresa es requerida.
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
+Listado de evaluaciones: Listado de evaluaciones
 Listado de Roles: Listado de Roles
 Material complementario: Material complementario
 Nuevos registros almacenados: Nuevos registros almacenados
@@ -132,9 +136,11 @@ No se pudo editar este registro.: No se pudo editar este registro.
 No se pudo filtrar el listado.: No se pudo filtrar el listado.
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
-Nuevo nivel de la empresa: Nuevo nivel de la empresa
+Nueva evaluación: Nueva evaluación
 Nueva página: Nueva página
+Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo Registro: Nuevo Registro
+Página: Página
 Página padre: Página padre
 Páginas principales: Páginas principales
 Perfil Empresarial: Perfil Empresarial
@@ -143,6 +149,7 @@ País: País
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
+Preguntas: Preguntas
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Procesar: Procesar
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso

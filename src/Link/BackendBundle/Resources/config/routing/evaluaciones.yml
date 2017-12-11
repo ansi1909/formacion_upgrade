@@ -1,0 +1,7 @@
+_paginasEvaluacion:
+    path:     /paginas/{app_id}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:index }
+
+_editEvaluacion:
+    path:     /edit/{prueba_id}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:edit, prueba_id: 0 }

@@ -78,6 +78,11 @@ class Functions
                                    'CertiPaginaLog' => 'pagina',
                                    'CertiForo' => 'pagina');
                 break;
+            case 'CertiPrueba':
+                $entidades = array('CertiPregunta' => 'prueba',
+                                   'CertiOpcion' => 'prueba',
+                                   'CertiPruebaLog' => 'prueba');
+                break;
     		default:
     			$entidades = array();
     			break;

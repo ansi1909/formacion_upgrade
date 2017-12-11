@@ -56,6 +56,20 @@ class CertiOpcion
      */
     private $usuario;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
+
 
 
     /**
@@ -162,5 +176,53 @@ class CertiOpcion
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return CertiOpcion
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+     /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiOpcion
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
     }
 }

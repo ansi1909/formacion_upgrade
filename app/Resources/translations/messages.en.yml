@@ -8,6 +8,7 @@ Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Archivos: Files
+Aún no se han creado las preguntas: No questions added yet
 Aviso de cierre de sesión: Notice of session closure
 Bienvenida: Welcome
 Bien hecho: Well done
@@ -25,8 +26,10 @@ Ciudad: City
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
+Configuración de evaluaciones: Tests setting
 Configuración de páginas: Pages setting
 Configurar: Configure
+Configurar evaluación: Configure test
 Configurar página: Configure page
 Confirmar: Confirm
 Contenido: Content
@@ -111,6 +114,7 @@ La empresa es requerida.: Company is required.
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies
+Listado de evaluaciones: List of tests
 Listado de Roles: List of Roles
 Material complementario: Complementary content
 Nuevos registros almacenados: New records added
@@ -132,9 +136,11 @@ No se pudo editar este registro.: It could not edit this item.
 No se pudo filtrar el listado.: It could not filter the list.
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
-Nuevo nivel de la empresa: New level of company
+Nueva evaluación: New test
 Nueva página: New page
+Nuevo nivel de la empresa: New level of company
 Nuevo Registro: New Item
+Página: Page
 Página padre: Father page
 Páginas principales: Main pages
 Perfil Empresarial: Company Profile
@@ -143,6 +149,7 @@ País: Country
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
+Preguntas: Questions
 Presiona el botón finalizar para completar: Press finish button to complete
 Procesar: Process
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions

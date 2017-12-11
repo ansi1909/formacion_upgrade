@@ -33,11 +33,25 @@ Link\ComunBundle\Entity\CertiPrueba:
             options:
                 unsigned: false
             column: cantidad_preguntas
-        duracion:
+        cantidadMostrar:
             type: integer
             nullable: true
             options:
                 unsigned: false
+            column: cantidad_mostrar
+        duracion:
+            type: time
+            nullable: true
+            options:
+                unsigned: 
+        fechaCreacion:
+            type: datetime
+            nullable: true
+            column: fecha_creacion
+        fechaModificacion:
+            type: datetime
+            nullable: true
+            column: fecha_modificacion
     manyToOne:
         pagina:
             targetEntity: CertiPagina

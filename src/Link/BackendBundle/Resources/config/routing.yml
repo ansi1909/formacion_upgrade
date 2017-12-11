@@ -53,3 +53,7 @@ usuarios:
 paginas:
     resource: "@LinkBackendBundle/Resources/config/routing/paginas.yml"
     prefix: /pagina
+
+evaluaciones:
+    resource: "@LinkBackendBundle/Resources/config/routing/evaluaciones.yml"
+    prefix: /evaluacion

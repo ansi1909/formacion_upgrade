@@ -39,7 +39,14 @@ class CertiPrueba
     /**
      * @var integer
      *
-     * @ORM\Column(name="duracion", type="integer", nullable=true)
+     * @ORM\Column(name="cantidad_mostrar", type="integer", nullable=true)
+     */
+    private $cantidadMostrar;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duracion", type="time", nullable=true)
      */
     private $duracion;
 
@@ -72,6 +79,20 @@ class CertiPrueba
      * })
      */
     private $estatusContenido;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
 
 
 
@@ -134,9 +155,33 @@ class CertiPrueba
     }
 
     /**
+     * Set cantidadMostrar
+     *
+     * @param integer $cantidadMostrar
+     *
+     * @return CertiPrueba
+     */
+    public function setCantidadMostrar($cantidadMostrar)
+    {
+        $this->cantidadMostrar = $cantidadMostrar;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadMostrar
+     *
+     * @return integer
+     */
+    public function getCantidadMostrar()
+    {
+        return $this->cantidadMostrar;
+    }
+
+    /**
      * Set duracion
      *
-     * @param integer $duracion
+     * @param \DateTime $duracion
      *
      * @return CertiPrueba
      */
@@ -150,7 +195,7 @@ class CertiPrueba
     /**
      * Get duracion
      *
-     * @return integer
+     * @return \DateTime
      */
     public function getDuracion()
     {
@@ -227,5 +272,53 @@ class CertiPrueba
     public function getEstatusContenido()
     {
         return $this->estatusContenido;
+    }
+
+     /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return CertiPrueba
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+     /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiPrueba
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
     }
 }
