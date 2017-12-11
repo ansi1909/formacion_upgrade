@@ -46,7 +46,7 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
         puntajeAprueba:
             type: decimal
             nullable: true
-            precision: 3
+            precision: 10
             scale: 2
             column: puntaje_aprueba
         muroActivo:

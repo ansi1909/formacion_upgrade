@@ -28,10 +28,10 @@
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                            <th class="hd__title">{{ 'Página asociada'|trans }}</th>
                             <th class="hd__title">{{ 'Preguntas'|trans }}</th>
                             <th class="hd__title">{{ 'Estatus'|trans }}</th>
                             <th class="hd__title">{{ 'Modificado el'|trans }}</th>
-                            <th class="hd__title">{{ 'Modificado por'|trans }}</th>
                             <th class="hd__title">{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
@@ -40,6 +40,7 @@
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
                                 <td>{{ prueba.nombre }}</td>
+                                <td>{{ prueba.pagina }}</td>
                                 <td>
                                     {% if prueba.preguntas|length > 0 %}
                                         <div class="tree">
@@ -55,9 +56,8 @@
                                 </td>
                                 <td>{{ prueba.status }}</td>
                                 <td>{{ prueba.modificacion }}</td>
-                                <td>{{ prueba.usuario }}</td>
                                 <td class="center">
-                                    <a href="{{ path('_editEvaluacion', { 'prueba_id': prueba.id }) }}" title="{{ 'Configurar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
+                                    <a href="{{ path('_preguntas', { 'prueba_id': prueba.id }) }}" title="{{ 'Configurar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if prueba.delete_disabled == '' %}delete{% endif %} {{ prueba.delete_disabled }}" data="{{ prueba.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>

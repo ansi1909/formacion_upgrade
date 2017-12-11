@@ -60,7 +60,7 @@ class CertiPaginaEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="puntaje_aprueba", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="puntaje_aprueba", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $puntajeAprueba;
 

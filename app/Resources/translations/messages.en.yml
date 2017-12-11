@@ -16,7 +16,9 @@ Buen trabajo: Good job
 Buscar: Search
 Cambiar contraseña: Change password
 Cancelar: Cancel
-Cantidad de sub-páginas: Quantity of sub-pages
+Cantidad de preguntas a mostrar: Number of questions to show
+Cantidad de preguntas de la evaluación: Number of test questions
+Cantidad de sub-páginas: Number of sub-pages
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cargo: Appointment
 Categoría: Category
@@ -27,6 +29,7 @@ Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
 Configuración de evaluaciones: Tests setting
+Configuración de la evaluación: Test setting
 Configuración de páginas: Pages setting
 Configurar: Configure
 Configurar evaluación: Configure test
@@ -46,6 +49,7 @@ Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
 Debe seleccionar al menos un rol.: You must select at least one role.
+Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 Descargue material complementario: Download complementary content
@@ -70,11 +74,14 @@ El material complementario debe ser sólo archivo con extensión pdf.: Complemen
 El nivel ha sido almacenado con éxito: Level has been saved successfully
 El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.
 El nombre de la empresa es requerido.: Company name is required.
+El nombre de la evaluación debe ser mínimo de 3 caracteres.: Test name must have at least 3 characters.
+El nombre de la evaluación es requerido.: Test name is required.
 El nombre de la página debe ser mínimo de 3 caracteres.: Page name must have at leat 3 characters.
 El nombre de la página es requerido.: Page name is required.
 El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
+El tiempo de duración es requerido.: Duration is required.
 Email de contacto: Contact Email
 Empresa: Company
 Empresas: Companies
@@ -104,8 +111,17 @@ Icono: Icon
 Iniciar Sesión: Log in
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
+Ir al listado de evaluaciones: Go to tests list
+Ir al listado de preguntas: Go to questions list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
-La cantidad de sub-páginas es requerida.: Quantity of sub-pages is required.
+La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: The number of questions to show must be greater or equal than 1.
+La cantidad de preguntas a mostrar debe ser un valor entero.: The number of questions to show must be a integer value.
+La cantidad de preguntas a mostrar es requerida.: The number of questions to show is required.
+La cantidad de preguntas debe ser mayor o igual a la cantidad de preguntas a mostrar.: The number of questions must be greater or equal than the number of questions to show.
+La cantidad de preguntas debe ser mayor o igual a 1.: The number of questions must be greater or equal than 1.
+La cantidad de preguntas debe ser un valor entero.: The number of questions must be a integer value.
+La cantidad de preguntas es requerida.: The number of questions is required.
+La cantidad de sub-páginas es requerida.: The number of sub-pages is required.
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.
@@ -118,6 +134,8 @@ Listado de evaluaciones: List of tests
 Listado de Roles: List of Roles
 Material complementario: Complementary content
 Nuevos registros almacenados: New records added
+Página asociada: Associated page
+Página seleccionada: Selected page
 Panel de acceso: Login
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
@@ -128,6 +146,7 @@ Nivel: Level
 Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
+No existen páginas: There are no pages
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se permiten espacios en blanco.: Blank spaces are not allowed.
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.
@@ -141,6 +160,7 @@ Nueva página: New page
 Nuevo nivel de la empresa: New level of company
 Nuevo Registro: New Item
 Página: Page
+Página asociada a la evaluación: Page associated to this test
 Página padre: Father page
 Páginas principales: Main pages
 Perfil Empresarial: Company Profile
@@ -175,6 +195,7 @@ Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
 Teléfono de contacto: Contact Number
+Tiempo de duración de la evaluación: Duration of the test
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
 Usuario: User

@@ -16,6 +16,8 @@ Buen trabajo: Buen trabajo
 Buscar: Buscar
 Cambiar contraseña: Cambiar contraseña
 Cancelar: Cancelar
+Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
+Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
 Cantidad de sub-páginas: Cantidad de sub-páginas
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
 Cargo: Cargo
@@ -27,6 +29,7 @@ Conceder: Conceder
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
 Configuración de evaluaciones: Configuración de evaluaciones
+Configuración de la evaluación: Configuración de la evaluación
 Configuración de páginas: Configuración de páginas
 Configurar: Configurar
 Configurar evaluación: Configurar evaluación
@@ -46,6 +49,7 @@ Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
 Datos del usuario: Datos del usuario
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
+Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
 Descargue material complementario: Descargue material complementario
@@ -70,11 +74,14 @@ El material complementario debe ser sólo archivo con extensión pdf.: El materi
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
 El nombre de la empresa es requerido.: El nombre de la empresa es requerido.
+El nombre de la evaluación debe ser mínimo de 3 caracteres.: El nombre de la evaluación debe ser mínimo de 3 caracteres.
+El nombre de la evaluación es requerido.: El nombre de la evaluación es requerido.
 El nombre de la página debe ser mínimo de 3 caracteres.: El nombre de la página debe ser mínimo de 3 caracteres.
 El nombre de la página es requerido.: El nombre de la página es requerido.
 El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
+El tiempo de duración es requerido.: El tiempo de duración es requerido.
 Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresas: Empresas
@@ -104,7 +111,16 @@ Icono: Icono
 Iniciar Sesión: Iniciar Sesión
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
+Ir al listado de evaluaciones: Ir al listado de evaluaciones
+Ir al listado de preguntas: Ir al listado de preguntas
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
+La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: La cantidad de preguntas a mostrar debe ser mayor o igual a 1.
+La cantidad de preguntas a mostrar debe ser un valor entero.: La cantidad de preguntas a mostrar debe ser un valor entero.
+La cantidad de preguntas a mostrar es requerida.: La cantidad de preguntas a mostrar es requerida.
+La cantidad de preguntas debe ser mayor o igual a la cantidad de preguntas a mostrar.: La cantidad de preguntas debe ser mayor o igual a la cantidad de preguntas a mostrar.
+La cantidad de preguntas debe ser mayor o igual a 1.: La cantidad de preguntas debe ser mayor o igual a 1.
+La cantidad de preguntas debe ser un valor entero.: La cantidad de preguntas debe ser un valor entero.
+La cantidad de preguntas es requerida.: La cantidad de preguntas es requerida.
 La cantidad de sub-páginas es requerida.: La cantidad de sub-páginas es requerida.
 La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
@@ -118,6 +134,8 @@ Listado de evaluaciones: Listado de evaluaciones
 Listado de Roles: Listado de Roles
 Material complementario: Material complementario
 Nuevos registros almacenados: Nuevos registros almacenados
+Página asociada: Página asociada
+Página seleccionada: Página seleccionada
 Panel de acceso: Panel de acceso
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
@@ -128,6 +146,7 @@ Nivel: Nivel
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
+No existen páginas: No existen páginas
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
 No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.
@@ -141,6 +160,7 @@ Nueva página: Nueva página
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo Registro: Nuevo Registro
 Página: Página
+Página asociada a la evaluación: Página asociada a la evaluación
 Página padre: Página padre
 Páginas principales: Páginas principales
 Perfil Empresarial: Perfil Empresarial
@@ -175,6 +195,7 @@ Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
 Teléfono de contacto: Teléfono de Contacto
+Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usuario: Usuario

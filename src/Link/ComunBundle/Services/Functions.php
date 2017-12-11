@@ -511,7 +511,7 @@ class Functions
 	}
 
 	// Retorna un arreglo multidimensional de las subpaginas dada pagina_id
-	public function subPaginas($pagina_id)
+	public function subPaginas($pagina_id, $paginas_asociadas = array())
 	{
 
 		$em = $this->em;
@@ -524,8 +524,9 @@ class Functions
 		foreach ($subpages as $subpage)
 		{
 			$tiene++;
-			$str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' class="pepa" data="'.$subpage->getId().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre();
-			$subPaginas = $this->subPaginas($subpage->getId());
+			$check = in_array($subpage->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
+			$str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getId().'" p_str="'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().$check;
+			$subPaginas = $this->subPaginas($subpage->getId(), $paginas_asociadas);
 			if ($subPaginas['tiene'] > 0)
 			{
 				$str .= '<ul>';
