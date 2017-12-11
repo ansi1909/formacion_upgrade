@@ -13,7 +13,7 @@
                 <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
                     <h5 class="card-title">{{ 'Búsqueda de participantes por empresa' |trans}}</h5>
                 </div>
-                    {# if usuario.id #}
+                    {% if usuario.empresa is null %}
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
@@ -32,9 +32,9 @@
                                 <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                     <select class="form_sty_sel form-control" style="border-radius: 5px">
                                         {% for nivel in niveles %}
-                                        {# if (nivel.empresaid == empresa.id)#}
+                                        
                                         <option>{{nivel.nombre}}</option>
-                                        {# endif #}
+                                        
                                         {% endfor %}
                                     </select>
                                     <span class="fa fa-industry"></span>
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                    {#endif#}
+                    {%endif%}
                         <div class="card-footer">
                             <div class="col-sm-16 col-md-16 text-right">
                                 <button type="submit" id="save" class="bttn__nxt edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Buscar'|trans }}"><span class="text__nxt">Buscar</span><span class="fa fa-search"></span></button>
