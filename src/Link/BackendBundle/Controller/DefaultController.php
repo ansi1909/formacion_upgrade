@@ -167,7 +167,7 @@ class DefaultController extends Controller
                     else {
                         
                         $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
-                                    WHERE p.rol IN (:roles) AND a.activo = :activo')
+                                    WHERE p.rol IN (:roles) AND a.activo = :activo AND a.aplicacion IS NULL')
                             ->setParameters(array('roles' => $roles_usuario,
                                                   'activo' => true));
                         
@@ -175,99 +175,102 @@ class DefaultController extends Controller
                         {
                             $error = $this->get('translator')->trans('Usted no tiene aplicaciones asignadas para su rol.');
                         }
-                        
-                        // Se setea la sesion y se prepara el menu
-                        $datosUsuario = array('id' => $usuario->getId(),
-                                              'nombre' => $usuario->getNombre(),
-                                              'apellido' => $usuario->getApellido(),
-                                              'correo' => $usuario->getCorreoPersonal(),
-                                              'foto' => $usuario->getFoto(),
-                                              'roles' => $roles_usuario);
+                        else {
 
-                        // Opciones del menu (Asumiendo que el único rol es Administrador = 1)
-                        $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
-                                                    WHERE p.rol = :rol_id 
-                                                    AND a.activo = :activo 
-                                                    AND a.aplicacion IS NULL")
-                                    ->setParameters(array('rol_id' => 1,
-                                                          'activo' => true));
-                        $permisos = $query->getResult();
+                            // Se setea la sesion y se prepara el menu
+                            $datosUsuario = array('id' => $usuario->getId(),
+                                                  'nombre' => $usuario->getNombre(),
+                                                  'apellido' => $usuario->getApellido(),
+                                                  'correo' => $usuario->getCorreoPersonal(),
+                                                  'foto' => $usuario->getFoto(),
+                                                  'roles' => $roles_usuario);
 
-                        $permisos_id = array();
-                        $menu = array();
-                        
-                        foreach ($permisos as $permiso)
-                        {
+                            // Opciones del menu
+                            $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                                        WHERE p.rol IN (:rol_id) 
+                                                        AND a.activo = :activo 
+                                                        AND a.aplicacion IS NULL")
+                                        ->setParameters(array('rol_id' => $roles_usuario,
+                                                              'activo' => true));
+                            $permisos = $query->getResult();
 
-                            if (!in_array($permiso->getId(), $permisos_id))
+                            $permisos_id = array();
+                            $menu = array();
+                            
+                            foreach ($permisos as $permiso)
                             {
 
-                                $permisos_id[] = $permiso->getId();
-
-                                $submenu = array();
-
-                                $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
-                                                            WHERE p.rol = :rol_id 
-                                                            AND a.activo = :activo 
-                                                            AND a.aplicacion = :app_id")
-                                            ->setParameters(array('rol_id' => 1,
-                                                                  'activo' => true,
-                                                                  'app_id' => $permiso->getAplicacion()->getId()));
-                                $subpermisos = $query->getResult();
-
-                                foreach ($subpermisos as $subpermiso)
+                                if (!in_array($permiso->getId(), $permisos_id))
                                 {
 
-                                    if (!in_array($subpermiso->getId(), $permisos_id))
+                                    $permisos_id[] = $permiso->getId();
+
+                                    $submenu = array();
+
+                                    $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                                                WHERE p.rol IN (:rol_id) 
+                                                                AND a.activo = :activo 
+                                                                AND a.aplicacion = :app_id")
+                                                ->setParameters(array('rol_id' => $roles_usuario,
+                                                                      'activo' => true,
+                                                                      'app_id' => $permiso->getAplicacion()->getId()));
+                                    $subpermisos = $query->getResult();
+
+                                    foreach ($subpermisos as $subpermiso)
                                     {
 
-                                        $permisos_id[] = $subpermiso->getId();
+                                        if (!in_array($subpermiso->getId(), $permisos_id))
+                                        {
 
-                                        $submenu[] = array('id' => $subpermiso->getAplicacion()->getId(),
-                                                           'url' => $subpermiso->getAplicacion()->getUrl(),
-                                                           'nombre' => $subpermiso->getAplicacion()->getNombre(),
-                                                           'icono' => $subpermiso->getAplicacion()->getIcono(),
-                                                           'url_existente' => $subpermiso->getAplicacion()->getUrl() ? 1 : 0);
+                                            $permisos_id[] = $subpermiso->getId();
 
+                                            $submenu[] = array('id' => $subpermiso->getAplicacion()->getId(),
+                                                               'url' => $subpermiso->getAplicacion()->getUrl(),
+                                                               'nombre' => $subpermiso->getAplicacion()->getNombre(),
+                                                               'icono' => $subpermiso->getAplicacion()->getIcono(),
+                                                               'url_existente' => $subpermiso->getAplicacion()->getUrl() ? 1 : 0);
+
+                                        }
+                                        
                                     }
-                                    
+
+                                    $menu[] = array('id' => $permiso->getAplicacion()->getId(),
+                                                    'url' => $permiso->getAplicacion()->getUrl(),
+                                                    'nombre' => $permiso->getAplicacion()->getNombre(),
+                                                    'icono' => $permiso->getAplicacion()->getIcono(),
+                                                    'url_existente' => $permiso->getAplicacion()->getUrl() ? 1 : 0,
+                                                    'submenu' => $submenu);
+
                                 }
-
-                                $menu[] = array('id' => $permiso->getAplicacion()->getId(),
-                                                'url' => $permiso->getAplicacion()->getUrl(),
-                                                'nombre' => $permiso->getAplicacion()->getNombre(),
-                                                'icono' => $permiso->getAplicacion()->getIcono(),
-                                                'url_existente' => $permiso->getAplicacion()->getUrl() ? 1 : 0,
-                                                'submenu' => $submenu);
-
+                                
                             }
-                            
+
+                            // Cierre de sesiones activas
+                            $sesiones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
+                                                                                                                         'disponible' => true));
+                            foreach ($sesiones as $s)
+                            {
+                                $s->setDisponible(false);
+                            }
+
+                            // Se crea la sesión en BD
+                            $admin_sesion = new AdminSesion();
+                            $admin_sesion->setFechaIngreso(new \DateTime('now'));
+                            $admin_sesion->setUsuario($usuario);
+                            $admin_sesion->setDisponible(true);
+                            $em->persist($admin_sesion);
+                            $em->flush();
+
+                            $session->set('ini', true);
+                            $session->set('sesion_id', $admin_sesion->getId());
+                            $session->set('code', $f->getLocaleCode());
+                            $session->set('administrador', $administrador);
+                            $session->set('usuario', $datosUsuario);
+                            $session->set('menu', $menu);
+
+                            return $this->redirectToRoute('_inicioAdmin');
+
                         }
-
-                        // Cierre de sesiones activas
-                        $sesiones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
-                                                                                                                     'disponible' => true));
-                        foreach ($sesiones as $s)
-                        {
-                            $s->setDisponible(false);
-                        }
-
-                        // Se crea la sesión en BD
-                        $admin_sesion = new AdminSesion();
-                        $admin_sesion->setFechaIngreso(new \DateTime('now'));
-                        $admin_sesion->setUsuario($usuario);
-                        $admin_sesion->setDisponible(true);
-                        $em->persist($admin_sesion);
-                        $em->flush();
-
-                        $session->set('ini', true);
-                        $session->set('sesion_id', $admin_sesion->getId());
-                        $session->set('code', $f->getLocaleCode());
-                        $session->set('administrador', $administrador);
-                        $session->set('usuario', $datosUsuario);
-                        $session->set('menu', $menu);
-
-                        return $this->redirectToRoute('_inicioAdmin');
                         
                     }
                 }

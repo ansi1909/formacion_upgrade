@@ -6,65 +6,94 @@
 {% endblock %}
 
 {% block body %}
+{% set encabezado = usuario_empresa ? 'Búsqueda de participantes empresa'|trans~' '~usuario.empresa.nombre : 'Búsqueda de participantes por empresa'|trans %}
 <br><br>
-    <div class="row">
-        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
-            <div class="card">
-                <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                    <h5 class="card-title">{{ 'Búsqueda de participantes por empresa' |trans}}</h5>
+<input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+<input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa ? usuario.empresa.id : 0 }}">
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ encabezado }}</h5>
+            </div>
+            <div class="card-block">
+                {% if not usuario_empresa %}
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                <option value="0"></option>
+                                {% for empresa in empresas %}
+                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                    </div>
+                    <br>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="nivel_id" name="nivel_id">
+                        </select>
+                        <span class="fa fa-industry"></span>
+                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                    </div>
                 </div>
-                    {% if usuario.empresa is null %}
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                    <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                        <option value="0"></option>
-                                        {% for empresa in empresas %}
-                                            <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <span class="fa fa-industry"></span>
-                                    <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                    <select class="form_sty_sel form-control" style="border-radius: 5px">
-                                        {% for nivel in niveles %}
-                                        
-                                        <option>{{nivel.nombre}}</option>
-                                        
-                                        {% endfor %}
-                                    </select>
-                                    <span class="fa fa-industry"></span>
-                                    <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row" style="margin-bottom: 0px;">
-                                <div class="col-sm-8 col-md-8 col-lg-8 offset-sm-4 offset-md-4 offset-lg-4" style="margin-bottom: 0px;">
-                                    <div class="alert alert-link">
-                                        <p>Elegir empresa a la que quiere consultar sus participantes</p>
-                                    </div>
-                                </div>
-                            </div>
+                <br>
+                <div class="row" style="margin-bottom: 0px;">
+                    <div class="col-sm-8 col-md-8 col-lg-8 offset-sm-4 offset-md-4 offset-lg-4" style="margin-bottom: 0px;">
+                        <div class="alert alert-link">
+                            <p>Elegir empresa a la que quiere consultar sus participantes</p>
                         </div>
-                    {%endif%}
-                        <div class="card-footer">
-                            <div class="col-sm-16 col-md-16 text-right">
-                                <button type="submit" id="save" class="bttn__nxt edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Buscar'|trans }}"><span class="text__nxt">Buscar</span><span class="fa fa-search"></span></button>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Buscar' |trans}}"><span class="fa fa-search"></span></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de Usuarios'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+<table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th>{{ 'Nombre'|trans }}</th>
+                            <th>{{ 'Apellido'|trans }}</th>
+                            <th>{{ 'Nivel'|trans }}</th>
+                            <th>{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
 {% endblock %}
 
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/participantes.js') }}"></script>
 {% endblock %}

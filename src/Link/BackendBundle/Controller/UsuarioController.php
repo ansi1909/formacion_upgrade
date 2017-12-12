@@ -451,18 +451,20 @@ class UsuarioController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
 
-        $niveles = array();
+        $usuario_empresa = 0;
+        $empresas = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
-            if ($usuario->getEmpresa()) {
-            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($usuario->getEmpresa()->getId()); 
+        if ($usuario->getEmpresa()) {
+            $usuario_empresa = 1; 
         }
+        else {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        } 
 
-        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll(); 
-
-        return $this->render('LinkBackendBundle:Usuario:participantes.html.twig', array('empresas' =>$empresas,
-                                                                                        'niveles' =>$niveles,
-                                                                                        'usuario' =>$usuario));
+        return $this->render('LinkBackendBundle:Usuario:participantes.html.twig', array('empresas' => $empresas,
+                                                                                        'usuario_empresa' => $usuario_empresa,
+                                                                                        'usuario' => $usuario));
     }
 
 }
