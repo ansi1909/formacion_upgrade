@@ -86,6 +86,7 @@ Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresas: Empresas
 Empresa con estatus inactivo: Empresa con estatus inactivo
+Enunciado: Enunciado
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
@@ -127,6 +128,7 @@ La categoría ha sido almacenada con éxito: La categoría ha sido almacenada co
 La clave es requerida.: La clave es requerida.
 La descripción es requerida.: La descripción es requerida.
 La empresa es requerida.: La empresa es requerida.
+La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
@@ -196,9 +198,12 @@ Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
 Teléfono de contacto: Teléfono de Contacto
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
+Tipo de elemento: Tipo de elemento
+Tipo de pregunta: Tipo de pregunta
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usuario: Usuario
 Usuario inactivo. Contacte al administrador del sistema.: Usuario inactivo. Contacte al administrador del sistema.
 Usuario o clave incorrecta.: Usuario o clave incorrecta.
+Valor de la pregunta: Valor de la pregunta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones

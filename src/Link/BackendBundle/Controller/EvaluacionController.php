@@ -7,9 +7,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPrueba;
+use Link\ComunBundle\Entity\CertiPregunta;
+use Link\ComunBundle\Entity\CertiTipoPregunta;
+use Link\ComunBundle\Entity\CertiTipoElemento;
 use Link\ComunBundle\Entity\CertiEstatusContenido;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -91,6 +95,9 @@ class EvaluacionController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+        $pagina_evaluada = 0;
+        $pagina_id = '';
+        $pagina_str = '';
         
         if ($prueba_id) 
         {
@@ -114,7 +121,7 @@ class EvaluacionController extends Controller
             ->add('duracion', TimeType::class, array('label' => $this->get('translator')->trans('Tiempo de duración de la evaluación'),
                                                      'input' => 'datetime',
                                                      'widget' => 'single_text',
-                                                     'html5' => true))
+                                                     'html5' => false))
             ->add('estatusContenido', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiEstatusContenido',
                                                                'choice_label' => 'nombre',
                                                                'expanded' => false,
@@ -127,26 +134,50 @@ class EvaluacionController extends Controller
         {
 
             $pagina_id = $request->request->get('pagina_id');
-            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            $pagina_str = $request->request->get('pagina_str');
 
-            $prueba->setPagina($pagina);
-            $em->persist($prueba);
-            $em->flush();
-
-            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPregunta p 
-                                        WHERE p.prueba = :prueba_id')
-                        ->setParameter('prueba_id', $prueba->getId());
-            $hay_preguntas = $query->getSingleScalarResult();
-
-            if ($prueba->getCantidadPreguntas() > 0 && !$hay_preguntas)
+            // Verificamos si la página asociada ya había sido seleccionada
+            $qb = $em->createQueryBuilder();
+            $qb->select('COUNT(p.id)')
+               ->from('LinkComunBundle:CertiPrueba', 'p')
+               ->where('p.pagina = :pagina_id');
+            $parametros['pagina_id'] = $pagina_id;
+            
+            if ($prueba_id)
             {
-                return $this->redirectToRoute('_editPregunta', array('prueba_id' => $prueba->getId(),
-                                                                     'pregunta_id' => 0,
-                                                                     'cantidad' => 1,
-                                                                     'total' => $prueba->getCantidadPreguntas()));
+                $qb->andWhere('p.id != :prueba_id');
+                $parametros['prueba_id'] = $prueba_id;
             }
-            else {
-                return $this->redirectToRoute('_preguntas', array('prueba_id' => $prueba->getId()));
+
+            $qb->setParameters($parametros);
+            $query = $qb->getQuery();
+            $pagina_evaluada = $query->getSingleScalarResult();
+
+            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            $prueba->setPagina($pagina);
+
+            if (!$pagina_evaluada)
+            {
+
+                $em->persist($prueba);
+                $em->flush();
+
+                $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPregunta p 
+                                            WHERE p.prueba = :prueba_id')
+                            ->setParameter('prueba_id', $prueba->getId());
+                $hay_preguntas = $query->getSingleScalarResult();
+
+                if (!$hay_preguntas)
+                {
+                    return $this->redirectToRoute('_editPregunta', array('prueba_id' => $prueba->getId(),
+                                                                         'pregunta_id' => 0,
+                                                                         'cantidad' => 1,
+                                                                         'total' => $prueba->getCantidadPreguntas()));
+                }
+                else {
+                    return $this->redirectToRoute('_preguntas', array('prueba_id' => $prueba->getId()));
+                }
+
             }
             
         }
@@ -194,7 +225,91 @@ class EvaluacionController extends Controller
 
         return $this->render('LinkBackendBundle:Evaluacion:edit.html.twig', array('form' => $form->createView(),
                                                                                   'prueba' => $prueba,
-                                                                                  'paginas' => $paginas));
+                                                                                  'paginas' => $paginas,
+                                                                                  'pagina_evaluada' => $pagina_evaluada,
+                                                                                  'pagina_id' => $pagina_id,
+                                                                                  'pagina_str' => $pagina_str));
+
+    }
+
+    public function editPreguntaAction($prueba_id, $pregunta_id, $cantidad, $total, Request $request){
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
+        
+        if ($pregunta_id) 
+        {
+            $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
+        }
+        else {
+            $pregunta = new CertiPregunta();
+            $pregunta->setFechaCreacion(new \DateTime('now'));
+        }
+
+        $pregunta->setPrueba($prueba);
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $pregunta->setUsuario($usuario);
+        $pregunta->setFechaModificacion(new \DateTime('now'));
+
+        $form = $this->createFormBuilder($pregunta)
+            ->setAction($this->generateUrl('_editPregunta', array('prueba_id' => $prueba_id,
+                                                                  'pregunta_id' => $pregunta_id,
+                                                                  'cantidad' => $cantidad,
+                                                                  'total' => $total)))
+            ->setMethod('POST')
+            ->add('enunciado', TextType::class, array('label' => $this->get('translator')->trans('Enunciado')))
+            ->add('imagen', HiddenType::class, array('required' => false))
+            ->add('tipoPregunta', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiTipoPregunta',
+                                                           'choice_label' => 'nombre',
+                                                           'expanded' => false,
+                                                           'label' => $this->get('translator')->trans('Tipo de pregunta'),
+                                                           'placeholder' => ''))
+            ->add('tipoElemento', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiTipoElemento',
+                                                           'choice_label' => 'nombre',
+                                                           'expanded' => false,
+                                                           'label' => $this->get('translator')->trans('Tipo de elemento'),
+                                                           'placeholder' => ''))
+            ->add('estatusContenido', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiEstatusContenido',
+                                                               'choice_label' => 'nombre',
+                                                               'expanded' => false,
+                                                               'label' => $this->get('translator')->trans('Estatus')))
+            ->add('valor', NumberType::class, array('label' => $this->get('translator')->trans('Valor de la pregunta')))
+            ->getForm();
+
+        $form->handleRequest($request);
+       
+        if ($request->getMethod() == 'POST')
+        {
+
+            $em->persist($pregunta);
+            $em->flush();
+
+            return $this->redirectToRoute('_opciones', array('pregunta_id' => 0,
+                                                             'cantidad' => $cantidad,
+                                                             'total' => $prueba->getCantidadPreguntas()));
+            
+        }
+
+        return $this->render('LinkBackendBundle:Evaluacion:editPregunta.html.twig', array('form' => $form->createView(),
+                                                                                          'pregunta' => $pregunta,
+                                                                                          'cantidad' => $cantidad,
+                                                                                          'total' => $total));
 
     }
 

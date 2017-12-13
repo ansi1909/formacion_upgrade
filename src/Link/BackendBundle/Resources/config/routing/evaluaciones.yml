@@ -13,3 +13,7 @@ _preguntas:
 _editPregunta:
     path:     /editPregunta/{prueba_id}/{pregunta_id}/{cantidad}/{total}
     defaults: { _controller: LinkBackendBundle:Evaluacion:editPregunta, pregunta_id: 0, cantidad: 1, total: 1 }
+
+_opciones:
+    path:     /opciones/{pregunta_id}/{cantidad}/{total}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:opciones }

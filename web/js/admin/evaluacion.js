@@ -1,5 +1,13 @@
 $(document).ready(function() {
 
+	$('.timePicker').timepicker({
+	    timeFormat: 'H:mm',
+	    interval: 15,
+	    dynamic: false,
+	    dropdown: true,
+	    scrollbar: true
+	});
+
 	$('.tree').jstree();
 
 	$('.tree').on("select_node.jstree", function (e, data) {

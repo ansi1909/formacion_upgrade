@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('jq/jquery-timepicker/jquery.timepicker.min.css') }}" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -20,6 +21,7 @@
     </div>
 </div>
 {{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
+<input type="hidden" id="pagina_evaluada" name="pagina_evaluada" value="{{ pagina_evaluada }}">
 <div class="row">
 	<div class="col-sm-16">
         <div class="card">
@@ -42,7 +44,7 @@
                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                         <div class="form-group">
                             <label for="form_cantidadPreguntas" class="col-16 col-form-label">{{ form_label(form.cantidadPreguntas) }}</label>
-                            <div class="col-6">
+                            <div class="col-8">
                                 {{ form_widget(form.cantidadPreguntas, { 'attr': { 'class': 'form-control form_sty1' } }) }}
                                 <span class="fa fa-slack"></span>
                             </div>
@@ -51,7 +53,7 @@
                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                         <div class="form-group">
                             <label for="form_cantidadMostrar" class="col-16 col-form-label">{{ form_label(form.cantidadMostrar) }}</label>
-                            <div class="col-6">
+                            <div class="col-8">
                                 {{ form_widget(form.cantidadMostrar, { 'attr': { 'class': 'form-control form_sty1' } }) }}
                                 <span class="fa fa-slack"></span>
                             </div>
@@ -62,8 +64,8 @@
                     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
                         <div class="form-group">
                             <label for="form_duracion" class="col-16 col-form-label">{{ form_label(form.duracion) }}</label>
-                            <div class="col-8">
-                                {{ form_widget(form.duracion, { 'attr': { 'class': 'form-control form_sty1', 'readonly': 'readonly' } }) }}
+                            <div class="col-10">
+                                {{ form_widget(form.duracion, { 'attr': { 'class': 'form-control form_sty1 timePicker' } }) }}
                                 <span class="fa fa-clock-o"></span>
                             </div>
                         </div>
@@ -102,7 +104,7 @@
                             <label for="pg_sel" class="col-16 col-form-label">{{ 'Página seleccionada'|trans }}</label>
                             <div class="col-14">
                                 <input type="text" class="form-control" id="pagina_str" name="pagina_str" readonly="readonly" value="{{ prueba.pagina ? prueba.pagina.categoria.nombre~': '~prueba.pagina.nombre : '' }}">
-                                <input type="hidden" id="pagina_id" name="pagina_id" value="">
+                                <input type="hidden" id="pagina_id" name="pagina_id" value="{{ prueba.pagina ? prueba.pagina.id : '' }}">
                             </div>
                         </div>
                     </div>
@@ -125,8 +127,16 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-timepicker/jquery.timepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/evaluacion.js') }}"></script>
     <script type="text/javascript">
+
+        var pagina_evaluada = $('#pagina_evaluada').val();
+        if (parseInt(pagina_evaluada) > 0) {
+            $('#div-error ul').html("<li>- {{ 'La página seleccionada ya está asociada a otra evaluación.'|trans }}</li>");
+            $('#div-error ul').show();
+            notify($('#div-error').html());
+        }
         
         $('#finish').click(function(){
             var valid = $("#form").valid();
@@ -141,7 +151,7 @@
 
         jQuery.validator.addMethod("greaterThan", function(value, element, param) { 
             var $otherElement = $(param);
-            return parseInt(value, 10) > parseInt($otherElement.val(), 10);
+            return parseInt(value, 10) >= parseInt($otherElement.val(), 10);
         });
 
         $("#form").validate({
@@ -157,7 +167,7 @@
                     required: true,
                     digits: true,
                     min: 1,
-                    greaterThan: "form[cantidadMostrar]"
+                    greaterThan: "#form_cantidadMostrar"
                 },
                 'form[cantidadMostrar]': {
                     required: true,
