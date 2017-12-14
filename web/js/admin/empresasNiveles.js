@@ -2,9 +2,11 @@ $(document).ready(function() {
 
 	$('#tbody-empresas tr').each(function(){
 		var tr = $(this).attr('id');
-		var tr_arr = tr.split('tr-');
-		var empresa_id = tr_arr[1];
-		treeNiveles(empresa_id);
+		if (!(typeof tr === 'undefined' || tr === null)){
+			var tr_arr = tr.split('tr-');
+			var empresa_id = tr_arr[1];
+			treeNiveles(empresa_id);
+		}
 	});
 
 	$('.new').click(function(){

@@ -18,7 +18,7 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_usuario', 'id'
 -- Data for Name: admin_usuario; Type: TABLE DATA; Schema: public;
 --
 
-INSERT INTO admin_usuario (id, login, clave, nombre, apellido, correo_personal, correo_corporativo, activo, fecha_registro, fecha_nacimiento, pais, ciudad, region, empresa_id, foto, division_funcional, cargo, nivel_id) VALUES (1, 'admin', 'admin', 'Administrador', 'Sistema', 'soporte_link_gerencial@gmail.com', NULL, TRUE, '2017-09-21 10:28:00', '1981-01-29', 'Venezuela', 'Caracas', 'Capital', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO admin_usuario (id, login, clave, nombre, apellido, correo_personal, correo_corporativo, activo, fecha_registro, fecha_nacimiento, pais_id, ciudad, region, empresa_id, foto, division_funcional, cargo, nivel_id) VALUES (1, 'admin', 'admin', 'Administrador', 'Sistema', 'soporte_link_gerencial@gmail.com', NULL, TRUE, '2017-09-21 10:28:00', '1981-01-29', 'VEN', 'Caracas', 'Capital', NULL, NULL, NULL, NULL, NULL);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_permiso_seq;; Type: SEQUENCE SET; Schema: public;
