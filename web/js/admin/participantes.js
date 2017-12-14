@@ -10,12 +10,12 @@ $(document).ready(function() {
     	console.log('Usuario admin');
     	var empresa_id = $(this).val();
 		getNiveles(empresa_id);
+		getListadoParticipantes(empresa_id,0);
 	});
 
-	$('#empresa_id').change(function(){
-    	console.log('Usuario admin');
-    	var empresa_id = $(this).val();
-		getNiveles(empresa_id);
+	$('#nivel_id').change(function(){
+		var nivel_id = $(this).val();
+		getListadoParticipantes(empresa_id,nivel_id);
 	});
 
 });
@@ -36,3 +36,21 @@ function getNiveles(empresa_id){
 		}
 	});
 }
+
+function getListadoParticipantes(empresa_id,nivel_id){
+	$.ajax({
+		type: "GET",
+		url: $('#url_Participantes').val(),
+		async: true,
+		data: { nivel_id: nivel_id },
+		dataType: "json",
+		success: function(data) {
+			$('#nombre').val(data.nombre);
+		},
+		error: function(){
+			$('#active-error').html($('#error_msg-filter').val());
+			$('#div-active-alert').show();
+		}
+	});
+}
+

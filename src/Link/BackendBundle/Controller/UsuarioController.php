@@ -467,4 +467,17 @@ class UsuarioController extends Controller
                                                                                         'usuario' => $usuario));
     }
 
+    public function ajaxParticipantesAction($nivel_id, $empresa_id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $usuarios = array();
+        $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($nivel_id);
+        
+        $return = array('usuarios' => $usuarios);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
 }
