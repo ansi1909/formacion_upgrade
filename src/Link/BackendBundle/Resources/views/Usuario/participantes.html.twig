@@ -11,7 +11,13 @@
 <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa ? usuario.empresa.id : 0 }}">
 <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxParticipantes') }}">
-
+<div class="col text-right">
+    <a href="{{ path('_nuevoParticipante')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></a>
+</div>
+<br>
+<div class="col text-right">
+    <a href="{{ path('_usuario')}}" class="bttn__nr"><span class="fa fa-upload" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Carga masiva'|trans }}</span></a>
+</div>
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
         <div class="card">
@@ -19,6 +25,7 @@
                 <h5 class="card-title">{{ encabezado }}</h5>
             </div>
             <div class="card-block">
+                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Empresa</label>
                 {% if not usuario_empresa %}
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
@@ -34,6 +41,8 @@
                     </div>
                     <br>
                 {% endif %}
+                <input type="hidden" id="participante" name="participante" value="{{usuario_empresa}}">
+                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Nivel</label>
                 <div class="row">
                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                         <select class="form_sty_sel form-control" style="border-radius: 5px" id="nivel_id" name="nivel_id">
@@ -43,18 +52,6 @@
                     </div>
                 </div>
                 <br>
-                <div class="row" style="margin-bottom: 0px;">
-                    <div class="col-sm-8 col-md-8 col-lg-8 offset-sm-4 offset-md-4 offset-lg-4" style="margin-bottom: 0px;">
-                        <div class="alert alert-link">
-                            <p>Elegir empresa a la que quiere consultar sus participantes</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="col-sm-16 col-md-16 text-right">
-                        <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Buscar' |trans}}"><span class="fa fa-search"></span></button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -88,13 +85,8 @@
                             <th>{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td id="nombre"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                    <tbody id="usuarios" name="usuarios">
+                        
                     </tbody>
                 </table>
 {% endblock %}

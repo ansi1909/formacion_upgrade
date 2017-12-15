@@ -469,15 +469,53 @@ class UsuarioController extends Controller
 
     public function ajaxParticipantesAction($nivel_id, $empresa_id, Request $request)
     {
+        
+        $f->setRequest($session->get('sesion_id'));
+
         $em = $this->getDoctrine()->getManager();
 
+        $qb = $em->createQueryBuilder();
+        $qb->select('u')
+           ->from('LinkComunBundle:AdminUsuario', 'u');
+        $qb->andWhere('u.empresa = :empresa_id');
+            $parametros['empresa_id'] = $empresa_id;
+
+        $qb->andWhere('u.nivel = :nivel_id');
+            $parametros['nivel_id'] = $nivel_id;
+
+        $qb->orderBy('u.nombre, ASC');
+
+        $query = $qb->getQuery();
+        $usuarios_db = $query->getResult();
         $usuarios = array();
-        $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($nivel_id);
+
+        foreach ($usuarios_db as $usuario) {
+            $usuarios .= '<tr><td>'.$usuario->getNombre().'</td><td>'.$usuario->getApellido().'</td><td>'.$usuario->getNivel().'</td><td>hola</td></tr>';
+        }
         
         $return = array('usuarios' => $usuarios);
-
+ 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function nuevoParticipanteAction($empresa_id, Request $request)
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+
+        return $this->render('LinkBackendBundle:Usuario:nuevoParticipante.html.twig');
     }
 
 }

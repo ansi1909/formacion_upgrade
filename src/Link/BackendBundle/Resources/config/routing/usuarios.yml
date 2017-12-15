@@ -20,6 +20,10 @@ _participantes:
     path:     /participantes/{app_id}
     defaults: { _controller: LinkBackendBundle:Usuario:participantes }
 
+_nuevoParticipante:
+    path:     /nuevoParticipante/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:nuevoParticipante, empresa_id: 0 }
+
 _ajaxParticipantes:
     path:     /ajaxParticipantes/
     defaults: { _controller: LinkBackendBundle:Usuario:ajaxParticipantes }

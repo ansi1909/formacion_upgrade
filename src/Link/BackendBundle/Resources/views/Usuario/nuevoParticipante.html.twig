@@ -1,0 +1,184 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .social-profile-pic img {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            -ms-border-radius: 6px;
+            border-radius: 6px;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 0 20px 0 10px;
+        }
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% set uri = app.request.getbasepath %}
+<br><br>
+<div class="row align-items-center justify-content-between">
+                    <div class="col-12 col-sm-12 page-title">
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <a href="{{ path('_participantes', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-16">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <div class="card-title">
+                                    <h6>Registrar participante</h6>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="container_wizard wizard-thin">
+                                    <div class="stepwizard">
+                                        <div class="stepwizard-row setup-panel d-flex">
+                                            <div class="stepwizard-step col">
+                                                <a href="#det0" class="btn bttn__fndo pass">
+                                                    <span class="btn-round">1</span>
+                                                    <p>Detalles 1<small>Lorem ipsum dolor sit amet</small></p>
+                                                </a>
+                                            </div>
+                                            <div class="stepwizard-step col">
+                                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                                    <span class="btn-round">2</span>
+                                                    <p>Detalles 2<small>Lorem ipsum dolor sit amet</small></p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form action="" class="container-fluid p-0">
+                                        <div class="row setup-content" id="det0">
+                                            <div class="col-sm-16">
+                                                <div class="row">
+                                                    <div class="col-sm-16">
+                                                        <h3 class="mb-2">Lorem1</h3>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                                        <div class="row">
+                                                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                                                {# set img = usuario.foto ? uploads~usuario.foto : asset('img/user.png') #}
+                                                                <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" style="background: transparent; border-radius: 50%;"></figure>
+                                                            </div>
+                                                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                <div class="input-group">
+                                                                    <input type="hidden" id="foto" name="foto" value="{# usuario.foto #}" readonly="readonly">
+                                                                    <span class="input-group-addon">
+                                                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&fldr=recursos/usuarios" class="btn iframe-btn" type="button">
+                                                                            <span class="fa fa-photo"></span>
+                                                                        </a>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                       <div class="for-group">
+                                                           <label for="pwd" class="col-2 col-form-label">Contraseña</label>
+                                                           <div class="col-14">
+                                                               <input type="password" class="form-control form_sty2" id="pwd" placeholder="Contraseña">
+                                                               <span class="fa fa-lock"></span>
+                                                           </div>
+                                                       </div>
+                                                       <br>
+                                                        <div class="form-group">
+                                                            <label for="" class="col-2 col-form-label">Fecha</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty4" id="datepicker_month_disabled" placeholder="Fecha">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wizard-footer">
+                                                    <div class="col-sm-16 text-right">
+                                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row setup-content" id="det1">
+                                            <div class="col-sm-16">
+                                                <div class="row">
+                                                    <div class="col-sm-16">
+                                                        <h3 class="mb-2">Lorem2</h3>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="texto" class="col-2 col-form-label">Texto</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty1" id="texto" placeholder="Usuario">
+                                                                <span class="fa fa-user"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="Correo" class="col-2 col-form-label">Correo</label>
+                                                            <div class="col-14">
+                                                                <input type="email" class="form-control form_sty3" id="Correo" placeholder="Correo">
+                                                                <span class="fa fa-envelope"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                                        <div class="for-group">
+                                                            <label for="pwd" class="col-2 col-form-label">Contraseña</label>
+                                                            <div class="col-14">
+                                                                <input type="password" class="form-control form_sty2" id="pwd" placeholder="Contraseña">
+                                                                <span class="fa fa-lock"></span>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <label for="" class="col-2 col-form-label">Fecha</label>
+                                                            <div class="col-14">
+                                                                <input type="text" class="form-control form_sty4" id="datepicker_month_disabled" placeholder="Fecha">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wizard-footer">
+                                                    <div class="col-sm-16 text-right">
+                                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">Siguiente</span><span class="fa fa-chevron-right"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
+{% endblock %}

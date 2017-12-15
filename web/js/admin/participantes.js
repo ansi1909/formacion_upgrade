@@ -45,7 +45,7 @@ function getListadoParticipantes(empresa_id,nivel_id){
 		data: { nivel_id: nivel_id },
 		dataType: "json",
 		success: function(data) {
-			$('#nombre').val(data.nombre);
+			$('#usuarios').html(data.usuarios);
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
