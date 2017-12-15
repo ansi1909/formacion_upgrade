@@ -297,12 +297,13 @@ class EvaluacionController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
-            $em->persist($pregunta);
+            return new Response('Llegaste bien');
+            /*$em->persist($pregunta);
             $em->flush();
 
             return $this->redirectToRoute('_opciones', array('pregunta_id' => 0,
                                                              'cantidad' => $cantidad,
-                                                             'total' => $prueba->getCantidadPreguntas()));
+                                                             'total' => $prueba->getCantidadPreguntas()));*/
             
         }
 

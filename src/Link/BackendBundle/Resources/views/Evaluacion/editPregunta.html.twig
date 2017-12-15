@@ -1,0 +1,178 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .input-group {
+            margin-top: 35px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<br><br>
+{% set uri = app.request.getbasepath %}
+<div class="row align-items-center justify-content-start">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="{{ path('_preguntas', { 'prueba_id': pregunta.prueba.id })}}" class="bttn__bck2"><span class="fa fa-list-ol"></span><span class="text__bck2">{{ 'Ir al listado de preguntas'|trans }}</span></a>
+        {% if pregunta.id %}
+            <a href="{{ path('_opciones', { 'pregunta_id': pregunta.id, 'cantidad': cantidad, 'total': total })}}" class="bttn__bck2"><span class="fa fa-list-ul"></span><span class="text__bck2">{{ 'Ir al listado de opciones'|trans }}</span></a>
+        {% endif %}
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
+</div>
+{{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<div class="row">
+	<div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Pregunta'|trans }} # {{ cantidad }}/{{ total }} {{ 'de la evaluación'|trans }} {{ pregunta.prueba.nombre }}</h6>
+                </div>
+            </div>
+            <div class="card-block fnd__wzd">
+                <div class="row">
+                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                        <div class="form-group">
+                            <label for="form_enunciado" class="col-16 col-form-label">{{ form_label(form.enunciado) }}</label>
+                            <div class="col-16">
+                                {{ form_widget(form.enunciado, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                                <span class="fa fa-align-justify"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                        <div class="form-group">
+                            <label for="form_tipoPregunta" class="col-16 col-form-label">{{ form_label(form.tipoPregunta) }}</label>
+                            <div class="col-16">
+                                {{ form_widget(form.tipoPregunta, { 'attr': { 'class': 'form-control form_sty_sel', 'style': 'border-radius: 5px;' } }) }}
+                                <span class="fa fa-tag"></span>
+                                <span class="bttn_d"><img src="{{ asset('img/down-arrowwht.png') }}" alt=""></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="input-group">
+                            {% set img = pregunta.imagen ? uploads~pregunta.imagen : asset('img/images-interface-symbol.png') %}
+                            <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" style="background: transparent; width: 150px; height: auto;"></figure>
+                            {{ form_widget(form.imagen, { 'attr': { 'readonly': 'readonly' } }) }}
+                            <span class="input-group-addon" style="border: none;">
+                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_imagen&fldr=recursos/paginas" class="btn iframe-btn" type="button">
+                                    <span class="fa fa-photo"></span>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                        <div class="form-group">
+                            <label for="form_tipoElemento" class="col-16 col-form-label">{{ form_label(form.tipoElemento) }}</label>
+                            <div class="col-16">
+                                {{ form_widget(form.tipoElemento, { 'attr': { 'class': 'form-control form_sty_sel', 'style': 'border-radius: 5px;' } }) }}
+                                <span class="fa fa-file-text-o"></span>
+                                <span class="bttn_d"><img src="{{ asset('img/down-arrowwht.png') }}" alt=""></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                        <div class="form-group">
+                            <label for="form_valor" class="col-16 col-form-label">{{ form_label(form.valor) }}</label>
+                            <div class="col-8">
+                                {{ form_widget(form.valor, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                                <span class="fa fa-percent"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                        <div class="form-group">
+                            <label for="form_estatusContenido" class="col-16 col-form-label">{{ form_label(form.estatusContenido) }}</label>
+                            <div class="col-8">
+                                {{ form_widget(form.estatusContenido, { 'attr': { 'class': 'form-control form_sty_sel', 'style': 'border-radius: 5px;' } }) }}
+                                <span class="fa fa-list-ol"></span>
+                                <span class="bttn_d"><img src="{{ asset('img/down-arrowwht.png') }}" alt=""></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer" style="background: #e6e6e6;">
+                <div class="col-sm-16 text-right">
+                    <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+{{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/pregunta.js') }}"></script>
+    <script type="text/javascript">
+
+        $('#finish').click(function(){
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                notify($('#div-error').html());
+            }
+            else {
+                $('#form').submit();
+            }
+        });
+
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'form[enunciado]': {
+                    required: true,
+                    minlength: 3
+                },
+                'form[tipoPregunta]': {
+                    required: true
+                },
+                'form[tipoElemento]': {
+                    required: true
+                },
+                'form[valor]': {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                'form[enunciado]': {
+                    required: "- {{ 'El enunciado es requerido.'|trans }}",
+                    minlength: "- {{ 'El enunciado debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'form[tipoPregunta]': {
+                    required: "- {{ 'El tipo de pregunta es requerido.'|trans }}"
+                },
+                'form[tipoElemento]': {
+                    required: "- {{ 'El tipo de elemento es requerido.'|trans }}"
+                },
+                'form[valor]': {
+                    required: "- {{ 'El valor de la pregunta es requerido.'|trans }}",
+                    number: "- {{ 'El valor de la pregunta debe ser un valor numérico.'|trans }}"
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

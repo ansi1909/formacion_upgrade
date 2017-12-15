@@ -48,6 +48,7 @@ Datos de la empresa: Company Data
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
+de la evaluación: of the test
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
@@ -69,6 +70,8 @@ El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
+El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
+El enunciado es requerido.: Statement is required.
 El login ya existe.: Login already exists.
 El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
@@ -82,6 +85,10 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must ha
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
 El tiempo de duración es requerido.: Duration is required.
+El tipo de elemento es requerido.: Element type is required.
+El tipo de pregunta es requerido.: Question type is required.
+El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
+El valor de la pregunta es requerido.: Question weighing is required.
 Email de contacto: Contact Email
 Empresa: Company
 Empresas: Companies
@@ -113,6 +120,7 @@ Iniciar Sesión: Log in
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
 Ir al listado de evaluaciones: Go to tests list
+Ir al listado de opciones: Go to options list
 Ir al listado de preguntas: Go to questions list
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: The number of questions to show must be greater or equal than 1.
@@ -139,6 +147,7 @@ Nuevos registros almacenados: New records added
 Página asociada: Associated page
 Página seleccionada: Selected page
 Panel de acceso: Login
+Pregunta: Question
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Mensaje del servidor: Server message

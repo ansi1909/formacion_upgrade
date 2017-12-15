@@ -133,8 +133,14 @@
         </div>
     </div>
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/vendor/cicular_progress/circle-progress.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendor/sparklines/jquery.sparkline.min.js') }}"></script>
+    {#<script src="{{ asset('assets/vendor/chartjs/Chart.bundle.min.js') }}" type="text/javascript"></script>#}
+    <script src="{{ asset('assets/vendor/chartjs/utils.js') }}" type="text/javascript"></script>
+    {#<script type="text/javascript" src="{{ asset('assets/js/dashboard1_light.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('js/admin/dashboard.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript">

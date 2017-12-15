@@ -48,6 +48,7 @@ Datos de la empresa: Datos de la empresa
 Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
 Datos del usuario: Datos del usuario
+de la evaluación: de la evaluación
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
@@ -69,6 +70,8 @@ El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
 El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
+El enunciado debe ser mínimo de 3 caracteres.: El enunciado debe ser mínimo de 3 caracteres.
+El enunciado es requerido.: El enunciado es requerido.
 El login ya existe.: El login ya existe.
 El material complementario debe ser sólo archivo con extensión pdf.: El material complementario debe ser sólo archivo con extensión pdf.
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
@@ -82,6 +85,10 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario d
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
+El tipo de elemento es requerido.: El tipo de elemento es requerido.
+El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
+El valor de la pregunta debe ser un valor numérico.: El valor de la pregunta debe ser un valor numérico.
+El valor de la pregunta es requerido.: El valor de la pregunta es requerido.
 Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresas: Empresas
@@ -113,6 +120,7 @@ Iniciar Sesión: Iniciar Sesión
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
 Ir al listado de evaluaciones: Ir al listado de evaluaciones
+Ir al listado de opciones: Ir al listado de opciones
 Ir al listado de preguntas: Ir al listado de preguntas
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: La cantidad de preguntas a mostrar debe ser mayor o igual a 1.
@@ -139,6 +147,7 @@ Nuevos registros almacenados: Nuevos registros almacenados
 Página asociada: Página asociada
 Página seleccionada: Página seleccionada
 Panel de acceso: Panel de acceso
+Pregunta: Pregunta
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Mensaje del servidor: Mensaje del servidor
