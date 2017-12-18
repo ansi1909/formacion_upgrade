@@ -499,8 +499,8 @@ class UsuarioController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function nuevoParticipanteAction($empresa_id, Request $request)
-    {
+        public function nuevoParticipanteAction($usuario_id, Request $request){
+
         $session = new Session();
         $f = $this->get('funciones');
       
@@ -514,8 +514,213 @@ class UsuarioController extends Controller
                 return $this->redirectToRoute('_authException');
             }
         }
+        $f->setRequest($session->get('sesion_id'));
 
-        return $this->render('LinkBackendBundle:Usuario:nuevoParticipante.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
+        $roles_usuario = array();
+        $roles_asignados = array();
+
+        $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
+
+        if ($usuario_id) 
+        {
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+            $roles_usuario = $em->getRepository('LinkComunBundle:AdminRolUsuario')->findByUsuario($usuario_id);
+            foreach ($roles_usuario as $ru)
+            {
+                $roles_asignados[] = $ru->getRol()->getId();
+            }
+        }
+        else {
+            $usuario = new AdminUsuario();
+            $usuario->setPais($pais);
+            $usuario->setFechaRegistro(new \DateTime('now'));
+        }
+
+        // Lista de paises
+        $qb = $em->createQueryBuilder();
+        $qb->select('p')
+           ->from('LinkComunBundle:AdminPais', 'p')
+           ->orderBy('p.nombre', 'ASC');
+        $query = $qb->getQuery();
+        $paises = $query->getResult();
+
+        // Lista de empresas
+        $qb = $em->createQueryBuilder();
+        $qb->select('e')
+           ->from('LinkComunBundle:AdminEmpresa', 'e');
+        if ($empresa_asignada)
+        {
+            $qb->where('e.id = :empresa_asignada')
+               ->setParameter('empresa_asignada', $empresa_asignada);
+        }
+        $qb->orderBy('e.nombre', 'ASC');
+        $query = $qb->getQuery();
+        $empresas = $query->getResult();
+
+        // Niveles de la empresa asignada
+        $niveles = array();
+        if ($empresa_asignada || $usuario->getEmpresa())
+        {
+            $empresa_usuario = $usuario->getEmpresa() ? $usuario->getEmpresa()->getId() : $empresa_asignada;
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_usuario),
+                                                                                                 array('nombre' => 'ASC'));
+        }
+
+        // Lista de roles
+        $qb = $em->createQueryBuilder();
+        $qb->select('r')
+           ->from('LinkComunBundle:AdminRol', 'r');
+
+        if ($empresa_asignada){
+            $qb->andWhere('r.id != :administrador');
+            $parametros['administrador'] = $yml['parameters']['rol']['administrador'];
+        }
+        
+        $qb->orderBy('r.nombre', 'ASC');
+        
+        if ($empresa_asignada)
+        {
+            $qb->setParameters($parametros);
+        }
+        
+        $query = $qb->getQuery();
+        $roles = $query->getResult();
+
+        // Lista de roles de empresa
+        $qb = $em->createQueryBuilder();
+        $qb->select('r')
+           ->from('LinkComunBundle:AdminRol', 'r')
+           ->andWhere('r.id != :administrador')
+           ->setParameter('administrador', $yml['parameters']['rol']['administrador']);
+        $query = $qb->getQuery();
+        $roles_empresa_bd = $query->getResult();
+        $roles_empresa = array();
+        foreach ($roles_empresa_bd as $rol_empresa)
+        {
+            $roles_empresa[] = $rol_empresa->getId();
+        }
+        $roles_empresa_str = implode(",", $roles_empresa);
+       
+
+        if ($request->getMethod() == 'POST')
+        {
+
+            $nombre = $request->request->get('nombre');
+            $apellido = $request->request->get('apellido');
+            $foto = $request->request->get('foto');
+            $login = strtolower($request->request->get('login'));
+            $clave = $request->request->get('clave');
+            $cambiar = $request->request->get('cambiar');
+            $correo_personal = $request->request->get('correo_personal');
+            $fecha_nacimiento = $request->request->get('fecha_nacimiento');
+            $activo = $request->request->get('activo');
+            $correo_corporativo = $request->request->get('correo_corporativo');
+            $fecha_nacimiento = $request->request->get('fecha_nacimiento');
+            $pais_id = $request->request->get('pais_id');
+            $ciudad = $request->request->get('ciudad');
+            $region = $request->request->get('region');
+            $empresa_id = $request->request->get('empresa_id');
+            $nivel_id = $request->request->get('nivel_id');
+            $division_funcional = $request->request->get('division_funcional');
+            $cargo = $request->request->get('cargo');
+            $roles_seleccionados = $request->request->get('roles');
+
+            $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
+            $empresa = $empresa_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id) : null;
+            $nivel = $nivel_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id) : null;
+
+            $usuario->setNombre($nombre);
+            $usuario->setApellido($apellido);
+            $usuario->setLogin($login);
+            if (!$usuario_id || $cambiar)
+            {
+                $usuario->setClave($clave);
+            }
+            $usuario->setCorreoPersonal($correo_personal);
+            $usuario->setCorreoCorporativo($correo_corporativo);
+            $usuario->setActivo($activo ? true : false);
+            $fn_array = explode("/", $fecha_nacimiento);
+            $d = $fn_array[0];
+            $m = $fn_array[1];
+            $a = $fn_array[2];
+            $fecha_nacimiento = "$a-$m-$d";
+            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            $usuario->setPais($pais);
+            $usuario->setCiudad($ciudad);
+            $usuario->setRegion($region);
+            $usuario->setEmpresa($empresa);
+            $usuario->setFoto($foto);
+            $usuario->setDivisionFuncional($division_funcional);
+            $usuario->setCargo($cargo);
+            $usuario->setNivel($nivel);
+            $em->persist($usuario);
+            $em->flush();
+
+            
+
+            
+                $rol_asignado = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRolUsuario')->findOneBy(array('rol' => 2,
+                                                                                                                        'usuario' => $usuario->getId()));
+
+                if (!$rol_asignado)
+                {
+
+                    $rol = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->find(2);
+
+                    $rol_usuario = new AdminRolUsuario();
+                    $rol_usuario->setRol($rol);
+                    $rol_usuario->setUsuario($usuario);
+                    $em->persist($rol_usuario);
+                    $em->flush();
+
+                }
+
+           
+
+            return $this->redirectToRoute('_showParticipante', array('usuario_id' => $usuario->getId()));
+
+        }
+        
+        return $this->render('LinkBackendBundle:Usuario:nuevoParticipante.html.twig', array('usuario' => $usuario,
+                                                                                  'paises' => $paises,
+                                                                                  'empresas' => $empresas,
+                                                                                  'empresa_asignada' => $empresa_asignada,
+                                                                                  'niveles' => $niveles,
+                                                                                  'roles' => $roles,
+                                                                                  'roles_asignados' => $roles_asignados,
+                                                                                  'roles_empresa_str' => $roles_empresa_str));
+
+    }
+
+
+    public function showParticipanteAction($usuario_id, Request $request){
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $roles_asignados = array();
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+
+
+        return $this->render('LinkBackendBundle:Usuario:showParticipante.html.twig', array('usuario' => $usuario));
+
     }
 
 }

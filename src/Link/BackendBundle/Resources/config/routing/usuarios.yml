@@ -21,11 +21,15 @@ _participantes:
     defaults: { _controller: LinkBackendBundle:Usuario:participantes }
 
 _nuevoParticipante:
-    path:     /nuevoParticipante/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Usuario:nuevoParticipante, empresa_id: 0 }
+    path:     /nuevoParticipante/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:nuevoParticipante, usuario_id: 0 }
 
 _ajaxParticipantes:
     path:     /ajaxParticipantes/
     defaults: { _controller: LinkBackendBundle:Usuario:ajaxParticipantes }
     requirements:
         method: GET
+
+_showParticipante:
+    path:     /showParticipante/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:showParticipante }
