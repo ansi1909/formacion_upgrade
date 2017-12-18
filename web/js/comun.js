@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	$('#dt').DataTable({
+    $('#dt, #dt2').DataTable({
         responsive: true,
         pageLength:10,
         sPaginationType: "full_numbers",
