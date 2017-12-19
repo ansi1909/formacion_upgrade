@@ -33,3 +33,7 @@ _ajaxParticipantes:
 _showParticipante:
     path:     /showParticipante/{usuario_id}
     defaults: { _controller: LinkBackendBundle:Usuario:showParticipante }
+
+_uploadParticipantes:
+    path:     /uploadParticipantes/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:uploadParticipantes, empresa_id: 0 }

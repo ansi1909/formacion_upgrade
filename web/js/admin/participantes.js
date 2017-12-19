@@ -9,12 +9,14 @@ $(document).ready(function() {
     $('#empresa_id').change(function(){
     	console.log('Usuario admin');
     	var empresa_id = $(this).val();
+    	var nivel_id = 0;
 		getNiveles(empresa_id);
-		getListadoParticipantes(empresa_id,0);
+		getListadoParticipantes(empresa_id,nivel_id);
 	});
 
 	$('#nivel_id').change(function(){
 		var nivel_id = $(this).val();
+		var empresa_id = $('#empresa_n');
 		getListadoParticipantes(empresa_id,nivel_id);
 	});
 
@@ -40,7 +42,7 @@ function getNiveles(empresa_id){
 function getListadoParticipantes(empresa_id,nivel_id){
 	$.ajax({
 		type: "GET",
-		url: $('#url_Participantes').val(),
+		url: $('#url_participantes').val(),
 		async: true,
 		data: { nivel_id: nivel_id },
 		dataType: "json",

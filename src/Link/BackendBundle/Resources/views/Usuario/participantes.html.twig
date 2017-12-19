@@ -7,16 +7,18 @@
 
 {% block body %}
 {% set encabezado = usuario_empresa ? 'Búsqueda de participantes empresa'|trans~' '~usuario.empresa.nombre : 'Búsqueda de participantes por empresa'|trans %}
+{% set empresa_n = usuario_empresa ? usuario.empresa.nombre : 0 %}
 <br><br>
 <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa ? usuario.empresa.id : 0 }}">
 <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxParticipantes') }}">
+<input type="hidden" id="empresa_n" name="empresa_n" value="{{ empresa_n }}">
 <div class="col text-right">
     <a href="{{ path('_nuevoParticipante')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></a>
 </div>
 <br>
 <div class="col text-right">
-    <a href="{# path('_usuario')#}" class="bttn__nr"><span class="fa fa-upload" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Carga masiva'|trans }}</span></a>
+    <a href="{{ path('_uploadParticipantes')}}" class="bttn__nr"><span class="fa fa-upload" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Carga masiva'|trans }}</span></a>
 </div>
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
@@ -25,8 +27,8 @@
                 <h5 class="card-title">{{ encabezado }}</h5>
             </div>
             <div class="card-block">
-                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Empresa</label>
                 {% if not usuario_empresa %}
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Empresa</label>
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                             <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
@@ -41,7 +43,6 @@
                     </div>
                     <br>
                 {% endif %}
-                <input type="hidden" id="participante" name="participante" value="{{usuario_empresa}}">
                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Nivel</label>
                 <div class="row">
                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">

@@ -467,12 +467,12 @@ class UsuarioController extends Controller
                                                                                         'usuario' => $usuario));
     }
 
-    public function ajaxParticipantesAction($nivel_id, $empresa_id, Request $request)
+    public function ajaxParticipantesAction(Request $request)
     {
-        
-        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        $nivel_id = $request->query->get('nivel_id');
 
         $qb = $em->createQueryBuilder();
         $qb->select('u')
@@ -483,7 +483,10 @@ class UsuarioController extends Controller
         $qb->andWhere('u.nivel = :nivel_id');
             $parametros['nivel_id'] = $nivel_id;
 
-        $qb->orderBy('u.nombre, ASC');
+        if ($empresa_id || $nivel_id)
+        {
+            $qb->setParameters($parametros);
+        }
 
         $query = $qb->getQuery();
         $usuarios_db = $query->getResult();
@@ -720,6 +723,37 @@ class UsuarioController extends Controller
 
 
         return $this->render('LinkBackendBundle:Usuario:showParticipante.html.twig', array('usuario' => $usuario));
+
+    }
+
+    public function uploadParticipantesAction($empresa_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        
+        $em = $this->getDoctrine()->getManager();
+        $errores = array();
+        $nuevos_registros = 0;
+        
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+         return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresa' => $empresa,
+                                                                                      'errores' => $errores,
+                                                                                      'nuevos_registros' => $nuevos_registros));
 
     }
 
