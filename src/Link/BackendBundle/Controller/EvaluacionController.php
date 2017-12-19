@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Yaml\Yaml;
 
 class EvaluacionController extends Controller
 {
@@ -297,13 +298,12 @@ class EvaluacionController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
-            return new Response('Llegaste bien');
-            /*$em->persist($pregunta);
+            $em->persist($pregunta);
             $em->flush();
 
-            return $this->redirectToRoute('_opciones', array('pregunta_id' => 0,
+            return $this->redirectToRoute('_opciones', array('pregunta_id' => $pregunta->getId(),
                                                              'cantidad' => $cantidad,
-                                                             'total' => $prueba->getCantidadPreguntas()));*/
+                                                             'total' => $prueba->getCantidadPreguntas()));
             
         }
 
@@ -311,6 +311,92 @@ class EvaluacionController extends Controller
                                                                                           'pregunta' => $pregunta,
                                                                                           'cantidad' => $cantidad,
                                                                                           'total' => $total));
+
+    }
+
+    public function opcionesAction($pregunta_id, $cantidad, $total)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pregunta_asociacion = $values['parameters']['tipo_pregunta']['asociacion'];
+        $es_asociacion = 0;
+        $opciones = array();
+        
+        $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
+
+        if ($pregunta->getTipoPregunta()->getId() != $pregunta_asociacion)
+        {
+
+            $query = $em->createQuery("SELECT po, o FROM LinkComunBundle:CertiPreguntaOpcion po 
+                                        JOIN po.opcion o 
+                                        WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id 
+                                        ORDER BY o.id ASC")
+                        ->setParameters(array('pregunta_id' => $pregunta_id,
+                                              'prueba_id' => $pregunta->getPrueba()->getId()));
+            $opciones_bd = $query->getResult();
+
+            foreach ($opciones_bd as $po)
+            {
+                $opciones[] = array('id' => $po->getId(),
+                                    'descripcion' => $po->getOpcion()->getDescripcion(),
+                                    'imagen' => $po->getOpcion()->getImagen(),
+                                    'correcta' => $po->getCorrecta(),
+                                    'delete_disabled' => $f->linkEliminar($po->getId(), 'CertiPreguntaOpcion'));
+            }
+
+        }
+        else {
+            
+            $es_asociacion = 1;
+            $opciones = array();
+
+            $asociacion = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findOneByPregunta($pregunta_id);
+            $preguntas_asociadas = explode(",", $asociacion->getPreguntas());
+
+            $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po 
+                                        JOIN po.opcion o JOIN po.pregunta p 
+                                        WHERE po.pregunta IN (:preguntas_id) 
+                                        AND o.prueba = :prueba_id 
+                                        AND p.pregunta = :pregunta_id 
+                                        ORDER BY po.id ASC")
+                        ->setParameters(array('preguntas_id' => $preguntas_asociadas,
+                                              'prueba_id' => $pregunta->getPrueba()->getId(),
+                                              'pregunta_id' => $pregunta_id));
+            $opciones_bd = $query->getResult();
+
+            foreach ($opciones_bd as $po)
+            {
+                $opciones[] = array('id' => $po->getId(),
+                                    'pregunta' => $po->getPregunta()->getEnunciado(),
+                                    'imagen_pregunta' => $po->getPregunta()->getImagen(),
+                                    'opcion' => $po->getOpcion()->getDescripcion(),
+                                    'imagen_opcion' => $po->getOpcion()->getImagen(),
+                                    'delete_disabled' => $f->linkEliminar($po->getId(), 'CertiPreguntaOpcion'));
+            }
+
+        }
+
+        return $this->render('LinkBackendBundle:Evaluacion:opciones.html.twig', array('opciones' => $opciones,
+                                                                                      'pregunta' => $pregunta,
+                                                                                      'es_asociacion' => $es_asociacion,
+                                                                                      'cantidad' => $cantidad+1,
+                                                                                      'total' => $total));
 
     }
 

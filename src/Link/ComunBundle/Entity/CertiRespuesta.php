@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CertiRespuesta
  *
- * @ORM\Table(name="certi_respuesta", indexes={@ORM\Index(name="IDX_98EB1A4531A5801E", columns={"pregunta_id"}), @ORM\Index(name="IDX_98EB1A455BDBF2F", columns={"opcion_id"}), @ORM\Index(name="IDX_98EB1A45DB38439E", columns={"usuario_id"})})
+ * @ORM\Table(name="certi_respuesta", indexes={@ORM\Index(name="IDX_98EB1A4531A5801E", columns={"pregunta_id"}), @ORM\Index(name="IDX_98EB1A455BDBF2F", columns={"pregunta_opcion_id"}), @ORM\Index(name="IDX_98EB1A45DB38439E", columns={"usuario_id"})})
  * @ORM\Entity
  */
 class CertiRespuesta
@@ -40,14 +40,14 @@ class CertiRespuesta
     private $pregunta;
 
     /**
-     * @var \Link\ComunBundle\Entity\CertiOpcion
+     * @var \Link\ComunBundle\Entity\CertiPreguntaOpcion
      *
-     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiOpcion")
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPreguntaOpcion")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="opcion_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pregunta_opcion_id", referencedColumnName="id")
      * })
      */
-    private $opcion;
+    private $preguntaOpcion;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
@@ -120,27 +120,27 @@ class CertiRespuesta
     }
 
     /**
-     * Set opcion
+     * Set preguntaOpcion
      *
-     * @param \Link\ComunBundle\Entity\CertiOpcion $opcion
+     * @param \Link\ComunBundle\Entity\CertiPreguntaOpcion $opcion
      *
      * @return CertiRespuesta
      */
-    public function setOpcion(\Link\ComunBundle\Entity\CertiOpcion $opcion = null)
+    public function setPreguntaOpcion(\Link\ComunBundle\Entity\CertiPreguntaOpcion $preguntaOpcion = null)
     {
-        $this->opcion = $opcion;
+        $this->preguntaOpcion = $preguntaOpcion;
 
         return $this;
     }
 
     /**
-     * Get opcion
+     * Get preguntaOpcion
      *
-     * @return \Link\ComunBundle\Entity\CertiOpcion
+     * @return \Link\ComunBundle\Entity\CertiPreguntaOpcion
      */
-    public function getOpcion()
+    public function getPreguntaOpcion()
     {
-        return $this->opcion;
+        return $this->preguntaOpcion;
     }
 
     /**

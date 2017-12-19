@@ -5,6 +5,10 @@ parameters:
         tutor: 3
         reporte: 4
         empresa: 5
+    tipo_pregunta:
+        simple: 1
+        multiple: 2
+        asociacion: 3
     folders:
         uploads: 'http://localhost/uploads/'
         #dir_uploads: 'C:/wamp/www/uploads/'

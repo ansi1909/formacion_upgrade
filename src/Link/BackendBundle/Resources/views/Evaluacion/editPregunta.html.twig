@@ -19,6 +19,11 @@
 <br><br>
 {% set uri = app.request.getbasepath %}
 <div class="row align-items-center justify-content-start">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Configuración de la evaluación'|trans }} {{ pregunta.prueba.nombre }}</h3>
+    </div>
+</div>
+<div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_preguntas', { 'prueba_id': pregunta.prueba.id })}}" class="bttn__bck2"><span class="fa fa-list-ol"></span><span class="text__bck2">{{ 'Ir al listado de preguntas'|trans }}</span></a>
         {% if pregunta.id %}

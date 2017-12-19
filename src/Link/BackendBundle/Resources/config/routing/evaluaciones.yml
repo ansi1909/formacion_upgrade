@@ -17,3 +17,9 @@ _editPregunta:
 _opciones:
     path:     /opciones/{pregunta_id}/{cantidad}/{total}
     defaults: { _controller: LinkBackendBundle:Evaluacion:opciones }
+
+_ajaxEditOpcion:
+    path:     /ajaxEditOpcion
+    defaults: { _controller: LinkBackendBundle:Evaluacion:ajaxEditOpcion }
+    requirements:
+        _method: GET

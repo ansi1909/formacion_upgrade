@@ -67,7 +67,7 @@ $(document).ready(function() {
     });
 
 
-    $("#edit, #list, #logout").click(function(){
+    $("#edit, #list, #logout, #next").click(function(){
         var url = $(this).attr('id');
         var parameter = $(this).attr('parameter');
         var p = '';

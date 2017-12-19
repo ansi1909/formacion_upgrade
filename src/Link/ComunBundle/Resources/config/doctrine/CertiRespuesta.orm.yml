@@ -7,7 +7,7 @@ Link\ComunBundle\Entity\CertiRespuesta:
                 - pregunta_id
         IDX_98EB1A455BDBF2F:
             columns:
-                - opcion_id
+                - pregunta_opcion_id
         IDX_98EB1A45DB38439E:
             columns:
                 - usuario_id
@@ -36,14 +36,14 @@ Link\ComunBundle\Entity\CertiRespuesta:
                 pregunta_id:
                     referencedColumnName: id
             orphanRemoval: false
-        opcion:
-            targetEntity: CertiOpcion
+        preguntaOpcion:
+            targetEntity: CertiPreguntaOpcion
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                opcion_id:
+                pregunta_opcion_id:
                     referencedColumnName: id
             orphanRemoval: false
         usuario:
