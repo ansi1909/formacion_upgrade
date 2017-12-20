@@ -1,8 +1,7 @@
 $(document).ready(function() {
 
 	var usuario_empresa = $("#usuario_empresa").val();
-	if (usuario_empresa){
-		console.log('Usuario de empresa');
+	if (usuario_empresa != '0'){
 		getNiveles(usuario_empresa);
 	}
 
@@ -16,7 +15,7 @@ $(document).ready(function() {
 
 	$('#nivel_id').change(function(){
 		var nivel_id = $(this).val();
-		var empresa_id = $('#empresa_n');
+		var empresa_id = $('#empresa_id').val();
 		getListadoParticipantes(empresa_id,nivel_id);
 	});
 
@@ -44,7 +43,7 @@ function getListadoParticipantes(empresa_id,nivel_id){
 		type: "GET",
 		url: $('#url_participantes').val(),
 		async: true,
-		data: { nivel_id: nivel_id },
+		data: { nivel_id: nivel_id, empresa_id: empresa_id },
 		dataType: "json",
 		success: function(data) {
 			$('#usuarios').html(data.usuarios);

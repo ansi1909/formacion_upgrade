@@ -478,10 +478,13 @@ class UsuarioController extends Controller
         $qb->select('u')
            ->from('LinkComunBundle:AdminUsuario', 'u');
         $qb->andWhere('u.empresa = :empresa_id');
-            $parametros['empresa_id'] = $empresa_id;
+        $parametros['empresa_id'] = $empresa_id;
 
-        $qb->andWhere('u.nivel = :nivel_id');
+        if ($nivel_id)
+        {
+            $qb->andWhere('u.nivel = :nivel_id');
             $parametros['nivel_id'] = $nivel_id;
+        }
 
         if ($empresa_id || $nivel_id)
         {
@@ -490,19 +493,20 @@ class UsuarioController extends Controller
 
         $query = $qb->getQuery();
         $usuarios_db = $query->getResult();
-        $usuarios = array();
+        $usuarios = '';
 
         foreach ($usuarios_db as $usuario) {
-            $usuarios .= '<tr><td>'.$usuario->getNombre().'</td><td>'.$usuario->getApellido().'</td><td>'.$usuario->getNivel().'</td><td>hola</td></tr>';
+            $usuarios .= '<tr><td>'.$usuario->getNombre().'</td><td>'.$usuario->getApellido().'</td><td>'.$usuario->getNivel()->getNombre().'</td><td>hola</td></tr>';
         }
         
         $return = array('usuarios' => $usuarios);
  
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
-        public function nuevoParticipanteAction($usuario_id, Request $request){
+    public function nuevoParticipanteAction($usuario_id, Request $request){
 
         $session = new Session();
         $f = $this->get('funciones');

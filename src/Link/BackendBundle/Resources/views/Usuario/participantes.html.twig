@@ -7,12 +7,12 @@
 
 {% block body %}
 {% set encabezado = usuario_empresa ? 'Búsqueda de participantes empresa'|trans~' '~usuario.empresa.nombre : 'Búsqueda de participantes por empresa'|trans %}
-{% set empresa_n = usuario_empresa ? usuario.empresa.nombre : 0 %}
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+
 <br><br>
 <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
-<input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa ? usuario.empresa.id : 0 }}">
+<input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa }}">
 <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxParticipantes') }}">
-<input type="hidden" id="empresa_n" name="empresa_n" value="{{ empresa_n }}">
 <div class="col text-right">
     <a href="{{ path('_nuevoParticipante')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></a>
 </div>
@@ -42,6 +42,8 @@
                         </div>
                     </div>
                     <br>
+                {% else %}
+                    <input type="empresa_id" name="empresa_id" value="{{ empresa_id }}">
                 {% endif %}
                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Nivel</label>
                 <div class="row">

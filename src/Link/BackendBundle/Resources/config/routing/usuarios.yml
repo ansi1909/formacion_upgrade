@@ -25,7 +25,7 @@ _nuevoParticipante:
     defaults: { _controller: LinkBackendBundle:Usuario:nuevoParticipante, usuario_id: 0 }
 
 _ajaxParticipantes:
-    path:     /ajaxParticipantes/
+    path:     /ajaxParticipantes
     defaults: { _controller: LinkBackendBundle:Usuario:ajaxParticipantes }
     requirements:
         method: GET
