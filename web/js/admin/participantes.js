@@ -2,6 +2,7 @@ $(document).ready(function() {
 
 	var usuario_empresa = $("#usuario_empresa").val();
 	if (usuario_empresa != '0'){
+		console.log('Usuario empresa');
 		getNiveles(usuario_empresa);
 	}
 

@@ -496,7 +496,11 @@ class UsuarioController extends Controller
         $usuarios = '';
 
         foreach ($usuarios_db as $usuario) {
-            $usuarios .= '<tr><td>'.$usuario->getNombre().'</td><td>'.$usuario->getApellido().'</td><td>'.$usuario->getNivel()->getNombre().'</td><td>hola</td></tr>';
+            $usuarios .= '<tr><td>'.$usuario->getNombre().'</td><td>'.$usuario->getApellido().'</td><td>'.$usuario->getNivel()->getNombre().'</td>
+            <td class="center">
+                <a href="{{ path('.'_nuevoParticipante'.', { '.'usuario_id'.' }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                <a href="#" class="btn btn-link btn-sm {# if usuario.delete_disabled == '.''.' #}delete{# endif #} {# usuario.delete_disabled #}" data="{# usuario.id #}"><span class="fa fa-trash"></span></a>
+            </td> </tr>';
         }
         
         $return = array('usuarios' => $usuarios);
