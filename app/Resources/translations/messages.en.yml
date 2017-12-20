@@ -21,6 +21,7 @@ Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
 Cantidad de sub-páginas: Number of sub-pages
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
+Cargando..: Loading..
 Cargo: Appointment
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
@@ -58,6 +59,7 @@ Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 Descargue material complementario: Download complementary content
+Descargar: Download
 Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
 Detalles de la página: Page details
@@ -96,7 +98,10 @@ El valor de la pregunta es requerido.: Question weighing is required.
 Email de contacto: Contact Email
 Empresa: Company
 Empresas: Companies
+Empresas activas: Active companies
 Empresa con estatus inactivo: Company with inactive status
+Empresas inactivas: Inactive companies
+Empresas registradas: Registered companies
 Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
@@ -116,6 +121,7 @@ Fila: Row
 Filtrar usuarios: Filter users
 Finalizar: Finish
 Foto de la página: Page picture
+Gráfico del promedio de conexiones: Connections average graph
 Guardar: Save
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
@@ -151,7 +157,10 @@ Lado: Side
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies
+Listado de empresas activas: List of active companies
+Listado de empresas inactivas: List of inactive companies
 Listado de evaluaciones: List of tests
+Listado de programas: List of programs
 Listado de Roles: List of Roles
 Material complementario: Complementary content
 Nuevos registros almacenados: New records added
@@ -197,6 +206,7 @@ Permisos por Rol: Permissions by Role
 Preguntas: Questions
 Presiona el botón finalizar para completar: Press finish button to complete
 Procesar: Process
+Prog. asociados: Associated Prog.
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Recordarme: Remember me
@@ -223,10 +233,18 @@ Teléfono de contacto: Contact Number
 Tiempo de duración de la evaluación: Duration of the test
 Tipo de elemento: Element type
 Tipo de pregunta: Question type
+Últimos 12: Last 12
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
 Usuario: User
+Usuarios activos: Active users
+Usuarios culminados: Finished users
+Usuarios cursando: Users Studying
+Usuarios inactivos: Inactive users
 Usuario inactivo. Contacte al administrador del sistema.: Inactive user. Contact the system administrator.
+Usuarios no iniciados: Uninitiated users
+Usuarios reg.: Reg users
+Usuarios registrados: Registered users
 Usuario o clave incorrecta.: User or password incorrect.
 Valor de la pregunta: Question weighing
 Ver Sub-Aplicaciones: See Sub-Applications
