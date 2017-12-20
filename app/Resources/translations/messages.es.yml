@@ -48,6 +48,7 @@ Datos Básicos: Datos Básicos
 Datos de la Aplicación: Datos de la Aplicación
 Datos de la categoría: Datos de la categoría
 Datos de la empresa: Datos de la empresa
+Datos de la opción: Datos de la opción
 Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
 Datos del usuario: Datos del usuario
@@ -97,6 +98,7 @@ Empresa: Empresa
 Empresas: Empresas
 Empresa con estatus inactivo: Empresa con estatus inactivo
 Enunciado: Enunciado
+Enunciado (Lado A): Enunciado (Lado A)
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
@@ -120,6 +122,7 @@ Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error e
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Icono: Icono
 Imagen: Imagen
+Imagen lado: Imagen lado
 Iniciar Sesión: Iniciar Sesión
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
@@ -138,8 +141,11 @@ La cantidad de sub-páginas es requerida.: La cantidad de sub-páginas es requer
 La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
 La clave es requerida.: La clave es requerida.
+La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mínimo de 3 caracteres.
 La descripción es requerida.: La descripción es requerida.
 La empresa es requerida.: La empresa es requerida.
+La imagen es requerida.: La imagen es requerida.
+La imagen lado A es requerida.: La imagen lado A es requerida.
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 Lado: Lado
 Listado de Aplicaciones: Listado de Aplicaciones
@@ -150,6 +156,7 @@ Listado de Roles: Listado de Roles
 Material complementario: Material complementario
 Nuevos registros almacenados: Nuevos registros almacenados
 Opción: Opción
+Opción correcta (Lado B): Opción correcta (Lado B)
 Opciones de la pregunta: Opciones de la pregunta
 Página asociada: Página asociada
 Página seleccionada: Página seleccionada

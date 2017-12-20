@@ -11,6 +11,9 @@ use Link\ComunBundle\Entity\CertiPregunta;
 use Link\ComunBundle\Entity\CertiTipoPregunta;
 use Link\ComunBundle\Entity\CertiTipoElemento;
 use Link\ComunBundle\Entity\CertiEstatusContenido;
+use Link\ComunBundle\Entity\CertiOpcion;
+use Link\ComunBundle\Entity\CertiPreguntaOpcion;
+use Link\ComunBundle\Entity\CertiPreguntaAsociacion;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -353,11 +356,16 @@ class EvaluacionController extends Controller
 
             foreach ($opciones_bd as $po)
             {
+                $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                            WHERE r.opcion = :opcion_id')
+                            ->setParameter('opcion_id', $po->getOpcion()->getId());
+                $hay_respuesta = $query->getSingleScalarResult();
+                $delete_disabled = $hay_respuesta ? 'disabled' : '';
                 $opciones[] = array('id' => $po->getId(),
                                     'descripcion' => $po->getOpcion()->getDescripcion(),
                                     'imagen' => $po->getOpcion()->getImagen(),
                                     'correcta' => $po->getCorrecta(),
-                                    'delete_disabled' => $f->linkEliminar($po->getId(), 'CertiPreguntaOpcion'));
+                                    'delete_disabled' => $delete_disabled);
             }
 
         }
@@ -382,12 +390,21 @@ class EvaluacionController extends Controller
 
             foreach ($opciones_bd as $po)
             {
+                $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                            WHERE r.opcion = :opcion_id')
+                            ->setParameter('opcion_id', $po->getOpcion()->getId());
+                $hay_respuesta_opcion = $query->getSingleScalarResult();
+                $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                            WHERE r.pregunta = :pregunta_id')
+                            ->setParameter('pregunta_id', $po->getPregunta()->getId());
+                $hay_respuesta_pregunta = $query->getSingleScalarResult();
+                $delete_disabled = $hay_respuesta_opcion || $hay_respuesta_pregunta ? 'disabled' : '';
                 $opciones[] = array('id' => $po->getId(),
                                     'pregunta' => $po->getPregunta()->getEnunciado(),
                                     'imagen_pregunta' => $po->getPregunta()->getImagen(),
                                     'opcion' => $po->getOpcion()->getDescripcion(),
                                     'imagen_opcion' => $po->getOpcion()->getImagen(),
-                                    'delete_disabled' => $f->linkEliminar($po->getId(), 'CertiPreguntaOpcion'));
+                                    'delete_disabled' => $delete_disabled);
             }
 
         }
@@ -397,6 +414,360 @@ class EvaluacionController extends Controller
                                                                                       'es_asociacion' => $es_asociacion,
                                                                                       'cantidad' => $cantidad+1,
                                                                                       'total' => $total));
+
+    }
+
+    public function ajaxEditOpcionAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $pregunta_opcion_id = $request->query->get('pregunta_opcion_id');
+        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $uploads = $values['parameters']['folders']['uploads'];
+        
+        $pregunta_opcion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($pregunta_opcion_id);
+
+        $return = array('descripcion' => $pregunta_opcion->getOpcion()->getDescripcion(),
+                        'imagen' => $pregunta_opcion->getOpcion()->getImagen(),
+                        'url_imagen' => $pregunta_opcion->getOpcion()->getImagen() ? $uploads.$pregunta_opcion->getOpcion()->getImagen() : '',
+                        'enunciado' => $pregunta_opcion->getPregunta()->getEnunciado(),
+                        'imagen_enunciado' => $pregunta_opcion->getPregunta()->getImagen(),
+                        'url_imagen_enunciado' => $pregunta_opcion->getPregunta()->getImagen() ? $uploads.$pregunta_opcion->getPregunta()->getImagen() : '',
+                        'correcta' => $pregunta_opcion->getCorrecta());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxCorrectaAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $pregunta_opcion_id = $request->request->get('pregunta_opcion_id');
+        $checked = $request->request->get('checked');
+
+        $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($pregunta_opcion_id);
+
+        // Si se marca SI, primero se deben colocar las demás en false
+        if ($checked)
+        {
+            $pos = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findByPregunta($pregunta_opcion->getPregunta()->getId());
+            foreach ($pos as $po)
+            {
+                $po->setCorrecta(false);
+                $em->persist($po);
+                $em->flush();
+            }
+        }
+        
+        $pregunta_opcion->setCorrecta($checked ? true : false);
+        $em->persist($pregunta_opcion);
+        $em->flush();
+                    
+        $return = array('id' => $pregunta_opcion->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxUpdateOpcionAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $tipo_elemento_imagen = $values['parameters']['tipo_elemento']['imagen'];
+        $uploads = $values['parameters']['folders']['uploads'];
+        
+        $pregunta_opcion_id = $request->request->get('pregunta_opcion_id');
+        $prueba_id = $request->request->get('prueba_id');
+        $pregunta_id = $request->request->get('pregunta_id');
+        $descripcion = $request->request->get('descripcion');
+        $imagen = $request->request->get('imagen');
+        $enunciado = $request->request->get('enunciado');
+        $imagen_enunciado = $request->request->get('imagen_enunciado');
+        $es_asociacion = $request->request->get('es_asociacion');
+        $correcta = $request->request->get('correcta');
+
+        $pregunta_padre = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $checked = '';
+
+        if ($pregunta_opcion_id)
+        {
+            $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($pregunta_opcion_id);
+            $opcion = $pregunta_opcion->getOpcion();
+            if ($es_asociacion)
+            {
+                $pregunta = $pregunta_opcion->getPregunta();
+            }
+        }
+        else {
+            $opcion = new CertiOpcion();
+            $opcion->setFechaCreacion(new \DateTime('now'));
+            $pregunta_opcion = new CertiPreguntaOpcion();
+            if ($es_asociacion)
+            {
+                $pregunta = new CertiPregunta();
+                $pregunta->setFechaCreacion(new \DateTime('now'));
+            }
+        }
+
+        // Opcion
+        $opcion->setDescripcion($descripcion);
+        $opcion->setImagen($pregunta_padre->getTipoElemento()->getId() == $tipo_elemento_imagen ? $imagen : null);
+        $opcion->setPrueba($pregunta_padre->getPrueba());
+        $opcion->setUsuario($usuario);
+        $opcion->setFechaModificacion(new \DateTime('now'));
+        $em->persist($opcion);
+        $em->flush();
+
+        // Pregunta (Solo si es de asociación)
+        if ($es_asociacion)
+        {
+
+            $pregunta->setEnunciado($enunciado);
+            $pregunta->setImagen($pregunta_padre->getTipoElemento()->getId() == $tipo_elemento_imagen ? $imagen_enunciado : null);
+            $pregunta->setPrueba($pregunta_padre->getPrueba());
+            $pregunta->setTipoPregunta($pregunta_padre->getTipoPregunta());
+            $pregunta->setTipoElemento($pregunta_padre->getTipoElemento());
+            $pregunta->setUsuario($usuario);
+            $pregunta->setEstatusContenido($pregunta_padre->getEstatusContenido());
+            $pregunta->setValor($pregunta_padre->getValor());
+            $pregunta->setPregunta($pregunta_padre->getId());
+            $pregunta->setFechaModificacion(new \DateTime('now'));
+            $em->persist($pregunta);
+            $em->flush();
+
+            $pregunta_asociacion = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findOneByPregunta($pregunta_id);
+            if (!$pregunta_asociacion)
+            {
+                $pregunta_asociacion = new CertiPreguntaAsociacion();
+                $preguntas_str = '';
+                $opciones_str = '';
+            }
+            else {
+                $preguntas_str = $pregunta_asociacion->getPreguntas();
+                $opciones_str = $pregunta_asociacion->getOpciones();
+            }
+            $preguntas_arr = explode(",", $preguntas_str);
+            $opciones_arr = explode(",", $opciones_str);
+            if (!in_array($pregunta->getId(), $preguntas_arr))
+            {
+                $preguntas_arr[] = $pregunta->getId();
+            }
+            if (!in_array($opcion->getId(), $opciones_arr))
+            {
+                $opciones_arr[] = $opcion->getId();
+            }
+            $preguntas_str = implode(",", $preguntas_arr);
+            $opciones_str = implode(",", $opciones_arr);
+            $pregunta_asociacion->setPregunta($pregunta_padre);
+            $pregunta_asociacion->setPreguntas($preguntas_str);
+            $pregunta_asociacion->setOpciones($opciones_str);
+            $em->persist($pregunta_asociacion);
+            $em->flush();
+
+        }
+
+        // PreguntaOpcion
+        $pregunta_opcion->setPregunta($es_asociacion ? $pregunta : $pregunta_padre);
+        $pregunta_opcion->setOpcion($opcion);
+        if (!$es_asociacion && $correcta)
+        {
+            $pos = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findByPregunta($pregunta_padre->getId());
+            foreach ($pos as $po)
+            {
+                $po->setCorrecta(false);
+                $em->persist($po);
+                $em->flush();
+            }
+        }
+        $pregunta_opcion->setCorrecta(!$es_asociacion ? $correcta ? true : false : true);
+        $em->persist($pregunta_opcion);
+        $em->flush();
+
+        // HTML
+        $html = $pregunta_opcion_id ? '' : '<tr id="tr-'.$pregunta_opcion->getId().'">';
+        if (!$es_asociacion)
+        {
+
+            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                        WHERE r.opcion = :opcion_id')
+                        ->setParameter('opcion_id', $pregunta_opcion->getOpcion()->getId());
+            $hay_respuesta = $query->getSingleScalarResult();
+            if ($hay_respuesta)
+            {
+                $delete_disabled = 'disabled';
+                $class_delete = '';
+            }
+            else {
+                $delete_disabled = '';
+                $class_delete = 'delete';
+            }
+
+            $checked = $pregunta_opcion->getCorrecta() ? ' checked' : '';
+
+            $html .= '<td>'.$pregunta_opcion->getOpcion()->getDescripcion().'</td>';
+            if ($pregunta_padre->getTipoElemento()->getId() == $tipo_elemento_imagen)
+            {
+                $img = $pregunta_opcion->getOpcion()->getImagen() ? '<img src="'.$uploads.$pregunta_opcion->getOpcion()->getImagen().'" alt="" class="img__opc">' : '';
+                $html .= '<td>'.$img.'</td>';
+            }
+            $html .= '<td class="center">
+                        <div class="can-toggle demo-rebrand-2 small">
+                            <input id="f'.$pregunta_opcion->getId().'" class="cb_activo" type="checkbox"'.$checked.'>
+                            <label for="f'.$pregunta_opcion->getId().'">
+                                <div class="can-toggle__switch" data-checked="'.$this->get('translator')->trans('Si').'" data-unchecked="No"></div>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="center">
+                        <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$pregunta_opcion->getId().'"><span class="fa fa-pencil"></span></a>
+                        <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$pregunta_opcion->getId().'"><span class="fa fa-trash"></span></a>
+                    </td>';
+
+        }
+        else {
+
+            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                        WHERE r.opcion = :opcion_id')
+                        ->setParameter('opcion_id', $pregunta_opcion->getOpcion()->getId());
+            $hay_respuesta_opcion = $query->getSingleScalarResult();
+            $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                        WHERE r.pregunta = :pregunta_id')
+                        ->setParameter('pregunta_id', $pregunta_opcion->getPregunta()->getId());
+            $hay_respuesta_pregunta = $query->getSingleScalarResult();
+            if ($hay_respuesta_opcion || $hay_respuesta_pregunta)
+            {
+                $delete_disabled = 'disabled';
+                $class_delete = '';
+            }
+            else {
+                $delete_disabled = '';
+                $class_delete = 'delete';
+            }
+
+            if ($pregunta_padre->getTipoElemento()->getId() == $tipo_elemento_imagen)
+            {
+                $img_pregunta = $pregunta_opcion->getPregunta()->getImagen() ? '<img src="'.$uploads.$pregunta_opcion->getPregunta()->getImagen().'" alt="" class="img__opc">' : '';
+                $img_opcion = $pregunta_opcion->getOpcion()->getImagen() ? '<img src="'.$uploads.$pregunta_opcion->getOpcion()->getImagen().'" alt="" class="img__opc">' : '';
+            }
+            else {
+                $img_pregunta = '';
+                $img_opcion = '';
+            }
+
+            $html .= '<td>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-xl-1 offset-lg-1 offset-md-1 offset-sm-1">'.$pregunta_opcion->getPregunta()->getEnunciado().'</div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4">'.$img_pregunta.'</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-xl-1 offset-lg-1 offset-md-1 offset-sm-1">'.$pregunta_opcion->getOpcion()->getDescripcion().'</div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4">'.$img_opcion.'</div>
+                            </div>
+                        </td>
+                        <td class="center">
+                            <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$pregunta_opcion->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$pregunta_opcion->getId().'"><span class="fa fa-trash"></span></a>
+                        </td>';
+
+        }
+
+        $html .= $pregunta_opcion_id ? '' : '</tr>';
+                    
+        $return = array('html' => $html,
+                        'checked' => $checked,
+                        'id' => $pregunta_opcion->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxDeleteOpcionAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $pregunta_opcion_id = $request->request->get('id');
+        $entity = $request->request->get('entity');
+
+        $ok = 1;
+        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pregunta_asociacion = $values['parameters']['tipo_pregunta']['asociacion'];
+
+        $pregunta_opcion = $em->getRepository('LinkComunBundle:'.$entity)->find($pregunta_opcion_id);
+        $opcion = $pregunta_opcion->getOpcion();
+        $pregunta = $pregunta_opcion->getPregunta();
+
+        if ($pregunta->getTipoPregunta()->getId() == $pregunta_asociacion)
+        {
+
+            // PreguntaAsociacion
+            $pregunta_asociacion = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findOneByPregunta($pregunta->getPregunta()->getId());
+            $preguntas_str = $pregunta_asociacion->getPreguntas();
+            $opciones_str = $pregunta_asociacion->getOpciones();
+            $preguntas_arr = explode(",", $preguntas_str);
+            $opciones_arr = explode(",", $opciones_str);
+            $preguntas_arr_new = array();
+            $opciones_arr_new = array();
+            foreach ($preguntas_arr as $p_arr)
+            {
+                if ($p_arr != $pregunta->getId())
+                {
+                    $preguntas_arr_new[] = $p_arr;
+                }
+            }
+            foreach ($opciones_arr as $o_arr)
+            {
+                if ($o_arr != $opcion->getId())
+                {
+                    $opciones_arr_new[] = $o_arr;
+                }
+            }
+            if (!count($preguntas_arr_new) && !count($opciones_arr_new))
+            {
+                $em->remove($pregunta_asociacion);
+                $em->flush();
+            }
+            else {
+                $preguntas_str = implode(",", $preguntas_arr_new);
+                $opciones_str = implode(",", $opciones_arr_new);
+                $pregunta_asociacion->setPreguntas($preguntas_str);
+                $pregunta_asociacion->setOpciones($opciones_str);
+                $em->persist($pregunta_asociacion);
+                $em->flush();
+            }
+
+        }
+        
+        // PreguntaOpcion
+        $em->remove($pregunta_opcion);
+        $em->flush();
+
+        // Pregunta
+        if ($pregunta->getTipoPregunta()->getId() == $pregunta_asociacion)
+        {
+            $em->remove($pregunta);
+            $em->flush();
+        }
+
+        // Opcion
+        $em->remove($opcion);
+        $em->flush();
+
+        $return = array('ok' => $ok);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
 

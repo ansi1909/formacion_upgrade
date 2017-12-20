@@ -14,11 +14,19 @@
     </style>
 {% endblock %}
 
+{% set uri = app.request.getbasepath %}
+{% set img_default = asset('img/images-interface-symbol.png') %}
+
 {% block body %}
 <br>
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditOpcion') }}">
+<input type="hidden" id="url_correcta" name="url_correcta" value="{{ path('_ajaxCorrecta') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_preguntas', { 'prueba_id': pregunta.prueba.id }) }}">
 <input type="hidden" id="url_next" name="url_next" value="{{ path('_editPregunta', { 'prueba_id': pregunta.prueba.id, 'pregunta_id': 0, 'cantidad': cantidad, 'total': total }) }}">
+<input type="hidden" id="url_delete_opcion" name="url_delete_opcion" value="{{ path('_ajaxDeleteOpcion') }}">
+<input type="hidden" id="es_asociacion" name="es_asociacion" value="{{ es_asociacion }}">
+<input type="hidden" id="elemento_imagen" name="elemento_imagen" value="{{ pregunta.tipoElemento.id == tipo_elemento_imagen ? '1' : '0' }}">
+<input type="hidden" id="img_default" name="img_default" value="{{ img_default }}">
 <div class="row align-items-center justify-content-start">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Configuración de la evaluación'|trans }} {{ pregunta.prueba.nombre }}</h3>
@@ -30,6 +38,9 @@
     </div>
     <div class="col text-right">
         <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Agregar opción'|trans }}</span></button>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
     </div>
 </div>
 <div class="row">
@@ -57,7 +68,9 @@
                         <thead class="sty__title">
                             <tr>
                                 <th class="hd__title">{{ 'Opción'|trans }}</th>
-                                <th class="hd__title">{{ 'Imagen'|trans }}</th>
+                                {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}
+                                    <th class="hd__title">{{ 'Imagen'|trans }}</th>
+                                {% endif %}
                                 <th class="hd__title">{{ 'Correcta'|trans }}</th>
                                 <th class="hd__title">{{ 'Acciones'|trans }}</th>
                             </tr>
@@ -65,16 +78,18 @@
                         <tbody id="tbody-options">
                             {% for po in opciones %}
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
-                                <tr class="{{ eo }}">
+                                <tr class="{{ eo }}" id="tr-{{ po.id }}">
                                     <td>{{ po.descripcion }}</td>
-                                    <td>
-                                        {% if po.imagen != '' %}
-                                            {% set img = uploads~po.imagen %}
-                                            <img src="{{ img }}" alt="" class="img__opc">
-                                        {% else %}
-                                            &nbsp;
-                                        {% endif %}
-                                    </td>
+                                    {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}
+                                        <td>
+                                            {% if po.imagen != '' %}
+                                                {% set img = uploads~po.imagen %}
+                                                <img src="{{ img }}" alt="" class="img__opc">
+                                            {% else %}
+                                                &nbsp;
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
                                     <td class="center">
                                         <div class="can-toggle demo-rebrand-2 small">
                                             <input id="f{{ po.id }}" class="cb_activo" type="checkbox" {% if po.correcta %}checked{% endif %}>
@@ -101,16 +116,20 @@
                         <tbody id="tbody-options">
                             {% for po in opciones %}
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
-                                <tr class="{{ eo }}">
+                                <tr class="{{ eo }}" id="tr-{{ po.id }}">
                                     <td>
                                         <div class="row">
                                             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-xl-1 offset-lg-1 offset-md-1 offset-sm-1">
                                                 {{ po.pregunta }}
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4">
-                                                {% if po.imagen_pregunta != '' %}
-                                                    {% set img = uploads~po.imagen_pregunta %}
-                                                    <img src="{{ img }}" alt="" class="img__opc">
+                                                {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}
+                                                    {% if po.imagen_pregunta != '' %}
+                                                        {% set img = uploads~po.imagen_pregunta %}
+                                                        <img src="{{ img }}" alt="" class="img__opc">
+                                                    {% else %}
+                                                        &nbsp;
+                                                    {% endif %}
                                                 {% else %}
                                                     &nbsp;
                                                 {% endif %}
@@ -123,9 +142,13 @@
                                                 {{ po.opcion }}
                                             </div>
                                             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4">
-                                                {% if po.imagen_opcion != '' %}
-                                                    {% set img = uploads~po.imagen_opcion %}
-                                                    <img src="{{ img }}" alt="" class="img__opc">
+                                                {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}
+                                                    {% if po.imagen_opcion != '' %}
+                                                        {% set img = uploads~po.imagen_opcion %}
+                                                        <img src="{{ img }}" alt="" class="img__opc">
+                                                    {% else %}
+                                                        &nbsp;
+                                                    {% endif %}
                                                 {% else %}
                                                     &nbsp;
                                                 {% endif %}
@@ -158,137 +181,150 @@
 {% endblock %}
 
 {% block formModal %}
-    <div class="modal-header gradiente">
-        <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la Aplicación'|trans }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+        <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la opción'|trans }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"></span></button>
     </div>
     <div class="modal-body">
-        <form id="form" name="form" action="{{ path('_ajaxUpdateAplicacion') }}" method="POST">
-            <input type="hidden" id="app_id" name="app_id" value="">
-            <div class="form-group row justify-content-end">
-                <label for="nombre" class="col-2 col-form-label">{{ 'Nombre'|trans }}:</label>
-                <div class="col-14">
-                    <input type="text" class="form-control form_sty1" id="nombre" name="nombre" value="">
-                    <span class="fa fa-keyboard-o"></span>
-                </div>
-            </div>
-            <div class="form-group row justify-content-end">
-                <label for="url" class="col-2 col-form-label">Url:</label>
-                <div class="col-14">
-                    <input type="text" class="form-control form_sty1" id="url" name="url" value="">
-                    <span class="fa fa-link"></span>
-                </div>
-            </div>
-            <div class="form-group row justify-content-end">
-                <label for="icono" class="col-2 col-form-label">{{ 'Icono'|trans }}:</label>
-                <div class="col-14">
-                    <input type="text" class="form-control form_sty1" id="icono" name="icono" value="">
-                    <span class="fa fa-square"></span>
-                </div>
-            </div>
-            <div class="form-group row justify-content-end">
-                <label for="activo" class="col-4 col-form-label">{{ 'Activo'|trans }}:</label>
-                <div class="col-12">
-                    <div class="can-toggle demo-rebrand-2 small">
-                        <input id="activo" name="activo" type="checkbox" checked>
-                        <label for="activo">
-                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                        </label>
+        <form id="form" name="form" action="{{ path('_ajaxUpdateOpcion') }}" method="POST">
+            <input type="hidden" id="pregunta_opcion_id" name="pregunta_opcion_id" value="">
+            <input type="hidden" id="prueba_id" name="prueba_id" value="{{ pregunta.prueba.id }}">
+            <input type="hidden" id="pregunta_id" name="pregunta_id" value="{{ pregunta.id }}">
+            {% if not es_asociacion %}
+                <div class="form-group">
+                    <label for="descripcion" class="col-16 col-form-label">{{ 'Descripción'|trans }}</label>
+                    <div class="col-16">
+                        <input type="text" class="form-control form_sty1" id="descripcion" name="descripcion" value="">
+                        <span class="fa fa-commenting"></span>
                     </div>
                 </div>
-            </div>
-            <div class="form-group row justify-content-end">
-                <label for="subaplicacion_id" class="col-4 col-form-label">{{ 'Sub-Aplicación de'|trans }}:</label>
-                <div class="col-12">
-                    <select class="form-control form_sty_sm" id="subaplicacion_id" name="subaplicacion_id" style="border-radius: 5px;">
-                    </select>
-                    <span class="fa fa-dedent"></span>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <div class="row">
+                        {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}
+                            <label for="imagen" class="col-8 col-form-label">{{ 'Imagen'|trans }}</label>
+                        {% endif %}
+                        <label for="num_resp" class="col-8 col-form-label">Correcta</label>
+                    </div>
+                    <div class="row">
+                        {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <div class="input-group">
+                                    <figure class="social-profile-pic" id="figure_imagen"><img src="{{ img_default }}" alt="" style="background: transparent; width: 150px; height: auto;"></figure>
+                                    <input type="hidden" id="imagen" name="imagen" value="" readonly="readonly">
+                                    <span class="input-group-addon" style="border: none;">
+                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/paginas" class="btn iframe-btn" type="button">
+                                            <span class="fa fa-photo"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="col-sm-7 col-md-7 col-lg-7">
+                            <div class="form-group">
+                                <div class="can-toggle demo-rebrand-2 small">
+                                    <input id="correcta" name="correcta" type="checkbox">
+                                    <label for="correcta">
+                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="form-group">
+                    <div class="row">
+                        <label for="enunciado" class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-form-label">{{ 'Enunciado (Lado A)'|trans }}</label>
+                        <label for="descripcion" class="col-8 col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-form-label">{{ 'Opción correcta (Lado B)'|trans }}</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                            <input type="text" class="form-control form_sty1" id="enunciado" name="enunciado" value="">
+                            <span class="fa fa-commenting"></span>
+                        </div>
+                        <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                            <input type="text" class="form-control form_sty1" id="descripcion" name="descripcion" value="">
+                            <span class="fa fa-commenting"></span>
+                        </div>
+                    </div>
+                </div>
+                {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <div class="row">
+                            <label for="imagen_enunciado" class="col-8 col-form-label">{{ 'Imagen lado'|trans }} A</label>
+                            <label for="imagen" class="col-8 col-form-label">{{ 'Imagen lado'|trans }} B</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <div class="input-group">
+                                    <figure class="social-profile-pic" id="figure_imagen_enunciado"><img src="{{ img_default }}" alt="" style="background: transparent; width: 150px; height: auto;"></figure>
+                                    <input type="hidden" id="imagen_enunciado" name="imagen_enunciado" value="" readonly="readonly">
+                                    <span class="input-group-addon" style="border: none;">
+                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen_enunciado&fldr=recursos/paginas" class="btn iframe-btn" type="button">
+                                            <span class="fa fa-photo"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <div class="input-group">
+                                    <figure class="social-profile-pic" id="figure_imagen"><img src="{{ img_default }}" alt="" style="background: transparent; width: 150px; height: auto;"></figure>
+                                    <input type="hidden" id="imagen" name="imagen" value="" readonly="readonly">
+                                    <span class="input-group-addon" style="border: none;">
+                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/paginas" class="btn iframe-btn" type="button">
+                                            <span class="fa fa-photo"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
         </form>
-        <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
-            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
-        </div>
-        <div class="card" id="detail" style="display:none;">
-            <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
-                <h4 class="card-title" style="color: #fff; text-transform: uppercase">Datos Básicos</h4>
-            </div>
-            <div class="card-block">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Nombre'|trans }}:</h5>
-                            <p id="p-nombre">Lorem Ipsum</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>Url:</h5>
-                            <p id="p-url">https://Loremipsumdolorsitamet.domain/</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Icono'|trans }}:</h5>
-                            <p id="p-icono"><span class="fa fa-users"></span></p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Activo'|trans }}:</h5>
-                            <p id="p-activo">Si</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row justify-content-between" id="div-subaplicacion">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Sub-Aplicación de'|trans }}:</h5>
-                            <p id="p-subaplicacion">5</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="col-sm-16 col-md-16 text-right">
-                    <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                    <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar' |trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
-    <script type="text/javascript" src="{{ asset('js/admin/aplicacion.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/opcion.js') }}"></script>
     <script type="text/javascript">
 
-        jQuery.validator.addMethod("noSpace", function(value, element) { 
-            return value.indexOf(" ") < 0; 
-        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
-
         $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
             rules: {
-                'nombre': {
+                'descripcion': {
                     required: true,
                     minlength: 3
                 },
-                'url': {
-                    noSpace: true
+                'imagen': {
+                    required: {% if pregunta.tipoElemento.id == tipo_elemento_imagen %}true{% else %}false{% endif %}
                 },
-                'icono': {
-                    noSpace: true
+                'enunciado': {
+                    required: {% if es_asociacion %}true{% else %}false{% endif %}
+                },
+                'imagen_enunciado': {
+                    required: {% if es_asociacion and pregunta.tipoElemento.id == tipo_elemento_imagen %}true{% else %}false{% endif %}
                 }
             },
             messages: {
-                'nombre': {
-                    required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                'descripcion': {
+                    required: "- {{ 'La descripción es requerida.'|trans }}",
+                    minlength: "- {{ 'La descripción debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'imagen': {
+                    required: "- {{ 'La imagen es requerida.'|trans }}"
+                },
+                'enunciado': {
+                    required: "- {{ 'El enunciado es requerido.'|trans }}"
+                },
+                'imagen_enunciado': {
+                    required: "- {{ 'La imagen lado A es requerida.'|trans }}"
                 }
             }
         });

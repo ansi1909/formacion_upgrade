@@ -48,6 +48,7 @@ Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
 Datos de la categoría: Category data
 Datos de la empresa: Company Data
+Datos de la opción: Option data
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
@@ -97,6 +98,7 @@ Empresa: Company
 Empresas: Companies
 Empresa con estatus inactivo: Company with inactive status
 Enunciado: Statement
+Enunciado (Lado A): Statement (Side A)
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
@@ -120,6 +122,7 @@ Ha ocurrido un error en la eliminación de este registro: An error ocurred delet
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Icono: Icon
 Imagen: Image
+Imagen lado: Image side
 Iniciar Sesión: Log in
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
@@ -138,8 +141,11 @@ La cantidad de sub-páginas es requerida.: The number of sub-pages is required.
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.
+La descripción debe ser mínimo de 3 caracteres.: Description must have at least 3 characters.
 La descripción es requerida.: Description is required.
 La empresa es requerida.: Company is required.
+La imagen es requerida.: Image is required.
+La imagen lado A es requerida.: Side A image is required.
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 Lado: Side
 Listado de Aplicaciones: List of Applications
@@ -150,6 +156,7 @@ Listado de Roles: List of Roles
 Material complementario: Complementary content
 Nuevos registros almacenados: New records added
 Opción: Option
+Opción correcta (Lado B): Correct option (Side B)
 Opciones de la pregunta: Options of the question
 Página asociada: Associated page
 Página seleccionada: Selected page

@@ -45,6 +45,7 @@ twig:
         root_path: %kernel.root_dir%
         uploads: 'http://localhost/uploads/'
         sesion_time: 1000000
+        tipo_elemento_imagen: 2
 
 # Doctrine Configuration
 doctrine:

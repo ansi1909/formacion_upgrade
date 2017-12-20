@@ -41,6 +41,7 @@
         <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
         <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
         <input type="hidden" id="sesion_time" name="sesion_time" value="{{sesion_time}}">
+        <input type="hidden" id="timerId" name="timerId" value="">
         <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}">
 
         {# Cabecera del area de trabajo #}
@@ -157,7 +158,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     {% block formModal %}
-                        <div class="modal-header">
+                        <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
                             <h5 class="modal-title" id="formModalLabel">New message</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                         </div>
@@ -226,7 +227,7 @@
 
             <script type="text/javascript">
                 
-                function sweetAlertDelete(id, entity)
+                function sweetAlertDelete(id, entity, preg_opt=0)
                 {
                     swal({
                         title: "{{ '¿Desea eliminar el registro?'|trans }}",
@@ -243,7 +244,7 @@
                     }).then(function () {
                         $.ajax({
                             type: "POST",
-                            url: $('#url_delete').val(),
+                            url: preg_opt == 0 ? $('#url_delete').val() : preg_opt,
                             async: true,
                             data: { id: id, entity: entity },
                             dataType: "json",
@@ -268,25 +269,30 @@
                     });
                 }
 
-                setTimeout(function()
-                { 
-                    swal({
-                          title: "{{'Aviso de cierre de sesión'|trans }}",
-                          text: "{{'No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos'|trans}}",
-                          onOpen: function () {
-                            swal.showLoading()
-                          },
-                          allowOutsideClick: false
-                    }).then(function (result) {
-                          if (result.dismiss === 'timer') {
-                            console.log('I was closed by the timer')
-                          }
-                        })  
-                    setTimeout(function()
-                        {
-                            window.location=($('#url_logout').val());
-                        },5000);
-                }, $('#sesion_time').val());
+                activarTimeout();
+
+                function activarTimeout(){
+                    var timerId = setTimeout(function()
+                    { 
+                        swal({
+                              title: "{{'Aviso de cierre de sesión'|trans }}",
+                              text: "{{'No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos'|trans}}",
+                              onOpen: function () {
+                                swal.showLoading()
+                              },
+                              allowOutsideClick: false
+                        }).then(function (result) {
+                              if (result.dismiss === 'timer') {
+                                console.log('I was closed by the timer')
+                              }
+                            })  
+                        setTimeout(function()
+                            {
+                                window.location=($('#url_logout').val());
+                            },5000);
+                    }, $('#sesion_time').val());
+                    $('#timerId').val(timerId);
+                }
 
                 function notify(msg)
                 {

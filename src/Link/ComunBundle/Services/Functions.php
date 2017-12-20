@@ -83,10 +83,7 @@ class Functions
                                    'CertiOpcion' => 'prueba',
                                    'CertiPruebaLog' => 'prueba');
                 break;
-            case 'CertiPreguntaOpcion':
-                $entidades = array('CertiRespuesta' => 'preguntaOpcion');
-                break;
-    		default:
+            default:
     			$entidades = array();
     			break;
     	}

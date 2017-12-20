@@ -9,6 +9,9 @@ parameters:
         simple: 1
         multiple: 2
         asociacion: 3
+    tipo_elemento:
+        texto: 1
+        imagen: 2
     folders:
         uploads: 'http://localhost/uploads/'
         #dir_uploads: 'C:/wamp/www/uploads/'

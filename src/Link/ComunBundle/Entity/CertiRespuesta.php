@@ -40,14 +40,14 @@ class CertiRespuesta
     private $pregunta;
 
     /**
-     * @var \Link\ComunBundle\Entity\CertiPreguntaOpcion
+     * @var \Link\ComunBundle\Entity\CertiOpcion
      *
-     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPreguntaOpcion")
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiOpcion")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pregunta_opcion_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="opcion_id", referencedColumnName="id")
      * })
      */
-    private $preguntaOpcion;
+    private $opcion;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
@@ -120,27 +120,27 @@ class CertiRespuesta
     }
 
     /**
-     * Set preguntaOpcion
+     * Set opcion
      *
-     * @param \Link\ComunBundle\Entity\CertiPreguntaOpcion $opcion
+     * @param \Link\ComunBundle\Entity\CertiOpcion $opcion
      *
      * @return CertiRespuesta
      */
-    public function setPreguntaOpcion(\Link\ComunBundle\Entity\CertiPreguntaOpcion $preguntaOpcion = null)
+    public function setPreguntaOpcion(\Link\ComunBundle\Entity\CertiOpcion $opcion = null)
     {
-        $this->preguntaOpcion = $preguntaOpcion;
+        $this->opcion = $opcion;
 
         return $this;
     }
 
     /**
-     * Get preguntaOpcion
+     * Get opcion
      *
-     * @return \Link\ComunBundle\Entity\CertiPreguntaOpcion
+     * @return \Link\ComunBundle\Entity\CertiOpcion
      */
-    public function getPreguntaOpcion()
+    public function getOpcion()
     {
-        return $this->preguntaOpcion;
+        return $this->opcion;
     }
 
     /**
