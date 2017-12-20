@@ -21,6 +21,7 @@ Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
 Cantidad de sub-páginas: Cantidad de sub-páginas
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
+Cargando..: Cargando..
 Cargo: Cargo
 Categoría: Categoría
 Categoría de las sub-paginas: Categoría de las sub-paginas
@@ -58,6 +59,7 @@ Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
 Descargue material complementario: Descargue material complementario
+Descargar: Descargar
 Descripción: Descripción
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Detalles de la página: Detalles de la página
@@ -96,7 +98,10 @@ El valor de la pregunta es requerido.: El valor de la pregunta es requerido.
 Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresas: Empresas
+Empresas activas: Empresas activas
 Empresa con estatus inactivo: Empresa con estatus inactivo
+Empresas inactivas: Empresas inactivas
+Empresas registradas: Empresas registradas
 Enunciado: Enunciado
 Enunciado (Lado A): Enunciado (Lado A)
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
@@ -116,6 +121,7 @@ Fila: Fila
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
 Foto de la página: Foto de la página
+Gráfico del promedio de conexiones: Grafico del promedio de conexiones
 Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
@@ -151,7 +157,10 @@ Lado: Lado
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
+Listado de empresas activas: Listado de empresas activas
+Listado de empresas inactivas: Listado de empresas inactivas
 Listado de evaluaciones: Listado de evaluaciones
+Listado de programas: Listado de programas
 Listado de Roles: Listado de Roles
 Material complementario: Material complementario
 Nuevos registros almacenados: Nuevos registros almacenados
@@ -197,6 +206,7 @@ Permisos por Rol: Permisos por Rol
 Preguntas: Preguntas
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Procesar: Procesar
+Prog. asociados: Prog. asociados
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
 Recordarme: Recordarme
@@ -223,10 +233,18 @@ Teléfono de contacto: Teléfono de Contacto
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Tipo de elemento: Tipo de elemento
 Tipo de pregunta: Tipo de pregunta
+Últimos 12: Últimos 12
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usuario: Usuario
+Usuarios activos: Usuarios activos
+Usuarios culminados: Usuarios culminados
+Usuarios cursando: Usuarios cursando
+Usuarios inactivos: Usuarios inactivos
 Usuario inactivo. Contacte al administrador del sistema.: Usuario inactivo. Contacte al administrador del sistema.
+Usuarios no iniciados: Usuarios no iniciados
+Usuarios reg.: Usuarios reg.
+Usuarios registrados: Usuarios registrados
 Usuario o clave incorrecta.: Usuario o clave incorrecta.
 Valor de la pregunta: Valor de la pregunta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
