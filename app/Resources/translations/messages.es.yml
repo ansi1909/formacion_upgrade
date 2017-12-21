@@ -33,6 +33,7 @@ Conceder permisos de acceso: Conceder permisos de acceso
 Configuración de evaluaciones: Configuración de evaluaciones
 Configuración de la evaluación: Configuración de la evaluación
 Configuración de páginas: Configuración de páginas
+Configuración de preguntas: Configuración de preguntas
 Configurar: Configurar
 Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
@@ -160,19 +161,12 @@ Listado de Empresas: Listado de Empresas
 Listado de empresas activas: Listado de empresas activas
 Listado de empresas inactivas: Listado de empresas inactivas
 Listado de evaluaciones: Listado de evaluaciones
+Listado de preguntas de la evaluación: Listado de preguntas de la evaluación
 Listado de programas: Listado de programas
 Listado de Roles: Listado de Roles
-Material complementario: Material complementario
-Nuevos registros almacenados: Nuevos registros almacenados
-Opción: Opción
-Opción correcta (Lado B): Opción correcta (Lado B)
-Opciones de la pregunta: Opciones de la pregunta
-Página asociada: Página asociada
-Página seleccionada: Página seleccionada
-Panel de acceso: Panel de acceso
-Pregunta: Pregunta
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
+Material complementario: Material complementario
 Mensaje del servidor: Mensaje del servidor
 Modificado el: Modificado el
 Modificado por: Modificado por
@@ -191,18 +185,27 @@ No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
 Nueva evaluación: Nueva evaluación
 Nueva página: Nueva página
+Nueva pregunta: Nueva pregunta
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo Registro: Nuevo Registro
+Nuevos registros almacenados: Nuevos registros almacenados
+Opción: Opción
+Opción correcta (Lado B): Opción correcta (Lado B)
+Opciones de la pregunta: Opciones de la pregunta
 Página: Página
+Página asociada: Página asociada
+Página seleccionada: Página seleccionada
 Página asociada a la evaluación: Página asociada a la evaluación
 Página padre: Página padre
 Páginas principales: Páginas principales
-Perfil Empresarial: Perfil Empresarial
+Panel de acceso: Panel de acceso
 Paso: Paso
 País: País
+Perfil Empresarial: Perfil Empresarial
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
+Pregunta: Pregunta
 Preguntas: Preguntas
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Procesar: Procesar
@@ -220,8 +223,8 @@ Roles asignados: Roles asignados
 Roles a seleccionar: Roles a seleccionar
 Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostrar los niveles
 Si: Si
-Siguiente: Siguiente
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
+Siguiente: Siguiente
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
 Su registro ha sido eliminado: Su registro ha sido eliminado
@@ -237,14 +240,14 @@ Tipo de pregunta: Tipo de pregunta
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usuario: Usuario
+Usuario inactivo. Contacte al administrador del sistema.: Usuario inactivo. Contacte al administrador del sistema.
+Usuario o clave incorrecta.: Usuario o clave incorrecta.
 Usuarios activos: Usuarios activos
 Usuarios culminados: Usuarios culminados
 Usuarios cursando: Usuarios cursando
 Usuarios inactivos: Usuarios inactivos
-Usuario inactivo. Contacte al administrador del sistema.: Usuario inactivo. Contacte al administrador del sistema.
 Usuarios no iniciados: Usuarios no iniciados
 Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
-Usuario o clave incorrecta.: Usuario o clave incorrecta.
 Valor de la pregunta: Valor de la pregunta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones

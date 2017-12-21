@@ -375,36 +375,42 @@ class EvaluacionController extends Controller
             $opciones = array();
 
             $asociacion = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findOneByPregunta($pregunta_id);
-            $preguntas_asociadas = explode(",", $asociacion->getPreguntas());
 
-            $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po 
-                                        JOIN po.opcion o JOIN po.pregunta p 
-                                        WHERE po.pregunta IN (:preguntas_id) 
-                                        AND o.prueba = :prueba_id 
-                                        AND p.pregunta = :pregunta_id 
-                                        ORDER BY po.id ASC")
-                        ->setParameters(array('preguntas_id' => $preguntas_asociadas,
-                                              'prueba_id' => $pregunta->getPrueba()->getId(),
-                                              'pregunta_id' => $pregunta_id));
-            $opciones_bd = $query->getResult();
-
-            foreach ($opciones_bd as $po)
+            if ($asociacion)
             {
-                $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
-                                            WHERE r.opcion = :opcion_id')
-                            ->setParameter('opcion_id', $po->getOpcion()->getId());
-                $hay_respuesta_opcion = $query->getSingleScalarResult();
-                $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
-                                            WHERE r.pregunta = :pregunta_id')
-                            ->setParameter('pregunta_id', $po->getPregunta()->getId());
-                $hay_respuesta_pregunta = $query->getSingleScalarResult();
-                $delete_disabled = $hay_respuesta_opcion || $hay_respuesta_pregunta ? 'disabled' : '';
-                $opciones[] = array('id' => $po->getId(),
-                                    'pregunta' => $po->getPregunta()->getEnunciado(),
-                                    'imagen_pregunta' => $po->getPregunta()->getImagen(),
-                                    'opcion' => $po->getOpcion()->getDescripcion(),
-                                    'imagen_opcion' => $po->getOpcion()->getImagen(),
-                                    'delete_disabled' => $delete_disabled);
+
+                $preguntas_asociadas = explode(",", $asociacion->getPreguntas());
+
+                $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po 
+                                            JOIN po.opcion o JOIN po.pregunta p 
+                                            WHERE po.pregunta IN (:preguntas_id) 
+                                            AND o.prueba = :prueba_id 
+                                            AND p.pregunta = :pregunta_id 
+                                            ORDER BY po.id ASC")
+                            ->setParameters(array('preguntas_id' => $preguntas_asociadas,
+                                                  'prueba_id' => $pregunta->getPrueba()->getId(),
+                                                  'pregunta_id' => $pregunta_id));
+                $opciones_bd = $query->getResult();
+
+                foreach ($opciones_bd as $po)
+                {
+                    $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                                WHERE r.opcion = :opcion_id')
+                                ->setParameter('opcion_id', $po->getOpcion()->getId());
+                    $hay_respuesta_opcion = $query->getSingleScalarResult();
+                    $query = $em->createQuery('SELECT COUNT(r.id) FROM LinkComunBundle:CertiRespuesta r 
+                                                WHERE r.pregunta = :pregunta_id')
+                                ->setParameter('pregunta_id', $po->getPregunta()->getId());
+                    $hay_respuesta_pregunta = $query->getSingleScalarResult();
+                    $delete_disabled = $hay_respuesta_opcion || $hay_respuesta_pregunta ? 'disabled' : '';
+                    $opciones[] = array('id' => $po->getId(),
+                                        'pregunta' => $po->getPregunta()->getEnunciado(),
+                                        'imagen_pregunta' => $po->getPregunta()->getImagen(),
+                                        'opcion' => $po->getOpcion()->getDescripcion(),
+                                        'imagen_opcion' => $po->getOpcion()->getImagen(),
+                                        'delete_disabled' => $delete_disabled);
+                }
+
             }
 
         }
@@ -538,7 +544,7 @@ class EvaluacionController extends Controller
             $pregunta->setUsuario($usuario);
             $pregunta->setEstatusContenido($pregunta_padre->getEstatusContenido());
             $pregunta->setValor($pregunta_padre->getValor());
-            $pregunta->setPregunta($pregunta_padre->getId());
+            $pregunta->setPregunta($pregunta_padre);
             $pregunta->setFechaModificacion(new \DateTime('now'));
             $em->persist($pregunta);
             $em->flush();
@@ -554,8 +560,8 @@ class EvaluacionController extends Controller
                 $preguntas_str = $pregunta_asociacion->getPreguntas();
                 $opciones_str = $pregunta_asociacion->getOpciones();
             }
-            $preguntas_arr = explode(",", $preguntas_str);
-            $opciones_arr = explode(",", $opciones_str);
+            $preguntas_arr = $preguntas_str != '' ? explode(",", $preguntas_str) : array();
+            $opciones_arr = $opciones_str != '' ? explode(",", $opciones_str) : array();
             if (!in_array($pregunta->getId(), $preguntas_arr))
             {
                 $preguntas_arr[] = $pregunta->getId();
@@ -702,13 +708,13 @@ class EvaluacionController extends Controller
 
         $ok = 1;
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $pregunta_asociacion = $values['parameters']['tipo_pregunta']['asociacion'];
+        $pregunta_asociacion_id = $values['parameters']['tipo_pregunta']['asociacion'];
 
         $pregunta_opcion = $em->getRepository('LinkComunBundle:'.$entity)->find($pregunta_opcion_id);
         $opcion = $pregunta_opcion->getOpcion();
         $pregunta = $pregunta_opcion->getPregunta();
 
-        if ($pregunta->getTipoPregunta()->getId() == $pregunta_asociacion)
+        if ($pregunta->getTipoPregunta()->getId() == $pregunta_asociacion_id)
         {
 
             // PreguntaAsociacion
@@ -754,7 +760,7 @@ class EvaluacionController extends Controller
         $em->flush();
 
         // Pregunta
-        if ($pregunta->getTipoPregunta()->getId() == $pregunta_asociacion)
+        if ($pregunta->getTipoPregunta()->getId() == $pregunta_asociacion_id)
         {
             $em->remove($pregunta);
             $em->flush();
@@ -768,6 +774,109 @@ class EvaluacionController extends Controller
 
         $return = json_encode($return);
         return new Response($return,200,array('Content-Type' => 'application/json'));
+
+    }
+
+    public function preguntasAction($prueba_id)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pregunta_asociacion = $values['parameters']['tipo_pregunta']['asociacion'];
+
+        $em = $this->getDoctrine()->getManager();
+        $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->find($prueba_id);
+
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
+                                    WHERE p.prueba = :prueba_id AND p.pregunta IS NULL 
+                                    ORDER BY p.orden ASC")
+                    ->setParameter('prueba_id', $prueba_id);
+        $preguntas_bd = $query->getResult();
+
+        $preguntas = array();
+
+        foreach ($preguntas_bd as $p)
+        {
+
+            $opciones = array();
+            $correcta = 0;
+
+            if ($p->getTipoPregunta()->getid() != $pregunta_asociacion)
+            {
+                $query = $em->createQuery("SELECT po, o FROM LinkComunBundle:CertiPreguntaOpcion po 
+                                            JOIN po.opcion o 
+                                            WHERE po.pregunta = :pregunta_id AND o.prueba = :prueba_id 
+                                            ORDER BY o.id ASC")
+                            ->setParameters(array('pregunta_id' => $p->getId(),
+                                                  'prueba_id' => $prueba->getId()));
+                $pos = $query->getResult();
+                foreach ($pos as $po)
+                {
+                    $correcta_str = $po->getCorrecta() ? ' (Correcta)' : '';
+                    $opciones[] = $po->getOpcion()->getDescripcion().$correcta_str;
+                    if ($po->getCorrecta())
+                    {
+                        $correcta++;
+                    }
+                }
+            }
+            else {
+                
+                $correcta++;
+                $asociacion = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findOneByPregunta($p->getId());
+
+                if ($asociacion)
+                {
+
+                    $preguntas_asociadas = explode(",", $asociacion->getPreguntas());
+
+                    $query = $em->createQuery("SELECT po, o, p FROM LinkComunBundle:CertiPreguntaOpcion po 
+                                                JOIN po.opcion o JOIN po.pregunta p 
+                                                WHERE po.pregunta IN (:preguntas_id) 
+                                                AND o.prueba = :prueba_id 
+                                                AND p.pregunta = :pregunta_id 
+                                                ORDER BY po.id ASC")
+                                ->setParameters(array('preguntas_id' => $preguntas_asociadas,
+                                                      'prueba_id' => $prueba->getId(),
+                                                      'pregunta_id' => $p->getId()));
+                    $pos = $query->getResult();
+
+                    foreach ($pos as $po)
+                    {
+                        $opciones[] = $po->getPregunta()->getEnunciado().' --> '.$po->getOpcion()->getDescripcion();
+                    }
+
+                }
+
+            }
+
+            $preguntas[] = array('id' => $p->getId(),
+                                 'enunciado' => $p->getEnunciado(),
+                                 'tipo' => $p->getTipoPregunta()->getNombre(),
+                                 'opciones' => $opciones,
+                                 'status' => $p->getEstatusContenido()->getNombre(),
+                                 'modificacion' => $p->getFechaModificacion()->format('d/m/Y H:i a'),
+                                 'orden' => $p->getOrden(),
+                                 'correcta' => $correcta);
+
+        }
+
+        return $this->render('LinkBackendBundle:Evaluacion:preguntas.html.twig', array('prueba' => $prueba,
+                                                                                       'preguntas' => $preguntas));
 
     }
 

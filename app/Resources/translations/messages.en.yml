@@ -33,6 +33,7 @@ Conceder permisos de acceso: Granting access for
 Configuración de evaluaciones: Tests setting
 Configuración de la evaluación: Test setting
 Configuración de páginas: Pages setting
+Configuración de preguntas: Questions setting
 Configurar: Configure
 Configurar evaluación: Configure test
 Configurar página: Configure page
@@ -58,8 +59,8 @@ Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
-Descargue material complementario: Download complementary content
 Descargar: Download
+Descargue material complementario: Download complementary content
 Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
 Detalles de la página: Page details
@@ -97,9 +98,9 @@ El valor de la pregunta debe ser un valor numérico.: Question weighing must be 
 El valor de la pregunta es requerido.: Question weighing is required.
 Email de contacto: Contact Email
 Empresa: Company
+Empresa con estatus inactivo: Company with inactive status
 Empresas: Companies
 Empresas activas: Active companies
-Empresa con estatus inactivo: Company with inactive status
 Empresas inactivas: Inactive companies
 Empresas registradas: Registered companies
 Enunciado: Statement
@@ -160,19 +161,12 @@ Listado de Empresas: List of Companies
 Listado de empresas activas: List of active companies
 Listado de empresas inactivas: List of inactive companies
 Listado de evaluaciones: List of tests
+Listado de preguntas de la evaluación: Questions list of test
 Listado de programas: List of programs
 Listado de Roles: List of Roles
-Material complementario: Complementary content
-Nuevos registros almacenados: New records added
-Opción: Option
-Opción correcta (Lado B): Correct option (Side B)
-Opciones de la pregunta: Options of the question
-Página asociada: Associated page
-Página seleccionada: Selected page
-Panel de acceso: Login
-Pregunta: Question
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
+Material complementario: Complementary content
 Mensaje del servidor: Server message
 Modificado el: Modified at
 Modificado por: Modified by
@@ -191,18 +185,27 @@ No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nueva evaluación: New test
 Nueva página: New page
+Nueva pregunta: New question
 Nuevo nivel de la empresa: New level of company
 Nuevo Registro: New Item
+Nuevos registros almacenados: New records added
+Opción: Option
+Opción correcta (Lado B): Correct option (Side B)
+Opciones de la pregunta: Options of the question
 Página: Page
+Página asociada: Associated page
+Página seleccionada: Selected page
 Página asociada a la evaluación: Page associated to this test
 Página padre: Father page
 Páginas principales: Main pages
-Perfil Empresarial: Company Profile
+Panel de acceso: Login
 Paso: Step
 País: Country
+Perfil Empresarial: Company Profile
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
+Pregunta: Question
 Preguntas: Questions
 Presiona el botón finalizar para completar: Press finish button to complete
 Procesar: Process
@@ -220,8 +223,8 @@ Roles asignados: Assigned roles
 Roles a seleccionar: Selectable roles
 Seleccione la empresa para mostrar los niveles: Select the company to show its levels
 Si: Yes
-Siguiente: Next
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
+Siguiente: Next
 Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Su registro ha sido eliminado: The item has been deleted
@@ -237,14 +240,14 @@ Tipo de pregunta: Question type
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
 Usuario: User
+Usuario inactivo. Contacte al administrador del sistema.: Inactive user. Contact the system administrator.
+Usuario o clave incorrecta.: User or password incorrect.
 Usuarios activos: Active users
 Usuarios culminados: Finished users
 Usuarios cursando: Users Studying
 Usuarios inactivos: Inactive users
-Usuario inactivo. Contacte al administrador del sistema.: Inactive user. Contact the system administrator.
 Usuarios no iniciados: Uninitiated users
 Usuarios reg.: Reg users
 Usuarios registrados: Registered users
-Usuario o clave incorrecta.: User or password incorrect.
 Valor de la pregunta: Question weighing
 Ver Sub-Aplicaciones: See Sub-Applications

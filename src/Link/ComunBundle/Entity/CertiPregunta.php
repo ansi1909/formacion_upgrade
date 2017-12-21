@@ -117,6 +117,13 @@ class CertiPregunta
      */
     private $fechaModificacion;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
 
 
     /**
@@ -391,5 +398,29 @@ class CertiPregunta
     public function getFechaModificacion()
     {
         return $this->fechaModificacion;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return CertiPregunta
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 }

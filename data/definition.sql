@@ -139,11 +139,14 @@ fecha_creacion timestamp without time zone,
 fecha_modificacion timestamp without time zone,
 estatus_contenido_id integer,
 usuario_id integer,
+orden integer,
+prelacion integer,
  PRIMARY KEY (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
  FOREIGN KEY (categoria_id) REFERENCES certi_categoria (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (estatus_contenido_id) REFERENCES certi_estatus_contenido (id));
+ FOREIGN KEY (estatus_contenido_id) REFERENCES certi_estatus_contenido (id),
+ FOREIGN KEY (prelacion) REFERENCES certi_pagina (id));
 
 CREATE TABLE certi_pagina_empresa(
 -- Attributes --
@@ -212,6 +215,7 @@ usuario_id integer,
 estatus_contenido_id integer,
 valor numeric(10,2),
 pregunta_id integer,
+orden integer,
 fecha_creacion timestamp without time zone,
 fecha_modificacion timestamp without time zone,
  PRIMARY KEY (id),

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CertiPagina
  *
- * @ORM\Table(name="certi_pagina", indexes={@ORM\Index(name="IDX_CF1CDC9157991ECF", columns={"pagina_id"}), @ORM\Index(name="IDX_CF1CDC913397707A", columns={"categoria_id"}), @ORM\Index(name="IDX_CF1CDC91DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_CF1CDC9164373B63", columns={"estatus_contenido_id"})})
+ * @ORM\Table(name="certi_pagina", indexes={@ORM\Index(name="IDX_CF1CDC9157991ECF", columns={"pagina_id"}), @ORM\Index(name="IDX_CF1CDC913397707A", columns={"categoria_id"}), @ORM\Index(name="IDX_CF1CDC91DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_CF1CDC9164373B63", columns={"estatus_contenido_id"}), @ORM\Index(name="IDX_CF1CDC9157991EDA", columns={"prelacion"})})
  * @ORM\Entity
  */
 class CertiPagina
@@ -111,6 +111,22 @@ class CertiPagina
      */
     private $fechaModificacion;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
+    /**
+     * @var \Link\ComunBundle\Entity\CertiPagina
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPagina")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="prelacion", referencedColumnName="id")
+     * })
+     */
+    private $prelacion;
 
 
     /**
@@ -385,5 +401,53 @@ class CertiPagina
     public function getFechaModificacion()
     {
         return $this->fechaModificacion;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return CertiPagina
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * Set prelacion
+     *
+     * @param \Link\ComunBundle\Entity\CertiPagina $prelacion
+     *
+     * @return CertiPagina
+     */
+    public function setPrelacion(\Link\ComunBundle\Entity\CertiPagina $prelacion = null)
+    {
+        $this->prelacion = $prelacion;
+
+        return $this;
+    }
+
+    /**
+     * Get prelacion
+     *
+     * @return \Link\ComunBundle\Entity\CertiPagina
+     */
+    public function getPrelacion()
+    {
+        return $this->prelacion;
     }
 }
