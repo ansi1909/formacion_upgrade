@@ -28,41 +28,43 @@
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Listado de preguntas de la evaluación'|trans }}</h5>
+                <h5 class="card-title">{{ 'Listado de preguntas de la evaluación'|trans }} {{ prueba.nombre }}</h5>
             </div>
             <div class="card-block">
-                <table class="table" id="dt">
+                <table class="table">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
-                            <th class="hd__title">{{ 'Página asociada'|trans }}</th>
-                            <th class="hd__title">{{ 'Preguntas'|trans }}</th>
+                            <th class="hd__title">#</th>
+                            <th class="hd__title">{{ 'Enunciado'|trans }}</th>
+                            <th class="hd__title">{{ 'Tipo de pregunta'|trans }}</th>
+                            <th class="hd__title">{{ 'Opciones'|trans }}</th>
                             <th class="hd__title">{{ 'Estatus'|trans }}</th>
                             <th class="hd__title">{{ 'Modificado el'|trans }}</th>
                             <th class="hd__title">{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for prueba in pruebas %}
+                        {% for pregunta in preguntas %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ prueba.nombre }}</td>
-                                <td>{{ prueba.pagina }}</td>
+                                <td>{{ pregunta.orden }}</td>
+                                <td>{{ pregunta.enunciado }}</td>
+                                <td>{{ pregunta.tipo }}</td>
                                 <td>
-                                    {% if prueba.preguntas|length > 0 %}
+                                    {% if pregunta.opciones|length > 0 %}
                                         <div class="tree">
                                             <ul data-jstree='{ "opened" : true }'>
-                                                {% for pregunta in prueba.preguntas %}
-                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ pregunta }}</li>
+                                                {% for opcion in pregunta.opciones %}
+                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ opcion }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
                                     {% else %}
-                                        {{ 'Aún no se han creado las preguntas'|trans }}
+                                        {{ 'Aún no se han creado las opciones'|trans }}
                                     {% endif %}
                                 </td>
-                                <td>{{ prueba.status }}</td>
-                                <td>{{ prueba.modificacion }}</td>
+                                <td>{{ pregunta.status }}</td>
+                                <td>{{ pregunta.modificacion }}</td>
                                 <td class="center">
                                     <a href="{{ path('_preguntas', { 'prueba_id': prueba.id }) }}" title="{{ 'Configurar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if prueba.delete_disabled == '' %}delete{% endif %} {{ prueba.delete_disabled }}" data="{{ prueba.id }}"><span class="fa fa-trash"></span></a>
