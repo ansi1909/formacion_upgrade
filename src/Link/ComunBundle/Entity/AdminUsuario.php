@@ -172,7 +172,7 @@ class AdminUsuario
     public function setLogin($login)
     {
         $this->login = $login;
-
+    
         return $this;
     }
 
@@ -196,7 +196,7 @@ class AdminUsuario
     public function setClave($clave)
     {
         $this->clave = $clave;
-
+    
         return $this;
     }
 
@@ -220,7 +220,7 @@ class AdminUsuario
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -244,7 +244,7 @@ class AdminUsuario
     public function setApellido($apellido)
     {
         $this->apellido = $apellido;
-
+    
         return $this;
     }
 
@@ -268,7 +268,7 @@ class AdminUsuario
     public function setCorreoPersonal($correoPersonal)
     {
         $this->correoPersonal = $correoPersonal;
-
+    
         return $this;
     }
 
@@ -292,7 +292,7 @@ class AdminUsuario
     public function setCorreoCorporativo($correoCorporativo)
     {
         $this->correoCorporativo = $correoCorporativo;
-
+    
         return $this;
     }
 
@@ -316,7 +316,7 @@ class AdminUsuario
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
+    
         return $this;
     }
 
@@ -340,7 +340,7 @@ class AdminUsuario
     public function setFechaRegistro($fechaRegistro)
     {
         $this->fechaRegistro = $fechaRegistro;
-
+    
         return $this;
     }
 
@@ -364,7 +364,7 @@ class AdminUsuario
     public function setFechaNacimiento($fechaNacimiento)
     {
         $this->fechaNacimiento = $fechaNacimiento;
-
+    
         return $this;
     }
 
@@ -388,7 +388,7 @@ class AdminUsuario
     public function setCiudad($ciudad)
     {
         $this->ciudad = $ciudad;
-
+    
         return $this;
     }
 
@@ -412,7 +412,7 @@ class AdminUsuario
     public function setRegion($region)
     {
         $this->region = $region;
-
+    
         return $this;
     }
 
@@ -436,7 +436,7 @@ class AdminUsuario
     public function setFoto($foto)
     {
         $this->foto = $foto;
-
+    
         return $this;
     }
 
@@ -460,7 +460,7 @@ class AdminUsuario
     public function setDivisionFuncional($divisionFuncional)
     {
         $this->divisionFuncional = $divisionFuncional;
-
+    
         return $this;
     }
 
@@ -484,7 +484,7 @@ class AdminUsuario
     public function setCargo($cargo)
     {
         $this->cargo = $cargo;
-
+    
         return $this;
     }
 
@@ -508,7 +508,7 @@ class AdminUsuario
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 
@@ -532,7 +532,7 @@ class AdminUsuario
     public function setNivel(\Link\ComunBundle\Entity\AdminNivel $nivel = null)
     {
         $this->nivel = $nivel;
-
+    
         return $this;
     }
 
@@ -556,7 +556,7 @@ class AdminUsuario
     public function setPais(\Link\ComunBundle\Entity\AdminPais $pais = null)
     {
         $this->pais = $pais;
-
+    
         return $this;
     }
 

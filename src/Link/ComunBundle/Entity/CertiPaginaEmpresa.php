@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CertiPaginaEmpresa
  *
- * @ORM\Table(name="certi_pagina_empresa", indexes={@ORM\Index(name="pagina_empresa_ndx1", columns={"empresa_id", "pagina_id"}), @ORM\Index(name="IDX_5C87DB99521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_5C87DB9957991ECF", columns={"pagina_id"})})
+ * @ORM\Table(name="certi_pagina_empresa", indexes={@ORM\Index(name="pagina_empresa_ndx1", columns={"empresa_id", "pagina_id"}), @ORM\Index(name="IDX_5C87DB99521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_5C87DB9957991ECF", columns={"pagina_id"}), @ORM\Index(name="IDX_5C87DB99DCCF207D", columns={"prelacion"})})
  * @ORM\Entity
  */
 class CertiPaginaEmpresa
@@ -72,6 +72,20 @@ class CertiPaginaEmpresa
     private $muroActivo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
+     */
+    private $imagenCertificado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen_constancia", type="string", length=250, nullable=true)
+     */
+    private $imagenConstancia;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -92,11 +106,14 @@ class CertiPaginaEmpresa
     private $pagina;
 
     /**
-     * @var string
+     * @var \Link\ComunBundle\Entity\CertiPagina
      *
-     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPagina")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="prelacion", referencedColumnName="id")
+     * })
      */
-    private $imagenCertificado;
+    private $prelacion;
 
 
 
@@ -120,7 +137,7 @@ class CertiPaginaEmpresa
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
+    
         return $this;
     }
 
@@ -144,7 +161,7 @@ class CertiPaginaEmpresa
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-
+    
         return $this;
     }
 
@@ -168,7 +185,7 @@ class CertiPaginaEmpresa
     public function setFechaVencimiento($fechaVencimiento)
     {
         $this->fechaVencimiento = $fechaVencimiento;
-
+    
         return $this;
     }
 
@@ -192,7 +209,7 @@ class CertiPaginaEmpresa
     public function setPruebaActiva($pruebaActiva)
     {
         $this->pruebaActiva = $pruebaActiva;
-
+    
         return $this;
     }
 
@@ -216,7 +233,7 @@ class CertiPaginaEmpresa
     public function setMaxIntentos($maxIntentos)
     {
         $this->maxIntentos = $maxIntentos;
-
+    
         return $this;
     }
 
@@ -240,7 +257,7 @@ class CertiPaginaEmpresa
     public function setPuntajeAprueba($puntajeAprueba)
     {
         $this->puntajeAprueba = $puntajeAprueba;
-
+    
         return $this;
     }
 
@@ -264,7 +281,7 @@ class CertiPaginaEmpresa
     public function setMuroActivo($muroActivo)
     {
         $this->muroActivo = $muroActivo;
-
+    
         return $this;
     }
 
@@ -279,6 +296,54 @@ class CertiPaginaEmpresa
     }
 
     /**
+     * Set imagenCertificado
+     *
+     * @param string $imagenCertificado
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setImagenCertificado($imagenCertificado)
+    {
+        $this->imagenCertificado = $imagenCertificado;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagenCertificado
+     *
+     * @return string
+     */
+    public function getImagenCertificado()
+    {
+        return $this->imagenCertificado;
+    }
+
+    /**
+     * Set imagenConstancia
+     *
+     * @param string $imagenConstancia
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setImagenConstancia($imagenConstancia)
+    {
+        $this->imagenConstancia = $imagenConstancia;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagenConstancia
+     *
+     * @return string
+     */
+    public function getImagenConstancia()
+    {
+        return $this->imagenConstancia;
+    }
+
+    /**
      * Set empresa
      *
      * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
@@ -288,7 +353,7 @@ class CertiPaginaEmpresa
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 
@@ -312,7 +377,7 @@ class CertiPaginaEmpresa
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -327,26 +392,26 @@ class CertiPaginaEmpresa
     }
 
     /**
-     * Set imagenCertificado
+     * Set prelacion
      *
-     * @param string $imagenCertificado
+     * @param \Link\ComunBundle\Entity\CertiPagina $prelacion
      *
      * @return CertiPaginaEmpresa
      */
-    public function setImagenCertificado($imagenCertificado)
+    public function setPrelacion(\Link\ComunBundle\Entity\CertiPagina $prelacion = null)
     {
-        $this->imagenCertificado = $imagenCertificado;
-
+        $this->prelacion = $prelacion;
+    
         return $this;
     }
 
     /**
-     * Get imagenCertificado
+     * Get prelacion
      *
-     * @return string
+     * @return \Link\ComunBundle\Entity\CertiPagina
      */
-    public function getImagenCertificado()
+    public function getPrelacion()
     {
-        return $this->imagenCertificado;
+        return $this->prelacion;
     }
 }

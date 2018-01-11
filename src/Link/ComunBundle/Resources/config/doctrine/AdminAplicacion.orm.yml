@@ -36,6 +36,11 @@ Link\ComunBundle\Entity\AdminAplicacion:
         activo:
             type: boolean
             nullable: true
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         aplicacion:
             targetEntity: AdminAplicacion

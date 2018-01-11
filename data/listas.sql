@@ -343,7 +343,7 @@ INSERT INTO certi_estatus_pagina (id, nombre) VALUES (3, 'Completada');
 -- Name: idadmin_tipo_notificacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_notificacion', 'id'), 3, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_notificacion', 'id'), 6, false);
 
 --
 -- Data for Name: admin_tipo_notificacion; Type: TABLE DATA; Schema: public;
@@ -351,6 +351,9 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_notificac
 
 INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (1, 'Muro');
 INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (2, 'Foro');
+INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (3, 'Bienvenida');
+INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (4, 'Recordatorio');
+INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (5, 'Evento');
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
@@ -384,3 +387,17 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (20, 'Usuarios sin ingresar', NULL, NULL, TRUE, 18);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (21, 'Estadisticas de las páginas', NULL, NULL, TRUE, 18);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (22, 'Auditoria de evaluaciones', NULL, NULL, TRUE, 18);
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_tipo_noticia_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_noticia', 'id'), 4, false);
+
+--
+-- Data for Name: admin_tipo_noticia; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_tipo_noticia (id, nombre) VALUES (1, 'Noticia');
+INSERT INTO admin_tipo_noticia (id, nombre) VALUES (2, 'Novedad');
+INSERT INTO admin_tipo_noticia (id, nombre) VALUES (3, 'Biblioteca Virtual');

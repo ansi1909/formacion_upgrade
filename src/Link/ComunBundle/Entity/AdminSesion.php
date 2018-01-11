@@ -37,6 +37,13 @@ class AdminSesion
     private $fechaRequest;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disponible", type="boolean", nullable=true)
+     */
+    private $disponible;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminUsuario")
@@ -46,12 +53,6 @@ class AdminSesion
      */
     private $usuario;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="disponible", type="boolean", nullable=true)
-     */
-    private $disponible;
 
 
     /**
@@ -74,7 +75,7 @@ class AdminSesion
     public function setFechaIngreso($fechaIngreso)
     {
         $this->fechaIngreso = $fechaIngreso;
-
+    
         return $this;
     }
 
@@ -98,7 +99,7 @@ class AdminSesion
     public function setFechaRequest($fechaRequest)
     {
         $this->fechaRequest = $fechaRequest;
-
+    
         return $this;
     }
 
@@ -113,30 +114,6 @@ class AdminSesion
     }
 
     /**
-     * Set usuario
-     *
-     * @param \Link\ComunBundle\Entity\AdminUsuario $usuario
-     *
-     * @return AdminSesion
-     */
-    public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \Link\ComunBundle\Entity\AdminUsuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
      * Set disponible
      *
      * @param boolean $disponible
@@ -146,7 +123,7 @@ class AdminSesion
     public function setDisponible($disponible)
     {
         $this->disponible = $disponible;
-
+    
         return $this;
     }
 
@@ -158,5 +135,29 @@ class AdminSesion
     public function getDisponible()
     {
         return $this->disponible;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Link\ComunBundle\Entity\AdminUsuario $usuario
+     *
+     * @return AdminSesion
+     */
+    public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Link\ComunBundle\Entity\AdminUsuario
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

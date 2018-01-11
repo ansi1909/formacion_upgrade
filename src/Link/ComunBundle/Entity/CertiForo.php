@@ -95,7 +95,7 @@ class CertiForo
     public function setMensaje($mensaje)
     {
         $this->mensaje = $mensaje;
-
+    
         return $this;
     }
 
@@ -119,7 +119,7 @@ class CertiForo
     public function setFechaRegistro($fechaRegistro)
     {
         $this->fechaRegistro = $fechaRegistro;
-
+    
         return $this;
     }
 
@@ -143,7 +143,7 @@ class CertiForo
     public function setPdf($pdf)
     {
         $this->pdf = $pdf;
-
+    
         return $this;
     }
 
@@ -167,7 +167,7 @@ class CertiForo
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -191,7 +191,7 @@ class CertiForo
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -215,7 +215,7 @@ class CertiForo
     public function setForo(\Link\ComunBundle\Entity\CertiForo $foro = null)
     {
         $this->foro = $foro;
-
+    
         return $this;
     }
 

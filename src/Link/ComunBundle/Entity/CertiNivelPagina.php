@@ -64,7 +64,7 @@ class CertiNivelPagina
     public function setNivel(\Link\ComunBundle\Entity\AdminNivel $nivel = null)
     {
         $this->nivel = $nivel;
-
+    
         return $this;
     }
 
@@ -88,7 +88,7 @@ class CertiNivelPagina
     public function setPaginaEmpresa(\Link\ComunBundle\Entity\CertiPaginaEmpresa $paginaEmpresa = null)
     {
         $this->paginaEmpresa = $paginaEmpresa;
-
+    
         return $this;
     }
 

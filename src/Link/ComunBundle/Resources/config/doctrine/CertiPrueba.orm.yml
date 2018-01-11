@@ -42,8 +42,6 @@ Link\ComunBundle\Entity\CertiPrueba:
         duracion:
             type: time
             nullable: true
-            options:
-                unsigned: 
         fechaCreacion:
             type: datetime
             nullable: true

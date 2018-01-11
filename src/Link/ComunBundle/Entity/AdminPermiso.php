@@ -64,7 +64,7 @@ class AdminPermiso
     public function setAplicacion(\Link\ComunBundle\Entity\AdminAplicacion $aplicacion = null)
     {
         $this->aplicacion = $aplicacion;
-
+    
         return $this;
     }
 
@@ -88,7 +88,7 @@ class AdminPermiso
     public function setRol(\Link\ComunBundle\Entity\AdminRol $rol = null)
     {
         $this->rol = $rol;
-
+    
         return $this;
     }
 

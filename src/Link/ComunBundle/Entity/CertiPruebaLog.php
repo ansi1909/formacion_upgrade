@@ -113,7 +113,7 @@ class CertiPruebaLog
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-
+    
         return $this;
     }
 
@@ -137,7 +137,7 @@ class CertiPruebaLog
     public function setFechaFin($fechaFin)
     {
         $this->fechaFin = $fechaFin;
-
+    
         return $this;
     }
 
@@ -161,7 +161,7 @@ class CertiPruebaLog
     public function setPorcentajeAvance($porcentajeAvance)
     {
         $this->porcentajeAvance = $porcentajeAvance;
-
+    
         return $this;
     }
 
@@ -185,7 +185,7 @@ class CertiPruebaLog
     public function setCorrectas($correctas)
     {
         $this->correctas = $correctas;
-
+    
         return $this;
     }
 
@@ -209,7 +209,7 @@ class CertiPruebaLog
     public function setErradas($erradas)
     {
         $this->erradas = $erradas;
-
+    
         return $this;
     }
 
@@ -233,7 +233,7 @@ class CertiPruebaLog
     public function setNota($nota)
     {
         $this->nota = $nota;
-
+    
         return $this;
     }
 
@@ -257,7 +257,7 @@ class CertiPruebaLog
     public function setEstado($estado)
     {
         $this->estado = $estado;
-
+    
         return $this;
     }
 
@@ -281,7 +281,7 @@ class CertiPruebaLog
     public function setPrueba(\Link\ComunBundle\Entity\CertiPrueba $prueba = null)
     {
         $this->prueba = $prueba;
-
+    
         return $this;
     }
 
@@ -305,7 +305,7 @@ class CertiPruebaLog
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 

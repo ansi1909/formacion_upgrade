@@ -60,6 +60,24 @@ Link\ComunBundle\Entity\AdminEmpresa:
             length: null
             options:
                 fixed: false
+        imagenCertificado:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: imagen_certificado
+        imagenConstancia:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: imagen_constancia
+        chatActivo:
+            type: boolean
+            nullable: true
+            column: chat_activo
     manyToOne:
         pais:
             targetEntity: AdminPais

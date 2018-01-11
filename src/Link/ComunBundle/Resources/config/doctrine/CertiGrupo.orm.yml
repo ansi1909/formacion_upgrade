@@ -32,6 +32,14 @@ Link\ComunBundle\Entity\CertiGrupo:
             length: 250
             options:
                 fixed: false
+            column: imagen_certificado
+        imagenConstancia:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: imagen_constancia
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

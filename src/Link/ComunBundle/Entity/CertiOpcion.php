@@ -37,6 +37,20 @@ class CertiOpcion
     private $imagen;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPrueba
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPrueba")
@@ -55,20 +69,6 @@ class CertiOpcion
      * })
      */
     private $usuario;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
-     */
-    private $fechaCreacion;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
-     */
-    private $fechaModificacion;
 
 
 
@@ -92,7 +92,7 @@ class CertiOpcion
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-
+    
         return $this;
     }
 
@@ -116,7 +116,7 @@ class CertiOpcion
     public function setImagen($imagen)
     {
         $this->imagen = $imagen;
-
+    
         return $this;
     }
 
@@ -131,6 +131,54 @@ class CertiOpcion
     }
 
     /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return CertiOpcion
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiOpcion
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
+
+    /**
      * Set prueba
      *
      * @param \Link\ComunBundle\Entity\CertiPrueba $prueba
@@ -140,7 +188,7 @@ class CertiOpcion
     public function setPrueba(\Link\ComunBundle\Entity\CertiPrueba $prueba = null)
     {
         $this->prueba = $prueba;
-
+    
         return $this;
     }
 
@@ -164,7 +212,7 @@ class CertiOpcion
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -176,53 +224,5 @@ class CertiOpcion
     public function getUsuario()
     {
         return $this->usuario;
-    }
-
-    /**
-     * Set fechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     *
-     * @return CertiOpcion
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->fechaCreacion = $fechaCreacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCreacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCreacion()
-    {
-        return $this->fechaCreacion;
-    }
-
-     /**
-     * Set fechaModificacion
-     *
-     * @param \DateTime $fechaModificacion
-     *
-     * @return CertiOpcion
-     */
-    public function setFechaModificacion($fechaModificacion)
-    {
-        $this->fechaModificacion = $fechaModificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaModificacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaModificacion()
-    {
-        return $this->fechaModificacion;
     }
 }

@@ -88,7 +88,7 @@ class CertiMuro
     public function setMensaje($mensaje)
     {
         $this->mensaje = $mensaje;
-
+    
         return $this;
     }
 
@@ -112,7 +112,7 @@ class CertiMuro
     public function setFechaRegistro($fechaRegistro)
     {
         $this->fechaRegistro = $fechaRegistro;
-
+    
         return $this;
     }
 
@@ -136,7 +136,7 @@ class CertiMuro
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -160,7 +160,7 @@ class CertiMuro
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -184,7 +184,7 @@ class CertiMuro
     public function setMuro(\Link\ComunBundle\Entity\CertiMuro $muro = null)
     {
         $this->muro = $muro;
-
+    
         return $this;
     }
 

@@ -13,6 +13,7 @@ url varchar(50),
 icono varchar(20),
 activo boolean,
 aplicacion_id integer,
+orden integer,
  PRIMARY KEY (id),
  FOREIGN KEY (aplicacion_id) REFERENCES admin_aplicacion (id));
 
@@ -47,7 +48,10 @@ telefono_principal varchar(20),
 fecha_creacion timestamp without time zone,
 direccion text,
 bienvenida text,
-pais_id character(3), 
+pais_id character(3),
+imagen_certificado varchar(250),
+imagen_constancia varchar(250),
+chat_activo boolean, 
  PRIMARY KEY (id),
  FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
 
@@ -110,6 +114,7 @@ nombre varchar(100),
 orden integer,
 empresa_id integer,
 imagen_certificado varchar(250),
+imagen_constancia varchar(250), 
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
 
@@ -140,13 +145,11 @@ fecha_modificacion timestamp without time zone,
 estatus_contenido_id integer,
 usuario_id integer,
 orden integer,
-prelacion integer,
  PRIMARY KEY (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
  FOREIGN KEY (categoria_id) REFERENCES certi_categoria (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (estatus_contenido_id) REFERENCES certi_estatus_contenido (id),
- FOREIGN KEY (prelacion) REFERENCES certi_pagina (id));
+ FOREIGN KEY (estatus_contenido_id) REFERENCES certi_estatus_contenido (id));
 
 CREATE TABLE certi_pagina_empresa(
 -- Attributes --
@@ -161,9 +164,12 @@ max_intentos integer,
 puntaje_aprueba numeric(10,2),
 muro_activo boolean,
 imagen_certificado varchar(250),
+imagen_constancia varchar(250), 
+prelacion integer,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
- FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id));
+ FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
+ FOREIGN KEY (prelacion) REFERENCES certi_pagina (id));
 
 CREATE TABLE certi_prueba(
 -- Attributes --
@@ -306,20 +312,31 @@ estado varchar(15),
  FOREIGN KEY (prueba_id) REFERENCES certi_prueba (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
 
+CREATE TABLE admin_tipo_noticia(
+-- Attributes --
+id serial,
+nombre varchar(20),
+ PRIMARY KEY (id));
+
 CREATE TABLE admin_noticia(
 -- Attributes --
 id serial,
 empresa_id integer,
-tipo varchar(20),
+tipo_noticia_id integer,
 usuario_id integer,
 fecha_registro timestamp without time zone,
 resumen text,
 contenido text,
 fecha_publicacion date,
 fecha_vencimiento date,
+titulo varchar(500),
+autor varchar(250),
+pdf varchar(250),
+imagen varchar(250),
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
- FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
+ FOREIGN KEY (tipo_noticia_id) REFERENCES admin_tipo_noticia (id));
 
 CREATE TABLE certi_muro(
 -- Attributes --

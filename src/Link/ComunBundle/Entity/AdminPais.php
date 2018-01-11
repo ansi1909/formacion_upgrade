@@ -86,7 +86,7 @@ class AdminPais
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -110,7 +110,7 @@ class AdminPais
     public function setContinente($continente)
     {
         $this->continente = $continente;
-
+    
         return $this;
     }
 
@@ -134,7 +134,7 @@ class AdminPais
     public function setRegion($region)
     {
         $this->region = $region;
-
+    
         return $this;
     }
 
@@ -158,7 +158,7 @@ class AdminPais
     public function setNombreLocal($nombreLocal)
     {
         $this->nombreLocal = $nombreLocal;
-
+    
         return $this;
     }
 
@@ -182,7 +182,7 @@ class AdminPais
     public function setCapital($capital)
     {
         $this->capital = $capital;
-
+    
         return $this;
     }
 
@@ -206,7 +206,7 @@ class AdminPais
     public function setId2($id2)
     {
         $this->id2 = $id2;
-
+    
         return $this;
     }
 

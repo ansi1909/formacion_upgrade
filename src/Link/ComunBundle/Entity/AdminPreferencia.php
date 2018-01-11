@@ -102,7 +102,7 @@ class AdminPreferencia
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
@@ -126,7 +126,7 @@ class AdminPreferencia
     public function setCss($css)
     {
         $this->css = $css;
-
+    
         return $this;
     }
 
@@ -150,7 +150,7 @@ class AdminPreferencia
     public function setLogo($logo)
     {
         $this->logo = $logo;
-
+    
         return $this;
     }
 
@@ -174,7 +174,7 @@ class AdminPreferencia
     public function setFavicon($favicon)
     {
         $this->favicon = $favicon;
-
+    
         return $this;
     }
 
@@ -198,7 +198,7 @@ class AdminPreferencia
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 
@@ -222,7 +222,7 @@ class AdminPreferencia
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -246,7 +246,7 @@ class AdminPreferencia
     public function setLayout(\Link\ComunBundle\Entity\AdminLayout $layout = null)
     {
         $this->layout = $layout;
-
+    
         return $this;
     }
 

@@ -64,7 +64,7 @@ class AdminRolUsuario
     public function setRol(\Link\ComunBundle\Entity\AdminRol $rol = null)
     {
         $this->rol = $rol;
-
+    
         return $this;
     }
 
@@ -88,7 +88,7 @@ class AdminRolUsuario
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 

@@ -44,6 +44,27 @@ class CertiPregunta
     private $valor;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPrueba
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPrueba")
@@ -103,27 +124,6 @@ class CertiPregunta
      */
     private $pregunta;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
-     */
-    private $fechaCreacion;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
-     */
-    private $fechaModificacion;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="orden", type="integer", nullable=true)
-     */
-    private $orden;
-
 
 
     /**
@@ -146,7 +146,7 @@ class CertiPregunta
     public function setEnunciado($enunciado)
     {
         $this->enunciado = $enunciado;
-
+    
         return $this;
     }
 
@@ -170,7 +170,7 @@ class CertiPregunta
     public function setImagen($imagen)
     {
         $this->imagen = $imagen;
-
+    
         return $this;
     }
 
@@ -194,7 +194,7 @@ class CertiPregunta
     public function setValor($valor)
     {
         $this->valor = $valor;
-
+    
         return $this;
     }
 
@@ -209,6 +209,78 @@ class CertiPregunta
     }
 
     /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return CertiPregunta
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return CertiPregunta
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiPregunta
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
+
+    /**
      * Set prueba
      *
      * @param \Link\ComunBundle\Entity\CertiPrueba $prueba
@@ -218,7 +290,7 @@ class CertiPregunta
     public function setPrueba(\Link\ComunBundle\Entity\CertiPrueba $prueba = null)
     {
         $this->prueba = $prueba;
-
+    
         return $this;
     }
 
@@ -242,7 +314,7 @@ class CertiPregunta
     public function setTipoPregunta(\Link\ComunBundle\Entity\CertiTipoPregunta $tipoPregunta = null)
     {
         $this->tipoPregunta = $tipoPregunta;
-
+    
         return $this;
     }
 
@@ -266,7 +338,7 @@ class CertiPregunta
     public function setTipoElemento(\Link\ComunBundle\Entity\CertiTipoElemento $tipoElemento = null)
     {
         $this->tipoElemento = $tipoElemento;
-
+    
         return $this;
     }
 
@@ -290,7 +362,7 @@ class CertiPregunta
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -314,7 +386,7 @@ class CertiPregunta
     public function setEstatusContenido(\Link\ComunBundle\Entity\CertiEstatusContenido $estatusContenido = null)
     {
         $this->estatusContenido = $estatusContenido;
-
+    
         return $this;
     }
 
@@ -338,7 +410,7 @@ class CertiPregunta
     public function setPregunta(\Link\ComunBundle\Entity\CertiPregunta $pregunta = null)
     {
         $this->pregunta = $pregunta;
-
+    
         return $this;
     }
 
@@ -350,77 +422,5 @@ class CertiPregunta
     public function getPregunta()
     {
         return $this->pregunta;
-    }
-
-    /**
-     * Set fechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     *
-     * @return CertiPregunta
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->fechaCreacion = $fechaCreacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCreacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCreacion()
-    {
-        return $this->fechaCreacion;
-    }
-
-     /**
-     * Set fechaModificacion
-     *
-     * @param \DateTime $fechaModificacion
-     *
-     * @return CertiPregunta
-     */
-    public function setFechaModificacion($fechaModificacion)
-    {
-        $this->fechaModificacion = $fechaModificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaModificacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaModificacion()
-    {
-        return $this->fechaModificacion;
-    }
-
-    /**
-     * Set orden
-     *
-     * @param integer $orden
-     *
-     * @return CertiPregunta
-     */
-    public function setOrden($orden)
-    {
-        $this->orden = $orden;
-
-        return $this;
-    }
-
-    /**
-     * Get orden
-     *
-     * @return integer
-     */
-    public function getOrden()
-    {
-        return $this->orden;
     }
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminNoticia
  *
- * @ORM\Table(name="admin_noticia", indexes={@ORM\Index(name="noticia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_F51CDD1FDB38439E", columns={"usuario_id"})})
+ * @ORM\Table(name="admin_noticia", indexes={@ORM\Index(name="noticia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_F51CDD1FDB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_F51CDD1F8146238", columns={"tipo_noticia_id"})})
  * @ORM\Entity
  */
 class AdminNoticia
@@ -21,13 +21,6 @@ class AdminNoticia
      * @ORM\SequenceGenerator(sequenceName="admin_noticia_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tipo", type="string", length=20, nullable=true)
-     */
-    private $tipo;
 
     /**
      * @var \DateTime
@@ -65,6 +58,34 @@ class AdminNoticia
     private $fechaVencimiento;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="titulo", type="string", length=500, nullable=true)
+     */
+    private $titulo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="autor", type="string", length=250, nullable=true)
+     */
+    private $autor;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pdf", type="string", length=250, nullable=true)
+     */
+    private $pdf;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen", type="string", length=250, nullable=true)
+     */
+    private $imagen;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -84,6 +105,16 @@ class AdminNoticia
      */
     private $usuario;
 
+    /**
+     * @var \Link\ComunBundle\Entity\AdminTipoNoticia
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminTipoNoticia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipo_noticia_id", referencedColumnName="id")
+     * })
+     */
+    private $tipoNoticia;
+
 
 
     /**
@@ -97,30 +128,6 @@ class AdminNoticia
     }
 
     /**
-     * Set tipo
-     *
-     * @param string $tipo
-     *
-     * @return AdminNoticia
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return string
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
-    /**
      * Set fechaRegistro
      *
      * @param \DateTime $fechaRegistro
@@ -130,7 +137,7 @@ class AdminNoticia
     public function setFechaRegistro($fechaRegistro)
     {
         $this->fechaRegistro = $fechaRegistro;
-
+    
         return $this;
     }
 
@@ -154,7 +161,7 @@ class AdminNoticia
     public function setResumen($resumen)
     {
         $this->resumen = $resumen;
-
+    
         return $this;
     }
 
@@ -178,7 +185,7 @@ class AdminNoticia
     public function setContenido($contenido)
     {
         $this->contenido = $contenido;
-
+    
         return $this;
     }
 
@@ -202,7 +209,7 @@ class AdminNoticia
     public function setFechaPublicacion($fechaPublicacion)
     {
         $this->fechaPublicacion = $fechaPublicacion;
-
+    
         return $this;
     }
 
@@ -226,7 +233,7 @@ class AdminNoticia
     public function setFechaVencimiento($fechaVencimiento)
     {
         $this->fechaVencimiento = $fechaVencimiento;
-
+    
         return $this;
     }
 
@@ -241,6 +248,102 @@ class AdminNoticia
     }
 
     /**
+     * Set titulo
+     *
+     * @param string $titulo
+     *
+     * @return AdminNoticia
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+    
+        return $this;
+    }
+
+    /**
+     * Get titulo
+     *
+     * @return string
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    /**
+     * Set autor
+     *
+     * @param string $autor
+     *
+     * @return AdminNoticia
+     */
+    public function setAutor($autor)
+    {
+        $this->autor = $autor;
+    
+        return $this;
+    }
+
+    /**
+     * Get autor
+     *
+     * @return string
+     */
+    public function getAutor()
+    {
+        return $this->autor;
+    }
+
+    /**
+     * Set pdf
+     *
+     * @param string $pdf
+     *
+     * @return AdminNoticia
+     */
+    public function setPdf($pdf)
+    {
+        $this->pdf = $pdf;
+    
+        return $this;
+    }
+
+    /**
+     * Get pdf
+     *
+     * @return string
+     */
+    public function getPdf()
+    {
+        return $this->pdf;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     *
+     * @return AdminNoticia
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
      * Set empresa
      *
      * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
@@ -250,7 +353,7 @@ class AdminNoticia
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 
@@ -274,7 +377,7 @@ class AdminNoticia
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -286,5 +389,29 @@ class AdminNoticia
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set tipoNoticia
+     *
+     * @param \Link\ComunBundle\Entity\AdminTipoNoticia $tipoNoticia
+     *
+     * @return AdminNoticia
+     */
+    public function setTipoNoticia(\Link\ComunBundle\Entity\AdminTipoNoticia $tipoNoticia = null)
+    {
+        $this->tipoNoticia = $tipoNoticia;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoNoticia
+     *
+     * @return \Link\ComunBundle\Entity\AdminTipoNoticia
+     */
+    public function getTipoNoticia()
+    {
+        return $this->tipoNoticia;
     }
 }

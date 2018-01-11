@@ -95,7 +95,7 @@ class CertiPaginaLog
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-
+    
         return $this;
     }
 
@@ -119,7 +119,7 @@ class CertiPaginaLog
     public function setFechaFin($fechaFin)
     {
         $this->fechaFin = $fechaFin;
-
+    
         return $this;
     }
 
@@ -143,7 +143,7 @@ class CertiPaginaLog
     public function setPorcentajeAvance($porcentajeAvance)
     {
         $this->porcentajeAvance = $porcentajeAvance;
-
+    
         return $this;
     }
 
@@ -167,7 +167,7 @@ class CertiPaginaLog
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -191,7 +191,7 @@ class CertiPaginaLog
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -215,7 +215,7 @@ class CertiPaginaLog
     public function setEstatusPagina(\Link\ComunBundle\Entity\CertiEstatusPagina $estatusPagina = null)
     {
         $this->estatusPagina = $estatusPagina;
-
+    
         return $this;
     }
 

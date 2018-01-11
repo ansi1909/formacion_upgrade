@@ -51,6 +51,11 @@ Link\ComunBundle\Entity\CertiPregunta:
             nullable: true
             precision: 10
             scale: 2
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
         fechaCreacion:
             type: datetime
             nullable: true
@@ -59,12 +64,6 @@ Link\ComunBundle\Entity\CertiPregunta:
             type: datetime
             nullable: true
             column: fecha_modificacion
-        orden:
-            type: integer
-            nullable: true
-            options:
-                unsigned: false
-            column: orden
     manyToOne:
         prueba:
             targetEntity: CertiPrueba

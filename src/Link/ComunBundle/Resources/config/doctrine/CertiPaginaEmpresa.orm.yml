@@ -12,6 +12,9 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
         IDX_5C87DB9957991ECF:
             columns:
                 - pagina_id
+        IDX_5C87DB99DCCF207D:
+            columns:
+                - prelacion
     id:
         id:
             type: integer
@@ -59,6 +62,14 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
             length: 250
             options:
                 fixed: false
+            column: imagen_certificado
+        imagenConstancia:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+            column: imagen_constancia
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
@@ -78,6 +89,16 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
             inversedBy: null
             joinColumns:
                 pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        prelacion:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                prelacion:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

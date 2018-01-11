@@ -71,7 +71,7 @@ class CertiPreguntaOpcion
     public function setCorrecta($correcta)
     {
         $this->correcta = $correcta;
-
+    
         return $this;
     }
 
@@ -95,7 +95,7 @@ class CertiPreguntaOpcion
     public function setPregunta(\Link\ComunBundle\Entity\CertiPregunta $pregunta = null)
     {
         $this->pregunta = $pregunta;
-
+    
         return $this;
     }
 
@@ -119,7 +119,7 @@ class CertiPreguntaOpcion
     public function setOpcion(\Link\ComunBundle\Entity\CertiOpcion $opcion = null)
     {
         $this->opcion = $opcion;
-
+    
         return $this;
     }
 

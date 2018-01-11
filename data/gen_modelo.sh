@@ -29,6 +29,7 @@ dia2code -t sql -cl certi_respuesta DClases.dia; cat DEFINITION.SQL >> definitio
 dia2code -t sql -cl certi_estatus_pagina DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl certi_pagina_log DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl certi_prueba_log DClases.dia; cat DEFINITION.SQL >> definition.sql
+dia2code -t sql -cl admin_tipo_noticia DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl admin_noticia DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl certi_muro DClases.dia; cat DEFINITION.SQL >> definition.sql
 dia2code -t sql -cl certi_foro DClases.dia; cat DEFINITION.SQL >> definition.sql

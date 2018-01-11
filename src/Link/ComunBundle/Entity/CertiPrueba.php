@@ -44,11 +44,25 @@ class CertiPrueba
     private $cantidadMostrar;
 
     /**
-     * @var integer
+     * @var \DateTime
      *
      * @ORM\Column(name="duracion", type="time", nullable=true)
      */
     private $duracion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
 
     /**
      * @var \Link\ComunBundle\Entity\CertiPagina
@@ -80,20 +94,6 @@ class CertiPrueba
      */
     private $estatusContenido;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
-     */
-    private $fechaCreacion;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
-     */
-    private $fechaModificacion;
-
 
 
     /**
@@ -116,7 +116,7 @@ class CertiPrueba
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -140,7 +140,7 @@ class CertiPrueba
     public function setCantidadPreguntas($cantidadPreguntas)
     {
         $this->cantidadPreguntas = $cantidadPreguntas;
-
+    
         return $this;
     }
 
@@ -164,7 +164,7 @@ class CertiPrueba
     public function setCantidadMostrar($cantidadMostrar)
     {
         $this->cantidadMostrar = $cantidadMostrar;
-
+    
         return $this;
     }
 
@@ -188,7 +188,7 @@ class CertiPrueba
     public function setDuracion($duracion)
     {
         $this->duracion = $duracion;
-
+    
         return $this;
     }
 
@@ -203,6 +203,54 @@ class CertiPrueba
     }
 
     /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return CertiPrueba
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiPrueba
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
+
+    /**
      * Set pagina
      *
      * @param \Link\ComunBundle\Entity\CertiPagina $pagina
@@ -212,7 +260,7 @@ class CertiPrueba
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -236,7 +284,7 @@ class CertiPrueba
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -260,7 +308,7 @@ class CertiPrueba
     public function setEstatusContenido(\Link\ComunBundle\Entity\CertiEstatusContenido $estatusContenido = null)
     {
         $this->estatusContenido = $estatusContenido;
-
+    
         return $this;
     }
 
@@ -272,53 +320,5 @@ class CertiPrueba
     public function getEstatusContenido()
     {
         return $this->estatusContenido;
-    }
-
-     /**
-     * Set fechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     *
-     * @return CertiPrueba
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->fechaCreacion = $fechaCreacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCreacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaCreacion()
-    {
-        return $this->fechaCreacion;
-    }
-
-     /**
-     * Set fechaModificacion
-     *
-     * @param \DateTime $fechaModificacion
-     *
-     * @return CertiPrueba
-     */
-    public function setFechaModificacion($fechaModificacion)
-    {
-        $this->fechaModificacion = $fechaModificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaModificacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaModificacion()
-    {
-        return $this->fechaModificacion;
     }
 }

@@ -60,6 +60,13 @@ class AdminAplicacion
      */
     private $aplicacion;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
 
 
     /**
@@ -82,7 +89,7 @@ class AdminAplicacion
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -106,7 +113,7 @@ class AdminAplicacion
     public function setUrl($url)
     {
         $this->url = $url;
-
+    
         return $this;
     }
 
@@ -130,7 +137,7 @@ class AdminAplicacion
     public function setIcono($icono)
     {
         $this->icono = $icono;
-
+    
         return $this;
     }
 
@@ -154,7 +161,7 @@ class AdminAplicacion
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
+    
         return $this;
     }
 
@@ -178,7 +185,7 @@ class AdminAplicacion
     public function setAplicacion(\Link\ComunBundle\Entity\AdminAplicacion $aplicacion = null)
     {
         $this->aplicacion = $aplicacion;
-
+    
         return $this;
     }
 
@@ -190,5 +197,29 @@ class AdminAplicacion
     public function getAplicacion()
     {
         return $this->aplicacion;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return AdminAplicacion
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 }

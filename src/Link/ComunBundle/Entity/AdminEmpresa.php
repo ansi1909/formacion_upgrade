@@ -79,6 +79,27 @@ class AdminEmpresa
     private $bienvenida;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
+     */
+    private $imagenCertificado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen_constancia", type="string", length=250, nullable=true)
+     */
+    private $imagenConstancia;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="chat_activo", type="boolean", nullable=true)
+     */
+    private $chatActivo;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminPais
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminPais")
@@ -110,7 +131,7 @@ class AdminEmpresa
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -134,7 +155,7 @@ class AdminEmpresa
     public function setRif($rif)
     {
         $this->rif = $rif;
-
+    
         return $this;
     }
 
@@ -158,7 +179,7 @@ class AdminEmpresa
     public function setCorreoPrincipal($correoPrincipal)
     {
         $this->correoPrincipal = $correoPrincipal;
-
+    
         return $this;
     }
 
@@ -182,7 +203,7 @@ class AdminEmpresa
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
+    
         return $this;
     }
 
@@ -206,7 +227,7 @@ class AdminEmpresa
     public function setTelefonoPrincipal($telefonoPrincipal)
     {
         $this->telefonoPrincipal = $telefonoPrincipal;
-
+    
         return $this;
     }
 
@@ -230,7 +251,7 @@ class AdminEmpresa
     public function setFechaCreacion($fechaCreacion)
     {
         $this->fechaCreacion = $fechaCreacion;
-
+    
         return $this;
     }
 
@@ -254,7 +275,7 @@ class AdminEmpresa
     public function setDireccion($direccion)
     {
         $this->direccion = $direccion;
-
+    
         return $this;
     }
 
@@ -278,7 +299,7 @@ class AdminEmpresa
     public function setBienvenida($bienvenida)
     {
         $this->bienvenida = $bienvenida;
-
+    
         return $this;
     }
 
@@ -293,6 +314,78 @@ class AdminEmpresa
     }
 
     /**
+     * Set imagenCertificado
+     *
+     * @param string $imagenCertificado
+     *
+     * @return AdminEmpresa
+     */
+    public function setImagenCertificado($imagenCertificado)
+    {
+        $this->imagenCertificado = $imagenCertificado;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagenCertificado
+     *
+     * @return string
+     */
+    public function getImagenCertificado()
+    {
+        return $this->imagenCertificado;
+    }
+
+    /**
+     * Set imagenConstancia
+     *
+     * @param string $imagenConstancia
+     *
+     * @return AdminEmpresa
+     */
+    public function setImagenConstancia($imagenConstancia)
+    {
+        $this->imagenConstancia = $imagenConstancia;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagenConstancia
+     *
+     * @return string
+     */
+    public function getImagenConstancia()
+    {
+        return $this->imagenConstancia;
+    }
+
+    /**
+     * Set chatActivo
+     *
+     * @param boolean $chatActivo
+     *
+     * @return AdminEmpresa
+     */
+    public function setChatActivo($chatActivo)
+    {
+        $this->chatActivo = $chatActivo;
+    
+        return $this;
+    }
+
+    /**
+     * Get chatActivo
+     *
+     * @return boolean
+     */
+    public function getChatActivo()
+    {
+        return $this->chatActivo;
+    }
+
+    /**
      * Set pais
      *
      * @param \Link\ComunBundle\Entity\AdminPais $pais
@@ -302,7 +395,7 @@ class AdminEmpresa
     public function setPais(\Link\ComunBundle\Entity\AdminPais $pais = null)
     {
         $this->pais = $pais;
-
+    
         return $this;
     }
 

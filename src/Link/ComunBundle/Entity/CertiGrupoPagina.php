@@ -64,7 +64,7 @@ class CertiGrupoPagina
     public function setGrupo(\Link\ComunBundle\Entity\CertiGrupo $grupo = null)
     {
         $this->grupo = $grupo;
-
+    
         return $this;
     }
 
@@ -88,7 +88,7 @@ class CertiGrupoPagina
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 

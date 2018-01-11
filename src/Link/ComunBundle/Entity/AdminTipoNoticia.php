@@ -5,12 +5,12 @@ namespace Link\ComunBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CertiCategoria
+ * AdminTipoNoticia
  *
- * @ORM\Table(name="certi_categoria")
+ * @ORM\Table(name="admin_tipo_noticia")
  * @ORM\Entity
  */
-class CertiCategoria
+class AdminTipoNoticia
 {
     /**
      * @var integer
@@ -18,7 +18,7 @@ class CertiCategoria
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="certi_categoria_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="admin_tipo_noticia_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -46,7 +46,7 @@ class CertiCategoria
      *
      * @param string $nombre
      *
-     * @return CertiCategoria
+     * @return AdminTipoNoticia
      */
     public function setNombre($nombre)
     {

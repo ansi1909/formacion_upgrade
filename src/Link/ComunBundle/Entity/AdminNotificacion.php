@@ -88,7 +88,7 @@ class AdminNotificacion
     public function setValorNotificacion($valorNotificacion)
     {
         $this->valorNotificacion = $valorNotificacion;
-
+    
         return $this;
     }
 
@@ -112,7 +112,7 @@ class AdminNotificacion
     public function setLeido($leido)
     {
         $this->leido = $leido;
-
+    
         return $this;
     }
 
@@ -136,7 +136,7 @@ class AdminNotificacion
     public function setTipoNotificacion(\Link\ComunBundle\Entity\AdminTipoNotificacion $tipoNotificacion = null)
     {
         $this->tipoNotificacion = $tipoNotificacion;
-
+    
         return $this;
     }
 
@@ -160,7 +160,7 @@ class AdminNotificacion
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -184,7 +184,7 @@ class AdminNotificacion
     public function setUsuarioTutor(\Link\ComunBundle\Entity\AdminUsuario $usuarioTutor = null)
     {
         $this->usuarioTutor = $usuarioTutor;
-
+    
         return $this;
     }
 

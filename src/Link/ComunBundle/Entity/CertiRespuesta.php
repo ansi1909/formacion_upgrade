@@ -81,7 +81,7 @@ class CertiRespuesta
     public function setFechaRegistro($fechaRegistro)
     {
         $this->fechaRegistro = $fechaRegistro;
-
+    
         return $this;
     }
 
@@ -105,7 +105,7 @@ class CertiRespuesta
     public function setPregunta(\Link\ComunBundle\Entity\CertiPregunta $pregunta = null)
     {
         $this->pregunta = $pregunta;
-
+    
         return $this;
     }
 
@@ -126,10 +126,10 @@ class CertiRespuesta
      *
      * @return CertiRespuesta
      */
-    public function setPreguntaOpcion(\Link\ComunBundle\Entity\CertiOpcion $opcion = null)
+    public function setOpcion(\Link\ComunBundle\Entity\CertiOpcion $opcion = null)
     {
         $this->opcion = $opcion;
-
+    
         return $this;
     }
 
@@ -153,7 +153,7 @@ class CertiRespuesta
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 

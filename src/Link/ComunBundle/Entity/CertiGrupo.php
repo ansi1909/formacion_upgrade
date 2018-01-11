@@ -37,6 +37,20 @@ class CertiGrupo
     private $orden;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
+     */
+    private $imagenCertificado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen_constancia", type="string", length=250, nullable=true)
+     */
+    private $imagenConstancia;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -45,13 +59,6 @@ class CertiGrupo
      * })
      */
     private $empresa;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
-     */
-    private $imagenCertificado;
 
 
 
@@ -75,7 +82,7 @@ class CertiGrupo
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -99,7 +106,7 @@ class CertiGrupo
     public function setOrden($orden)
     {
         $this->orden = $orden;
-
+    
         return $this;
     }
 
@@ -114,40 +121,16 @@ class CertiGrupo
     }
 
     /**
-     * Set empresa
-     *
-     * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
-     *
-     * @return CertiGrupo
-     */
-    public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
-    {
-        $this->empresa = $empresa;
-
-        return $this;
-    }
-
-    /**
-     * Get empresa
-     *
-     * @return \Link\ComunBundle\Entity\AdminEmpresa
-     */
-    public function getEmpresa()
-    {
-        return $this->empresa;
-    }
-
-    /**
      * Set imagenCertificado
      *
      * @param string $imagenCertificado
      *
-     * @return CertiPaginaEmpresa
+     * @return CertiGrupo
      */
     public function setImagenCertificado($imagenCertificado)
     {
         $this->imagenCertificado = $imagenCertificado;
-
+    
         return $this;
     }
 
@@ -159,5 +142,53 @@ class CertiGrupo
     public function getImagenCertificado()
     {
         return $this->imagenCertificado;
+    }
+
+    /**
+     * Set imagenConstancia
+     *
+     * @param string $imagenConstancia
+     *
+     * @return CertiGrupo
+     */
+    public function setImagenConstancia($imagenConstancia)
+    {
+        $this->imagenConstancia = $imagenConstancia;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagenConstancia
+     *
+     * @return string
+     */
+    public function getImagenConstancia()
+    {
+        return $this->imagenConstancia;
+    }
+
+    /**
+     * Set empresa
+     *
+     * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
+     *
+     * @return CertiGrupo
+     */
+    public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
+    {
+        $this->empresa = $empresa;
+    
+        return $this;
+    }
+
+    /**
+     * Get empresa
+     *
+     * @return \Link\ComunBundle\Entity\AdminEmpresa
+     */
+    public function getEmpresa()
+    {
+        return $this->empresa;
     }
 }
