@@ -473,6 +473,7 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
         $nivel_id = $request->query->get('nivel_id');
+        $f = $this->get('funciones');
 
         $qb = $em->createQueryBuilder();
         $qb->select('u')
@@ -496,10 +497,12 @@ class UsuarioController extends Controller
         $usuarios = '';
 
         foreach ($usuarios_db as $usuario) {
+            $delete_disabled = $f->linkEliminar($usuario->getId(), 'AdminUsuario');
+            $class_delete = $delete_disabled == '' ? 'delete' : '';
             $usuarios .= '<tr><td>'.$usuario->getNombre().'</td><td>'.$usuario->getApellido().'</td><td>'.$usuario->getNivel()->getNombre().'</td>
             <td class="center">
-                <a href="{{ path('.'_nuevoParticipante'.', { '.'usuario_id'.' }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
-                <a href="#" class="btn btn-link btn-sm {# if usuario.delete_disabled == '.''.' #}delete{# endif #} {# usuario.delete_disabled #}" data="{# usuario.id #}"><span class="fa fa-trash"></span></a>
+                <a href="'.$this->generateUrl('_nuevoParticipante', array('usuario_id' => $usuario->getId())).'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                <a href="#" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$usuario->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
         
