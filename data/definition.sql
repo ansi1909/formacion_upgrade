@@ -414,3 +414,18 @@ usuario_id integer,
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
  FOREIGN KEY (layout_id) REFERENCES admin_layout (id));
 
+CREATE TABLE admin_tipo_pregunta(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_faqs(
+-- Attributes --
+id serial,
+tipo_pregunta_id integer,
+pregunta varchar(500),
+respuesta varchar(500),
+ PRIMARY KEY (id),
+ FOREIGN KEY (tipo_pregunta_id) REFERENCES admin_tipo_pregunta (id));
+

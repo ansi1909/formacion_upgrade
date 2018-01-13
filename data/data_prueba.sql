@@ -12,7 +12,7 @@ SET search_path = public, pg_catalog;
 -- Name: idadmin_usuario_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_usuario', 'id'), 3, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_usuario', 'id'), 2, false);
 
 --
 -- Data for Name: admin_usuario; Type: TABLE DATA; Schema: public;
