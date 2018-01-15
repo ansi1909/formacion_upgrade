@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\AdminSesion:
     type: entity
     table: admin_sesion
     indexes:
-        sesion_ndx1:
+        IDX_468DD3E2DB38439E:
             columns:
                 - usuario_id
     id:

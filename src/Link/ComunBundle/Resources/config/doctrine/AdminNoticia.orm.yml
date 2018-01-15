@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\AdminNoticia:
     type: entity
     table: admin_noticia
     indexes:
-        noticia_ndx1:
+        IDX_F51CDD1F521E1991:
             columns:
                 - empresa_id
         IDX_F51CDD1FDB38439E:

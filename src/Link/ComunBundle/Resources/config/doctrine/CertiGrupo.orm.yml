@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\CertiGrupo:
     type: entity
     table: certi_grupo
     indexes:
-        grupo_ndx1:
+        IDX_CAEA2502521E1991:
             columns:
                 - empresa_id
     id:

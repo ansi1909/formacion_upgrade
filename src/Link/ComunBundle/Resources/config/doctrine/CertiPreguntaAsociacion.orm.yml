@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\CertiPreguntaAsociacion:
     type: entity
     table: certi_pregunta_asociacion
     indexes:
-        pregunta_asociacion_ndx1:
+        IDX_85C9F56A31A5801E:
             columns:
                 - pregunta_id
     id:

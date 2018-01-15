@@ -2,10 +2,6 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
     type: entity
     table: certi_pagina_empresa
     indexes:
-        pagina_empresa_ndx1:
-            columns:
-                - empresa_id
-                - pagina_id
         IDX_5C87DB99521E1991:
             columns:
                 - empresa_id

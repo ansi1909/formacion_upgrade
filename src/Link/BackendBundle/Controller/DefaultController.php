@@ -189,7 +189,8 @@ class DefaultController extends Controller
                             $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
                                                         WHERE p.rol IN (:rol_id) 
                                                         AND a.activo = :activo 
-                                                        AND a.aplicacion IS NULL")
+                                                        AND a.aplicacion IS NULL
+                                                        ORDER BY a.nombre ASC")
                                         ->setParameters(array('rol_id' => $roles_usuario,
                                                               'activo' => true));
                             $permisos = $query->getResult();
@@ -210,7 +211,8 @@ class DefaultController extends Controller
                                     $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
                                                                 WHERE p.rol IN (:rol_id) 
                                                                 AND a.activo = :activo 
-                                                                AND a.aplicacion = :app_id")
+                                                                AND a.aplicacion = :app_id
+                                                                ORDER BY a.nombre ASC")
                                                 ->setParameters(array('rol_id' => $roles_usuario,
                                                                       'activo' => true,
                                                                       'app_id' => $permiso->getAplicacion()->getId()));

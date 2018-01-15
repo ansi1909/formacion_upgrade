@@ -2,10 +2,6 @@ Link\ComunBundle\Entity\CertiPruebaLog:
     type: entity
     table: certi_prueba_log
     indexes:
-        prueba_log_ndx1:
-            columns:
-                - prueba_id
-                - usuario_id
         IDX_B5265B3BE7DE889A:
             columns:
                 - prueba_id

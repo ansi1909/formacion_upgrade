@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\AdminNivel:
     type: entity
     table: admin_nivel
     indexes:
-        nivel_ndx1:
+        IDX_AD6DB31521E1991:
             columns:
                 - empresa_id
     id:

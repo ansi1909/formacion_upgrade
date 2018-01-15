@@ -24,7 +24,7 @@ INSERT INTO admin_usuario (id, login, clave, nombre, apellido, correo_personal, 
 -- Name: idadmin_permiso_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_permiso', 'id'), 13, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_permiso', 'id'), 22, false);
 
 --
 -- Data for Name: admin_permiso; Type: TABLE DATA; Schema: public;
@@ -42,6 +42,15 @@ INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (9, 12, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (10, 7, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (11, 14, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (12, 8, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (13, 23, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (14, 24, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (15, 25, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (16, 26, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (17, 27, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (18, 17, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (19, 16, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (20, 28, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (21, 29, 1);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_rol_usuario_seq;; Type: SEQUENCE SET; Schema: public;

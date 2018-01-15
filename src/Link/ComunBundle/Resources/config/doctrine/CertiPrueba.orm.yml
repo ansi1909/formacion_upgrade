@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\CertiPrueba:
     type: entity
     table: certi_prueba
     indexes:
-        prueba_ndx1:
+        IDX_B7E318BF57991ECF:
             columns:
                 - pagina_id
         IDX_B7E318BFDB38439E:

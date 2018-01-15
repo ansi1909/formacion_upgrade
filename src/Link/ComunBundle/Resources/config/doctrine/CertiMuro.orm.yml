@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\CertiMuro:
     type: entity
     table: certi_muro
     indexes:
-        muro_ndx1:
+        IDX_F736956B57991ECF:
             columns:
                 - pagina_id
         IDX_F736956BDB38439E:

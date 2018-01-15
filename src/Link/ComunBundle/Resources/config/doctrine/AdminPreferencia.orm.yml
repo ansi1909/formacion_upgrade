@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\AdminPreferencia:
     type: entity
     table: admin_preferencia
     indexes:
-        preferencia_ndx1:
+        IDX_2B27D1B8521E1991:
             columns:
                 - empresa_id
         IDX_2B27D1B8DB38439E:

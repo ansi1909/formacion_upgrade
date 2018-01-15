@@ -2,19 +2,15 @@ Link\ComunBundle\Entity\AdminNotificacion:
     type: entity
     table: admin_notificacion
     indexes:
-        notificacion_ndx1:
-            columns:
-                - usuario_id
-                - usuario_tutor_id
         IDX_BDBBB019B394FE3:
             columns:
                 - tipo_notificacion_id
         IDX_BDBBB01DB38439E:
             columns:
                 - usuario_id
-        IDX_BDBBB01C84E9668:
+        IDX_BDBBB01521E1991:
             columns:
-                - usuario_tutor_id
+                - empresa_id
     id:
         id:
             type: integer
@@ -25,15 +21,18 @@ Link\ComunBundle\Entity\AdminNotificacion:
             generator:
                 strategy: SEQUENCE
     fields:
-        valorNotificacion:
-            type: integer
+        asunto:
+            type: string
             nullable: true
+            length: 500
             options:
-                unsigned: false
-            column: valor_notificacion
-        leido:
-            type: boolean
+                fixed: false
+        mensaje:
+            type: text
             nullable: true
+            length: null
+            options:
+                fixed: false
     manyToOne:
         tipoNotificacion:
             targetEntity: AdminTipoNotificacion
@@ -55,14 +54,14 @@ Link\ComunBundle\Entity\AdminNotificacion:
                 usuario_id:
                     referencedColumnName: id
             orphanRemoval: false
-        usuarioTutor:
-            targetEntity: AdminUsuario
+        empresa:
+            targetEntity: AdminEmpresa
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                usuario_tutor_id:
+                empresa_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

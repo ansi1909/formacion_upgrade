@@ -2,10 +2,6 @@ Link\ComunBundle\Entity\CertiPaginaLog:
     type: entity
     table: certi_pagina_log
     indexes:
-        pagina_log_ndx1:
-            columns:
-                - pagina_id
-                - usuario_id
         IDX_AE97B9D657991ECF:
             columns:
                 - pagina_id

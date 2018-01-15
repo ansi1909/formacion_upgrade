@@ -2,10 +2,6 @@ Link\ComunBundle\Entity\CertiPreguntaOpcion:
     type: entity
     table: certi_pregunta_opcion
     indexes:
-        pregunta_opcion_ndx1:
-            columns:
-                - pregunta_id
-                - opcion_id
         IDX_87EE792C31A5801E:
             columns:
                 - pregunta_id
