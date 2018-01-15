@@ -375,14 +375,33 @@ CREATE TABLE admin_notificacion(
 -- Attributes --
 id serial,
 tipo_notificacion_id integer,
-valor_notificacion integer,
+asunto varchar(500),
+mensaje text,
 usuario_id integer,
-leido boolean,
-usuario_tutor_id integer,
+empresa_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_notificacion_id) REFERENCES admin_tipo_notificacion (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (usuario_tutor_id) REFERENCES admin_usuario (id));
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
+
+CREATE TABLE admin_tipo_destino(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_notificacion_programada(
+-- Attributes --
+id serial,
+notificacion_id integer,
+tipo_destino_id integer,
+entidad_id integer,
+usuario_id integer,
+fecha_difusion timestamp without time zone,
+ PRIMARY KEY (id),
+ FOREIGN KEY (notificacion_id) REFERENCES admin_notificacion (id),
+ FOREIGN KEY (tipo_destino_id) REFERENCES admin_tipo_destino (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
 
 CREATE TABLE certi_nivel_pagina(
 -- Attributes --
