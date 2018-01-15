@@ -871,7 +871,8 @@ class EvaluacionController extends Controller
                                  'status' => $p->getEstatusContenido()->getNombre(),
                                  'modificacion' => $p->getFechaModificacion()->format('d/m/Y H:i a'),
                                  'orden' => $p->getOrden(),
-                                 'correcta' => $correcta);
+                                 'correcta' => $correcta,
+                                 'delete_disabled' => $f->linkEliminar($p->getId(), 'CertiPregunta'));
 
         }
 

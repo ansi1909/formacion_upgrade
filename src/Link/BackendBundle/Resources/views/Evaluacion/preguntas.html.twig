@@ -66,8 +66,9 @@
                                 <td>{{ pregunta.status }}</td>
                                 <td>{{ pregunta.modificacion }}</td>
                                 <td class="center">
-                                    <a href="{{ path('_preguntas', { 'prueba_id': prueba.id }) }}" title="{{ 'Configurar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if prueba.delete_disabled == '' %}delete{% endif %} {{ prueba.delete_disabled }}" data="{{ prueba.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="{{ path('_editPregunta', { 'prueba_id': prueba.id, 'pregunta_id': pregunta.id, 'cantidad': preguntas|length, 'total': prueba.cantidadPreguntas })}}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_opciones', { 'pregunta_id': pregunta.id, 'cantidad': preguntas|length, 'total': prueba.cantidadPreguntas })}}" title="{{ 'Ir al listado de opciones'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-list-ul"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if pregunta.delete_disabled == '' %}delete{% endif %} {{ pregunta.delete_disabled }}" data="{{ pregunta.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -83,5 +84,5 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/evaluaciones.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/preguntas.js') }}"></script>
 {% endblock %}
