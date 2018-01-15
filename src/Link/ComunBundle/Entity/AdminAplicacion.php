@@ -51,6 +51,13 @@ class AdminAplicacion
     private $activo;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminAplicacion
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminAplicacion")
@@ -59,13 +66,6 @@ class AdminAplicacion
      * })
      */
     private $aplicacion;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="orden", type="integer", nullable=true)
-     */
-    private $orden;
 
 
 
@@ -176,30 +176,6 @@ class AdminAplicacion
     }
 
     /**
-     * Set aplicacion
-     *
-     * @param \Link\ComunBundle\Entity\AdminAplicacion $aplicacion
-     *
-     * @return AdminAplicacion
-     */
-    public function setAplicacion(\Link\ComunBundle\Entity\AdminAplicacion $aplicacion = null)
-    {
-        $this->aplicacion = $aplicacion;
-    
-        return $this;
-    }
-
-    /**
-     * Get aplicacion
-     *
-     * @return \Link\ComunBundle\Entity\AdminAplicacion
-     */
-    public function getAplicacion()
-    {
-        return $this->aplicacion;
-    }
-
-    /**
      * Set orden
      *
      * @param integer $orden
@@ -221,5 +197,29 @@ class AdminAplicacion
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * Set aplicacion
+     *
+     * @param \Link\ComunBundle\Entity\AdminAplicacion $aplicacion
+     *
+     * @return AdminAplicacion
+     */
+    public function setAplicacion(\Link\ComunBundle\Entity\AdminAplicacion $aplicacion = null)
+    {
+        $this->aplicacion = $aplicacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get aplicacion
+     *
+     * @return \Link\ComunBundle\Entity\AdminAplicacion
+     */
+    public function getAplicacion()
+    {
+        return $this->aplicacion;
     }
 }

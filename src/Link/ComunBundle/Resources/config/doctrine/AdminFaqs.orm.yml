@@ -1,0 +1,41 @@
+Link\ComunBundle\Entity\AdminFaqs:
+    type: entity
+    table: admin_faqs
+    indexes:
+        IDX_A92D3C05481AEE6:
+            columns:
+                - tipo_pregunta_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        pregunta:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        respuesta:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+    manyToOne:
+        tipoPregunta:
+            targetEntity: AdminTipoPregunta
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_pregunta_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
