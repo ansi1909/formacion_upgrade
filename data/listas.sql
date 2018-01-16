@@ -153,17 +153,15 @@ INSERT INTO certi_estatus_pagina (id, nombre) VALUES (3, 'Completada');
 -- Name: idadmin_tipo_notificacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_notificacion', 'id'), 6, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_notificacion', 'id'), 4, false);
 
 --
 -- Data for Name: admin_tipo_notificacion; Type: TABLE DATA; Schema: public;
 --
 
-INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (1, 'Muro');
-INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (2, 'Foro');
-INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (3, 'Bienvenida');
-INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (4, 'Recordatorio');
-INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (5, 'Evento');
+INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (1, 'Bienvenida');
+INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (2, 'Recordatorio');
+INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (3, 'Felicitación');
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
@@ -219,3 +217,21 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_noticia',
 INSERT INTO admin_tipo_noticia (id, nombre) VALUES (1, 'Noticia');
 INSERT INTO admin_tipo_noticia (id, nombre) VALUES (2, 'Novedad');
 INSERT INTO admin_tipo_noticia (id, nombre) VALUES (3, 'Biblioteca Virtual');
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_tipo_destino_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_destino', 'id'), 8, false);
+
+--
+-- Data for Name: admin_tipo_destino; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (1, 'Todos');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (2, 'Nivel');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (3, 'Programa');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (4, 'Grupo de participantes');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (5, 'Usuarios que no han ingresado');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (6, 'Usuarios que no han ingresado a un programa');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (7, 'Usuarios aprobados');
