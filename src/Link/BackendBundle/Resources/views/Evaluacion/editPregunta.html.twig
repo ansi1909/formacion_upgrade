@@ -41,7 +41,8 @@
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Pregunta'|trans }} # {{ cantidad }}/{{ total }} {{ 'de la evaluación'|trans }} {{ pregunta.prueba.nombre }}</h6>
+                    {% set orden = pregunta.id ? pregunta.orden : cantidad~'/'~total %}
+                    <h6>{{ 'Pregunta'|trans }} # {{ orden }} {{ 'de la evaluación'|trans }} {{ pregunta.prueba.nombre }}</h6>
                 </div>
             </div>
             <div class="card-block fnd__wzd">

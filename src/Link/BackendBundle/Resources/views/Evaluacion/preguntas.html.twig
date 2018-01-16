@@ -19,8 +19,9 @@
         <a href="{{ path('_paginasEvaluacion', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck2"><span class="fa fa-list-ol"></span><span class="text__bck2">{{ 'Ir al listado de evaluaciones'|trans }}</span></a>
     </div>
     {% if preguntas|length < prueba.cantidadPreguntas %}
+        {% set cantidad = preguntas|length + 1 %}
         <div class="col text-right">
-            <a href="{{ path('_editPregunta', { 'prueba_id': prueba.id, 'pregunta_id': 0, 'cantidad': preguntas|length, 'total': prueba.cantidadPreguntas })}}" class="bttn__nre"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nre">{{ 'Nueva pregunta'|trans }}</span></a>
+            <a href="{{ path('_editPregunta', { 'prueba_id': prueba.id, 'pregunta_id': 0, 'cantidad': cantidad, 'total': prueba.cantidadPreguntas })}}" class="bttn__nre"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nre">{{ 'Nueva pregunta'|trans }}</span></a>
         </div>
     {% endif %}
 </div>
