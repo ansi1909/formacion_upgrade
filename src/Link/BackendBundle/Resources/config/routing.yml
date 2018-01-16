@@ -57,3 +57,7 @@ paginas:
 evaluaciones:
     resource: "@LinkBackendBundle/Resources/config/routing/evaluaciones.yml"
     prefix: /evaluacion
+
+faqs:
+    resource: "@LinkBackendBundle/Resources/config/routing/faqs.yml"
+    prefix: /faq

@@ -196,7 +196,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (21, 'Estadisticas de las páginas', NULL, NULL, TRUE, 18);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (22, 'Auditoria de evaluaciones', NULL, NULL, TRUE, 18);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (23, 'Roles de usuarios', '_roles', 'fa-group', TRUE, 1);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (24, 'Faqs', NULL, 'fa-question', TRUE, 16);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (24, 'Faqs', '_faqs', 'fa-question', TRUE, 16);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (25, 'Tutorial', NULL, 'fa-desktop', TRUE, 16);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (26, 'Biblioteca virtual', NULL, 'fa-book', TRUE, 23);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (27, 'Administrar notificaciones', NULL, 'fa-inbox', TRUE, NULL);
