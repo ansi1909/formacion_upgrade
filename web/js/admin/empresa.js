@@ -33,4 +33,13 @@ $(document).ready(function() {
 		}
 	} );
 
+	$('.nextBtn').click(function(){
+
+		// Cantidad de caracteres en la bienvenida
+		var editor_data = CKEDITOR.instances.bienvenida.getData();
+		var deslen = document.getElementById("deslen");
+		deslen.value = parseInt(editor_data.replace(/<[^>]+>/g, '').length);
+
+	});
+
 });

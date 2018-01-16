@@ -189,7 +189,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (14, 'Participantes', '_participantes', 'fa-users', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (15, 'Mural', '_filtroMuro', NULL, TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (16, 'Administrar ayuda', NULL, 'fa-info-circle', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (17, 'Noticias y novedades', NULL, 'fa-bell', TRUE, NULL);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (17, 'Noticias y novedades', NULL, 'fa-bell', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (18, 'Reportes y consultas', NULL, NULL, TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (19, 'Sesiones de usuarios', NULL, NULL, TRUE, 18);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (20, 'Usuarios sin ingresar', NULL, NULL, TRUE, 18);
@@ -198,7 +198,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (23, 'Roles de usuarios', '_roles', 'fa-group', TRUE, 1);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (24, 'Faqs', NULL, 'fa-question', TRUE, 16);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (25, 'Tutorial', NULL, 'fa-desktop', TRUE, 16);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (26, 'Biblioteca virtual', NULL, 'fa-book', TRUE, 23);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (26, 'Biblioteca virtual', NULL, 'fa-book', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (27, 'Administrar notificaciones', NULL, 'fa-inbox', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (28, 'Notificaciones', NULL, 'fa-inbox', TRUE, 27);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (29, 'Programar avisos', NULL, 'fa-clock-o', TRUE, 27);

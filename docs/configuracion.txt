@@ -38,6 +38,7 @@
 	- definition.sql
 	- indices.sql
 	- listas.sql
+	- data_prueba.sql
 
 12. Aumentar las cantidad de memoria PHP de las siguientes variables en php.ini:
 	memory_limit = 128M

@@ -36,7 +36,7 @@ $(document).ready(function() {
 						$( "#tbody-options" ).append( data.html );
 					}
 					// Si se marca SI, las demás deben marcarse como NO
-					if (data.checked != '' && $('#es_asociacion').val() == 0)
+					if (data.checked != '' && $('#es_simple').val() == 1)
 					{
 						$('.cb_activo').each(function(){
 							if ($(this).attr('id') != 'f'+data.id)

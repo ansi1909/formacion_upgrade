@@ -46,6 +46,20 @@ $(document).ready(function() {
 		}
 	} );
 
+	$('.nextBtn').click(function(){
+
+		// Cantidad de caracteres en la descripción
+		var editor_descripcion = CKEDITOR.instances.form_descripcion.getData();
+		var deslen = document.getElementById("deslen");
+		deslen.value = parseInt(editor_descripcion.replace(/<[^>]+>/g, '').length);
+
+		// Cantidad de caracteres en el contenido
+		var editor_contenido = CKEDITOR.instances.form_contenido.getData();
+		var deslen2 = document.getElementById("deslen2");
+		deslen2.value = parseInt(editor_contenido.replace(/<[^>]+>/g, '').length);
+
+	});
+
 });
 
 function responsive_filemanager_callback(field_id){
