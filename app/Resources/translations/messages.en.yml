@@ -55,6 +55,7 @@ Datos de la opción: Option data
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
+Datos del Tipo de Notificación: Notification Details
 de la evaluación: of the test
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
@@ -165,6 +166,7 @@ Listado de evaluaciones: List of tests
 Listado de preguntas de la evaluación: Questions list of test
 Listado de programas: List of programs
 Listado de Roles: List of Roles
+Listado de Tipos de Notificaciones: List of Types of Notifications
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Material complementario: Complementary content
@@ -238,6 +240,8 @@ Teléfono de contacto: Contact Number
 Tiempo de duración de la evaluación: Duration of the test
 Tipo de elemento: Element type
 Tipo de pregunta: Question type
+Tipo Notificación: Notification Type
+Tipo de Notificaciones: Type of Notifications
 Últimos 12: Last 12
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
