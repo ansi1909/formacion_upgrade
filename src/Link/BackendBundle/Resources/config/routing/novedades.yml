@@ -1,0 +1,15 @@
+_bibliotecas:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Novedad:index }
+
+_ajaxEditBiblioteca:
+    path:     /ajaxEditBiblioteca
+    defaults: { _controller: LinkBackendBundle:Novedad:ajaxEditBiblioteca }
+    requirements:
+        method: GET
+
+_ajaxUpdateBiblioteca:
+    path:     /ajaxUpdateBiblioteca
+    defaults: { _controller: LinkBackendBundle:Novedad:ajaxUpdateBiblioteca }
+    requirements:
+        method: POST

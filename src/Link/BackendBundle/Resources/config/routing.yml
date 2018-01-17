@@ -61,3 +61,12 @@ evaluaciones:
 faqs:
     resource: "@LinkBackendBundle/Resources/config/routing/faqs.yml"
     prefix: /faq
+
+tiponotificaciones:
+    resource: "@LinkBackendBundle/Resources/config/routing/tiponotificaciones.yml"
+    prefix: /tiponotificacion
+
+novedades:
+    resource: "@LinkBackendBundle/Resources/config/routing/novedades.yml"
+    prefix: /novedades
+

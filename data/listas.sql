@@ -198,10 +198,11 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (23, 'Roles de usuarios', '_roles', 'fa-group', TRUE, 1);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (24, 'Faqs', '_faqs', 'fa-question', TRUE, 16);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (25, 'Tutorial', NULL, 'fa-desktop', TRUE, 16);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (26, 'Biblioteca virtual', NULL, 'fa-book', TRUE, 9);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (26, 'Biblioteca virtual', '_bibliotecas', 'fa-book', TRUE, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (27, 'Administrar notificaciones', NULL, 'fa-inbox', TRUE, NULL);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (28, 'Notificaciones', NULL, 'fa-inbox', TRUE, 27);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (29, 'Programar avisos', NULL, 'fa-clock-o', TRUE, 27);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (30, 'Tipo Notificaciones', '_tipoNotificacion', 'fa-inbox', TRUE, 1);
 
 
 ------------------------------------------------------------------------------------------------------------------------

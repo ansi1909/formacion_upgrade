@@ -1,0 +1,15 @@
+_tipoNotificacion:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:TipoNotificacion:index }
+
+_ajaxUpdateTipoNotificacion:
+    path:     /ajaxUpdateTipoNotificacion
+    defaults: { _controller: LinkBackendBundle:TipoNotificacion:ajaxUpdateTipoNotificacion }
+    requirements:
+        method: POST
+
+_ajaxEditTipoNotificacion:
+    path:     /ajaxEditTipoNotificacion
+    defaults: { _controller: LinkBackendBundle:TipoNotificacion:ajaxEditTipoNotificacion }
+    requirements:
+        method: GET
