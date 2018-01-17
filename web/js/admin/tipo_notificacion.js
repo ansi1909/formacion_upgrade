@@ -62,7 +62,7 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var tipo_notificacion_id = $(this).attr('data');
-		sweetAlertDelete(tipo_notificacion_id, 'Admintipo_notificacion');
+		sweetAlertDelete(tipo_notificacion_id, 'AdminTipoNotificacion');
 	});
 
 });
@@ -97,7 +97,7 @@ function savetipo_notificacion()
 						$('.delete').click(function()
 						{
 							var tipo_notificacion_id= $(this).attr('data');
-							sweetAlertDelete(tipo_notificacion_id, 'Admintipo_notificacion');
+							sweetAlertDelete(tipo_notificacion_id, 'AdminTipoNotificacion');
 						});
 					}
 					$('#form').hide();
