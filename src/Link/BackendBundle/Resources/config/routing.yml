@@ -61,3 +61,7 @@ evaluaciones:
 tiponotificaciones:
     resource: "@LinkBackendBundle/Resources/config/routing/tiponotificaciones.yml"
     prefix: /tiponotificacion
+
+novedades:
+    resource: "@LinkBackendBundle/Resources/config/routing/novedades.yml"
+    prefix: /novedades

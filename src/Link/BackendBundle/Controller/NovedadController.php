@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
-use Link\ComunBundle\Entity\AdminRol; 
+use Link\ComunBundle\Entity\AdminNoticia; 
 
 
-class RolController extends Controller
+class NovedadController extends Controller
 {
    public function indexAction($app_id)
     {
