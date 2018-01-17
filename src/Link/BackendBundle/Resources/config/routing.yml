@@ -57,3 +57,7 @@ paginas:
 evaluaciones:
     resource: "@LinkBackendBundle/Resources/config/routing/evaluaciones.yml"
     prefix: /evaluacion
+
+tiponotificaciones:
+    resource: "@LinkBackendBundle/Resources/config/routing/tiponotificaciones.yml"
+    prefix: /tiponotificacion

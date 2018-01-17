@@ -89,6 +89,9 @@ class Functions
                                    'CertiPreguntaAsociacion' => 'pregunta',
                                	   'CertiRespuesta' => 'pregunta');
                 break;
+            case 'AdminTipoNotificacion':
+                $entidades = array('AdminNotificacion' => 'tipoNotificacion');
+                break;
             default:
     			$entidades = array();
     			break;
