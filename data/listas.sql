@@ -167,7 +167,7 @@ INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (3, 'Felicitación');
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 30, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 31, false);
 
 --
 -- Data for Name: admin_aplicacion; Type: TABLE DATA; Schema: public;

@@ -51,11 +51,11 @@
                                 <td>{{ faq.id }}</td>
                                 <td>{{ faq.pregunta }}</td>
                                 <td class="center">
-                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if aplicacion.delete_disabled == '' %}delete{% endif %} {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
-                                    {% if aplicacion.tiene_subaplicaciones %}
-                                        <a href="#" title="{{ 'Ver Sub-Aplicaciones'|trans }}" class="btn btn-link btn-sm see" data="{{ aplicacion.id }}"><span class="fa fa-eye"></span></a>
-                                    {% endif %}
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{# aplicacion.id #}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {# if aplicacion.delete_disabled == '' #}delete{# endif #} {# aplicacion.delete_disabled #}" data="{# aplicacion.id #}"><span class="fa fa-trash"></span></a>
+                                    {# if aplicacion.tiene_subaplicaciones #}
+                                        <a href="#" title="{{ 'Ver Sub-Aplicaciones'|trans }}" class="btn btn-link btn-sm see" data="{# aplicacion.id #}"><span class="fa fa-eye"></span></a>
+                                    {# endif #}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -91,52 +91,35 @@
 
 {% block formModal %}
     <div class="modal-header gradiente">
-        <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la Aplicación'|trans }}</h5>
+        <h5 class="modal-title" id="formModalLabel">{{ 'Datos de las preguntas'|trans }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
     </div>
     <div class="modal-body">
         <form id="form" name="form" action="{{ path('_ajaxUpdateAplicacion') }}" method="POST">
             <input type="hidden" id="app_id" name="app_id" value="">
             <div class="form-group row justify-content-end">
-                <label for="nombre" class="col-2 col-form-label">{{ 'Nombre'|trans }}:</label>
-                <div class="col-14">
-                    <input type="text" class="form-control form_sty1" id="nombre" name="nombre" value="">
+                <label for="pregunta" class="col-3 col-form-label">{{ 'Pregunta'|trans }}:</label>
+                <div class="col-13">
+                    <input type="text" class="form-control form_sty1" id="pregunta" name="pregunta" value="">
                     <span class="fa fa-keyboard-o"></span>
                 </div>
             </div>
             <div class="form-group row justify-content-end">
-                <label for="url" class="col-2 col-form-label">Url:</label>
-                <div class="col-14">
-                    <input type="text" class="form-control form_sty1" id="url" name="url" value="">
-                    <span class="fa fa-link"></span>
+                <label for="respuesta" class="col-3 col-form-label">Respuesta:</label>
+                <div class="col-13">
+                    <textarea class="form-control" id="respuesta" name="respuesta"></textarea>
                 </div>
             </div>
             <div class="form-group row justify-content-end">
-                <label for="icono" class="col-2 col-form-label">{{ 'Icono'|trans }}:</label>
-                <div class="col-14">
-                    <input type="text" class="form-control form_sty1" id="icono" name="icono" value="">
-                    <span class="fa fa-square"></span>
-                </div>
-            </div>
-            <div class="form-group row justify-content-end">
-                <label for="activo" class="col-4 col-form-label">{{ 'Activo'|trans }}:</label>
+                <label for="tipo_pregunta" class="col-4 col-form-label">{{ 'Tipo de pregunta'|trans }}:</label>
                 <div class="col-12">
-                    <div class="can-toggle demo-rebrand-2 small">
-                        <input id="activo" name="activo" type="checkbox" checked>
-                        <label for="activo">
-                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row justify-content-end">
-                <label for="subaplicacion_id" class="col-4 col-form-label">{{ 'Sub-Aplicación de'|trans }}:</label>
-                <div class="col-12">
-                    <select class="form-control form_sty_sm" id="subaplicacion_id" name="subaplicacion_id" style="border-radius: 5px;">
+                    <select class=" selectpicker" id="select1" name="select" style="border-radius: 5px;">
+                        {% for tipo in tipos %}
+                          <option value="{{ tipo.id }}"> {{ tipo.nombre }} </option>
+                        {% endfor %}
                     </select>
-                    <span class="fa fa-dedent"></span>
                 </div>
-            </div>
+            </div>    
         </form>
         <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
             <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
@@ -196,7 +179,59 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    
+    <script type="text/javascript" src="{{ asset('assets/vendor/Bootstrap-selectv-12/dist/js/bootstrap-select.js') }}"></script>
     <script type="text/javascript">
+
+        $(function() {
+              var content = "<input type='text' class='bss-input' onKeyDown='event.stopPropagation();' onKeyPress='addSelectInpKeyPress(this,event)' onClick='event.stopPropagation()' placeholder='Add item'> <span class='glyphicon glyphicon-plus addnewicon' onClick='addSelectItem(this,event,1);'></span>";
+             
+              var divider = $('<option/>')
+                      .addClass('divider')
+                      .data('divider', true);
+                      
+             
+              var addoption = $('<option/>', {class: 'addItem'})
+                      .data('content', content)
+                  
+              $('.selectpicker')
+                      .append(divider)
+                      .append(addoption)
+                      .selectpicker();
+             
+            });
+             
+            function addSelectItem(t,ev)
+            {
+               ev.stopPropagation();
+               
+               var bs = $(t).closest('.bootstrap-select')
+               var txt=bs.find('.bss-input').val().replace(/[|]/g,"");
+               var txt=$(t).prev().val().replace(/[|]/g,"");
+               if ($.trim(txt)=='') return;
+               
+               // Changed from previous version to cater to new
+               // layout used by bootstrap-select.
+               var p=bs.find('select');
+               var o=$('option', p).eq(-2);
+               o.before( $("<option>", { "selected": true, "text": txt}) );
+               p.selectpicker('refresh');
+            }
+             
+            function addSelectInpKeyPress(t,ev)
+            {
+               ev.stopPropagation();
+             
+               // do not allow pipe character
+               if (ev.which==124) ev.preventDefault();
+             
+               // enter character adds the option
+               if (ev.which==13)
+               {
+                  ev.preventDefault();
+                  addSelectItem($(t).next(),ev);
+               }
+            }
 
 
         $("#form").validate({
