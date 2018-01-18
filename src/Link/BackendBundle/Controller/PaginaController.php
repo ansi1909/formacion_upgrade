@@ -104,8 +104,38 @@ class PaginaController extends Controller
             $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
         }
         else {
+
             $pagina = new CertiPagina();
             $pagina->setFechaCreacion(new \DateTime('now'));
+
+            // Establecer el orden, último por defecto
+            $qb = $em->createQueryBuilder();
+            $qb->select('p')
+               ->from('LinkComunBundle:CertiPagina', 'p')
+               ->orderBy('p.orden', 'DESC');
+            
+            if ($pagina_padre_id)
+            {
+                $qb->andWhere('p.pagina = :pagina_id')
+                   ->setParameter('pagina_id', $pagina_padre_id);
+            }
+            else {
+                $qb->andWhere('p.pagina IS NULL');
+            }
+
+            $query = $qb->getQuery();
+            $paginas = $query->getResult();
+            
+            if ($paginas)
+            {
+                $orden = $paginas[0]->getOrden()+1;
+            }
+            else {
+                $orden = 1;
+            }
+
+            $pagina->setOrden($orden);
+
         }
 
         if ($pagina_padre_id)
@@ -212,6 +242,25 @@ class PaginaController extends Controller
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $pagina->setUsuario($usuario);
         $pagina->setFechaModificacion(new \DateTime('now'));
+
+        // Establecer el orden, último por defecto
+        $qb = $em->createQueryBuilder();
+        $qb->select('p')
+           ->from('LinkComunBundle:CertiPagina', 'p')
+           ->where('p.pagina IS NULL')
+           ->orderBy('p.orden', 'DESC');
+        $query = $qb->getQuery();
+        $paginas = $query->getResult();
+        
+        if ($paginas)
+        {
+            $orden = $paginas[0]->getOrden()+1;
+        }
+        else {
+            $orden = 1;
+        }
+
+        $pagina->setOrden($orden);
 
         $form = $this->createFormBuilder($pagina)
             ->setAction($this->generateUrl('_newPagina'))
