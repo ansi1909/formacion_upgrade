@@ -30,6 +30,29 @@ class DefaultController extends Controller
         	
         	// Lógica para mostrar el dashboard del backend
 
+            /************************* BORRAR PORQUE ESTO ES UNA PRUEBA DE UNA LLAMADA A UNA FUNCION BD **************/
+            /*$query = $em->getConnection()->prepare('SELECT
+                                                    fnprueba(:re, :ppagina_id) as
+                                                    resultado; fetch all from re;');
+            $re = 're';
+            $query->bindValue(':re', $re, \PDO::PARAM_STR);
+            $query->bindValue(':ppagina_id', 1, \PDO::PARAM_INT);
+            $query->execute();
+            $paginas = $query->fetchAll();
+            //return new Response(var_dump($paginas));
+
+            foreach ($paginas as $cantidad)
+            {
+                $i++;
+                $c += $cantidad['cantidad'];
+                if ($i == 1)
+                {
+                    $raza = $em->getRepository('PetsComunBundle:Raza')->find($cantidad['raza_id']);
+                    $cantidad_raza = $cantidad['cantidad'];
+                }
+            }*/
+            /************************* BORRAR PORQUE ESTO ES UNA PRUEBA DE UNA LLAMADA A UNA FUNCION BD **************/
+
       	}
       	else {
       		return $this->redirectToRoute('_loginAdmin');
