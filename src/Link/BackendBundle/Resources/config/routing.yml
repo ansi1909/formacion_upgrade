@@ -70,3 +70,6 @@ novedades:
     resource: "@LinkBackendBundle/Resources/config/routing/novedades.yml"
     prefix: /novedades
 
+bibliotecas:
+  resource: "@LinkBackendBundle/Resources/config/routing/bibliotecas.yml"
+  prefix: /biblioteca
