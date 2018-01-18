@@ -41,7 +41,7 @@ class PaginaController extends Controller
 
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
                                     WHERE p.pagina IS NULL
-                                    ORDER BY p.id ASC");
+                                    ORDER BY p.orden ASC");
         $pages = $query->getResult();
 
         $paginas = $f->paginas($pages);

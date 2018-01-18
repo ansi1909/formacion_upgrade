@@ -1,10 +1,11 @@
 <table class="table" id="dt">
     <thead class="sty__title">
         <tr>
+            <th class="hd__title">{{ 'Orden'|trans }}</th>
+            <th class="hd__title">Id</th>
             <th class="hd__title">{{ 'Nombre'|trans }}</th>
             <th class="hd__title">{{ 'Categoría'|trans }}</th>
             <th class="hd__title">{{ 'Modificado el'|trans }}</th>
-            <th class="hd__title">{{ 'Modificado por'|trans }}</th>
             <th class="hd__title">{{ 'Estatus'|trans }}</th>
             <th class="hd__title">{{ 'Sub-páginas'|trans }}</th>
             <th class="hd__title">{{ 'Acciones'|trans }}</th>
@@ -14,10 +15,11 @@
         {% for pagina in paginas %}
             {% set eo = cycle(['odd', 'even'], loop.index) %}
             <tr class="{{ eo }}">
+                <td>{{ pagina.orden }}</td>
+                <td>{{ pagina.id }}</td>
                 <td>{{ pagina.nombre }}</td>
                 <td>{{ pagina.categoria }}</td>
                 <td>{{ pagina.modificacion }}</td>
-                <td>{{ pagina.usuario }}</td>
                 <td>{{ pagina.status }}</td>
                 <td>
                     {% if pagina.subpaginas.tiene > 0 %}

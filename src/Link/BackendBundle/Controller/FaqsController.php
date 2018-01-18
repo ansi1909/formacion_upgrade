@@ -52,10 +52,14 @@ class FaqsController extends Controller
 
             $faqsdb[] = array('id' => $faq->getId(),
                               'pregunta' => $faq->getPregunta(),
-                              'respuesta' => $faq->geRespuesta());
+                              'respuesta' => $faq->getRespuesta());
         }
 
-        return $this->render('LinkBackendBundle:Faqs:index.html.twig', array('faqs' => $faqsdb));
+        $tipo_pregunta = array();
+        $tipo_pregunta = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoPregunta')->findAll();
+
+        return $this->render('LinkBackendBundle:Faqs:index.html.twig', array('faqs' => $faqsdb,
+                                                                             'tipos' => $tipo_pregunta));
 
     }
 

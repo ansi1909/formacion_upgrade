@@ -505,6 +505,7 @@ class Functions
         	$subpaginas = $this->subPaginas($page->getId());
 
             $paginas[] = array('id' => $page->getId(),
+            				   'orden' => $page->getOrden(),
                                'nombre' => $page->getNombre(),
                                'categoria' => $page->getCategoria()->getNombre(),
                                'modificacion' => $page->getFechaModificacion()->format('d/m/Y H:i a'),

@@ -22,6 +22,12 @@ _ajaxActive:
     requirements:
         _method: POST
 
+_ajaxOrder:
+    path:     /ajaxOrder
+    defaults: { _controller: LinkBackendBundle:Default:ajaxOrder }
+    requirements:
+        _method: POST
+
 roles:
     resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
     prefix: /rol
@@ -70,6 +76,13 @@ novedades:
     resource: "@LinkBackendBundle/Resources/config/routing/novedades.yml"
     prefix: /novedades
 
+<<<<<<< HEAD
 bibliotecas:
   resource: "@LinkBackendBundle/Resources/config/routing/bibliotecas.yml"
   prefix: /biblioteca
+=======
+notificaciones:
+    resource: "@LinkBackendBundle/Resources/config/routing/notificaciones.yml"
+    prefix: /notificaciones
+
+>>>>>>> e8adabd522515e2b2a5e8a2a688071f6d85e9a0c

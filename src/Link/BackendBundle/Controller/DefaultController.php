@@ -90,6 +90,27 @@ class DefaultController extends Controller
         
     }
 
+    public function ajaxOrderAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $id = $request->request->get('id');
+        $entity = $request->request->get('entity');
+        $orden = $request->request->get('orden');
+
+        $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
+        $object->setOrden($orden);
+        $em->persist($object);
+        $em->flush();
+                    
+        $return = array('id' => $object->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
     public function loginAction(Request $request)
     {
         $session = new session();
