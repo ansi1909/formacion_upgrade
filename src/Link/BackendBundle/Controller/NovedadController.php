@@ -76,7 +76,7 @@ class NovedadController extends Controller
 
 
 
-       return $this->render('LinkBackendBundle:Biblioteca:index.html.twig', array('noticias'=>$noticiadb,
+       return $this->render('LinkBackendBundle:Novedad:index.html.twig', array('noticias'=>$noticiadb,
                                                                                   'empresas' => $empresas));
 
     }
