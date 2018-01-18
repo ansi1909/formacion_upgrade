@@ -9,6 +9,7 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Archivos: Archivos
+Asunto: Asunto
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aviso de cierre de sesión: Aviso de cierre de sesión
@@ -16,6 +17,10 @@ Bienvenida: Bienvenida
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
 Buscar: Buscar
+Búsqueda de participantes empresa: Búsqueda de participantes empresa
+Búsqueda de participantes por empresa: Búsqueda de participantes por empresa
+Búsqueda de notificaciones empresa: Búsqueda de notificaciones empresa
+Búsqueda de notificaciones por empresa: Búsqueda de notificaciones por empresa
 Cambiar contraseña: Cambiar contraseña
 Cancelar: Cancelar
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
@@ -120,6 +125,7 @@ Estructura: Estructura
 Fecha Creación: Fecha Creación
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
+Fecha Difusión: Fecha Difusión
 Fila: Fila
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
@@ -164,6 +170,8 @@ Listado de Empresas: Listado de Empresas
 Listado de empresas activas: Listado de empresas activas
 Listado de empresas inactivas: Listado de empresas inactivas
 Listado de evaluaciones: Listado de evaluaciones
+Listado de notificaciones: Listado de notificaciones
+Listado de participantes: Listado de participantes
 Listado de preguntas de la evaluación: Listado de preguntas de la evaluación
 Listado de programas: Listado de programas
 Listado de Roles: Listado de Roles
@@ -215,6 +223,8 @@ Pregunta: Pregunta
 Preguntas: Preguntas
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Procesar: Procesar
+Programa: Programa
+Programas: Programas
 Prog. asociados: Prog. asociados
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo

@@ -76,3 +76,7 @@ novedades:
     resource: "@LinkBackendBundle/Resources/config/routing/novedades.yml"
     prefix: /novedades
 
+notificaciones:
+    resource: "@LinkBackendBundle/Resources/config/routing/notificaciones.yml"
+    prefix: /notificaciones
+

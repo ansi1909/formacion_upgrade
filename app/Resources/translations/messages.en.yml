@@ -9,6 +9,7 @@ Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Archivos: Files
+Asunto: Subject
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aviso de cierre de sesión: Notice of session closure
@@ -16,6 +17,10 @@ Bienvenida: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
 Buscar: Search
+Búsqueda de participantes empresa: Search participants company
+Búsqueda de participantes por empresa: Search participants by company
+Búsqueda de notificaciones empresa: Search notifications company
+Búsqueda de notificaciones por empresa: Search notifications by company
 Cambiar contraseña: Change password
 Cancelar: Cancel
 Cantidad de preguntas a mostrar: Number of questions to show
@@ -120,6 +125,7 @@ Estructura: Structure
 Fecha Creación: Creation Date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
+Fecha Difusión: Dissemination Date
 Fila: Row
 Filtrar usuarios: Filter users
 Finalizar: Finish
@@ -164,6 +170,8 @@ Listado de Empresas: List of Companies
 Listado de empresas activas: List of active companies
 Listado de empresas inactivas: List of inactive companies
 Listado de evaluaciones: List of tests
+Listado de notificaciones: List of notifications
+Listado de participantes: List of participants
 Listado de preguntas de la evaluación: Questions list of test
 Listado de programas: List of programs
 Listado de Roles: List of Roles
@@ -215,6 +223,8 @@ Pregunta: Question
 Preguntas: Questions
 Presiona el botón finalizar para completar: Press finish button to complete
 Procesar: Process
+Programa: Program
+Programas: Programs
 Prog. asociados: Associated Prog.
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
