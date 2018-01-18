@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
-use Link\ComunBundle\Entity\AdminRol; 
+use Link\ComunBundle\Entity\AdminFaqs;
+use Link\ComunBundle\Entity\AdminTipoPregunta;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,18 +42,16 @@ class FaqsController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $faqsdb = array();
-        
-        // Todas las aplicaciones principales
-        $query = $em->createQuery("SELECT f FROM LinkComunBundle:AdminFaqs f
-                                    ORDER BY f.pregunta ASC");
-        $faqs = $query->getResult();
+        $faqs = $em->getRepository('LinkComunBundle:AdminFaqs')->findAll();
 
         foreach ($faqs as $faq)
         {
 
             $faqsdb[] = array('id' => $faq->getId(),
+                              'tipopregunta' => $faq->getTipoPregunta()->getNombre(),
                               'pregunta' => $faq->getPregunta(),
                               'respuesta' => $faq->getRespuesta());
+                              
         }
 
         $tipo_pregunta = array();
@@ -61,6 +60,41 @@ class FaqsController extends Controller
         return $this->render('LinkBackendBundle:Faqs:index.html.twig', array('faqs' => $faqsdb,
                                                                              'tipos' => $tipo_pregunta));
 
+    }
+
+    public function ajaxUpdateFaqsAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $faq_id = $request->request->get('faq_id');
+        $pregunta = $request->request->get('pregunta');
+        $respuesta = $request->request->get('respuesta');
+        $tipo_pregunta = $request->request->get('tipo_pregunta');
+
+        if ($faq_id)
+        {
+            $faq = $em->getRepository('LinkComunBundle:AdminFaqs')->find($faq_id);
+        }
+        else {
+            $faq = new AdminFaqs();
+        }
+
+        $faq->setPregunta($pregunta);
+        $faq->setRespuesta($respuesta);
+
+        $em->persist($faq);
+        $em->flush();
+                    
+        $return = array('id' => $faq->getId(),
+                        'pregunta' =>$faq->getPregunta(),
+                        'respuesta' =>$faq->getRespuesta(),
+                        'delete_disabled' =>$f->linkEliminar($faq->getId(),'AdminFaqs'));
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }

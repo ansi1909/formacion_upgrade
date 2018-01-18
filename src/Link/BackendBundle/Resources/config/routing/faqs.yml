@@ -1,3 +1,9 @@
 _faqs:
     path:     /faqs/{app_id}
     defaults: { _controller: LinkBackendBundle:Faqs:index }
+
+_ajaxUpdateFaqs:
+    path:     /ajaxUpdateFaqs
+    defaults: { _controller: LinkBackendBundle:Faqs:ajaxUpdateFaqs }
+    requirements:
+        method: POST

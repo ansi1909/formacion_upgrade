@@ -5,7 +5,7 @@
 <input type="hidden" id="aplicaciones_str" name="aplicaciones_str" value="{# aplicaciones_str #}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
 <input type="hidden" id="url_subapps" name="url_subapps" value="{{ path('_ajaxSubAplicaciones') }}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_aplicaciones', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_faqs', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="error_msg-subapps" name="error_msg-subapps" value="{{ 'Error al obtener las subaplicaciones.'|trans }}">
 
 <div class="row align-items-center justify-content-between">
@@ -48,7 +48,7 @@
                         {% for faq in faqs %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ faq.id }}</td>
+                                <td>{{ faq.tipopregunta }}</td>
                                 <td>{{ faq.pregunta }}</td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{# aplicacion.id #}"><span class="fa fa-pencil"></span></a>
@@ -95,8 +95,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
     </div>
     <div class="modal-body">
-        <form id="form" name="form" action="{{ path('_ajaxUpdateAplicacion') }}" method="POST">
-            <input type="hidden" id="app_id" name="app_id" value="">
+        <form id="form" name="form" action="{{ path('_ajaxUpdateFaqs') }}" method="POST">
+            <input type="hidden" id="faq_id" name="faq_id" value="">
             <div class="form-group row justify-content-end">
                 <label for="pregunta" class="col-3 col-form-label">{{ 'Pregunta'|trans }}:</label>
                 <div class="col-13">
@@ -113,7 +113,7 @@
             <div class="form-group row justify-content-end">
                 <label for="tipo_pregunta" class="col-4 col-form-label">{{ 'Tipo de pregunta'|trans }}:</label>
                 <div class="col-12">
-                    <select class=" selectpicker" id="select1" name="select" style="border-radius: 5px;">
+                    <select class="form-control form_sty_sm" id="tipo_pregunta" name="tipo_pregunta" style="border-radius: 5px;">
                         {% for tipo in tipos %}
                           <option value="{{ tipo.id }}"> {{ tipo.nombre }} </option>
                         {% endfor %}
@@ -132,36 +132,22 @@
                 <div class="container">
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Nombre'|trans }}:</h5>
-                            <p id="p-nombre">Lorem Ipsum</p>
+                            <h5>{{ 'Pregunta'|trans }}:</h5>
+                            <p id="p-pregunta">Lorem Ipsum</p>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
-                            <h5>Url:</h5>
-                            <p id="p-url">https://Loremipsumdolorsitamet.domain/</p>
+                            <h5>Respuesta:</h5>
+                            <p id="p-respuesta">https://Loremipsumdolorsitamet.domain/</p>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Icono'|trans }}:</h5>
-                            <p id="p-icono"><span class="fa fa-users"></span></p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Activo'|trans }}:</h5>
-                            <p id="p-activo">Si</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row justify-content-between" id="div-subaplicacion">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Sub-Aplicación de'|trans }}:</h5>
-                            <p id="p-subaplicacion">5</p>
+                            <h5>{{ 'Tipo pregunta'|trans }}:</h5>
+                            <p id="p-t"><span class="fa fa-users"></span></p>
                         </div>
                     </div>
                 </div>
@@ -178,61 +164,10 @@
 
 {% block javascripts %}
     {{ parent() }}
+
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    
-    <script type="text/javascript" src="{{ asset('assets/vendor/Bootstrap-selectv-12/dist/js/bootstrap-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/faq.js') }}"></script>
     <script type="text/javascript">
-
-        $(function() {
-              var content = "<input type='text' class='bss-input' onKeyDown='event.stopPropagation();' onKeyPress='addSelectInpKeyPress(this,event)' onClick='event.stopPropagation()' placeholder='Add item'> <span class='glyphicon glyphicon-plus addnewicon' onClick='addSelectItem(this,event,1);'></span>";
-             
-              var divider = $('<option/>')
-                      .addClass('divider')
-                      .data('divider', true);
-                      
-             
-              var addoption = $('<option/>', {class: 'addItem'})
-                      .data('content', content)
-                  
-              $('.selectpicker')
-                      .append(divider)
-                      .append(addoption)
-                      .selectpicker();
-             
-            });
-             
-            function addSelectItem(t,ev)
-            {
-               ev.stopPropagation();
-               
-               var bs = $(t).closest('.bootstrap-select')
-               var txt=bs.find('.bss-input').val().replace(/[|]/g,"");
-               var txt=$(t).prev().val().replace(/[|]/g,"");
-               if ($.trim(txt)=='') return;
-               
-               // Changed from previous version to cater to new
-               // layout used by bootstrap-select.
-               var p=bs.find('select');
-               var o=$('option', p).eq(-2);
-               o.before( $("<option>", { "selected": true, "text": txt}) );
-               p.selectpicker('refresh');
-            }
-             
-            function addSelectInpKeyPress(t,ev)
-            {
-               ev.stopPropagation();
-             
-               // do not allow pipe character
-               if (ev.which==124) ev.preventDefault();
-             
-               // enter character adds the option
-               if (ev.which==13)
-               {
-                  ev.preventDefault();
-                  addSelectItem($(t).next(),ev);
-               }
-            }
-
 
         $("#form").validate({
             rules: {
