@@ -129,6 +129,7 @@ Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
+Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
 Icono: Icono
 Imagen: Imagen
 Imagen lado: Imagen lado
@@ -196,6 +197,7 @@ Opción: Opción
 Opción correcta (Lado B): Opción correcta (Lado B)
 Opciones: Opciones
 Opciones de la pregunta: Opciones de la pregunta
+Orden: Orden
 Página: Página
 Página asociada: Página asociada
 Página seleccionada: Página seleccionada

@@ -22,6 +22,12 @@ _ajaxActive:
     requirements:
         _method: POST
 
+_ajaxOrder:
+    path:     /ajaxOrder
+    defaults: { _controller: LinkBackendBundle:Default:ajaxOrder }
+    requirements:
+        _method: POST
+
 roles:
     resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
     prefix: /rol
