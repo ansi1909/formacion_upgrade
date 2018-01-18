@@ -1,0 +1,251 @@
+{% extends '::admin.html.twig'%}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<br>
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditBiblioteca') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="error_msg-subapps" name="error_msg-subapps" value="{{ 'Error al obtener las subaplicaciones.'|trans }}">
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Listado de Biblioteca Virtual'|trans }}</h3>
+    </div>
+    <div class="col text-right">
+        <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></button>
+    </div>
+</div>
+<div class="row">
+ 	<div class="col-sm-16">
+  		<div class="card">
+  			<div class="card-header gradiente">
+            	<h5 class="card-title">{{ 'Listado de Biblioteca Virtual'|trans }}</h5>
+        	</div>
+        	<div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+         		<table class="table " id="dt">
+          			<thead class="sty__title">
+                    	<tr>
+                        	<th class="hd__title">{{ 'Empresa'|trans }}</th>
+                            <th class="hd__title">{{ 'Título'|trans }}</th>
+                        	<th class="hd__title">{{ 'Fecha Creación'|trans }}</th>
+                        	<th class="hd__title">{{ 'Acciones'|trans }}</th>
+                    	</tr>
+                	</thead>
+                	<tbody>
+                		{% for noticia in noticias %}
+                			<tr class="odd">
+                				<td>{{ noticia.empresa }}</td>
+                				<td>{{ noticia.titulo }}</td>
+                				<td>{{ noticia.fechaRegistro|date("d/m/Y") }}</td>
+                                <td class="center">
+                                    <a href="{{ path('_registro', { 'noticia_id': noticia.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if noticia.delete_disabled == '' %}delete{% endif %} {{ noticia.delete_disabled }}" data="{{ noticia.id }}"><span class="fa fa-trash"></span></a>
+                                </td>
+                			</tr>
+                		{% endfor %}
+                	</tbody>
+         		</table>
+        	</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block formModal %}
+{% set uri = app.request.getbasepath %}
+
+    <div class="modal-header gradiente">
+        <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la Biblioteca Virtual'|trans }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+    </div>
+    <div class="modal-body">
+        <form id="form" name="form" action="{{ path('_ajaxUpdateBiblioteca') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="app_id" name="app_id" value="">
+            <input type="hidden" id="noticia_id" name="noticia_id" value="">
+
+                <div class="form-group row justify-content-end">
+                    <label for="nombre" class="col-2 col-form-label">{{ 'Empresa'|trans }}:</label>
+                    <div class="col-14">
+                        <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
+                            <option value="0"></option>
+                            {% for empresa in empresas %}
+                                <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="fa fa-industry"></span>
+                    </div>
+                </div> 
+            <div class="form-group row justify-content-end">
+                <label for="nombre" class="col-2 col-form-label">{{ 'Título'|trans }}:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="titulo" name="titulo" value="">
+                    <span class="fa fa-square"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="icono" class="col-2 col-form-label">{{ 'Contenido'|trans }}:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="contenido" name="contenido" value="">
+                    <span class="fa fa-square"></span>
+                </div>
+            </div>
+
+            <div class="form-group row justify-content-end">
+                <label for="icono" class="col-2 col-form-label">{{ 'Pdf'|trans }}:</label>
+                <div class="col-11">
+                    <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
+                    <span class="fa fa-square"></span>
+                </div>
+                <div class="col-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">                
+                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&fldr=recursos/noticias" class="btn iframe-btn" type="button">
+                                <span class="fa fa-file-excel-o"></span>
+                            </a>
+                        </span>
+                    </div>
+                </div>                
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="icono" class="col-2 col-form-label">{{ 'Imagen'|trans }}:</label>
+                <div class="col-11">
+                    <input type="text" class="form-control form_sty1" name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
+                    <span class="fa fa-square"></span>
+                </div>
+                <div class="col-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">                   
+                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/noticias" class="btn iframe-btn" type="button">
+                                <span class="fa fa-file-excel-o"></span>
+                            </a>
+                        </span>
+                    </div>  
+                </div>
+            </div>
+        </form>
+        <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+        </div>
+        <div class="card" id="detail" style="display:none;">
+            <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+                <h4 class="card-title" style="color: #fff; text-transform: uppercase">Datos Básicos</h4>
+            </div>
+            <div class="card-block">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Título'|trans }}:</h5>
+                            <p id="p-titulo">Lorem Ipsum<span class="fa fa-square"></span></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Contenido'|trans }}:</h5>
+                            <p id="p-contenido">fdsfsdfsdf<span class="fa fa-square"></span></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Pdf'|trans }}:</h5>
+                            <p id="p-pdf">fdsfsdfsdf<span class="fa fa-square"></span></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Imagen'|trans }}:</h5>
+                            <p id="p-imagen">fdsfsdfsdf<span class="fa fa-square"></span></p>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-sm-16 col-md-16 text-right">
+                    <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                    <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar' |trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/biblioteca.js') }}"></script>
+    <script type="text/javascript">
+
+        jQuery.validator.addMethod("noSpace", function(value, element) { 
+            return value.indexOf(" ") < 0; 
+        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
+
+        $("#form").validate({
+            rules: {
+                'titulo': {
+                    required: true,
+                    minlength: 3
+                },
+                'contenido': {
+                    required: true,
+                    minlength: 3
+                },
+                'pdf': {
+                    extension: "pdf"
+                },
+                'imagen': {
+                    extension: "jpg|png"
+                }
+            },
+            messages: {
+                'titulo': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'contenido': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'pdf': {
+                    extension: "- {{ 'Sólo archivos con extensión pdf.'|trans }}"
+                },
+                'imagen': {
+                    extension: "- {{ 'Sólo archivos con extensión jpg o png.'|trans }}"
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

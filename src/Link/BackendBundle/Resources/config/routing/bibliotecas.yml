@@ -1,15 +1,15 @@
 _bibliotecas:
     path:     /listado/{app_id}
-    defaults: { _controller: LinkBackendBundle:Empresa:index }
+    defaults: { _controller: LinkBackendBundle:Biblioteca:index }
 
-_registro:
-    path:     /registro/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Empresa:registro, empresa_id: 0 }
+_ajaxEditBiblioteca:
+    path:     /ajaxEditBiblioteca
+    defaults: { _controller: LinkBackendBundle:Biblioteca:ajaxEditBiblioteca }
+    requirements:
+        method: GET
 
-_guardarEmpresa:
-    path:     /guardarEmpresa
-    defaults: {_controller: LinkBackendBundle:Empresa:guardarEmpresa }
-
-_showEmpresa:
-    path:     /mostrar/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Empresa:mostrar }
+_ajaxUpdateBiblioteca:
+    path:     /ajaxUpdateBiblioteca
+    defaults: { _controller: LinkBackendBundle:Biblioteca:ajaxUpdateBiblioteca }
+    requirements:
+        method: POST
