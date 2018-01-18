@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/css/rowReorder.dataTables.min.css') }}" type="text/css">
 {% endblock %}
 
 
@@ -32,10 +33,11 @@
                 <h5 class="card-title">{{ 'Listado de preguntas de la evaluación'|trans }} {{ prueba.nombre }}</h5>
             </div>
             <div class="card-block">
-                <table class="table">
+                <table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title">#</th>
+                            <th class="hd__title">{{ 'Orden'|trans }}</th>
+                            <th class="hd__title">Id</th>
                             <th class="hd__title">{{ 'Enunciado'|trans }}</th>
                             <th class="hd__title">{{ 'Tipo de pregunta'|trans }}</th>
                             <th class="hd__title">{{ 'Opciones'|trans }}</th>
@@ -49,6 +51,7 @@
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
                                 <td>{{ pregunta.orden }}</td>
+                                <td>{{ pregunta.id }}</td>
                                 <td>{{ pregunta.enunciado }}</td>
                                 <td>{{ pregunta.tipo }}</td>
                                 <td>
@@ -85,5 +88,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/preguntas.js') }}"></script>
 {% endblock %}
