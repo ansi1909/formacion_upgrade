@@ -4,7 +4,7 @@
 <br>
 <input type="hidden" id="aplicaciones_str" name="aplicaciones_str" value="{# aplicaciones_str #}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
-<input type="hidden" id="url_subapps" name="url_subapps" value="{{ path('_ajaxSubAplicaciones') }}">
+<input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxRespuesta') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_faqs', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="error_msg-subapps" name="error_msg-subapps" value="{{ 'Error al obtener las subaplicaciones.'|trans }}">
 
@@ -51,11 +51,9 @@
                                 <td>{{ faq.tipopregunta }}</td>
                                 <td>{{ faq.pregunta }}</td>
                                 <td class="center">
-                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{# aplicacion.id #}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ faq.id }}"><span class="fa fa-pencil"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {# if aplicacion.delete_disabled == '' #}delete{# endif #} {# aplicacion.delete_disabled #}" data="{# aplicacion.id #}"><span class="fa fa-trash"></span></a>
-                                    {# if aplicacion.tiene_subaplicaciones #}
-                                        <a href="#" title="{{ 'Ver Sub-Aplicaciones'|trans }}" class="btn btn-link btn-sm see" data="{# aplicacion.id #}"><span class="fa fa-eye"></span></a>
-                                    {# endif #}
+                                    <a href="#" title="{{ 'Ver respuesta'|trans }}" class="btn btn-link btn-sm see" data="{{ faq.id }}"><span class="fa fa-eye"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -64,24 +62,16 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-6" style="display:none;" id="div-subapps">
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-6" style="display:none;" id="div-respuesta">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Sub-Aplicaciones de'|trans }} <span id="appTitle"></span></h5>
+                <h5 class="card-title">{{ 'Respuesta'|trans }} </h5>
+                <div>
+                    <textarea id="respuesta"></textarea>
+                </div>
             </div>
             <div class="card-block">
-                <table class="table">
-                    <thead class="sty__title">
-                        <tr>
-                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
-                            <th class="hd__title">Url</th>
-                            <th class="hd__title">{{ 'Activo'|trans }}</th>
-                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-subapps">
-                    </tbody>
-                </table>
+                
             </div>
         </div>
     </div>
@@ -113,7 +103,7 @@
             <div class="form-group row justify-content-end">
                 <label for="tipo_pregunta" class="col-4 col-form-label">{{ 'Tipo de pregunta'|trans }}:</label>
                 <div class="col-12">
-                    <select class="form-control form_sty_sm" id="tipo_pregunta" name="tipo_pregunta" style="border-radius: 5px;">
+                    <select class="form-control form_sty_sm" id="tipo_pregunta_id" name="tipo_pregunta_id" style="border-radius: 5px;">
                         {% for tipo in tipos %}
                           <option value="{{ tipo.id }}"> {{ tipo.nombre }} </option>
                         {% endfor %}

@@ -7,3 +7,9 @@ _ajaxUpdateFaqs:
     defaults: { _controller: LinkBackendBundle:Faqs:ajaxUpdateFaqs }
     requirements:
         method: POST
+
+_ajaxRespuesta:
+    path:     /ajaxRespuesta
+    defaults: { _controller: LinkBackendBundle:Faqs:ajaxRespuesta }
+    requirements:
+        _method: GET
