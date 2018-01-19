@@ -4,6 +4,7 @@ namespace Link\ComunBundle\Services;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class Functions
 {	
@@ -12,9 +13,10 @@ class Functions
 	protected $container;
 	protected $mailer;
 	private $templating;
-	
+
 	public function __construct(\Doctrine\ORM\EntityManager $em, ContainerInterface $container)
 	{
+
 		$this->em = $em;
 		$this->container = $container;
 		$this->mailer = $container->get('mailer');
@@ -485,11 +487,19 @@ class Functions
 	{
 
 		$em = $this->em;
+		$session = new Session();
 		
 		$admin_sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($sesion_id);
-		$admin_sesion->setFechaRequest(new \DateTime('now'));
-        $em->persist($admin_sesion);
-        $em->flush();
+		if($admin_sesion){
+			$admin_sesion->setFechaRequest(new \DateTime('now'));
+        	$em->persist($admin_sesion);
+        	$em->flush();
+		}
+		else{
+			$session->invalidate();
+        	$session->clear();
+		}
+		
 
 	}
 

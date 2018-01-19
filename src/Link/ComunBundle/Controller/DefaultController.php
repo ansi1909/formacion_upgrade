@@ -27,9 +27,10 @@ class DefaultController extends Controller
             $sesion->setDisponible(false);
             $em->persist($sesion);
             $em->flush();
+            $f->setRequest($session->get('sesion_id'));
         }
 
-        $f->setRequest($session->get('sesion_id'));
+        
         $session->invalidate();
         $session->clear();
 
