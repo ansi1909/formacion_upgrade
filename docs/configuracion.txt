@@ -26,7 +26,7 @@
 
 8. Base de datos con Postgres 9.4
 
-9. Activar las siguientes extensiones PHP:
+9. Activar las siguientes extensiones PHP php.ini, tanto en el del apache como el del php:
 	- php_curl
 	- php_intl
 	- php_pdo_pgsql
@@ -51,3 +51,5 @@
 	xdebug.var_display_max_depth = -1 
 	xdebug.var_display_max_children = -1
 	xdebug.var_display_max_data = -1
+
+14. URL backend: http://localhost/formacion2.0/web/app_dev.php/admin/
