@@ -79,3 +79,7 @@ novedades:
 notificaciones:
     resource: "@LinkBackendBundle/Resources/config/routing/notificaciones.yml"
     prefix: /notificaciones
+
+tipodestino:
+    resource: "@LinkBackendBundle/Resources/config/routing/tipodestino.yml"
+    prefix: /tipodestino

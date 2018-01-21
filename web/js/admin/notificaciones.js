@@ -1,0 +1,53 @@
+$(document).ready(function() {
+
+    $('#empresa_id').change(function(){
+    	console.log('Usuario admin');
+    	var empresa_id = $(this).val();
+		getListadoNotificaciones(empresa_id);
+	});
+
+	afterPaginate();
+
+});
+
+function getListadoNotificaciones(empresa_id){
+	$.ajax({
+		type: "GET",
+		url: $('#url_notificaciones').val(),
+		async: true,
+		data: { empresa_id: empresa_id },
+		dataType: "json",
+		success: function(data) {
+			$('#list_notificaciones').html(data.notificaciones);
+		},
+		error: function(){
+			$('#active-error').html($('#error_msg-filter').val());
+			$('#div-active-alert').show();
+		}
+	});
+}
+
+function afterPaginate(){
+	$('.see').click(function(){
+		var notificacion_id = $(this).attr('data');
+		$('#div-active-alert').hide();
+		$.ajax({
+			type: "GET",
+			url: $('#url_programation').val(),
+			async: true,
+			data: { notificacion_id: notificacion_id },
+			dataType: "json",
+			success: function(data) {
+				$('#tbody_history_programation').html(data.html);
+				$('#notificacionTitle').html(data.notificacion);
+				$('#history_programation').show();
+				observe();
+			},
+			error: function(){
+				$('#active-error').html($('#error_msg_history').val());
+				$('#div-active-alert').show();
+				$('#history_programation').hide();
+			}
+		});
+	});
+}

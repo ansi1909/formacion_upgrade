@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNotificacion;
 use Link\ComunBundle\Entity\AdminNotificacionProgramada;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
+use Link\ComunBundle\Entity\AdminNivel;
+use Link\ComunBundle\Entity\CertiPagina;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -34,93 +36,119 @@ class NotificacionController extends Controller
         $usuario_empresa = 0;
         $empresas = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        $tipo_notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoNotificacion')->findAll();
 
         if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1; 
+            $usuario_empresa = 1;
+            $notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($usuario->getEmpresa());
         }
         else {
             $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-        } 
+            $notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findAll();
+        }
+
+         foreach ($notificaciones as $notificacion)
+        {
+            $notificacionesdb[]= array('id'=>$notificacion->getId(),
+                              'asunto'=>$notificacion->getAsunto(),
+                              'empresa'=>$notificacion->getEmpresa()->getNombre(),
+                              'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre(),
+                              'delete_disabled'=>$f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
+
+        }
+
 
         return $this->render('LinkBackendBundle:Notificacion:index.html.twig', array('empresas' => $empresas,
                                                                                         'usuario_empresa' => $usuario_empresa,
+                                                                                        'notificaciones' => $notificacionesdb,
+                                                                                        'tipo_notificaciones' => $tipo_notificaciones,
                                                                                         'usuario' => $usuario));
     }
 
     public function ajaxNotificacionAction(Request $request)
     {
 
-        /*$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-        $nivel_id = $request->query->get('nivel_id');
         $f = $this->get('funciones');
 
         $qb = $em->createQueryBuilder();
         $qb->select('u')
-           ->from('LinkComunBundle:AdminUsuario', 'u');
+           ->from('LinkComunBundle:AdminNotificacion', 'u');
         $qb->andWhere('u.empresa = :empresa_id');
         $parametros['empresa_id'] = $empresa_id;
 
-        if ($nivel_id)
-        {
-            $qb->andWhere('u.nivel = :nivel_id');
-            $parametros['nivel_id'] = $nivel_id;
-        }
-
-        if ($empresa_id || $nivel_id)
+        if ($empresa_id)
         {
             $qb->setParameters($parametros);
         }
 
         $query = $qb->getQuery();
-        $usuarios_db = $query->getResult();
-        $usuarios = '';
+        $notificaciones_db = $query->getResult();
+        $notificaciones = '';
 
-        foreach ($usuarios_db as $usuario) {
-            $delete_disabled = $f->linkEliminar($usuario->getId(), 'AdminUsuario');
+        foreach ($notificaciones_db as $notificacion) {
+            $delete_disabled = $f->linkEliminar($notificacion->getId(), 'AdminNotificacion');
             $class_delete = $delete_disabled == '' ? 'delete' : '';
-            $usuarios .= '<tr><td>'.$usuario->getNombre().'</td><td>'.$usuario->getApellido().'</td><td>'.$usuario->getNivel()->getNombre().'</td>
+            $notificaciones .= '<tr><td>'.$notificacion->getAsunto().'</td><td>'.$notificacion->getEmpresa()->getNombre().'</td><td>'.$notificacion->getTipoNotificacion()->getNombre().'</td>
             <td class="center">
-                <a href="'.$this->generateUrl('_nuevoParticipante', array('usuario_id' => $usuario->getId())).'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
-                <a href="#" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$usuario->getId().'"><span class="fa fa-trash"></span></a>
+                <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$notificacion->getId().'"><span class="fa fa-pencil"></span></a>
+                <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$notificacion->getId().'"><span class="fa fa-trash"></span></a>
+                <a href="#" title="'.$this->get('translator')->trans('Ver Historial').'" class="btn btn-link btn-sm see" data="'.$notificacion->getId().'"><span class="fa fa-eye"></span></a>
             </td> </tr>';
         }
         
-        $return = array('usuarios' => $usuarios);
+        $return = array('notificaciones' => $notificaciones);
  
         $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));*/
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 
     public function ajaxUpdateNotificacionAction(Request $request)
     {
         
-        /*$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
+        $notificacion_id = $request->request->get('notificacion_id');
+        $asunto = $request->request->get('asunto');
+        $mensaje = $request->request->get('mensaje');
         $tipo_notificacion_id = $request->request->get('tipo_notificacion_id');
-        $nombre = $request->request->get('tipo_notificacion');
+        $tipo_notificacion = $em->getRepository('LinkComunBundle:AdminTipoNotificacion')->find($tipo_notificacion_id);
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        if ($tipo_notificacion_id)
+        if ($usuario->getEmpresa()) {
+            $empresa_id = $usuario->getEmpresa()->getId();
+        }else{
+            $empresa_id = $request->query->get('form_empresa_id');
+        }
+        
+
+        if ($notificacion_id)
         {
-            $tipo_notificacion = $em->getRepository('LinkComunBundle:AdminTipoNotificacion')->find($tipo_notificacion_id);
+            $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
         }
         else {
-            $tipo_notificacion = new AdminTipoNotificacion();
+            $notificacion = new AdminNotificacion();
         }
 
-        $tipo_notificacion->setNombre($nombre);
+        $notificacion->setAsunto($asunto);
+        $notificacion->setMensaje($mensaje);
+        $notificacion->setTipoNotificacion($tipo_notificacion->getId());
+        $notificacion->setUsuario($usuario->getId());
         
-        $em->persist($tipo_notificacion);
+        $em->persist($notificacion);
         $em->flush();
                     
-        $return = array('id' => $tipo_notificacion->getId(),
-                        'nombre' =>$tipo_notificacion->getNombre(),
-                        'delete_disabled' =>$f->linkEliminar($tipo_notificacion->getId(),'AdminTipoNotificacion'));
+        $return = array('id' => $notificacion->getId(),
+                        'asunto'=>$notificacion->getAsunto(),
+                        'empresa'=>$notificacion->getEmpresa()->getNombre(),
+                        'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre(),
+                        'delete_disabled' =>$f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
 
         $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));*/
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
 
@@ -142,6 +170,52 @@ class NotificacionController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));*/
+        
+    }
+
+    public function ajaxHistoryProgramationsAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $notificacion_id = $request->query->get('notificacion_id');
+        $html = '';
+        
+        $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+        $notificaciones_programadas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByNotificacion($notificacion_id);
+
+        foreach ($notificaciones_programadas as $notificacion_programada)
+        {
+            $checked = $notificacion_programada->getActivo() ? 'checked' : '';
+            $delete_disabled = $f->linkEliminar($notificacion_programada->getId(), 'AdminNotificacionProgramada');
+            $delete = $delete_disabled=='' ? 'delete' : '';
+            if($notificacion_programada->getTipoDestino()->getNombre() == 'Programa'){
+
+                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $entidad = $programa->getNombre();
+
+            }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Nivel'){
+                $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($notificacion_programada->getEntidadId());
+                $entidad = $nivel->getNombre();
+            }else{
+                $entidad = 'N/A';
+            }
+            $html .= '<tr>
+                        <td>'.$notificacion_programada->getTipoDestino()->getNombre().'</td>
+                        <td>'.$entidad.'</td>
+                        <td>'.$notificacion_programada->getFechaDifusion().'</td>
+                        <td class="center">
+                            <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>';
+        }
+
+        $return = array('html' => $html,
+                        'notificacion' => $notificacion->getAsunto());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
 

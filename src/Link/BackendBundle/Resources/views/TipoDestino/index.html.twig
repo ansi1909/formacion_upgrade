@@ -1,12 +1,12 @@
 {% extends '::admin.html.twig' %}
 
 {% block body %}
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTipoNotificacion') }}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_tipoNotificacion', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTipoDestino') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_tipoDestino', { 'app_id': app.session.get('app_id') }) }}">
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>Tipo de Notificaciones</h3>
+        <h3>Tipo de Destinos</h3>
     </div>
    <div class="col text-right">
        <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
@@ -16,24 +16,24 @@
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Listado de Tipos de Notificaciones' |trans}}</h5>
+                <h5 class="card-title">{{ 'Listado de Tipos de Destinos' |trans}}</h5>
             </div>
             <div class="card-block">
                 <table class="table">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title">{{'Tipo Notificación'|trans }}</th>
+                            <th class="hd__title">{{'Tipo Destino'|trans }}</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                      {% for tipo_notificacion in tipo_notificaciones %}
+                      {% for tipo_destino in tipo_destinos %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{eo}}">
-                                <td>{{ tipo_notificacion.nombre }}</td>
+                                <td>{{ tipo_destino.nombre }}</td>
                                 <td class="center">
-                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ tipo_notificacion.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if tipo_notificacion.delete_disabled == '' %}delete{% endif %} {{ tipo_notificacion.delete_disabled }}" data="{{tipo_notificacion.id}}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ tipo_destino.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if tipo_destino.delete_disabled == '' %}delete{% endif %} {{ tipo_destino.delete_disabled }}" data="{{tipo_destino.id}}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                       {% endfor %}
@@ -48,17 +48,17 @@
 
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del Tipo de Notificación'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del Tipo de Destino'|trans}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form" action="{{ path( '_ajaxUpdateTipoNotificacion')}}"  method="POST">
-        <input type="hidden" id="tipo_notificacion_id" name="tipo_notificacion_id" value="">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateTipoDestino')}}"  method="POST">
+        <input type="hidden" id="tipo_destino_id" name="tipo_destino_id" value="">
         <div class="form-group">
-            <label for="recipient-name" class="form-conttipo_notificacion-label">{{ 'Tipo Notificación'|trans }}:</label>
-            <input type="text" class="form-conttipo_notificacion form_sty_modal" id="tipo_notificacion" name="tipo_notificacion" value="">
+            <label for="recipient-name" class="form-conttipo_destino-label">{{ 'Tipo Destino'|trans }}:</label>
+            <input type="text" class="form-conttipo_destino form_sty_modal" id="tipo_destino" name="tipo_destino" value="">
             <span class="fa fa-cube"></span>
         </div>
     </form>
@@ -73,7 +73,7 @@
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{ 'Tipo Notificación'|trans }}:</h5>
+                        <h5>{{ 'Tipo Destino'|trans }}:</h5>
                         <p id="p-nombre">Lorem Ipsum</p>
                     </div>
                 </div>
@@ -101,18 +101,18 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
-    <script type="text/javascript" src="{{ asset('js/admin/tipo_notificacion.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/tipo_destino.js') }}"></script>
     <script type="text/javascript">
 
         $("#form").validate({
             rules: {
-                'tipo_notificacion': {
+                'tipo_destino': {
                     required: true,
                     minlength: 3
                 },
             },
             messages: {
-                'tipo_notificacion': {
+                'tipo_destino': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
                 }

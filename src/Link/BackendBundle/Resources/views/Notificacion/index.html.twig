@@ -6,66 +6,37 @@
 {% endblock %}
 
 {% block body %}
-{% set encabezado = usuario_empresa ? 'Búsqueda de notificaciones empresa'|trans~' '~usuario.empresa.nombre : 'Búsqueda de notificaciones por empresa'|trans %}
+
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
 <br><br>
-<input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
 <input type="hidden" id="url_notificaciones" name="url_notificaciones" value="{{ path ('_ajaxNotificacion') }}">
+<input type="hidden" id="url_programation" name="url_programation" value="{{ path('_ajaxHistoryProgramations') }}">
+<input type="hidden" id="error_msg_history" name="error_msg_history" value="{{ 'Error al obtener el historial.'|trans }}">
+{% if usuario_empresa %}
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+{% endif %}
 <div class="col text-right">
     <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
 </div>
 <br>
+{% if not usuario_empresa %}
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ encabezado }}</h5>
+                <h5 class="card-title">{{ 'Búsqueda de notificaciones por empresa'|trans  }}</h5>
             </div>
             <div class="card-block">
-                {% if not usuario_empresa %}
                  <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa'|trans }}</label>
-
-                    <div class="row">
-                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                <option value="0"></option>
-                                {% for empresa in empresas %}
-                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                            <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                        </div>
-                    </div>
-                    <br>
-                {% else %}
-                    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
-                {% endif %}
-                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programa'|trans }}</label>
                 <div class="row">
                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                        {% if not usuario_empresa %}
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
-                                <option value="0"></option>
-                                {% for empresa in empresas %}
-                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        {% else %}
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
-                            </select>
-                        {% endif %}
-                        <span class="fa fa-industry"></span>
-                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                    </div>
-                </div>
-                <br>
-                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Nivel</label>
-                <div class="row">
-                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="nivel_id" name="nivel_id">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                            <option value="0"></option>
+                            {% for empresa in empresas %}
+                                <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                            {% endfor %}
                         </select>
                         <span class="fa fa-industry"></span>
                         <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
@@ -76,8 +47,9 @@
         </div>
     </div>
 </div>
+{% endif %}
 <div class="row">
-    <div class="col-sm-16">
+    <div class="col-sm-10 col-md-10 col-lg-10">
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
@@ -104,14 +76,51 @@
                                 <th>{{ 'Empresa'|trans }}</th>
                             {% endif %}
                             <th>{{ 'Tipo Notificación'|trans }}</th>
-                            <th>{{ 'Fecha Difusión'|trans }}</th>
                             <th>{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody id="usuarios" name="usuarios">
-                        
+                    <tbody id="list_notificaciones" name="list_notificaciones">
+                        {% for notificacion in notificaciones %}
+                            <tr>
+                                <td>{{ notificacion.asunto }}</td>
+                                {% if not usuario_empresa %}
+                                    <td>{{ notificacion.empresa }}</td>
+                                {% endif %}
+                                <td>{{ notificacion.tipo_notificacion }}</td>
+                                <td class="center">
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-6" style="display:none;" id="history_programation">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Historial de programaciones de'|trans }} <span id="notificacionTitle"></span></h5>
+            </div>
+            <div class="card-block">
+                <table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Destino'|trans }}</th>
+                            <th class="hd__title">{{ 'Entidad'|trans }}</th>
+                            <th class="hd__title">{{ 'Fecha'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_history_programation">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block formModal %}
@@ -125,9 +134,27 @@
     <form id="form" name="form" action="{{ path( '_ajaxUpdateNotificacion')}}"  method="POST">
         <input type="hidden" id="notificacion_id" name="notificacion_id" value="">
         <div class="form-group">
-            <label for="recipient-name" class="form-conttipo_notificacion-label">{{ 'Notificación'|trans }}:</label>
-            <input type="text" class="form-cont_notificacion form_sty_modal" id="notificacion" name="notificacion" value="">
+            <label for="asunto" class="form-conttipo_notificacion-label">{{ 'Asunto'|trans }}:</label>
+            <input type="text" class="form-cont_notificacion form_sty_modal" id="asunto" name="asunto" value="">
             <span class="fa fa-cube"></span>
+            <label for="mensaje" class="form-conttipo_notificacion-label">{{ 'Mensaje'|trans }}:</label>
+            <textarea class="ckeditor" id="mensaje" name="mensaje" value=""></textarea>
+            {% if not usuario_empresa %}
+                <label for="form_empresa_id" class="form-conttipo_notificacion-label">{{ 'Mensaje'|trans }}:</label>
+                <select class="form_sty_sel form-control" style="border-radius: 5px" id="form_empresa_id" name="form_empresa_id">
+                    <option value="0"></option>
+                    {% for empresa in empresas %}
+                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+            <label for="tipo_notificacion_id" class="form-conttipo_notificacion-label">{{ 'Tipo Notificación'|trans }}:</label>
+            <select class="form_sty_sel form-control" style="border-radius: 5px" id="tipo_notificacion_id" name="tipo_notificacion_id">
+                <option value="0"></option>
+                {% for tipo_notificacion in tipo_notificaciones %}
+                    <option value="{{ tipo_notificacion.id }}" >{{ tipo_notificacion.nombre }}</option>
+                {% endfor %}
+            </select>
         </div>
     </form>
     <div class="alert alert-success" tipo_notificacione="alert" id="alert-success" style="display:none;"> 
@@ -167,6 +194,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/participantes.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/notificaciones.js') }}"></script>
 {% endblock %}

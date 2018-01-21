@@ -19,3 +19,9 @@ _ajaxEditNotificacion:
     defaults: { _controller: LinkBackendBundle:Notificacion:ajaxEditNotificacion }
     requirements:
         method: GET
+
+_ajaxHistoryProgramations:
+    path:     /ajaxHistoryProgramtions
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxHistoryProgramations }
+    requirements:
+        _method: GET

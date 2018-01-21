@@ -61,6 +61,7 @@ Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
 Datos del Tipo de Notificación: Notification Details
+Datos del Tipo de Destino: Destinity Destails
 de la evaluación: of the test
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
@@ -70,6 +71,7 @@ Descargar: Download
 Descargue material complementario: Download complementary content
 Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
+Destino: Destination
 Detalles de la página: Page details
 División funcional: Functional division
 Editar: Edit
@@ -112,7 +114,9 @@ Empresas inactivas: Inactive companies
 Empresas registradas: Registered companies
 Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
+Entidad: Entity
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
+Error al obtener el historial.: Error ocurred retrieving history.
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
@@ -122,6 +126,7 @@ Estatus de las sub-paginas: Sub-pages status
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Estructura: Structure
+Fecha: Date
 Fecha Creación: Creation Date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
@@ -136,6 +141,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
+Historial de programaciones de: Programation history of 
 Icono: Icon
 Imagen: Image
 Imagen lado: Image side
@@ -175,10 +181,12 @@ Listado de participantes: List of participants
 Listado de preguntas de la evaluación: Questions list of test
 Listado de programas: List of programs
 Listado de Roles: List of Roles
+Listado de Tipos de Destinos: List of Types of Destinies
 Listado de Tipos de Notificaciones: List of Types of Notifications
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Material complementario: Complementary content
+Mensaje: Message
 Mensaje del servidor: Server message
 Modificado el: Modified at
 Modificado por: Modified by
@@ -254,6 +262,8 @@ Tipo de elemento: Element type
 Tipo de pregunta: Question type
 Tipo Notificación: Notification Type
 Tipo de Notificaciones: Type of Notifications
+Tipo Destino: Destinit Type
+Tipo de Destinos: Desnity Types
 Últimos 12: Last 12
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
@@ -265,7 +275,9 @@ Usuarios culminados: Finished users
 Usuarios cursando: Users Studying
 Usuarios inactivos: Inactive users
 Usuarios no iniciados: Uninitiated users
+Usuarios Notificados: Notified Users
 Usuarios reg.: Reg users
 Usuarios registrados: Registered users
 Valor de la pregunta: Question weighing
+Ver Historial: See History
 Ver Sub-Aplicaciones: See Sub-Applications

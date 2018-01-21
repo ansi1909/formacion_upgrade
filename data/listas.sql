@@ -203,6 +203,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VAL
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (28, 'Notificaciones', '_notificacion', 'fa-inbox', TRUE, 27);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (29, 'Programar avisos', NULL, 'fa-clock-o', TRUE, 27);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (30, 'Tipo Notificaciones', '_tipoNotificacion', 'fa-inbox', TRUE, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (31, 'Tipo Destino', '_tipoDestino', 'fa-envelope', TRUE, 1);
 
 
 ------------------------------------------------------------------------------------------------------------------------
