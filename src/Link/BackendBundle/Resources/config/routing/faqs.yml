@@ -13,3 +13,9 @@ _ajaxRespuesta:
     defaults: { _controller: LinkBackendBundle:Faqs:ajaxRespuesta }
     requirements:
         _method: GET
+
+_ajaxEditFaqs:
+    path:     /ajaxEditFaqs
+    defaults: { _controller: LinkBackendBundle:Faqs:ajaxEditFaqs }
+    requirements:
+        _method: GET

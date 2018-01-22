@@ -28,36 +28,6 @@ $(document).ready(function() {
 		e.preventDefault();
 		saveRol();
 	});
-
-	$('.edit').click(function(){
-		var rol_id = $(this).attr('data');
-		var url_edit = $('#url_edit').val();
-		$('#guardar').prop('disabled', false);
-		$('label.error').hide();
-		$('#form').show();
-		$('#alert-success').hide();
-		$('#detail').hide();
-		$('#aceptar').hide();
-		$('#guardar').show();
-		$('#cancelar').show();
-		$('#div-alert').hide();
-		$.ajax({
-			type: "GET",
-			url: url_edit,
-			async: true,
-			data: { rol_id: rol_id },
-			dataType: "json",
-			success: function(data) {
-				$('#rol_id').val(rol_id);
-				$('#rol').val(data.nombre);
-				$('#descripcion').val(data.descripcion);
-			},
-			error: function(){
-				$('alert-error').html($('#error_msg_edit').val());
-				$('#div-alert').show();
-			}
-		});
-	});
 	 
  	$('#aceptar').click(function(){
 		window.location.replace($('#url_list').val());
@@ -67,6 +37,8 @@ $(document).ready(function() {
 		var rol_id = $(this).attr('data');
 		sweetAlertDelete(rol_id, 'AdminRol');
 	});
+
+	observe();
 
 });
 
@@ -89,15 +61,13 @@ function observe()
 			type: "GET",
 			url: url_edit,
 			async: true,
-			data: { app_id: app_id },
+			data: { faq_id: faq_id },
 			dataType: "json",
 			success: function(data) {
-				$('#app_id').val(app_id);
-				$('#nombre').val(data.nombre);
-				$('#url').val(data.url);
-				$('#icono').val(data.icono);
-				$('#activo').prop('checked', data.activo);
-				$('#subaplicacion_id').html(data.subaplicaciones);
+				$('#faq_id').val(faq_id);
+				$('#pregunta').val(data.pregunta);
+				$('#respuesta').val(data.respuesta);
+				$('#tipo_pregunta_id').html(data.tipo_pregunta);
 			},
 			error: function(){
 				$('#alert-error').html($('#error_msg-edit').val());
@@ -107,8 +77,8 @@ function observe()
 	});
 
 	$('.delete').click(function(){
-		var app_id = $(this).attr('data');
-		sweetAlertDelete(app_id, 'AdminAplicacion');
+		var faq_id = $(this).attr('data');
+		sweetAlertDelete(faq_id, 'AdminFaqs');
 	});
 
 }
@@ -143,8 +113,8 @@ function saveFaq()
 						$( "#detail-delete" ).show();
 						$('.delete').click(function()
 						{
-							var rol_id= $(this).attr('data');
-							sweetAlertDelete(rol_id, 'AdminRol');
+							var faq_id= $(this).attr('data');
+							sweetAlertDelete(faq_id, 'AdminFaqs');
 						});
 					}
 					$('#form').hide();
@@ -173,7 +143,7 @@ function afterPaginate(){
 			data: { faq_id: faq_id },
 			dataType: "json",
 			success: function(data) {
-				$('#respuesta').html(data.respuesta);
+				$('#respuesta_v').html(data.respuesta);
 				$('#div-respuesta').show();
 				observe();
 			},
@@ -184,3 +154,4 @@ function afterPaginate(){
 			}
 		});
 	});
+}

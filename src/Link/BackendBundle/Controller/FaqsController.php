@@ -47,10 +47,12 @@ class FaqsController extends Controller
         foreach ($faqs as $faq)
         {
 
+
             $faqsdb[] = array('id' => $faq->getId(),
                               'tipopregunta' => $faq->getTipoPregunta()->getNombre(),
                               'pregunta' => $faq->getPregunta(),
-                              'respuesta' => $faq->getRespuesta());
+                              'respuesta' => $faq->getRespuesta(),
+                              'delete_disabled' => $f->linkEliminar($faq->getId(), 'AdminFaqs'));
                               
         }
 
@@ -100,7 +102,7 @@ class FaqsController extends Controller
         
     }
 
-    public function ajaxRespuesta(Request $request)
+    public function ajaxRespuestaAction(Request $request)
     {
         
         $em = $this->getDoctrine()->getManager();
@@ -112,6 +114,35 @@ class FaqsController extends Controller
 
 
         $return = array('respuesta' => $respuesta->getrespuesta());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+
+    public function ajaxEditFaqsAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $faq_id = $request->query->get('faq_id');
+        $tipo_p = '<option value=""></option>';
+        
+        $faq1 = $this->getDoctrine()->getRepository('LinkComunBundle:AdminFaqs')->find($faq_id);
+        $faqs = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoPregunta')->findAll();
+
+        foreach($faqs as $faq)
+        {
+
+            $selected = $faq1->getTipoPregunta()->getId() == $faq->getId() ? ' selected'  : '';
+            $tipo_p .= '<option value="'.$faq->getId().'"'.$selected.' >'.$faq->getNombre().'</option>';
+         
+        }   
+
+        $return = array('faq_id' => $faq1->getId(),
+                        'pregunta' => $faq1->getPregunta(),
+                        'respuesta' => $faq1->getRespuesta(),
+                        'tipo_pregunta' => $tipo_p);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
