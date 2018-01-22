@@ -68,10 +68,6 @@ faqs:
     resource: "@LinkBackendBundle/Resources/config/routing/faqs.yml"
     prefix: /faq
 
-tiponotificaciones:
-    resource: "@LinkBackendBundle/Resources/config/routing/tiponotificaciones.yml"
-    prefix: /tiponotificacion
-
 novedades:
     resource: "@LinkBackendBundle/Resources/config/routing/novedades.yml"
     prefix: /novedades
@@ -79,7 +75,3 @@ novedades:
 notificaciones:
     resource: "@LinkBackendBundle/Resources/config/routing/notificaciones.yml"
     prefix: /notificaciones
-
-tipodestino:
-    resource: "@LinkBackendBundle/Resources/config/routing/tipodestino.yml"
-    prefix: /tipodestino
