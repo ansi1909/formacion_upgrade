@@ -12,7 +12,7 @@
 <br><br>
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditNotificacion') }}">
+<!--<input type="hidden" id="url_edit" name="url_edit" value="{#{{ path('_editNotificacion') }}#}">-->
 <input type="hidden" id="url_notificaciones" name="url_notificaciones" value="{{ path ('_ajaxNotificacion') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_notificacion', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_programation" name="url_programation" value="{{ path('_ajaxHistoryProgramations') }}">
@@ -21,7 +21,7 @@
     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
 {% endif %}
 <div class="col text-right">
-    <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+    <a href="{{ path( '_createNotificacion' )}}" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></a>
 </div>
 <br>
 {% if not usuario_empresa %}
@@ -91,7 +91,7 @@
                                 {% endif %}
                                 <td>{{ notificacion.tipo_notificacion }}</td>
                                 <td class="center">
-                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id, 'status': 'edit' }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
                                     <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
                                 </td>
@@ -126,94 +126,8 @@
 </div>
 {% endblock %}
 
-{% block formModal %}
-<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del Tipo de Notificación'|trans}}</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true" style="color: #fff;">&times;</span>
-    </button>
-</div>
-<div class="modal-body">
-    <form id="form" name="form" action="{{ path( '_ajaxUpdateNotificacion')}}"  method="POST">
-        <input type="hidden" id="notificacion_id" name="notificacion_id" value="">
-        <div class="form-group">
-            <label for="asunto" class="form-conttipo_notificacion-label">{{ 'Asunto'|trans }}:</label>
-            <input type="text" class="form-cont_notificacion form_sty_modal" id="asunto" name="asunto" value="">
-            <span class="fa fa-cube"></span>
-            <label for="mensaje" class="form-conttipo_notificacion-label">{{ 'Mensaje'|trans }}:</label>
-            <textarea class="ckeditor" id="mensaje" name="mensaje" value=""></textarea>
-            {% if not usuario_empresa %}
-                <label for="form_empresa_id" class="form-conttipo_notificacion-label">{{ 'Empresa'|trans }}:</label>
-                <select class="form_sty_sel form-control" style="border-radius: 5px" id="form_empresa_id" name="form_empresa_id">
-                    <option value="0"></option>
-                    {% for empresa in empresas %}
-                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                    {% endfor %}
-                </select>
-            {% endif %}
-            <label for="tipo_notificacion_id" class="form-conttipo_notificacion-label">{{ 'Tipo Notificación'|trans }}:</label>
-            <select class="form_sty_sel form-control" style="border-radius: 5px" id="tipo_notificacion_id" name="tipo_notificacion_id">
-                <option value="0"></option>
-                {% for tipo_notificacion in tipo_notificaciones %}
-                    <option value="{{ tipo_notificacion.id }}" >{{ tipo_notificacion.nombre }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </form>
-    <div class="alert alert-success" tipo_notificacione="alert" id="alert-success" style="display:none;"> 
-        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
-    </div>
-    <div class="card" id="detail" style="display:none;">
-        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
-            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
-        </div>
-        <div class="card-block">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{ 'Asunto'|trans }}:</h5>
-                        <p id="p-nombre"></p>
-                    </div>
-                </div>
-                <br>
-                <div class="row justify-content-between">
-                    <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Empresa'| trans}}</h5>
-                        <p id="p_empresa"></p>
-                    </div>
-                </div>
-                <br> 
-                <div class="row justify-content-between">
-                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Tipo Notificación'| trans}}</h5>
-                        <p id="p_notificacion"></p>
-                    </div>
-                </div>
-                <br>
-                <div class="row justify-content-between">
-                    <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Mensaje'| trans}}</h5>
-                        <br>
-                        <p id="p-des"></p>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="col-sm-16 col-md-16 text-right">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/notificaciones.js') }}"></script>
 {% endblock %}

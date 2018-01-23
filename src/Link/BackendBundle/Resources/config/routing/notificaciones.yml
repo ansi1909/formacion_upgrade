@@ -8,17 +8,13 @@ _ajaxNotificacion:
     requirements:
         method: GET
 
-_ajaxUpdateNotificacion:
-    path:     /ajaxUpdateNotificacion
-    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxUpdateNotificacion }
-    requirements:
-        method: POST
+_createNotificacion:
+    path:     /createNotificacion
+    defaults: { _controller: LinkBackendBundle:Notificacion:createNotificacion }
 
-_ajaxEditNotificacion:
-    path:     /ajaxEditNotificacion
-    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxEditNotificacion }
-    requirements:
-        method: GET
+_editNotificacion:
+    path:     /editNotificacion/{notificacion_id}/{status}
+    defaults: { _controller: LinkBackendBundle:Notificacion:editNotificacion }
 
 _ajaxHistoryProgramations:
     path:     /ajaxHistoryProgramtions
