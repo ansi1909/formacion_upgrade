@@ -234,7 +234,7 @@ class DefaultController extends Controller
                                                         WHERE p.rol IN (:rol_id) 
                                                         AND a.activo = :activo 
                                                         AND a.aplicacion IS NULL
-                                                        ORDER BY a.nombre ASC")
+                                                        ORDER BY a.orden ASC")
                                         ->setParameters(array('rol_id' => $roles_usuario,
                                                               'activo' => true));
                             $permisos = $query->getResult();
@@ -256,7 +256,7 @@ class DefaultController extends Controller
                                                                 WHERE p.rol IN (:rol_id) 
                                                                 AND a.activo = :activo 
                                                                 AND a.aplicacion = :app_id
-                                                                ORDER BY a.nombre ASC")
+                                                                ORDER BY a.orden ASC")
                                                 ->setParameters(array('rol_id' => $roles_usuario,
                                                                       'activo' => true,
                                                                       'app_id' => $permiso->getAplicacion()->getId()));
