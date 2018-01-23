@@ -53,3 +53,7 @@
 	xdebug.var_display_max_data = -1
 
 14. URL backend: http://localhost/formacion2.0/web/app_dev.php/admin/
+
+15. Al subir al server configurar variable 
+		auto_generate_proxy_classes: "%kernel.debug%"
+	en config.yml, actualmente está en false porque estamos trabajando en entorno windows
