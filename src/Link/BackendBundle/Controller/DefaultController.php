@@ -32,16 +32,22 @@ class DefaultController extends Controller
 
             /************************* BORRAR PORQUE ESTO ES UNA PRUEBA DE UNA LLAMADA A UNA FUNCION BD **************/
             /*$query = $em->getConnection()->prepare('SELECT
-                                                    fnprueba(:re, :ppagina_id) as
+                                                    fnduplicar_pagina(:re, :ppagina_id) as
                                                     resultado; fetch all from re;');
-            $re = 're';
-            $query->bindValue(':re', $re, \PDO::PARAM_STR);
+            $query = $em->getConnection()->prepare('SELECT
+                                                    fnduplicar_pagina(:ppagina_id, :pnombre, :pusuario_id, :pfecha) as
+                                                    resultado;');
+            //$re = 're';
+            //$query->bindValue(':re', $re, \PDO::PARAM_STR);
             $query->bindValue(':ppagina_id', 1, \PDO::PARAM_INT);
+            $query->bindValue(':pnombre', 'Copia', \PDO::PARAM_STR);
+            $query->bindValue(':pusuario_id', 1, \PDO::PARAM_INT);
+            $query->bindValue(':pfecha', date('Y-m-d H:i:s'), \PDO::PARAM_STR);
             $query->execute();
             $paginas = $query->fetchAll();
-            //return new Response(var_dump($paginas));
+            return new Response(var_dump($paginas));
 
-            foreach ($paginas as $cantidad)
+            /*foreach ($paginas as $cantidad)
             {
                 $i++;
                 $c += $cantidad['cantidad'];
@@ -234,7 +240,7 @@ class DefaultController extends Controller
                                                         WHERE p.rol IN (:rol_id) 
                                                         AND a.activo = :activo 
                                                         AND a.aplicacion IS NULL
-                                                        ORDER BY a.nombre ASC")
+                                                        ORDER BY a.orden ASC")
                                         ->setParameters(array('rol_id' => $roles_usuario,
                                                               'activo' => true));
                             $permisos = $query->getResult();
@@ -256,7 +262,7 @@ class DefaultController extends Controller
                                                                 WHERE p.rol IN (:rol_id) 
                                                                 AND a.activo = :activo 
                                                                 AND a.aplicacion = :app_id
-                                                                ORDER BY a.nombre ASC")
+                                                                ORDER BY a.orden ASC")
                                                 ->setParameters(array('rol_id' => $roles_usuario,
                                                                       'activo' => true,
                                                                       'app_id' => $permiso->getAplicacion()->getId()));

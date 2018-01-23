@@ -321,4 +321,49 @@ class PaginaController extends Controller
 
     }
 
+    public function ajaxGetPageAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $pagina_id = $request->query->get('pagina_id');
+        
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        
+        $return = array('nombre' => $pagina->getNombre().' ('.$this->get('translator')->trans('Copia').')');
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxTreePaginasAction($pagina_id, Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $paginas_asociadas = array(); // Solo para pasar un arreglo vacío en el segundo en parámetro
+        $subPaginas = $f->subPaginas($pagina->getId(), $paginas_asociadas, 1);
+
+        $return = array();
+
+        if ($subPaginas['tiene'] > 0)
+        {
+            $return[] = array('text' => $pagina->getCategoria()->getNombre().': '.$pagina->getNombre(),
+                              'state' => array('opened' => true),
+                              'icon' => 'fa fa-angle-double-right',
+                              'children' => $subPaginas['return']);
+        }
+        else {
+            $return[] = array('text' => $pagina->getCategoria()->getNombre().': '.$pagina->getNombre(),
+                              'state' => array('opened' => true),
+                              'icon' => 'fa fa-angle-double-right');
+        }
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
 }

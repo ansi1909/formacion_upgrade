@@ -25,6 +25,7 @@ Cambiar contraseña: Change password
 Cancelar: Cancel
 Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
+Cantidad de registros creados: Number of records created
 Cantidad de sub-páginas: Number of sub-pages
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cargando..: Loading..
@@ -47,6 +48,7 @@ Confirmar: Confirm
 Contenido: Content
 Continuar: Continue
 Contraseña: Password
+Copia: Copy
 Correcta: Correct
 Correo corporativo: Company email
 Correo personal: Personal email
@@ -74,6 +76,7 @@ Descripción: Description
 Destino: Destination
 Detalles de la página: Page details
 División funcional: Functional division
+Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
 Editar página: Edit page
 Eliminado: Deleted
@@ -203,6 +206,7 @@ No se pudo editar este registro.: It could not edit this item.
 No se pudo filtrar el listado.: It could not filter the list.
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
+Nombre para esta página: Name for this page
 Nueva evaluación: New test
 Nueva página: New page
 Nueva pregunta: New question
