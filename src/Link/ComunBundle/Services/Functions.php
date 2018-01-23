@@ -542,7 +542,8 @@ class Functions
 		$tiene = 0;
 		$str = '';
 		
-		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findByPagina($pagina_id);
+		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_id),
+																			  array('orden' => 'ASC'));
 		
 		foreach ($subpages as $subpage)
 		{

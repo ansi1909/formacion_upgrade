@@ -58,7 +58,7 @@ class EvaluacionController extends Controller
 
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
                                         WHERE p.prueba = :prueba_id AND p.pregunta IS NULL
-                                        ORDER BY p.id ASC")
+                                        ORDER BY p.orden ASC")
                         ->setParameter('prueba_id', $p->getId());
             $preguntas_bd = $query->getResult();
 
