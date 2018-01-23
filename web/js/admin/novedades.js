@@ -3,8 +3,8 @@ $(document).ready(function() {
 	var root_site = $('#root_site').val();
 
 	$('.delete').click(function(){
-		var empresa_id = $(this).attr('data');
-		sweetAlertDelete(empresa_id, 'AdminEmpresa');
+		var noticia_id = $(this).attr('data');
+		sweetAlertDelete(noticia_id, 'AdminNoticia');
 	});
 
     $('.iframe-btn').fancybox({	
