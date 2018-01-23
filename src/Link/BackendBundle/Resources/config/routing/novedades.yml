@@ -13,3 +13,7 @@ _ajaxUpdateBiblioteca:
     defaults: { _controller: LinkBackendBundle:Novedad:ajaxUpdateBiblioteca }
     requirements:
         method: POST
+
+_registroNovedades:
+    path:     /registro/{noticia_id}
+    defaults: { _controller: LinkBackendBundle:Novedad:registroNovedades, noticia_id: 0 }
