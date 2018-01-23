@@ -1,127 +1,95 @@
 $(document).ready(function() {
+	
+	var root_site = $('#root_site').val();
 
-	$('#div-active-alert').hide();
-
-	$('#guardar').click(function(){
-		$('#div-alert').hide();
-		if ($("#form").valid())
-		{
-			$('#guardar').prop('disabled', true);
-			$.ajax({
-				type: "POST",
-				url: $('#form').attr('action'),
-				async: true,
-				data: $("#form").serialize(),
-				dataType: "json",
-				success: function(data) {
-					$('#p-titulo').html(data.titulo);
-					$('#p-contenido').html(data.contenido);
-					$('#p-pdf').html(data.pdf);
-					$('#p-imagen').html(data.imagen);
-
-					$( "#detail-edit" ).attr( "data", data.id );
-					if (data.delete_disabled != '')
-					{
-						$( "#detail-delete" ).hide();
-						$( "#detail-delete" ).removeClass( "delete" );
-					}
-					else {
-						$( "#detail-delete" ).attr( "data", data.id );
-						$( "#detail-delete" ).addClass( "delete" );
-						$( "#detail-delete" ).show();
-						$('.delete').click(function(){
-							var app_id = $(this).attr('data');
-							sweetAlertDelete(app_id, 'AdminNoticia');
-						});
-					}
-					$('#form').hide();
-					$('#alert-success').show();
-					$('#detail').show();
-					$('#aceptar').show();
-					$('#guardar').hide();
-					$('#cancelar').hide();
-				},
-				error: function(){
-					$('#alert-error').html($('#error_msg-save').val());
-					$('#div-alert').show();
-					$('#guardar').prop('disabled', false);
-				}
-			});
-		}
+    $('#fecha_publicacion').datepicker({
+	    startView: 1,
+	    autoclose: true,
+	    format: 'dd/mm/yyyy',
+	    language: 'es'
 	});
 
-	$('#aceptar').click(function(){
-		window.location.replace($('#url_list').val());
-	});
+    $('#fecha_vencimiento').datepicker({
+	    startView: 1,
+	    autoclose: true,
+	    format: 'dd/mm/yyyy',
+	    language: 'es'
+	});  
 
-	$('.new').click(function(){
-		$('label.error').hide();
-		$('#form').show();
-		$('#alert-success').hide();
-		$('#detail').hide();
-		$('#aceptar').hide();
-		$('#guardar').show();
-		$('#cancelar').show();
-		$('#div-alert').hide();
-		$('#app_id').val("");
-		$('#nombre').val("");
-		$('#url').val("");
-		$('#icono').val("");
-	});
-
-	observe();
-
-});
-
-function observe()
-{
-
-	$('.edit').click(function(){
-		var app_id = $(this).attr('data');
-		var url_edit = $('#url_edit').val();
-		$('#guardar').prop('disabled', false);
-		$('label.error').hide();
-		$('#form').show();
-		$('#alert-success').hide();
-		$('#detail').hide();
-		$('#aceptar').hide();
-		$('#guardar').show();
-		$('#cancelar').show();
-		$('#div-alert').hide();
-		$.ajax({
-			type: "GET",
-			url: url_edit,
-			async: true,
-			data: { app_id: app_id },
-			dataType: "json",
-			success: function(data) {
-				$('#app_id').val(app_id);
-				$('#nombre').val(data.nombre);
-				$('#url').val(data.url);
-				$('#icono').val(data.icono);
-				$('#activo').prop('checked', data.activo);
-			},
-			error: function(){
-				$('#alert-error').html($('#error_msg-edit').val());
-				$('#div-alert').show();
-			}
-		});
-	});
-
-	$('.delete').click(function(){
-		var app_id = $(this).attr('data');
-		sweetAlertDelete(app_id, 'AdminNoticia');
-	});
-
-	$('.iframe-btn').fancybox({	
+    $('.iframe-btn').fancybox({	
 		'width'		: 900,
 		'height'	: 900,
 		'type'		: 'iframe',
         'autoScale' : false,
 		'autoSize'	: false
     });
-    
-}
+
+    $('#finish').click(function()
+    {
+    	$('#div-error').hide();
+/*    	var str_error = validarForm();
+    	if (str_error != '')
+    	{
+    		$('#alert-error').html(str_error);
+    		$('#div-error').show();
+    	}
+    	else {*/
+    		$('#form').submit();
+    	//}
+    });
+
+    CKEDITOR.replace( 'resumen', {
+		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
+		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
+		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&editor=ckeditor&fldr=recursos/noticias',
+		on: {
+			instanceReady: function() {
+				var editor_data = CKEDITOR.instances.resumen.getData();
+				var elem = document.getElementById("deslen");
+				elem.value = parseInt(editor_data.replace(/<[^>]+>/g, '').length);
+			},
+			key: function() {
+				var editor_data = CKEDITOR.instances.resumen.getData();
+				var elem = document.getElementById("deslen");
+				elem.value = parseInt(editor_data.replace(/<[^>]+>/g, '').length);
+			}
+		}
+	} );
+
+	CKEDITOR.replace( 'contenido', {
+		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
+		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
+		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&editor=ckeditor&fldr=recursos/noticias',
+		on: {
+			instanceReady: function() {
+				var editor_data = CKEDITOR.instances.contenido.getData();
+				var elem = document.getElementById("deslen2");
+				elem.value = parseInt(editor_data.replace(/<[^>]+>/g, '').length);
+			},
+			key: function() {
+				var editor_data = CKEDITOR.instances.contenido.getData();
+				var elem = document.getElementById("deslen2");
+				elem.value = parseInt(editor_data.replace(/<[^>]+>/g, '').length);
+			}
+		}
+	} );
+
+	$('.nextBtn').click(function(){
+
+		// Cantidad de caracteres en el resumen
+		var editor_descripcion = CKEDITOR.instances.resumen.getData();
+		var deslen = document.getElementById("deslen");
+		deslen.value = parseInt(editor_descripcion.replace(/<[^>]+>/g, '').length);
+
+		// Cantidad de caracteres en el contenido
+		var editor_contenido = CKEDITOR.instances.contenido.getData();
+		var deslen2 = document.getElementById("deslen2");
+		deslen2.value = parseInt(editor_contenido.replace(/<[^>]+>/g, '').length);
+
+	});
+
+
+});
 
 function responsive_filemanager_callback(field_id){
 	
@@ -131,6 +99,6 @@ function responsive_filemanager_callback(field_id){
 	var new_image = arr[arr.length-1];
 	$('#'+field_id).val(new_image);
 	
-	$('#figure').html('<img src="'+url+'">');
+	$('#figure_'+field_id).html('<img src="'+url+'" style="background: transparent; width: 150px; height: auto;">');
 	
 }

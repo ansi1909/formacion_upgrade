@@ -1,8 +1,8 @@
 {% extends '::admin.html.twig'%}
 
-
 {% block stylesheets %}
     {{ parent() }}
+
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
     <style>
         .input-group-addon{padding:0px;}
@@ -16,33 +16,40 @@
         }
 
         .modal-dialog {
-            max-width: 868px;
+            max-width: 1188px;
             margin: 30px auto;
         }    
     </style>
 {% endblock %}
 
 {% block body %}
+{% set uri = app.request.getbasepath %}
+
 <br>
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditBiblioteca') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="error_msg-subapps" name="error_msg-subapps" value="{{ 'Error al obtener las subaplicaciones.'|trans }}">
+<input type="hidden" id="app_id" name="app_id" value="{{ aplicacion.id }}" />
+<input type="hidden" id="deslen3" name="deslen3" value="0" />
 
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>{{ 'Listado de Biblioteca Virtual'|trans }}</h3>
+        <h3>Listado de {{ aplicacion.nombre }}</h3>
     </div>
     <div class="col text-right">
-        <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></button>
-    </div>
+        {% if aplicacion.id==26 %}
+            <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></button>
+        {% else %}
+            <a href="{{ path('_registroNovedades')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nueva Registro'|trans }}</span></a>
+        {% endif %}
+    </div>     
 </div>
 <div class="row">
- 	<div class="col-sm-16">
-  		<div class="card">
-  			<div class="card-header gradiente">
-            	<h5 class="card-title">{{ 'Listado de Biblioteca Virtual'|trans }}</h5>
-        	</div>
-        	<div class="card-block">
+    <div class="col-sm-16 col-md-16 col-lg-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">Listado de {{ aplicacion.nombre }}</h5>
+            </div>
+            <div class="card-block">
                 <div class="row" id="div-active-alert" style="display:none;">
                     <div class="col-sm-2">
                         &nbsp;
@@ -56,59 +63,79 @@
                         &nbsp;
                     </div>
                 </div>
-         		<table class="table " id="dt">
-          			<thead class="sty__title">
-                    	<tr>
-                        	<th class="hd__title">{{ 'Empresa'|trans }}</th>
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            {% if not usuario_empresa %}
+                                <th class="hd__title">{{ 'Empresa'|trans }}</th>
+                            {% endif %}
+
+                            {% if aplicacion.id==17 %}
+                                <th class="hd__title">{{ 'Tipo de Noticia'|trans }}</th>
+                            {% endif %}
                             <th class="hd__title">{{ 'Título'|trans }}</th>
-                        	<th class="hd__title">{{ 'Fecha Creación'|trans }}</th>
-                        	<th class="hd__title">{{ 'Acciones'|trans }}</th>
-                    	</tr>
-                	</thead>
-                	<tbody>
-                		{% for noticia in noticias %}
-                			<tr class="odd">
-                				<td>{{ noticia.empresa }}</td>
-                				<td>{{ noticia.titulo }}</td>
-                				<td>{{ noticia.fechaRegistro|date("d/m/Y") }}</td>
+                            <th class="hd__title">{{ 'Fecha Creación'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for noticia in noticias %}
+                            <tr class="odd">
+                                {% if not usuario_empresa %}
+                                    <td>{{ noticia.empresa }}</td>
+                                {% endif %}
+
+                                {% if aplicacion.id==17 %}
+                                    <td>{{ noticia.tipoNoticia }}</td>
+                                {% endif %}
+                                <td>{{ noticia.titulo }}</td>
+                                <td>{{ noticia.fechaRegistro|date("d/m/Y") }}</td>
                                 <td class="center">
-                                    <a href="{{ path('_registro', { 'noticia_id': noticia.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                {% if aplicacion.id==26 %}
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ noticia.id }}"><span class="fa fa-pencil"></span></a>
+                                {% else %}
+                                    <a href="{{ path('_registroNovedades', { 'noticia_id': noticia.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>                                
+                                {% endif %}
                                     <a href="#" class="btn btn-link btn-sm {% if noticia.delete_disabled == '' %}delete{% endif %} {{ noticia.delete_disabled }}" data="{{ noticia.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
-                			</tr>
-                		{% endfor %}
-                	</tbody>
-         		</table>
-        	</div>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block formModal %}
-{% set uri = app.request.getbasepath %}
-
+    {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+    {% set uri = app.request.getbasepath %}
     <div class="modal-header gradiente">
         <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la Biblioteca Virtual'|trans }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+        <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />        
     </div>
     <div class="modal-body">
-        <form id="form" name="form" action="{{ path('_ajaxUpdateBiblioteca') }}" method="POST" enctype="multipart/form-data">
-            <input type="hidden" id="app_id" name="app_id" value="">
+        <form id="form" name="form" action="{{ path('_ajaxUpdateBiblioteca') }}" method="POST" >
             <input type="hidden" id="noticia_id" name="noticia_id" value="">
+            {% if not usuario_empresa %}
+            <div class="form-group row justify-content-end">
+                <label for="nombre" class="col-2 col-form-label">{{ 'Empresa'|trans }}:</label>
+                <div class="col-14">
+                    <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
+                        <option value=""></option>
+                        {% for empresa in empresas %}
+                            <option value="{{ empresa.id }}" >{{ empresa.nombre|trim }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="fa fa-industry"></span>
+                </div>
+            </div>
+            {% else %}
+                <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+            {% endif %}
 
-                <div class="form-group row justify-content-end">
-                    <label for="nombre" class="col-2 col-form-label">{{ 'Empresa'|trans }}:</label>
-                    <div class="col-14">
-                        <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
-                            <option value="0"></option>
-                            {% for empresa in empresas %}
-                                <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
-                            {% endfor %}
-                        </select>
-                        <span class="fa fa-industry"></span>
-                    </div>
-                </div> 
             <div class="form-group row justify-content-end">
                 <label for="nombre" class="col-2 col-form-label">{{ 'Título'|trans }}:</label>
                 <div class="col-14">
@@ -117,48 +144,44 @@
                 </div>
             </div>
             <div class="form-group row justify-content-end">
-                <label for="icono" class="col-2 col-form-label">{{ 'Contenido'|trans }}:</label>
+                <label for="nombre" class="col-2 col-form-label">{{ 'Contenido'|trans }}:</label>
                 <div class="col-14">
-                    <input type="text" class="form-control form_sty1" id="contenido" name="contenido" value="">
-                    <span class="fa fa-square"></span>
+                    <textarea id="contenido" name="contenido" class="ckeditor" aria-required="true" style="visibility: hidden; display: none;"></textarea>                    
                 </div>
             </div>
-
             <div class="form-group row justify-content-end">
-                <label for="icono" class="col-2 col-form-label">{{ 'Pdf'|trans }}:</label>
-                <div class="col-11">
+                <label for="nombre" class="col-2 col-form-label">{{ 'Pdf'|trans }}:</label>
+                <div class="col-3">
                     <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
                     <span class="fa fa-square"></span>
                 </div>
                 <div class="col-3">
                     <div class="input-group">
-                        <span class="input-group-addon">                
+                        <span class="input-group-addon">
                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&fldr=recursos/noticias" class="btn iframe-btn" type="button">
-                                <span class="fa fa-file-excel-o"></span>
+                                <span class="fa fa-file-pdf-o"></span>
                             </a>
                         </span>
                     </div>
-                </div>                
-            </div>
-            <div class="form-group row justify-content-end">
-                <label for="icono" class="col-2 col-form-label">{{ 'Imagen'|trans }}:</label>
-                <div class="col-11">
+                </div>
+                <label for="nombre" class="col-2 col-form-label">{{ 'Imagen'|trans }}:</label>
+                <div class="col-3">
                     <input type="text" class="form-control form_sty1" name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
                     <span class="fa fa-square"></span>
                 </div>
                 <div class="col-3">
                     <div class="input-group">
-                        <span class="input-group-addon">                   
+                        <span class="input-group-addon">
                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/noticias" class="btn iframe-btn" type="button">
-                                <span class="fa fa-file-excel-o"></span>
+                                <span class="fa fa-file-picture-o"></span>
                             </a>
                         </span>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </form>
         <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
-            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El registro ha sido almacenado con éxito'|trans }}. 
         </div>
         <div class="card" id="detail" style="display:none;">
             <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
@@ -166,33 +189,42 @@
             </div>
             <div class="card-block">
                 <div class="container">
+                    {% if not usuario_empresa %}
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{ 'Empresa'|trans }}:</h5>
+                                <p id="p-empresa">Lorem Ipsum</p>
+                            </div>
+                        </div>
+                        <br>
+                    {% endif %}
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
                             <h5>{{ 'Título'|trans }}:</h5>
-                            <p id="p-titulo">Lorem Ipsum<span class="fa fa-square"></span></p>
+                            <p id="p-titulo">Lorem Ipsum</p>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
                             <h5>{{ 'Contenido'|trans }}:</h5>
-                            <p id="p-contenido">fdsfsdfsdf<span class="fa fa-square"></span></p>
+                            <p id="p-cotenido">Lorem Ipsum</p>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
                             <h5>{{ 'Pdf'|trans }}:</h5>
-                            <p id="p-pdf">fdsfsdfsdf<span class="fa fa-square"></span></p>
+                            <p id="p-pdf"></span></p>
                         </div>
                     </div>
                     <br>
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
                             <h5>{{ 'Imagen'|trans }}:</h5>
-                            <p id="p-imagen">fdsfsdfsdf<span class="fa fa-square"></span></p>
+                            <p id="p-imagen">Si</p>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div>
             <div class="card-footer">
@@ -208,33 +240,59 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>    
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/novedad.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/novedades.js') }}"></script>
     <script type="text/javascript">
 
         jQuery.validator.addMethod("noSpace", function(value, element) { 
             return value.indexOf(" ") < 0; 
         }, "{{ 'No se permiten espacios en blanco.'|trans }}");
 
+        /*  $('#finish').click(function(){
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                notify($('#div-error').html());
+            }else 
+            {
+                var deslen = $('#deslen').val();
+                error = 0;
+                if (deslen < {{ minlenght_bienvenida }} )
+                {
+                    error = 1;
+                    $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
+                }
+                if (error == 1)
+                {
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else {
+                    $('#form').submit();
+                }
+            }
+        });*/
+
         $("#form").validate({
             rules: {
+                'empresa_id': {
+                    required: true
+                },
                 'titulo': {
                     required: true,
                     minlength: 3
                 },
                 'contenido': {
                     required: true,
-                    minlength: 3
-                },
-                'pdf': {
-                    extension: "pdf"
-                },
-                'imagen': {
-                    extension: "jpg|png"
+                    min: 3
                 }
             },
             messages: {
+                'empresa_id': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                },
                 'titulo': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
@@ -242,15 +300,9 @@
                 'contenido': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
-                },
-                'pdf': {
-                    extension: "- {{ 'Sólo archivos con extensión pdf.'|trans }}"
-                },
-                'imagen': {
-                    extension: "- {{ 'Sólo archivos con extensión jpg o png.'|trans }}"
                 }
             }
         });
-
     </script>
+
 {% endblock %}
