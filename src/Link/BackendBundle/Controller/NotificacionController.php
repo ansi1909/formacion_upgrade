@@ -27,6 +27,7 @@ class NotificacionController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $session->set('app_id', $app_id);
+        $notificacionesdb = array();
         if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
         {
             return $this->redirectToRoute('_authException');
