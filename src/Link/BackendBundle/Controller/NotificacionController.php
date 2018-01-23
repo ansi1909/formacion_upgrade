@@ -73,14 +73,17 @@ class NotificacionController extends Controller
         $f = $this->get('funciones');
 
         $qb = $em->createQueryBuilder();
-        $qb->select('u')
-           ->from('LinkComunBundle:AdminNotificacion', 'u');
-        $qb->andWhere('u.empresa = :empresa_id');
-        $parametros['empresa_id'] = $empresa_id;
 
         if ($empresa_id)
         {
+            $qb->select('u')
+               ->from('LinkComunBundle:AdminNotificacion', 'u');
+            $qb->andWhere('u.empresa = :empresa_id');
+            $parametros['empresa_id'] = $empresa_id;
             $qb->setParameters($parametros);
+        }else{
+            $qb->select('u')
+               ->from('LinkComunBundle:AdminNotificacion', 'u');
         }
 
         $query = $qb->getQuery();
