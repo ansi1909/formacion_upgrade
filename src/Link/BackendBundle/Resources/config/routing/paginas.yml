@@ -13,3 +13,15 @@ _newPagina:
 _editPagina:
     path:     /edit/{pagina_padre_id}/{pagina_id}/{categoria_id}/{estatus_contenido_id}/{cantidad}/{total}
     defaults: { _controller: LinkBackendBundle:Pagina:edit, pagina_padre_id: 0, pagina_id: 0, categoria_id: 0, estatus_contenido_id: 0, cantidad: 1, total: 1 }
+
+_ajaxDuplicatePage:
+    path:     /ajaxDuplicatePage
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxDuplicatePage }
+    requirements:
+        _method: POST
+
+_ajaxGetPage:
+    path:     /ajaxGetPage
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxGetPage }
+    requirements:
+        _method: GET
