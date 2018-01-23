@@ -8,10 +8,13 @@
 {% block body %}
 
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
-
+{% set uri = app.request.getbasepath %}
 <br><br>
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditNotificacion') }}">
 <input type="hidden" id="url_notificaciones" name="url_notificaciones" value="{{ path ('_ajaxNotificacion') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_notificacion', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_programation" name="url_programation" value="{{ path('_ajaxHistoryProgramations') }}">
 <input type="hidden" id="error_msg_history" name="error_msg_history" value="{{ 'Error al obtener el historial.'|trans }}">
 {% if usuario_empresa %}
@@ -32,7 +35,7 @@
                  <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa'|trans }}</label>
                 <div class="row">
                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_empresa_id" name="select_empresa_id">
                             <option value="0"></option>
                             {% for empresa in empresas %}
                                 <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
@@ -140,7 +143,7 @@
             <label for="mensaje" class="form-conttipo_notificacion-label">{{ 'Mensaje'|trans }}:</label>
             <textarea class="ckeditor" id="mensaje" name="mensaje" value=""></textarea>
             {% if not usuario_empresa %}
-                <label for="form_empresa_id" class="form-conttipo_notificacion-label">{{ 'Mensaje'|trans }}:</label>
+                <label for="form_empresa_id" class="form-conttipo_notificacion-label">{{ 'Empresa'|trans }}:</label>
                 <select class="form_sty_sel form-control" style="border-radius: 5px" id="form_empresa_id" name="form_empresa_id">
                     <option value="0"></option>
                     {% for empresa in empresas %}
@@ -168,15 +171,30 @@
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{ 'Tipo Notificación'|trans }}:</h5>
-                        <p id="p-nombre">Lorem Ipsum</p>
+                        <h5>{{ 'Asunto'|trans }}:</h5>
+                        <p id="p-nombre"></p>
                     </div>
                 </div>
                 <br>
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Descripción'| trans}}</h5>
-                        <p id="p-des">https://Loremipsumdolorsitamet.domain/</p>
+                        <h5>{{'Empresa'| trans}}</h5>
+                        <p id="p_empresa"></p>
+                    </div>
+                </div>
+                <br> 
+                <div class="row justify-content-between">
+                     <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{'Tipo Notificación'| trans}}</h5>
+                        <p id="p_notificacion"></p>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{'Mensaje'| trans}}</h5>
+                        <br>
+                        <p id="p-des"></p>
                     </div>
                 </div>
                 <br>

@@ -113,18 +113,21 @@ class NotificacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $session = new Session();
 
         $notificacion_id = $request->request->get('notificacion_id');
         $asunto = $request->request->get('asunto');
         $mensaje = $request->request->get('mensaje');
         $tipo_notificacion_id = $request->request->get('tipo_notificacion_id');
+        $empresa_id = $request->request->get('form_empresa_id');
+
         $tipo_notificacion = $em->getRepository('LinkComunBundle:AdminTipoNotificacion')->find($tipo_notificacion_id);
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         if ($usuario->getEmpresa()) {
-            $empresa_id = $usuario->getEmpresa()->getId();
+            $empresa = $usuario->getEmpresa();
         }else{
-            $empresa_id = $request->query->get('form_empresa_id');
+            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         }
         
 
@@ -138,8 +141,9 @@ class NotificacionController extends Controller
 
         $notificacion->setAsunto($asunto);
         $notificacion->setMensaje($mensaje);
-        $notificacion->setTipoNotificacion($tipo_notificacion->getId());
-        $notificacion->setUsuario($usuario->getId());
+        $notificacion->setTipoNotificacion($tipo_notificacion);
+        $notificacion->setEmpresa($empresa);
+        $notificacion->setUsuario($usuario);
         
         $em->persist($notificacion);
         $em->flush();
@@ -147,6 +151,7 @@ class NotificacionController extends Controller
         $return = array('id' => $notificacion->getId(),
                         'asunto'=>$notificacion->getAsunto(),
                         'empresa'=>$notificacion->getEmpresa()->getNombre(),
+                        'mensaje'=>$notificacion->getMensaje(),
                         'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre(),
                         'delete_disabled' =>$f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
 
@@ -157,22 +162,50 @@ class NotificacionController extends Controller
 
    public function ajaxEditNotificacionAction(Request $request)
     {
-        
-        /*$em = $this->getDoctrine()->getManager();
-        $tipo_notificacion_id = $request->query->get('tipo_notificacion_id');
-                
-        $tipo_notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoNotificacion')->find($tipo_notificacion_id);
+        $session = new Session();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        $em = $this->getDoctrine()->getManager();
+        $notificacion_id = $request->query->get('notificacion_id');
+        $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id); 
 
-        $query = $em->createQuery("SELECT r FROM LinkComunBundle:AdminTipoNotificacion r 
-                                    WHERE r.nombre IS NULL 
-                                    ORDER BY r.id ASC");
-        $apps = $query->getResult();
+        if ($usuario->getEmpresa()) {
+            $selectempresa = '<option value="'.$usuario->getEmpresa()->getId().'"'.$selected.'>'.$usuario->getEmpresa()->getNombre().'</option>';
+        }else{
+            $selectempresa = '<option value=""></option>';
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+            foreach ($empresas as $empresa)
+            {
+                if ($notificacion->getEmpresa()->getId() == $empresa->getId())
+                {
+                    $selectempresa .= '<option value="'.$empresa->getId().'" selected="selected">'.$empresa->getNombre().'</option>';
+                }else{
 
+                    $selectempresa .= '<option value="'.$empresa->getId().'">'.$empresa->getNombre().'</option>';
+                }
+            }
+        }
 
-        $return = array('nombre' => $tipo_notificacion->getNombre());
+        $selecttiponotificacion = '<option value=""></option>';
+        $tipo_notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoNotificacion')->findAll();
+        foreach ($tipo_notificaciones as $tipo_notificacion)
+        {
+            if ($notificacion->getTipoNotificacion()->getId() == $tipo_notificacion->getId())
+            {
+                $selecttiponotificacion .= '<option value="'.$tipo_notificacion->getId().'" selected="selected">'.$tipo_notificacion->getNombre().'</option>';
+            }else{
+
+                $selecttiponotificacion .= '<option value="'.$tipo_notificacion->getId().'">'.$tipo_notificacion->getNombre().'</option>';
+            }
+        }
+
+        $return = array('notificacion_id'=>$notificacion->getId(),
+                        'asunto'=>$notificacion->getAsunto(),
+                        'mensaje'=>$notificacion->getMensaje(),
+                        'form_empresa_id'=>$selectempresa,
+                        'tipo_notificacion_id'=>$selecttiponotificacion);
 
         $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));*/
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
 
