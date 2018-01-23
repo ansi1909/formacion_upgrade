@@ -534,13 +534,13 @@ class Functions
 	}
 
 	// Retorna un arreglo multidimensional de las subpaginas dada pagina_id
-	public function subPaginas($pagina_id, $paginas_asociadas = array())
+	public function subPaginas($pagina_id, $paginas_asociadas = array(), $json = 0)
 	{
 
 		$em = $this->em;
 		$subpaginas = array();
 		$tiene = 0;
-		$str = '';
+		$return = $json ? array() ? '';
 		
 		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_id),
 																			  array('orden' => 'ASC'));
@@ -548,20 +548,39 @@ class Functions
 		foreach ($subpages as $subpage)
 		{
 			$tiene++;
-			$check = in_array($subpage->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
-			$str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getId().'" p_str="'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().$check;
-			$subPaginas = $this->subPaginas($subpage->getId(), $paginas_asociadas);
-			if ($subPaginas['tiene'] > 0)
+			if (!$json)
 			{
-				$str .= '<ul>';
-				$str .= $subPaginas['str'];
-				$str .= '</ul>';
+				$check = in_array($subpage->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
+				$return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getId().'" p_str="'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().$check;
+				$subPaginas = $this->subPaginas($subpage->getId(), $paginas_asociadas);
+				if ($subPaginas['tiene'] > 0)
+				{
+					$return .= '<ul>';
+					$return .= $subPaginas['return'];
+					$return .= '</ul>';
+				}
+				$return .= '</li>';
 			}
-			$str .= '</li>';
+			else {
+				// Forma json para tree
+				$subPaginas = $this->subPaginas($subpage->getId(), $paginas_asociadas, 1);
+				if ($subPaginas['tiene'] > 0)
+				{
+					$return[] = array('text' => $subpage->getCategoria()->getNombre().': '.$subpage->getNombre(),
+		                              'state' => array('opened' => true),
+		                              'icon' => 'fa fa-angle-double-right',
+		                              'children' => $subPaginas['return']);
+				}
+				else {
+					$return[] = array('text' => $subpage->getCategoria()->getNombre().': '.$subpage->getNombre(),
+		                              'state' => array('opened' => true),
+		                              'icon' => 'fa fa-angle-double-right');
+				}
+			}
 		}
 
 		$subpaginas = array('tiene' => $tiene,
-							'str' => $str);
+							'return' => $return);
 
 		return $subpaginas;
 

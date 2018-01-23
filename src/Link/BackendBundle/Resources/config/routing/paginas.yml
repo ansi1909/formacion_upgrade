@@ -25,3 +25,9 @@ _ajaxGetPage:
     defaults: { _controller: LinkBackendBundle:Pagina:ajaxGetPage }
     requirements:
         _method: GET
+
+_ajaxTreePaginas:
+    path:     /ajaxTreePaginas/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxTreePaginas, pagina_id: 0 }
+    requirements:
+        method: GET
