@@ -540,7 +540,7 @@ class Functions
 		$em = $this->em;
 		$subpaginas = array();
 		$tiene = 0;
-		$return = $json ? array() ? '';
+		$return = $json ? $return: array() ? $return:'';
 		
 		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_id),
 																			  array('orden' => 'ASC'));
