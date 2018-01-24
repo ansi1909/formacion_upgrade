@@ -129,7 +129,7 @@ class NotificacionController extends Controller
             $form = $this->createFormBuilder($notificacion)
                 ->setAction($this->generateUrl('_createNotificacion'))
                 ->setMethod('POST')
-                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Nombre')))
+                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
                 ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                             'choice_label' => 'nombre',
@@ -143,7 +143,7 @@ class NotificacionController extends Controller
             $form = $this->createFormBuilder($notificacion)
                 ->setAction($this->generateUrl('_createNotificacion'))
                 ->setMethod('POST')
-                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Nombre')))
+                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
                 ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                             'choice_label' => 'nombre',
@@ -206,7 +206,7 @@ class NotificacionController extends Controller
             $form = $this->createFormBuilder($notificacion)
                 ->setAction($this->generateUrl('_createNotificacion'))
                 ->setMethod('POST')
-                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Nombre')))
+                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
                 ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                             'choice_label' => 'nombre',
@@ -220,7 +220,7 @@ class NotificacionController extends Controller
             $form = $this->createFormBuilder($notificacion)
                 ->setAction($this->generateUrl('_createNotificacion'))
                 ->setMethod('POST')
-                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Nombre')))
+                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
                 ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                             'choice_label' => 'nombre',
