@@ -2,12 +2,12 @@ Link\ComunBundle\Entity\AdminNotificacion:
     type: entity
     table: admin_notificacion
     indexes:
+        notificacion_ndx1:
+            columns:
+                - usuario_id
         IDX_BDBBB019B394FE3:
             columns:
                 - tipo_notificacion_id
-        IDX_BDBBB01DB38439E:
-            columns:
-                - usuario_id
         IDX_BDBBB01521E1991:
             columns:
                 - empresa_id

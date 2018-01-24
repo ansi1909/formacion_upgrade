@@ -1,0 +1,3 @@
+_tutorial:
+    path:     /tutorial/{app_id}
+    defaults: { _controller: LinkBackendBundle:Tutorial:index }
