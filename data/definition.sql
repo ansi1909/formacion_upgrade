@@ -448,3 +448,11 @@ respuesta varchar(500),
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_pregunta_id) REFERENCES admin_tipo_pregunta (id));
 
+CREATE TABLE admin_tutorial(
+-- Attributes --
+id serial,
+nombre varchar (250),
+pdf varchar(250),
+video varchar(250),
+ PRIMARY KEY (id));
+

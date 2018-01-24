@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CertiPregunta
  *
- * @ORM\Table(name="certi_pregunta", indexes={@ORM\Index(name="IDX_FF8A1BE1E7DE889A", columns={"prueba_id"}), @ORM\Index(name="IDX_FF8A1BE1481AEE6", columns={"tipo_pregunta_id"}), @ORM\Index(name="IDX_FF8A1BE1F4868001", columns={"tipo_elemento_id"}), @ORM\Index(name="IDX_FF8A1BE1DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_FF8A1BE164373B63", columns={"estatus_contenido_id"}), @ORM\Index(name="IDX_FF8A1BE131A5801E", columns={"pregunta_id"})})
+ * @ORM\Table(name="certi_pregunta", indexes={@ORM\Index(name="pregunta_ndx1", columns={"prueba_id", "tipo_elemento_id"}), @ORM\Index(name="IDX_FF8A1BE1E7DE889A", columns={"prueba_id"}), @ORM\Index(name="IDX_FF8A1BE1481AEE6", columns={"tipo_pregunta_id"}), @ORM\Index(name="IDX_FF8A1BE1F4868001", columns={"tipo_elemento_id"}), @ORM\Index(name="IDX_FF8A1BE1DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_FF8A1BE164373B63", columns={"estatus_contenido_id"}), @ORM\Index(name="IDX_FF8A1BE131A5801E", columns={"pregunta_id"})})
  * @ORM\Entity
  */
 class CertiPregunta

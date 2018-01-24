@@ -2,6 +2,10 @@ Link\ComunBundle\Entity\CertiNivelPagina:
     type: entity
     table: certi_nivel_pagina
     indexes:
+        nivel_pagina_ndx1:
+            columns:
+                - nivel_id
+                - pagina_empresa_id
         IDX_EF46AB9EDA3426AE:
             columns:
                 - nivel_id

@@ -173,35 +173,35 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', '
 -- Data for Name: admin_aplicacion; Type: TABLE DATA; Schema: public;
 --
 
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (1, 'Administración', NULL, 'fa-cogs', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (2, 'Usuarios', '_usuarios', 'fa-user', TRUE, 1);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (3, 'Aplicaciones', '_aplicaciones', 'fa-list-ul', TRUE, 1);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (4, 'Configuración de permisos', '_permisos', 'fa-key', TRUE, 1);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (5, 'Administrar páginas', NULL, 'fa-files-o', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (6, 'Categorías', '_categorias', 'fa-tags', TRUE, 5);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (7, 'Páginas', '_paginas', 'fa-file-text-o', TRUE, 5);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (8, 'Evaluaciones', '_paginasEvaluacion', 'fa-check-circle-o', TRUE, 5);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (9, 'Administrar empresa', NULL, 'fa-building', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (10, 'Empresas', '_empresas', 'fa-industry', TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (11, 'Asignación de páginas', '_empresasPaginas', NULL, TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (12, 'Niveles por empresa', '_empresasNiveles', 'fa-list-ol', TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (13, 'Agrupación de páginas', '_empresasGrupo', NULL, TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (14, 'Participantes', '_participantes', 'fa-users', TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (15, 'Mural', '_filtroMuro', NULL, TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (16, 'Administrar ayuda', NULL, 'fa-info-circle', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (17, 'Noticias y novedades', '_bibliotecas', 'fa-bell', TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (18, 'Reportes y consultas', NULL, NULL, TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (19, 'Sesiones de usuarios', NULL, NULL, TRUE, 18);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (20, 'Usuarios sin ingresar', NULL, NULL, TRUE, 18);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (21, 'Estadisticas de las páginas', NULL, NULL, TRUE, 18);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (22, 'Auditoria de evaluaciones', NULL, NULL, TRUE, 18);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (23, 'Roles de usuarios', '_roles', 'fa-group', TRUE, 1);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (24, 'Faqs', '_faqs', 'fa-question', TRUE, 16);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (25, 'Tutorial', NULL, 'fa-desktop', TRUE, 16);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (26, 'Biblioteca virtual', '_bibliotecas', 'fa-book', TRUE, 9);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (27, 'Administrar notificaciones', NULL, 'fa-inbox', TRUE, NULL);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (28, 'Notificaciones', '_notificacion', 'fa-inbox', TRUE, 27);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id) VALUES (29, 'Programar avisos', '_programados', 'fa-clock-o', TRUE, 27);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (1, 'Administración', NULL, 'fa-cogs', TRUE, NULL, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (2, 'Usuarios', '_usuarios', 'fa-user', TRUE, 1, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (3, 'Aplicaciones', '_aplicaciones', 'fa-list-ul', TRUE, 1, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (4, 'Configuración de permisos', '_permisos', 'fa-key', TRUE, 1, 3);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (5, 'Administrar páginas', NULL, 'fa-files-o', TRUE, NULL, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (6, 'Categorías', '_categorias', 'fa-tags', TRUE, 5, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (7, 'Páginas', '_paginas', 'fa-file-text-o', TRUE, 5, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (8, 'Evaluaciones', '_paginasEvaluacion', 'fa-check-circle-o', TRUE, 5, 3);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (9, 'Administrar empresa', NULL, 'fa-building', TRUE, NULL, 3);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (10, 'Empresas', '_empresas', 'fa-industry', TRUE, 9, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (11, 'Asignación de páginas', '_empresasPaginas', NULL, TRUE, 9, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (12, 'Niveles por empresa', '_empresasNiveles', 'fa-list-ol', TRUE, 9, 3);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (13, 'Agrupación de páginas', '_empresasGrupo', NULL, TRUE, 9, 4);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (14, 'Participantes', '_participantes', 'fa-users', TRUE, 9, 5);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (15, 'Mural', '_filtroMuro', NULL, TRUE, NULL, 4);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (16, 'Administrar ayuda', NULL, 'fa-info-circle', TRUE, NULL, 5);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (17, 'Noticias y novedades', '_bibliotecas', 'fa-bell', TRUE, 9, 6);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (18, 'Reportes y consultas', NULL, NULL, TRUE, NULL, 6);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (19, 'Sesiones de usuarios', NULL, NULL, TRUE, 18, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (20, 'Usuarios sin ingresar', NULL, NULL, TRUE, 18, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (21, 'Estadisticas de las páginas', NULL, NULL, TRUE, 18, 3);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (22, 'Auditoria de evaluaciones', NULL, NULL, TRUE, 18, 4);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (23, 'Roles de usuarios', '_roles', 'fa-group', TRUE, 1, 4);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (24, 'Faqs', '_faqs', 'fa-question', TRUE, 16, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (25, 'Tutorial', '_tutorial', 'fa-desktop', TRUE, 16, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (26, 'Biblioteca virtual', '_bibliotecas', 'fa-book', TRUE, 9, 7);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (27, 'Administrar notificaciones', NULL, 'fa-inbox', TRUE, NULL, 7);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (28, 'Notificaciones', '_notificacion', 'fa-inbox', TRUE, 27, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (29, 'Programar avisos', '_programados', 'fa-clock-o', TRUE, 27, 2);
 
 
 ------------------------------------------------------------------------------------------------------------------------
