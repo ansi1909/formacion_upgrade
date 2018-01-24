@@ -218,7 +218,7 @@ class EvaluacionController extends Controller
             if ($subPaginas['tiene'] > 0)
             {
                 $str .= '<ul>';
-                $str .= $subPaginas['str'];
+                $str .= $subPaginas['return'];
                 $str .= '</ul>';
             }
             $str .= '</li>';
