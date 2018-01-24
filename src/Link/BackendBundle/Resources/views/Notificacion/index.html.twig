@@ -12,11 +12,8 @@
 <br><br>
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
-<!--<input type="hidden" id="url_edit" name="url_edit" value="{#{{ path('_editNotificacion') }}#}">-->
 <input type="hidden" id="url_notificaciones" name="url_notificaciones" value="{{ path ('_ajaxNotificacion') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_notificacion', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_programation" name="url_programation" value="{{ path('_ajaxHistoryProgramations') }}">
-<input type="hidden" id="error_msg_history" name="error_msg_history" value="{{ 'Error al obtener el historial.'|trans }}">
 {% if usuario_empresa %}
     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
 {% endif %}
@@ -52,7 +49,7 @@
 </div>
 {% endif %}
 <div class="row">
-    <div class="col-sm-10 col-md-10 col-lg-10">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
@@ -93,31 +90,9 @@
                                 <td class="center">
                                     <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id, 'status': 'edit' }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
-                                    <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-6" style="display:none;" id="history_programation">
-        <div class="card">
-            <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Historial de programaciones de'|trans }} <span id="notificacionTitle"></span></h5>
-            </div>
-            <div class="card-block">
-                <table class="table">
-                    <thead class="sty__title">
-                        <tr>
-                            <th class="hd__title">{{ 'Destino'|trans }}</th>
-                            <th class="hd__title">{{ 'Entidad'|trans }}</th>
-                            <th class="hd__title">{{ 'Fecha'|trans }}</th>
-                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody_history_programation">
                     </tbody>
                 </table>
             </div>

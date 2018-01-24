@@ -97,6 +97,9 @@ class Functions
             case 'AdminNotificacion':
                 $entidades = array('AdminNotificacionProgramada' => 'notificacion');
                 break;
+            case 'AdminNotificacionProgramada':
+                $entidades = array('AdminNotificacionProgramada' => 'grupo');
+                break;
             default:
     			$entidades = array();
     			break;
