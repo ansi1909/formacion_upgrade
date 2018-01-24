@@ -13,7 +13,7 @@ $(document).ready(function() {
 	    startView: 1,
 	    autoclose: true,
 	    format: 'dd/mm/yyyy',
-	    language: 'es'
+	    language: 'es'   
 	});  
 
     $('.iframe-btn').fancybox({	
@@ -27,15 +27,15 @@ $(document).ready(function() {
     $('#finish').click(function()
     {
     	$('#div-error').hide();
-/*    	var str_error = validarForm();
+    	var str_error = validarForm();
     	if (str_error != '')
     	{
     		$('#alert-error').html(str_error);
     		$('#div-error').show();
-    	}
-    	else {*/
+    	}else 
+    	{
     		$('#form').submit();
-    	//}
+    	}
     });
 
     CKEDITOR.replace( 'resumen', {
@@ -72,10 +72,9 @@ $(document).ready(function() {
 				elem.value = parseInt(editor_data.replace(/<[^>]+>/g, '').length);
 			}
 		}
-	} );
+	});
 
 	$('.nextBtn').click(function(){
-
 		// Cantidad de caracteres en el resumen
 		var editor_descripcion = CKEDITOR.instances.resumen.getData();
 		var deslen = document.getElementById("deslen");
@@ -85,9 +84,7 @@ $(document).ready(function() {
 		var editor_contenido = CKEDITOR.instances.contenido.getData();
 		var deslen2 = document.getElementById("deslen2");
 		deslen2.value = parseInt(editor_contenido.replace(/<[^>]+>/g, '').length);
-
 	});
-
 
 });
 

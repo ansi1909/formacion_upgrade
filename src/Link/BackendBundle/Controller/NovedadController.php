@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminNoticia;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,14 +17,14 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-
 class NovedadController extends Controller
 {
     public function indexAction($app_id, Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
-        
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
         if (!$session->get('ini'))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -38,19 +39,21 @@ class NovedadController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+        $app_id = $session->get('app_id');
 
         //contultamos el nombre de la aplicacion para reutilizarla en la vista
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
 
         if($app_id==26)//se consulta el tipo de noticias: biblioteca virtual
         {
-            $tipo_noticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find(3);
+            $tipo_noticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($yml['parameters']['tipo_noticias']['biblioteca_virtual']);
         }
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
         $usuario_empresa = 0;
         $empresas = array();
+
 
         if($session->get('administrador')==true)//si es administrador
         {
@@ -64,8 +67,8 @@ class NovedadController extends Controller
                 if($app_id==17)//se consulta la informacion del tipo de noticia: noticias y novedades 
                 {   
                     $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n JOIN n.tipoNoticia tn 
-                                               WHERE tn.id <= :tipo ')
-                                ->setParameters(array('tipo' => 2));
+                                               WHERE tn.id < :tipo ')
+                                ->setParameters(array('tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'] ));
                     $noticias = $query->getResult();
                 }
             }
@@ -85,8 +88,8 @@ class NovedadController extends Controller
                     $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n 
                                                JOIN n.tipoNoticia tn 
                                                JOIN n.empresa e 
-                                               WHERE tn.id <= :tipo and e.id= :empresa')
-                                ->setParameters(array('tipo' => 2, 'empresa' => $usuario->getEmpresa()->getId() ));
+                                               WHERE tn.id < :tipo and e.id= :empresa')
+                                ->setParameters(array('tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'], 'empresa' => $usuario->getEmpresa()->getId() ));
                     $noticias = $query->getResult();
                 }
             }
@@ -113,79 +116,8 @@ class NovedadController extends Controller
                                                                                 'usuario' => $usuario ));
     }
 
-    public function ajaxUpdateBibliotecaAction(Request $request)
+    public function registroBibliotecaAction($biblioteca_id, Request $request)
     {
-        
-        $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
-        $session = new Session();
-
-        $noticia_id = $request->request->get('noticia_id');
-        $empresa_id = $request->request->get('empresa_id');
-        $tipo_noticia_id = 3;
-
-        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $tipo_noticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($tipo_noticia_id);
-        
-        $titulo = trim($request->request->get('titulo'));
-        $contenido = "prueba de registro";//$request->request->get('contenido');
-//"prueba de registro";// 
-        $pdf = trim($request->request->get('pdf'));
-        $imagen = trim($request->request->get('imagen'));
-
-        if ($noticia_id)
-            $noticia = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
-        else
-            $noticia = new AdminNoticia();
-
-        $noticia->setEmpresa($empresa);
-        $noticia->setUsuario($usuario);
-        $noticia->setTipoNoticia($tipo_noticia);
-        $noticia->setFechaRegistro(new \DateTime('now'));
-        $noticia->setContenido($contenido);
-        $noticia->setTitulo($titulo);
-        $noticia->setPdf($pdf);
-        $noticia->setImagen($imagen);
-        $em->persist($noticia);
-        $em->flush();
-
-        $return = array('id' => $noticia->getId(),
-                        'empresa' => $noticia->getEmpresa()->getNombre(),
-                        'titulo' => $noticia->getTitulo(),
-                        'contenido' => $noticia->getContenido(),
-                        'pdf' => $noticia->getPdf(),
-                        'imagen' => $noticia->getImagen());   
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
-    }
-
-    public function ajaxEditBibliotecaAction(Request $request)
-    {
-        
-        $em = $this->getDoctrine()->getManager();
-        $noticia_id = $request->query->get('noticia_id');
-
-        $ok = 1;
-        $error = '';
-
-        $noticia = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
-
-        $return = array('id' => $noticia->getId(),
-                        'empresa' => $noticia->getEmpresa()->getId(),
-                        'titulo' => $noticia->getTitulo(),
-                        'contenido' => $noticia->getContenido(),
-                        'pdf' => $noticia->getPdf(),
-                        'imagen' => $noticia->getImagen());    
-       
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
-    }
-
-    public function registroNovedadesAction($noticia_id, Request $request){
 
         $session = new Session();
         $f = $this->get('funciones');
@@ -204,14 +136,108 @@ class NovedadController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        //contultamos el nombre de la aplicacion para reutilizarla en la vista
+        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
+
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
-        $tipoNoticias = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->findAll(array('nombre' => 'ASC'));
+
+        $usuario_empresa = 0;
+        if($session->get('administrador')==false)//si no es administrador
+        {
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = 1; 
+        }
+
+        if ($biblioteca_id)
+        {
+            $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($biblioteca_id);
+        }else 
+        {
+            $biblioteca = new AdminNoticia();
+            $biblioteca->setFechaRegistro(new \DateTime('now'));
+        }
+
+        if ($request->getMethod() == 'POST')
+        {
+
+            if($usuario_empresa==1)
+            {
+                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
+            }else
+            {
+                $empresa_id = $request->request->get('empresa_id');
+                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+            }
+
+            $tipo_noticia_id = 3;
+            $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($tipo_noticia_id);
+
+            $titulo = trim($request->request->get('titulo'));
+            $pdf = trim($request->request->get('pdf'));
+            $imagen = trim($request->request->get('imagen'));
+            $contenido = trim($request->request->get('contenido'));
+
+            $biblioteca->setUsuario($usuario);
+            $biblioteca->setEmpresa($empresa);
+            $biblioteca->setTipoNoticia($tipoNoticia);
+            $biblioteca->setTitulo($titulo);
+            $biblioteca->setPdf($pdf);
+            $biblioteca->setImagen($imagen);
+            $biblioteca->setContenido($contenido);
+            $em->persist($biblioteca);
+            $em->flush();
+
+
+            return $this->redirectToRoute('_bibliotecas', array('app_id' => $aplicacion->getId() ));
+
+        }
+       // return new Response(var_dump($session->get('administrador'),$usuario_empresa));
+
+        return $this->render('LinkBackendBundle:Novedad:registroBiblioteca.html.twig', array('empresas' => $empresas,
+                                                                                             'biblioteca' => $biblioteca,
+                                                                                             'usuario_empresa' => $usuario_empresa ));
+
+    }
+
+    public function registroNovedadAction($noticia_id, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        //contultamos el nombre de la aplicacion para reutilizarla en la vista
+        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
+
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+
+        $query = $em->createQuery('SELECT tn FROM LinkComunBundle:AdminTipoNoticia tn
+                                   WHERE tn.id < :tipo ')
+                    ->setParameters(array('tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'] ));
+        $tipoNoticias = $query->getResult();
 
         $usuario_empresa = 0;
 
         if($session->get('administrador')==false)//si no es administrador
-            $usuario_empresa = 1;
+        {
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = 1; 
+        }
 
         if ($noticia_id)
         {
@@ -248,7 +274,7 @@ class NovedadController extends Controller
             $fp = explode("/", $fecha_publicacion);
             $publicacion = $fp[2].'-'.$fp[1].'-'.$fp[0];
 
-            $pdf = $request->request->get('pdf');
+            $pdf = trim($request->request->get('pdf'));
             $imagen = trim($request->request->get('imagen'));
 
             $contenido = trim($request->request->get('contenido'));
@@ -259,27 +285,23 @@ class NovedadController extends Controller
             $noticia->setTipoNoticia($tipoNoticia);
             $noticia->setTitulo($titulo);
             $noticia->setAutor($autor);
-
             $noticia->setPdf($pdf);
             $noticia->setImagen($imagen);
-            $noticia->setResumen($contenido);
-            $noticia->setContenido($resumen);
-
+            $noticia->setResumen($resumen);
+            $noticia->setContenido($contenido);
             $noticia->setFechaVencimiento(new \DateTime($vencimiento));
             $noticia->setFechaPublicacion(new \DateTime($publicacion));
-
             $em->persist($noticia);
             $em->flush();
 
-            return $this->redirectToRoute('_bibliotecas', array('app_id' => $session->get('app_id')));
+            return $this->redirectToRoute('_bibliotecas', array('app_id' => $aplicacion->getId() ));
 
         }
         
         return $this->render('LinkBackendBundle:Novedad:registroNovedad.html.twig', array('empresas' => $empresas,
                                                                                           'tipoNoticias' => $tipoNoticias,
                                                                                           'noticia' => $noticia,
-                                                                                          'usuario_empresa' => $usuario_empresa,
-                                                                                          'usuario' => $usuario));
+                                                                                          'usuario_empresa' => $usuario_empresa ));
 
     }
 

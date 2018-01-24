@@ -2,18 +2,10 @@ _bibliotecas:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Novedad:index }
 
-_ajaxEditBiblioteca:
-    path:     /ajaxEditBiblioteca
-    defaults: { _controller: LinkBackendBundle:Novedad:ajaxEditBiblioteca }
-    requirements:
-        method: GET
+_registroBiblioteca:
+    path:     /registroBibliotecaVirtual/{biblioteca_id}
+    defaults: { _controller: LinkBackendBundle:Novedad:registroBiblioteca, biblioteca_id: 0 }
 
-_ajaxUpdateBiblioteca:
-    path:     /ajaxUpdateBiblioteca
-    defaults: { _controller: LinkBackendBundle:Novedad:ajaxUpdateBiblioteca }
-    requirements:
-        method: POST
-
-_registroNovedades:
-    path:     /registro/{noticia_id}
-    defaults: { _controller: LinkBackendBundle:Novedad:registroNovedades, noticia_id: 0 }
+_registroNovedad:
+    path:     /registroNoticaNovedad/{noticia_id}
+    defaults: { _controller: LinkBackendBundle:Novedad:registroNovedad, noticia_id: 0 }

@@ -12,6 +12,10 @@ parameters:
     tipo_elemento:
         texto: 1
         imagen: 2
+    tipo_noticias:
+        noticia: 1
+        novedad: 2
+        biblioteca_virtual: 3
     folders:
         uploads: 'http://localhost/uploads/'
         dir_uploads: 'C:/wamp/www/uploads/'
