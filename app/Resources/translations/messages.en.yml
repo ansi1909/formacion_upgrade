@@ -62,8 +62,9 @@ Datos de la opción: Option data
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
-Datos del Tipo de Notificación: Notification Details
-Datos del Tipo de Destino: Destinity Destails
+Datos del Tipo de Notificación: Notification Type Details
+Datos del Tipo de Destino: Destinity Type Details
+Datos Notificación: Notification Details
 de la evaluación: of the test
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
@@ -171,6 +172,7 @@ La descripción es requerida.: Description is required.
 La empresa es requerida.: Company is required.
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
+La notificación ha sido almacenada con éxito: Notification has been saved successfully
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 Lado: Side
 Listado de Aplicaciones: List of Applications

@@ -64,6 +64,7 @@ Datos del Rol: Datos del Rol
 Datos del usuario: Datos del usuario
 Datos del Tipo de Notificación: Datos del Tipo de Notificación
 Datos del Tipo de Destino: Datos del Tipo de Destino
+Datos Notificación: Datos Notificación
 de la evaluación: de la evaluación
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
@@ -171,6 +172,7 @@ La descripción es requerida.: La descripción es requerida.
 La empresa es requerida.: La empresa es requerida.
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
+La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 Lado: Lado
 Listado de Aplicaciones: Listado de Aplicaciones
