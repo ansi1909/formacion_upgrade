@@ -10,8 +10,6 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNotificacion;
 use Link\ComunBundle\Entity\AdminNotificacionProgramada;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
-use Link\ComunBundle\Entity\AdminNivel;
-use Link\ComunBundle\Entity\CertiPagina;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -269,7 +267,6 @@ class NotificacionController extends Controller
 
         foreach ($notificaciones_programadas as $notificacion_programada)
         {
-            $checked = $notificacion_programada->getActivo() ? 'checked' : '';
             $delete_disabled = $f->linkEliminar($notificacion_programada->getId(), 'AdminNotificacionProgramada');
             $delete = $delete_disabled=='' ? 'delete' : '';
             if($notificacion_programada->getTipoDestino()->getNombre() == 'Programa'){
