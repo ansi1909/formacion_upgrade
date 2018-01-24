@@ -4,11 +4,17 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/css/rowReorder.dataTables.min.css') }}" type="text/css">
+    <style type="text/css">
+        .modal-dialog {
+            max-width: 60%;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxGetPage') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreePaginas') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_paginas',{ 'app_id': app.session.get('app_id') }) }}">
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -59,7 +65,7 @@
         <div class="card-block">
             <div class="container">
                 <div class="row justify-content-between">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-2 pnl__tree" id="tree_paginas">
+                    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 pnl__tree" id="tree_paginas">
                         &nbsp;
                     </div>
                 </div>

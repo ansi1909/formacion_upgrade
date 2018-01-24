@@ -55,7 +55,7 @@
                         {% for aplicacion in aplicaciones %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ aplicacion.orden }}</td>
+                                <td class="columorden">{{ aplicacion.orden }}</td>
                                 <td>{{ aplicacion.id }}</td>
                                 <td>{{ aplicacion.nombre }}</td>
                                 <td class="center">
@@ -85,8 +85,8 @@
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Sub-Aplicaciones de'|trans }} <span id="appTitle"></span></h5>
             </div>
-            <div class="card-block">
-                <table class="table subapp" >
+            <div class="card-block" id="subapp">
+                {#<table class="table">
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">{{ 'Orden'|trans }}</th>
@@ -98,7 +98,7 @@
                     </thead>
                     <tbody id="tbody-subapps">
                     </tbody>
-                </table>
+                </table>#}
             </div>
         </div>
     </div>
@@ -241,6 +241,14 @@
                 }
             }
         });
+
+        $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
+          });
 
     </script>
 {% endblock %}

@@ -50,6 +50,7 @@ begin
     /*FOR i IN 0..array_upper(arr, 1) LOOP
         RETURN NEXT arr[i];
     END LOOP;*/
+    -- Retorna la cantidad de registros insertados más el nuevo id de la página padre
     str = array_upper(arr, 1)+1 || '__' || newid;
     RETURN str;
 

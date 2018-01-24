@@ -167,8 +167,7 @@ function observe()
 		sweetAlertDelete(app_id, 'AdminAplicacion');
 	});
 
-	var table2 = $('.subapp').DataTable( {
-		destroy: true,
+	var table2 = $('#dtSub').DataTable( {
         rowReorder: true,
         responsive: true,
         pageLength:10,
@@ -200,21 +199,6 @@ function observe()
 
     } );
 
-    $('.see').click(function(){
-		var app_id = $(this).attr('data');
-		$('#div-active-alert').hide();
-		$.ajax({
-			type: "GET",
-			url: $('#url_subapps').val(),
-			async: true,
-			data: { app_id: app_id },
-			dataType: "json",
-			success: function(data) {
-				$('#tbody-subapps').html(data.html);
-			}
-		});
-	});
-
     table2.on( 'row-reorder', function ( e, diff, edit ) {
         
         for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
@@ -224,6 +208,14 @@ function observe()
             reordenar(id, 'AdminAplicacion', diff[i].newData);
         }
  
+    });
+
+    $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
     });
 
 }
@@ -239,7 +231,7 @@ function afterPaginate(){
 			data: { app_id: app_id },
 			dataType: "json",
 			success: function(data) {
-				$('#tbody-subapps').html(data.html);
+				$('#subapp').html(data.html);
 				$('#appTitle').html(data.empresa);
 				$('#div-subapps').show();
 				observe();
