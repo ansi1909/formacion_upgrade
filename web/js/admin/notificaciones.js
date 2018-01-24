@@ -34,6 +34,13 @@ function observe(){
 			}
 		});
 	});
+	$('.delete').click(function(){
+
+		var notificacion_id = $(this).attr('data');
+
+		sweetAlertDelete(notificacion_id, 'AdminNotificacion');
+
+	});
 }
 
 function getListadoNotificaciones(empresa_id){
