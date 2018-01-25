@@ -39,9 +39,7 @@ class RolController extends Controller
         $query= $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r
                                         ORDER BY r.nombre ASC');
         $roles=$query->getResult();
-        
-       //return new Response(var_dump($roles));
-        
+                
         foreach ($roles as $rol)
         {
             $rolesdb[]= array('id'=>$rol->getId(),

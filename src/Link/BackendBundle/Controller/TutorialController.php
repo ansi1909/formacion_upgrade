@@ -40,8 +40,6 @@ class TutorialController extends Controller
                                         ORDER BY t.nombre ASC');
         $tutoriales=$query->getResult();
         
-       //return new Response(var_dump($roles));
-        
         foreach ($tutoriales as $tutorial)
         {
             $tutorialdb[]= array('id'=>$tutorial->getId(),
@@ -49,11 +47,64 @@ class TutorialController extends Controller
                               'pdf'=>$tutorial->getPdf(),
                               'video'=>$tutorial->getVideo(),
                               'delete_disabled'=>$f->linkEliminar($tutorial->getId(),'AdminTutorial'));
-
         }
 
        return $this->render('LinkBackendBundle:Tutorial:index.html.twig', array('tutoriales'=>$tutorialdb) );
 
+    }
+
+    public function ajaxUpdateTutorialAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $tutorial_id = $request->request->get('tutorial_id');
+        $nombre = $request->request->get('nombre');
+        $pdf = $request->request->get('pdf');
+        $video = $request->request->get('video');
+
+        if ($tutorial_id)
+        {
+            $tutorial = $em->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
+        }
+        else {
+            $tutorial = new AdminTutorial();
+        }
+
+        $tutorial->setNombre($nombre);
+        $tutorial->setPdf($pdf);
+        $tutorial->setVideo($video);
+        
+        $em->persist($tutorial);
+        $em->flush();
+                    
+        $return = array('id' => $tutorial->getId(),
+                        'nombre' =>$tutorial->getNombre(),
+                        'pdf' =>$tutorial->getPdf(),
+                        'video' =>$tutorial->getVideo(),
+                        'delete_disabled' =>$f->linkEliminar($tutorial->getId(),'AdminTutorial'));
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxEditTutorialAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $tutorial_id = $request->query->get('tutorial_id');
+                
+        $tutorial = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
+
+        $return = array('nombre' => $tutorial->getNombre(),
+                        'pdf' => $tutorial->getPdf(),
+                        'video' => $tutorial->getVideo());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }
