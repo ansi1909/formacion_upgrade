@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />    
     <style>
         .input-group-addon{padding:0px;}
@@ -120,6 +121,18 @@
                 <div class="alert alert-info" role="alert">
                 <span>Haz clic en <strong><i class="fa fa-eye"></i></strong> para mostrar el historial de programaciones de la notificación</span>
             </div>
+            <div class="tree">
+                <ul data-jstree='{ "opened" : true }'>
+                    <li data-jstree='{ "icon": "fa fa-angle-double-right", "opened" : true }'>Arból-Test
+                        <ul>
+                            <li data-jstree='{ "icon" : "fa fa-angle-right" }'>elemento-test-11</li>
+                            <li data-jstree='{ "icon" : "fa fa-angle-right" }'>elemento-test-12</li>
+                            <li data-jstree='{ "icon" : "fa fa-angle-right" }'>elemento-test-13</li>
+                            <li data-jstree='{ "icon" : "fa fa-angle-right" }'>elemento-test-14</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
             </div>
         </div>
         <div class="card" id="loading" style="width:24px;display:none">
@@ -232,5 +245,9 @@
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/programados.js') }}"></script>
+    <script type="text/javascript">
+        $('.tree').jstree();
+    </script>
 {% endblock %}

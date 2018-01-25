@@ -26,10 +26,14 @@ $(document).ready(function() {
 		e.preventDefault();
 		saveProgramacion();
 	});
+	//$('.tree').jstree();
 	observe();
 });
 
 function observe(){
+
+	$('.tree').jstree();
+
 	$('.see').click(function(){
 		var notificacion_id = $(this).attr('data');
 		$('#div-active-alert').hide();
@@ -43,18 +47,23 @@ function observe(){
 			data: { notificacion_id: notificacion_id },
 			dataType: "json",
 			success: function(data) {
+				$('.tree').jstree();
 				$('#tbody_history_programation').html(data.html);
 				$('#notificacionTitle').html(data.notificacion);
 				$('#loading').hide();
 				$('#history_programation').show();
+				$('.tree').jstree();
 			},
 			error: function(){
+				$('.tree').jstree();
 				$('#active-error').html($('#error_msg_history').val());
 				$('#div-active-alert').show();
 				$('#history_message').show();
 				$('#history_programation').hide();
+				$('.tree').jstree();
 			}
 		});
+		$('.tree').jstree();
 	});
 
 	$('.add').click(function(){
@@ -68,7 +77,7 @@ function observe(){
 
 		var notificacion_id = $(this).attr('data');
 
-		sweetAlertDelete(notificacion_id, 'AdminNotificacion');
+		sweetAlertDelete(notificacion_id, 'AdminNotificacionProgramada');
 
 	});
 
@@ -78,6 +87,7 @@ function observe(){
 	    format: 'dd/mm/yyyy',
 	    language: 'es'
 	});
+
 }
 
 function getListadoNotificaciones(empresa_id){

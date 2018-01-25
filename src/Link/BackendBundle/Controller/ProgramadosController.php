@@ -115,7 +115,15 @@ class ProgramadosController extends Controller
         $html = '';
         
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
-        $notificaciones_programadas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByNotificacion($notificacion_id);
+
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminNotificacionProgramada p
+                                            WHERE p.notificacion = :notificacion_id AND p.grupo IS NULL
+                                            ORDER BY p.id ASC")
+                            ->setParameters(array('notificacion_id' => $notificacion->getId()));
+        $notificaciones_programadas = $query->getResult();
+
+        //$notificaciones_programadas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByNotificacion($notificacion_id);
+        $entidad = '';
 
         foreach ($notificaciones_programadas as $notificacion_programada)
         {
@@ -129,6 +137,32 @@ class ProgramadosController extends Controller
             }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Nivel'){
                 $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($notificacion_programada->getEntidadId());
                 $entidad = $nivel->getNombre();
+
+            }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Grupo de participantes'){
+                $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                $entidad .= '<div class="tree">
+                                <ul data-jstree=\'{ "opened": true }\'>
+                                    <li data-jstree=\'{ "icon": "fa fa-angle-double-right", "opened" : true }\'>'.$this->get('translator')->trans('Usuarios').'
+                                            <ul>';
+                                                foreach ($programacion_grupo as $programada){
+                                                    $usuario_programado = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($programada->getEntidadId());
+                                                    $entidad .= '<li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>'.$usuario_programado->getNombre().' '.$usuario_programado->getApellido().'</li>';
+                                                }
+                                $entidad .= '</ul>
+                                    </li>
+                                </ul>
+                            </div><div class="tree">
+                <ul data-jstree=\'{ "opened": true }\'>
+                    <li data-jstree=\'{ "icon": "fa fa-angle-double-right", "opened" : true }\'>Arból-Test
+                        <ul>
+                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-11</li>
+                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-12</li>
+                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-13</li>
+                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-14</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>';
             }else{
                 $entidad = 'N/A';
             }
