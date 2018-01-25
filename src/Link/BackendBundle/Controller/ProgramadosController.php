@@ -271,7 +271,7 @@ class ProgramadosController extends Controller
                         $programacion_nuevo_grupo->setNotificacion($notificacion);
                         $programacion_nuevo_grupo->setTipoDestino($tipo_destino);
                         $programacion_nuevo_grupo->setUsuario($usuario);
-                        $programacion_nuevo_grupo->setUsuario($programacion);
+                        $programacion_nuevo_grupo->setGrupo($programacion);
                         
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
@@ -302,7 +302,7 @@ class ProgramadosController extends Controller
                         $programacion_nuevo_grupo->setNotificacion($notificacion);
                         $programacion_nuevo_grupo->setTipoDestino($tipo_destino);
                         $programacion_nuevo_grupo->setUsuario($usuario);
-                        $programacion_nuevo_grupo->setUsuario($programacion);
+                        $programacion_nuevo_grupo->setGrupo($programacion);
                         
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
