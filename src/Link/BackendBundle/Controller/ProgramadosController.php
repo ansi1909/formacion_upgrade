@@ -140,7 +140,7 @@ class ProgramadosController extends Controller
 
             }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Grupo de participantes'){
                 $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
-                $entidad .= '<div class="tree">
+                /*$entidad .= '<div class="tree">
                                 <ul data-jstree=\'{ "opened": true }\'>
                                     <li data-jstree=\'{ "icon": "fa fa-angle-double-right", "opened" : true }\'>'.$this->get('translator')->trans('Usuarios').'
                                             <ul>';
@@ -151,18 +151,21 @@ class ProgramadosController extends Controller
                                 $entidad .= '</ul>
                                     </li>
                                 </ul>
-                            </div><div class="tree">
-                <ul data-jstree=\'{ "opened": true }\'>
-                    <li data-jstree=\'{ "icon": "fa fa-angle-double-right", "opened" : true }\'>Arból-Test
-                        <ul>
-                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-11</li>
-                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-12</li>
-                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-13</li>
-                            <li data-jstree=\'{ "icon": "fa fa-angle-right" }\'>elemento-test-14</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>';
+                            </div>';*/
+                $entidad .= '<div class="tree jstree jstree-1 jstree-default" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="j1_1" aria-busy="false">
+                                <ul class="jstree-container-ul jstree-children" role="group">
+                                    <li role="treeitem" data-jstree="{ &quot;icon&quot;: &quot;fa fa-angle-double-right&quot;, &quot;opened&quot; : true }" aria-selected="false" aria-level="1" aria-labelledby="j1_1_anchor" aria-expanded="true" id="j1_1" class="jstree-node  jstree-open jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j1_1_anchor"><i class="jstree-icon jstree-themeicon fa fa-angle-double-right jstree-themeicon-custom" role="presentation"></i>'.$this->get('translator')->trans('Usuarios').'</a>
+                                        <ul role="group" class="jstree-children">';
+
+                                            foreach ($programacion_grupo as $programada){
+                                                    $usuario_programado = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($programada->getEntidadId());
+                                                    $entidad .= '<li role="treeitem" data-jstree="{ &quot;icon&quot; : &quot;fa fa-angle-right&quot; }" aria-selected="false" aria-level="2" aria-labelledby="j1_2_anchor" id="j1_2" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j1_2_anchor"><i class="jstree-icon jstree-themeicon fa fa-angle-right jstree-themeicon-custom" role="presentation"></i>'.$usuario_programado->getNombre().' '.$usuario_programado->getApellido().'</a></li>';
+                                            }
+                                            
+                            $entidad .= '</ul>
+                                    </li>
+                                </ul>
+                            </div>';
             }else{
                 $entidad = 'N/A';
             }
