@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\CertiOpcion:
     type: entity
     table: certi_opcion
     indexes:
-        IDX_66DA696AE7DE889A:
+        opcion_ndx1:
             columns:
                 - prueba_id
         IDX_66DA696ADB38439E:

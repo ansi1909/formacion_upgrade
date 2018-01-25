@@ -96,7 +96,6 @@ class NotificacionController extends Controller
             <td class="center">
                 <a href="'.$this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId(), 'status' => 'edit')).'" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$notificacion->getId().'"><span class="fa fa-trash"></span></a>
-                <a href="#" title="'.$this->get('translator')->trans('Ver Historial').'" class="btn btn-link btn-sm see" data="'.$notificacion->getId().'"><span class="fa fa-eye"></span></a>
             </td> </tr>';
         }
         
@@ -251,51 +250,6 @@ class NotificacionController extends Controller
                                                                               'usuario_empresa' => $usuario_empresa,
                                                                               'mensaje' => $mensaje,
                                                                               'usuario' => $usuario));
-        
-    }
-
-    public function ajaxHistoryProgramationsAction(Request $request)
-    {
-        
-        $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
-        $notificacion_id = $request->query->get('notificacion_id');
-        $html = '';
-        
-        $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
-        $notificaciones_programadas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByNotificacion($notificacion_id);
-
-        foreach ($notificaciones_programadas as $notificacion_programada)
-        {
-            $delete_disabled = $f->linkEliminar($notificacion_programada->getId(), 'AdminNotificacionProgramada');
-            $delete = $delete_disabled=='' ? 'delete' : '';
-            if($notificacion_programada->getTipoDestino()->getNombre() == 'Programa'){
-
-                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
-                $entidad = $programa->getNombre();
-
-            }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Nivel'){
-                $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($notificacion_programada->getEntidadId());
-                $entidad = $nivel->getNombre();
-            }else{
-                $entidad = 'N/A';
-            }
-            $html .= '<tr>
-                        <td>'.$notificacion_programada->getTipoDestino()->getNombre().'</td>
-                        <td>'.$entidad.'</td>
-                        <td>'.$notificacion_programada->getFechaDifusion().'</td>
-                        <td class="center">
-                            <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
-                            <a href="#" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
-                        </td>
-                    </tr>';
-        }
-
-        $return = array('html' => $html,
-                        'notificacion' => $notificacion->getAsunto());
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
 

@@ -2,6 +2,10 @@ Link\ComunBundle\Entity\CertiPregunta:
     type: entity
     table: certi_pregunta
     indexes:
+        pregunta_ndx1:
+            columns:
+                - prueba_id
+                - tipo_elemento_id
         IDX_FF8A1BE1E7DE889A:
             columns:
                 - prueba_id

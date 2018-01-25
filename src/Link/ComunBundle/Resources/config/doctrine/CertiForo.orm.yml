@@ -2,7 +2,7 @@ Link\ComunBundle\Entity\CertiForo:
     type: entity
     table: certi_foro
     indexes:
-        IDX_318634CC57991ECF:
+        foro_ndx1:
             columns:
                 - pagina_id
         IDX_318634CCDB38439E:

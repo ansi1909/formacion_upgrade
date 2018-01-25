@@ -1,3 +1,27 @@
 _programados:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Programados:index }
+
+_ajaxNotificacion:
+    path:     /ajaxNotificacion
+    defaults: { _controller: LinkBackendBundle:Programados:ajaxNotificacion }
+    requirements:
+        method: GET
+
+_ajaxHistoryProgramations:
+    path:     /ajaxHistoryProgramations
+    defaults: { _controller: LinkBackendBundle:Programados:ajaxHistoryProgramations }
+    requirements:
+        _method: GET
+
+_ajaxTipoDestino:
+    path:     /ajaxTipoDestino
+    defaults: { _controller: LinkBackendBundle:Programados:ajaxTipoDestino }
+    requirements:
+        _method: GET
+
+_ajaxUpdateProgramations:
+    path:     /ajaxUpdateProgramations
+    defaults: { _controller: LinkBackendBundle:Programados:ajaxUpdateProgramations }
+    requirements:
+        method: POST

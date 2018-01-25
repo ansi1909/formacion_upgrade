@@ -1,43 +1,108 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />    
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .input-group {
+            margin-top: 35px;
+        }
+       
+    </style>
+{% endblock %}
+
 {% block body %}
-{#<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditRol') }}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_roles', { 'app_id': app.session.get('app_id') }) }}">#}
+
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+{% set uri = app.request.getbasepath %}
+<br><br>
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
+<input type="hidden" id="url_tipo_destino" name="url_tipo_destino" value="{{ path('_ajaxTipoDestino') }}">
+<input type="hidden" id="url_notificaciones" name="url_notificaciones" value="{{ path ('_ajaxNotificacion') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_notificacion', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_programation" name="url_programation" value="{{ path('_ajaxHistoryProgramations') }}">
+<input type="hidden" id="error_msg_history" name="error_msg_history" value="{{ 'Error al obtener el historial.'|trans }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_programados', { 'app_id': app.session.get('app_id') }) }}">
+{% if usuario_empresa %}
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+{% endif %}
+
 <br>
-<div class="row align-items-center justify-content-between">
-    <div class="col-12 col-sm-12 page-title">
-        <h3>Notificaciones Programadas</h3>
-    </div>
-   <div class="col text-right">
-       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
-   </div>
-</div>
+{% if not usuario_empresa %}
 <div class="row">
-    <div class="col-sm-16">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
         <div class="card">
-            <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Listado de avisos programados'|trans }}</h5>
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Búsqueda de notificaciones por empresa'|trans  }}</h5>
             </div>
             <div class="card-block">
-                <table class="table">
+                 <label for="select_empresa_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa'|trans }}</label>
+                <div class="row">
+                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_empresa_id" name="select_empresa_id">
+                            <option value="0"></option>
+                            {% for empresa in empresas %}
+                                <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="fa fa-industry"></span>
+                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+                <table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title">{{ 'Destino'|trans }}</th>
-                            <th class="hd__title">{{ 'Entidad'|trans }}</th>
-                            <th class="hd__title">{{ 'Fecha'|trans }}</th>
-                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                            <th>{{ 'Asunto'|trans }}</th>
+                            {% if not usuario_empresa %}
+                                <th>{{ 'Empresa'|trans }}</th>
+                            {% endif %}
+                            <th>{{ 'Tipo Notificación'|trans }}</th>
+                            <th>{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody_history_programation">
+                    <tbody id="list_notificaciones" name="list_notificaciones">
                         {% for notificacion in notificaciones %}
                             <tr>
-                                <td>{{ notificacion.tipo_destino }}</td>
-                                <td>{{ notificacion.entidad }}</td>
-                                <td>{{ notificacion.fecha_difusion }}</td>
-
+                                <td>{{ notificacion.asunto }}</td>
+                                {% if not usuario_empresa %}
+                                    <td>{{ notificacion.empresa }}</td>
+                                {% endif %}
+                                <td>{{ notificacion.tipo_notificacion }}</td>
                                 <td class="center">
-                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{'Nuevo Registro' | trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-plus"></span></a>
+                                    <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -46,32 +111,74 @@
             </div>
         </div>
     </div>
+    <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+        <div class="card" id="history_message">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Historial de programaciones'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="alert alert-info" role="alert">
+                <span>Haz clic en <strong><i class="fa fa-eye"></i></strong> para mostrar el historial de programaciones de la notificación</span>
+            </div>
+            </div>
+        </div>
+        <div class="card" id="loading" style="width:24px;display:none">
+            <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
+        </div>
+        <div class="card" id="history_programation" style="display:none">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Historial de programaciones de'|trans }} <span id="notificacionTitle"></span></h5>
+            </div>
+            <div class="card-block">
+                <table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th>{{ 'Destino'|trans }}</th>
+                            <th>{{ 'Entidad'|trans }}</th>
+                            <th>{{ 'Fecha'|trans }}</th>
+                            <th>{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_history_programation">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock %}
-
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del Rol'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos de la Programación'|trans}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form" action="#{#{{ path( '_ajaxUpdateRol')}}#}"  method="POST">
-        <input type="hidden" id="rol_id" name="rol_id" value="">
-        <div class="form-group">
-            <label for="recipient-name" class="form-control-label">{{ 'Rol'|trans }}:</label>
-            <input type="text" class="form-control form_sty_modal" id="rol" name="rol" value="">
-            <span class="fa fa-cube"></span>
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateProgramations')}}"  method="POST">
+        <input type="hidden" id="notificacion_id" name="notificacion_id" value="">
+        <input type="hidden" id="programacion_id" name="programacion_id" value="">
+        <div class="alert alert-danger" role="alert" id="active-formulario-error" style="display:none;"> 
+            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span>{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
         </div>
         <div class="form-group">
-            <label for="message-text" class="form-control-label">{{ 'Descripción'|trans }}:</label>
-            <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+            <label for="tipo_destino_id" class="form-control-label">{{ 'Tipo Destino'|trans }}:</label>
+            <select class="form-control form_sty_modal" style="border-radius: 5px" id="tipo_destino_id" name="tipo_destino_id">
+                <option value="0"></option>
+                {% for destino in tipo_destino %}
+                    <option value="{{ destino.id }}" >{{ destino.nombre }}</option>
+                {% endfor %}
+            </select>
+            <span class="fa fa-industry"></span>
+            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
         </div>
+        <div id="loading_form" style="width:24px;display:none">
+            <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
+        </div>
+        <div id="formulario_ajax"></div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
-        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La notificación ha sido programada con éxito'|trans }}. 
     </div>
     <div class="card" id="detail" style="display:none;">
         <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
@@ -81,15 +188,22 @@
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{ 'Rol'|trans }}:</h5>
-                        <p id="p-nombre">Lorem Ipsum</p>
+                        <h5>{{ 'Asunto'|trans }}:</h5>
+                        <p id="p-asunto"></p>
                     </div>
                 </div>
                 <br>
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Descripción'| trans}}</h5>
-                        <p id="p-des">https://Loremipsumdolorsitamet.domain/</p>
+                        <h5>{{'Destino'| trans}}</h5>
+                        <p id="p-destino"></p>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{'Fecha Difusión'| trans}}</h5>
+                        <p id="p-fecha"></p>
                     </div>
                 </div>
                 <br>
@@ -102,10 +216,21 @@
             </div>
         </div>
     </div>
+    <div class="card" id="detail" style="display:none;">
+        <div class="card-footer">
+            <div class="col-sm-16 col-md-16 text-right">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/programados.js') }}"></script>
 {% endblock %}

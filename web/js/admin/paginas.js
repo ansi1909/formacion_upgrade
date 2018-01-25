@@ -61,6 +61,10 @@ $(document).ready(function() {
         duplicarPagina();
     });
 
+    $('#aceptar').click(function(){
+        window.location.replace($('#url_list').val());
+    });
+
 });
 
 function duplicarPagina()

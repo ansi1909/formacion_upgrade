@@ -15,9 +15,3 @@ _createNotificacion:
 _editNotificacion:
     path:     /editNotificacion/{notificacion_id}/{status}
     defaults: { _controller: LinkBackendBundle:Notificacion:editNotificacion }
-
-_ajaxHistoryProgramations:
-    path:     /ajaxHistoryProgramtions
-    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxHistoryProgramations }
-    requirements:
-        _method: GET

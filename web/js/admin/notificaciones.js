@@ -8,32 +8,10 @@ $(document).ready(function() {
 		$('#history_programation').hide();
 		
 	});
-	afterPaginate();
 	observe();
 });
 
 function observe(){
-	$('.see').click(function(){
-		var notificacion_id = $(this).attr('data');
-		$('#div-active-alert').hide();
-		$.ajax({
-			type: "GET",
-			url: $('#url_programation').val(),
-			async: true,
-			data: { notificacion_id: notificacion_id },
-			dataType: "json",
-			success: function(data) {
-				$('#tbody_history_programation').html(data.html);
-				$('#notificacionTitle').html(data.notificacion);
-				$('#history_programation').show();
-			},
-			error: function(){
-				$('#active-error').html($('#error_msg_history').val());
-				$('#div-active-alert').show();
-				$('#history_programation').hide();
-			}
-		});
-	});
 	$('.delete').click(function(){
 
 		var notificacion_id = $(this).attr('data');
@@ -58,13 +36,5 @@ function getListadoNotificaciones(empresa_id){
 			$('#active-error').html($('#error_msg-filter').val());
 			$('#div-active-alert').show();
 		}
-	});
-}
-
-function afterPaginate(){
-	$('.see').click(function(){
-		var notificacion_id = $(this).attr('data');
-		$('#div-active-alert').hide();
-		observe();
 	});
 }

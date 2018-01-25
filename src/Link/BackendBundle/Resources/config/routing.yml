@@ -79,3 +79,7 @@ notificaciones:
 programados:
     resource: "@LinkBackendBundle/Resources/config/routing/programados.yml"
     prefix: /programados
+
+tutorial:
+    resource: "@LinkBackendBundle/Resources/config/routing/tutorial.yml"
+    prefix: /tutorial
