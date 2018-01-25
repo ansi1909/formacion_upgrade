@@ -1,12 +1,5 @@
 $(document).ready(function() {
 
-	$('.tree').jstree();
-
-	$('.delete').click(function(){
-		var pagina_id = $(this).attr('data');
-		sweetAlertDelete(pagina_id, 'CertiPagina');
-	});
-
 	var table = $('#dt').DataTable( {
 		destroy: true,
         rowReorder: true
@@ -23,34 +16,6 @@ $(document).ready(function() {
  
     });
 
-    $('.duplicate').click(function(){
-        var pagina_id = $(this).attr('data');
-        $('#pagina_id').val(pagina_id);
-        $('#guardar').prop('disabled', false);
-        $('label.error').hide();
-        $('#form').show();
-        $('#alert-success').hide();
-        $('#detail').hide();
-        $('#aceptar').hide();
-        $('#guardar').show();
-        $('#cancelar').show();
-        $('#div-alert').hide();
-        $.ajax({
-           type:"GET",
-           url: $('#url_edit').val(),
-           async: true,
-           data: { pagina_id: pagina_id},
-           dataType: "json",
-           success: function(data){
-               $('#nombre').val(data.nombre);
-           },
-           error: function(){
-               $('#alert-error').html($('#error_msg-edit').val());
-               $('#div-alert').show();
-           }
-        });
-    });
-
     $('#guardar').click(function(){
         duplicarPagina();
     });
@@ -64,6 +29,12 @@ $(document).ready(function() {
     $('#aceptar').click(function(){
         window.location.replace($('#url_list').val());
     });
+
+    $('.paginate_button').click(function(){
+        afterPaginate();
+    });
+
+    observe();
 
 });
 
@@ -94,6 +65,7 @@ function duplicarPagina()
             error: function(){
                 $('#alert-error').html($('#error_msg-save').val());
                 $('#div-alert').show();
+                $('#guardar').prop('disabled', false);
             }
         });
     }
@@ -110,4 +82,48 @@ function treePaginas(pagina_id)
             }
         }
     });
+}
+
+function afterPaginate(){
+    observe();
+}
+
+function observe()
+{
+
+    $('.tree').jstree();
+
+    $('.delete').click(function(){
+        var pagina_id = $(this).attr('data');
+        sweetAlertDelete(pagina_id, 'CertiPagina');
+    });
+
+    $('.duplicate').click(function(){
+        var pagina_id = $(this).attr('data');
+        $('#pagina_id').val(pagina_id);
+        $('#guardar').prop('disabled', false);
+        $('label.error').hide();
+        $('#form').show();
+        $('#alert-success').hide();
+        $('#detail').hide();
+        $('#aceptar').hide();
+        $('#guardar').show();
+        $('#cancelar').show();
+        $('#div-alert').hide();
+        $.ajax({
+           type:"GET",
+           url: $('#url_edit').val(),
+           async: true,
+           data: { pagina_id: pagina_id},
+           dataType: "json",
+           success: function(data){
+               $('#nombre').val(data.nombre);
+           },
+           error: function(){
+               $('#alert-error').html($('#error_msg-edit').val());
+               $('#div-alert').show();
+           }
+        });
+    });
+
 }
