@@ -25,3 +25,9 @@ _ajaxUpdateProgramations:
     defaults: { _controller: LinkBackendBundle:Programados:ajaxUpdateProgramations }
     requirements:
         method: POST
+
+_ajaxEditProgramations:
+    path:     /ajaxEditProgramations
+    defaults: { _controller: LinkBackendBundle:Programados:ajaxEditProgramations }
+    requirements:
+        method: GET

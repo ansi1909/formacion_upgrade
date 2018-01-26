@@ -113,6 +113,8 @@ class ProgramadosController extends Controller
         $f = $this->get('funciones');
         $notificacion_id = $request->query->get('notificacion_id');
         $html = '';
+        $fecha_actual = date('d/m/Y');
+        $deshabilitado = "";
         
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
 
@@ -140,7 +142,7 @@ class ProgramadosController extends Controller
 
             }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Grupo de participantes'){
                 $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
-                /*$entidad .= '<div class="tree">
+                $entidad .= '<div class="tree">
                                 <ul data-jstree=\'{ "opened": true }\'>
                                     <li data-jstree=\'{ "icon": "fa fa-angle-double-right", "opened" : true }\'>'.$this->get('translator')->trans('Usuarios').'
                                             <ul>';
@@ -151,31 +153,21 @@ class ProgramadosController extends Controller
                                 $entidad .= '</ul>
                                     </li>
                                 </ul>
-                            </div>';*/
-                $entidad .= '<div class="tree jstree jstree-1 jstree-default" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="j1_1" aria-busy="false">
-                                <ul class="jstree-container-ul jstree-children" role="group">
-                                    <li role="treeitem" data-jstree="{ &quot;icon&quot;: &quot;fa fa-angle-double-right&quot;, &quot;opened&quot; : true }" aria-selected="false" aria-level="1" aria-labelledby="j1_1_anchor" aria-expanded="true" id="j1_1" class="jstree-node  jstree-open jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j1_1_anchor"><i class="jstree-icon jstree-themeicon fa fa-angle-double-right jstree-themeicon-custom" role="presentation"></i>'.$this->get('translator')->trans('Usuarios').'</a>
-                                        <ul role="group" class="jstree-children">';
-
-                                            foreach ($programacion_grupo as $programada){
-                                                    $usuario_programado = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($programada->getEntidadId());
-                                                    $entidad .= '<li role="treeitem" data-jstree="{ &quot;icon&quot; : &quot;fa fa-angle-right&quot; }" aria-selected="false" aria-level="2" aria-labelledby="j1_2_anchor" id="j1_2" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j1_2_anchor"><i class="jstree-icon jstree-themeicon fa fa-angle-right jstree-themeicon-custom" role="presentation"></i>'.$usuario_programado->getNombre().' '.$usuario_programado->getApellido().'</a></li>';
-                                            }
-                                            
-                            $entidad .= '</ul>
-                                    </li>
-                                </ul>
                             </div>';
             }else{
                 $entidad = 'N/A';
+            }
+            if($fecha_actual >= $notificacion_programada->getFechaDifusion()->format("d/m/Y")){
+                $deshabilitado = 'disabled';
             }
             $html .= '<tr>
                         <td>'.$notificacion_programada->getTipoDestino()->getNombre().'</td>
                         <td>'.$entidad.'</td>
                         <td>'.$notificacion_programada->getFechaDifusion()->format("d/m/Y").'</td>
                         <td class="center">
-                            <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
-                            <a href="#" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
+                            <input type="hidden" id="hidden_notificacion_id" name="hidden_notificacion_id" value="'.$notificacion->getId().'">
+                            <a href="#" class="btn btn-link btn-sm edit '.$deshabilitado.'" id="edit_programacion" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" class="btn btn-link btn-sm '.$deshabilitado.' '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
         }
@@ -380,27 +372,95 @@ class ProgramadosController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
-/*
-   public function ajaxEditRolAction(Request $request)
+
+   public function ajaxEditProgramationsAction(Request $request)
     {
         
         $em = $this->getDoctrine()->getManager();
-        $rol_id = $request->query->get('rol_id');
-                
-        $rol = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+        $programacion_id = $request->query->get('programacion_id');
+        $notificacion_id = $request->query->get('notificacion_id');
+        $f = $this->get('funciones');
+        $formulario = '';
+        $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+        $programacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($programacion_id);
+        $fecha_difusion = $programacion->getFechaDifusion()->format('d/m/Y');
+        $aviso = '';
+        $selected = '';
 
-        $query = $em->createQuery("SELECT r FROM LinkComunBundle:AdminRol r 
-                                    WHERE r.nombre IS NULL 
-                                    ORDER BY r.id ASC");
-        $apps = $query->getResult();
+        if($programacion->getTipoDestino()->getNombre() == "Nivel"){
 
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($notificacion->getEmpresa()->getId());
+            $formulario .='<div class="form-group">
+                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el nivel').':</label>
+                                <select class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id">
+                                    <option value="0"></option>';
+            foreach ($niveles as $nivel) {
+                    if($nivel->getId() == $programacion->getEntidadId()){
+                        $selected = "selected=selected";
+                    }
+                    $formulario .='<option value="'.$nivel->getId().'" '.$selected.'>'.$nivel->getNombre().'</option>';
+            }
+            $formulario .= '</select>
+                            <div><br>';
+            
+        }elseif($programacion->getTipoDestino()->getNombre() == "Programa"){
 
-        $return = array('nombre' => $rol->getNombre(),
-                        'descripcion' => $rol->getDescripcion());
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
+            $programas_asignados = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findByEmpresa($notificacion->getEmpresa()->getId());
+            $formulario .='<div class="form-group">
+                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
+                                <select class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id">
+                                    <option value="0"></option>';
+            foreach ($programas_asignados as $programa_asignado) {
+                if($programa_asignado->getActivo() == true){
+                    $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
+                    if($programa->getId() == $programacion->getEntidadId()){
+                        $selected = "selected=selected";
+                    }
+                    $formulario .='<option value="'.$programa->getId().'" '.$selected.' >'.$programa->getNombre().'</option>';
+                }
+            }
+            $formulario .= '</select>
+                            <div><br>';
 
+            
+        }elseif($programacion->getTipoDestino()->getNombre() == "Grupo de participantes"){
+
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
+            $usuarios_grupo = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
+            $formulario .='<div class="form-group">
+                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
+                                <select multiple=multiple class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id[]">
+                                    <option value="0"></option>';
+            foreach ($usuarios_grupo as $usuario_grupo) {
+                    if($usuario_grupo->getId() == $programacion->getEntidadId()){
+                        $selected = "selected=selected";
+                    }
+                    $formulario .='<option value="'.$usuario_grupo->getId().'" '.$selected.' >'.$usuario_grupo->getNombre().' '.$usuario_grupo->getApellido().' ('.$usuario_grupo->getLogin().')</option>';
+            }
+            $formulario .= '</select>
+                            <div><br>'; 
+            
+        }elseif($programacion->getTipoDestino()->getNombre() == "Todos"){
+
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
+
+        }
+
+        $formulario  .= '<div class="form-group">
+                            <label for="fecha_difusion" class="form-control-label">'.$this->get('translator')->trans('Seleccione fecha difusión').':</label>
+                            <input type="text" class="form-control form_sty1" name="fecha_difusion" id="fecha_difusion" value="'.$fecha_difusion.'">
+                            <!--<span class="fa fa-calendar"></span>-->
+                            '.$aviso.'
+                        </div>';
+        
+        $return = array('tipo_destino' => $programacion->getTipoDestino()->getId(),
+                        'formulario' =>$formulario);
+ 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
-    }*/
+    }
 
 }
