@@ -16,7 +16,6 @@ use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
 use Link\ComunBundle\Entity\AdminUsuario;
 
-
 class ProgramadosController extends Controller
 {
 
@@ -51,11 +50,9 @@ class ProgramadosController extends Controller
             $notificacionesdb[]= array('id'=>$notificacion->getId(),
                               'asunto'=>$notificacion->getAsunto(),
                               'empresa'=>$notificacion->getEmpresa()->getNombre(),
-                              'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre(),
-                              'delete_disabled'=>$f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
+                              'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre());
 
         }
-
 
         return $this->render('LinkBackendBundle:Programados:index.html.twig', array('empresas' => $empresas,
                                                                                         'usuario_empresa' => $usuario_empresa,
@@ -357,6 +354,8 @@ class ProgramadosController extends Controller
             
             $em->persist($programacion);
             $em->flush();
+
+            $this->sendNowEmail($programacion->getId());
          
         }
 
@@ -461,6 +460,85 @@ class ProgramadosController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function sendNowEmail($programacion_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($programacion_id);
+        $hoy = date('d/m/Y');
+        $controller = 'ProgramadosController';
+
+        if($hoy == $programacion->getFechaDifusion()->format("d/m/Y"))
+        {
+
+            $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($programacion->getNotificacion()->getId());
+            $parametros = array();
+            $template = "LinkBackendBundle:Programados:email.html.twig";
+
+            if($programacion->getTipoDestino()->getNombre() == "Nivel")
+            {
+
+                $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminUsuario p
+                                            WHERE p.nivel = :nivel_id AND p.empresa = :empresa_id
+                                            ORDER BY p.id ASC")
+                            ->setParameters(array('nivel_id' => $programacion->getEntidadId(),
+                                                  'empresa_id' => $notificacion->getEmpresa()->getId()));
+                $usuarios = $query->getResult();
+
+            }
+            elseif($programacion->getTipoDestino()->getNombre() == "Programa")
+            {
+
+                $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
+
+            }
+            elseif($programacion->getTipoDestino()->getNombre() == "Todos")
+            {
+
+                $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
+
+            }
+            elseif($programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
+            {
+
+                $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
+                foreach ($programacion_grupo as $individual){
+
+                        $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($individual->getEntidadId());
+                }
+
+            }
+
+            foreach ($usuarios as $usuario) {
+
+                $parametros= array('twig'=>$template,
+                                    'asunto'=>$notificacion->getAsunto(),
+                                    'remitente'=>array('info@formacion2-0.com' => 'Formación 2.0'),
+                                    'destinatario'=>$usuario->getCorreoCorporativo(),
+                                    'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
+
+                $f->sendEmail($parametros, $controller);
+            }
+
+        }
+    }
+
+    public function sendAction()
+    {
+        $this_is = 'this is';
+        $the_message = ' the message of the email';
+        $mailer = $this->get('mailer');
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('The Subject for this Message')
+            ->setFrom('jponce@bmt.com.ve')
+            ->setTo('jhonatan@uakami.com')
+            ->setBody($this->renderView('LinkBackendBundle:Programados:emailTest.html.twig', ['this'=>$this_is, 'message'=>$the_message]))
+        ;
+        $mailer->send($message);
+        return new Response('<html><body>The email has been sent successfully!</body></html>');
     }
 
 }
