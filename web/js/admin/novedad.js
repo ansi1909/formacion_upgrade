@@ -24,20 +24,6 @@ $(document).ready(function() {
 		'autoSize'	: false
     });
 
-    $('#finish').click(function()
-    {
-    	$('#div-error').hide();
-    	var str_error = validarForm();
-    	if (str_error != '')
-    	{
-    		$('#alert-error').html(str_error);
-    		$('#div-error').show();
-    	}else 
-    	{
-    		$('#form').submit();
-    	}
-    });
-
     CKEDITOR.replace( 'resumen', {
 		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
 		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',

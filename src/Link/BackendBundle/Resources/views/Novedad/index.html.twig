@@ -55,7 +55,7 @@
                         &nbsp;
                     </div>
                 </div>
-                <table class="table" id="dt">
+                <table class="table" id="listado_noticias">
                     <thead class="sty__title">
                         <tr>
                             {% if not usuario_empresa %}
@@ -84,9 +84,9 @@
                                 <td>{{ noticia.fechaRegistro|date("d/m/Y") }}</td>
                                 <td class="center">
                                 {% if aplicacion.id==26 %}
-                                    <a href="{{ path('_registroBiblioteca', { 'biblioteca_id': noticia.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>                                
+                                    <a href="{{ path('_registroBiblioteca', { 'biblioteca_id': noticia.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                                 {% else %}
-                                    <a href="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>                                
+                                    <a href="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                                 {% endif %}
                                     <a href="#" class="btn btn-link btn-sm {% if noticia.delete_disabled == '' %}delete{% endif %} {{ noticia.delete_disabled }}" data="{{ noticia.id }}"><span class="fa fa-trash"></span></a>
                                 </td>

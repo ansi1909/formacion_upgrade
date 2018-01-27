@@ -188,15 +188,38 @@ class NovedadController extends Controller
             $em->persist($biblioteca);
             $em->flush();
 
-
-            return $this->redirectToRoute('_bibliotecas', array('app_id' => $aplicacion->getId() ));
+            return $this->redirectToRoute('_showBiblioteca', array('biblioteca_id' => $biblioteca->getId()));
 
         }
-       // return new Response(var_dump($session->get('administrador'),$usuario_empresa));
 
         return $this->render('LinkBackendBundle:Novedad:registroBiblioteca.html.twig', array('empresas' => $empresas,
                                                                                              'biblioteca' => $biblioteca,
                                                                                              'usuario_empresa' => $usuario_empresa ));
+
+    }
+
+    public function mostrarBibliotecaAction($biblioteca_id)
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($biblioteca_id);
+
+        return $this->render('LinkBackendBundle:Novedad:mostrarBiblioteca.html.twig', array('biblioteca' => $biblioteca));
 
     }
 
@@ -294,7 +317,7 @@ class NovedadController extends Controller
             $em->persist($noticia);
             $em->flush();
 
-            return $this->redirectToRoute('_bibliotecas', array('app_id' => $aplicacion->getId() ));
+            return $this->redirectToRoute('_showNovedad', array('noticia_id' => $noticia->getId()));
 
         }
         
@@ -305,7 +328,7 @@ class NovedadController extends Controller
 
     }
 
-/*    public function mostrarAction($empresa_id)
+   public function mostrarNoticiaNovedadAction($noticia_id)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -323,10 +346,11 @@ class NovedadController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-        return $this->render('LinkBackendBundle:Empresa:mostrar.html.twig', array('empresa' => $empresa));
+        $noticia = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
 
-    }*/
+        return $this->render('LinkBackendBundle:Novedad:mostrarNovedad.html.twig', array('noticia' => $noticia));
+
+    }
 
 }

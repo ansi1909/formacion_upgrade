@@ -92,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <form id="form" name="form" action="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}" class="container-fluid p-0" method="POST">
+                    <form id="form_novedad" name="form_novedad" action="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}" class="container-fluid p-0" method="POST">
                         <div class="row setup-content" id="det0">   
                             <div class="col-sm-16">
                                 <div class="row">
@@ -308,7 +308,7 @@
 
         $('#finish').click(function()
         {
-           var valid = $('#form').valid();
+           var valid = $('#form_novedad').valid();
            if(!valid)
            {
                notify($('#div-error').html());
@@ -331,13 +331,16 @@
                     }else
                     {
                         if (deslen > {{ minlenght_bienvenida }} && deslen2 > {{ minlenght_bienvenida }} )
-                            $('#form').submit();
+                        {
+                            $('#finish').attr("disabled", "disabled");
+                            $('#form_novedad').submit();
+                        }
                     }
                 }
             }
         });
         
-        $("#form").validate({
+        $("#form_novedad").validate({
             errorLabelContainer: "#div-error ul",
             wrapper: "li",
             ignore: "",

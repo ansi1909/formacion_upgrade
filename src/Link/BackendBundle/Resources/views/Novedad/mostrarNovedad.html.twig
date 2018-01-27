@@ -1,0 +1,199 @@
+{% extends '::admin.html.twig'%}
+
+{% block body %}
+
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="noticia_id" name="noticia_id" value="noticia.id">
+
+<br><br>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-left">
+        <a href="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col text-right">
+        <button type="button" class="bttn__nr" id="edit"><span class="fa fa-pencil"></span><span class="text__nr">{{ 'Editar'|trans }}</span></button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Detalles de la Noticia y Novedad'|trans }}</h6>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="container_wizard wizard-thin">
+                    <div class="stepwizard">
+                        <div class="stepwizard-row setup-panel d-flex">
+                            <div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Resumen'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Contenido'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det3" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">4</span>
+                                    <p>{{ 'Archivos'|trans }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det0">   
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Empresa'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ noticia.empresa.nombre }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Tipo de Noticia'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ noticia.tipoNoticia.nombre }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Título'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ noticia.titulo }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Autor'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ noticia.autor }}</p>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Fecha de Publicación'|trans }}</h5>
+                                    <div class="col-14">
+                                        {% set fecha_publicacion = noticia.fechaPublicacion ? noticia.fechaPublicacion|date('d/m/Y') : '' %}
+                                        <p>{{ fecha_publicacion }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Fecha de Vencimiento'|trans }}</h5>
+                                    <div class="col-14">
+                                        {% set fecha_vencimiento = noticia.fechaVencimiento ? noticia.fechaVencimiento|date('d/m/Y') : '' %}
+                                        <p>{{ fecha_vencimiento }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det1">
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h5>{{ 'Resumen'|trans }}</h5>
+                                </div>
+                                <div class="col-sm-16">
+                                    <div class="col-16">{{ noticia.resumen|raw }}</div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det2">
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h5>{{ 'Contenido'|trans }}</h5>
+                                </div>
+                                <div class="col-sm-16">
+                                    <div class="col-16">{{ noticia.contenido|raw }}</div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det3">
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h5>{{ 'Imagen'|trans }}</h5>
+                                </div>
+                                {% if noticia.imagen %}
+                                    <div class="col-sm-6">
+                                        {% set img = uploads~noticia.imagen %}
+                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="{{ 'Imagen |trans' }}" width="100%"></figure>
+                                    </div>
+                                {% endif %}    
+                                <div class="col-sm-2">
+                                    <h5>{{ 'Pdf'|trans }}</h5>
+                                </div>
+                                {% if noticia.pdf %}
+                                    <div class="col-sm-6">
+                                        {% set pdf = uploads~noticia.pdf %}
+                                        <p class="fa fa-file-pdf-o">
+                                            <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
+                                        </p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn" id="list"><span class="text__nxt">{{ 'Ir al listado'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        $('#edit').click(function()
+        {
+            window.location.replace($('#url_edit').val());
+        });
+        
+    </script>
+{% endblock %}

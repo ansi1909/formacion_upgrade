@@ -6,6 +6,14 @@ _registroBiblioteca:
     path:     /registroBibliotecaVirtual/{biblioteca_id}
     defaults: { _controller: LinkBackendBundle:Novedad:registroBiblioteca, biblioteca_id: 0 }
 
+_showBiblioteca:
+    path:     /mostrarBibliotecaVirtual/{biblioteca_id}
+    defaults: { _controller: LinkBackendBundle:Novedad:mostrarBiblioteca }
+
 _registroNovedad:
-    path:     /registroNoticaNovedad/{noticia_id}
+    path:     /registroNoticiaNovedad/{noticia_id}
     defaults: { _controller: LinkBackendBundle:Novedad:registroNovedad, noticia_id: 0 }
+
+_showNovedad:
+    path:     /mostrarNoticiaNovedad/{noticia_id}
+    defaults: { _controller: LinkBackendBundle:Novedad:mostrarNoticiaNovedad }
