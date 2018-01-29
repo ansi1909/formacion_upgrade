@@ -31,7 +31,3 @@ _ajaxEditProgramations:
     defaults: { _controller: LinkBackendBundle:Programados:ajaxEditProgramations }
     requirements:
         method: GET
-
-_send:
-    path:     /send
-    defaults: { _controller: LinkBackendBundle:Programados:send }

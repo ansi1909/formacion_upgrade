@@ -491,7 +491,14 @@ class ProgramadosController extends Controller
             elseif($programacion->getTipoDestino()->getNombre() == "Programa")
             {
 
-                $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
+                $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
+                                            JOIN LinkComunBundle:CertiNivelPagina c 
+                                            WHERE c.paginaEmpresa = :programa
+                                            AND c.nivel = u.nivel
+                                            ORDER BY u.id ASC")
+                            ->setParameters(array('programa' => $programacion->getEntidadId()));
+
+                $usuarios = $query->getResult();
 
             }
             elseif($programacion->getTipoDestino()->getNombre() == "Todos")
@@ -523,22 +530,6 @@ class ProgramadosController extends Controller
             }
 
         }
-    }
-
-    public function sendAction()
-    {
-        $this_is = 'this is';
-        $the_message = ' the message of the email';
-        $mailer = $this->get('mailer');
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject('The Subject for this Message')
-            ->setFrom('jponce@bmt.com.ve')
-            ->setTo('jhonatan@uakami.com')
-            ->setBody($this->renderView('LinkBackendBundle:Programados:emailTest.html.twig', ['this'=>$this_is, 'message'=>$the_message]))
-        ;
-        $mailer->send($message);
-        return new Response('<html><body>The email has been sent successfully!</body></html>');
     }
 
 }

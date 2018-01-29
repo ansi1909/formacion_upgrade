@@ -3,13 +3,16 @@ parameters:
     database_host: 127.0.0.1
     database_driver: pdo_pgsql
     database_path: null
-    database_port: '5432'
+    database_port: 5432
     database_name: formacion
     database_user: desa
     database_password: desa1234
     mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    mailer_host: smtp.gmail.com
+    mailer_port: 587
+    mailer_encryption: ssl
+    mailer_auth_mode: login
+    mailer_user: ponceelrelajado@gmail.com
+    mailer_password: micontraseña
     secret: ThisTokenIsNotSoSecretChangeIt
     sendmail: 1
