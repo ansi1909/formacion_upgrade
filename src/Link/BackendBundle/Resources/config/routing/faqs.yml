@@ -19,3 +19,9 @@ _ajaxEditFaqs:
     defaults: { _controller: LinkBackendBundle:Faqs:ajaxEditFaqs }
     requirements:
         _method: GET
+
+_ajaxNuevaPregunta:
+    path:     /ajaxNuevaPregunta
+    defaults: { _controller: LinkBackendBundle:Faqs:ajaxNuevaPregunta }
+    requirements:
+        method: POST

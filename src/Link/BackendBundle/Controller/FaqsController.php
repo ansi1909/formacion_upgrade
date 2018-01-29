@@ -94,6 +94,7 @@ class FaqsController extends Controller
         $return = array('id' => $faq->getId(),
                         'pregunta' =>$faq->getPregunta(),
                         'respuesta' =>$faq->getRespuesta(),
+                        'id_tipo_pregunta' =>$faq->getTipoPregunta()->getId(),
                         'tipo_pregunta' =>$faq->getTipoPregunta()->getnombre(),
                         'delete_disabled' =>$f->linkEliminar($faq->getId(),'AdminFaqs'));
 
@@ -142,11 +143,51 @@ class FaqsController extends Controller
         $return = array('faq_id' => $faq1->getId(),
                         'pregunta' => $faq1->getPregunta(),
                         'respuesta' => $faq1->getRespuesta(),
+                        'id_tipo_pregunta' => $faq1->getTipoPregunta()->getId(),
                         'tipo_pregunta' => $tipo_p);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function ajaxNuevaPreguntaAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $id_tipo_pregunta = $request->request->get('id_tipo_pregunta');
+        $new_pregunta = $request->request->get('new_pregunta');
+        $tipo_pre = '<option value=""></option>';
+
+        if ($id_tipo_pregunta)
+        {
+            $tipo_p = $em->getRepository('LinkComunBundle:AdminTipoPregunta')->find($id_tipo_pregunta);
+        }
+        else {
+            $tipo_p = new AdminTipoPregunta();
+        }
+
+
+        $tipo_p->setNombre($new_pregunta);
+
+        $em->persist($tipo_p);
+        $em->flush();
+                    
+        $tps = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoPregunta')->findAll();
+
+        foreach($tps as $tp)
+        {
+
+            $tipo_pre .= '<option value="'.$tp->getId().'" >'.$tp->getNombre().'</option>';
+         
+        }   
+
+        $return = array('tipo_pregunta' => $tipo_pre);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
 }

@@ -14,6 +14,7 @@ $(document).ready(function() {
 		$('#pregunta').val("");
 		$('#respuesta').val("");
 		$('#tipo_pregunta_id').val("");
+		$('#new_pregunta').val("");
 		$('#div-alert').hide();
 	});
 
@@ -23,10 +24,9 @@ $(document).ready(function() {
 		saveFaq();
 	});
 
-	$('#form').submit(function(e)
-	{
-		e.preventDefault();
-		saveRol();
+
+	$('.nuevap').click(function(){
+		nuevaPregunta();
 	});
 	 
  	$('#aceptar').click(function(){
@@ -67,6 +67,7 @@ function observe()
 				$('#faq_id').val(faq_id);
 				$('#pregunta').val(data.pregunta);
 				$('#respuesta').val(data.respuesta);
+				$('#id_tipo_pregunta').val(data.id_tipo_pregunta)
 				$('#tipo_pregunta_id').html(data.tipo_pregunta);
 			},
 			error: function(){
@@ -154,4 +155,25 @@ function afterPaginate(){
 			}
 		});
 	});
+}
+
+function nuevaPregunta()
+{		
+		var url_nuevaPregunta = $('#url_nuevaPregunta').val();
+		$('#nuevap').prop('disabled', true);
+		$.ajax({
+			type: "POST",
+			url: url_nuevaPregunta,
+			async: true,
+			data: $("#form").serialize(),
+			dataType: "json",
+			success: function(data) {
+				$('#tipo_pregunta_id').html(data.tipo_pregunta);
+				$('#new_pregunta').val("");
+			},
+			error: function(){
+				$('#alert-error').html($('#error_msg-save').val());
+				$('#div-alert').show();
+			}
+		});
 }

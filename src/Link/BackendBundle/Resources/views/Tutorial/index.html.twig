@@ -67,8 +67,10 @@
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{eo}}">
                                 <td>{{tutorial.nombre}}</td>
-                                <td><a href="{{ruta ~ tutorial.pdf}}">{{tutorial.pdf}}</a></td>
-                                <td><a href="#">{{tutorial.video}}</a></td>
+                                {% set pdf = uploads~tutorial.pdf %}
+                                <td><a href="{{pdf}}" target="_blank">{{tutorial.pdf}}</a></td>
+                                {% set pdf = uploads~tutorial.video %}
+                                <td><a href="{{pdf}}" target="_blank">{{tutorial.video}}</a></td>
                                 <td class="center">
                                     <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ tutorial.id }}"><span class="fa fa-pencil"></span></a>
                                     <a href="#" class="btn btn-link btn-sm {% if tutorial.delete_disabled == '' %}delete{% endif %} {{ tutorial.delete_disabled }}" data="{{tutorial.id}}"><span class="fa fa-trash"></span></a>
@@ -105,7 +107,7 @@
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value=" " >
                 <span class="input-group-addon">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=pdf&fldr=recursos/tutorial" class="btn iframe-btn" type="button">
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&fldr=recursos/tutoriales" class="btn iframe-btn" type="button">
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>
@@ -116,7 +118,7 @@
             <div class="input-group">
                 <input type="text" class="form-control " name="video" id="video">
                 <span class="input-group-addon">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=video&fldr=recursos/tutorial" class="btn iframe-btn" type="button">
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=3&field_id=video&fldr=recursos/tutoriales" class="btn iframe-btn" type="button">
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>
@@ -124,7 +126,7 @@
         </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
-        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El tutorial ha sido almacenada con éxito'|trans }}. 
     </div>
     <div class="card" id="detail" style="display:none;">
         <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
@@ -181,7 +183,7 @@
                 'nombre': {
                     required: true,
                     minlength: 3
-                },
+                }
             },
             messages: {
                 'nombre': {

@@ -11,6 +11,7 @@
 			niveles/		# Aquí se almacenan los archivos Excel de los niveles por empresa
 			paginas/		# Aquí se almacenan los archivos de las páginas
 			noticias/		# Aquí se almacenan los archivos de las noticias
+			tutoriales/		# Aquí se almacenan los archivos de los tutoriales
 
 4. Las constantes globales para twig están seteadas en app/config/config.yml:
 	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida
