@@ -1,18 +1,18 @@
 $(document).ready(function() 
 {
-    
-    $('.delete').click(function()
-    {
-        var noticia_id = $(this).attr('data');
-        sweetAlertDelete(noticia_id, 'AdminNoticia');
-    });
+	
+	$('.delete').click(function()
+	{
+		var certificado_id = $(this).attr('data');
+		sweetAlertDelete(certificado_id, 'AdminNoticia');
+	});
 
-    $('.iframe-btn').fancybox({ 
-        'width'     : 900,
-        'height'    : 900,
-        'type'      : 'iframe',
+    $('.iframe-btn').fancybox({	
+		'width'		: 900,
+		'height'	: 900,
+		'type'		: 'iframe',
         'autoScale' : false,
-        'autoSize'  : false
+		'autoSize'	: false
     });
 
     activarDataTable();
@@ -31,7 +31,7 @@ function paginateScroll()
 
 function activarDataTable() 
 {
-    $('#listado_noticias').DataTable({
+    $('#listado_certificados').DataTable({
         responsive: true,
         pageLength:10,
         sPaginationType: "full_numbers",

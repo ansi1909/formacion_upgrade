@@ -37,14 +37,16 @@ $(document).ready(function() {
 
 });
 
-function responsive_filemanager_callback(field_id){
-	
+function responsive_filemanager_callback(field_id)
+{
+
 	// Ruta en el campo de texto
 	var url=jQuery('#'+field_id).val();
 	var arr = url.split('uploads/');
 	var new_image = arr[arr.length-1];
 	$('#'+field_id).val(new_image);
 	
-	$('#figure_'+field_id).html('<img src="'+url+'" style="background: transparent; width: 150px; height: auto;">');
+	if(field_id=="imagen")
+		$('#figure').html('<img src="'+url+'" width="100%">');
 	
 }

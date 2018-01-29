@@ -1,0 +1,103 @@
+Link\ComunBundle\Entity\CertiCertificado:
+    type: entity
+    table: certi_certificado
+    indexes:
+        IDX_D0147FE7521E1991:
+            columns:
+                - empresa_id
+        IDX_D0147FE71AAC87BB:
+            columns:
+                - tipo_certificado_id
+        IDX_D0147FE77649AC72:
+            columns:
+                - tipo_imagen_certificado_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        entidadId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: entidad_id
+        imagen:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        encabezado:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        nombre:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        descripcion:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        titulo:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        fecha:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        qr:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoCertificado:
+            targetEntity: CertiTipoCertificado
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_certificado_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoImagenCertificado:
+            targetEntity: CertiTipoImagenCertificado
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_imagen_certificado_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -6,7 +6,6 @@
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
-
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -15,27 +14,9 @@
         .input-group {
             margin-top: 35px;
         }
-        .social-profile-pic img {
-            width: 150px;
-            height: 150px;
-            overflow: hidden;
-            border: 0;
-            -webkit-border-radius: 6px;
-            -moz-border-radius: 6px;
-            -ms-border-radius: 6px;
-            border-radius: 6px;
-            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            margin: 0 20px 0 10px;
+        img {
+            width: 100% !important;
         }
-        .sty__title {
-            padding: 2px 5px;
-            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
-            font-weight: bold;
-        }        
-       
     </style>
 {% endblock %}
 
@@ -133,6 +114,29 @@
                                         </div>
                                     </div>
                                 </div>
+
+                              <!--   <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <div class="input-group date" id='datetimepicker6'>
+                                                <input type="text" class="form-control"/>
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <div class="input-group date" id='datetimepicker7'>
+                                                <input type="text" class="form-control"/>
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div> -->
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-8 col-md-8 col-lg-8">
@@ -156,7 +160,7 @@
                                         <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Publicación'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_publicacion = noticia.fechaPublicacion ? noticia.fechaPublicacion|date('d/m/Y') : '' %}
-                                            <input type="text" class="form-control form_sty1" name="fecha_publicacion" id="fecha_publicacion" value="{{ fecha_publicacion }}">
+                                            <input type="text" class="form-control form_sty1" name="fecha_publicacion" id="fecha_publicacion" value="{{ fecha_publicacion }}" placeholder="DD/MM/YYYY">
                                             <span class="fa fa-calendar"></span>
                                         </div>
                                     </div>
@@ -164,7 +168,7 @@
                                         <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Vencimiento'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_vencimiento = noticia.fechaVencimiento ? noticia.fechaVencimiento|date('d/m/Y') : '' %}
-                                            <input type="text" class="form-control form_sty1" name="fecha_vencimiento" id="fecha_vencimiento" value="{{ fecha_vencimiento }}">
+                                            <input type="text" class="form-control form_sty1" name="fecha_vencimiento" id="fecha_vencimiento" value="{{ fecha_vencimiento }}" placeholder="DD/MM/YYYY">
                                             <span class="fa fa-calendar"></span>
                                         </div>
                                     </div>
@@ -231,42 +235,35 @@
                             <div class="col-sm-16">
                                 <div class="row">
                                     <div class="col-sm-16">
-                                        <h3 class="mb-2">{{ 'Paso'|trans }} 4</h3>
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-sm-8 col-lg-8 col-md-8">
+                                    <div class="col-sm-6 col-lg-6 col-md-6">
                                         <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Imagen'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
-                                            <span class="fa fa-picture-o"></span>
+                                            <input type="text" class="form-control form_sty1" name="imagen" id="imagen" value="{{ noticia.imagen }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
+                                            <span class="fa fa-file-picture-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-sm-2 col-md-2 col-lg-32">
                                         <div class="input-group">
                                             <span class="input-group-addon">
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/noticias" class="btn iframe-btn" type="button">
+                                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/noticias" class="btn iframe-btn" type="button">
                                                     <span class="fa fa-file-picture-o"></span>
                                                 </a>
                                             </span>
                                         </div>
                                     </div>
-                                   <!--  <div class="col-sm-4 col-lg-4 col-md-4">
-                                        {% set img = asset('img/picture.png') %}
-                                        <div id="figure"><img src="{{ img }}" alt="{{ 'Imagen de la Noticia y Novedad|trans' }}" style="width: 150px; height: auto; margin: 0 1rem;"></div>
-                                    </div>   -->                              
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-8 col-lg-8 col-md-8">
+                                    <div class="col-sm-6 col-lg-6 col-md-6">
                                         <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Pdf'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
+                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
                                             <span class="fa fa-file-pdf-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-sm-2 col-md-2 col-lg-2">
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&fldr=recursos/noticias" class="btn iframe-btn" type="button">
@@ -276,12 +273,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        {% set img = noticia.imagen  ? uploads~noticia.imagen  : asset('img/picture.png') %}
+                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" ></figure>
+                                    </div> 
+                                </div>
                                 <br>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
                                         <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -299,13 +303,14 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>    
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/novedad.js') }}"></script>
     <script type="text/javascript">
 
+        $("form :input").attr("autocomplete", "off");
         $('#finish').click(function()
         {
            var valid = $('#form_novedad').valid();
@@ -316,6 +321,7 @@
            {
                 var deslen = $('#deslen').val();
                 var deslen2 = $('#deslen2').val();
+
                 if (deslen < {{ minlenght_bienvenida }} )
                 {
                     $('#div-error ul').html("<li>- {{'Cantidad mínima de caracteres en el Resumen'|trans }}: {{ minlenght_bienvenida }}</li>");
@@ -374,10 +380,10 @@
             },
             messages: {
                 'empresa_id': {
-                    required: "- {{ 'La empresa es requerido.'|trans }}",
+                    required: "- {{ 'La empresa es requerido.'|trans }}"
                 },
                 'tipo_noticia_id': {
-                    required: "- {{ 'El tipo de noticia es requerido.'|trans }}",
+                    required: "- {{ 'El tipo de noticia es requerido.'|trans }}"
                 },                
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",

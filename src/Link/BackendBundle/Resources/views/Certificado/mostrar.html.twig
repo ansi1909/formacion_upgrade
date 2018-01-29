@@ -8,17 +8,16 @@
         }
     </style>
 {% endblock %}
-
+ 
 {% block body %}
 
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="noticia_id" name="noticia_id" value="noticia.id">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroCertificado', { 'certificado_id': certificado.id }) }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_certificados', { 'app_id': app.session.get('app_id') }) }}">
 
 <br><br>
 <div class="row align-items-center justify-content-between">
     <div class="col text-left">
-        <a href="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+        <a href="{{ path('_certificados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
     <div class="col text-right">
         <button type="button" class="bttn__nr" id="edit"><span class="fa fa-pencil"></span><span class="text__nr">{{ 'Editar'|trans }}</span></button>
@@ -29,7 +28,7 @@
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Detalles de la Noticia y Novedad'|trans }}</h6>
+                    <h6>{{ 'Detalles del Certificado'|trans }}</h6>
                 </div>
             </div>
             <div class="card-block">
@@ -45,19 +44,13 @@
                             <div class="stepwizard-step col">
                                 <a href="#det1" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">2</span>
-                                    <p>{{ 'Resumen'|trans }}</p>
+                                    <p>{{ 'Archivo'|trans }}</p>
                                 </a>
                             </div>
                             <div class="stepwizard-step col">
                                 <a href="#det2" class="btn btn-secondary pass disabled">
                                     <span class="btn-round">3</span>
-                                    <p>{{ 'Contenido'|trans }}</p>
-                                </a>
-                            </div>
-                            <div class="stepwizard-step col">
-                                <a href="#det3" class="btn btn-secondary pass disabled">
-                                    <span class="btn-round">4</span>
-                                    <p>{{ 'Archivos'|trans }}</p>
+                                    <p>{{ 'Diseño'|trans }}</p>
                                 </a>
                             </div>
                         </div>
@@ -69,45 +62,28 @@
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Empresa'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ noticia.empresa.nombre }}</p>
+                                        <p>{{ certificado.empresa.nombre }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Tipo de Noticia'|trans }}</h5>
+                                    <h5>{{ 'Tipo de Imagen'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ noticia.tipoNoticia.nombre }}</p>
+                                        <p>{{ certificado.empresa.nombre }}</p>
                                     </div>
                                 </div>
                             </div>
                             <br>
                             <div class="row">
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Título'|trans }}</h5>
+                                    <h5>{{ 'Tipo de Certificado'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ noticia.titulo }}</p>
+                                        <p>{{ certificado.empresa.nombre }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Autor'|trans }}</h5>
+                                    <h5>{{ 'Entidad'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ noticia.autor }}</p>
-                                    </div>
-                                </div>                                
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Fecha de Publicación'|trans }}</h5>
-                                    <div class="col-14">
-                                        {% set fecha_publicacion = noticia.fechaPublicacion ? noticia.fechaPublicacion|date('d/m/Y') : '' %}
-                                        <p>{{ fecha_publicacion }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Fecha de Vencimiento'|trans }}</h5>
-                                    <div class="col-14">
-                                        {% set fecha_vencimiento = noticia.fechaVencimiento ? noticia.fechaVencimiento|date('d/m/Y') : '' %}
-                                        <p>{{ fecha_vencimiento }}</p>
+                                        <p>{{ certificado.empresa.nombre }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -123,12 +99,15 @@
                         <div class="col-sm-16">
                             <br>
                             <div class="row">
-                                <div class="col-sm-16">
-                                    <h5>{{ 'Resumen'|trans }}</h5>
+                                <div class="col-sm-2">
+                                    <h5>{{ 'Imagen'|trans }}</h5>
                                 </div>
-                                <div class="col-sm-16">
-                                    <div class="col-16">{{ noticia.resumen|raw }}</div>
-                                </div>
+                                {% if certificado.imagen %}
+                                    <div class="col-sm-6">
+                                        {% set img = uploads~certificado.imagen %}
+                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }} " alt="{{ 'Imagen |trans' }}" width="100%"></figure>
+                                    </div>
+                                {% endif %}    
                             </div>
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">
@@ -141,45 +120,50 @@
                         <div class="col-sm-16">
                             <br>
                             <div class="row">
-                                <div class="col-sm-16">
-                                    <h5>{{ 'Contenido'|trans }}</h5>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Encabezado'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.titulo }}</p>
+                                    </div>
                                 </div>
-                                <div class="col-sm-16">
-                                    <div class="col-16">{{ noticia.contenido|raw }}</div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Nombre'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.titulo }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="wizard-footer">
-                                <div class="col-sm-16 text-right">
-                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row setup-content" id="det3">
-                        <div class="col-sm-16">
                             <br>
                             <div class="row">
-                                <div class="col-sm-2">
-                                    <h5>{{ 'Imagen'|trans }}</h5>
-                                </div>
-                                {% if noticia.imagen %}
-                                    <div class="col-sm-6">
-                                        {% set img = uploads~noticia.imagen %}
-                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }} " alt="{{ 'Imagen |trans' }}" width="100%"></figure>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Descripción'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.titulo }}</p>
                                     </div>
-                                {% endif %}    
-                                <div class="col-sm-2">
-                                    <h5>{{ 'Pdf'|trans }}</h5>
                                 </div>
-                                {% if noticia.pdf %}
-                                    <div class="col-sm-6">
-                                        {% set pdf = uploads~noticia.pdf %}
-                                        <p class="fa fa-file-pdf-o">
-                                            <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
-                                        </p>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Título'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.titulo }}</p>
                                     </div>
-                                {% endif %}
+                                </div>
                             </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Fecha'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.titulo }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'QR'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.titulo }}</p>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <br>
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">
                                     <button type="button" class="bttn__nxt nextBtn" id="list"><span class="text__nxt">{{ 'Ir al listado'|trans }}</span><span class="fa fa-chevron-right"></span></button>

@@ -2,8 +2,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />    
+    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -12,7 +13,9 @@
         .input-group {
             margin-top: 35px;
         }
-       
+        img {
+            width: 100% !important;
+        }        
     </style>
 {% endblock %}
 
@@ -139,37 +142,30 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-sm-8 col-lg-8 col-md-8">
+                                    <div class="col-sm-6 col-lg-6 col-md-6">
                                         <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Imagen'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
                                             <input type="text" class="form-control form_sty1" name="imagen" id="imagen" value="{{ biblioteca.imagen }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
-                                            <span class="fa fa-picture-o"></span>
+                                            <span class="fa fa-file-picture-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-sm-2 col-md-2 col-lg-32">
                                         <div class="input-group">
                                             <span class="input-group-addon">
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/noticias" class="btn iframe-btn" type="button">
+                                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&fldr=recursos/noticias" class="btn iframe-btn" type="button">
                                                     <span class="fa fa-file-picture-o"></span>
                                                 </a>
                                             </span>
                                         </div>
                                     </div>
-                                   <!--  <div class="col-sm-4 col-lg-4 col-md-4">
-                                        {% set img = asset('img/picture.png') %}
-                                        <div id="figure"><img src="{{ img }}" alt="{{ 'Imagen de la Noticia y Novedad|trans' }}" style="width: 150px; height: auto; margin: 0 1rem;"></div>
-                                    </div>   -->                              
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-8 col-lg-8 col-md-8">
+                                    <div class="col-sm-6 col-lg-6 col-md-6">
                                         <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Pdf'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
+                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
                                             <span class="fa fa-file-pdf-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="col-sm-2 col-md-2 col-lg-2">
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&fldr=recursos/noticias" class="btn iframe-btn" type="button">
@@ -178,6 +174,13 @@
                                             </span>
                                         </div>
                                     </div>
+                                </div>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        {% set img = biblioteca.imagen  ? uploads~biblioteca.imagen  : asset('img/picture.png') %}
+                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt=""></figure>
+                                    </div> 
                                 </div>
                                 <br>
                                 <div class="wizard-footer">
@@ -202,9 +205,12 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>   
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/biblioteca.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('js/admin/biblioteca.js') }}"></script>  
     <script type="text/javascript">
 
+        $("form :input").attr("autocomplete", "off");
         $('#finish').click(function()
         {
            var valid = $('#form_biblioteca').valid();
@@ -251,7 +257,7 @@
             },
             messages: {
                 'empresa_id': {
-                    required: "- {{ 'La empresa es requerido.'|trans }}",
+                    required: "- {{ 'La empresa es requerido.'|trans }}"
                 },            
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",
@@ -266,4 +272,5 @@
             }
         });
     </script>
+
 {% endblock %}

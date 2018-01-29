@@ -16,6 +16,13 @@ parameters:
         noticia: 1
         novedad: 2
         biblioteca_virtual: 3
+    tipo_certificado:
+        empresa: 1
+        pagina: 2
+        grupo_paginas: 3
+    tipo_imagen_certificado:
+        certificado: 1
+        constancia: 2 
     folders:
         uploads: 'http://localhost/uploads/'
         dir_uploads: 'C:/wamp/www/uploads/'

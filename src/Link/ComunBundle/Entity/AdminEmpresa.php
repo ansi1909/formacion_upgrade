@@ -79,20 +79,6 @@ class AdminEmpresa
     private $bienvenida;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
-     */
-    private $imagenCertificado;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="imagen_constancia", type="string", length=250, nullable=true)
-     */
-    private $imagenConstancia;
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="chat_activo", type="boolean", nullable=true)
@@ -311,54 +297,6 @@ class AdminEmpresa
     public function getBienvenida()
     {
         return $this->bienvenida;
-    }
-
-    /**
-     * Set imagenCertificado
-     *
-     * @param string $imagenCertificado
-     *
-     * @return AdminEmpresa
-     */
-    public function setImagenCertificado($imagenCertificado)
-    {
-        $this->imagenCertificado = $imagenCertificado;
-    
-        return $this;
-    }
-
-    /**
-     * Get imagenCertificado
-     *
-     * @return string
-     */
-    public function getImagenCertificado()
-    {
-        return $this->imagenCertificado;
-    }
-
-    /**
-     * Set imagenConstancia
-     *
-     * @param string $imagenConstancia
-     *
-     * @return AdminEmpresa
-     */
-    public function setImagenConstancia($imagenConstancia)
-    {
-        $this->imagenConstancia = $imagenConstancia;
-    
-        return $this;
-    }
-
-    /**
-     * Get imagenConstancia
-     *
-     * @return string
-     */
-    public function getImagenConstancia()
-    {
-        return $this->imagenConstancia;
     }
 
     /**

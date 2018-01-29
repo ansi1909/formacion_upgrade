@@ -83,3 +83,7 @@ programados:
 tutorial:
     resource: "@LinkBackendBundle/Resources/config/routing/tutorial.yml"
     prefix: /tutorial
+
+certificados:
+    resource: "@LinkBackendBundle/Resources/config/routing/certificados.yml"
+    prefix: /certificados

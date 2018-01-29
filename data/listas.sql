@@ -202,7 +202,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (27, 'Administrar notificaciones', NULL, 'fa-inbox', TRUE, NULL, 7);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (28, 'Notificaciones', '_notificacion', 'fa-inbox', TRUE, 27, 1);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (29, 'Programar avisos', '_programados', 'fa-clock-o', TRUE, 27, 2);
-
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (30, 'Certificados y Constancias', '_certificados', 'fa-graduation-cap', TRUE, 9, 8);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_tipo_noticia_seq;; Type: SEQUENCE SET; Schema: public;
@@ -235,3 +235,30 @@ INSERT INTO admin_tipo_destino (id, nombre) VALUES (4, 'Grupo de participantes')
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (5, 'Usuarios que no han ingresado');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (6, 'Usuarios que no han ingresado a un programa');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (7, 'Usuarios aprobados');
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idcerti_tipo_certificado_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_tipo_certificado', 'id'), 4, false);
+
+--
+-- Data for Name: certi_tipo_certificado; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO certi_tipo_certificado (id, nombre) VALUES (1, 'Por Empresa');
+INSERT INTO certi_tipo_certificado (id, nombre) VALUES (2, 'Por Página');
+INSERT INTO certi_tipo_certificado (id, nombre) VALUES (3, 'Por Grupo de Páginas');
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idcerti_tipo_imagen_certificado_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_tipo_imagen_certificado', 'id'), 3, false);
+
+--
+-- Data for Name: certi_tipo_imagen_certificado; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO certi_tipo_imagen_certificado (id, nombre) VALUES (1, 'Certificado');
+INSERT INTO certi_tipo_imagen_certificado (id, nombre) VALUES (2, 'Constancia');

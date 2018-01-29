@@ -2,18 +2,36 @@ $(document).ready(function() {
 	
 	var root_site = $('#root_site').val();
 
+/*	$('#datetimepicker6').datepicker();
+	$('#datetimepicker7').datepicker({
+		useCurrent: false
+	});
+
+	$('#datetimepicker6').on("dp.change", function(e) {
+		$('#datetimepicker7').data("datepicker").minDate(e.date);
+	});
+
+	$('#datetimepicker7').on("dp.change", function(e) {
+		$('#datetimepicker6').data("datepicker").maxDate(e.date);
+	});*/
+
+
     $('#fecha_publicacion').datepicker({
 	    startView: 1,
 	    autoclose: true,
 	    format: 'dd/mm/yyyy',
-	    language: 'es'
+	    language: 'es',
+	    startDate: '-1d',
+	    clearBtn: true
 	});
 
     $('#fecha_vencimiento').datepicker({
 	    startView: 1,
 	    autoclose: true,
 	    format: 'dd/mm/yyyy',
-	    language: 'es'   
+	    language: 'es',
+	    clearBtn: true,
+		startDate: '-1d'
 	});  
 
     $('.iframe-btn').fancybox({	
@@ -74,14 +92,14 @@ $(document).ready(function() {
 
 });
 
-function responsive_filemanager_callback(field_id){
-	
+function responsive_filemanager_callback(field_id)
+{
 	// Ruta en el campo de texto
 	var url=jQuery('#'+field_id).val();
 	var arr = url.split('uploads/');
 	var new_image = arr[arr.length-1];
 	$('#'+field_id).val(new_image);
 	
-	$('#figure_'+field_id).html('<img src="'+url+'" style="background: transparent; width: 150px; height: auto;">');
-	
+	if(field_id=="imagen")
+		$('#figure').html('<img src="'+url+'" width="100%">');
 }

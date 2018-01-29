@@ -8,9 +8,6 @@ Link\ComunBundle\Entity\AdminNotificacionProgramada:
         IDX_CA62D99675B0043D:
             columns:
                 - tipo_destino_id
-        IDX_CA62D9969C833003:
-            columns:
-                - grupo_id
         IDX_CA62D996DB38439E:
             columns:
                 - usuario_id
@@ -53,16 +50,6 @@ Link\ComunBundle\Entity\AdminNotificacionProgramada:
             inversedBy: null
             joinColumns:
                 tipo_destino_id:
-                    referencedColumnName: id
-            orphanRemoval: false
-        grupo:
-            targetEntity: AdminNotificacionProgramada
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                grupo_id:
                     referencedColumnName: id
             orphanRemoval: false
         usuario:
