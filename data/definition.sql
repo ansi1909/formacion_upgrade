@@ -392,10 +392,12 @@ tipo_destino_id integer,
 entidad_id integer,
 usuario_id integer,
 fecha_difusion timestamp without time zone,
+grupo_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (notificacion_id) REFERENCES admin_notificacion (id),
  FOREIGN KEY (tipo_destino_id) REFERENCES admin_tipo_destino (id),
- FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
+ FOREIGN KEY (grupo_id) REFERENCES admin_notificacion_programada (id));
 
 CREATE TABLE certi_nivel_pagina(
 -- Attributes --
