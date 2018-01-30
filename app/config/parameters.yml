@@ -12,7 +12,7 @@ parameters:
     mailer_port: 587
     mailer_encryption: ssl
     mailer_auth_mode: login
-    mailer_user: ponceelrelajado@gmail.com
-    mailer_password: micontraseña
+    mailer_user: josenriquev@gmail.com
+    mailer_password: contraseña
     secret: ThisTokenIsNotSoSecretChangeIt
     sendmail: 1
