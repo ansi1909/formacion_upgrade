@@ -419,7 +419,6 @@ class Functions
 
 			$ip = $this->get_client_ip();
 			$ipdat = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=" . $ip));
-
 			//get ISO2 country code
 			if(property_exists($ipdat, 'geoplugin_countryCode')) {
 				if (trim($ipdat->geoplugin_countryCode))
