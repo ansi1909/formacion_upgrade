@@ -1,0 +1,15 @@
+_empresasGrupo:
+    path:     /empresasGrupo/{app_id}
+    defaults: { _controller: LinkBackendBundle:empresasGrupo:index }
+
+_ajaxEmpresasGrupo:
+    path:     /ajaxEmpresasGrupo
+    defaults: { _controller: LinkBackendBundle:empresasGrupo:ajaxEmpresasGrupo }
+    requirements:
+        method: GET
+
+_ajaxUpdateGrupo:
+    path:     /ajaxUpdateGrupo
+    defaults: { _controller: LinkBackendBundle:empresasGrupo:ajaxUpdateGrupo }
+    requirements:
+        method: POST

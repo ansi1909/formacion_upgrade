@@ -87,3 +87,7 @@ tutorial:
 certificados:
     resource: "@LinkBackendBundle/Resources/config/routing/certificados.yml"
     prefix: /certificados
+
+empresasGrupo:
+    resource: "@LinkBackendBundle/Resources/config/routing/empresasGrupo.yml"
+    prefix: /empresasGrupo
