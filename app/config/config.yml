@@ -78,7 +78,7 @@ swiftmailer:
     encryption: "ssl"
     auth_mode:  "login"
     host:       "smtp_gmail.com"
-    port:       "%mailer_port%"
+    #port:       "%mailer_port%"
     username:   "tutorvirtualformacion"
-    password:   "%mailer_password%"
-    spool:     { type: memory }
+    password:   "formacion1934"
+    #spool:     { type: memory }
