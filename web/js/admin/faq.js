@@ -159,21 +159,21 @@ function afterPaginate(){
 
 function nuevaPregunta()
 {		
-		var url_nuevaPregunta = $('#url_nuevaPregunta').val();
-		$('#nuevap').prop('disabled', true);
-		$.ajax({
-			type: "POST",
-			url: url_nuevaPregunta,
-			async: true,
-			data: $("#form").serialize(),
-			dataType: "json",
-			success: function(data) {
-				$('#tipo_pregunta_id').html(data.tipo_pregunta);
-				$('#new_pregunta').val("");
-			},
-			error: function(){
-				$('#alert-error').html($('#error_msg-save').val());
-				$('#div-alert').show();
-			}
-		});
+	var url_nuevaPregunta = $('#url_nuevaPregunta').val();
+	$('#nuevap').prop('disabled', true);
+	$.ajax({
+		type: "POST",
+		url: url_nuevaPregunta,
+		async: true,
+		data: $("#form").serialize(),
+		dataType: "json",
+		success: function(data) {
+			$('#tipo_pregunta_id').html(data.tipo_pregunta);
+			$('#new_pregunta').val("");
+		},
+		error: function(){
+			$('#alert-error').html($('#error_msg-save').val());
+			$('#div-alert').show();
+		}
+	});
 }
