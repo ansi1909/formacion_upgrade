@@ -6,16 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
-use Link\ComunBundle\Entity\AdminNoticia;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Link\ComunBundle\Entity\CertiCertificado;
 
 class CertificadoController extends Controller
 {
@@ -23,7 +14,6 @@ class CertificadoController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         if (!$session->get('ini'))
         {
@@ -45,20 +35,25 @@ class CertificadoController extends Controller
         //contultamos el nombre de la aplicacion para reutilizarla en la vista
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
 
-        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        $certificados = $em->getRepository('LinkComunBundle:CertiCertificado')->findAll();
 
-        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
-        $noticias = $em->getRepository('LinkComunBundle:AdminNoticia')->findAll();
-            
-        $noticiadb= array();
-      
+        $certificadodb= array();
+        if($certificados)
+        {
+            foreach ($certificados as $certificado)
+            {
+                $certificadodb[]= array('id'=>$certificado->getId(),
+                                    'empresa'=>$certificado->getEmpresa()->getNombre(),
+                                    'tipoCertificado'=>$certificado->getTipoCertificado()->getNombre(),
+                                    'tipoImagenCertificado'=>$certificado->getTipoImagenCertificado()->getNombre(),
+                                    'delete_disabled'=>$f->linkEliminar($certificado->getId(),'CertiCertificado'));
+            }
+        }
+
         return $this->render('LinkBackendBundle:Certificado:index.html.twig', array('aplicacion' => $aplicacion,
-                                                                            'noticias' => $noticiadb,
-                                                                            'empresas' => $empresas,
-                                                                            'usuario' => $usuario ));
-    
-    }
+                                                                                    'certificados' => $certificadodb ));
 
+    }
 
     public function registroAction($certificado_id, Request $request)
     {
@@ -81,52 +76,54 @@ class CertificadoController extends Controller
         $em = $this->getDoctrine()->getManager();
      
         $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+        $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
+        $tipo_imagen_certificados = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->findAll(array('nombre' => 'ASC'));
 
         if ($certificado_id)
-        {
-            $certificado = $em->getRepository('LinkComunBundle:AdminNoticia')->find($certificado_id);
-        }else 
-        {
-            $certificado = new AdminNoticia();
-            $certificado->setFechaRegistro(new \DateTime('now'));
-        }
+            $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
+        else 
+            $certificado = new CertiCertificado();
 
         if ($request->getMethod() == 'POST')
         {
-
-           /* if($usuario_empresa==1)
-            {
-                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
-            }else
-            {
-                $empresa_id = $request->request->get('empresa_id');
-                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-            }
-
-            $tipo_noticia_id = 3;
-            $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($tipo_noticia_id);
-
-            $titulo = trim($request->request->get('titulo'));
-            $pdf = trim($request->request->get('pdf'));
+            $empresa_id = $request->request->get('empresa_id');
+            $tipo_imagen_certificado_id = $request->request->get('tipo_imagen_certificado_id');
+            $tipo_certificado_id = $request->request->get('tipo_certificado_id');
+            $entidad = $request->request->get('entidad');
             $imagen = trim($request->request->get('imagen'));
-            $contenido = trim($request->request->get('contenido'));
+            $encabezado = trim($request->request->get('encabezado'));
+            $nombre = trim($request->request->get('nombre'));
+            $descripcion = trim($request->request->get('descripcion'));
+            $titulo = trim($request->request->get('titulo'));
+            $fecha = trim($request->request->get('fecha'));
+            $qr = trim($request->request->get('qr'));
 
-            $certificado->setUsuario($usuario);
+            $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+            $tipoCertificado = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->find($tipo_certificado_id);
+            $tipoImagenCertificado = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->find($tipo_imagen_certificado_id);
+            
             $certificado->setEmpresa($empresa);
-            $certificado->setTipoNoticia($tipoNoticia);
-            $certificado->setTitulo($titulo);
-            $certificado->setPdf($pdf);
+            $certificado->setTipoCertificado($tipoCertificado);
+            $certificado->setTipoImagenCertificado($tipoImagenCertificado);
+            $certificado->setEntidadId($entidad);
             $certificado->setImagen($imagen);
-            $certificado->setContenido($contenido);
+            $certificado->setEncabezado($encabezado);
+            $certificado->setNombre($nombre);
+            $certificado->setDescripcion($descripcion);
+            $certificado->setTitulo($titulo);
+            $certificado->setFecha($fecha);
+            $certificado->setQr($qr);            
             $em->persist($certificado);
-            $em->flush();*/
+            $em->flush();
 
             return $this->redirectToRoute('_showCertificado', array('certificado_id' => $certificado->getId()));
 
         }
 
         return $this->render('LinkBackendBundle:Certificado:registro.html.twig', array('empresas' => $empresas,
-                                                                                      'certificado' => $certificado));
+                                                                                       'certificado' => $certificado,
+                                                                                       'tipoCertificados' => $tipo_certificados,
+                                                                                       'tipoImagenCertificados' => $tipo_imagen_certificados ));
 
     }
 
@@ -149,7 +146,7 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $certificado = $em->getRepository('LinkComunBundle:AdminNoticia')->find($certificado_id);
+        $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
 
         return $this->render('LinkBackendBundle:Certificado:mostrar.html.twig', array('certificado' => $certificado));
 

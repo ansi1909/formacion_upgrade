@@ -467,6 +467,7 @@ nombre character varying(20),
 CREATE TABLE certi_certificado(
 -- Attributes --
 id serial,
+empresa_id integer,
 entidad_id integer,
 tipo_certificado_id integer,
 tipo_imagen_certificado_id integer,
@@ -478,5 +479,6 @@ titulo text,
 fecha text,
 qr text,
  PRIMARY KEY (id),
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (tipo_certificado_id) REFERENCES certi_tipo_certificado (id),
  FOREIGN KEY (tipo_imagen_certificado_id) REFERENCES certi_tipo_imagen_certificado (id) );

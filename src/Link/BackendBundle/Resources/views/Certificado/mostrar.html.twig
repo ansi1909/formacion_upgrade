@@ -68,7 +68,7 @@
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Tipo de Imagen'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.empresa.nombre }}</p>
+                                        <p>{{ certificado.tipoImagenCertificado.nombre }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -77,13 +77,14 @@
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Tipo de Certificado'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.empresa.nombre }}</p>
+                                        <p>{{ certificado.tipoCertificado.nombre }}</p>
+                                        <input type="hidden" id="tipo_certificado_id" value="{{ certificado.tipoCertificado.id }}" />
                                     </div>
                                 </div>
-                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                <div class="col-sm-8 col-md-8 col-lg-8 entidad">
                                     <h5>{{ 'Entidad'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.empresa.nombre }}</p>
+                                        <p>{{ certificado.entidadId }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -123,13 +124,13 @@
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Encabezado'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.titulo }}</p>
+                                        <p>{{ certificado.encabezado }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Nombre'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.titulo }}</p>
+                                        <p>{{ certificado.nombre }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +139,7 @@
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Descripción'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.titulo }}</p>
+                                        <p>{{ certificado.descripcion }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
@@ -153,13 +154,13 @@
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Fecha'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.titulo }}</p>
+                                        <p>{{ certificado.fecha }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'QR'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.titulo }}</p>
+                                        <p>{{ certificado.qr }}</p>
                                     </div>
                                 </div>
                             </div>                            
@@ -183,10 +184,13 @@
     {{ parent() }}
     <script type="text/javascript">
 
-        $('#edit').click(function()
+        if($('#tipo_certificado_id').val()>1)
         {
-            window.location.replace($('#url_edit').val());
-        });      
-        
+            $('.entidad').show();
+        }else
+        {
+            $('.entidad').hide();
+            $('#entidad').attr("value","0");
+        }
     </script>
 {% endblock %}

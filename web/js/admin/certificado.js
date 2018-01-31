@@ -2,6 +2,13 @@ $(document).ready(function() {
 
 	var root_site = $('#root_site').val();
 
+	validarEntidad($('#tipo_certificado_id').val());
+
+	$('#tipo_certificado_id').click(function()
+	{
+		validarEntidad($(this).val());
+	});
+
     $('.iframe-btn').fancybox({	
 		'width'		: 900,
 		'height'	: 900,
@@ -10,8 +17,19 @@ $(document).ready(function() {
 		'autoSize'	: false
     });
 
- 
-});
+ });
+
+function validarEntidad(valor)
+{
+	if(valor>1)
+	{
+		$('.entidad').show();
+	}else
+	{
+		$('.entidad').hide();
+		$('#entidad').attr("value","0");
+	}
+}
 
 function responsive_filemanager_callback(field_id)
 {

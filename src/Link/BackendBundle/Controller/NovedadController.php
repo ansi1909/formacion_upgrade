@@ -8,14 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminNoticia;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class NovedadController extends Controller
 {
@@ -57,10 +49,14 @@ class NovedadController extends Controller
             $usuario_empresa = 0;
             $empresas = array();
 
-
             if($session->get('administrador')==true)//si es administrador
             {
                 $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+
+              /*  $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                           WHERE e.activo = :activo ORDER BY e.nombre ASC')
+                            ->setParameters(array('activo' => true));
+                $empresas = $query->getResult();*/
 
                 if($app_id==26)//se consulta la informacion del tipo de noticia: biblioteca virtual
                 {
@@ -146,7 +142,11 @@ class NovedadController extends Controller
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+        //$empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+        $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                   WHERE e.activo = :activo ORDER BY e.nombre ASC')
+                    ->setParameters(array('activo' => true));
+        $empresas = $query->getResult();
 
         $usuario_empresa = 0;
         if($session->get('administrador')==false)//si no es administrador
@@ -253,7 +253,11 @@ class NovedadController extends Controller
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+        //$empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+        $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                   WHERE e.activo = :activo ORDER BY e.nombre ASC')
+                    ->setParameters(array('activo' => true));
+        $empresas = $query->getResult();
 
         $query = $em->createQuery('SELECT tn FROM LinkComunBundle:AdminTipoNoticia tn
                                    WHERE tn.id < :tipo ')

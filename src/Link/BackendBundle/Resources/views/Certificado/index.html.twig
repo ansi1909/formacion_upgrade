@@ -55,20 +55,20 @@
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">{{ 'Empresa'|trans }}</th>
-                            <th class="hd__title">{{ 'Tipo de Reporte'|trans }}</th>
-                            <th class="hd__title">{{ 'Agrupado por'|trans }}</th>
+                            <th class="hd__title">{{ 'Tipo Certificado'|trans }}</th>
+                            <th class="hd__title">{{ 'Tipo de Imagen Certificado'|trans }}</th>
                             <th class="hd__title">{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for noticia in noticias %}
+                        {% for certificado in certificados %}
                             <tr class="odd">
-                                <td>{{ noticia.empresa }}</td>
-                                <td>{{ noticia.titulo }}</td>
-                                <td>{{ noticia.fechaRegistro|date("d/m/Y") }}</td>
-                                <td class="center">
-                                    <a href="{{ path('_registroBiblioteca', { 'biblioteca_id': noticia.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if noticia.delete_disabled == '' %}delete{% endif %} {{ noticia.delete_disabled }}" data="{{ noticia.id }}"><span class="fa fa-trash"></span></a>
+                                <td>{{ certificado.empresa }}</td>
+                                <td>{{ certificado.tipoCertificado }}</td>
+                                <td>{{ certificado.tipoImagenCertificado }}</td>
+                                 <td class="center">
+                                    <a href="{{ path('_registroCertificado', { 'certificado_id': certificado.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if certificado.delete_disabled == '' %}delete{% endif %} {{ certificado.delete_disabled }}" data="{{ certificado.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -83,6 +83,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/certidicados.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/certificados.js') }}"></script>
 
 {% endblock %}
