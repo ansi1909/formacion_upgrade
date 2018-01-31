@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminNotificacionProgramada
  *
- * @ORM\Table(name="admin_notificacion_programada", indexes={@ORM\Index(name="IDX_CA62D9964D633FC4", columns={"notificacion_id"}), @ORM\Index(name="IDX_CA62D99675B0043D", columns={"tipo_destino_id"}), @ORM\Index(name="IDX_CA62D996DB38439E", columns={"usuario_id"})})
+ * @ORM\Table(name="admin_notificacion_programada", indexes={@ORM\Index(name="IDX_CA62D9964D633FC4", columns={"notificacion_id"}), @ORM\Index(name="IDX_CA62D99675B0043D", columns={"tipo_destino_id"}), @ORM\Index(name="IDX_CA62D996DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_CA62D9969C833003", columns={"grupo_id"})})
  * @ORM\Entity
  */
 class AdminNotificacionProgramada
@@ -65,6 +65,16 @@ class AdminNotificacionProgramada
      * })
      */
     private $usuario;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminNotificacionProgramada
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminNotificacionProgramada")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="grupo_id", referencedColumnName="id")
+     * })
+     */
+    private $grupo;
 
 
 
@@ -196,5 +206,29 @@ class AdminNotificacionProgramada
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set grupo
+     *
+     * @param \Link\ComunBundle\Entity\AdminNotificacionProgramada $grupo
+     *
+     * @return AdminNotificacionProgramada
+     */
+    public function setGrupo(\Link\ComunBundle\Entity\AdminNotificacionProgramada $grupo = null)
+    {
+        $this->grupo = $grupo;
+    
+        return $this;
+    }
+
+    /**
+     * Get grupo
+     *
+     * @return \Link\ComunBundle\Entity\AdminNotificacionProgramada
+     */
+    public function getGrupo()
+    {
+        return $this->grupo;
     }
 }

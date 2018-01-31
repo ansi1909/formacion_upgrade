@@ -18,7 +18,7 @@
     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
 {% endif %}
 <div class="col text-right">
-    <a href="{{ path( '_createNotificacion' )}}" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></a>
+    <a href="{{ path( '_createNotificacion' )}}" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></a>
 </div>
 <br>
 {% if not usuario_empresa %}
@@ -88,7 +88,8 @@
                                 {% endif %}
                                 <td>{{ notificacion.tipo_notificacion }}</td>
                                 <td class="center">
-                                    <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id, 'status': 'edit' }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_showNotificacion', { 'notificacion_id': notificacion.id, 'status': 'show' }) }}" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>

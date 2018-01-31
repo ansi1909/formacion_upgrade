@@ -30,7 +30,7 @@ class ProgramadosController extends Controller
             return $this->redirectToRoute('_authException');
         }
         $f->setRequest($session->get('sesion_id'));
-
+        $em = $this->getDoctrine()->getManager();
         $usuario_empresa = 0;
         $empresas = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
@@ -41,8 +41,16 @@ class ProgramadosController extends Controller
             $notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($usuario->getEmpresa());
         }
         else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-            $notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findAll();
+            $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                       WHERE e.activo = 'true'
+                                       ORDER BY e.id ASC");
+            $empresas = $query->getResult();
+            
+            $query2 = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
+                                       JOIN LinkComunBundle:AdminEmpresa e
+                                       WHERE e.activo = 'true' AND e.id = n.empresa
+                                       ORDER BY n.id ASC");
+            $notificaciones = $query2->getResult();
         }
 
          foreach ($notificaciones as $notificacion)
@@ -55,10 +63,10 @@ class ProgramadosController extends Controller
         }
 
         return $this->render('LinkBackendBundle:Programados:index.html.twig', array('empresas' => $empresas,
-                                                                                        'usuario_empresa' => $usuario_empresa,
-                                                                                        'notificaciones' => $notificacionesdb,
-                                                                                        'tipo_destino' => $tipo_destino,
-                                                                                        'usuario' => $usuario));
+                                                                                    'usuario_empresa' => $usuario_empresa,
+                                                                                    'notificaciones' => $notificacionesdb,
+                                                                                    'tipo_destino' => $tipo_destino,
+                                                                                    'usuario' => $usuario));
     }
 
     public function ajaxNotificacionAction(Request $request)
@@ -194,47 +202,57 @@ class ProgramadosController extends Controller
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($notificacion->getEmpresa()->getId());
-            $formulario .='<div class="form-group">
-                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el nivel').':</label>
-                                <select class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id">
-                                    <option value="0"></option>';
-            foreach ($niveles as $nivel) {
-                    $formulario .='<option value="'.$nivel->getId().'" >'.$nivel->getNombre().'</option>';
-            }
-            $formulario .= '</select>
-                            <div><br>';
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el nivel').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
+                        <option value="0"></option>';
+                        foreach ($niveles as $nivel) {
+                            $formulario .='<option value="'.$nivel->getId().'" >'.$nivel->getNombre().'</option>';
+                        }
+             $formulario .= '</select>
+                        <span class="fa fa-line-chart"></span>
+                        <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                    </div>
+                </div>';
             
         }elseif($tipo_destino->getNombre() == "Programa"){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $programas_asignados = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findByEmpresa($notificacion->getEmpresa()->getId());
-            $formulario .='<div class="form-group">
-                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
-                                <select class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id">
-                                    <option value="0"></option>';
-            foreach ($programas_asignados as $programa_asignado) {
-                if($programa_asignado->getActivo() == true){
-                    $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
-                    $formulario .='<option value="'.$programa->getId().'" >'.$programa->getNombre().'</option>';
-                }
-            }
-            $formulario .= '</select>
-                            <div><br>';
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
+                        <option value="0"></option>';
+                        foreach ($programas_asignados as $programa_asignado) {
+                            if($programa_asignado->getActivo() == true){
+                                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
+                                $formulario .='<option value="'.$programa->getId().'" >'.$programa->getNombre().'</option>';
+                            }
+                        }
+             $formulario .= '</select>
+                    <span class="fa fa-book"></span>
+                    <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                </div>
+            </div>';
 
             
         }elseif($tipo_destino->getNombre() == "Grupo de participantes"){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $usuarios_grupo = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
-            $formulario .='<div class="form-group">
-                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
-                                <select multiple=multiple class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id[]">
-                                    <option value="0"></option>';
-            foreach ($usuarios_grupo as $usuario_grupo) {
-                    $formulario .='<option value="'.$usuario_grupo->getId().'" >'.$usuario_grupo->getNombre().' '.$usuario_grupo->getApellido().' ('.$usuario_grupo->getLogin().')</option>';
-            }
-            $formulario .= '</select>
-                            <div><br>'; 
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select multiple=multiple class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id[]" style="border-radius: 5px;">
+                        <option value="0"></option>';
+                        foreach ($usuarios_grupo as $usuario_grupo) {
+                            $formulario .='<option value="'.$usuario_grupo->getId().'" >'.$usuario_grupo->getNombre().' '.$usuario_grupo->getApellido().' ('.$usuario_grupo->getLogin().')</option>';
+                        }
+             $formulario .= '</select>
+                            </div>
+                        </div>';
             
         }elseif($tipo_destino->getNombre() == "Todos"){
 
@@ -242,11 +260,13 @@ class ProgramadosController extends Controller
 
         }
 
-        $formulario  .= '<div class="form-group">
+        $formulario .='<div class="jsonfileds">
                             <label for="fecha_difusion" class="form-control-label">'.$this->get('translator')->trans('Seleccione fecha difusión').':</label>
-                            <input type="text" class="form-control form_sty1" name="fecha_difusion" id="fecha_difusion" value="'.$fecha_difusion.'">
-                            <!--<span class="fa fa-calendar"></span>-->
-                            '.$aviso.'
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                                <input type="text" class="form-control form_sty1" name="fecha_difusion" id="fecha_difusion" value="'.$fecha_difusion.'" style="border-radius: 5px;">
+                                <span class="fa fa-calendar"></span>
+                                '.$aviso.'
+                            </div>
                         </div>';
         
         $return = array('formulario' => $formulario);
@@ -521,10 +541,10 @@ class ProgramadosController extends Controller
             foreach ($usuarios as $usuario) {
 
                 $parametros= array('twig'=>$template,
-                                    'asunto'=>$notificacion->getAsunto(),
-                                    'remitente'=>array('info@formacion2-0.com' => 'Formación 2.0'),
-                                    'destinatario'=>$usuario->getCorreoCorporativo(),
-                                    'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
+                                   'asunto'=>$notificacion->getAsunto(),
+                                   'remitente'=>array('info@formacion2-0.com' => 'Formación 2.0'),
+                                   'destinatario'=>$usuario->getCorreoCorporativo(),
+                                   'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
 
                 $f->sendEmail($parametros, $controller);
             }

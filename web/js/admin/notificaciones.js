@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+
 	//var root_site = $('#root_site').val();
     $('#select_empresa_id').change(function(){
     	console.log('Usuario admin');

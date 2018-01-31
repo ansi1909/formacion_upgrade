@@ -22,9 +22,10 @@
     <div class="col text-left">
         <a href="{{ path('_notificacion', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
-    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
-        <ul></ul>
-    </div>
+</div>
+<br>
+<div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 alert alert-danger" role="alert" id="div-error" style="display:none;">
+    <ul></ul>
 </div>
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
@@ -33,24 +34,52 @@
                 <h5 class="card-title">{{'Datos Notificación'|trans}}</h5>
             </div>
             <div class="card-block">
-                 {{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
-                    <input type="hidden" id="notificacion_id" name="notificacion_id" value="">
-                    <div class="form-group">
+                {{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
+                <input type="hidden" id="notificacion_id" name="notificacion_id" value="">
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
                         <label for="asunto" class="form-conttipo_notificacion-label">{{ form_label(form.asunto) }}:</label>
-                        {{ form_widget(form.asunto, { 'attr': { 'class': 'form-control form_sty1' } }) }}
-                        <span class="fa fa-cube"></span>
-                        <label for="mensaje" class="form-conttipo_notificacion-label">{{ form_label(form.mensaje) }}:</label>
-                        {{ form_widget(form.mensaje, { 'attr': { 'class': 'ckeditor' } }) }}
-                        {% if not usuario_empresa %}
-                            <label for="form_empresa_id" class="form-conttipo_notificacion-label">{{ form_label(form.empresa) }}:</label>
-                            {{ form_widget(form.empresa, { 'attr': { 'class': 'form-control form_sty_select' } }) }}
-                        {% endif %}
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            {{ form_widget(form.asunto, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                            <span class="fa fa-font"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
                         <label for="tipo_notificacion_id" class="form-conttipo_notificacion-label">{{ form_label(form.tipoNotificacion) }}:</label>
-                        {{ form_widget(form.tipoNotificacion, { 'attr': { 'class': 'form-control form_sty_select' } }) }}
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            {{ form_widget(form.tipoNotificacion, { 'attr': { 'class': 'form-control form_sty_select' } }) }}
+                            <span class="fa fa-tags"></span>
+                        </div>
                     </div>
-                    <div class="col-sm-16 text-right">
-                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+                </div>   
+                {% if not usuario_empresa %}
+                    <div class="row">
+                        <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <label for="form_empresa_id" class="form-conttipo_notificacion-label">{{ form_label(form.empresa) }}:</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                                {{ form_widget(form.empresa, { 'attr': { 'class': 'form-control form_sty_select' } }) }}
+                                <span class="fa fa-industry"></span>
+                            </div>
+                        </div>
+                    </div>                           
+                {% endif %}
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="mensaje" class="form-conttipo_notificacion-label">{{ form_label(form.mensaje) }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            {{ form_widget(form.mensaje, { 'attr': { 'class': 'ckeditor' } }) }}
+                        </div>
                     </div>
+                </div>                     
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+                        </div>
+                    </div>
+                </div> 
                 {{ form_end(form) }}
             </div>
         </div>

@@ -13,5 +13,9 @@ _createNotificacion:
     defaults: { _controller: LinkBackendBundle:Notificacion:createNotificacion }
 
 _editNotificacion:
-    path:     /editNotificacion/{notificacion_id}/{status}
+    path:     /editNotificacion/{notificacion_id}/
     defaults: { _controller: LinkBackendBundle:Notificacion:editNotificacion }
+
+_showNotificacion:
+    path:     /showNotificacion/{notificacion_id}/{status}
+    defaults: { _controller: LinkBackendBundle:Notificacion:showNotificacion }

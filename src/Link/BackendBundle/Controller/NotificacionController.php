@@ -8,15 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNotificacion;
-use Link\ComunBundle\Entity\AdminNotificacionProgramada;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class NotificacionController extends Controller
 {
@@ -24,14 +19,21 @@ class NotificacionController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-        $session->set('app_id', $app_id);
-        $notificacionesdb = array();
-        if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+        if (!$session->get('ini'))
         {
-            return $this->redirectToRoute('_authException');
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
         }
         $f->setRequest($session->get('sesion_id'));
-
+        $em = $this->getDoctrine()->getManager();
+        $notificacionesdb = array();
         $usuario_empresa = 0;
         $empresas = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
@@ -42,26 +44,34 @@ class NotificacionController extends Controller
             $notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($usuario->getEmpresa());
         }
         else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-            $notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findAll();
+            $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
+                                       WHERE e.activo = 'true'
+                                       ORDER BY e.id ASC");
+            $empresas = $query->getResult();
+            
+            $query2 = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
+                                       JOIN LinkComunBundle:AdminEmpresa e
+                                       WHERE e.activo = 'true' AND e.id = n.empresa
+                                       ORDER BY n.id ASC");
+            $notificaciones = $query2->getResult();
         }
 
          foreach ($notificaciones as $notificacion)
         {
             $notificacionesdb[]= array('id'=>$notificacion->getId(),
-                              'asunto'=>$notificacion->getAsunto(),
-                              'empresa'=>$notificacion->getEmpresa()->getNombre(),
-                              'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre(),
-                              'delete_disabled'=>$f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
+                                       'asunto'=>$notificacion->getAsunto(),
+                                       'empresa'=>$notificacion->getEmpresa()->getNombre(),
+                                       'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre(),
+                                       'delete_disabled'=>$f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
 
         }
 
 
         return $this->render('LinkBackendBundle:Notificacion:index.html.twig', array('empresas' => $empresas,
-                                                                                        'usuario_empresa' => $usuario_empresa,
-                                                                                        'notificaciones' => $notificacionesdb,
-                                                                                        'tipo_notificaciones' => $tipo_notificaciones,
-                                                                                        'usuario' => $usuario));
+                                                                                     'usuario_empresa' => $usuario_empresa,
+                                                                                     'notificaciones' => $notificacionesdb,
+                                                                                     'tipo_notificaciones' => $tipo_notificaciones,
+                                                                                     'usuario' => $usuario));
     }
 
     public function ajaxNotificacionAction(Request $request)
@@ -94,7 +104,8 @@ class NotificacionController extends Controller
             $class_delete = $delete_disabled == '' ? 'delete' : '';
             $notificaciones .= '<tr><td>'.$notificacion->getAsunto().'</td><td>'.$notificacion->getEmpresa()->getNombre().'</td><td>'.$notificacion->getTipoNotificacion()->getNombre().'</td>
             <td class="center">
-                <a href="'.$this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId(), 'status' => 'edit')).'" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                <a href="'.$this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId())).'" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                <a href="'.$this->generateUrl('_showNotificacion', array('notificacion_id' => $notificacion->getId(), 'status' => 'show')).'" title="'.$this->get('translator')->trans('Ver').'" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$notificacion->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
@@ -110,8 +121,21 @@ class NotificacionController extends Controller
     {
         
         $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
         $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
         $notificacion = new AdminNotificacion();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $usuario_empresa = 0;
@@ -143,15 +167,15 @@ class NotificacionController extends Controller
                 ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
                 ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
-                                                            'choice_label' => 'nombre',
-                                                            'expanded' => false,
-                                                            'label' => $this->get('translator')->trans('Tipo Notificación'),
-                                                            'placeholder' => ''))
-                ->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
                                                                    'choice_label' => 'nombre',
                                                                    'expanded' => false,
-                                                                   'label' => $this->get('translator')->trans('Empresa'),
+                                                                   'label' => $this->get('translator')->trans('Tipo Notificación'),
                                                                    'placeholder' => ''))
+                ->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
+                                                          'choice_label' => 'nombre',
+                                                          'expanded' => false,
+                                                          'label' => $this->get('translator')->trans('Empresa'),
+                                                          'placeholder' => ''))
                 ->getForm();
                 
         }
@@ -165,31 +189,63 @@ class NotificacionController extends Controller
             $em->persist($notificacion);
             $em->flush();
 
-            return $this->redirectToRoute('_editNotificacion', array('notificacion_id' => $notificacion->getId(), 'status'=> 'exito'));
+            return $this->redirectToRoute('_showNotificacion', array('notificacion_id' => $notificacion->getId(), 'status'=> 'exito'));
             
         }
         
         return $this->render('LinkBackendBundle:Notificacion:newNotificacion.html.twig', array('form' => $form->createView(),
-                                                                              'usuario_empresa' => $usuario_empresa,
-                                                                              'usuario' => $usuario));
+                                                                                               'usuario_empresa' => $usuario_empresa,
+                                                                                               'usuario' => $usuario));
         
     }
 
-    public function editNotificacionAction(Request $request, $notificacion_id, $status)
+    public function showNotificacionAction(Request $request, $notificacion_id, $status)
     {
-                
-        $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
         $session = new Session();
-
-        $notificacionid = $notificacion_id;
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() != null and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
         $mensaje = $status;
         if($mensaje == "exito"){
             $mensaje = 1;
         }else{
             $mensaje = 0;
         }
-        $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacionid);
+        $usuario_empresa = 0;
+
+        if ($usuario->getEmpresa()) {
+
+            $usuario_empresa = 1;
+        }
+
+        return $this->render('LinkBackendBundle:Notificacion:showNotificacion.html.twig', array('notificacion' => $notificacion,
+                                                                                                'mensaje' => $mensaje,
+                                                                                                'usuario_empresa' => $usuario_empresa,
+                                                                                                'usuario' => $usuario));
+
+    }
+
+    public function editNotificacionAction(Request $request, $notificacion_id)
+    {
+                
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $session = new Session();
+
+        $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $usuario_empresa = 0;
 
@@ -201,34 +257,34 @@ class NotificacionController extends Controller
             $notificacion->setEmpresa($usuario->getEmpresa());
 
             $form = $this->createFormBuilder($notificacion)
-                ->setAction($this->generateUrl('_createNotificacion'))
+                ->setAction($this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId())))
                 ->setMethod('POST')
                 ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
                 ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
-                                                            'choice_label' => 'nombre',
-                                                            'expanded' => false,
-                                                            'label' => $this->get('translator')->trans('Tipo Notificación'),
-                                                            'placeholder' => ''))
+                                                                   'choice_label' => 'nombre',
+                                                                   'expanded' => false,
+                                                                   'label' => $this->get('translator')->trans('Tipo Notificación'),
+                                                                   'placeholder' => ''))
                 ->getForm();
                 
         }else{
 
             $form = $this->createFormBuilder($notificacion)
-                ->setAction($this->generateUrl('_createNotificacion'))
+                ->setAction($this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId())))
                 ->setMethod('POST')
                 ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
                 ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
-                                                            'choice_label' => 'nombre',
-                                                            'expanded' => false,
-                                                            'label' => $this->get('translator')->trans('Tipo Notificación'),
-                                                            'placeholder' => ''))
-                ->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
                                                                    'choice_label' => 'nombre',
                                                                    'expanded' => false,
-                                                                   'label' => $this->get('translator')->trans('Empresa'),
+                                                                   'label' => $this->get('translator')->trans('Tipo Notificación'),
                                                                    'placeholder' => ''))
+                ->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
+                                                          'choice_label' => 'nombre',
+                                                          'expanded' => false,
+                                                          'label' => $this->get('translator')->trans('Empresa'),
+                                                          'placeholder' => ''))
                 ->getForm();
                 
         }
@@ -242,14 +298,13 @@ class NotificacionController extends Controller
             $em->persist($notificacion);
             $em->flush();
 
-            return $this->redirectToRoute('_editNotificacion', array('notificacion_id' => $notificacion->getId(), 'status'=> 'exito'));
+            return $this->redirectToRoute('_showNotificacion', array('notificacion_id' => $notificacion->getId(), 'status'=> 'exito'));
             
         }
         
         return $this->render('LinkBackendBundle:Notificacion:editNotificacion.html.twig', array('form' => $form->createView(),
-                                                                              'usuario_empresa' => $usuario_empresa,
-                                                                              'mensaje' => $mensaje,
-                                                                              'usuario' => $usuario));
+                                                                                                'usuario_empresa' => $usuario_empresa,
+                                                                                                'usuario' => $usuario));
         
     }
 

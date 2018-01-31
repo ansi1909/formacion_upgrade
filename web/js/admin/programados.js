@@ -16,15 +16,7 @@ $(document).ready(function() {
 		getformularioProgramaciones(tipo_destino_id, notificacion_id);
 		
 	});
-	$('#guardar').click(function(){
-		saveProgramacion();
-	});
-
-	$('#form').submit(function(e)
-	{
-		e.preventDefault();
-		saveProgramacion();
-	});
+	
 
 	observe();
 });
@@ -66,9 +58,19 @@ function observe(){
 	});
 
 	$('.add').click(function(){
-
+		$('#tipo_destino_id').val('');
+		$('#entidad_id').val('');
+		$('.jsonfileds').hide();
 		var notificacion_id = $(this).attr('data');
 		$('#notificacion_id').val(notificacion_id);
+
+	});
+
+	$('#cancelar').click(function(){
+		$('#tipo_destino_id').val('');
+		$('#entidad_id').val('');
+		$('.jsonfileds').hide();
+		$('.alert-danger').hide();
 
 	});
 
@@ -88,6 +90,16 @@ function observe(){
 	});
 	$('#aceptar').click(function(){
 		window.location.replace($('#url_list').val());
+	});
+
+	$('#guardar').click(function(){
+		saveProgramacion();
+	});
+
+	$('#form').submit(function(e)
+	{
+		e.preventDefault();
+		saveProgramacion();
 	});
 
 }
@@ -203,6 +215,7 @@ function saveProgramacion()
 					$('#cancelar').hide();
 				},
 				error: function(){
+					$('#guardar').prop('disabled', false);
 					$('#alert-error').html($('#error_msg-save').val());
 					$('#div-alert').show();
 				}
