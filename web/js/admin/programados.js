@@ -37,6 +37,16 @@ $(document).ready(function() {
 		observe();
 	});
 
+	$('#guardar').click(function(){
+		saveProgramacion();
+	});
+
+	$('#form').submit(function(e)
+	{
+		e.preventDefault();
+		saveProgramacion();
+	});
+
 	observe();
 });
 
@@ -47,6 +57,8 @@ function observe(){
 	$('#cancelar').click(function(){
 		$('#tipo_destino_id').val('');
 		$('#entidad_id').val('');
+		$('#notificacion_id').val('');
+		$('#programacion_id').val('');
 		$('.jsonfileds').hide();
 		$('.alert-danger').hide();
 		$('.error').hide();
@@ -69,16 +81,6 @@ function observe(){
 	});
 	$('#aceptar').click(function(){
 		window.location.replace($('#url_list').val());
-	});
-
-	$('#guardar').click(function(){
-		saveProgramacion();
-	});
-
-	$('#form').submit(function(e)
-	{
-		e.preventDefault();
-		saveProgramacion();
 	});
 
 	
