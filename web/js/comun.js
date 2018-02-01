@@ -90,4 +90,12 @@ $(document).ready(function() {
         return false;
     });
 
+    $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
+    });
+
 });

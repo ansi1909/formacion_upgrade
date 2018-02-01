@@ -1,10 +1,15 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/css/rowReorder.dataTables.min.css') }}" type="text/css">
+{% endblock %}
+
 {% block body %}
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditRol') }}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_roles', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
 
 <br>
@@ -57,20 +62,42 @@
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
                 <h5 class="card-title">{{ 'Listado de grupos' |trans}}</h5>
             </div>
+            {% if not usuario_empresa %}
+            <div class="card-block" id="lpe">   
+            {% else %}
             <div class="card-block">
-                <table class="table">
+                <table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title">Orden</th>
+                            <th class="hd__title columorden">Orden</th>
                             <th class="hd__title">{{'Id'|trans }}</th>
                             <th class="hd__title">{{'Nombre'|trans }}</th>
                             <th class="hd__title">{{'Programas asociados'|trans }}</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody id="grupos" name="grupos">
-                      
-                    </tbody>
+            {%endif%}
+                    {% if not usuario_empresa %}
+                        <tbody id="grupos" name="grupos">
+                          
+                        </tbody>
+                    {% else %}
+                        <tbody id="grupos" name="grupos">
+                          {% for grupo in grupos %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{eo}}">
+                                <td class="columorden">{{ grupo.orden }}</td>
+                                <td>{{ grupo.id }}</td>
+                                <td>{{ grupo.nombre }}</td>
+                                <td> </td>
+                                <td class="center">
+                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    {% endif %}
                 </table>                 
             </div>
         </div>
@@ -91,6 +118,7 @@
     <form id="form" name="form" action="{{ path( '_ajaxUpdateGrupo')}}"  method="POST">
         <input type="hidden" id="grupo_id" name="grupo_id" value="">
         <input type="hidden" id="id_empresa" name="id_empresa" value="">
+        <input type="hidden" id="orden" name="orden" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
             <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
@@ -129,6 +157,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/empresasGrupo.js') }}"></script>
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript">

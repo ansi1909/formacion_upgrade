@@ -13,3 +13,9 @@ _ajaxUpdateGrupo:
     defaults: { _controller: LinkBackendBundle:empresasGrupo:ajaxUpdateGrupo }
     requirements:
         method: POST
+
+_ajaxEditGrupo:
+    path:     /ajaxEditGrupo
+    defaults: { _controller: LinkBackendBundle:empresasGrupo:ajaxEditGrupo }
+    requirements:
+        method: GET
