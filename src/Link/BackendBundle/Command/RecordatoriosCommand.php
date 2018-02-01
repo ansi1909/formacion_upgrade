@@ -135,6 +135,7 @@ class RecordatoriosCommand extends ContainerAwareCommand
         // finalmente busaco todas las notificaciones progaramadas para el día de hoy
         $notificaciones_hoy = $em->createQuery("SELECT p FROM LinkComunBundle:AdminNotificacionProgramada p
                                                 WHERE p.fecha_difusion = :fecha_difusion
+                                                AND p.tipoDestino NOT IN (5,6,7)
                                                 ORDER BY p.id ASC")
                                  ->setParameters(array('fecha_difusion' => $fecha));
         $lista_hoy = $notificaciones_hoy->getResult();
