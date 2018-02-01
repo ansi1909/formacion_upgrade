@@ -61,3 +61,5 @@
 15. Al subir al server configurar variable 
 		auto_generate_proxy_classes: "%kernel.debug%"
 	en config.yml, actualmente está en false porque estamos trabajando en entorno windows
+	
+16. En el php.ini setear allow_url_fopen = On
