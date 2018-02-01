@@ -5,7 +5,6 @@ $(document).ready(function() {
     	var empresa_id = $(this).val();
 		getListadoNotificaciones(empresa_id);
 		$('#loading').hide();
-		$('#history_message').show();
 		
 	});
 	$('#tipo_destino_id').change(function(){
@@ -16,7 +15,27 @@ $(document).ready(function() {
 		getformularioProgramaciones(tipo_destino_id, notificacion_id);
 		
 	});
-	
+
+	var table = $('#dt').DataTable( {
+		destroy: true,
+        rowReorder: true
+
+    } );
+
+    table.on( 'row-reorder', function ( e, diff, edit ) {
+        
+        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+            var rowData = table.row( diff[i].node ).data();
+            // Id del registro está en la segunda columna
+        	id = rowData[1];
+            reordenar(id, 'AdminNotificacion', diff[i].newData);
+        }
+ 
+    });
+
+    $('.paginate_button').click(function(){
+		observe();
+	});
 
 	observe();
 });
@@ -25,52 +44,12 @@ function observe(){
 
 	$('.tree').jstree();
 
-	$('.see').click(function(){
-		var notificacion_id = $(this).attr('data');
-		$('#div-active-alert').hide();
-		$('#tbody_history_programation').hide();
-		$('#loading').show();
-		$('#history_message').hide();
-		$.ajax({
-			type: "GET",
-			url: $('#url_programation').val(),
-			async: true,
-			data: { notificacion_id: notificacion_id },
-			dataType: "json",
-			success: function(data) {
-				$('.tree').jstree();
-				$('#tbody_history_programation').html(data.html);
-				$('#tbody_history_programation').show();
-				$('#notificacionTitle').html(data.notificacion);
-				$('#loading').hide();
-				$('.tree').jstree();
-				editProgramacion()
-			},
-			error: function(){
-				$('.tree').jstree();
-				$('#active-error').html($('#error_msg_history').val());
-				$('#div-active-alert').show();
-				$('#history_message').show();
-				$('.tree').jstree();
-				editProgramacion()
-			}
-		});
-	});
-
-	$('.add').click(function(){
-		$('#tipo_destino_id').val('');
-		$('#entidad_id').val('');
-		$('.jsonfileds').hide();
-		var notificacion_id = $(this).attr('data');
-		$('#notificacion_id').val(notificacion_id);
-
-	});
-
 	$('#cancelar').click(function(){
 		$('#tipo_destino_id').val('');
 		$('#entidad_id').val('');
 		$('.jsonfileds').hide();
 		$('.alert-danger').hide();
+		$('.error').hide();
 
 	});
 
@@ -102,6 +81,97 @@ function observe(){
 		saveProgramacion();
 	});
 
+	
+
+    $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
+    });
+
+    $('.add').click(function(){
+		$('#tipo_destino_id').val('');
+		$('#entidad_id').val('');
+		$('.jsonfileds').hide();
+		var notificacion_id = $(this).attr('data');
+		$('#notificacion_id').val(notificacion_id);
+
+	});
+
+	$('.see').click(function(){
+		var notificacion_id = $(this).attr('data');
+		$('#div-active-alert').hide();
+		$('#tbody_history_programation').hide();
+		$('#loading').show();
+		$.ajax({
+			type: "GET",
+			url: $('#url_programation').val(),
+			async: true,
+			data: { notificacion_id: notificacion_id },
+			dataType: "json",
+			success: function(data) {
+				$('.tree').jstree();
+				$('#tbody_history_programation').html(data.html);
+				$('#tbody_history_programation').show();
+				$('#notificacionTitle').html(data.notificacion);
+				$('#loading').hide();
+				$('.tree').jstree();
+				editProgramacion();
+			},
+			error: function(){
+				$('.tree').jstree();
+				$('#active-error').html($('#error_msg_history').val());
+				$('#div-active-alert').show();
+				$('.tree').jstree();
+				editProgramacion();
+			}
+		});
+		var table2 = $('#dtSub').DataTable( {
+        rowReorder: false,
+        responsive: false,
+        pageLength:10,
+        destroy: true,
+        sPaginationType: "full_numbers",
+        oLanguage: {
+        	"sProcessing":    "Procesando...",
+            "sLengthMenu":    "Mostrar _MENU_ registros",
+            "sZeroRecords":   "No se encontraron resultados",
+            "sEmptyTable":    "Ningún dato disponible en esta tabla",
+            "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_.",
+            "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":   "",
+            "sSearch":        "Buscar:",
+            "sUrl":           "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            oPaginate: {
+                sFirst: "<<",
+                sPrevious: "<",
+                sNext: ">", 
+                sLast: ">>" 
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+
+    } );
+
+    table2.on( 'row-reorder', function ( e, diff, edit ) {
+        
+        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+            var rowData = table2.row( diff[i].node ).data();
+            // Id del registro está en la segunda columna
+        	id = rowData[1];
+            reordenar(id, 'AdminNotificacionProgramada', diff[i].newData);
+        } 
+    });
+	});
+
 }
 
 function getListadoNotificaciones(empresa_id){
@@ -118,7 +188,6 @@ function getListadoNotificaciones(empresa_id){
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
 			$('#div-active-alert').show();
-			$('#history_message').show();
 		}
 	});
 }
@@ -145,7 +214,7 @@ function getformularioProgramaciones(tipo_destino_id, notificacion_id){
 
 function editProgramacion(){
 
-	$('#edit_programacion').click(function(){
+	$('.edit_programacion').click(function(){
 
 		var programacion_id = $(this).attr('data');
 		var notificacion_id = $('#hidden_notificacion_id').val();

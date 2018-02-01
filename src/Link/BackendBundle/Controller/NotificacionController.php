@@ -175,7 +175,13 @@ class NotificacionController extends Controller
                                                           'choice_label' => 'nombre',
                                                           'expanded' => false,
                                                           'label' => $this->get('translator')->trans('Empresa'),
-                                                          'placeholder' => ''))
+                                                          'placeholder' => '',
+                                                          'query_builder' => function(EntityRepository $er){
+                                                             return $er->createQueryBuilder('e')
+                                                                      ->where('e.activo = ?1')
+                                                                      ->setParameter(1, true)
+                                                                      ->orderBy('e.nombre', 'ASC');
+                                                         }))
                 ->getForm();
                 
         }
@@ -284,7 +290,13 @@ class NotificacionController extends Controller
                                                           'choice_label' => 'nombre',
                                                           'expanded' => false,
                                                           'label' => $this->get('translator')->trans('Empresa'),
-                                                          'placeholder' => ''))
+                                                          'placeholder' => '',
+                                                          'query_builder' => function(EntityRepository $er){
+                                                             return $er->createQueryBuilder('e')
+                                                                      ->where('e.activo = ?1')
+                                                                      ->setParameter(1, true)
+                                                                      ->orderBy('e.nombre', 'ASC');
+                                                         }))
                 ->getForm();
                 
         }

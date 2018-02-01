@@ -53,18 +53,9 @@ class ProgramadosController extends Controller
             $notificaciones = $query2->getResult();
         }
 
-         foreach ($notificaciones as $notificacion)
-        {
-            $notificacionesdb[]= array('id'=>$notificacion->getId(),
-                              'asunto'=>$notificacion->getAsunto(),
-                              'empresa'=>$notificacion->getEmpresa()->getNombre(),
-                              'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre());
-
-        }
-
         return $this->render('LinkBackendBundle:Programados:index.html.twig', array('empresas' => $empresas,
                                                                                     'usuario_empresa' => $usuario_empresa,
-                                                                                    'notificaciones' => $notificacionesdb,
+                                                                                    'notificaciones' => $notificaciones,
                                                                                     'tipo_destino' => $tipo_destino,
                                                                                     'usuario' => $usuario));
     }
@@ -162,16 +153,16 @@ class ProgramadosController extends Controller
             }else{
                 $entidad = 'N/A';
             }
-            if($fecha_actual >= $notificacion_programada->getFechaDifusion()->format("d/m/Y")){
+            /*if(strtotime($fecha_actual) >= strtotime($notificacion_programada->getFechaDifusion()->format("d/m/Y"))){
                 $deshabilitado = 'disabled';
-            }
+            }*/
             $html .= '<tr>
                         <td>'.$notificacion_programada->getTipoDestino()->getNombre().'</td>
                         <td>'.$entidad.'</td>
                         <td>'.$notificacion_programada->getFechaDifusion()->format("d/m/Y").'</td>
                         <td class="center">
                             <input type="hidden" id="hidden_notificacion_id" name="hidden_notificacion_id" value="'.$notificacion->getId().'">
-                            <a href="#" class="btn btn-link btn-sm edit '.$deshabilitado.'" id="edit_programacion" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" class="btn btn-link btn-sm edit edit_programacion" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
                             <a href="#" class="btn btn-link btn-sm '.$deshabilitado.' '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
@@ -206,7 +197,7 @@ class ProgramadosController extends Controller
                 <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el nivel').':</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
                     <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
-                        <option value="0"></option>';
+                        <option value=""></option>';
                         foreach ($niveles as $nivel) {
                             $formulario .='<option value="'.$nivel->getId().'" >'.$nivel->getNombre().'</option>';
                         }
@@ -214,7 +205,8 @@ class ProgramadosController extends Controller
                         <span class="fa fa-line-chart"></span>
                         <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
                     </div>
-                </div>';
+                </div>
+                <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
         }elseif($tipo_destino->getNombre() == "Programa"){
 
@@ -224,7 +216,7 @@ class ProgramadosController extends Controller
                 <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
                     <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
-                        <option value="0"></option>';
+                        <option value=""></option>';
                         foreach ($programas_asignados as $programa_asignado) {
                             if($programa_asignado->getActivo() == true){
                                 $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
@@ -235,7 +227,8 @@ class ProgramadosController extends Controller
                     <span class="fa fa-book"></span>
                     <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
                 </div>
-            </div>';
+            </div>
+            <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
 
             
         }elseif($tipo_destino->getNombre() == "Grupo de participantes"){
@@ -245,14 +238,15 @@ class ProgramadosController extends Controller
             $formulario .='<div class="jsonfileds">
                 <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
-                    <select multiple=multiple class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id[]" style="border-radius: 5px;">
-                        <option value="0"></option>';
+                    <select multiple=multiple class="form-control form_sty_sel form_sty_modal" id="entidad_id_grupo" name="entidad_id_grupo[]" style="border-radius: 5px;">
+                        <option value=""></option>';
                         foreach ($usuarios_grupo as $usuario_grupo) {
                             $formulario .='<option value="'.$usuario_grupo->getId().'" >'.$usuario_grupo->getNombre().' '.$usuario_grupo->getApellido().' ('.$usuario_grupo->getLogin().')</option>';
                         }
              $formulario .= '</select>
                             </div>
-                        </div>';
+                        </div>
+                        <label id="entidad_id_grupo-error" class="error" for="entidad_id_grupo" style="display:none;"></label>';
             
         }elseif($tipo_destino->getNombre() == "Todos"){
 
@@ -267,7 +261,8 @@ class ProgramadosController extends Controller
                                 <span class="fa fa-calendar"></span>
                                 '.$aviso.'
                             </div>
-                        </div>';
+                        </div>
+                        <label id="fecha_difusion-error" class="error" for="fecha_difusion" style="display:none;"></label>';
         
         $return = array('formulario' => $formulario);
  
@@ -287,6 +282,7 @@ class ProgramadosController extends Controller
         $programacion_id = $request->request->get('programacion_id');
         $tipo_destino_id = $request->request->get('tipo_destino_id');
         $entidad_id = $request->request->get('entidad_id');
+        $entidad_id_grupo = $request->request->get('entidad_id_grupo');
         $fecha_difusion = trim($request->request->get('fecha_difusion'));
         $fv = explode("/", $fecha_difusion);
         $difusion = $fv[2].'-'.$fv[1].'-'.$fv[0];
@@ -295,21 +291,56 @@ class ProgramadosController extends Controller
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
 
+        $logger = $this->get('logger');
+        if($entidad_id_grupo){
+            foreach ($entidad_id_grupo as $entidad){
+
+                    $logger->error('entidad_id_grupo: '.$entidad);
+            }
+        }
+
+        if($entidad_id){
+
+            $logger->error('entidad_id: '.$entidad_id);
+        }
+        
+        if($notificacion_id){
+
+            $logger->error('notificacion_id: '.$notificacion_id);
+        }
+        if($programacion_id){
+
+            
+        }
+        if($tipo_destino_id){
+
+            $logger->error('tipo_destino_id: '.$tipo_destino_id);
+        }
 
         if($tipo_destino->getNombre() == "Grupo de participantes"){
 
             if ($programacion_id)
             {
+                $logger->error('programacion_id: '.$programacion_id.' - A Editar');
+                // actualizo la programacion padre
                 $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($programacion_id);
-                $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
-                // se me ocurre eliminar los registros de este grupo, y dejar solo el principal porque no se como determinar si un usurio fe deseleccionado
-                // una vez eliminados se crean los nuevos
-                foreach ($programacion_grupo as $individual){
+                $programacion->setFechaDifusion(new \DateTime($difusion));
+                $programacion->setNotificacion($notificacion);
+                $programacion->setTipoDestino($tipo_destino);
+                $programacion->setUsuario($usuario);
+                
+                $em->persist($programacion);
+                $em->flush();
 
+                // se me ocurre eliminar los registros de este grupo, y dejar solo el principal porque no se como determinar si un usurio fe deseleccionado
+                $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
+                foreach ($programacion_grupo as $individual){
+                        $logger->error('Eliminando Registro: '.$individual->getId());
                         $em->remove($individual);
                         $flush = $em->flush();
                 }
-                foreach ($entidad_id as $entidad){
+                // una vez eliminados se crean los nuevos
+                foreach ($entidad_id_grupo as $entidad){
 
                         $programacion_nuevo_grupo = new AdminNotificacionProgramada();
                         $programacion_nuevo_grupo->setEntidadId($entidad);
@@ -321,16 +352,12 @@ class ProgramadosController extends Controller
                         
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
+                        $logger->error('Creando Registro hijo: '.$programacion_nuevo_grupo->getId());
                 }
-                $programacion->setFechaDifusion(new \DateTime($difusion));
-                $programacion->setNotificacion($notificacion);
-                $programacion->setTipoDestino($tipo_destino);
-                $programacion->setUsuario($usuario);
                 
-                $em->persist($programacion);
-                $em->flush();
             }
             else {
+
                 $programacion = new AdminNotificacionProgramada();
                 $programacion->setFechaDifusion(new \DateTime($difusion));
                 $programacion->setNotificacion($notificacion);
@@ -339,8 +366,9 @@ class ProgramadosController extends Controller
                 
                 $em->persist($programacion);
                 $em->flush();
+                $logger->error('Creando nueva programacion - programacion_id: '.$programacion->getId());
 
-                foreach ($entidad_id as $entidad){
+                foreach ($entidad_id_grupo as $entidad){
 
                         $programacion_nuevo_grupo = new AdminNotificacionProgramada();
                         $programacion_nuevo_grupo->setEntidadId($entidad);
@@ -352,6 +380,7 @@ class ProgramadosController extends Controller
                         
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
+                        $logger->error('Creando Registro hijo: '.$programacion_nuevo_grupo->getId());
                 }
                 
             }
@@ -360,6 +389,7 @@ class ProgramadosController extends Controller
 
            if ($programacion_id)
             {
+                $logger->error('programacion_id: '.$programacion_id.' - A Editar');
                 $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($programacion_id);
             }
             else {
@@ -374,6 +404,7 @@ class ProgramadosController extends Controller
             
             $em->persist($programacion);
             $em->flush();
+            $logger->error('Creando nueva programacion - programacion_id: '.$programacion->getId());
 
             $this->sendNowEmail($programacion->getId());
          
@@ -408,58 +439,82 @@ class ProgramadosController extends Controller
 
         if($programacion->getTipoDestino()->getNombre() == "Nivel"){
 
+
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($notificacion->getEmpresa()->getId());
-            $formulario .='<div class="form-group">
-                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el nivel').':</label>
-                                <select class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id">
-                                    <option value="0"></option>';
-            foreach ($niveles as $nivel) {
-                    if($nivel->getId() == $programacion->getEntidadId()){
-                        $selected = "selected=selected";
-                    }
-                    $formulario .='<option value="'.$nivel->getId().'" '.$selected.'>'.$nivel->getNombre().'</option>';
-            }
-            $formulario .= '</select>
-                            <div><br>';
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el nivel').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
+                        <option value=""></option>';
+                        foreach ($niveles as $nivel) {
+                            if($nivel->getId() == $programacion->getEntidadId()){
+                                $selected = 'selected="selected"';
+                            }
+                            $formulario .='<option value="'.$nivel->getId().'" '.$selected.'>'.$nivel->getNombre().'</option>';
+                            $selected = '';
+                        }
+             $formulario .= '</select>
+                        <span class="fa fa-line-chart"></span>
+                        <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                    </div>
+                </div>';
             
         }elseif($programacion->getTipoDestino()->getNombre() == "Programa"){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $programas_asignados = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findByEmpresa($notificacion->getEmpresa()->getId());
-            $formulario .='<div class="form-group">
-                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
-                                <select class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id">
-                                    <option value="0"></option>';
-            foreach ($programas_asignados as $programa_asignado) {
-                if($programa_asignado->getActivo() == true){
-                    $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
-                    if($programa->getId() == $programacion->getEntidadId()){
-                        $selected = "selected=selected";
-                    }
-                    $formulario .='<option value="'.$programa->getId().'" '.$selected.' >'.$programa->getNombre().'</option>';
-                }
-            }
-            $formulario .= '</select>
-                            <div><br>';
-
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
+                        <option value=""></option>';
+                        foreach ($programas_asignados as $programa_asignado) {
+                            if($programa_asignado->getActivo() == true){
+                                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
+                                if($programa->getId() == $programacion->getEntidadId()){
+                                    $selected = 'selected="selected"';
+                                }
+                                $formulario .='<option value="'.$programa->getId().'" '.$selected.' >'.$programa->getNombre().'</option>';
+                                $selected = '';
+                            }
+                        }
+             $formulario .= '</select>
+                    <span class="fa fa-book"></span>
+                    <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                </div>
+            </div>';
             
         }elseif($programacion->getTipoDestino()->getNombre() == "Grupo de participantes"){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $usuarios_grupo = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
-            $formulario .='<div class="form-group">
-                                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
-                                <select multiple=multiple class="form-control form_sty_modal" style="border-radius: 5px" id="entidad_id" name="entidad_id[]">
-                                    <option value="0"></option>';
-            foreach ($usuarios_grupo as $usuario_grupo) {
-                    if($usuario_grupo->getId() == $programacion->getEntidadId()){
-                        $selected = "selected=selected";
-                    }
-                    $formulario .='<option value="'.$usuario_grupo->getId().'" '.$selected.' >'.$usuario_grupo->getNombre().' '.$usuario_grupo->getApellido().' ('.$usuario_grupo->getLogin().')</option>';
-            }
-            $formulario .= '</select>
-                            <div><br>'; 
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select multiple=multiple class="form-control form_sty_sel form_sty_modal" id="entidad_id_grupo" name="entidad_id_grupo[]" style="border-radius: 5px;">
+                        <option value=""></option>';
+                        foreach ($usuarios_grupo as $usuario_grupo) {
+                            $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np 
+                                            WHERE np.entidadId = :usuario_id
+                                            AND np.grupo = :grupo_id
+                                            AND np.notificacion = :notificacion_id
+                                            ORDER BY np.id ASC")
+                            ->setParameters(array('usuario_id' => $usuario_grupo->getId(),
+                                                  'grupo_id' => $programacion->getId(),
+                                                  'notificacion_id' => $notificacion->getId()));
+
+                            $programacion_grupo = $query->getResult();
+
+                            if(count($programacion_grupo) > 0){
+                                $selected = 'selected="selected"';
+                            }
+                            $formulario .='<option value="'.count($programacion_grupo).'-'.$usuario_grupo->getId().'" '.$selected.' >'.$usuario_grupo->getNombre().' '.$usuario_grupo->getApellido().' ('.$usuario_grupo->getLogin().')</option>';
+                            $selected = '';
+                        }
+             $formulario .= '</select>
+                            </div>
+                        </div>';
             
         }elseif($programacion->getTipoDestino()->getNombre() == "Todos"){
 
@@ -467,11 +522,13 @@ class ProgramadosController extends Controller
 
         }
 
-        $formulario  .= '<div class="form-group">
+        $formulario .='<div class="jsonfileds">
                             <label for="fecha_difusion" class="form-control-label">'.$this->get('translator')->trans('Seleccione fecha difusión').':</label>
-                            <input type="text" class="form-control form_sty1" name="fecha_difusion" id="fecha_difusion" value="'.$fecha_difusion.'">
-                            <!--<span class="fa fa-calendar"></span>-->
-                            '.$aviso.'
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                                <input type="text" class="form-control form_sty1" name="fecha_difusion" id="fecha_difusion" value="'.$programacion->getFechaDifusion()->format("d/m/Y").'" style="border-radius: 5px;">
+                                <span class="fa fa-calendar"></span>
+                                '.$aviso.'
+                            </div>
                         </div>';
         
         $return = array('tipo_destino' => $programacion->getTipoDestino()->getId(),
@@ -550,6 +607,23 @@ class ProgramadosController extends Controller
             }
 
         }
+    }
+
+    public function sendAction()
+
+    {
+
+        $this_is = 'this is';
+        $the_message = ' the message of the email';
+        $mailer = $this->get('mailer');
+        $message = \Swift_Message::newInstance()
+            ->setSubject('The Subject for this Message')
+            ->setFrom('jponce@bmt.com.ve')
+            ->setTo('jhonatan@uakami.com')
+            ->setBody($this->renderView('LinkBackendBundle:Programados:emailTest.html.twig', ['this'=>$this_is, 'message'=>$the_message]));
+        $mailer->send($message);
+        return new Response('<html><body>The email has been sent successfully!</body></html>');
+
     }
 
 }

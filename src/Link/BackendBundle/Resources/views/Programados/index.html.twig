@@ -54,7 +54,7 @@
                             {% endfor %}
                         </select>
                         <span class="fa fa-industry"></span>
-                        {#<span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>#}
+                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
                     </div>
                 </div>
                 <br>
@@ -99,9 +99,9 @@
                             <tr>
                                 <td>{{ notificacion.asunto }}</td>
                                 {% if not usuario_empresa %}
-                                    <td>{{ notificacion.empresa }}</td>
+                                    <td>{{ notificacion.empresa.nombre }}</td>
                                 {% endif %}
-                                <td>{{ notificacion.tipo_notificacion }}</td>
+                                <td>{{ notificacion.tipoNotificacion.nombre }}</td>
                                 <td class="center">
                                     <a href="#" title="{{'Nuevo registro' | trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-plus"></span></a>
                                     <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
@@ -119,7 +119,7 @@
                 <h5 class="card-title">{{ 'Historial de programaciones de'|trans }} <span id="notificacionTitle">...</span></h5>
             </div>
             <div class="card-block">
-                <table class="table">
+                <table class="table" id="dtSub">
                     <thead class="sty__title">
                         <tr>
                             <th>{{ 'Destino'|trans }}</th>
@@ -131,9 +131,6 @@
                     <tbody id="tbody_history_programation">
                     </tbody>
                 </table>
-                <div class="alert alert-info" role="alert" id="history_message">
-                    <span>Haz clic en <strong><i class="fa fa-eye"></i></strong> para mostrar el historial de programaciones de la notificación</span>
-                </div>
                 <div id="loading" style="width:24px;display:none">
                     <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
                 </div>
@@ -153,16 +150,15 @@
     <form id="form" name="form" action="{{ path( '_ajaxUpdateProgramations')}}"  method="POST">
         <input type="hidden" id="notificacion_id" name="notificacion_id" value="">
         <input type="hidden" id="programacion_id" name="programacion_id" value="">
-        <div class="alert alert-danger" role="alert" id="active-formulario-error" style="display:none;"> 
-            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span>{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+        {#<div class="alert alert-danger" role="alert" id="active-formulario-error" style="display:none;"> 
             <ul></ul>
-        </div>
+        </div>#}
         <div class="row">
             <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
                 <label for="tipo_destino_id" class="form-control-label">{{ 'Tipo Destino'|trans }}:</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
                     <select class="form-control form_sty_sel form_sty_modal" id="tipo_destino_id" name="tipo_destino_id" style="border-radius: 5px;">
-                        <option value="0"></option>
+                        <option value=""></option>
                         {% for destino in tipo_destino %}
                             <option value="{{ destino.id }}" >{{ destino.nombre }}</option>
                         {% endfor %}
@@ -170,6 +166,7 @@
                     <span class="fa fa-send-o"></span>
                     <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
                 </div>
+                <label id="tipo_destino_id-error" class="error" for="tipo_destino_id" style="display:none;"></label>
             </div>
         </div>
         
@@ -237,6 +234,20 @@
     <script type="text/javascript" src="{{ asset('js/admin/programados.js') }}"></script>
     <script type="text/javascript">
 
+        /*$('#guardar').click(function(){
+
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                $('#active-formulario-error ul').show();
+                notify($('#active-formulario-error').html());
+            }
+            else 
+            {  
+                $('#form').submit();
+            }
+        });*/
+
         $.validator.addMethod("anyDate",
             function(value, element) {
                 return value.match(/^(0?[1-9]|[12][0-9]|3[0-1])[/., -](0?[1-9]|1[0-2])[/., -](19|20)?\d{2}$/);
@@ -244,9 +255,9 @@
         );
 
         $("#form").validate({
-            errorLabelContainer: "#active-formulario-error ul",
+            /*errorLabelContainer: "#active-formulario-error ul",
             wrapper: "li",
-            ignore: "",
+            ignore: "",*/
             rules: {
                 'tipo_destino_id': {
                     required: true,
@@ -254,7 +265,7 @@
                 'entidad_id': {
                     required: true,
                 },
-                'entidad_id[]': {
+                'entidad_id_grupo[]': {
                     required: true,
                 },
                 'fecha_difusion': {
@@ -269,8 +280,8 @@
                 'entidad_id': {
                     required: "- {{ 'Seleccione un grupo de usuarios a enviar la notificación'|trans }}",
                 },
-                'entidad_id[]': {
-                    required: "- {{ 'Seleccione un grupo de usuarios a enviar la notificación'|trans }}",
+                'entidad_id_grupo[]': {
+                    required: "- {{ 'Seleccione al menos un usuario para enviar la notificación'|trans }}",
                 },
                 'fecha_difusion': {
                     required: "- {{ 'La fecha de difusión es requerida.'|trans }}",

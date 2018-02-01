@@ -98,6 +98,9 @@
     <script type="text/javascript">
 
     $('#finish').click(function(){
+        var editor_mensaje = CKEDITOR.instances.form_mensaje.getData();
+        var deslen = document.getElementById("deslen");
+        deslen.value = parseInt(editor_mensaje.replace(/<[^>]+>/g, '').length);
             var valid = $("#form").valid();
             if (!valid) 
             {
@@ -116,7 +119,6 @@
                 if (error == 1)
                 {
                     $('#div-error ul').show();
-                    $('#div-success').hide();
                     notify($('#div-error').html());
                 }
                 else {
@@ -141,6 +143,9 @@
                 },
                 'form[tipoNotificacion]': {
                     required: true
+                },
+                'form[empresa]': {
+                    required: true
                 }
             },
             messages: {
@@ -154,6 +159,9 @@
                 },
                 'form[tipoNotificacion]': {
                     required: "- {{ 'El tipo de notificación es requerida.'|trans }}",
+                },
+                'form[empresa]': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}",
                 }
             }
         });
