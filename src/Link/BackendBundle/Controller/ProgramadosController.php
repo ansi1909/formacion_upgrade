@@ -560,12 +560,14 @@ class ProgramadosController extends Controller
                 }
                 elseif($programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
                 {
+                    $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
+                                                JOIN LinkComunBundle:AdminNotificacionProgramada p 
+                                                WHERE p.grupo = :grupo
+                                                AND p.entidad = u.id
+                                                ORDER BY u.id ASC")
+                                ->setParameters(array('grupo' => $programacion->getId()));
 
-                    $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
-                    foreach ($programacion_grupo as $individual){
-
-                            $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($individual->getEntidadId());
-                    }
+                    $usuarios = $query->getResult();
 
                 }
 
