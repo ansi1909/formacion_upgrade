@@ -4,8 +4,6 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -59,7 +57,6 @@
                     <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
                     <input type="hidden" id="url_login" name="url_login" value="{{ path('_ajaxValidLogin') }}">
                     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
-                    <input type="hidden" id="roles_empresa_str" name="roles_empresa_str" value="{{ roles_empresa_str }}">
                     <div class="container_wizard wizard-thin">
                         <div class="stepwizard">
                             <div class="stepwizard-row setup-panel d-flex">
@@ -137,8 +134,8 @@
                                             <label for="clave" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Contraseña'|trans }}</label>
                                             <div class="col-sm-14 col-md-14 col-lg-14">
                                                 {% set disabled = usuario.id ? 'disabled="disabled"' : '' %}
-                                                    <input type="password" class="form-control form_sty1" name="clave" id="clave" {{ disabled }}>
-                                                    <span class="fa fa-lock"></span>
+                                                <input type="password" class="form-control form_sty1" name="clave" id="clave" {{ disabled }}>
+                                                <span class="fa fa-lock"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -253,7 +250,7 @@
                                                         <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
                                                     {% endfor %}
                                                 {% else %}
-                                                    <option value="0"></option>
+                                                    <option value=""></option>
                                                     {% for empresa in empresas %}
                                                         {% set selected = usuario.empresa ? usuario.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
                                                         <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
@@ -267,7 +264,7 @@
                                         <label for="nivel_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Nivel'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
                                             <select class="form-control form_sty_select" name="nivel_id" id="nivel_id">
-                                                <option value="0">{{ 'Seleccione la empresa para mostrar los niveles'|trans }}</option>
+                                                <option value="">{{ 'Seleccione la empresa para mostrar los niveles'|trans }}</option>
                                                 {% for nivel in niveles %}
                                                     {% set selected = usuario.nivel ? usuario.nivel.id == nivel.id ? 'selected="selected"' : '' : '' %}
                                                     <option value="{{ nivel.id }}" {{ selected }} >{{ nivel.nombre }}</option>
@@ -330,54 +327,38 @@
             else {
 
                 // Validaciones adicionales
-                var empresa_id = $('#empresa_id').val();
-                var nivel_id = $('#nivel_id').val();
                 var usuario_id = $('#usuario_id').val();
                 var login = $('#login').val();
-
                 
-                    if ((empresa_id == 0 || nivel_id == 0))
-                    {
-                        valid = false;
-                    }
-               
-                if (!valid){
-                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar tanto la empresa como el nivel.'|trans }}</li>");
-                    $('#div-error ul').show();
-                    notify($('#div-error').html());
-                }
-                else {
-
-                    // Validar si el login no existe cuando es un usuario nuevo
-                    if (!usuario_id)
-                    {
-                        $.ajax({
-                            type: "POST",
-                            url: $('#url_login').val(),
-                            async: true,
-                            data: { login: login },
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.ok != 0)
-                                {
-                                    $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
-                                    $('#div-error ul').show();
-                                    notify($('#div-error').html());
-                                }
-                                else {
-                                    $('#form').submit();
-                                }
-                            },
-                            error: function(){
-                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
+                // Validar si el login no existe cuando es un usuario nuevo
+                if (!usuario_id)
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: $('#url_login').val(),
+                        async: true,
+                        data: { login: login },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.ok != 0)
+                            {
+                                $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
                                 $('#div-error ul').show();
                                 notify($('#div-error').html());
                             }
-                        });
-                    }
-                    else {
-                        $('#form').submit();
-                    }
+                            else {
+                                $('#form').submit();
+                            }
+                        },
+                        error: function(){
+                            $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
+                            $('#div-error ul').show();
+                            notify($('#div-error').html());
+                        }
+                    });
+                }
+                else {
+                    $('#form').submit();
                 }
 
             }
@@ -413,12 +394,14 @@
                 'fecha_nacimiento': {
                     required: true
                 },
+                'empresa_id': {
+                    required: true
+                },
+                'nivel_id': {
+                    required: true
+                },
                 'correo_corporativo': {
                     email: true
-                },
-                'roles[]': {
-                    required: true,
-                    minlength: 1
                 }
             },
             messages: {
@@ -443,12 +426,14 @@
                 'fecha_nacimiento': {
                     required: "- {{ 'Fecha de nacimiento es requerida.'|trans }}"
                 },
+                'empresa_id': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
+                },
+                'nivel_id': {
+                    required: "- {{ 'El nivel es requerido.'|trans }}"
+                },
                 'correo_corporativo': {
                     email: "- {{ 'El correo corporativo tiene un formato inválido.'|trans }}"
-                },
-                'roles[]': {
-                    required: "- {{ 'Debe seleccionar al menos un rol.'|trans }}",
-                    minlength: "- {{ 'Debe seleccionar al menos un rol.'|trans }}"
                 }
             }
         });

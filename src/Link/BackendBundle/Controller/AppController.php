@@ -59,7 +59,7 @@ class AppController extends Controller
                                    	'icono' => $app->getIcono(),
                                    	'activo' => $app->getActivo(),
                                    	'delete_disabled' => $f->linkEliminar($app->getId(), 'AdminAplicacion'),
-                                      'tiene_subaplicaciones' => $tiene_subaplicaciones);
+                                    'tiene_subaplicaciones' => $tiene_subaplicaciones);
 
         }
 

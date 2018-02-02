@@ -43,6 +43,7 @@
         <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
         <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
         <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
+        <input type="hidden" id="error_msg-filter" name="error_msg-filter" value="{{ 'No se pudo filtrar el listado.'|trans }}">
         <input type="hidden" id="sesion_time" name="sesion_time" value="{{sesion_time}}">
         <input type="hidden" id="timerId" name="timerId" value="">
         <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}">
@@ -343,6 +344,39 @@
                                 "{{ 'Ha ocurrido un error reordenando de este registro'|trans }}",
                                 'error'
                             );
+                        }
+                    });
+                }
+
+                function applyDataTable()
+                {
+                    $('#dt, #dt2').DataTable({
+                        responsive: true,
+                        pageLength:10,
+                        sPaginationType: "full_numbers",
+                        oLanguage: {
+                            "sProcessing":    "{{ 'Procesando'|trans }}...",
+                            "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                            "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                            "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                            "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                            "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                            "sInfoPostFix":   "",
+                            "sSearch":        "{{ 'Buscar'|trans }}:",
+                            "sUrl":           "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                            oPaginate: {
+                                sFirst: "<<",
+                                sPrevious: "<",
+                                sNext: ">", 
+                                sLast: ">>" 
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                            }
                         }
                     });
                 }

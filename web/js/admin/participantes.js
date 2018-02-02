@@ -2,12 +2,12 @@ $(document).ready(function() {
 
 	var usuario_empresa = $("#usuario_empresa").val();
 	if (usuario_empresa != '0'){
-		console.log('Usuario empresa');
+		var nivel_id = 0;
 		getNiveles(usuario_empresa);
+		getListadoParticipantes(usuario_empresa,nivel_id);
 	}
 
     $('#empresa_id').change(function(){
-    	console.log('Usuario admin');
     	var empresa_id = $(this).val();
     	var nivel_id = 0;
 		getNiveles(empresa_id);
@@ -19,6 +19,12 @@ $(document).ready(function() {
 		var empresa_id = $('#empresa_id').val();
 		getListadoParticipantes(empresa_id,nivel_id);
 	});
+
+	$('.paginate_button').click(function(){
+        afterPaginate();
+    });
+
+	observe();
 
 });
 
@@ -47,7 +53,10 @@ function getListadoParticipantes(empresa_id,nivel_id){
 		data: { nivel_id: nivel_id, empresa_id: empresa_id },
 		dataType: "json",
 		success: function(data) {
-			$('#usuarios').html(data.usuarios);
+			$('#usuarios').html(data.html);
+			applyDataTable();
+			observe();
+			clearTimeout( timerId );
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
@@ -56,3 +65,16 @@ function getListadoParticipantes(empresa_id,nivel_id){
 	});
 }
 
+function afterPaginate(){
+    observe();
+}
+
+function observe()
+{
+
+    $('.delete').click(function(){
+        var usuario_id = $(this).attr('data');
+        sweetAlertDelete(usuario_id, 'AdminUsuario');
+    });
+
+}

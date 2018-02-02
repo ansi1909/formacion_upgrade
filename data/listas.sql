@@ -183,7 +183,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (8, 'Evaluaciones', '_paginasEvaluacion', 'fa-check-circle-o', TRUE, 5, 3);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (9, 'Administrar empresa', NULL, 'fa-building', TRUE, NULL, 3);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (10, 'Empresas', '_empresas', 'fa-industry', TRUE, 9, 1);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (11, 'Asignación de páginas', '_empresasPaginas', NULL, TRUE, 9, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (11, 'Asignación de páginas', '_empresasPaginas', 'fa-sitemap', TRUE, 9, 2);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (12, 'Niveles por empresa', '_empresasNiveles', 'fa-list-ol', TRUE, 9, 3);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (13, 'Agrupación de páginas', '_empresasGrupo', NULL, TRUE, 9, 4);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (14, 'Participantes', '_participantes', 'fa-users', TRUE, 9, 5);

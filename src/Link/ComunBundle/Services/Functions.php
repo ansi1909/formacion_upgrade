@@ -65,7 +65,7 @@ class Functions
     							   'CertiMuro' => 'usuario',
     							   'CertiForo' => 'usuario',
     							   'AdminNotificacion' => 'usuario',
-    							   'AdminNotificacion' => 'usuarioTutor',
+    							   'AdminNotificacionProgramada' => 'usuario',
     							   'AdminPreferencia' => 'usuario');
     			break;
             case 'AdminNivel':
