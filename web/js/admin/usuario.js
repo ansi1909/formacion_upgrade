@@ -25,6 +25,7 @@ $(document).ready(function() {
 			dataType: "json",
 			success: function(data) {
 				$('#nivel_id').html(data.options);
+				clearTimeout( timerId );
 			},
 			error: function(){
 				$('#active-error').html($('#error_msg-filter').val());

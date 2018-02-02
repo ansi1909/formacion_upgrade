@@ -31,3 +31,17 @@ _ajaxTreePaginas:
     defaults: { _controller: LinkBackendBundle:Pagina:ajaxTreePaginas, pagina_id: 0 }
     requirements:
         method: GET
+
+_empresasPaginas:
+    path:     /empresasPaginas/{app_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:empresasPaginas }
+
+_ajaxPaginasEmpresa:
+    path:     /ajaxPaginasEmpresa
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxPaginasEmpresa }
+    requirements:
+        _method: GET
+
+_empresaPaginas:
+    path:     /empresaPaginas/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:empresaPaginas }

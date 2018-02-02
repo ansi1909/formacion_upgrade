@@ -398,4 +398,50 @@ class PaginaController extends Controller
 
     }
 
+    public function empresasPaginasAction($app_id)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $empresas = array();
+        
+        // Todas las empresas 
+        $empresas_bd = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+
+        foreach ($empresas_bd as $empresa)
+        {
+
+            $query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        WHERE pe.empresa = :empresa_id')
+                        ->setParameter('empresa_id', $empresa->getId());
+            $tiene_paginas = $query->getSingleScalarResult();
+
+            $empresas[] = array('id' => $empresa->getId(),
+                                'nombre' => $empresa->getNombre(),
+                                'rif' => $empresa->getRif(),
+                                'tiene_paginas' => $tiene_paginas);
+
+        }
+
+        return $this->render('LinkBackendBundle:Pagina:empresasPaginas.html.twig', array('empresas' => $empresas));
+
+    }
+
 }
