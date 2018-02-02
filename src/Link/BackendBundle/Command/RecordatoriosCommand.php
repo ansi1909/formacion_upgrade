@@ -4,13 +4,10 @@
 
 namespace Link\BackendBundle\Command;
 
-
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 class RecordatoriosCommand extends ContainerAwareCommand
 {
@@ -25,8 +22,9 @@ class RecordatoriosCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $f = $this->get('funciones');
+        //$doctrine = $this->getContainer()->get('doctrine');
+        $em = $this->getContainer()->get('doctrine')->getEntityManager('default');
+        $f = $this->getContainer()->get('funciones');
         // tomando fecha actual para buscar usuarios que no hallan ingresado en 5 días
         $fecha = date('Y-m-j');
         $nuevafecha = strtotime ( '-5 day' , strtotime ( $fecha ) ) ;
@@ -36,12 +34,15 @@ class RecordatoriosCommand extends ContainerAwareCommand
         $template = "LinkBackendBundle:Programados:email.html.twig";
 
         // busco todos los usuarios registrados en la plataforma
-        $usuarios = $em->getRepository('LinkComunBundle:AdminUsuario')->findAll();
+        $active_users = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
+                                     WHERE u.activo = 'true'
+                                     ORDER BY u.id ASC");
+        $usuarios = $active_users->getResult();
 
         foreach ($usuarios as $usuario){
 
             // verifico si el usuario tiene registros en admin_sesion entre la fecha actual y 5 días antes
-            $ssesion = $em->createQuery("SELECT p FROM LinkComunBundle:AdminSession p
+            $ssesion = $em->createQuery("SELECT p FROM LinkComunBundle:AdminSesion p
                                          WHERE p.usuario = :usuario_id AND p.fechaIngreso BETWEEN :fecha and :nuevafecha
                                          ORDER BY p.id ASC")
                           ->setParameters(array('usuario_id' => $usuario->getId(),
@@ -135,6 +136,7 @@ class RecordatoriosCommand extends ContainerAwareCommand
         // finalmente busaco todas las notificaciones progaramadas para el día de hoy
         $notificaciones_hoy = $em->createQuery("SELECT p FROM LinkComunBundle:AdminNotificacionProgramada p
                                                 WHERE p.fecha_difusion = :fecha_difusion
+                                                AND p.tipoDestino NOT IN (5,6,7)
                                                 ORDER BY p.id ASC")
                                  ->setParameters(array('fecha_difusion' => $fecha));
         $lista_hoy = $notificaciones_hoy->getResult();

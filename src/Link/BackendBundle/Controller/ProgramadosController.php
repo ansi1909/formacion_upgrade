@@ -166,6 +166,7 @@ class ProgramadosController extends Controller
                             <a href="#" class="btn btn-link btn-sm '.$deshabilitado.' '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
+            $entidad = '';
         }
 
         $return = array('html' => $html,
@@ -252,6 +253,10 @@ class ProgramadosController extends Controller
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
 
+        }else{
+
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy').'</strong></em>';
+
         }
 
         $formulario .='<div class="jsonfileds">
@@ -291,37 +296,10 @@ class ProgramadosController extends Controller
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
 
-        $logger = $this->get('logger');
-        if($entidad_id_grupo){
-            foreach ($entidad_id_grupo as $entidad){
-
-                    $logger->error('entidad_id_grupo: '.$entidad);
-            }
-        }
-
-        if($entidad_id){
-
-            $logger->error('entidad_id: '.$entidad_id);
-        }
-        
-        if($notificacion_id){
-
-            $logger->error('notificacion_id: '.$notificacion_id);
-        }
-        if($programacion_id){
-
-            
-        }
-        if($tipo_destino_id){
-
-            $logger->error('tipo_destino_id: '.$tipo_destino_id);
-        }
-
         if($tipo_destino->getNombre() == "Grupo de participantes"){
 
             if ($programacion_id)
             {
-                $logger->error('programacion_id: '.$programacion_id.' - A Editar');
                 // actualizo la programacion padre
                 $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($programacion_id);
                 $programacion->setFechaDifusion(new \DateTime($difusion));
@@ -335,7 +313,6 @@ class ProgramadosController extends Controller
                 // se me ocurre eliminar los registros de este grupo, y dejar solo el principal porque no se como determinar si un usurio fe deseleccionado
                 $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
                 foreach ($programacion_grupo as $individual){
-                        $logger->error('Eliminando Registro: '.$individual->getId());
                         $em->remove($individual);
                         $flush = $em->flush();
                 }
@@ -352,7 +329,6 @@ class ProgramadosController extends Controller
                         
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
-                        $logger->error('Creando Registro hijo: '.$programacion_nuevo_grupo->getId());
                 }
                 
             }
@@ -366,7 +342,6 @@ class ProgramadosController extends Controller
                 
                 $em->persist($programacion);
                 $em->flush();
-                $logger->error('Creando nueva programacion - programacion_id: '.$programacion->getId());
 
                 foreach ($entidad_id_grupo as $entidad){
 
@@ -380,7 +355,6 @@ class ProgramadosController extends Controller
                         
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
-                        $logger->error('Creando Registro hijo: '.$programacion_nuevo_grupo->getId());
                 }
                 
             }
@@ -389,7 +363,6 @@ class ProgramadosController extends Controller
 
            if ($programacion_id)
             {
-                $logger->error('programacion_id: '.$programacion_id.' - A Editar');
                 $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($programacion_id);
             }
             else {
@@ -404,7 +377,6 @@ class ProgramadosController extends Controller
             
             $em->persist($programacion);
             $em->flush();
-            $logger->error('Creando nueva programacion - programacion_id: '.$programacion->getId());
 
             $this->sendNowEmail($programacion->getId());
          
@@ -547,65 +519,68 @@ class ProgramadosController extends Controller
         $hoy = date('d/m/Y');
         $controller = 'ProgramadosController';
 
-        if($hoy == $programacion->getFechaDifusion()->format("d/m/Y"))
+        if($programacion->getTipoDestino()->getNombre() == "Nivel" or $programacion->getTipoDestino()->getNombre() == "Programa" or $programacion->getTipoDestino()->getNombre() == "Todos" or $programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
         {
-
-            $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($programacion->getNotificacion()->getId());
-            $parametros = array();
-            $template = "LinkBackendBundle:Programados:email.html.twig";
-
-            if($programacion->getTipoDestino()->getNombre() == "Nivel")
+            if($hoy == $programacion->getFechaDifusion()->format("d/m/Y"))
             {
 
-                $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminUsuario p
-                                            WHERE p.nivel = :nivel_id AND p.empresa = :empresa_id
-                                            ORDER BY p.id ASC")
-                            ->setParameters(array('nivel_id' => $programacion->getEntidadId(),
-                                                  'empresa_id' => $notificacion->getEmpresa()->getId()));
-                $usuarios = $query->getResult();
+                $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($programacion->getNotificacion()->getId());
+                $parametros = array();
+                $template = "LinkBackendBundle:Programados:email.html.twig";
 
-            }
-            elseif($programacion->getTipoDestino()->getNombre() == "Programa")
-            {
+                if($programacion->getTipoDestino()->getNombre() == "Nivel")
+                {
 
-                $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
-                                            JOIN LinkComunBundle:CertiNivelPagina c 
-                                            WHERE c.paginaEmpresa = :programa
-                                            AND c.nivel = u.nivel
-                                            ORDER BY u.id ASC")
-                            ->setParameters(array('programa' => $programacion->getEntidadId()));
+                    $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminUsuario p
+                                                WHERE p.nivel = :nivel_id AND p.empresa = :empresa_id
+                                                ORDER BY p.id ASC")
+                                ->setParameters(array('nivel_id' => $programacion->getEntidadId(),
+                                                      'empresa_id' => $notificacion->getEmpresa()->getId()));
+                    $usuarios = $query->getResult();
 
-                $usuarios = $query->getResult();
+                }
+                elseif($programacion->getTipoDestino()->getNombre() == "Programa")
+                {
 
-            }
-            elseif($programacion->getTipoDestino()->getNombre() == "Todos")
-            {
+                    $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
+                                                JOIN LinkComunBundle:CertiNivelPagina c 
+                                                WHERE c.paginaEmpresa = :programa
+                                                AND c.nivel = u.nivel
+                                                ORDER BY u.id ASC")
+                                ->setParameters(array('programa' => $programacion->getEntidadId()));
 
-                $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
+                    $usuarios = $query->getResult();
 
-            }
-            elseif($programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
-            {
+                }
+                elseif($programacion->getTipoDestino()->getNombre() == "Todos")
+                {
 
-                $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
-                foreach ($programacion_grupo as $individual){
+                    $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
 
-                        $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($individual->getEntidadId());
+                }
+                elseif($programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
+                {
+
+                    $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
+                    foreach ($programacion_grupo as $individual){
+
+                            $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($individual->getEntidadId());
+                    }
+
+                }
+
+                foreach ($usuarios as $usuario) {
+
+                    $parametros= array('twig'=>$template,
+                                       'asunto'=>$notificacion->getAsunto(),
+                                       'remitente'=>array('info@formacion2-0.com' => 'Formación 2.0'),
+                                       'destinatario'=>$usuario->getCorreoCorporativo(),
+                                       'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
+
+                    $f->sendEmail($parametros, $controller);
                 }
 
             }
-
-            foreach ($usuarios as $usuario) {
-
-                $parametros= array('twig'=>$template,
-                                   'asunto'=>$notificacion->getAsunto(),
-                                   'remitente'=>array('info@formacion2-0.com' => 'Formación 2.0'),
-                                   'destinatario'=>$usuario->getCorreoCorporativo(),
-                                   'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
-
-                $f->sendEmail($parametros, $controller);
-            }
-
         }
     }
 
