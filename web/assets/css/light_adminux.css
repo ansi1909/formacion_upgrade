@@ -3747,6 +3747,18 @@ table tr td img {
   align-content: center;
 }
 
+.dataTables_wrapper .dataTable tr:hover{
+    background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+    color: #fff;
+    font-weight: bold;
+    border-left: 0.3rem solid #fff;
+}
+
+.dataTables_wrapper .dataTable tr:hover a{
+    color: #fff;
+    font-weight: bold;
+}
+
 .dataTables_wrapper label {
   display: flex;
   align-items: center;

@@ -66,7 +66,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td class="center">
+                                <td class="center f_icon">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if aplicacion.delete_disabled == '' %}delete{% endif %} {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
                                     {% if aplicacion.tiene_subaplicaciones %}
