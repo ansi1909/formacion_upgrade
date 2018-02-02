@@ -108,7 +108,7 @@ class empresasGrupoController extends Controller
             $class_delete = $delete_disabled == '' ? 'delete' : '';
             $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td> <td> </td>
             <td class="center">
-                <a href="'.$this->generateUrl('_ajaxUpdateGrupo', array('grupo_id' => $grupo->getId())).'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
                 <a href="#" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }

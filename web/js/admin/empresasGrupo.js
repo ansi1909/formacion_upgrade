@@ -29,11 +29,6 @@ $(document).ready(function() {
 		window.location.replace($('#url_list').val());
 	});
 
-	$('.delete').click(function(){
-		var grupo_id = $(this).attr('data');
-		sweetAlertDelete(grupo_id, 'CertiGrupo');
-	});
-
 	var table = $('#dt').DataTable( {
 		destroy: true,
         rowReorder: true
@@ -101,6 +96,7 @@ function getListadoGrupos(empresa_id){
 			$('#lpe').html(data.grupos);
 			$('#id_empresa').val(empresa_id);
 			$('#new').removeClass("ocultar");
+			$('#grupo_id').val(data.grupo_id);
 
 			var table = $('#dt').DataTable( {
 				destroy: true,
@@ -127,13 +123,47 @@ function getListadoGrupos(empresa_id){
 		            $( '.columorden' ).css( 'cursor','auto' );
 		    });
 
-				},
-				error: function(){
-					$('#active-error').html($('#error_msg-filter').val());
-					$('#div-active-alert').show();
-				}
+			$('.edit').click(function(){
+				var grupo_id = $(this).attr('data');
+				var url_edit = $('#url_edit').val();
+				$('#guardar').prop('disabled', false);
+				$('label.error').hide();
+				$('#form').show();
+				$('#alert-success').hide();
+				$('#detail').hide();
+				$('#aceptar').hide();
+				$('#guardar').show();
+				$('#cancelar').show();
+				$('#div-alert').hide();
+				$.ajax({
+					type: "GET",
+					url: url_edit,
+					async: true,
+					data: { grupo_id: grupo_id },
+					dataType: "json",
+					success: function(data) {
+						$('#grupo_id').val(grupo_id);
+						$('#nombre').val(data.nombre);
+						$('#id_empresa').val(data.empresa_id);
+						$('#orden').val(data.orden);
+					},
+					error: function(){
+				$('alert-error').html($('#error_msg_edit').val());
+				$('#div-alert').show();
+					}
+				});
 			});
 
+			$('.delete').click(function(){
+				var grupo_id = $(this).attr('data');
+				sweetAlertDelete(grupo_id, 'CertiGrupo');
+			});
+		},
+		error: function(){
+			$('#active-error').html($('#error_msg-filter').val());
+			$('#div-active-alert').show();
+				}
+	});
 }
 
 function saveGrupo()
