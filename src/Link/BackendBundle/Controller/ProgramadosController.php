@@ -295,7 +295,7 @@ class ProgramadosController extends Controller
         $formulario .='<div class="jsonfileds">
                             <label for="fecha_difusion" class="form-control-label">'.$this->get('translator')->trans('Seleccione fecha difusión').':</label>
                             <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
-                                <input type="text" class="form-control form_sty1" name="fecha_difusion" id="fecha_difusion" value="'.$fecha_difusion.'" style="border-radius: 5px;">
+                                <input type="text" class="form-control form_sty1" name="fecha_difusion" id="fecha_difusion" value="'.$fecha_difusion.'" style="border-radius: 5px;" data-date-start-date="0d">
                                 <span class="fa fa-calendar"></span>
                                 '.$aviso.'
                             </div>

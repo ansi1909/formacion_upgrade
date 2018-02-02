@@ -261,12 +261,6 @@
             }
         });*/
 
-        $.validator.addMethod("anyDate",
-            function(value, element) {
-                return value.match(/^(0?[1-9]|[12][0-9]|3[0-1])[/., -](0?[1-9]|1[0-2])[/., -](19|20)?\d{2}$/);
-            }
-        );
-
         $("#form").validate({
             /*errorLabelContainer: "#active-formulario-error ul",
             wrapper: "li",
@@ -283,7 +277,6 @@
                 },
                 'fecha_difusion': {
                     required: true,
-                    anyDate: true,
                 }
             },
             messages: {
@@ -298,7 +291,6 @@
                 },
                 'fecha_difusion': {
                     required: "- {{ 'La fecha de difusión es requerida.'|trans }}",
-                    anyDate: "- {{ 'Ingrese un formato de fecha correcto.'|trans }}",
                 }
             }
         });
