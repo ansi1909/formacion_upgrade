@@ -79,6 +79,7 @@ class NotificacionController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
+        $usuario_empresa = $request->query->get('usuario_empresa');
         $f = $this->get('funciones');
 
         $qb = $em->createQueryBuilder();
@@ -98,6 +99,18 @@ class NotificacionController extends Controller
         $query = $qb->getQuery();
         $notificaciones_db = $query->getResult();
         $notificaciones = '';
+        $notificaciones .= '<table class="table" id="dt">
+                            <thead class="sty__title">
+                                <tr>
+                                    <th>'.$this->get('translator')->trans('Asunto').'</th>';
+                                    if ($usuario_empresa == 0){
+                                        $notificaciones .= '<th>'.$this->get('translator')->trans('Empresa').'</th>';
+                                    }
+                                    $notificaciones .= '<th>'.$this->get('translator')->trans('Tipo Notificación').'</th>
+                                    <th>'.$this->get('translator')->trans('Acciones').'</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
 
         foreach ($notificaciones_db as $notificacion) {
             $delete_disabled = $f->linkEliminar($notificacion->getId(), 'AdminNotificacion');
@@ -109,6 +122,8 @@ class NotificacionController extends Controller
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$notificacion->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
+        $notificaciones .= '</tbody>
+                        </table>';
         
         $return = array('notificaciones' => $notificaciones);
  

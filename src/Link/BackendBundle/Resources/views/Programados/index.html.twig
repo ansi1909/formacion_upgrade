@@ -83,33 +83,36 @@
                         &nbsp;
                     </div>
                 </div>
-                <table class="table" id="dt">
-                    <thead class="sty__title">
-                        <tr>
-                            <th>{{ 'Asunto'|trans }}</th>
-                            {% if not usuario_empresa %}
-                                <th>{{ 'Empresa'|trans }}</th>
-                            {% endif %}
-                            <th>{{ 'Tipo Notificación'|trans }}</th>
-                            <th>{{ 'Acciones'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="list_notificaciones" name="list_notificaciones">
-                        {% for notificacion in notificaciones %}
+                <div id="list_notificaciones">
+                    <table class="table" id="dt">
+                        <thead class="sty__title">
                             <tr>
-                                <td>{{ notificacion.asunto }}</td>
+                                <th>{{ 'Asunto'|trans }}</th>
                                 {% if not usuario_empresa %}
-                                    <td>{{ notificacion.empresa.nombre }}</td>
+                                    <th>{{ 'Empresa'|trans }}</th>
                                 {% endif %}
-                                <td>{{ notificacion.tipoNotificacion.nombre }}</td>
-                                <td class="center">
-                                    <a href="#" title="{{'Nuevo registro' | trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-plus"></span></a>
-                                    <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
-                                </td>
+                                <th>{{ 'Tipo Notificación'|trans }}</th>
+                                <th>{{ 'Acciones'|trans }}</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for notificacion in notificaciones %}
+                                <tr>
+                                    <td>{{ notificacion.asunto }}</td>
+                                    <input type="hidden" id="asuntoTable{{ notificacion.id }}" value="{{ notificacion.asunto }}">
+                                    {% if not usuario_empresa %}
+                                        <td>{{ notificacion.empresa.nombre }}</td>
+                                    {% endif %}
+                                    <td>{{ notificacion.tipoNotificacion.nombre }}</td>
+                                    <td class="center">
+                                        <a href="#" title="{{'Nuevo registro' | trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-plus"></span></a>
+                                        <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -119,18 +122,20 @@
                 <h5 class="card-title">{{ 'Historial de programaciones de'|trans }} <span id="notificacionTitle">...</span></h5>
             </div>
             <div class="card-block">
-                <table class="table" id="dtSub">
-                    <thead class="sty__title">
-                        <tr>
-                            <th>{{ 'Destino'|trans }}</th>
-                            <th>{{ 'Entidad'|trans }}</th>
-                            <th>{{ 'Fecha'|trans }}</th>
-                            <th>{{ 'Acciones'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody_history_programation">
-                    </tbody>
-                </table>
+                <div id="tbody_history_programation">
+                    <table class="table" id="dtSub">
+                        <thead class="sty__title">
+                            <tr>
+                                <th>{{ 'Destino'|trans }}</th>
+                                <th>{{ 'Entidad'|trans }}</th>
+                                <th>{{ 'Fecha'|trans }}</th>
+                                <th>{{ 'Acciones'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
                 <div id="loading" style="width:24px;display:none">
                     <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
                 </div>
@@ -153,6 +158,14 @@
         {#<div class="alert alert-danger" role="alert" id="active-formulario-error" style="display:none;"> 
             <ul></ul>
         </div>#}
+        <div class="row">
+            <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                <label for="asunto" class="form-control-label">{{ 'Asunto'|trans }}:</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <input class="form-control form_sty_sel form_sty_modal" id="asunto" name="asunto" style="border-radius: 5px;" disabled="disabled">
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
                 <label for="tipo_destino_id" class="form-control-label">{{ 'Tipo Destino'|trans }}:</label>

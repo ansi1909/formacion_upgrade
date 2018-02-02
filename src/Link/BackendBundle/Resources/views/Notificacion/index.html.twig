@@ -68,34 +68,36 @@
                         &nbsp;
                     </div>
                 </div>
-                <table class="table" id="dt">
-                    <thead class="sty__title">
-                        <tr>
-                            <th>{{ 'Asunto'|trans }}</th>
-                            {% if not usuario_empresa %}
-                                <th>{{ 'Empresa'|trans }}</th>
-                            {% endif %}
-                            <th>{{ 'Tipo Notificación'|trans }}</th>
-                            <th>{{ 'Acciones'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="list_notificaciones" name="list_notificaciones">
-                        {% for notificacion in notificaciones %}
+                <div id="list_notificaciones">
+                    <table class="table" id="dt">
+                        <thead class="sty__title">
                             <tr>
-                                <td>{{ notificacion.asunto }}</td>
+                                <th>{{ 'Asunto'|trans }}</th>
                                 {% if not usuario_empresa %}
-                                    <td>{{ notificacion.empresa }}</td>
+                                    <th>{{ 'Empresa'|trans }}</th>
                                 {% endif %}
-                                <td>{{ notificacion.tipo_notificacion }}</td>
-                                <td class="center">
-                                    <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
-                                    <a href="{{ path('_showNotificacion', { 'notificacion_id': notificacion.id, 'status': 'show' }) }}" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
-                                </td>
+                                <th>{{ 'Tipo Notificación'|trans }}</th>
+                                <th>{{ 'Acciones'|trans }}</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for notificacion in notificaciones %}
+                                <tr>
+                                    <td>{{ notificacion.asunto }}</td>
+                                    {% if not usuario_empresa %}
+                                        <td>{{ notificacion.empresa }}</td>
+                                    {% endif %}
+                                    <td>{{ notificacion.tipo_notificacion }}</td>
+                                    <td class="center">
+                                        <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                        <a href="{{ path('_showNotificacion', { 'notificacion_id': notificacion.id, 'status': 'show' }) }}" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
+                                        <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

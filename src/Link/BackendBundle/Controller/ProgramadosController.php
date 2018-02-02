@@ -65,6 +65,7 @@ class ProgramadosController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
+        $usuario_empresa = $request->query->get('usuario_empresa');
         $f = $this->get('funciones');
 
         $qb = $em->createQueryBuilder();
@@ -84,16 +85,34 @@ class ProgramadosController extends Controller
         $query = $qb->getQuery();
         $notificaciones_db = $query->getResult();
         $notificaciones = '';
+        $notificaciones .= '<table class="table" id="dt">
+                            <thead class="sty__title">
+                                <tr>
+                                    <th>'.$this->get('translator')->trans('Asunto').'</th>';
+                                    if ($usuario_empresa == 0){
+                                        $notificaciones .= '<th>'.$this->get('translator')->trans('Empresa').'</th>';
+                                    }
+                                    $notificaciones .= '<th>'.$this->get('translator')->trans('Tipo Notificación').'</th>
+                                    <th>'.$this->get('translator')->trans('Acciones').'</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
 
         foreach ($notificaciones_db as $notificacion) {
             $delete_disabled = $f->linkEliminar($notificacion->getId(), 'AdminNotificacion');
             $class_delete = $delete_disabled == '' ? 'delete' : '';
-            $notificaciones .= '<tr><td>'.$notificacion->getAsunto().'</td><td>'.$notificacion->getEmpresa()->getNombre().'</td><td>'.$notificacion->getTipoNotificacion()->getNombre().'</td>
-            <td class="center">
-                <a href="#" title="'.$this->get('translator')->trans('Nuevo Registro').'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$notificacion->getId().'"><span class="fa fa-plus"></span></a>
-                <a href="#" title="'.$this->get('translator')->trans('Ver Historial').'" class="btn btn-link btn-sm see" data="'.$notificacion->getId().'"><span class="fa fa-eye"></span></a>
-            </td> </tr>';
+            $notificaciones .= '<tr>
+                                    <td>'.$notificacion->getAsunto().'</td>
+                                    <input type="hidden" id="asuntoTable'.$notificacion->getId().'" value="'.$notificacion->getAsunto().'">
+                                    <td>'.$notificacion->getEmpresa()->getNombre().'</td><td>'.$notificacion->getTipoNotificacion()->getNombre().'</td>
+                                    <td class="center">
+                                        <a href="#" title="'.$this->get('translator')->trans('Nuevo Registro').'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$notificacion->getId().'"><span class="fa fa-plus"></span></a>
+                                        <a href="#" title="'.$this->get('translator')->trans('Ver Historial').'" class="btn btn-link btn-sm see" data="'.$notificacion->getId().'"><span class="fa fa-eye"></span></a>
+                                    </td>
+                                </tr>';
         }
+        $notificaciones .= '</tbody>
+                        </table>';
         
         $return = array('notificaciones' => $notificaciones);
  
@@ -122,6 +141,17 @@ class ProgramadosController extends Controller
 
         //$notificaciones_programadas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByNotificacion($notificacion_id);
         $entidad = '';
+
+        $html .= '<table class="table" id="dtSub">
+                        <thead class="sty__title">
+                            <tr>
+                                <th>'.$this->get('translator')->trans('Destino').'</th>
+                                <th>'.$this->get('translator')->trans('Entidad').'</th>
+                                <th>'.$this->get('translator')->trans('Fecha').'</th>
+                                <th>'.$this->get('translator')->trans('Acciones').'</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
 
         foreach ($notificaciones_programadas as $notificacion_programada)
         {
@@ -162,12 +192,15 @@ class ProgramadosController extends Controller
                         <td>'.$notificacion_programada->getFechaDifusion()->format("d/m/Y").'</td>
                         <td class="center">
                             <input type="hidden" id="hidden_notificacion_id" name="hidden_notificacion_id" value="'.$notificacion->getId().'">
+                            <input type="hidden" id="asuntoTableEdit'.$notificacion->getId().'" value="'.$notificacion->getAsunto().'">
                             <a href="#" class="btn btn-link btn-sm edit edit_programacion" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
                             <a href="#" class="btn btn-link btn-sm '.$deshabilitado.' '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
             $entidad = '';
         }
+        $html .= '</tbody>
+                </table>';
 
         $return = array('html' => $html,
                         'notificacion' => $notificacion->getAsunto());

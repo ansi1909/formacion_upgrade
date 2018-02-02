@@ -3,7 +3,8 @@ $(document).ready(function() {
     $('#select_empresa_id').change(function(){
     	console.log('Usuario admin');
     	var empresa_id = $(this).val();
-		getListadoNotificaciones(empresa_id);
+    	var usuario_empresa = $('#usuario_empresa').val();
+		getListadoNotificaciones(empresa_id, usuario_empresa);
 		$('#loading').hide();
 		
 	});
@@ -15,23 +16,6 @@ $(document).ready(function() {
 		getformularioProgramaciones(tipo_destino_id, notificacion_id);
 		
 	});
-
-	var table = $('#dt').DataTable( {
-		destroy: true,
-        rowReorder: true
-
-    } );
-
-    table.on( 'row-reorder', function ( e, diff, edit ) {
-        
-        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
-            var rowData = table.row( diff[i].node ).data();
-            // Id del registro está en la segunda columna
-        	id = rowData[1];
-            reordenar(id, 'AdminNotificacion', diff[i].newData);
-        }
- 
-    });
 
     $('.paginate_button').click(function(){
 		observe();
@@ -48,6 +32,7 @@ $(document).ready(function() {
 	});
 
 	observe();
+	segundaTabla();
 });
 
 function observe(){
@@ -98,9 +83,28 @@ function observe(){
 		$('#entidad_id').val('');
 		$('.jsonfileds').hide();
 		var notificacion_id = $(this).attr('data');
+		var asunto = $('#asuntoTable'+notificacion_id).val()
+		$('#asunto').val(asunto);
 		$('#notificacion_id').val(notificacion_id);
 
 	});
+
+	var table = $('#dt').DataTable( {
+		destroy: true,
+        rowReorder: true
+
+    } );
+
+    table.on( 'row-reorder', function ( e, diff, edit ) {
+        
+        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+            var rowData = table.row( diff[i].node ).data();
+            // Id del registro está en la segunda columna
+        	id = rowData[1];
+            reordenar(id, 'AdminNotificacion', diff[i].newData);
+        }
+ 
+    });
 
 	$('.see').click(function(){
 		var notificacion_id = $(this).attr('data');
@@ -121,6 +125,7 @@ function observe(){
 				$('#loading').hide();
 				$('.tree').jstree();
 				editProgramacion();
+				segundaTabla();
 			},
 			error: function(){
 				$('.tree').jstree();
@@ -130,58 +135,17 @@ function observe(){
 				editProgramacion();
 			}
 		});
-		var table2 = $('#dtSub').DataTable( {
-        rowReorder: false,
-        responsive: false,
-        pageLength:10,
-        destroy: true,
-        sPaginationType: "full_numbers",
-        oLanguage: {
-        	"sProcessing":    "Procesando...",
-            "sLengthMenu":    "Mostrar _MENU_ registros",
-            "sZeroRecords":   "No se encontraron resultados",
-            "sEmptyTable":    "Ningún dato disponible en esta tabla",
-            "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_.",
-            "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix":   "",
-            "sSearch":        "Buscar:",
-            "sUrl":           "",
-            "sInfoThousands":  ",",
-            "sLoadingRecords": "Cargando...",
-            oPaginate: {
-                sFirst: "<<",
-                sPrevious: "<",
-                sNext: ">", 
-                sLast: ">>" 
-            },
-            "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
-        }
-
-    } );
-
-    table2.on( 'row-reorder', function ( e, diff, edit ) {
-        
-        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
-            var rowData = table2.row( diff[i].node ).data();
-            // Id del registro está en la segunda columna
-        	id = rowData[1];
-            reordenar(id, 'AdminNotificacionProgramada', diff[i].newData);
-        } 
-    });
+		
 	});
 
 }
 
-function getListadoNotificaciones(empresa_id){
+function getListadoNotificaciones(empresa_id, usuario_empresa){
 	$.ajax({
 		type: "GET",
 		url: $('#url_notificaciones').val(),
 		async: true,
-		data: { empresa_id: empresa_id },
+		data: { empresa_id: empresa_id, usuario_empresa : usuario_empresa },
 		dataType: "json",
 		success: function(data) {
 			$('#list_notificaciones').html(data.notificaciones);
@@ -222,6 +186,8 @@ function editProgramacion(){
 		var notificacion_id = $('#hidden_notificacion_id').val();
 		$('#notificacion_id').val(notificacion_id);
 		$('#programacion_id').val(programacion_id);
+		var asunto = $('#asuntoTableEdit'+notificacion_id).val()
+		$('#asunto').val(asunto);
 
 		$.ajax({
 		type: "GET",
@@ -292,4 +258,49 @@ function saveProgramacion()
 				}
 			});
 		}
+}
+
+function segundaTabla()
+{
+	var table2 = $('#dtSub').DataTable( {
+        responsive: false,
+        pageLength:10,
+        destroy: true,
+        sPaginationType: "full_numbers",
+        oLanguage: {
+        	"sProcessing":    "Procesando...",
+            "sLengthMenu":    "Mostrar _MENU_ registros",
+            "sZeroRecords":   "No se encontraron resultados",
+            "sEmptyTable":    "Ningún dato disponible en esta tabla",
+            "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_.",
+            "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":   "",
+            "sSearch":        "Buscar:",
+            "sUrl":           "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            oPaginate: {
+                sFirst: "<<",
+                sPrevious: "<",
+                sNext: ">", 
+                sLast: ">>" 
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+
+    } );
+
+    table2.on( 'row-reorder', function ( e, diff, edit ) {
+        
+        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+            var rowData = table2.row( diff[i].node ).data();
+            // Id del registro está en la segunda columna
+        	id = rowData[1];
+            reordenar(id, 'AdminNotificacionProgramada', diff[i].newData);
+        } 
+    });
 }
