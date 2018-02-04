@@ -1,0 +1,21 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_driver: pdo_pgsql
+    database_path: null
+    database_port: 5432
+    database_name: develo_formacion
+    #database_name: formacion
+    database_user: develo
+    #database_user: desa
+    database_password: F0rm4c10n2.0
+    #database_password: desa1234
+    #mailer_transport: smtp
+    #mailer_host: smtp.gmail.com
+    #mailer_port: 587
+    #mailer_encryption: ssl
+    #mailer_auth_mode: login
+    #mailer_user: tutorvirtualformacion@gmail.com
+    #mailer_password: formacion1934
+    secret: ThisTokenIsNotSoSecretChangeIt
+    sendmail: 1

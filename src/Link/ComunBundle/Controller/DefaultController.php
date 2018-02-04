@@ -22,11 +22,15 @@ class DefaultController extends Controller
         $f = $this->get('funciones');
 
         $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
-        $sesion->setDisponible(false);
-        $em->persist($sesion);
-        $em->flush();
+        if ($sesion)
+        {
+            $sesion->setDisponible(false);
+            $em->persist($sesion);
+            $em->flush();
+            $f->setRequest($session->get('sesion_id'));
+        }
 
-        $f->setRequest($session->get('sesion_id'));
+        
         $session->invalidate();
         $session->clear();
 

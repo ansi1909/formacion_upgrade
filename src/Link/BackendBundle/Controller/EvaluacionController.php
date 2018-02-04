@@ -58,7 +58,7 @@ class EvaluacionController extends Controller
 
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
                                         WHERE p.prueba = :prueba_id AND p.pregunta IS NULL
-                                        ORDER BY p.id ASC")
+                                        ORDER BY p.orden ASC")
                         ->setParameter('prueba_id', $p->getId());
             $preguntas_bd = $query->getResult();
 
@@ -218,7 +218,7 @@ class EvaluacionController extends Controller
             if ($subPaginas['tiene'] > 0)
             {
                 $str .= '<ul>';
-                $str .= $subPaginas['str'];
+                $str .= $subPaginas['return'];
                 $str .= '</ul>';
             }
             $str .= '</li>';
@@ -262,8 +262,27 @@ class EvaluacionController extends Controller
             $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
         }
         else {
+
             $pregunta = new CertiPregunta();
             $pregunta->setFechaCreacion(new \DateTime('now'));
+
+            // Establecer el orden, último por defecto
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
+                                        WHERE p.pregunta IS NULL AND p.prueba = :prueba_id 
+                                        ORDER BY p.orden DESC")
+                        ->setParameter('prueba_id', $prueba->getId());
+            $preguntas = $query->getResult();
+
+            if ($preguntas)
+            {
+                $orden = $preguntas[0]->getOrden()+1;
+            }
+            else {
+                $orden = 1;
+            }
+
+            $pregunta->setOrden($orden);
+
         }
 
         $pregunta->setPrueba($prueba);
@@ -338,10 +357,12 @@ class EvaluacionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $pregunta_asociacion = $values['parameters']['tipo_pregunta']['asociacion'];
+        $pregunta_simple = $values['parameters']['tipo_pregunta']['simple'];
         $es_asociacion = 0;
         $opciones = array();
         
         $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
+        $es_simple = $pregunta->getTipoPregunta()->getId() == $pregunta_simple ? 1 : 0;
 
         if ($pregunta->getTipoPregunta()->getId() != $pregunta_asociacion)
         {
@@ -418,6 +439,7 @@ class EvaluacionController extends Controller
         return $this->render('LinkBackendBundle:Evaluacion:opciones.html.twig', array('opciones' => $opciones,
                                                                                       'pregunta' => $pregunta,
                                                                                       'es_asociacion' => $es_asociacion,
+                                                                                      'es_simple' => $es_simple,
                                                                                       'cantidad' => $cantidad+1,
                                                                                       'total' => $total));
 
@@ -488,6 +510,7 @@ class EvaluacionController extends Controller
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $tipo_elemento_imagen = $values['parameters']['tipo_elemento']['imagen'];
         $uploads = $values['parameters']['folders']['uploads'];
+        $pregunta_simple = $values['parameters']['tipo_pregunta']['simple'];
         
         $pregunta_opcion_id = $request->request->get('pregunta_opcion_id');
         $prueba_id = $request->request->get('prueba_id');
@@ -583,7 +606,7 @@ class EvaluacionController extends Controller
         // PreguntaOpcion
         $pregunta_opcion->setPregunta($es_asociacion ? $pregunta : $pregunta_padre);
         $pregunta_opcion->setOpcion($opcion);
-        if (!$es_asociacion && $correcta)
+        if ($correcta && $pregunta_padre->getTipoPregunta()->getId() == $pregunta_simple)
         {
             $pos = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findByPregunta($pregunta_padre->getId());
             foreach ($pos as $po)
@@ -871,7 +894,8 @@ class EvaluacionController extends Controller
                                  'status' => $p->getEstatusContenido()->getNombre(),
                                  'modificacion' => $p->getFechaModificacion()->format('d/m/Y H:i a'),
                                  'orden' => $p->getOrden(),
-                                 'correcta' => $correcta);
+                                 'correcta' => $correcta,
+                                 'delete_disabled' => $f->linkEliminar($p->getId(), 'CertiPregunta'));
 
         }
 

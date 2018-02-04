@@ -48,3 +48,6 @@ http://www.maestrosdelweb.com/editorial/curso-symfony2-seguridad-de-acceso/
 - Instalar el Bundle LiuggioExcelbundle
 1. Instalar composer
 2. Ejecutar: composer require liuggio/excelbundle
+
+- Hacer dump de una tabla en particular usando INSERTS:
+pg_dump -h localhost -p 5432 -U desa -W --table="admin_rol" --data-only --column-inserts formacion > admin_rol.sql

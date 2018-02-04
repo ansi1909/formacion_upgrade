@@ -49,8 +49,6 @@ fecha_creacion timestamp without time zone,
 direccion text,
 bienvenida text,
 pais_id character(3),
-imagen_certificado varchar(250),
-imagen_constancia varchar(250),
 chat_activo boolean, 
  PRIMARY KEY (id),
  FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
@@ -113,8 +111,6 @@ id serial,
 nombre varchar(100),
 orden integer,
 empresa_id integer,
-imagen_certificado varchar(250),
-imagen_constancia varchar(250), 
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
 
@@ -163,8 +159,6 @@ prueba_activa boolean,
 max_intentos integer,
 puntaje_aprueba numeric(10,2),
 muro_activo boolean,
-imagen_certificado varchar(250),
-imagen_constancia varchar(250), 
 prelacion integer,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
@@ -375,14 +369,35 @@ CREATE TABLE admin_notificacion(
 -- Attributes --
 id serial,
 tipo_notificacion_id integer,
-valor_notificacion integer,
+asunto varchar(500),
+mensaje text,
 usuario_id integer,
-leido boolean,
-usuario_tutor_id integer,
+empresa_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_notificacion_id) REFERENCES admin_tipo_notificacion (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (usuario_tutor_id) REFERENCES admin_usuario (id));
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
+
+CREATE TABLE admin_tipo_destino(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_notificacion_programada(
+-- Attributes --
+id serial,
+notificacion_id integer,
+tipo_destino_id integer,
+entidad_id integer,
+usuario_id integer,
+fecha_difusion timestamp without time zone,
+grupo_id integer,
+ PRIMARY KEY (id),
+ FOREIGN KEY (notificacion_id) REFERENCES admin_notificacion (id),
+ FOREIGN KEY (tipo_destino_id) REFERENCES admin_tipo_destino (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
+ FOREIGN KEY (grupo_id) REFERENCES admin_notificacion_programada (id));
 
 CREATE TABLE certi_nivel_pagina(
 -- Attributes --
@@ -429,3 +444,41 @@ respuesta varchar(500),
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_pregunta_id) REFERENCES admin_tipo_pregunta (id));
 
+CREATE TABLE admin_tutorial(
+-- Attributes --
+id serial,
+nombre varchar (250),
+pdf varchar(250),
+video varchar(250),
+ PRIMARY KEY (id));
+
+CREATE TABLE certi_tipo_certificado(
+-- Attributes --
+id serial NOT NULL,
+nombre character varying(20),
+ PRIMARY KEY (id));
+
+CREATE TABLE certi_tipo_imagen_certificado(
+-- Attributes --
+id serial NOT NULL,
+nombre character varying(20),
+ PRIMARY KEY (id));
+
+CREATE TABLE certi_certificado(
+-- Attributes --
+id serial,
+empresa_id integer,
+entidad_id integer,
+tipo_certificado_id integer,
+tipo_imagen_certificado_id integer,
+imagen character varying(250),
+encabezado text,
+nombre text,
+descripcion text,
+titulo text,
+fecha text,
+qr text,
+ PRIMARY KEY (id),
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
+ FOREIGN KEY (tipo_certificado_id) REFERENCES certi_tipo_certificado (id),
+ FOREIGN KEY (tipo_imagen_certificado_id) REFERENCES certi_tipo_imagen_certificado (id) );

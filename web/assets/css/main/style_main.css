@@ -895,3 +895,7 @@
             opacity: 0;
         }
     }
+
+    .ocultar{
+        display: none;
+    }

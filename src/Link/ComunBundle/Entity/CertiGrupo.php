@@ -37,20 +37,6 @@ class CertiGrupo
     private $orden;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="imagen_certificado", type="string", length=250, nullable=true)
-     */
-    private $imagenCertificado;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="imagen_constancia", type="string", length=250, nullable=true)
-     */
-    private $imagenConstancia;
-
-    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -118,54 +104,6 @@ class CertiGrupo
     public function getOrden()
     {
         return $this->orden;
-    }
-
-    /**
-     * Set imagenCertificado
-     *
-     * @param string $imagenCertificado
-     *
-     * @return CertiGrupo
-     */
-    public function setImagenCertificado($imagenCertificado)
-    {
-        $this->imagenCertificado = $imagenCertificado;
-    
-        return $this;
-    }
-
-    /**
-     * Get imagenCertificado
-     *
-     * @return string
-     */
-    public function getImagenCertificado()
-    {
-        return $this->imagenCertificado;
-    }
-
-    /**
-     * Set imagenConstancia
-     *
-     * @param string $imagenConstancia
-     *
-     * @return CertiGrupo
-     */
-    public function setImagenConstancia($imagenConstancia)
-    {
-        $this->imagenConstancia = $imagenConstancia;
-    
-        return $this;
-    }
-
-    /**
-     * Get imagenConstancia
-     *
-     * @return string
-     */
-    public function getImagenConstancia()
-    {
-        return $this->imagenConstancia;
     }
 
     /**

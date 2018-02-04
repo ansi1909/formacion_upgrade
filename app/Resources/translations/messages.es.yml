@@ -9,6 +9,7 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Archivos: Archivos
+Asunto: Asunto
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aviso de cierre de sesión: Aviso de cierre de sesión
@@ -16,10 +17,15 @@ Bienvenida: Bienvenida
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
 Buscar: Buscar
+Búsqueda de participantes empresa: Búsqueda de participantes empresa
+Búsqueda de participantes por empresa: Búsqueda de participantes por empresa
+Búsqueda de notificaciones empresa: Búsqueda de notificaciones empresa
+Búsqueda de notificaciones por empresa: Búsqueda de notificaciones por empresa
 Cambiar contraseña: Cambiar contraseña
 Cancelar: Cancelar
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
+Cantidad de registros creados: Cantidad de registros creados
 Cantidad de sub-páginas: Cantidad de sub-páginas
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
 Cargando..: Cargando..
@@ -42,6 +48,7 @@ Confirmar: Confirmar
 Contenido: Contenido
 Continuar: Continuar
 Contraseña: Contraseña
+Copia: Copia
 Correcta: Correcta
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
@@ -55,6 +62,9 @@ Datos de la opción: Datos de la opción
 Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
 Datos del usuario: Datos del usuario
+Datos del Tipo de Notificación: Datos del Tipo de Notificación
+Datos del Tipo de Destino: Datos del Tipo de Destino
+Datos Notificación: Datos Notificación
 de la evaluación: de la evaluación
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
@@ -64,8 +74,10 @@ Descargue material complementario: Descargue material complementario
 Descargar: Descargar
 Descripción: Descripción
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
+Destino: Destino
 Detalles de la página: Detalles de la página
 División funcional: División funcional
+Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
 Editar página: Editar página
 Eliminado: Eliminado
@@ -106,7 +118,9 @@ Empresas inactivas: Empresas inactivas
 Empresas registradas: Empresas registradas
 Enunciado: Enunciado
 Enunciado (Lado A): Enunciado (Lado A)
+Entidad: Entidad
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
+Error al obtener el historial.: Error al obtener el historial.
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
 Errores: Errores
@@ -116,9 +130,11 @@ Estatus de las sub-paginas: Estatus de las sub-paginas
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Estructura: Estructura
+Fecha: Fecha
 Fecha Creación: Fecha Creación
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
+Fecha Difusión: Fecha Difusión
 Fila: Fila
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
@@ -128,6 +144,8 @@ Guardar: Guardar
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
+Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
+Historial de programaciones de: Historial de programaciones de
 Icono: Icono
 Imagen: Imagen
 Imagen lado: Imagen lado
@@ -151,9 +169,11 @@ La categoría ha sido almacenada con éxito: La categoría ha sido almacenada co
 La clave es requerida.: La clave es requerida.
 La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mínimo de 3 caracteres.
 La descripción es requerida.: La descripción es requerida.
+La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
 La empresa es requerida.: La empresa es requerida.
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
+La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 Lado: Lado
 Listado de Aplicaciones: Listado de Aplicaciones
@@ -162,12 +182,17 @@ Listado de Empresas: Listado de Empresas
 Listado de empresas activas: Listado de empresas activas
 Listado de empresas inactivas: Listado de empresas inactivas
 Listado de evaluaciones: Listado de evaluaciones
+Listado de notificaciones: Listado de notificaciones
+Listado de participantes: Listado de participantes
 Listado de preguntas de la evaluación: Listado de preguntas de la evaluación
 Listado de programas: Listado de programas
 Listado de Roles: Listado de Roles
+Listado de Tipos de Destinos: Listado de Tipos de Destinos
+Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Material complementario: Material complementario
+Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
 Modificado el: Modificado el
 Modificado por: Modificado por
@@ -184,6 +209,7 @@ No se pudo editar este registro.: No se pudo editar este registro.
 No se pudo filtrar el listado.: No se pudo filtrar el listado.
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
+Nombre para esta página: Nombre para esta página
 Nueva evaluación: Nueva evaluación
 Nueva página: Nueva página
 Nueva pregunta: Nueva pregunta
@@ -194,6 +220,7 @@ Opción: Opción
 Opción correcta (Lado B): Opción correcta (Lado B)
 Opciones: Opciones
 Opciones de la pregunta: Opciones de la pregunta
+Orden: Orden
 Página: Página
 Página asociada: Página asociada
 Página seleccionada: Página seleccionada
@@ -211,6 +238,8 @@ Pregunta: Pregunta
 Preguntas: Preguntas
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Procesar: Procesar
+Programa: Programa
+Programas: Programas
 Prog. asociados: Prog. asociados
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
@@ -238,6 +267,10 @@ Teléfono de contacto: Teléfono de Contacto
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Tipo de elemento: Tipo de elemento
 Tipo de pregunta: Tipo de pregunta
+Tipo Notificación: Tipo Notificación
+Tipo de Notificaciones: Tipo de Notificaciones
+Tipo Destino: Tipo Destino
+Tipo de Destinos: Tipo de Destinos
 Últimos 12: Últimos 12
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
@@ -249,7 +282,9 @@ Usuarios culminados: Usuarios culminados
 Usuarios cursando: Usuarios cursando
 Usuarios inactivos: Usuarios inactivos
 Usuarios no iniciados: Usuarios no iniciados
+Usuarios Notificados: Usuarios Notificados
 Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
 Valor de la pregunta: Valor de la pregunta
+Ver Historial: Ver Historial
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones

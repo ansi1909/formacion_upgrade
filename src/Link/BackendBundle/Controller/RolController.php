@@ -8,13 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminRol; 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+
 
 class RolController extends Controller
 {
@@ -45,9 +39,7 @@ class RolController extends Controller
         $query= $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r
                                         ORDER BY r.nombre ASC');
         $roles=$query->getResult();
-        
-       //return new Response(var_dump($roles));
-        
+                
         foreach ($roles as $rol)
         {
             $rolesdb[]= array('id'=>$rol->getId(),

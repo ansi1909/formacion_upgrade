@@ -68,14 +68,17 @@ doctrine:
         #path:     "%database_path%"
 
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_generate_proxy_classes: false
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
+    transport:  "smtp"
+    encryption: "ssl"
+    auth_mode:  "login"
+    host:       "acacias.venred.com"
+    port:       465
+    username:   "tutorvirtual@formacion2puntocero.com"
+    password:   "UKyhCzWcq29EDKJ7!!"
+    #spool:     { type: memory }

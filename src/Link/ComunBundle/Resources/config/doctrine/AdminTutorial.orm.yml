@@ -1,0 +1,32 @@
+Link\ComunBundle\Entity\AdminTutorial:
+    type: entity
+    table: admin_tutorial
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        pdf:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        video:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

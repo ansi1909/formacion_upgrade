@@ -1,0 +1,196 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        img {
+            width: 100% !important;
+        }
+    </style>
+{% endblock %}
+ 
+{% block body %}
+
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroCertificado', { 'certificado_id': certificado.id }) }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_certificados', { 'app_id': app.session.get('app_id') }) }}">
+
+<br><br>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-left">
+        <a href="{{ path('_certificados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col text-right">
+        <button type="button" class="bttn__nr" id="edit"><span class="fa fa-pencil"></span><span class="text__nr">{{ 'Editar'|trans }}</span></button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Detalles del Certificado'|trans }}</h6>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="container_wizard wizard-thin">
+                    <div class="stepwizard">
+                        <div class="stepwizard-row setup-panel d-flex">
+                            <div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Archivo'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Diseño'|trans }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det0">   
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Empresa'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.empresa.nombre }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Tipo de Imagen'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.tipoImagenCertificado.nombre }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Tipo de Certificado'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.tipoCertificado.nombre }}</p>
+                                        <input type="hidden" id="tipo_certificado_id" value="{{ certificado.tipoCertificado.id }}" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8 entidad">
+                                    <h5>{{ 'Entidad'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.entidadId }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det1">
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h5>{{ 'Imagen'|trans }}</h5>
+                                </div>
+                                {% if certificado.imagen %}
+                                    <div class="col-sm-6">
+                                        {% set img = uploads~certificado.imagen %}
+                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }} " alt="{{ 'Imagen |trans' }}" width="100%"></figure>
+                                    </div>
+                                {% endif %}    
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det2">
+                        <div class="col-sm-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Encabezado'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.encabezado }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Nombre'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.nombre }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Descripción'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.descripcion }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Título'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.titulo }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Fecha'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.fecha }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'QR'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ certificado.qr }}</p>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <br>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn" id="list"><span class="text__nxt">{{ 'Ir al listado'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        if($('#tipo_certificado_id').val()>1)
+        {
+            $('.entidad').show();
+        }else
+        {
+            $('.entidad').hide();
+            $('#entidad').attr("value","0");
+        }
+    </script>
+{% endblock %}

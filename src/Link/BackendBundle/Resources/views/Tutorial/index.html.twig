@@ -1,0 +1,198 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .social-profile-pic img {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            -ms-border-radius: 6px;
+            border-radius: 6px;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 0 20px 0 10px;
+        }
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+{% set ruta = ' /formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=pdf&fldr=recursos/tutorial/ ' %}
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_tutorial', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
+<br>
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>Tutoriales</h3>
+    </div>
+   <div class="col text-right">
+       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+   </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Listado de tutoriales' |trans}}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{'Nombre' |trans }}</th>
+                            <th class="hd__title">{{'PDF'|trans }}</th>
+                            <th class="hd__title">{{'Videos'|trans }}</th>
+                            <th class="hd__title">{{'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for tutorial in tutoriales %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{eo}}">
+                                <td>{{tutorial.nombre}}</td>
+                                {% set pdf = uploads~tutorial.pdf %}
+                                <td><a href="{{pdf}}" target="_blank">{{tutorial.pdf}}</a></td>
+                                {% set pdf = uploads~tutorial.video %}
+                                <td><a href="{{pdf}}" target="_blank">{{tutorial.video}}</a></td>
+                                <td class="center">
+                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ tutorial.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if tutorial.delete_disabled == '' %}delete{% endif %} {{ tutorial.delete_disabled }}" data="{{tutorial.id}}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>                 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block formModal %}
+
+<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del tutorial'|trans}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: #fff;">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateTutorial')}}"  method="POST">
+        <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
+            <span class="fa fa-cube"></span>
+        </div>
+        <div class="form-group ">
+            <label for="recipient-name" class="form-control-label">{{ 'PDF'|trans }}:</label>
+            <div class="input-group">
+                <input type="text" class="form-control " name="pdf" id="pdf" value=" " >
+                <span class="input-group-addon">
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&fldr=recursos/tutoriales" class="btn iframe-btn" type="button">
+                        <span class="fa fa-photo"></span>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label for="recipient-name" class="form-control-label">{{ 'Video'|trans }}:</label>
+            <div class="input-group">
+                <input type="text" class="form-control " name="video" id="video">
+                <span class="input-group-addon">
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=3&field_id=video&fldr=recursos/tutoriales" class="btn iframe-btn" type="button">
+                        <span class="fa fa-photo"></span>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </form>
+    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El tutorial ha sido almacenada con éxito'|trans }}. 
+    </div>
+    <div class="card" id="detail" style="display:none;">
+        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
+        </div>
+        <div class="card-block">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Nombre'|trans }}:</h5>
+                        <p id="p-nombre">Lorem Ipsum</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{'Pdf'| trans}}:</h5>
+                        <p id="p-pdf">https://Loremipsumdolorsitamet.domain/</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{'Video'| trans}}:</h5>
+                        <p id="p-video">https://Loremipsumdolorsitamet.domain/</p>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-sm-16 col-md-16 text-right">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/tutorial.js') }}"></script>
+    <script type="text/javascript">
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+
+        
+    </script>
+{% endblock %}

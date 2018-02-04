@@ -25,6 +25,7 @@
 <input type="hidden" id="url_next" name="url_next" value="{{ path('_editPregunta', { 'prueba_id': pregunta.prueba.id, 'pregunta_id': 0, 'cantidad': cantidad, 'total': total }) }}">
 <input type="hidden" id="url_delete_opcion" name="url_delete_opcion" value="{{ path('_ajaxDeleteOpcion') }}">
 <input type="hidden" id="es_asociacion" name="es_asociacion" value="{{ es_asociacion }}">
+<input type="hidden" id="es_simple" name="es_simple" value="{{ es_simple }}">
 <input type="hidden" id="elemento_imagen" name="elemento_imagen" value="{{ pregunta.tipoElemento.id == tipo_elemento_imagen ? '1' : '0' }}">
 <input type="hidden" id="img_default" name="img_default" value="{{ img_default }}">
 <div class="row align-items-center justify-content-start">

@@ -1,5 +1,10 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/css/rowReorder.dataTables.min.css') }}" type="text/css">
+{% endblock %}
+
 {% block body %}
 <br>
 <input type="hidden" id="aplicaciones_str" name="aplicaciones_str" value="{{ aplicaciones_str }}">
@@ -17,7 +22,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-10 col-md-10 col-lg-10">
+    <div class="col-sm-9 col-md-9 col-lg-9">
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Listado de Aplicaciones'|trans }}</h5>
@@ -39,8 +44,9 @@
                 <table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
+                            <th class="hd__title">{{ 'Orden'|trans }}</th>
+                            <th class="hd__title">{{ 'Id'|trans }}</th>
                             <th class="hd__title">{{ 'Nombre'|trans }}</th>
-                            <th class="hd__title">Url</th>
                             <th class="hd__title">{{ 'Activo'|trans }}</th>
                             <th class="hd__title">{{ 'Acciones'|trans }}</th>
                         </tr>
@@ -49,8 +55,9 @@
                         {% for aplicacion in aplicaciones %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
+                                <td class="columorden">{{ aplicacion.orden }}</td>
+                                <td>{{ aplicacion.id }}</td>
                                 <td>{{ aplicacion.nombre }}</td>
-                                <td>{{ aplicacion.url }}</td>
                                 <td class="center">
                                     <div class="can-toggle demo-rebrand-2 small">
                                         <input id="f{{ aplicacion.id }}" class="cb_activo" type="checkbox" {% if aplicacion.activo %}checked{% endif %}>
@@ -59,7 +66,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td class="center">
+                                <td class="center f_icon">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if aplicacion.delete_disabled == '' %}delete{% endif %} {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
                                     {% if aplicacion.tiene_subaplicaciones %}
@@ -73,24 +80,12 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-6" style="display:none;" id="div-subapps">
+    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7" style="display:none;" id="div-subapps">
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Sub-Aplicaciones de'|trans }} <span id="appTitle"></span></h5>
             </div>
-            <div class="card-block">
-                <table class="table">
-                    <thead class="sty__title">
-                        <tr>
-                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
-                            <th class="hd__title">Url</th>
-                            <th class="hd__title">{{ 'Activo'|trans }}</th>
-                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-subapps">
-                    </tbody>
-                </table>
+            <div class="card-block" id="subapp">
             </div>
         </div>
     </div>
@@ -205,6 +200,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/aplicacion.js') }}"></script>
     <script type="text/javascript">
 
@@ -232,6 +228,14 @@
                 }
             }
         });
+
+        $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
+          });
 
     </script>
 {% endblock %}

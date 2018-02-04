@@ -83,6 +83,23 @@ $(document).ready(function() {
 		afterPaginate();
 	});
 
+	var table = $('#dt').DataTable( {
+		destroy: true,
+        rowReorder: true
+
+    } );
+
+    table.on( 'row-reorder', function ( e, diff, edit ) {
+        
+        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+            var rowData = table.row( diff[i].node ).data();
+            // Id del registro está en la segunda columna
+        	id = rowData[1];
+            reordenar(id, 'AdminAplicacion', diff[i].newData);
+        }
+ 
+    }); 
+
 	observe();
 
 });
@@ -150,6 +167,57 @@ function observe()
 		sweetAlertDelete(app_id, 'AdminAplicacion');
 	});
 
+	var table2 = $('#dtSub').DataTable( {
+        rowReorder: true,
+        responsive: true,
+        pageLength:10,
+        sPaginationType: "full_numbers",
+        oLanguage: {
+        	"sProcessing":    "Procesando...",
+            "sLengthMenu":    "Mostrar _MENU_ registros",
+            "sZeroRecords":   "No se encontraron resultados",
+            "sEmptyTable":    "Ningún dato disponible en esta tabla",
+            "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_.",
+            "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":   "",
+            "sSearch":        "Buscar:",
+            "sUrl":           "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            oPaginate: {
+                sFirst: "<<",
+                sPrevious: "<",
+                sNext: ">", 
+                sLast: ">>" 
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+
+    } );
+
+    table2.on( 'row-reorder', function ( e, diff, edit ) {
+        
+        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+            var rowData = table2.row( diff[i].node ).data();
+            // Id del registro está en la segunda columna
+        	id = rowData[1];
+            reordenar(id, 'AdminAplicacion', diff[i].newData);
+        }
+ 
+    });
+
+    $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
+    });
+
 }
 
 function afterPaginate(){
@@ -163,7 +231,7 @@ function afterPaginate(){
 			data: { app_id: app_id },
 			dataType: "json",
 			success: function(data) {
-				$('#tbody-subapps').html(data.html);
+				$('#subapp').html(data.html);
 				$('#appTitle').html(data.empresa);
 				$('#div-subapps').show();
 				observe();
@@ -175,4 +243,6 @@ function afterPaginate(){
 			}
 		});
 	});
+
+
 }

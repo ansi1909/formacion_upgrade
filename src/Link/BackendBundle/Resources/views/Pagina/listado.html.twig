@@ -1,10 +1,11 @@
 <table class="table" id="dt">
     <thead class="sty__title">
         <tr>
+            <th class="hd__title">{{ 'Orden'|trans }}</th>
+            <th class="hd__title">Id</th>
             <th class="hd__title">{{ 'Nombre'|trans }}</th>
             <th class="hd__title">{{ 'Categoría'|trans }}</th>
             <th class="hd__title">{{ 'Modificado el'|trans }}</th>
-            <th class="hd__title">{{ 'Modificado por'|trans }}</th>
             <th class="hd__title">{{ 'Estatus'|trans }}</th>
             <th class="hd__title">{{ 'Sub-páginas'|trans }}</th>
             <th class="hd__title">{{ 'Acciones'|trans }}</th>
@@ -14,16 +15,17 @@
         {% for pagina in paginas %}
             {% set eo = cycle(['odd', 'even'], loop.index) %}
             <tr class="{{ eo }}">
+                <td>{{ pagina.orden }}</td>
+                <td>{{ pagina.id }}</td>
                 <td>{{ pagina.nombre }}</td>
                 <td>{{ pagina.categoria }}</td>
                 <td>{{ pagina.modificacion }}</td>
-                <td>{{ pagina.usuario }}</td>
                 <td>{{ pagina.status }}</td>
                 <td>
                     {% if pagina.subpaginas.tiene > 0 %}
                         <div class="tree">
                             <ul data-jstree='{ "opened" : true }'>
-                                {{ pagina.subpaginas.str|raw }}
+                                {{ pagina.subpaginas.return|raw }}
                             </ul>
                         </div>
                     {% else %}
@@ -33,6 +35,7 @@
                 <td class="center">
                     <a href="{{ path('_pagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Configurar página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if pagina.delete_disabled == '' %}delete{% endif %} {{ pagina.delete_disabled }}" data="{{ pagina.id }}"><span class="fa fa-trash"></span></a>
+                    <a href="#" title="{{ 'Duplicar página y sub-páginas'|trans }}" class="btn btn-link btn-sm duplicate" data-toggle="modal" data-target="#formModal" data="{{ pagina.id }}"><span class="fa fa-copy"></span></a>
                 </td>
             </tr>
         {% endfor %}

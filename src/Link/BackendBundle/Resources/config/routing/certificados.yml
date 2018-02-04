@@ -1,0 +1,11 @@
+_certificados:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:index }
+
+_registroCertificado:
+    path:     /registroCertificado/{certificado_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:registro, certificado_id: 0 }
+
+_showCertificado:
+    path:     /mostrarCertificado/{certificado_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:mostrar }

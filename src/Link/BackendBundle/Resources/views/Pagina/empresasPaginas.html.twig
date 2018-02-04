@@ -1,0 +1,63 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+<br>
+<input type="hidden" id="url_pages" name="url_pages" value="{{ path('_ajaxPaginasEmpresa') }}">
+<input type="hidden" id="error_msg-pages" name="error_msg-pages" value="{{ 'Error al obtener las páginas asignadas.'|trans }}">
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Asignación de páginas'|trans }}</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                            <th class="hd__title">RIF</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for empresa in empresas %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>{{ empresa.nombre }}</td>
+                                <td>{{ empresa.rif }}</td>
+                                <td class="center">
+                                    <a href="{{ path('_empresaPaginas', { 'empresa_id': empresa.id }) }}" title="{{ 'Asignar páginas'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
+                                    {% if empresa.tiene_paginas %}
+                                        <a href="#" title="{{ 'Ver páginas asignadas'|trans }}" class="btn btn-link btn-sm see" data="{{ empresa.id }}"><span class="fa fa-eye"></span></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 col-10" style="display:none;" id="div-pages">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Páginas asignadas'|trans }} <span id="appTitle"></span></h5>
+            </div>
+            <div class="card-block" id="pages">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/empresasPáginas.js') }}"></script>
+{% endblock %}

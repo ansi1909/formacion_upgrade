@@ -38,7 +38,7 @@ class AppController extends Controller
         // Todas las aplicaciones principales
         $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
                                     WHERE a.aplicacion IS NULL 
-                                    ORDER BY a.nombre ASC");
+                                    ORDER BY a.orden ASC");
         $apps = $query->getResult();
         $aplicaciones_str = '<option value=""></option>';
 
@@ -52,12 +52,13 @@ class AppController extends Controller
                         ->setParameter('aplicacion_id', $app->getId());
             $tiene_subaplicaciones = $query->getSingleScalarResult();
 
-            $aplicaciones[] = array('id' => $app->getId(),
-                                 	'nombre' => $app->getNombre(),
-                                 	'url' => $app->getUrl(),
-                                 	'icono' => $app->getIcono(),
-                                 	'activo' => $app->getActivo(),
-                                 	'delete_disabled' => $f->linkEliminar($app->getId(), 'AdminAplicacion'),
+            $aplicaciones[] = array('orden' => $app->getOrden(),
+                                    'id' => $app->getId(),
+                                   	'nombre' => $app->getNombre(),
+                                   	'url' => $app->getUrl(),
+                                   	'icono' => $app->getIcono(),
+                                   	'activo' => $app->getActivo(),
+                                   	'delete_disabled' => $f->linkEliminar($app->getId(), 'AdminAplicacion'),
                                     'tiene_subaplicaciones' => $tiene_subaplicaciones);
 
         }
@@ -157,7 +158,7 @@ class AppController extends Controller
         // Todas las aplicaciones principales
         $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
                                     WHERE a.aplicacion IS NULL 
-                                    ORDER BY a.id ASC");
+                                    ORDER BY a.orden ASC");
         $apps = $query->getResult();
 
         foreach ($apps as $app)
@@ -199,6 +200,34 @@ class AppController extends Controller
         }
         else {
         	$aplicacion = new AdminAplicacion();
+
+            // Establecer el orden, último por defecto
+            $qb = $em->createQueryBuilder();
+            $qb->select('a')
+               ->from('LinkComunBundle:AdminAplicacion', 'a')
+               ->orderBy('a.orden', 'DESC');
+            
+            if ($subaplicacion_id)
+            {
+                $qb->andWhere('a.aplicacion = :aplicacion_id')
+                   ->setParameter('aplicacion_id', $subaplicacion_id);
+            }
+            else {
+                $qb->andWhere('a.aplicacion IS NULL');
+            }
+
+            $query = $qb->getQuery();
+            $aplicaciones = $query->getResult();
+            
+            if ($aplicaciones)
+            {
+                $orden = $aplicaciones[0]->getOrden()+1;
+            }
+            else {
+                $orden = 1;
+            }
+
+            $aplicacion->setOrden($orden);
         }
 
         $aplicacion->setNombre($nombre);
@@ -255,10 +284,24 @@ class AppController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $app_id = $request->query->get('app_id');
-        $html = '';
+        $html = '<table class="table" id="dtSub">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Orden').'</th>
+                            <th class="hd__title">Id</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
         
         $aplicacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
-        $subaplicaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminAplicacion')->findByAplicacion($app_id);
+        $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAplicacion a 
+                                    WHERE a.aplicacion = :app_id 
+                                    ORDER BY a.orden ASC")
+                    ->setParameter('app_id', $app_id);
+        $subaplicaciones = $query->getResult();
 
         foreach ($subaplicaciones as $subaplicacion)
         {
@@ -266,8 +309,9 @@ class AppController extends Controller
             $delete_disabled = $f->linkEliminar($subaplicacion->getId(), 'AdminAplicacion');
             $delete = $delete_disabled=='' ? 'delete' : '';
             $html .= '<tr>
+                        <td class="columorden">'.$subaplicacion->getOrden().'</td>
+                        <td>'.$subaplicacion->getId().'</td>
                         <td>'.$subaplicacion->getNombre().'</td>
-                        <td>'.$subaplicacion->getUrl().'</td>
                         <td class="center">
                             <div class="can-toggle demo-rebrand-2 small">
                                 <input id="f'.$subaplicacion->getId().'" class="cb_activo" type="checkbox" '.$checked.'>
@@ -282,6 +326,9 @@ class AppController extends Controller
                         </td>
                     </tr>';
         }
+
+        $html .= '</tbody>
+                </table>';
 
         $return = array('html' => $html,
                         'empresa' => $aplicacion->getNombre());

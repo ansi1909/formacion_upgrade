@@ -3,7 +3,6 @@
 
 {% block body %}
 <br>
-<input type="hidden" id="error_msg-filter" name="error_msg-filter" value="{{ 'No se pudo filtrar el listado.'|trans }}">
 <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -27,7 +26,6 @@
                                 <label for="texto" class="col-2 col-form-label">{{ 'Rol'|trans }}</label>
                                 <div class="col-14">
                                     <select class="form-control form_sty1" name="rol_id" id="rol_id">
-                                        <option value="0"></option>
                                         {% for rol in roles %}
                                             {% set selected = rol_id == rol.id ? 'selected="selected"' : '' %}
                                             <option value="{{ rol.id }}" {{ selected }} >{{ rol.nombre }}</option>
@@ -42,7 +40,9 @@
                                 <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
                                 <div class="col-14">
                                     <select class="form-control form_sty1" name="empresa_id" id="empresa_id">
-                                        <option value="0"></option>
+                                        {% if not empresa_asignada %}
+                                            <option value="0"></option>
+                                        {% endif %}
                                         {% for empresa in empresas %}
                                             {% set selected = empresa_id == empresa.id ? 'selected="selected"' : '' %}
                                             <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre }}</option>

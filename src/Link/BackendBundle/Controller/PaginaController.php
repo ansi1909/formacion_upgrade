@@ -41,7 +41,7 @@ class PaginaController extends Controller
 
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
                                     WHERE p.pagina IS NULL
-                                    ORDER BY p.id ASC");
+                                    ORDER BY p.orden ASC");
         $pages = $query->getResult();
 
         $paginas = $f->paginas($pages);
@@ -104,8 +104,38 @@ class PaginaController extends Controller
             $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
         }
         else {
+
             $pagina = new CertiPagina();
             $pagina->setFechaCreacion(new \DateTime('now'));
+
+            // Establecer el orden, último por defecto
+            $qb = $em->createQueryBuilder();
+            $qb->select('p')
+               ->from('LinkComunBundle:CertiPagina', 'p')
+               ->orderBy('p.orden', 'DESC');
+            
+            if ($pagina_padre_id)
+            {
+                $qb->andWhere('p.pagina = :pagina_id')
+                   ->setParameter('pagina_id', $pagina_padre_id);
+            }
+            else {
+                $qb->andWhere('p.pagina IS NULL');
+            }
+
+            $query = $qb->getQuery();
+            $paginas = $query->getResult();
+            
+            if ($paginas)
+            {
+                $orden = $paginas[0]->getOrden()+1;
+            }
+            else {
+                $orden = 1;
+            }
+
+            $pagina->setOrden($orden);
+
         }
 
         if ($pagina_padre_id)
@@ -213,6 +243,25 @@ class PaginaController extends Controller
         $pagina->setUsuario($usuario);
         $pagina->setFechaModificacion(new \DateTime('now'));
 
+        // Establecer el orden, último por defecto
+        $qb = $em->createQueryBuilder();
+        $qb->select('p')
+           ->from('LinkComunBundle:CertiPagina', 'p')
+           ->where('p.pagina IS NULL')
+           ->orderBy('p.orden', 'DESC');
+        $query = $qb->getQuery();
+        $paginas = $query->getResult();
+        
+        if ($paginas)
+        {
+            $orden = $paginas[0]->getOrden()+1;
+        }
+        else {
+            $orden = 1;
+        }
+
+        $pagina->setOrden($orden);
+
         $form = $this->createFormBuilder($pagina)
             ->setAction($this->generateUrl('_newPagina'))
             ->setMethod('POST')
@@ -269,6 +318,129 @@ class PaginaController extends Controller
         return $this->render('LinkBackendBundle:Pagina:new.html.twig', array('form' => $form->createView(),
                                                                              'categorias' => $categorias,
                                                                              'status' => $status));
+
+    }
+
+    public function ajaxGetPageAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $pagina_id = $request->query->get('pagina_id');
+        
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        
+        $return = array('nombre' => $pagina->getNombre().' ('.$this->get('translator')->trans('Copia').')');
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxTreePaginasAction($pagina_id, Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $paginas_asociadas = array(); // Solo para pasar un arreglo vacío en el segundo en parámetro
+        $subPaginas = $f->subPaginas($pagina->getId(), $paginas_asociadas, 1);
+
+        $return = array();
+
+        if ($subPaginas['tiene'] > 0)
+        {
+            $return[] = array('text' => $pagina->getCategoria()->getNombre().': '.$pagina->getNombre(),
+                              'state' => array('opened' => true),
+                              'icon' => 'fa fa-angle-double-right',
+                              'children' => $subPaginas['return']);
+        }
+        else {
+            $return[] = array('text' => $pagina->getCategoria()->getNombre().': '.$pagina->getNombre(),
+                              'state' => array('opened' => true),
+                              'icon' => 'fa fa-angle-double-right');
+        }
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxDuplicatePageAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $pagina_id = $request->request->get('pagina_id');
+        $nombre = $request->request->get('nombre');
+
+        // Llamada a la función de BD que duplica la página
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnduplicar_pagina(:ppagina_id, :pnombre, :pusuario_id, :pfecha) as
+                                                resultado;');
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pnombre', $nombre, \PDO::PARAM_STR);
+        $query->bindValue(':pusuario_id', $session->get('usuario')['id'], \PDO::PARAM_INT);
+        $query->bindValue(':pfecha', date('Y-m-d H:i:s'), \PDO::PARAM_STR);
+        $query->execute();
+        $r = $query->fetchAll();
+
+        // La respuesta viene formada por Inserts__newIdPaginaPadre
+        $r_arr = explode("__", $r[0]['resultado']);
+        
+        $return = array('id' => $r_arr[1],
+                        'inserts' => $r_arr[0]);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function empresasPaginasAction($app_id)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $empresas = array();
+        
+        // Todas las empresas 
+        $empresas_bd = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+
+        foreach ($empresas_bd as $empresa)
+        {
+
+            $query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        WHERE pe.empresa = :empresa_id')
+                        ->setParameter('empresa_id', $empresa->getId());
+            $tiene_paginas = $query->getSingleScalarResult();
+
+            $empresas[] = array('id' => $empresa->getId(),
+                                'nombre' => $empresa->getNombre(),
+                                'rif' => $empresa->getRif(),
+                                'tiene_paginas' => $tiene_paginas);
+
+        }
+
+        return $this->render('LinkBackendBundle:Pagina:empresasPaginas.html.twig', array('empresas' => $empresas));
 
     }
 
