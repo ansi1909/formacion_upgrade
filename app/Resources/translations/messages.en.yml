@@ -169,6 +169,7 @@ La categoría ha sido almacenada con éxito: Category has been saved successfull
 La clave es requerida.: Password is required.
 La descripción debe ser mínimo de 3 caracteres.: Description must have at least 3 characters.
 La descripción es requerida.: Description is required.
+La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
 La empresa es requerida.: Company is required.
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.

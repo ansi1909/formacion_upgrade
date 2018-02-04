@@ -33,7 +33,9 @@ class UsuarioController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $niveles = array();
+        $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $values);
 
         if ($request->getMethod() == 'POST')
         {
@@ -45,9 +47,8 @@ class UsuarioController extends Controller
             $login = trim(strtolower($request->request->get('login')));
         }
         else {
-            $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            $rol_id = $values['parameters']['rol']['administrador'];
-            $empresa_id = 0;
+            $rol_id = $values['parameters']['rol']['empresa'];
+            $empresa_id = $empresa_asignada;
             $nivel_id = 0;
             $nombre = '';
             $apellido = '';
@@ -145,8 +146,25 @@ class UsuarioController extends Controller
 
         }
 
-        $roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
-        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        if ($empresa_asignada && !$session->get('administrador')) 
+        {
+
+            // Select de roles
+            $query = $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r 
+                                        WHERE r.id != :administrador')
+                        ->setParameter('administrador', $values['parameters']['rol']['administrador']);
+            $roles = $query->getResult();
+
+            // Select de empresas
+            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e 
+                                        WHERE e.id = :empresa_asignada')
+                        ->setParameter('empresa_asignada', $empresa_asignada);
+            $empresas = $query->getResult();
+        }
+        else {
+            $roles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminRol')->findAll();
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        }
 
         return $this->render('LinkBackendBundle:Usuario:index.html.twig', array('usuarios' => $usuarios,
         																	    'roles' => $roles,
@@ -157,7 +175,8 @@ class UsuarioController extends Controller
                                                                                 'nivel_id' => $nivel_id,
                                                                                 'nombre' => $nombre,
                                                                                 'apellido' => $apellido,
-                                                                                'login' => $login));
+                                                                                'login' => $login,
+                                                                                'empresa_asignada' => $empresa_asignada));
 
     }
 
@@ -180,9 +199,9 @@ class UsuarioController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
         $roles_usuario = array();
         $roles_asignados = array();
+        $empresa_asignada = 0;
 
         $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->findOneById2($session->get('code'));
 
@@ -194,11 +213,16 @@ class UsuarioController extends Controller
             {
                 $roles_asignados[] = $ru->getRol()->getId();
             }
+            if ($usuario->getEmpresa())
+            {
+                $empresa_asignada = $usuario->getEmpresa()->getId();
+            }
         }
         else {
             $usuario = new AdminUsuario();
             $usuario->setPais($pais);
             $usuario->setFechaRegistro(new \DateTime('now'));
+            $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
         }
 
         // Lista de paises
@@ -217,6 +241,10 @@ class UsuarioController extends Controller
         {
             $qb->where('e.id = :empresa_asignada')
                ->setParameter('empresa_asignada', $empresa_asignada);
+        }
+        else {
+            $qb->where('e.activo = :activo')
+               ->setParameter('activo', true);
         }
         $qb->orderBy('e.nombre', 'ASC');
         $query = $qb->getQuery();

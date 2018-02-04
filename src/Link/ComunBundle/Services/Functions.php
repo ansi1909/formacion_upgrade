@@ -414,7 +414,7 @@ class Functions
 		
 		foreach ($roles as $rol_id)
         {
-        	if ($rol_id == $yml['parameters']['rol']['empresa'])
+        	if ($rol_id != $yml['parameters']['rol']['administrador'])
         	{
         		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
         		$empresa_id = $usuario->getEmpresa()->getId();
