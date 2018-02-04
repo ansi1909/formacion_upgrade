@@ -77,8 +77,8 @@ swiftmailer:
     transport:  "smtp"
     encryption: "ssl"
     auth_mode:  "login"
-    host:       "smtp_gmail.com"
-    #port:       "%mailer_port%"
-    username:   "tutorvirtualformacion"
-    password:   "formacion1934"
+    host:       "acacias.venred.com"
+    port:       465
+    username:   "tutorvirtual@formacion2puntocero.com"
+    password:   "UKyhCzWcq29EDKJ7!!"
     #spool:     { type: memory }
