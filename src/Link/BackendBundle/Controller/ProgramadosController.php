@@ -136,12 +136,13 @@ class ProgramadosController extends Controller
         $html = '';
         $fecha_actual = date('d/m/Y');
         $deshabilitado = "";
+        $trclass = "";
         
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
 
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminNotificacionProgramada p
-                                            WHERE p.notificacion = :notificacion_id AND p.grupo IS NULL
-                                            ORDER BY p.id ASC")
+                                   WHERE p.notificacion = :notificacion_id AND p.grupo IS NULL
+                                   ORDER BY p.id ASC")
                             ->setParameters(array('notificacion_id' => $notificacion->getId()));
         $notificaciones_programadas = $query->getResult();
 
@@ -193,17 +194,18 @@ class ProgramadosController extends Controller
             }else{
                 $entidad = 'N/A';
             }
-            /*if(strtotime($fecha_actual) >= strtotime($notificacion_programada->getFechaDifusion()->format("d/m/Y"))){
+            if ($notificacion_programada->getEnviado() == true) {
+                $trclass = 'class="table-active"';
                 $deshabilitado = 'disabled';
-            }*/
-            $html .= '<tr>
+            }
+            $html .= '<tr '.$trclass.'>
                         <td>'.$notificacion_programada->getTipoDestino()->getNombre().'</td>
                         <td>'.$entidad.'</td>
                         <td>'.$notificacion_programada->getFechaDifusion()->format("d/m/Y").'</td>
                         <td class="center">
                             <input type="hidden" id="hidden_notificacion_id" name="hidden_notificacion_id" value="'.$notificacion->getId().'">
                             <input type="hidden" id="asuntoTableEdit'.$notificacion->getId().'" value="'.$notificacion->getAsunto().'">
-                            <a href="#" class="btn btn-link btn-sm edit edit_programacion" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" class="btn btn-link btn-sm edit edit_programacion '.$deshabilitado.'" data-toggle="modal" data-target="#formModal" data="'.$notificacion_programada->getId().'"><span class="fa fa-pencil"></span></a>
                             <a href="#" class="btn btn-link btn-sm '.$deshabilitado.' '.$delete.' '.$delete_disabled.'" data="'.$notificacion_programada->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
@@ -631,8 +633,8 @@ class ProgramadosController extends Controller
                 {
 
                     $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminUsuario p
-                                                WHERE p.nivel = :nivel_id AND p.empresa = :empresa_id
-                                                ORDER BY p.id ASC")
+                                               WHERE p.nivel = :nivel_id AND p.empresa = :empresa_id
+                                               ORDER BY p.id ASC")
                                 ->setParameters(array('nivel_id' => $programacion->getEntidadId(),
                                                       'empresa_id' => $notificacion->getEmpresa()->getId()));
                     $usuarios = $query->getResult();
@@ -642,10 +644,10 @@ class ProgramadosController extends Controller
                 {
 
                     $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
-                                                JOIN LinkComunBundle:CertiNivelPagina c 
-                                                WHERE c.paginaEmpresa = :programa
-                                                AND c.nivel = u.nivel
-                                                ORDER BY u.id ASC")
+                                               JOIN LinkComunBundle:CertiNivelPagina c 
+                                               WHERE c.paginaEmpresa = :programa
+                                               AND c.nivel = u.nivel
+                                               ORDER BY u.id ASC")
                                 ->setParameters(array('programa' => $programacion->getEntidadId()));
 
                     $usuarios = $query->getResult();
@@ -660,10 +662,10 @@ class ProgramadosController extends Controller
                 elseif($programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
                 {
                     $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
-                                                JOIN LinkComunBundle:AdminNotificacionProgramada p 
-                                                WHERE p.grupo = :grupo
-                                                AND p.entidad = u.id
-                                                ORDER BY u.id ASC")
+                                               JOIN LinkComunBundle:AdminNotificacionProgramada p 
+                                               WHERE p.grupo = :grupo
+                                               AND p.entidad = u.id
+                                               ORDER BY u.id ASC")
                                 ->setParameters(array('grupo' => $programacion->getId()));
 
                     $usuarios = $query->getResult();
@@ -680,6 +682,12 @@ class ProgramadosController extends Controller
 
                     $f->sendEmail($parametros, $controller);
                 }
+
+
+                $programacion->setEnviado(true);
+                
+                $em->persist($programacion);
+                $em->flush();
 
             }
         }

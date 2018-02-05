@@ -224,6 +224,84 @@ class NivelController extends Controller
         $nuevos_registros = 0;
         
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        if ($request->getMethod() == 'POST')
+        {
+
+            $file = $request->request->get('file');
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+            
+            if(!file_exists($fileWithPath)) 
+            {
+                $errores[] = $this->get('translator')->trans('El archivo').' '.$fileWithPath.' '.$this->get('translator')->trans('no existe');
+            } 
+            else {
+                
+                $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+              
+                // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
+                $total_sheets = $objPHPExcel->getSheetCount();
+                $allSheetName = $objPHPExcel->getSheetNames();
+                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+              
+                // Se obtiene el número máximo de filas y columnas
+                $highestRow = $objWorksheet->getHighestRow();
+                $highestColumn = $objWorksheet->getHighestColumn();
+                $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+              
+                // $headingsArray contiene las cabeceras de la hoja excel. Los titulos de columnas
+                $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
+                $headingsArray = $headingsArray[1];
+
+                //Se recorre toda la hoja excel desde la fila 2
+                $r = -1;
+                $col = 0;
+                $niveles = array();
+                for ($row=2; $row<=$highestRow; ++$row) 
+                {
+
+                    $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                    $nombre = trim($cell->getValue());
+
+                    if (!$nombre)
+                    {
+                        $errores[] = $this->get('translator')->trans('Fila').' '.$row.': '.$this->get('translator')->trans('Dato en nulo.');
+                    }
+                    else {
+
+                        // Los nombres de niveles repetidos se omiten
+                        $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n 
+                                                    WHERE n.empresa = :empresa_id AND LOWER(n.nombre) = :nombre')
+                                    ->setParameters(array('empresa_id' => $empresa_id,
+                                                          'nombre' => strtolower($nombre)));
+                        
+                        if (!$query->getSingleScalarResult())
+                        {
+                            // Lo agregamos en el array de niveles
+                            $niveles[] = $nombre;
+                        }
+
+                    }
+
+                }
+
+                if (!count($errores) && count($niveles))
+                {
+                    foreach ($niveles as $n)
+                    {
+                        $nuevos_registros++;
+                        $nivel = new AdminNivel();
+                        $nivel->setNombre($n);
+                        $nivel->setEmpresa($empresa);
+                        $em->persist($nivel);
+                        $em->flush();
+                    }
+                }
+
+            }
+            
+        }
         
         return $this->render('LinkBackendBundle:Nivel:uploadNiveles.html.twig', array('empresa' => $empresa,
                                                                                       'errores' => $errores,

@@ -19,4 +19,13 @@ $(document).ready(function() {
 		}
 	} );
 
+	$('#finish').click(function(){
+		$('#finish').hide();
+	});
+
+	$('#form').submit(function(e)
+	{
+		$('#finish').hide();
+	});
+
 });
