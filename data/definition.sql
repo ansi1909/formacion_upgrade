@@ -49,7 +49,8 @@ fecha_creacion timestamp without time zone,
 direccion text,
 bienvenida text,
 pais_id character(3),
-chat_activo boolean, 
+chat_activo boolean,
+webinar boolean, 
  PRIMARY KEY (id),
  FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
 
@@ -482,3 +483,18 @@ qr text,
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (tipo_certificado_id) REFERENCES certi_tipo_certificado (id),
  FOREIGN KEY (tipo_imagen_certificado_id) REFERENCES certi_tipo_imagen_certificado (id) );
+
+CREATE TABLE admin_evento(
+-- Attributes --
+id serial,
+empresa_id integer,
+nivel_id integer,
+nombre varchar(500),
+descripcion text,
+lugar text,
+fecha timestamp without time zone,
+usuario_id integer,
+ PRIMARY KEY (id),
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
+ FOREIGN KEY (nivel_id) REFERENCES admin_nivel (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));

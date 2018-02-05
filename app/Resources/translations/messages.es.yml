@@ -1,14 +1,19 @@
 Acción: Acción
 Acciones: Acciones
 Aceptar: Aceptar
+Activar para ordenar la columna de manera ascendente: Activar para ordenar la columna de manera ascendente
+Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activo: Activo
 Agregar opción: Agregar opción
 Agregar sub-página: Agregar sub-página
+al: al
 Apellido: Apellido
 Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Archivos: Archivos
+Asignación de páginas: Asignación de páginas
+Asignar páginas: Asignar páginas
 Asunto: Asunto
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
@@ -66,6 +71,7 @@ Datos del Tipo de Notificación: Datos del Tipo de Notificación
 Datos del Tipo de Destino: Datos del Tipo de Destino
 Datos Notificación: Datos Notificación
 de la evaluación: de la evaluación
+de un total de: de un total de
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
@@ -95,6 +101,7 @@ El enunciado es requerido.: El enunciado es requerido.
 El login ya existe.: El login ya existe.
 El material complementario debe ser sólo archivo con extensión pdf.: El material complementario debe ser sólo archivo con extensión pdf.
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
+El nivel es requerido: El nivel es requerido
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
 El nombre de la empresa es requerido.: El nombre de la empresa es requerido.
 El nombre de la evaluación debe ser mínimo de 3 caracteres.: El nombre de la evaluación debe ser mínimo de 3 caracteres.
@@ -121,6 +128,7 @@ Enunciado (Lado A): Enunciado (Lado A)
 Entidad: Entidad
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener el historial.: Error al obtener el historial.
+Error al obtener las páginas asignadas.: Error al obtener las páginas asignadas.
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
 Errores: Errores
@@ -136,6 +144,7 @@ Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
 Fecha Difusión: Fecha Difusión
 Fila: Fila
+filtrado de un total de: filtrado de un total de
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
 Foto de la página: Foto de la página
@@ -196,11 +205,15 @@ Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
 Modificado el: Modificado el
 Modificado por: Modificado por
+Mostrando registros del: Mostrando registros del
+Mostrar: Mostrar
+Ningún dato disponible en esta tabla: Ningún dato disponible en esta tabla
 Nivel: Nivel
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
 No existen páginas: No existen páginas
+No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
 No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.
@@ -226,6 +239,7 @@ Página asociada: Página asociada
 Página seleccionada: Página seleccionada
 Página asociada a la evaluación: Página asociada a la evaluación
 Página padre: Página padre
+Páginas asignadas: Páginas asignadas
 Páginas principales: Páginas principales
 Panel de acceso: Panel de acceso
 Paso: Paso
@@ -237,6 +251,7 @@ Permisos por Rol: Permisos por Rol
 Pregunta: Pregunta
 Preguntas: Preguntas
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
+Procesando: Procesando
 Procesar: Procesar
 Programa: Programa
 Programas: Programas
@@ -247,6 +262,7 @@ Recordarme: Recordarme
 Región: Región
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
+registros: registros
 Resultado del archivo procesado: Resultado del archivo procesado
 Rol: Rol
 Roles: Roles
@@ -287,4 +303,5 @@ Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
 Valor de la pregunta: Valor de la pregunta
 Ver Historial: Ver Historial
+Ver páginas asignadas: Ver páginas asignadas
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones

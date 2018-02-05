@@ -86,6 +86,13 @@ class AdminEmpresa
     private $chatActivo;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="webinar", type="boolean", nullable=true)
+     */
+    private $webinar;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminPais
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminPais")
@@ -321,6 +328,30 @@ class AdminEmpresa
     public function getChatActivo()
     {
         return $this->chatActivo;
+    }
+
+    /**
+     * Set webinar
+     *
+     * @param boolean $webinar
+     *
+     * @return AdminEmpresa
+     */
+    public function setWebinar($webinar)
+    {
+        $this->webinar = $webinar;
+    
+        return $this;
+    }
+
+    /**
+     * Get webinar
+     *
+     * @return boolean
+     */
+    public function getWebinar()
+    {
+        return $this->webinar;
     }
 
     /**

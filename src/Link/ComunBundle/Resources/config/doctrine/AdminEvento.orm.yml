@@ -1,0 +1,76 @@
+Link\ComunBundle\Entity\AdminEvento:
+    type: entity
+    table: admin_evento
+    indexes:
+        IDX_1A4E3AFC521E1991:
+            columns:
+                - empresa_id
+        IDX_1A4E3AFCDA3426AE:
+            columns:
+                - nivel_id
+        IDX_1A4E3AFCDB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        descripcion:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        lugar:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        fecha:
+            type: datetime
+            nullable: true
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        nivel:
+            targetEntity: AdminNivel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                nivel_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

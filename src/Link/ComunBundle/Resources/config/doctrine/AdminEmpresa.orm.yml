@@ -64,6 +64,9 @@ Link\ComunBundle\Entity\AdminEmpresa:
             type: boolean
             nullable: true
             column: chat_activo
+        webinar:
+            type: boolean
+            nullable: true
     manyToOne:
         pais:
             targetEntity: AdminPais

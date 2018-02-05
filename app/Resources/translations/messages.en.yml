@@ -1,14 +1,19 @@
 Acción: Action
 Acciones: Actions
 Aceptar: Accept
+Activar para ordenar la columna de manera ascendente: Enable to order column ascending
+Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activo: Active
 Agregar opción: Add option
 Agregar sub-página: Add sub-page
+al: to
 Apellido: Last Name
 Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Archivos: Files
+Asignación de páginas: Page assignment
+Asignar páginas: Assign page
 Asunto: Subject
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
@@ -66,6 +71,7 @@ Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos Notificación: Notification Details
 de la evaluación: of the test
+de un total de: of total of
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
@@ -95,6 +101,7 @@ El enunciado es requerido.: Statement is required.
 El login ya existe.: Login already exists.
 El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
+El nivel es requerido: Level is required
 El nombre de la empresa debe ser mínimo de 3 caracteres.: Company name must have at least 3 characters.
 El nombre de la empresa es requerido.: Company name is required.
 El nombre de la evaluación debe ser mínimo de 3 caracteres.: Test name must have at least 3 characters.
@@ -121,6 +128,7 @@ Enunciado (Lado A): Statement (Side A)
 Entidad: Entity
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener el historial.: Error ocurred retrieving history.
+Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
@@ -136,6 +144,7 @@ Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
 Fecha Difusión: Dissemination Date
 Fila: Row
+filtrado de un total de: filtered of a total of
 Filtrar usuarios: Filter users
 Finalizar: Finish
 Foto de la página: Page picture
@@ -196,11 +205,15 @@ Mensaje: Message
 Mensaje del servidor: Server message
 Modificado el: Modified at
 Modificado por: Modified by
+Mostrando registros del: Showing items of
+Mostrar: Show
+Ningún dato disponible en esta tabla: No data available in this table
 Nivel: Level
 Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
 No existen páginas: There are no pages
+No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se permiten espacios en blanco.: Blank spaces are not allowed.
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.
@@ -226,6 +239,7 @@ Página asociada: Associated page
 Página seleccionada: Selected page
 Página asociada a la evaluación: Page associated to this test
 Página padre: Father page
+Páginas asignadas: Assigned pages
 Páginas principales: Main pages
 Panel de acceso: Login
 Paso: Step
@@ -237,6 +251,7 @@ Permisos por Rol: Permissions by Role
 Pregunta: Question
 Preguntas: Questions
 Presiona el botón finalizar para completar: Press finish button to complete
+Procesando: Processing
 Procesar: Process
 Programa: Program
 Programas: Programs
@@ -247,6 +262,7 @@ Recordarme: Remember me
 Región: Region
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
+registros: items
 Resultado del archivo procesado: Result of the processed file
 Rol: Role
 Roles: Roles
@@ -287,4 +303,5 @@ Usuarios reg.: Reg users
 Usuarios registrados: Registered users
 Valor de la pregunta: Question weighing
 Ver Historial: See History
+Ver páginas asignadas: View assigned pages
 Ver Sub-Aplicaciones: See Sub-Applications
