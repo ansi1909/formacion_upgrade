@@ -11,6 +11,7 @@
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
+<input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
 
 <br>
 <div class="row align-items-center justify-content-between">
@@ -159,18 +160,17 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/empresasGrupo.js') }}"></script>
-    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript">
 
         $("#form").validate({
             rules: {
-                'rol': {
+                'nombre': {
                     required: true,
                     minlength: 3
                 },
             },
             messages: {
-                'rol': {
+                'nombre': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
                 }

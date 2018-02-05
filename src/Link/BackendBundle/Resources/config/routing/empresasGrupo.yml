@@ -1,21 +1,27 @@
 _empresasGrupo:
     path:     /empresasGrupo/{app_id}
-    defaults: { _controller: LinkBackendBundle:empresasGrupo:index }
+    defaults: { _controller: LinkBackendBundle:EmpresasGrupo:index }
 
 _ajaxEmpresasGrupo:
     path:     /ajaxEmpresasGrupo
-    defaults: { _controller: LinkBackendBundle:empresasGrupo:ajaxEmpresasGrupo }
+    defaults: { _controller: LinkBackendBundle:EmpresasGrupo:ajaxEmpresasGrupo }
     requirements:
         method: GET
 
 _ajaxUpdateGrupo:
     path:     /ajaxUpdateGrupo
-    defaults: { _controller: LinkBackendBundle:empresasGrupo:ajaxUpdateGrupo }
+    defaults: { _controller: LinkBackendBundle:EmpresasGrupo:ajaxUpdateGrupo }
     requirements:
         method: POST
 
 _ajaxEditGrupo:
     path:     /ajaxEditGrupo
-    defaults: { _controller: LinkBackendBundle:empresasGrupo:ajaxEditGrupo }
+    defaults: { _controller: LinkBackendBundle:EmpresasGrupo:ajaxEditGrupo }
     requirements:
         method: GET
+
+_ajaxDeleteGrupo:
+    path:     /ajaxDeleteGrupo
+    defaults: { _controller: LinkBackendBundle:EmpresasGrupo:ajaxDeleteGrupo }
+    requirements:
+        method: POST

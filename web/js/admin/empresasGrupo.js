@@ -79,7 +79,7 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var grupo_id = $(this).attr('data');
-		sweetAlertDelete(grupo_id, 'CertiGrupo');
+		sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
 	});
 
 });
@@ -156,7 +156,7 @@ function getListadoGrupos(empresa_id){
 
 			$('.delete').click(function(){
 				var grupo_id = $(this).attr('data');
-				sweetAlertDelete(grupo_id, 'CertiGrupo');
+				sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
 			});
 		},
 		error: function(){

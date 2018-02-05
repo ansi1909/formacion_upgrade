@@ -95,11 +95,15 @@ class EmpresaController extends Controller
             $pais_id = $request->request->get('pais_id');
             $bienvenida = $request->request->get('bienvenida');
             $activo = $request->request->get('activo');
+            $activo2 = $request->request->get('activo2');
+            $activo3 = $request->request->get('activo3');
 
             $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id);
 
             $empresa->setNombre($nombre);
             $empresa->setActivo($activo ? true : false);
+            $empresa->setChatActivo($activo2 ? true : false);
+            $empresa->setWebinar($activo3 ? true : false);
             $empresa->setBienvenida($bienvenida);
             $empresa->setPais($pais);
             $em->persist($empresa);

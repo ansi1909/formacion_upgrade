@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\CertiGrupo; 
 
 
-class empresasGrupoController extends Controller
+class EmpresasGrupoController extends Controller
 {
    public function indexAction($app_id)
     {
@@ -193,6 +193,41 @@ class empresasGrupoController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function ajaxDeleteGrupoAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->request->get('id');
+        $entity = $request->request->get('entity');
+
+        $ok = 1;
+        
+        $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->find($id);
+
+        $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
+        $em->remove($object);
+        $em->flush();
+
+        $query = $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g WHERE g.empresa = :empresa_id')
+                    ->setParameter('empresa_id', $grupo->getEmpresa()->getId());
+        $grupos_empresa = $query->getResult();
+        $orden = 0;
+
+        foreach ($grupos_empresa as $grupo_empresa) {
+            $orden = $orden + 1;
+            $grupo_empresa->setOrden($orden);
+            $em->persist($grupo_empresa);
+            $em->flush();
+        }
+
+        $return = array('ok' => $ok);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
+
     }
 
 }
