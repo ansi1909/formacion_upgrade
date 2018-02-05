@@ -223,6 +223,8 @@ class NotificacionController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         if (!$session->get('ini'))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -235,9 +237,7 @@ class NotificacionController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-        $em = $this->getDoctrine()->getManager();
-
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        
         $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
         $mensaje = $status;
         if($mensaje == "exito"){
@@ -264,6 +264,8 @@ class NotificacionController extends Controller
                 
         $session = new Session();
         $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         if (!$session->get('ini'))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -276,10 +278,8 @@ class NotificacionController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-        $em = $this->getDoctrine()->getManager();
 
         $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $usuario_empresa = 0;
 
         $notificacion->setUsuario($usuario);

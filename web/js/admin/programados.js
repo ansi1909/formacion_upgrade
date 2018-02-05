@@ -21,11 +21,15 @@ $(document).ready(function() {
 	});
 
 	$('#guardar').click(function(){
+		$('#guardar').hide();
+		$('#cancelar').hide();
 		saveProgramacion();
 	});
 
 	$('#form').submit(function(e)
 	{
+		$('#guardar').hide();
+		$('#cancelar').hide();
 		e.preventDefault();
 		saveProgramacion();
 	});
