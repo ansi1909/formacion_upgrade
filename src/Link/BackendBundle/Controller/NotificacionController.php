@@ -135,22 +135,21 @@ class NotificacionController extends Controller
     public function createNotificacionAction(Request $request)
     {
         
-        $em = $this->getDoctrine()->getManager();
         $session = new Session();
         $f = $this->get('funciones');
-      
         if (!$session->get('ini'))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
+
             if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
             {
                 return $this->redirectToRoute('_authException');
             }
         }
         $f->setRequest($session->get('sesion_id'));
-
+        $em = $this->getDoctrine()->getManager();
         $notificacion = new AdminNotificacion();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $usuario_empresa = 0;
@@ -223,22 +222,23 @@ class NotificacionController extends Controller
     public function showNotificacionAction(Request $request, $notificacion_id, $status)
     {
         $session = new Session();
-        $em = $this->getDoctrine()->getManager();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
         $f = $this->get('funciones');
-      
         if (!$session->get('ini'))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
+
             if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() != null and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
             {
                 return $this->redirectToRoute('_authException');
             }
         }
         $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
         $mensaje = $status;
         if($mensaje == "exito"){
             $mensaje = 1;
@@ -262,9 +262,21 @@ class NotificacionController extends Controller
     public function editNotificacionAction(Request $request, $notificacion_id)
     {
                 
-        $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
         $session = new Session();
+        $f = $this->get('funciones');
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() != null and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
 
         $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);

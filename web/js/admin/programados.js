@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     $('#select_empresa_id').change(function(){
-    	console.log('Usuario admin');
     	var empresa_id = $(this).val();
     	var usuario_empresa = $('#usuario_empresa').val();
 		getListadoNotificaciones(empresa_id, usuario_empresa);
@@ -126,6 +125,7 @@ function observe(){
 				$('.tree').jstree();
 				editProgramacion();
 				segundaTabla();
+				clearTimeout( timerId );
 			},
 			error: function(){
 				$('.tree').jstree();
@@ -150,6 +150,7 @@ function getListadoNotificaciones(empresa_id, usuario_empresa){
 		success: function(data) {
 			$('#list_notificaciones').html(data.notificaciones);
 			observe();
+			clearTimeout( timerId );
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
@@ -170,6 +171,7 @@ function getformularioProgramaciones(tipo_destino_id, notificacion_id){
 			$('#loading_form').hide();
 			$('#formulario_ajax').html(data.formulario);
 			observe();
+			clearTimeout( timerId );
 		},
 		error: function(){
 			$('#loading_form').hide();
@@ -201,6 +203,7 @@ function editProgramacion(){
 				$('#tipo_destino_id').val(data.tipo_destino);
 				$('#formulario_ajax').html(data.formulario);
 				observe();
+				clearTimeout( timerId );
 			},
 			error: function(){
 				$('#loading_form').hide();
@@ -250,6 +253,7 @@ function saveProgramacion()
 					$('#aceptar').show();
 					$('#guardar').hide();
 					$('#cancelar').hide();
+					clearTimeout( timerId );
 				},
 				error: function(){
 					$('#guardar').prop('disabled', false);

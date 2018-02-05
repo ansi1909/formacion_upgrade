@@ -23,11 +23,17 @@ class ProgramadosController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
-        $session->set('app_id', $app_id);
-        $notificacionesdb = array();
-        if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+        if (!$session->get('ini'))
         {
-            return $this->redirectToRoute('_authException');
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
         }
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
@@ -180,6 +186,10 @@ class ProgramadosController extends Controller
                                     </li>
                                 </ul>
                             </div>';
+            }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Usuarios que no han ingresado a un programa'){
+                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $entidad = $programa->getNombre();
+
             }else{
                 $entidad = 'N/A';
             }
@@ -281,6 +291,28 @@ class ProgramadosController extends Controller
                             </div>
                         </div>
                         <label id="entidad_id_grupo-error" class="error" for="entidad_id_grupo" style="display:none;"></label>';
+            
+        }elseif($tipo_destino->getNombre() == "Usuarios que no han ingresado a un programa"){
+
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy').'</strong></em>';
+            $programas_asignados = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findByEmpresa($notificacion->getEmpresa()->getId());
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
+                        <option value=""></option>';
+                        foreach ($programas_asignados as $programa_asignado) {
+                            if($programa_asignado->getActivo() == true){
+                                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
+                                $formulario .='<option value="'.$programa->getId().'" >'.$programa->getNombre().'</option>';
+                            }
+                        }
+             $formulario .= '</select>
+                    <span class="fa fa-book"></span>
+                    <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                </div>
+            </div>
+            <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
         }elseif($tipo_destino->getNombre() == "Todos"){
 
@@ -463,7 +495,8 @@ class ProgramadosController extends Controller
                         <span class="fa fa-line-chart"></span>
                         <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
                     </div>
-                </div>';
+                </div>
+                <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
         }elseif($programacion->getTipoDestino()->getNombre() == "Programa"){
 
@@ -488,7 +521,8 @@ class ProgramadosController extends Controller
                     <span class="fa fa-book"></span>
                     <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
                 </div>
-            </div>';
+            </div>
+            <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
         }elseif($programacion->getTipoDestino()->getNombre() == "Grupo de participantes"){
 
@@ -519,11 +553,42 @@ class ProgramadosController extends Controller
                         }
              $formulario .= '</select>
                             </div>
-                        </div>';
+                        </div>
+                        <label id="entidad_id_grupo-error" class="error" for="entidad_id_grupo" style="display:none;"></label>';
+            
+        }elseif($tipo_destino->getNombre() == "Usuarios que no han ingresado a un programa"){
+
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy').'</strong></em>';
+            $programas_asignados = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findByEmpresa($notificacion->getEmpresa()->getId());
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
+                        <option value=""></option>';
+                        foreach ($programas_asignados as $programa_asignado) {
+                            if($programa_asignado->getActivo() == true){
+                                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
+                                if($programa->getId() == $programacion->getEntidadId()){
+                                    $selected = 'selected="selected"';
+                                }
+                                $formulario .='<option value="'.$programa->getId().'" '.$selected.' >'.$programa->getNombre().'</option>';
+                                $selected = '';
+                            }
+                        }
+             $formulario .= '</select>
+                    <span class="fa fa-book"></span>
+                    <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                </div>
+            </div>
+            <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
         }elseif($programacion->getTipoDestino()->getNombre() == "Todos"){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
+
+        }else{
+
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy').'</strong></em>';
 
         }
 
@@ -534,7 +599,8 @@ class ProgramadosController extends Controller
                                 <span class="fa fa-calendar"></span>
                                 '.$aviso.'
                             </div>
-                        </div>';
+                        </div>
+                        <label id="fecha_difusion-error" class="error" for="fecha_difusion" style="display:none;"></label>';
         
         $return = array('tipo_destino' => $programacion->getTipoDestino()->getId(),
                         'formulario' =>$formulario);

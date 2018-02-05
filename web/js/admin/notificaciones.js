@@ -3,7 +3,6 @@ $(document).ready(function() {
 
 	//var root_site = $('#root_site').val();
     $('#select_empresa_id').change(function(){
-    	console.log('Usuario admin');
     	var empresa_id = $(this).val();
     	var usuario_empresa = $('#usuario_empresa').val();
 		getListadoNotificaciones(empresa_id, usuario_empresa);
@@ -53,6 +52,7 @@ function getListadoNotificaciones(empresa_id, usuario_empresa){
 		success: function(data) {
 			$('#list_notificaciones').html(data.notificaciones);
 			observe();
+			clearTimeout( timerId );
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
