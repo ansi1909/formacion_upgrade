@@ -37,6 +37,13 @@ class AdminNotificacionProgramada
     private $fechaDifusion;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enviado", type="boolean", nullable=true)
+     */
+    private $enviado;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminNotificacion
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminNotificacion")
@@ -134,6 +141,30 @@ class AdminNotificacionProgramada
     public function getFechaDifusion()
     {
         return $this->fechaDifusion;
+    }
+
+    /**
+     * Set enviado
+     *
+     * @param boolean $enviado
+     *
+     * @return AdminNotificacionProgramada
+     */
+    public function setEnviado($enviado)
+    {
+        $this->enviado = $enviado;
+    
+        return $this;
+    }
+
+    /**
+     * Get enviado
+     *
+     * @return boolean
+     */
+    public function getEnviado()
+    {
+        return $this->enviado;
     }
 
     /**
