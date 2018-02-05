@@ -2673,18 +2673,22 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 
 .btn-secondary {
   color: #fff;
+  font-weight: bold; 
   background-color: #00558D;
-  border-color: #ffffff;
+  border-color: none;
+  box-shadow: 0 3px 0 .5px #00416d;
+  transition: all 1s ease;
 }
 
 .btn-secondary:hover {
   color: #fff;
   background: linear-gradient(to right, #0084db 0%, #00558D 100%);
-  border-color: #e0e0e0;
+  border-color: none;
+  box-shadow: 0 3px 0 .5px #00416d;
 }
 
 .btn-secondary:focus, .btn-secondary.focus {
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 1.5px 0 .5px #00416d;
 }
 
 .btn-secondary.disabled, .btn-secondary:disabled {
@@ -2696,7 +2700,8 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .show > .btn-secondary.dropdown-toggle {
   color: #fff;
   background: linear-gradient(to right, #0084db 0%, #00558D 100%);
-  border-color: #e0e0e0;
+  border-color: none;
+  outline: none;
 }
 
 .btn-info {

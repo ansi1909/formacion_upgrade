@@ -3754,9 +3754,14 @@ table tr td img {
     border-left: 0.3rem solid #fff;
 }
 
-.dataTables_wrapper .dataTable tr:hover a{
+.dataTables_wrapper .dataTable tr:hover a, .dataTables_wrapper .dataTable tr:hover .dropdown a:hover{
     color: #fff;
     font-weight: bold;
+}
+
+.dataTables_wrapper .dataTable tr:hover .dropdown a{
+    color: #383838;
+    font-weight: normal;
 }
 
 .dataTables_wrapper label {

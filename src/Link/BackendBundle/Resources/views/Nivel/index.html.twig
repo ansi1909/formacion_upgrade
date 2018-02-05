@@ -42,7 +42,7 @@
                                 <td class="center">
                                     {% if empresa.activo %}
                                         <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
+                                            <button class="btn btn-secondary dropdown-toggle add_style" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">{{ 'Configurar'|trans }}</a>
                                                 <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
