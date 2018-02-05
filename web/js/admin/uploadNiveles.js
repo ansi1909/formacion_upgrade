@@ -13,4 +13,11 @@ $(document).ready(function() {
 		window.location.replace($('#url_niveles').val());
 	});
 
+	var valid = $("#form").valid();
+    if (valid) 
+    {
+    	console.log('escondete');
+        $('#save').hide();
+    }
+
 });
