@@ -192,10 +192,9 @@ function saveGrupo()
 						$( "#detail-delete" ).attr("data",data.id);
 						$( "#detail-delete" ).addClass("delete");
 						$( "#detail-delete" ).show();
-						$('.delete').click(function()
-						{
-							var grupo_id= $(this).attr('data');
-							sweetAlertDelete(grupo_id, 'CertiGrupo');
+						$('.delete').click(function(){
+							var grupo_id = $(this).attr('data');
+							sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
 						});
 					}
 					$('#form').hide();

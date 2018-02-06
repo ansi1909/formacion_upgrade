@@ -143,7 +143,7 @@
                                             <label for="texto" class="col-4 col-form-label">{{ 'Activar chat'|trans }}</label>
                                             <div class="col-4">
                                                 <div class="can-toggle demo-rebrand-2 small">
-                                                    <input id="f2" id="activo2" name="activo2" type="checkbox" {% if empresa.activo %}checked{% endif %}>
+                                                    <input id="f2" id="activo2" name="activo2" type="checkbox" {% if empresa.ChatActivo %}checked{% endif %}>
                                                     <label for="f2">
                                                         <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                     </label>
@@ -156,7 +156,7 @@
                                             <label for="texto" class="col-6 col-form-label">{{ 'Activar webinar'|trans }}</label>
                                             <div class="col-4">
                                                 <div class="can-toggle demo-rebrand-2 small">
-                                                    <input id="f3" id="activo3" name="activo3" type="checkbox" {% if empresa.activo %}checked{% endif %}>
+                                                    <input id="f3" id="activo3" name="activo3" type="checkbox" {% if empresa.webinar %}checked{% endif %}>
                                                     <label for="f3">
                                                         <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
                                                     </label>
