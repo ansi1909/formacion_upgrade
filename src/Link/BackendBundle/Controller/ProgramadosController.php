@@ -265,7 +265,7 @@ class ProgramadosController extends Controller
                         <option value=""></option>';
                         foreach ($programas_asignados as $programa_asignado) {
                             if($programa_asignado->getActivo() == true){
-                                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getEmpresa()->getId());
+                                $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_asignado->getPagina()->getId());
                                 $formulario .='<option value="'.$programa->getId().'" >'.$programa->getNombre().'</option>';
                             }
                         }
