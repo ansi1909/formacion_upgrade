@@ -542,7 +542,6 @@ class Functions
 		$em = $this->em;
 		$subpaginas = array();
 		$tiene = 0;
-		//$return = $json ? $return: array() ? $return:'';
 		$return = $json ? array() : '';
 		
 		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_id),
@@ -576,6 +575,64 @@ class Functions
 				}
 				else {
 					$return[] = array('text' => $subpage->getCategoria()->getNombre().': '.$subpage->getNombre(),
+		                              'state' => array('opened' => true),
+		                              'icon' => 'fa fa-angle-double-right');
+				}
+			}
+		}
+
+		$subpaginas = array('tiene' => $tiene,
+							'return' => $return);
+
+		return $subpaginas;
+
+	}
+
+
+	// Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
+	public function subPaginasEmpresa($pagina_id, $empresa_id, $json = 0)
+	{
+
+		$em = $this->em;
+		$subpaginas = array();
+		$tiene = 0;
+		$return = $json ? array() : '';
+
+		$query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                    JOIN pe.pagina p 
+                                    WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                                    ORDER BY p.orden ASC")
+                    ->setParameters(array('empresa_id' => $empresa_id,
+                    					  'pagina_id' => $pagina_id));
+        $subpages = $query->getResult();
+		
+		foreach ($subpages as $subpage)
+		{
+			$tiene++;
+			if (!$json)
+			{
+				$return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'">'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre();
+				$subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId());
+				if ($subPaginas['tiene'] > 0)
+				{
+					$return .= '<ul>';
+					$return .= $subPaginas['return'];
+					$return .= '</ul>';
+				}
+				$return .= '</li>';
+			}
+			else {
+				// Forma json para tree
+				$subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId(), 1);
+				if ($subPaginas['tiene'] > 0)
+				{
+					$return[] = array('text' => $subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre(),
+		                              'state' => array('opened' => true),
+		                              'icon' => 'fa fa-angle-double-right',
+		                              'children' => $subPaginas['return']);
+				}
+				else {
+					$return[] = array('text' => $subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre(),
 		                              'state' => array('opened' => true),
 		                              'icon' => 'fa fa-angle-double-right');
 				}

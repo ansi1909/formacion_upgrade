@@ -444,4 +444,113 @@ class PaginaController extends Controller
 
     }
 
+    public function ajaxPaginasEmpresaAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $empresa_id = $request->query->get('empresa_id');
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        
+        $query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                    JOIN pe.pagina p 
+                                    WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                    ORDER BY p.orden ASC")
+                    ->setParameter('empresa_id', $empresa_id);
+        $pes = $query->getResult();
+
+        $html = '<table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Páginas').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Vencimiento').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Acceso').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-pages">';
+
+        foreach ($pes as $pe)
+        {
+            $activo = $pe->getActivo() ? 'checked' : '';
+            $acceso = $pe->getAcceso() ? 'checked' : '';
+            // Se verifica la página tiene sub-páginas
+            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPagina p 
+                                        WHERE p.pagina = :pagina_id')
+                        ->setParameter('pagina_id', $pe->getPagina()->getId());
+            $tiene_subpaginas = $query->getSingleScalarResult();
+            $html .= '<tr>
+                        <td id="td-'.$pe->getId().'">&nbsp;</td>
+                        <td>'.$pe->getFechaVencimiento()->format('d/m/Y').'</td>
+                        <td class="center">
+                            <div class="can-toggle demo-rebrand-2 small">
+                                <input id="f_active'.$pe->getId().'" class="cb_activo" type="checkbox" '.$activo.'>
+                                <label for="f_active'.$pe->getId().'">
+                                    <div class="can-toggle__switch" data-checked="'.$this->get('translator')->trans('Si').'" data-unchecked="No"></div>
+                                </label>
+                            </div>
+                        </td>
+                        <td class="center">
+                            <div class="can-toggle demo-rebrand-2 small">
+                                <input id="f_access'.$pe->getId().'" class="cb_acceso" type="checkbox" '.$acceso.'>
+                                <label for="f_access'.$pe->getId().'">
+                                    <div class="can-toggle__switch" data-checked="'.$this->get('translator')->trans('Si').'" data-unchecked="No"></div>
+                                </label>
+                            </div>
+                        </td>
+                        <td class="center">';
+            if ($tiene_subpaginas)
+            {
+                $html .= '<a href="'.$this->generateUrl('_asignarSubpaginas', array('empresa_id' => $pe->getEmpresa()->getId(), 'pagina_padre_id' => $pe->getPagina()->getId())).'" title="'.$this->get('translator')->trans('Asignar sub-páginas').'" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>';
+            }
+            else {
+                $html .= '&nbsp;';
+            }
+            $html .= '</td>
+                    </tr>';
+        }
+
+        $html .= '</tbody>
+                </table>';
+
+        $return = array('html' => $html,
+                        'empresa' => $empresa->getNombre());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxTreePaginasEmpresaAction($pagina_empresa_id, Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->find($pagina_empresa_id);
+
+        $subPaginas = $f->subPaginasEmpresa($pagina_empresa->getPagina()->getId(), $pagina_empresa->getEmpresa()->getId(), 1);
+
+        $return = array();
+
+        if ($subPaginas['tiene'] > 0)
+        {
+            $return[] = array('text' => $pagina_empresa->getPagina()->getCategoria()->getNombre().': '.$pagina_empresa->getPagina()->getNombre(),
+                              'state' => array('opened' => true),
+                              'icon' => 'fa fa-angle-double-right',
+                              'children' => $subPaginas['return']);
+        }
+        else {
+            $return[] = array('text' => $pagina_empresa->getPagina()->getCategoria()->getNombre().': '.$pagina_empresa->getPagina()->getNombre(),
+                              'state' => array('opened' => true),
+                              'icon' => 'fa fa-angle-double-right');
+        }
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
 }

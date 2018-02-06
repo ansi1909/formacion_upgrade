@@ -232,7 +232,7 @@ function afterPaginate(){
 			dataType: "json",
 			success: function(data) {
 				$('#subapp').html(data.html);
-				$('#appTitle').html(data.empresa);
+				$('#appTitle').html(data.nombre);
 				$('#div-subapps').show();
 				observe();
 			},

@@ -331,7 +331,7 @@ class AppController extends Controller
                 </table>';
 
         $return = array('html' => $html,
-                        'empresa' => $aplicacion->getNombre());
+                        'nombre' => $aplicacion->getNombre());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

@@ -1,3 +1,4 @@
+Acceso: Acceso
 Acción: Acción
 Acciones: Acciones
 Aceptar: Aceptar
@@ -14,6 +15,7 @@ Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Archivos: Archivos
 Asignación de páginas: Asignación de páginas
 Asignar páginas: Asignar páginas
+Asignar sub-páginas: Asignar sub-páginas
 Asunto: Asunto
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
@@ -220,6 +222,7 @@ No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este
 No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
 No se pudo filtrar el listado.: No se pudo filtrar el listado.
+No se pudo habilitar/inhabilitar el acceso a esta página.: No se pudo habilitar/inhabilitar el acceso a esta página.
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
 Nombre para esta página: Nombre para esta página
@@ -239,7 +242,8 @@ Página asociada: Página asociada
 Página seleccionada: Página seleccionada
 Página asociada a la evaluación: Página asociada a la evaluación
 Página padre: Página padre
-Páginas asignadas: Páginas asignadas
+Páginas: Páginas
+Páginas asignadas a: Páginas asignadas a
 Páginas principales: Páginas principales
 Panel de acceso: Panel de acceso
 Paso: Paso
@@ -302,6 +306,7 @@ Usuarios Notificados: Usuarios Notificados
 Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
 Valor de la pregunta: Valor de la pregunta
+Vencimiento: Vencimiento
 Ver Historial: Ver Historial
 Ver páginas asignadas: Ver páginas asignadas
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones

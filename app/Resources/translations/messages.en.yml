@@ -1,3 +1,4 @@
+Acceso: Access
 Acción: Action
 Acciones: Actions
 Aceptar: Accept
@@ -14,6 +15,7 @@ Aplicaciones a la que tiene acceso: Applications it has access to
 Archivos: Files
 Asignación de páginas: Page assignment
 Asignar páginas: Assign page
+Asignar sub-páginas: Assign sub-page
 Asunto: Subject
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
@@ -220,6 +222,7 @@ No se pudo activar/desactivar este registro.: It could not enable/disable this i
 No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
 No se pudo filtrar el listado.: It could not filter the list.
+No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/deny the access to this page.
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nombre para esta página: Name for this page
@@ -239,7 +242,8 @@ Página asociada: Associated page
 Página seleccionada: Selected page
 Página asociada a la evaluación: Page associated to this test
 Página padre: Father page
-Páginas asignadas: Assigned pages
+Páginas: Pages
+Páginas asignadas a: Assigned pages to
 Páginas principales: Main pages
 Panel de acceso: Login
 Paso: Step
@@ -302,6 +306,7 @@ Usuarios Notificados: Notified Users
 Usuarios reg.: Reg users
 Usuarios registrados: Registered users
 Valor de la pregunta: Question weighing
+Vencimiento: Expiration
 Ver Historial: See History
 Ver páginas asignadas: View assigned pages
 Ver Sub-Aplicaciones: See Sub-Applications

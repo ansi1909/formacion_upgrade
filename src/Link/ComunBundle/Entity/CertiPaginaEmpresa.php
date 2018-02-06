@@ -72,6 +72,13 @@ class CertiPaginaEmpresa
     private $muroActivo;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="acceso", type="boolean", nullable=true)
+     */
+    private $acceso;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -279,6 +286,30 @@ class CertiPaginaEmpresa
     public function getMuroActivo()
     {
         return $this->muroActivo;
+    }
+
+    /**
+     * Set acceso
+     *
+     * @param boolean $acceso
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setAcceso($acceso)
+    {
+        $this->acceso = $acceso;
+    
+        return $this;
+    }
+
+    /**
+     * Get acceso
+     *
+     * @return boolean
+     */
+    public function getAcceso()
+    {
+        return $this->acceso;
     }
 
     /**

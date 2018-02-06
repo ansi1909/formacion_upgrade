@@ -3,7 +3,10 @@
 {% block body %}
 <br>
 <input type="hidden" id="url_pages" name="url_pages" value="{{ path('_ajaxPaginasEmpresa') }}">
+<input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreePaginasEmpresa') }}">
+<input type="hidden" id="url_acceso" name="url_acceso" value="{{ path('_ajaxAccesoPagina') }}">
 <input type="hidden" id="error_msg-pages" name="error_msg-pages" value="{{ 'Error al obtener las páginas asignadas.'|trans }}">
+<input type="hidden" id="error_msg-acceso" name="error_msg-access" value="{{ 'No se pudo habilitar/inhabilitar el acceso a esta página.'|trans }}">
 
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -47,9 +50,23 @@
     <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 col-10" style="display:none;" id="div-pages">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Páginas asignadas'|trans }} <span id="appTitle"></span></h5>
+                <h5 class="card-title">{{ 'Páginas asignadas a'|trans }} <span id="empresaTitle"></span></h5>
             </div>
-            <div class="card-block" id="pages">
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+                <div id="pages"></div>
             </div>
         </div>
     </div>
@@ -59,5 +76,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/admin/empresasPáginas.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/empresasPaginas.js') }}"></script>
 {% endblock %}

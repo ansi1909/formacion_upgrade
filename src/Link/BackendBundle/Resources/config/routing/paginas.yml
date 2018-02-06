@@ -45,3 +45,15 @@ _ajaxPaginasEmpresa:
 _empresaPaginas:
     path:     /empresaPaginas/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Pagina:empresaPaginas }
+
+_ajaxTreePaginasEmpresa:
+    path:     /ajaxTreePaginasEmpresa/{pagina_empresa_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxTreePaginasEmpresa, pagina_empresa_id: 0 }
+    requirements:
+        method: GET
+
+_ajaxAccesoPagina:
+    path:     /ajaxAccesoPagina
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxAccesoPagina }
+    requirements:
+        _method: POST

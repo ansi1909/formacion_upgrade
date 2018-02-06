@@ -56,6 +56,9 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
             type: boolean
             nullable: true
             column: muro_activo
+        acceso:
+            type: boolean
+            nullable: true
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
