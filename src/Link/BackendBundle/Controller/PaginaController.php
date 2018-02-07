@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Yaml\Yaml;
 
 class PaginaController extends Controller
 {
@@ -551,6 +552,106 @@ class PaginaController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function empresaPaginasAction($empresa_id, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        if ($request->getMethod() == 'POST')
+        {
+            /*
+            // Se guardan las aplicaciones seleccionadas
+            $aplicaciones = $request->request->get('aplicaciones');
+            
+            // Se buscan las aplicaciones con acceso para eliminar las que no fueron seleccionadas
+            $permisos = $em->getRepository('LinkComunBundle:AdminPermiso')->findByRol($rol_id);
+
+            foreach ($permisos as $permiso)
+            {
+                if (!in_array($permiso->getAplicacion()->getId(), $aplicaciones))
+                {
+                    $em->remove($permiso);
+                    $em->flush();
+                }
+            }
+
+            // Ordenamos el arreglo de aplicaciones de menor a mayor
+            asort($aplicaciones);
+
+            foreach ($aplicaciones as $aplicacion_id)
+            {
+                
+                $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($aplicacion_id);
+                $permiso = $em->getRepository('LinkComunBundle:AdminPermiso')->findOneBy(array('aplicacion' => $aplicacion_id,
+                                                                                               'rol' => $rol_id));
+                
+                if (!$permiso)
+                {
+                    $permiso = new AdminPermiso();
+                    $permiso->setAplicacion($aplicacion);
+                    $permiso->setRol($rol);
+                    $em->persist($permiso);
+                    $em->flush();
+                }
+
+            }
+
+            return $this->redirectToRoute('_permisos', array('app_id' => $session->get('app_id')));
+            */
+        }
+        else {
+
+            $paginas = array();
+            $i = 0;
+
+            // Todas las páginas padres activas
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                        WHERE p.pagina IS NULL AND p.estatusContenido = :activo 
+                                        ORDER BY p.orden ASC")
+                        ->setParameter('activo', $yml['parameters']['estatus_contenido']['activo']);
+            $pages = $query->getResult();
+
+            foreach ($pages as $page)
+            {
+
+                $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $page->getId(),
+                                                                                                            'empresa' => $empresa_id));
+
+                $paginas[] = array('id' => $page->getId(),
+                                   'nombre' => $page->getNombre(),
+                                   'subpaginas' => $f->subPaginas($page->getId()),
+                                   'asignada' => $pagina_empresa ? 1 : 0,
+                                   'activar' => $pagina_empresa ? $pagina_empresa->getActivo() ? true : false : true,
+                                   'acceso' => $pagina_empresa ? $pagina_empresa->getAcceso() ? true : false : true);
+
+            }
+
+            return $this->render('LinkBackendBundle:Pagina:empresaPaginas.html.twig', array('empresa' => $empresa,
+                                                                                            'paginas' => $paginas));
+
+        }
+
     }
 
 }

@@ -22,7 +22,11 @@ parameters:
         grupo_paginas: 3
     tipo_imagen_certificado:
         certificado: 1
-        constancia: 2 
+        constancia: 2
+    estatus_contenido:
+        borrador: 1
+        activo: 2
+        inactivo: 3
     folders:
         uploads: 'http://localhost/uploads/'
         dir_uploads: 'C:/wamp64/www/uploads/'

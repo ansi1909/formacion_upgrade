@@ -2,6 +2,7 @@ Acceso: Access
 Acción: Action
 Acciones: Actions
 Aceptar: Accept
+Activar: Enable
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activo: Active
@@ -14,6 +15,9 @@ Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Archivos: Files
 Asignación de páginas: Page assignment
+Asignación de páginas de la empresa: Page assignment of company
+Asignada: Assigned
+Asignar: Assign
 Asignar páginas: Assign page
 Asignar sub-páginas: Assign sub-page
 Asunto: Subject
@@ -72,6 +76,7 @@ Datos del usuario: User details
 Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos Notificación: Notification Details
+Dar acceso: Provide access
 de la evaluación: of the test
 de un total de: of total of
 Debe seleccionar al menos un rol.: You must select at least one role.
