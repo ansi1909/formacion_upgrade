@@ -6,8 +6,11 @@ Activar: Enable
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activo: Active
+Agregar: Add
 Agregar opción: Add option
+Agregar pregunta: Add question
 Agregar sub-página: Add sub-page
+Agrupación de páginas: Grouping pages
 al: to
 Apellido: Last Name
 Aplicación: Application
@@ -40,6 +43,7 @@ Cantidad de registros creados: Number of records created
 Cantidad de sub-páginas: Number of sub-pages
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cargando..: Loading..
+Carga masiva: Bulk Load
 Cargo: Appointment
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
@@ -70,11 +74,14 @@ Datos de la Aplicación: Application Data
 Datos de la categoría: Category data
 Datos de la empresa: Company Data
 Datos de la opción: Option data
+Datos de la pregunta: Question data
+Datos del grupo: Group information
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
 Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
+Datos del tutorial: Tutorial data
 Datos Notificación: Notification Details
 Dar acceso: Provide access
 de la evaluación: of the test
@@ -93,6 +100,7 @@ División funcional: Functional division
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
 Editar página: Edit page
+Elegir empresa: Choose company
 Eliminado: Deleted
 Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
@@ -105,6 +113,7 @@ El correo corporativo tiene un formato inválido.: Company email has invalid for
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
 El enunciado es requerido.: Statement is required.
+El grupo ha sido almacenada con éxito: The group has been stored successfully
 El login ya existe.: Login already exists.
 El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
@@ -118,11 +127,13 @@ El nombre de la página es requerido.: Page name is required.
 El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
+El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
 El tipo de elemento es requerido.: Element type is required.
 El tipo de pregunta es requerido.: Question type is required.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
 El valor de la pregunta es requerido.: Question weighing is required.
+El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
 Email de contacto: Contact Email
 Empresa: Company
 Empresa con estatus inactivo: Company with inactive status
@@ -136,6 +147,7 @@ Entidad: Entity
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
+Error al obtener la repuesta: Error getting the answer
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
@@ -187,6 +199,7 @@ La descripción debe ser mínimo de 3 caracteres.: Description must have at leas
 La descripción es requerida.: Description is required.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
 La empresa es requerida.: Company is required.
+La faq ha sido almacenada con éxito: The faq has been stored successfully
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
 La notificación ha sido almacenada con éxito: Notification has been saved successfully
@@ -198,13 +211,16 @@ Listado de Empresas: List of Companies
 Listado de empresas activas: List of active companies
 Listado de empresas inactivas: List of inactive companies
 Listado de evaluaciones: List of tests
+Listado de grupos: List of groups
 Listado de notificaciones: List of notifications
 Listado de participantes: List of participants
+Listado de preguntas: List of questions
 Listado de preguntas de la evaluación: Questions list of test
 Listado de programas: List of programs
 Listado de Roles: List of Roles
 Listado de Tipos de Destinos: List of Types of Destinies
 Listado de Tipos de Notificaciones: List of Types of Notifications
+Listado de tutoriales: List of tutorials
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Material complementario: Complementary content
@@ -277,6 +293,7 @@ Rol: Role
 Roles: Roles
 Roles asignados: Assigned roles
 Roles a seleccionar: Selectable roles
+Respuesta: Answer
 Seleccione la empresa para mostrar los niveles: Select the company to show its levels
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
@@ -296,6 +313,7 @@ Tipo Notificación: Notification Type
 Tipo de Notificaciones: Type of Notifications
 Tipo Destino: Destinit Type
 Tipo de Destinos: Desnity Types
+Tutoriales: Tutorials
 Últimos 12: Last 12
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
@@ -314,4 +332,5 @@ Valor de la pregunta: Question weighing
 Vencimiento: Expiration
 Ver Historial: See History
 Ver páginas asignadas: View assigned pages
+Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications

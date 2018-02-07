@@ -32,8 +32,8 @@
                             <tr class="{{eo}}">
                                 <td>{{ categoria.nombre }}</td>
                                 <td class="col text-right">
-                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ categoria.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if categoria.delete_disabled == '' %}delete{% endif %} {{ categoria.delete_disabled }}" data="{{categoria.id}}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ categoria.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if categoria.delete_disabled == '' %}delete{% endif %} {{ categoria.delete_disabled }}" data="{{categoria.id}}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                       {% endfor %}

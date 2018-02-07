@@ -40,7 +40,7 @@
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>Tutoriales</h3>
+        <h3>{{'Tutoriales'|trans}}</h3>
     </div>
    <div class="col text-right">
        <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
@@ -57,8 +57,8 @@
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">{{'Nombre' |trans }}</th>
-                            <th class="hd__title">{{'PDF'|trans }}</th>
-                            <th class="hd__title">{{'Videos'|trans }}</th>
+                            <th class="hd__title">PDF</th>
+                            <th class="hd__title">Videos</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
@@ -72,8 +72,8 @@
                                 {% set pdf = uploads~tutorial.video %}
                                 <td><a href="{{pdf}}" target="_blank">{{tutorial.video}}</a></td>
                                 <td class="center">
-                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ tutorial.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if tutorial.delete_disabled == '' %}delete{% endif %} {{ tutorial.delete_disabled }}" data="{{tutorial.id}}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ tutorial.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if tutorial.delete_disabled == '' %}delete{% endif %} {{ tutorial.delete_disabled }}" data="{{tutorial.id}}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                       {% endfor %}
@@ -103,7 +103,7 @@
             <span class="fa fa-cube"></span>
         </div>
         <div class="form-group ">
-            <label for="recipient-name" class="form-control-label">{{ 'PDF'|trans }}:</label>
+            <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value=" " >
                 <span class="input-group-addon">
@@ -114,7 +114,7 @@
             </div>
         </div>
         <div class="form-group ">
-            <label for="recipient-name" class="form-control-label">{{ 'Video'|trans }}:</label>
+            <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="video" id="video">
                 <span class="input-group-addon">
@@ -143,14 +143,14 @@
                 <br>
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Pdf'| trans}}:</h5>
+                        <h5>Pdf:</h5>
                         <p id="p-pdf">https://Loremipsumdolorsitamet.domain/</p>
                     </div>
                 </div>
                 <br>
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Video'| trans}}:</h5>
+                        <h5>Video:</h5>
                         <p id="p-video">https://Loremipsumdolorsitamet.domain/</p>
                     </div>
                 </div>

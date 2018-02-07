@@ -97,7 +97,7 @@ class EmpresasGrupoController extends Controller
                             <th class="hd__title columorden">'.$this->get('translator')->trans('Orden').'</th>
                             <th class="hd__title">Id</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Programas asociados').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Prog. asociados').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
                         </tr>
                     </thead>
@@ -108,8 +108,8 @@ class EmpresasGrupoController extends Controller
             $class_delete = $delete_disabled == '' ? 'delete' : '';
             $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td> <td> </td>
             <td class="center">
-                <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
-                <a href="#" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
+                <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
+                <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
         

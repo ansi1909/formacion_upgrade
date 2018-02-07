@@ -25,7 +25,7 @@
             </div>
             <div class="card-block">
                 {% if not usuario_empresa %}
-                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Empresa</label>
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
 
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
@@ -43,7 +43,7 @@
                 {% else %}
                     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
                 {% endif %}
-                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Nivel</label>
+                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Nivel' |trans}}</label>
                 <div class="row">
                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                         <select class="form_sty_sel form-control" style="border-radius: 5px" id="nivel_id" name="nivel_id">

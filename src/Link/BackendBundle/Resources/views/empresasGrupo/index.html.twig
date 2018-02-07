@@ -16,7 +16,7 @@
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>Agrupación de páginas</h3>
+        <h3>{{'Agrupación de páginas' | trans}}</h3>
     </div>
 {% if not usuario_empresa %}
    <div class="col text-right">
@@ -33,10 +33,10 @@
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">Elegir empresa</h5>
+                <h5 class="card-title">{{'Elegir empresa' | trans}}</h5>
             </div>
             <div class="card-block">
-                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">Empresa</label>
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                             <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
@@ -73,7 +73,7 @@
                             <th class="hd__title columorden">Orden</th>
                             <th class="hd__title">{{'Id'|trans }}</th>
                             <th class="hd__title">{{'Nombre'|trans }}</th>
-                            <th class="hd__title">{{'Programas asociados'|trans }}</th>
+                            <th class="hd__title">{{'Prog. asociados'|trans }}</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
@@ -92,8 +92,8 @@
                                 <td>{{ grupo.nombre }}</td>
                                 <td> </td>
                                 <td class="center">
-                                    <a href="#" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                           {% endfor %}
