@@ -203,6 +203,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (28, 'Notificaciones', '_notificacion', 'fa-inbox', TRUE, 27, 1);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (29, 'Programar avisos', '_programados', 'fa-clock-o', TRUE, 27, 2);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (30, 'Certificados y Constancias', '_certificados', 'fa-graduation-cap', TRUE, 9, 8);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (31, 'Calendario de eventos', '_calendario', 'fa fa-calendar-alt', TRUE, NULL, 9);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_tipo_noticia_seq;; Type: SEQUENCE SET; Schema: public;

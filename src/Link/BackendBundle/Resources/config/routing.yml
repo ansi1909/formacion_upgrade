@@ -91,3 +91,7 @@ certificados:
 empresasGrupo:
     resource: "@LinkBackendBundle/Resources/config/routing/empresasGrupo.yml"
     prefix: /empresasGrupo
+
+calendario:
+    resource: "@LinkBackendBundle/Resources/config/routing/calendario.yml"
+    prefix: /calendario
