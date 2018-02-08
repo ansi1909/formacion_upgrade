@@ -57,3 +57,15 @@ _ajaxAccesoPagina:
     defaults: { _controller: LinkBackendBundle:Pagina:ajaxAccesoPagina }
     requirements:
         _method: POST
+
+_asignarSubpaginas:
+    path:     /asignarSubpaginas/{empresa_id}/{pagina_padre_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:asignarSubpaginas }
+
+_editAsignacion:
+    path:     /editAsignacion/{empresa_id}/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:editAsignacion }
+
+_showAsignacion:
+    path:     /showAsignacion/{empresa_id}/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:showAsignacion }

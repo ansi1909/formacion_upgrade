@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiCategoria;
 use Link\ComunBundle\Entity\CertiEstatusContenido;
+use Link\ComunBundle\Entity\CertiPaginaEmpresa;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -504,11 +505,9 @@ class PaginaController extends Controller
                         <td class="center">';
             if ($tiene_subpaginas)
             {
-                $html .= '<a href="'.$this->generateUrl('_asignarSubpaginas', array('empresa_id' => $pe->getEmpresa()->getId(), 'pagina_padre_id' => $pe->getPagina()->getId())).'" title="'.$this->get('translator')->trans('Asignar sub-páginas').'" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>';
+                $html .= '<a href="'.$this->generateUrl('_asignarSubpaginas', array('empresa_id' => $pe->getEmpresa()->getId(), 'pagina_padre_id' => $pe->getPagina()->getId())).'" title="'.$this->get('translator')->trans('Configurar asignación de sub-páginas').'" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>';
             }
-            else {
-                $html .= '&nbsp;';
-            }
+            $html .= '<a href="'.$this->generateUrl('_editAsignacion', array('empresa_id' => $pe->getEmpresa()->getId(), 'pagina_id' => $pe->getPagina()->getId())).'" title="'.$this->get('translator')->trans('Editar asignación').'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>';
             $html .= '</td>
                     </tr>';
         }
@@ -580,45 +579,36 @@ class PaginaController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
-            /*
-            // Se guardan las aplicaciones seleccionadas
-            $aplicaciones = $request->request->get('aplicaciones');
             
-            // Se buscan las aplicaciones con acceso para eliminar las que no fueron seleccionadas
-            $permisos = $em->getRepository('LinkComunBundle:AdminPermiso')->findByRol($rol_id);
+            // Se guardan las páginas seleccionadas
+            $asignaciones = $request->request->get('asignar');
+            $activaciones = $request->request->get('activar');
+            $accesos = $request->request->get('acceso');
 
-            foreach ($permisos as $permiso)
+            foreach ($asignaciones as $pagina_id)
             {
-                if (!in_array($permiso->getAplicacion()->getId(), $aplicaciones))
-                {
-                    $em->remove($permiso);
-                    $em->flush();
-                }
-            }
 
-            // Ordenamos el arreglo de aplicaciones de menor a mayor
-            asort($aplicaciones);
+                $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
+                                                                                                            'empresa' => $empresa_id));
 
-            foreach ($aplicaciones as $aplicacion_id)
-            {
-                
-                $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($aplicacion_id);
-                $permiso = $em->getRepository('LinkComunBundle:AdminPermiso')->findOneBy(array('aplicacion' => $aplicacion_id,
-                                                                                               'rol' => $rol_id));
-                
-                if (!$permiso)
+                if (!$pagina_empresa)
                 {
-                    $permiso = new AdminPermiso();
-                    $permiso->setAplicacion($aplicacion);
-                    $permiso->setRol($rol);
-                    $em->persist($permiso);
-                    $em->flush();
+                    $pagina_empresa = new CertiPaginaEmpresa();
+                    $date = new DateTime();
+                    $pagina_empresa->setFechaInicio($date->modify('next monday')); // Fecha de inicio el próximo lunes
+                    $pagina_empresa->setFechaVencimiento($date->modify('+1 year')); // Fecha de vencimiento un año después
                 }
 
-            }
+                $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
+                $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                $em->persist($pagina_empresa);
+                $em->flush();
 
-            return $this->redirectToRoute('_permisos', array('app_id' => $session->get('app_id')));
-            */
+            }
+            
+            return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $empresa_id,
+                                                                   'pagina_id' => 0));
+
         }
         else {
 
