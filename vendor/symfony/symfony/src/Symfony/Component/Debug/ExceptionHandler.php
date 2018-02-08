@@ -83,7 +83,7 @@ class ExceptionHandler
     /**
      * Sets the format for links to source files.
      *
-     * @param string|FileLinkFormatter $format The format for links to source files
+     * @param string|FileLinkFormatter $fileLinkFormat The format for links to source files
      *
      * @return string The previous file link format
      */
@@ -386,7 +386,7 @@ EOF;
                 $formattedValue = str_replace("\n", '', $this->escapeHtml(var_export($item[1], true)));
             }
 
-            $result[] = is_int($key) ? $formattedValue : sprintf("'%s' => %s", $key, $formattedValue);
+            $result[] = is_int($key) ? $formattedValue : sprintf("'%s' => %s", $this->escapeHtml($key), $formattedValue);
         }
 
         return implode(', ', $result);

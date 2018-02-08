@@ -164,7 +164,7 @@ class Inline
                 }
 
                 if (Yaml::DUMP_OBJECT_AS_MAP & $flags && ($value instanceof \stdClass || $value instanceof \ArrayObject)) {
-                    return self::dumpArray((array) $value, $flags);
+                    return self::dumpArray($value, $flags);
                 }
 
                 if (Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE & $flags) {
@@ -210,9 +210,9 @@ class Inline
             case Escaper::requiresDoubleQuoting($value):
                 return Escaper::escapeWithDoubleQuotes($value);
             case Escaper::requiresSingleQuoting($value):
-            case preg_match('{^[0-9]+[_0-9]*$}', $value):
-            case preg_match(self::getHexRegex(), $value):
-            case preg_match(self::getTimestampRegex(), $value):
+            case Parser::preg_match('{^[0-9]+[_0-9]*$}', $value):
+            case Parser::preg_match(self::getHexRegex(), $value):
+            case Parser::preg_match(self::getTimestampRegex(), $value):
                 return Escaper::escapeWithSingleQuotes($value);
             default:
                 return $value;
@@ -224,12 +224,16 @@ class Inline
      *
      * @internal
      *
-     * @param array $value The PHP array to check
+     * @param array|\ArrayObject|\stdClass $value The PHP array or array-like object to check
      *
      * @return bool true if value is hash array, false otherwise
      */
-    public static function isHash(array $value)
+    public static function isHash($value)
     {
+        if ($value instanceof \stdClass || $value instanceof \ArrayObject) {
+            return true;
+        }
+
         $expectedKey = 0;
 
         foreach ($value as $key => $val) {
@@ -273,13 +277,13 @@ class Inline
     /**
      * Parses a YAML scalar.
      *
-     * @param string $scalar
-     * @param int    $flags
-     * @param string $delimiters
-     * @param array  $stringDelimiters
-     * @param int    &$i
-     * @param bool   $evaluate
-     * @param array  $references
+     * @param string   $scalar
+     * @param int      $flags
+     * @param string[] $delimiters
+     * @param string[] $stringDelimiters
+     * @param int      &$i
+     * @param bool     $evaluate
+     * @param array    $references
      *
      * @return string
      *
@@ -306,10 +310,10 @@ class Inline
                 $i += strlen($output);
 
                 // remove comments
-                if (preg_match('/[ \t]+#/', $output, $match, PREG_OFFSET_CAPTURE)) {
+                if (Parser::preg_match('/[ \t]+#/', $output, $match, PREG_OFFSET_CAPTURE)) {
                     $output = substr($output, 0, $match[0][1]);
                 }
-            } elseif (preg_match('/^(.+?)('.implode('|', $delimiters).')/', substr($scalar, $i), $match)) {
+            } elseif (Parser::preg_match('/^(.+?)('.implode('|', $delimiters).')/', substr($scalar, $i), $match)) {
                 $output = $match[1];
                 $i += strlen($output);
             } else {
@@ -345,7 +349,7 @@ class Inline
      */
     private static function parseQuotedScalar($scalar, &$i)
     {
-        if (!preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
+        if (!Parser::preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
             throw new ParseException(sprintf('Malformed inline YAML string: %s.', substr($scalar, $i)));
         }
 
@@ -457,14 +461,15 @@ class Inline
             }
 
             // key
+            $isKeyQuoted = in_array($mapping[$i], array('"', "'"), true);
             $key = self::parseScalar($mapping, $flags, array(':', ' '), array('"', "'"), $i, false);
 
-            if (false === $i = strpos($mapping, ':', $i)) {
+            if (':' !== $key && false === $i = strpos($mapping, ':', $i)) {
                 break;
             }
 
-            if (!isset($mapping[$i + 1]) || !in_array($mapping[$i + 1], array(' ', ',', '[', ']', '{', '}'), true)) {
-                @trigger_error('Using a colon that is not followed by an indication character (i.e. " ", ",", "[", "]", "{", "}" is deprecated since version 3.2 and will throw a ParseException in 4.0.', E_USER_DEPRECATED);
+            if (':' !== $key && !$isKeyQuoted && (!isset($mapping[$i + 1]) || !in_array($mapping[$i + 1], array(' ', ',', '[', ']', '{', '}'), true))) {
+                @trigger_error('Using a colon after an unquoted mapping key that is not followed by an indication character (i.e. " ", ",", "[", "]", "{", "}") is deprecated since version 3.2 and will throw a ParseException in 4.0.', E_USER_DEPRECATED);
             }
 
             // value
@@ -533,7 +538,7 @@ class Inline
      * @param int    $flags
      * @param array  $references
      *
-     * @return string A YAML string
+     * @return mixed The evaluated YAML string
      *
      * @throws ParseException when object parsing support was disabled and the parser detected a PHP object or when a reference could not be resolved
      */
@@ -614,7 +619,7 @@ class Inline
                         return;
                     case 0 === strpos($scalar, '!!float '):
                         return (float) substr($scalar, 8);
-                    case preg_match('{^[+-]?[0-9][0-9_]*$}', $scalar):
+                    case Parser::preg_match('{^[+-]?[0-9][0-9_]*$}', $scalar):
                         $scalar = str_replace('_', '', (string) $scalar);
                         // omitting the break / return as integers are handled in the next case
                     case ctype_digit($scalar):
@@ -628,7 +633,7 @@ class Inline
 
                         return '0' == $scalar[1] ? octdec($scalar) : (((string) $raw === (string) $cast) ? $cast : $raw);
                     case is_numeric($scalar):
-                    case preg_match(self::getHexRegex(), $scalar):
+                    case Parser::preg_match(self::getHexRegex(), $scalar):
                         $scalar = str_replace('_', '', $scalar);
 
                         return '0x' === $scalar[0].$scalar[1] ? hexdec($scalar) : (float) $scalar;
@@ -639,14 +644,14 @@ class Inline
                         return log(0);
                     case 0 === strpos($scalar, '!!binary '):
                         return self::evaluateBinaryScalar(substr($scalar, 9));
-                    case preg_match('/^(-|\+)?[0-9][0-9,]*(\.[0-9_]+)?$/', $scalar):
-                    case preg_match('/^(-|\+)?[0-9][0-9_]*(\.[0-9_]+)?$/', $scalar):
+                    case Parser::preg_match('/^(-|\+)?[0-9][0-9,]*(\.[0-9_]+)?$/', $scalar):
+                    case Parser::preg_match('/^(-|\+)?[0-9][0-9_]*(\.[0-9_]+)?$/', $scalar):
                         if (false !== strpos($scalar, ',')) {
                             @trigger_error('Using the comma as a group separator for floats is deprecated since version 3.2 and will be removed in 4.0.', E_USER_DEPRECATED);
                         }
 
                         return (float) str_replace(array(',', '_'), '', $scalar);
-                    case preg_match(self::getTimestampRegex(), $scalar):
+                    case Parser::preg_match(self::getTimestampRegex(), $scalar):
                         if (Yaml::PARSE_DATETIME & $flags) {
                             // When no timezone is provided in the parsed date, YAML spec says we must assume UTC.
                             return new \DateTime($scalar, new \DateTimeZone('UTC'));
@@ -679,7 +684,7 @@ class Inline
             throw new ParseException(sprintf('The normalized base64 encoded data (data without whitespace characters) length must be a multiple of four (%d bytes given).', strlen($parsedBinaryData)));
         }
 
-        if (!preg_match('#^[A-Z0-9+/]+={0,2}$#i', $parsedBinaryData)) {
+        if (!Parser::preg_match('#^[A-Z0-9+/]+={0,2}$#i', $parsedBinaryData)) {
             throw new ParseException(sprintf('The base64 encoded data (%s) contains invalid characters.', $parsedBinaryData));
         }
 
@@ -688,7 +693,7 @@ class Inline
 
     private static function isBinaryString($value)
     {
-        return !preg_match('//u', $value) || preg_match('/[^\x09-\x0d\x20-\xff]/', $value);
+        return !preg_match('//u', $value) || preg_match('/[^\x00\x07-\x0d\x1B\x20-\xff]/', $value);
     }
 
     /**

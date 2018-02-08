@@ -11,6 +11,7 @@
 
 namespace Symfony\Bundle\SecurityBundle\Tests\DataCollector;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\DataCollector\SecurityDataCollector;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
@@ -20,7 +21,7 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Http\FirewallMapInterface;
 
-class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
+class SecurityDataCollectorTest extends TestCase
 {
     public function testCollectWhenSecurityIsDisabled()
     {
@@ -165,6 +166,11 @@ class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
                 array('ROLE_ADMIN'),
                 array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
             ),
+            array(
+                array('ROLE_ADMIN', 'ROLE_OPERATOR'),
+                array('ROLE_ADMIN', 'ROLE_OPERATOR'),
+                array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
+            ),
         );
     }
 
@@ -172,6 +178,7 @@ class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
     {
         return new RoleHierarchy(array(
             'ROLE_ADMIN' => array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
+            'ROLE_OPERATOR' => array('ROLE_USER'),
         ));
     }
 

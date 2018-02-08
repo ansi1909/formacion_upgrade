@@ -14,6 +14,7 @@ namespace Symfony\Component\Cache\Adapter;
 use Predis\Connection\Factory;
 use Predis\Connection\Aggregate\PredisCluster;
 use Predis\Connection\Aggregate\RedisCluster;
+use Predis\Response\Status;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 
 /**
@@ -33,7 +34,9 @@ class RedisAdapter extends AbstractAdapter
     private $redis;
 
     /**
-     * @param \Redis|\RedisArray|\RedisCluster|\Predis\Client $redisClient
+     * @param \Redis|\RedisArray|\RedisCluster|\Predis\Client $redisClient     The redis client
+     * @param string                                          $namespace       The default namespace
+     * @param int                                             $defaultLifetime The default lifetime
      */
     public function __construct($redisClient, $namespace = '', $defaultLifetime = 0)
     {
@@ -87,6 +90,11 @@ class RedisAdapter extends AbstractAdapter
             $params['dbindex'] = $m[1];
             $params['path'] = substr($params['path'], 0, -strlen($m[0]));
         }
+        if (isset($params['host'])) {
+            $scheme = 'tcp';
+        } else {
+            $scheme = 'unix';
+        }
         $params += array(
             'host' => isset($params['host']) ? $params['host'] : $params['path'],
             'port' => isset($params['host']) ? 6379 : null,
@@ -117,7 +125,7 @@ class RedisAdapter extends AbstractAdapter
                 throw new InvalidArgumentException(sprintf('Redis connection failed (%s): %s', $e, $dsn));
             }
         } elseif (is_a($class, \Predis\Client::class, true)) {
-            $params['scheme'] = isset($params['host']) ? 'tcp' : 'unix';
+            $params['scheme'] = $scheme;
             $params['database'] = $params['dbindex'] ?: null;
             $params['password'] = $auth;
             $redis = new $class((new Factory())->create($params));
@@ -136,11 +144,14 @@ class RedisAdapter extends AbstractAdapter
     protected function doFetch(array $ids)
     {
         if ($ids) {
-            $values = $this->redis->mGet($ids);
-            $index = 0;
-            foreach ($ids as $id) {
-                if ($value = $values[$index++]) {
-                    yield $id => parent::unserialize($value);
+            $values = $this->pipeline(function () use ($ids) {
+                foreach ($ids as $id) {
+                    yield 'get' => array($id);
+                }
+            });
+            foreach ($values as $id => $v) {
+                if ($v) {
+                    yield $id => parent::unserialize($v);
                 }
             }
         }
@@ -251,61 +262,71 @@ class RedisAdapter extends AbstractAdapter
             return $failed;
         }
 
-        if (0 >= $lifetime) {
-            $this->redis->mSet($serialized);
-
-            return $failed;
-        }
-
-        $this->pipeline(function ($pipe) use (&$serialized, $lifetime) {
+        $results = $this->pipeline(function () use ($serialized, $lifetime) {
             foreach ($serialized as $id => $value) {
-                $pipe('setEx', $id, array($lifetime, $value));
+                if (0 >= $lifetime) {
+                    yield 'set' => array($id, $value);
+                } else {
+                    yield 'setEx' => array($id, $lifetime, $value);
+                }
             }
         });
+        foreach ($results as $id => $result) {
+            if (true !== $result && (!$result instanceof Status || $result !== Status::get('OK'))) {
+                $failed[] = $id;
+            }
+        }
 
         return $failed;
     }
 
-    private function execute($command, $id, array $args, $redis = null)
+    private function pipeline(\Closure $generator)
     {
-        array_unshift($args, $id);
-        call_user_func_array(array($redis ?: $this->redis, $command), $args);
-    }
+        $ids = array();
 
-    private function pipeline(\Closure $callback)
-    {
-        $redis = $this->redis;
-
-        try {
-            if ($redis instanceof \Predis\Client) {
-                $redis->pipeline(function ($pipe) use ($callback) {
-                    $this->redis = $pipe;
-                    $callback(array($this, 'execute'));
-                });
-            } elseif ($redis instanceof \RedisArray) {
-                $connections = array();
-                $callback(function ($command, $id, $args) use (&$connections) {
-                    if (!isset($connections[$h = $this->redis->_target($id)])) {
-                        $connections[$h] = $this->redis->_instance($h);
-                        $connections[$h]->multi(\Redis::PIPELINE);
-                    }
-                    $this->execute($command, $id, $args, $connections[$h]);
-                });
-                foreach ($connections as $c) {
-                    $c->exec();
+        if ($this->redis instanceof \Predis\Client) {
+            $results = $this->redis->pipeline(function ($redis) use ($generator, &$ids) {
+                foreach ($generator() as $command => $args) {
+                    call_user_func_array(array($redis, $command), $args);
+                    $ids[] = $args[0];
                 }
-            } else {
-                $pipe = $redis->multi(\Redis::PIPELINE);
-                try {
-                    $callback(array($this, 'execute'));
-                } finally {
-                    if ($pipe) {
-                        $redis->exec();
-                    }
+            });
+        } elseif ($this->redis instanceof \RedisArray) {
+            $connections = $results = $ids = array();
+            foreach ($generator() as $command => $args) {
+                if (!isset($connections[$h = $this->redis->_target($args[0])])) {
+                    $connections[$h] = array($this->redis->_instance($h), -1);
+                    $connections[$h][0]->multi(\Redis::PIPELINE);
                 }
+                call_user_func_array(array($connections[$h][0], $command), $args);
+                $results[] = array($h, ++$connections[$h][1]);
+                $ids[] = $args[0];
             }
-        } finally {
-            $this->redis = $redis;
+            foreach ($connections as $h => $c) {
+                $connections[$h] = $c[0]->exec();
+            }
+            foreach ($results as $k => list($h, $c)) {
+                $results[$k] = $connections[$h][$c];
+            }
+        } elseif ($this->redis instanceof \RedisCluster) {
+            // phpredis doesn't support pipelining with RedisCluster
+            // see https://github.com/phpredis/phpredis/blob/develop/cluster.markdown#pipelining
+            $results = array();
+            foreach ($generator() as $command => $args) {
+                $results[] = call_user_func_array(array($this->redis, $command), $args);
+                $ids[] = $args[0];
+            }
+        } else {
+            $this->redis->multi(\Redis::PIPELINE);
+            foreach ($generator() as $command => $args) {
+                call_user_func_array(array($this->redis, $command), $args);
+                $ids[] = $args[0];
+            }
+            $results = $this->redis->exec();
+        }
+
+        foreach ($ids as $k => $id) {
+            yield $id => $results[$k];
         }
     }
 }

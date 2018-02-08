@@ -60,7 +60,7 @@ class Caster
             $combine = false;
             $p = array_keys($a);
             foreach ($p as $i => $k) {
-                if (isset($k[0]) && "\0" !== $k[0] && !$reflector->hasProperty($k)) {
+                if (isset($k[0]) ? "\0" !== $k[0] && !$reflector->hasProperty($k) : \PHP_VERSION_ID >= 70200) {
                     $combine = true;
                     $p[$i] = self::PREFIX_DYNAMIC.$k;
                 } elseif (isset($k[16]) && "\0" === $k[16] && 0 === strpos($k, "\0class@anonymous\0")) {
@@ -132,8 +132,10 @@ class Caster
 
     public static function castPhpIncompleteClass(\__PHP_Incomplete_Class $c, array $a, Stub $stub, $isNested)
     {
-        $stub->class .= '('.$a['__PHP_Incomplete_Class_Name'].')';
-        unset($a['__PHP_Incomplete_Class_Name']);
+        if (isset($a['__PHP_Incomplete_Class_Name'])) {
+            $stub->class .= '('.$a['__PHP_Incomplete_Class_Name'].')';
+            unset($a['__PHP_Incomplete_Class_Name']);
+        }
 
         return $a;
     }

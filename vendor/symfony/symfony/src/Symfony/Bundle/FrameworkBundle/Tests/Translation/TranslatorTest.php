@@ -11,12 +11,13 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Tests\Translation;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Translation\MessageSelector;
 
-class TranslatorTest extends \PHPUnit_Framework_TestCase
+class TranslatorTest extends TestCase
 {
     protected $tmpDir;
 
@@ -133,6 +134,62 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $translator = new Translator($container, new MessageSelector());
 
         $this->assertSame('en', $translator->getLocale());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Translation\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The Translator does not support the following options: 'foo'
+     */
+    public function testInvalidOptions()
+    {
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')->getMock();
+
+        (new Translator($container, new MessageSelector(), [], ['foo' => 'bar']));
+    }
+
+    /** @dataProvider getDebugModeAndCacheDirCombinations */
+    public function testResourceFilesOptionLoadsBeforeOtherAddedResources($debug, $enableCache)
+    {
+        $someCatalogue = $this->getCatalogue('some_locale', array());
+
+        $loader = $this->getMockBuilder('Symfony\Component\Translation\Loader\LoaderInterface')->getMock();
+
+        $loader->expects($this->at(0))
+            ->method('load')
+            /* The "messages.some_locale.loader" is passed via the resource_file option and shall be loaded first */
+            ->with('messages.some_locale.loader', 'some_locale', 'messages')
+            ->willReturn($someCatalogue);
+
+        $loader->expects($this->at(1))
+            ->method('load')
+            /* This resource is added by an addResource() call and shall be loaded after the resource_files */
+            ->with('second_resource.some_locale.loader', 'some_locale', 'messages')
+            ->willReturn($someCatalogue);
+
+        $options = array(
+            'resource_files' => array('some_locale' => array('messages.some_locale.loader')),
+            'debug' => $debug,
+        );
+
+        if ($enableCache) {
+            $options['cache_dir'] = $this->tmpDir;
+        }
+
+        /** @var Translator $translator */
+        $translator = $this->createTranslator($loader, $options);
+        $translator->addResource('loader', 'second_resource.some_locale.loader', 'some_locale', 'messages');
+
+        $translator->trans('some_message', array(), null, 'some_locale');
+    }
+
+    public function getDebugModeAndCacheDirCombinations()
+    {
+        return array(
+            array(false, false),
+            array(true, false),
+            array(false, true),
+            array(true, true),
+        );
     }
 
     protected function getCatalogue($locale, $messages, $resources = array())

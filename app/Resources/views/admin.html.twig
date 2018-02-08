@@ -47,6 +47,7 @@
         <input type="hidden" id="sesion_time" name="sesion_time" value="{{sesion_time}}">
         <input type="hidden" id="timerId" name="timerId" value="">
         <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}">
+        <input type="hidden" id="url_qr" name="url_qr" value="{{ path('_ajaxQR') }}">
 
         {# Cabecera del area de trabajo #}
         <header class="navbar-fixed">
@@ -200,6 +201,8 @@
                 </div>
             </div>
         </div>
+
+        <button id="qr">qr</button>
 
         {% block javascripts %}
             {# Jquery, Tether and Bootstrap JS. #}

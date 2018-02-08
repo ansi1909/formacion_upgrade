@@ -70,4 +70,17 @@ $(document).ready(function() {
             $( '.columorden' ).css( 'cursor','auto' );
     });
 
+    $('#qr').click(function(){
+        $.ajax({
+            type: "GET",
+            url: url_qr,
+            async: true,
+            data: {  },
+            dataType: "json",
+            success: function(data) {
+                $('#qr').val(hola);
+            }
+        })
+    })
+
 });

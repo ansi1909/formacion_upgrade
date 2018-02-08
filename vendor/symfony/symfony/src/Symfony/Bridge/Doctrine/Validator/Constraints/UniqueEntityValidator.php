@@ -63,6 +63,10 @@ class UniqueEntityValidator extends ConstraintValidator
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 
+        if (null === $entity) {
+            return;
+        }
+
         if ($constraint->em) {
             $em = $this->registry->getManager($constraint->em);
 
@@ -176,9 +180,15 @@ class UniqueEntityValidator extends ConstraintValidator
             return $this->formatValue($value, self::PRETTY_DATE);
         }
 
-        // non unique value is a composite PK
         if ($class->getName() !== $idClass = get_class($value)) {
-            $identifiers = $em->getClassMetadata($idClass)->getIdentifierValues($value);
+            // non unique value might be a composite PK that consists of other entity objects
+            if ($em->getMetadataFactory()->hasMetadataFor($idClass)) {
+                $identifiers = $em->getClassMetadata($idClass)->getIdentifierValues($value);
+            } else {
+                // this case might happen if the non unique column has a custom doctrine type and its value is an object
+                // in which case we cannot get any identifiers for it
+                $identifiers = array();
+            }
         } else {
             $identifiers = $class->getIdentifierValues($value);
         }

@@ -326,4 +326,15 @@ class DefaultController extends Controller
         return $response;
 
     }
+
+    public function ajaxQRAction()
+    {
+        $ruta = 'qr/';
+
+        \PHPQRCode\QRcode::png("Test", "qr/qrcode.png", 'L', 4, 2);
+        $return = $ruta;
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
 }

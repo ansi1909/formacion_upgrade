@@ -11,10 +11,11 @@
 
 namespace Symfony\Component\Debug\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\Debug\ErrorHandler;
 
-class DebugClassLoaderTest extends \PHPUnit_Framework_TestCase
+class DebugClassLoaderTest extends TestCase
 {
     /**
      * @var int Error reporting level before running tests
@@ -60,7 +61,7 @@ class DebugClassLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testUnsilencing()
     {
-        if (PHP_VERSION_ID >= 70000) {
+        if (\PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('PHP7 throws exceptions, unsilencing is not required anymore.');
         }
         if (defined('HHVM_VERSION')) {
@@ -108,7 +109,7 @@ class DebugClassLoaderTest extends \PHPUnit_Framework_TestCase
         } catch (\ErrorException $exception) {
             // if an exception is thrown, the test passed
             $this->assertStringStartsWith(__FILE__, $exception->getFile());
-            if (PHP_VERSION_ID < 70000) {
+            if (\PHP_VERSION_ID < 70000) {
                 $this->assertRegExp('/^Runtime Notice: Declaration/', $exception->getMessage());
                 $this->assertEquals(E_STRICT, $exception->getSeverity());
             } else {
@@ -244,7 +245,7 @@ class DebugClassLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testReservedForPhp7()
     {
-        if (PHP_VERSION_ID >= 70000) {
+        if (\PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('PHP7 already prevents using reserved names.');
         }
 

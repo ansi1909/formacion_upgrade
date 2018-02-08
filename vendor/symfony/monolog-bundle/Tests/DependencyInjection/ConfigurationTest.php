@@ -218,7 +218,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('mailer', $config['handlers']['swift']['mailer']);
     }
 
-    public function testWithElasticsearchHandler() {
+    public function testWithElasticsearchHandler()
+    {
         $configs = array(
             array(
                 'handlers' => array(
@@ -240,7 +241,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $config['handlers']['elasticsearch']['ignore_error']);
         $this->assertEquals('my-record', $config['handlers']['elasticsearch']['document_type']);
         $this->assertEquals('my-index', $config['handlers']['elasticsearch']['index']);
-
     }
 
     public function testWithConsoleHandler()
@@ -267,6 +267,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             OutputInterface::VERBOSITY_NORMAL => Logger::NOTICE,
             OutputInterface::VERBOSITY_VERBOSE => Logger::INFO,
             OutputInterface::VERBOSITY_VERY_VERBOSE => 150,
+            OutputInterface::VERBOSITY_QUIET => Logger::ERROR,
             OutputInterface::VERBOSITY_DEBUG => Logger::DEBUG
         ), $config['handlers']['console']['verbosity_levels']);
     }
