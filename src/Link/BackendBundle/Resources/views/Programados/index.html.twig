@@ -91,7 +91,7 @@
                                 {% if not usuario_empresa %}
                                     <th>{{ 'Empresa'|trans }}</th>
                                 {% endif %}
-                                <th>{{ 'Tipo Notificación'|trans }}</th>
+                                <th>{{ 'Tipo notificación'|trans }}</th>
                                 <th>{{ 'Acciones'|trans }}</th>
                             </tr>
                         </thead>
@@ -106,7 +106,7 @@
                                     <td>{{ notificacion.tipoNotificacion.nombre }}</td>
                                     <td class="center">
                                         <a href="#" title="{{'Nuevo registro' | trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ notificacion.id }}"><span class="fa fa-plus"></span></a>
-                                        <a href="#" title="{{ 'Ver Historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
+                                        <a href="#" title="{{ 'Ver historial'|trans }}" class="btn btn-link btn-sm see" data="{{ notificacion.id }}"><span class="fa fa-eye"></span></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -146,7 +146,7 @@
 {% endblock %}
 {% block formModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos de la Programación'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos de la programación'|trans}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>

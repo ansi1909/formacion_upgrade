@@ -106,7 +106,7 @@ class NotificacionController extends Controller
                                     if ($usuario_empresa == 0){
                                         $notificaciones .= '<th>'.$this->get('translator')->trans('Empresa').'</th>';
                                     }
-                                    $notificaciones .= '<th>'.$this->get('translator')->trans('Tipo Notificación').'</th>
+                                    $notificaciones .= '<th>'.$this->get('translator')->trans('Tipo notificación').'</th>
                                     <th>'.$this->get('translator')->trans('Acciones').'</th>
                                 </tr>
                             </thead>
@@ -169,7 +169,7 @@ class NotificacionController extends Controller
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                             'choice_label' => 'nombre',
                                                             'expanded' => false,
-                                                            'label' => $this->get('translator')->trans('Tipo Notificación'),
+                                                            'label' => $this->get('translator')->trans('Tipo notificación'),
                                                             'placeholder' => ''))
                 ->getForm();
                 
@@ -183,7 +183,7 @@ class NotificacionController extends Controller
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                                    'choice_label' => 'nombre',
                                                                    'expanded' => false,
-                                                                   'label' => $this->get('translator')->trans('Tipo Notificación'),
+                                                                   'label' => $this->get('translator')->trans('Tipo notificación'),
                                                                    'placeholder' => ''))
                 ->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
                                                           'choice_label' => 'nombre',
@@ -297,7 +297,7 @@ class NotificacionController extends Controller
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                                    'choice_label' => 'nombre',
                                                                    'expanded' => false,
-                                                                   'label' => $this->get('translator')->trans('Tipo Notificación'),
+                                                                   'label' => $this->get('translator')->trans('Tipo notificación'),
                                                                    'placeholder' => ''))
                 ->getForm();
                 
@@ -311,7 +311,7 @@ class NotificacionController extends Controller
                 ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
                                                                    'choice_label' => 'nombre',
                                                                    'expanded' => false,
-                                                                   'label' => $this->get('translator')->trans('Tipo Notificación'),
+                                                                   'label' => $this->get('translator')->trans('Tipo notificación'),
                                                                    'placeholder' => ''))
                 ->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
                                                           'choice_label' => 'nombre',

@@ -646,4 +646,24 @@ class Functions
 
 	}
 
+	// Verifica si el usuario tiene el rol Empresa y devuelve empresa_id
+	public function emailUsuarios($usuarios, $notificacion, $template)
+	{
+		$controller = 'RecordatoriosCommand';
+      	$parametros = array();
+		foreach ($usuarios as $usuario) {
+          $parametros= array('twig'=>$template,
+                             'asunto'=>$notificacion->getAsunto(),
+                             'remitente'=>array('info@formacion2-0.com' => 'Formación 2.0'),
+                             'destinatario'=>$usuario->getCorreoCorporativo(),
+                             'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
+
+          $this->sendEmail($parametros, $controller);
+
+        }
+		
+		return true;
+
+	}
+
 }

@@ -75,6 +75,7 @@ Datos de la categoría: Datos de la categoría
 Datos de la empresa: Datos de la empresa
 Datos de la opción: Datos de la opción
 Datos de la pregunta: Datos de la pregunta
+Datos de la programación: Datos de la programación
 Datos del grupo: Datos del grupo
 Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
@@ -82,7 +83,7 @@ Datos del usuario: Datos del usuario
 Datos del Tipo de Notificación: Datos del Tipo de Notificación
 Datos del Tipo de Destino: Datos del Tipo de Destino
 Datos del tutorial: Datos del tutorial
-Datos Notificación: Datos Notificación
+Datos notificación: Datos notificación
 Dar acceso: Dar acceso
 de la evaluación: de la evaluación
 de un total de: de un total de
@@ -106,6 +107,8 @@ Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
 El apellido del usuario es requerido.: El apellido del usuario es requerido.
 El archivo: El archivo
+El asunto de la notificación debe ser mínimo de 3 caracteres.: El asunto de la notificación debe ser mínimo de 3 caracteres.
+El asunto de la notificación es requerido.: El asunto de la notificación es requerido.
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
 El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
@@ -116,6 +119,7 @@ El enunciado es requerido.: El enunciado es requerido.
 El grupo ha sido almacenada con éxito: El grupo ha sido almacenada con éxito
 El login ya existe.: El login ya existe.
 El material complementario debe ser sólo archivo con extensión pdf.: El material complementario debe ser sólo archivo con extensión pdf.
+El mensaje es requerido.: El mensaje es requerido.
 El nivel ha sido almacenado con éxito: El nivel ha sido almacenado con éxito
 El nivel es requerido: El nivel es requerido
 El nombre de la empresa debe ser mínimo de 3 caracteres.: El nombre de la empresa debe ser mínimo de 3 caracteres.
@@ -130,6 +134,7 @@ El país es requerido.: El país es requerido.
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
 El tipo de elemento es requerido.: El tipo de elemento es requerido.
+El tipo de notificación es requerida.: El tipo de notificación es requerida.
 El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
 El valor de la pregunta debe ser un valor numérico.: El valor de la pregunta debe ser un valor numérico.
 El valor de la pregunta es requerido.: El valor de la pregunta es requerido.
@@ -152,6 +157,7 @@ Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
 Errores: Errores
 Errores de validación: Errores de validación
+Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
 Este campo es requerido.: Este campo es requerido.
@@ -203,6 +209,7 @@ La faq ha sido almacenada con éxito: La faq ha sido almacenada con éxito
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
+La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 Lado: Lado
 Listado de Aplicaciones: Listado de Aplicaciones
@@ -251,7 +258,7 @@ Nueva evaluación: Nueva evaluación
 Nueva página: Nueva página
 Nueva pregunta: Nueva pregunta
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
-Nuevo Registro: Nuevo Registro
+Nuevo registro: Nuevo registro
 Nuevos registros almacenados: Nuevos registros almacenados
 Opción: Opción
 Opción correcta (Lado B): Opción correcta (Lado B)
@@ -269,6 +276,7 @@ Páginas principales: Páginas principales
 Panel de acceso: Panel de acceso
 Paso: Paso
 País: País
+Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Perfil Empresarial: Perfil Empresarial
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
@@ -294,7 +302,11 @@ Roles: Roles
 Roles asignados: Roles asignados
 Roles a seleccionar: Roles a seleccionar
 Respuesta: Respuesta
+Seleccione el/los usuarios: Seleccione el/los usuarios
+Seleccione el nivel: Seleccione el nivel
+Seleccione el programa: Seleccione el programa
 Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostrar los niveles
+Seleccione fecha difusión: Seleccione fecha difusión
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Siguiente: Siguiente
@@ -309,8 +321,7 @@ Teléfono de contacto: Teléfono de Contacto
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Tipo de elemento: Tipo de elemento
 Tipo de pregunta: Tipo de pregunta
-Tipo Notificación: Tipo Notificación
-Tipo de Notificaciones: Tipo de Notificaciones
+Tipo notificación: Tipo notificación
 Tipo Destino: Tipo Destino
 Tipo de Destinos: Tipo de Destinos
 Tutoriales: Tutoriales
@@ -318,6 +329,7 @@ Tutoriales: Tutoriales
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usuario: Usuario
+Usuarios: Usuarios
 Usuario inactivo. Contacte al administrador del sistema.: Usuario inactivo. Contacte al administrador del sistema.
 Usuario o clave incorrecta.: Usuario o clave incorrecta.
 Usuarios activos: Usuarios activos
@@ -330,7 +342,7 @@ Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
 Valor de la pregunta: Valor de la pregunta
 Vencimiento: Vencimiento
-Ver Historial: Ver Historial
+Ver historial: Ver historial
 Ver páginas asignadas: Ver páginas asignadas
 Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
