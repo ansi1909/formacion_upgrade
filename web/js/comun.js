@@ -72,13 +72,15 @@ $(document).ready(function() {
 
     $('#qr').click(function(){
         $.ajax({
-            type: "GET",
-            url: url_qr,
+            type: "POST",
+            url: $('#form').attr('action'),
             async: true,
-            data: {  },
+            data: $("#form").serialize(),
             dataType: "json",
             success: function(data) {
-                $('#qr').val(hola);
+                $('#qri').html(data.ruta);
+                $('#nombre').val("");
+                $('#contenido').val("");
             }
         })
     })

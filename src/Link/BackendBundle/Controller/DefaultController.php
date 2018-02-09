@@ -327,12 +327,20 @@ class DefaultController extends Controller
 
     }
 
-    public function ajaxQRAction()
+    public function ajaxQRAction(Request $request)
     {
-        $ruta = 'qr/';
 
-        \PHPQRCode\QRcode::png("Test", "qr/qrcode.png", 'L', 4, 2);
-        $return = $ruta;
+        $nombre = $request->request->get('nombre');
+        $contenido = $request->request->get('contenido');
+        $size = $request->request->get('size');
+
+        $nombre = $nombre.'.png';
+
+        \PHPQRCode\QRcode::png($contenido, "../qr/".$nombre, 'H', $size, 4);
+
+        $ruta ='<img src="/formacion2.0/qr/'.$nombre.'">';
+        
+        $return = array('ruta' =>$ruta);
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
