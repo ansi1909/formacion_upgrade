@@ -1,4 +1,5 @@
 Acceso: Access
+Acceso a la página: Access to this page
 Acción: Action
 Acciones: Actions
 Aceptar: Accept
@@ -17,8 +18,10 @@ Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Archivos: Files
+Asignación de página padre: Father page assignment
 Asignación de páginas: Page assignment
 Asignación de páginas de la empresa: Page assignment of company
+Asignación habilitada: Enabled assignment
 Asignada: Assigned
 Asignar: Assign
 Asignar páginas: Assign page
@@ -100,6 +103,7 @@ Detalles de la página: Page details
 División funcional: Functional division
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
+Editar asignación: Edit assignment
 Editar página: Edit page
 Elegir empresa: Choose company
 Eliminado: Deleted
@@ -157,12 +161,14 @@ Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
 Errores de validación: Validation errors
-Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today's date
+Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Estructura: Structure
+Evaluación: Test
+Evaluación activa: Enabled test
 Fecha: Date
 Fecha Creación: Creation Date
 Fecha de nacimiento: Birthday
@@ -179,11 +185,12 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
-Historial de programaciones de: Programation history of 
+Historial de programaciones de: Programation history of
 Icono: Icon
 Imagen: Image
 Imagen lado: Image side
 Iniciar Sesión: Log in
+Inicio: Begin
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
 Ir al listado de evaluaciones: Go to tests list
@@ -237,6 +244,7 @@ Modificado el: Modified at
 Modificado por: Modified by
 Mostrando registros del: Showing items of
 Mostrar: Show
+Muro: Wall
 Ningún dato disponible en esta tabla: No data available in this table
 Nivel: Level
 Niveles: Levels
@@ -276,8 +284,9 @@ Páginas principales: Main pages
 Panel de acceso: Login
 Paso: Step
 País: Country
-Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today's date
+Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Perfil Empresarial: Company Profile
+Permisos: Permissions
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
@@ -319,6 +328,7 @@ Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
 Teléfono de contacto: Contact Number
 Tiempo de duración de la evaluación: Duration of the test
+Tiene muro: Has wall
 Tipo de elemento: Element type
 Tipo de pregunta: Question type
 Tipo notificación: Notification type

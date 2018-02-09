@@ -63,9 +63,9 @@ _asignarSubpaginas:
     defaults: { _controller: LinkBackendBundle:Pagina:asignarSubpaginas }
 
 _editAsignacion:
-    path:     /editAsignacion/{empresa_id}/{pagina_id}
+    path:     /editAsignacion/{pagina_empresa_id}
     defaults: { _controller: LinkBackendBundle:Pagina:editAsignacion }
 
 _showAsignacion:
     path:     /showAsignacion/{empresa_id}/{pagina_id}
-    defaults: { _controller: LinkBackendBundle:Pagina:showAsignacion }
+    defaults: { _controller: LinkBackendBundle:Pagina:showAsignacion, pagina_id: 0 }

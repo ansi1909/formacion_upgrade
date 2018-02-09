@@ -1,4 +1,5 @@
 Acceso: Acceso
+Acceso a la página: Acceso a la página
 Acción: Acción
 Acciones: Acciones
 Aceptar: Aceptar
@@ -17,8 +18,10 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Archivos: Archivos
+Asignación de página padre: Asignación de página padre
 Asignación de páginas: Asignación de páginas
 Asignación de páginas de la empresa: Asignación de páginas de la empresa
+Asignación habilitada: Asignación habilitada
 Asignada: Asignada
 Asignar: Asignar
 Asignar páginas: Asignar páginas
@@ -100,6 +103,7 @@ Detalles de la página: Detalles de la página
 División funcional: División funcional
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
+Editar asignación: Editar asignación
 Editar página: Editar página
 Elegir empresa: Elegir empresa
 Eliminado: Eliminado
@@ -163,6 +167,8 @@ Estatus de las sub-paginas: Estatus de las sub-paginas
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Estructura: Estructura
+Evaluación: Evaluación
+Evaluación activa: Evaluación activa
 Fecha: Fecha
 Fecha Creación: Fecha Creación
 Fecha de nacimiento: Fecha de nacimiento
@@ -184,6 +190,7 @@ Icono: Icono
 Imagen: Imagen
 Imagen lado: Imagen lado
 Iniciar Sesión: Iniciar Sesión
+Inicio: Inicio
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
 Ir al listado de evaluaciones: Ir al listado de evaluaciones
@@ -237,6 +244,7 @@ Modificado el: Modificado el
 Modificado por: Modificado por
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
+Muro: Muro
 Ningún dato disponible en esta tabla: Ningún dato disponible en esta tabla
 Nivel: Nivel
 Niveles: Niveles
@@ -278,6 +286,7 @@ Paso: Paso
 País: País
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Perfil Empresarial: Perfil Empresarial
+Permisos: Permisos
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
@@ -319,6 +328,7 @@ Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
 Teléfono de contacto: Teléfono de Contacto
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
+Tiene muro: Tiene muro
 Tipo de elemento: Tipo de elemento
 Tipo de pregunta: Tipo de pregunta
 Tipo notificación: Tipo notificación

@@ -5,6 +5,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Link\ComunBundle\Entity\CertiPaginaEmpresa;
 
 class Functions
 {	
@@ -588,7 +589,6 @@ class Functions
 
 	}
 
-
 	// Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
 	public function subPaginasEmpresa($pagina_id, $empresa_id, $json = 0)
 	{
@@ -663,6 +663,51 @@ class Functions
         }
 		
 		return true;
+
+	}
+
+	// Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
+	public function asignacionSubPaginas($pagina_empresa, $yml)
+	{
+
+		$em = $this->em;
+		
+		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId()),
+																			  array('orden' => 'ASC'));
+		
+		foreach ($subpages as $subpage)
+		{
+
+			$subpagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $subpage->getId(),
+                                                                                                    	   'empresa' => $pagina_empresa->getEmpresa()->getId()));
+
+			$query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p 
+			                                        WHERE p.pagina = :pagina_id AND p.estatusContenido = :activo')
+			            ->setParameters(array('pagina_id' => $subpage->getId(),
+			                        		  'activo' => $yml['parameters']['estatus_contenido']['activo']));
+			$tiene_prueba = $query->getSingleScalarResult();
+
+			if (!$subpagina_empresa)
+            {
+                // Nueva asignación
+                $subpagina_empresa = new CertiPaginaEmpresa();
+            }
+            $subpagina_empresa->setEmpresa($pagina_empresa->getEmpresa());
+            $subpagina_empresa->setPagina($subpage);
+            $subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
+            $subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
+            $subpagina_empresa->setActivo($pagina_empresa->getActivo());
+            $subpagina_empresa->setAcceso($pagina_empresa->getAcceso());
+            $subpagina_empresa->setPruebaActiva($tiene_prueba ? $pagina_empresa->getPruebaActiva() : false);
+            $subpagina_empresa->setMaxIntentos($pagina_empresa->getMaxIntentos());
+            $subpagina_empresa->setPuntajeAprueba($pagina_empresa->getPuntajeAprueba());
+            $subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
+            $em->persist($subpagina_empresa);
+            $em->flush();
+			
+			$this->asignacionSubPaginas($subpagina_empresa, $yml);
+
+		}
 
 	}
 

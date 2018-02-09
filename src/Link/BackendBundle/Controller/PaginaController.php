@@ -507,7 +507,7 @@ class PaginaController extends Controller
             {
                 $html .= '<a href="'.$this->generateUrl('_asignarSubpaginas', array('empresa_id' => $pe->getEmpresa()->getId(), 'pagina_padre_id' => $pe->getPagina()->getId())).'" title="'.$this->get('translator')->trans('Configurar asignación de sub-páginas').'" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>';
             }
-            $html .= '<a href="'.$this->generateUrl('_editAsignacion', array('empresa_id' => $pe->getEmpresa()->getId(), 'pagina_id' => $pe->getPagina()->getId())).'" title="'.$this->get('translator')->trans('Editar asignación').'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>';
+            $html .= '<a href="'.$this->generateUrl('_editAsignacion', array('pagina_empresa_id' => $pe->getId())).'" title="'.$this->get('translator')->trans('Editar asignación').'" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>';
             $html .= '</td>
                     </tr>';
         }
@@ -588,21 +588,41 @@ class PaginaController extends Controller
             foreach ($asignaciones as $pagina_id)
             {
 
+                $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
                 $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
                                                                                                             'empresa' => $empresa_id));
 
                 if (!$pagina_empresa)
                 {
+                    // Asignación de página padre
                     $pagina_empresa = new CertiPaginaEmpresa();
-                    $date = new DateTime();
-                    $pagina_empresa->setFechaInicio($date->modify('next monday')); // Fecha de inicio el próximo lunes
-                    $pagina_empresa->setFechaVencimiento($date->modify('+1 year')); // Fecha de vencimiento un año después
-                }
+                    $pagina_empresa->setEmpresa($empresa);
+                    $pagina_empresa->setPagina($pagina);
+                    $date = new \DateTime();
+                    $date->modify('next monday');
+                    $next_monday = $date->format('Y-m-d');
+                    $date->modify('+1 year');
+                    $next_year = $date->format('Y-m-d');
+                    $pagina_empresa->setFechaInicio(new \DateTime($next_monday)); // Fecha de inicio el próximo lunes
+                    $pagina_empresa->setFechaVencimiento(new \DateTime($next_year)); // Fecha de vencimiento un año después
+                    $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
+                    $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $em->persist($pagina_empresa);
+                    $em->flush();
 
-                $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
-                $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
-                $em->persist($pagina_empresa);
-                $em->flush();
+                    // Asignación de sub-páginas
+                    $f->asignacionSubPaginas($pagina_empresa, $yml);
+
+                }
+                else {
+
+                    // Solo actualizamos las páginas padres
+                    $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
+                    $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $em->persist($pagina_empresa);
+                    $em->flush();
+
+                }
 
             }
             
@@ -641,6 +661,88 @@ class PaginaController extends Controller
                                                                                             'paginas' => $paginas));
 
         }
+
+    }
+
+    public function showAsignacionAction($empresa_id, $pagina_id, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        // Páginas asignadas
+        $qb = $em->createQueryBuilder();
+        $qb->select('pe')
+           ->from('LinkComunBundle:CertiPaginaEmpresa', 'pe')
+           ->leftJoin('pe.pagina', 'p')
+           ->andWhere('pe.empresa = :empresa_id')
+           ->orderBy('p.orden', 'ASC');
+        $parametros['empresa_id'] = $empresa_id;
+        if ($pagina_id)
+        {
+
+            $qb->andWhere('pe.pagina = :pagina_id');
+            $parametros['pagina_id'] = $pagina_id;
+
+            // Página padre asignada
+            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            $pagina_padre_id = $pagina->getPagina()->getId();
+
+        }
+        else {
+            $qb->andWhere('p.pagina IS NULL');
+            $pagina_padre_id = 0;
+        }
+        $qb->setParameters($parametros);
+        $query = $qb->getQuery();
+        $pes = $query->getResult();
+
+        $asignaciones = array();
+
+        foreach ($pes as $pe)
+        {
+
+            // Permisos
+            $check_activo = $pe->getActivo() ? ' <span class="fa fa-check"></span>' : '';
+            $check_acceso = $pe->getAcceso() ? ' <span class="fa fa-check"></span>' : '';
+            $check_muro = $pe->getMuroActivo() ? ' <span class="fa fa-check"></span>' : '';
+            $check_prueba = $pe->getPruebaActiva() ? ' <span class="fa fa-check"></span>' : '';
+            $permisos = '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="activo'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Asignación habilitada').'">'.$this->get('translator')->trans('Activo').$check_activo.'</li>';
+            $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="acceso'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Acceso a la página').'">'.$this->get('translator')->trans('Acceso').$check_acceso.'</li>';
+            $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="muro'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Tiene muro').'">'.$this->get('translator')->trans('Muro').$check_muro.'</li>';
+            $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="prueba'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Evaluación activa').'">'.$this->get('translator')->trans('Evaluación').$check_prueba.'</li>';
+
+            $asignaciones[] = array('id' => $pe->getId(),
+                                    'pagina_id' => $pe->getPagina()->getId(),
+                                    'pagina' => $pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre(),
+                                    'estructura' => $f->subPaginasEmpresa($pe->getPagina()->getId(), $pe->getEmpresa()->getId(), 0),
+                                    'permisos' => $permisos,
+                                    'inicio' => $pe->getFechaInicio()->format('d/m/Y'),
+                                    'vencimiento' => $pe->getFechaVencimiento()->format('d/m/Y'));
+
+        }
+
+        return $this->render('LinkBackendBundle:Pagina:showAsignacion.html.twig', array('empresa' => $empresa,
+                                                                                        'asignaciones' => $asignaciones,
+                                                                                        'pagina_padre_id' => $pagina_padre_id));
 
     }
 
