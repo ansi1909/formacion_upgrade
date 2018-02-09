@@ -27,6 +27,13 @@ parameters:
         borrador: 1
         activo: 2
         inactivo: 3
+    tipo_destino:
+        todos: 1
+        nivel: 2
+        programa: 3
+        grupo: 4
+        no_ingresado: 5
+        no_ingresado_programa: 6
     folders:
         uploads: 'http://localhost/uploads/'
         dir_uploads: 'C:/wamp64/www/uploads/'
