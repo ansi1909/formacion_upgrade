@@ -702,6 +702,7 @@ class Functions
             $subpagina_empresa->setMaxIntentos($pagina_empresa->getMaxIntentos());
             $subpagina_empresa->setPuntajeAprueba($pagina_empresa->getPuntajeAprueba());
             $subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
+            $subpagina_empresa->setColaborativo($pagina_empresa->getColaborativo());
             $em->persist($subpagina_empresa);
             $em->flush();
 			

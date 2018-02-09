@@ -725,9 +725,11 @@ class PaginaController extends Controller
             $check_acceso = $pe->getAcceso() ? ' <span class="fa fa-check"></span>' : '';
             $check_muro = $pe->getMuroActivo() ? ' <span class="fa fa-check"></span>' : '';
             $check_prueba = $pe->getPruebaActiva() ? ' <span class="fa fa-check"></span>' : '';
+            $check_colaborativo = $pe->getColaborativo() ? ' <span class="fa fa-check"></span>' : '';
             $permisos = '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="activo'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Asignación habilitada').'">'.$this->get('translator')->trans('Activo').$check_activo.'</li>';
             $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="acceso'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Acceso a la página').'">'.$this->get('translator')->trans('Acceso').$check_acceso.'</li>';
             $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="muro'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Tiene muro').'">'.$this->get('translator')->trans('Muro').$check_muro.'</li>';
+            $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="colaborativo'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Espacio colaborativo').'">'.$this->get('translator')->trans('Espacio colaborativo').$check_colaborativo.'</li>';
             $permisos .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="prueba'.$pe->getPagina()->getId().'" p_str="'.$this->get('translator')->trans('Evaluación activa').'">'.$this->get('translator')->trans('Evaluación').$check_prueba.'</li>';
 
             $asignaciones[] = array('id' => $pe->getId(),
