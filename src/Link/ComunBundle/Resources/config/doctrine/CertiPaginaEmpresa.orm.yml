@@ -59,6 +59,9 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
         acceso:
             type: boolean
             nullable: true
+        colaborativo:
+            type: boolean
+            nullable: true
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

@@ -79,6 +79,13 @@ class CertiPaginaEmpresa
     private $acceso;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="colaborativo", type="boolean", nullable=true)
+     */
+    private $colaborativo;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -310,6 +317,30 @@ class CertiPaginaEmpresa
     public function getAcceso()
     {
         return $this->acceso;
+    }
+
+    /**
+     * Set colaborativo
+     *
+     * @param boolean $colaborativo
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setColaborativo($colaborativo)
+    {
+        $this->colaborativo = $colaborativo;
+    
+        return $this;
+    }
+
+    /**
+     * Get colaborativo
+     *
+     * @return boolean
+     */
+    public function getColaborativo()
+    {
+        return $this->colaborativo;
     }
 
     /**
