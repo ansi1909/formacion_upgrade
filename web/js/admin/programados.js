@@ -16,10 +16,6 @@ $(document).ready(function() {
 		
 	});
 
-    $('.paginate_button').click(function(){
-		observe();
-	});
-
 	$('#guardar').click(function(){
 		$('#guardar').hide();
 		$('#cancelar').hide();
@@ -71,27 +67,6 @@ function observe(){
 		window.location.replace($('#url_list').val());
 	});
 
-	
-
-    $( ".columorden" )
-          .mouseover(function() {
-            $( '.columorden' ).css( 'cursor','move' );
-          })
-          .mouseout(function() {
-            $( '.columorden' ).css( 'cursor','auto' );
-    });
-
-    $('.add').click(function(){
-		$('#tipo_destino_id').val('');
-		$('#entidad_id').val('');
-		$('.jsonfileds').hide();
-		var notificacion_id = $(this).attr('data');
-		var asunto = $('#asuntoTable'+notificacion_id).val()
-		$('#asunto').val(asunto);
-		$('#notificacion_id').val(notificacion_id);
-
-	});
-
 	var table = $('#dt').DataTable( {
 		destroy: true,
         rowReorder: true
@@ -109,37 +84,18 @@ function observe(){
  
     });
 
-	$('.see').click(function(){
-		var notificacion_id = $(this).attr('data');
-		$('#div-active-alert').hide();
-		$('#tbody_history_programation').hide();
-		$('#loading').show();
-		$.ajax({
-			type: "GET",
-			url: $('#url_programation').val(),
-			async: true,
-			data: { notificacion_id: notificacion_id },
-			dataType: "json",
-			success: function(data) {
-				$('.tree').jstree();
-				$('#tbody_history_programation').html(data.html);
-				$('#tbody_history_programation').show();
-				$('#notificacionTitle').html(data.notificacion);
-				$('#loading').hide();
-				$('.tree').jstree();
-				editProgramacion();
-				segundaTabla();
-				clearTimeout( timerId );
-			},
-			error: function(){
-				$('.tree').jstree();
-				$('#active-error').html($('#error_msg_history').val());
-				$('#div-active-alert').show();
-				$('.tree').jstree();
-				editProgramacion();
-			}
-		});
-		
+    $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
+    });
+
+  	afterPaginate();
+
+	$('.paginate_button').click(function(){
+		afterPaginate();
 	});
 
 }
@@ -154,6 +110,7 @@ function getListadoNotificaciones(empresa_id, usuario_empresa){
 		success: function(data) {
 			$('#list_notificaciones').html(data.notificaciones);
 			observe();
+			afterPaginate();
 			clearTimeout( timerId );
 		},
 		error: function(){
@@ -311,4 +268,51 @@ function segundaTabla()
             reordenar(id, 'AdminNotificacionProgramada', diff[i].newData);
         } 
     });
+}
+
+function afterPaginate(){
+
+	$('.add').click(function(){
+		$('#tipo_destino_id').val('');
+		$('#entidad_id').val('');
+		$('.jsonfileds').hide();
+		var notificacion_id = $(this).attr('data');
+		var asunto = $('#asuntoTable'+notificacion_id).val()
+		$('#asunto').val(asunto);
+		$('#notificacion_id').val(notificacion_id);
+
+	});
+
+	$('.see').click(function(){
+		var notificacion_id = $(this).attr('data');
+		$('#div-active-alert').hide();
+		$('#tbody_history_programation').hide();
+		$('#loading').show();
+		$.ajax({
+			type: "GET",
+			url: $('#url_programation').val(),
+			async: true,
+			data: { notificacion_id: notificacion_id },
+			dataType: "json",
+			success: function(data) {
+				$('.tree').jstree();
+				$('#tbody_history_programation').html(data.html);
+				$('#tbody_history_programation').show();
+				$('#notificacionTitle').html(data.notificacion);
+				$('#loading').hide();
+				$('.tree').jstree();
+				editProgramacion();
+				segundaTabla();
+				clearTimeout( timerId );
+			},
+			error: function(){
+				$('.tree').jstree();
+				$('#active-error').html($('#error_msg_history').val());
+				$('#div-active-alert').show();
+				$('.tree').jstree();
+				editProgramacion();
+			}
+		});
+		
+	});
 }
