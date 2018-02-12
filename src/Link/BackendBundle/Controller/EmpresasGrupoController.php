@@ -109,6 +109,7 @@ class EmpresasGrupoController extends Controller
             $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td> <td> </td>
             <td class="center">
                 <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
+                <a href="#" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
@@ -227,6 +228,60 @@ class EmpresasGrupoController extends Controller
 
         $return = json_encode($return);
         return new Response($return,200,array('Content-Type' => 'application/json'));
+
+    }
+
+    public function grupoPaginasAction($app_id)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario_empresa = 0;
+        $gruposdb= array();
+        $empresas = array();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+
+        if ($usuario->getEmpresa()) {
+            $usuario_empresa = 1; 
+
+            $query= $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g
+                                        WHERE g.empresa = :empresa_id
+                                        ORDER BY g.orden ASC')
+                                    ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
+            $grupos=$query->getResult();
+
+            foreach ($grupos as $grupo)
+            {
+                $gruposdb[]= array('id'=>$grupo->getId(),
+                              'nombre'=>$grupo->getNombre(),
+                              'orden'=>$grupo->getOrden(),
+                              'delete_disabled'=>$f->linkEliminar($grupo->getId(),'CertiGrupo'));
+
+            }
+        }
+        else {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        } 
+
+
+        return $this->render('LinkBackendBundle:empresasGrupo:asignar_pagina.html.twig');
 
     }
 
