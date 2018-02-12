@@ -30,9 +30,9 @@ class UsersScheduledCommand extends ContainerAwareCommand
       $em = $em = $this->getContainer()->get('doctrine')->getManager();
       $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
       // tomando fecha actual para buscar usuarios que no hallan ingresado en 5 días
-      $fecha = date('Y-m-j');
+      $fecha = '2018-03-31';
       $template = "LinkBackendBundle:Programados:email.html.twig";
-
+      /*
       // busco en notificacion_programada todas las notificaciones que el tipo destino sea Todos, Nivel, Programa, Grupo de participantes, que no sea una programacion hija y que no este enviada
       $programada = $em->createQuery("SELECT p FROM LinkComunBundle:AdminNotificacionProgramada p
                                       WHERE p.tipoDestino IN (1,2,3,4)
@@ -45,9 +45,9 @@ class UsersScheduledCommand extends ContainerAwareCommand
       $programadas = $programada->getResult();
 
      // en caso de que existan notificaciones de este tipo
-      if(count($programadas) > 0){
+    if(count($programadas) > 0){
 
-          foreach ($programadas as $prog){
+        foreach ($programadas as $prog){
             $output->writeln('Programacion tipo "Usuarios que no han ingresado" - programacion_id:'.$prog->getId());
             // busco en admin_notificacion la notificacion
             $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($prog->getNotificacion()->getId());
@@ -56,9 +56,10 @@ class UsersScheduledCommand extends ContainerAwareCommand
             // busco la empresa dueña de la notificacion y valido que este activa
             $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
                                        WHERE e.id = :empresa
-                                       AND e.activo = 'true'
+                                       AND e.activo = :activo
                                        ORDER BY e.id ASC")
-                        ->setParameters(array('empresa_id' => $notificacion->getEmpresa()->getId()));
+                        ->setParameters(array('empresa_id' => $notificacion->getEmpresa()->getId(),
+                                              'activo' => true));
             $empresa = $query->getResult();
 
             $output->writeln('La empresa_id: '.$empresa[0]->getId().' esta activa');
@@ -71,9 +72,10 @@ class UsersScheduledCommand extends ContainerAwareCommand
                 $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
                                            WHERE u.nivel = :nivel_id 
                                            AND u.empresa = :empresa_id
-                                           AND u.activo = 'true'
+                                           AND u.activo = :activo
                                            ORDER BY u.id ASC")
                             ->setParameters(array('nivel_id' => $prog->getEntidadId(),
+                                                  'activo' => true,
                                                   'empresa_id' => $empresa[0]->getId()));
                 $usuarios = $query->getResult();
 
@@ -90,14 +92,15 @@ class UsersScheduledCommand extends ContainerAwareCommand
                                                         LinkComunBundle:CertiPagina p
                                            WHERE p.id = :programa
                                            AND p.estatusContenido = 2
-                                           AND pe.activo = 'true'
+                                           AND pe.activo = :activo
                                            AND pe.empresa = :empresa
                                            AND pe.pagina = p.id
                                            AND n.paginaEmpresa = pe.id
                                            AND n.nivel = u.nivel
-                                           AND u.activo = 'true'
+                                           AND u.activo = :activo
                                            ORDER BY u.id ASC")
                             ->setParameters(array('programa' => $prog->getEntidadId(),
+                                                  'activo' => true,
                                                   'empresa' => $empresa[0]->getId()));
                 $usuarios = $query->getResult();
 
@@ -107,11 +110,12 @@ class UsersScheduledCommand extends ContainerAwareCommand
                 $output->writeln('Programacion tipo TODOS');
                 $output->writeln('Buscando usuarios del de la empresa_id: '.$empresa[0]->getId());
                 $active_users = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
-                                              WHERE u.activo = 'true'
+                                              WHERE u.activo = :activo
                                               AND u.empresa = :empresa_id
-                                              AND u.activo = 'true'
+                                              AND u.activo = :activo
                                               ORDER BY u.id ASC")
-                                   ->setParameters(array('empresa_id' => $empresa[0]->getId()));
+                                   ->setParameters(array('empresa_id' => $empresa[0]->getId(),
+                                                         'activo' => true));
                 $usuarios = $active_users->getResult();
 
             }
@@ -125,9 +129,10 @@ class UsersScheduledCommand extends ContainerAwareCommand
                                            JOIN LinkComunBundle:AdminNotificacionProgramada p 
                                            WHERE p.grupo = :grupo
                                            AND p.entidad = u.id
-                                           AND u.activo = 'true'
+                                           AND u.activo = :activo
                                            ORDER BY u.id ASC")
-                            ->setParameters(array('grupo' => $prog->getId()));
+                            ->setParameters(array('grupo' => $prog->getId(),
+                                                  'activo' => true));
                 $usuarios = $query->getResult();
 
             }
@@ -147,7 +152,25 @@ class UsersScheduledCommand extends ContainerAwareCommand
                 $em->persist($individual);
                 $em->flush();
             }
-          }
-       }
-    }
+        }
+    }*/
+        // Llamada a la función de BD que duplica la página
+        $consulta = array();
+        $query = $em->getConnection()->prepare('SELECT fnrecordatorios_usuarios(:pfecha) as resultado;');
+        $query->bindValue(':pfecha', date('Y-m-d'), \PDO::PARAM_STR);
+        $query->execute();
+        $consulta = $query->fetchAll();
+        $output->writeln('CONSULTA: '.$consulta[0]['resultado']);
+        for ($i = 0; $i < count($consulta); $i++) {
+            $output->writeln('ARREGLO: '.$consulta[$i]['resultado']);
+            $valor = explode('__', $consulta[$i]['resultado']);
+            $nombre = $valor[3];
+            $apellido = $valor[4];
+            $correo = $valor[5];
+            $asunto = $valor[0];
+            $mensaje = $valor[1];
+            $id = $valor[2];
+            $output->writeln('NOMBRE: '.$nombre.' APELLIDO: '.$apellido.' EMAIL: '.$correo.' ASUNTO: '.$asunto.' MENSAJE: '.$mensaje);
+        }
+  }
 }
