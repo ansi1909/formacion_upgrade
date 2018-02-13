@@ -3,7 +3,9 @@ Acceso a la página: Acceso a la página
 Acción: Acción
 Acciones: Acciones
 Aceptar: Aceptar
-Asignar: Asignar
+Activar: Activar
+Activar evaluación: Activar evaluación
+Activar muro: Activar muro
 Activar para ordenar la columna de manera ascendente: Activar para ordenar la columna de manera ascendente
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activo: Activo
@@ -17,6 +19,7 @@ Apellido: Apellido
 Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
+Aplicar periodo a las sub-páginas: Aplicar periodo a las sub-páginas
 Archivos: Archivos
 Asignación de página padre: Asignación de página padre
 Asignación de páginas: Asignación de páginas
@@ -43,9 +46,10 @@ Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
 Cantidad de registros creados: Cantidad de registros creados
 Cantidad de sub-páginas: Cantidad de sub-páginas
+Cantidad máxima de intentos: Cantidad máxima de intentos
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
 Cargando..: Cargando..
-Carga masiva
+Carga masiva: Carga masiva
 Cargo: Cargo
 Categoría: Categoría
 Categoría de las sub-paginas: Categoría de las sub-paginas
@@ -54,6 +58,7 @@ Ciudad: Ciudad
 Conceder: Conceder
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
+Configuración de asignación: Configuración de asignación
 Configuración de evaluaciones: Configuración de evaluaciones
 Configuración de la evaluación: Configuración de la evaluación
 Configuración de páginas: Configuración de páginas
@@ -163,6 +168,7 @@ Errores: Errores
 Errores de validación: Errores de validación
 Espacio colaborativo: Espacio colaborativo
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
+Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
 Este campo es requerido.: Este campo es requerido.
@@ -214,6 +220,7 @@ La descripción es requerida.: La descripción es requerida.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
 La empresa es requerida.: La empresa es requerida.
 La faq ha sido almacenada con éxito: La faq ha sido almacenada con éxito
+La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
@@ -245,6 +252,7 @@ Modificado el: Modificado el
 Modificado por: Modificado por
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
+Mostrar asignaciones: Mostrar asignaciones
 Muro: Muro
 Ningún dato disponible en esta tabla: Ningún dato disponible en esta tabla
 Nivel: Nivel
@@ -287,6 +295,7 @@ Paso: Paso
 País: País
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Perfil Empresarial: Perfil Empresarial
+Periodo: Periodo
 Permisos: Permisos
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
@@ -301,6 +310,7 @@ Programas: Programas
 Prog. asociados: Prog. asociados
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
+Puntaje con que se aprueba: Puntaje con que se aprueba
 Recordarme: Recordarme
 Región: Región
 Registrar Empresa: Registrar Empresa
@@ -319,6 +329,11 @@ Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostr
 Seleccione fecha difusión: Seleccione fecha difusión
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
+Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.
+Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.
+Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
+Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
+Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
 Siguiente: Siguiente
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.

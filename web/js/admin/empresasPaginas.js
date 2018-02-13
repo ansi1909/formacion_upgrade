@@ -30,9 +30,10 @@ function observe()
 
 	$('#tbody-pages tr').each(function(){
 		var tr = $(this).attr('id');
+		console.log(tr);
 		if (!(typeof tr === 'undefined' || tr === null)){
 			var tr_arr = tr.split('tr-');
-			var pagina_id = tr_arr[1];
+			var pagina_empresa_id = tr_arr[1];
 			treePaginas(pagina_empresa_id);
 		}
 	});

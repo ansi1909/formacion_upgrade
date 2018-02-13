@@ -337,44 +337,21 @@ class Functions
 	}
 
 	// Calcula la diferencia de tiempo entre fecha y hoy
-	// Si es menos de una hora retorna la cantidad de minutos
-	// Si es más de una hora y fecha es hoy retorna la hora de fecha
-	// Si fecha es ayer retorna "Ayer Hora"
-	// Si fecha es menor que ayer se muestra fecha formateado con la hora
+	// Retorna la cantidad de días
 	public function timeAgo($fecha)
 	{
 
-		$hoy = date('Y-m-d');
-		$ayer = date('Y-m-d', strtotime('yesterday'));
-		$time_ago = '';
+		$days_ago = 0;
 		
 		if ($fecha)
 		{
-			
 			$datetime1 = new \DateTime($fecha);
 			$datetime2 = new \DateTime("now");
 			$interval = $datetime1->diff($datetime2);
-
-			if ($fecha < $ayer)
-			{
-				$time_ago = $datetime1->format('Y-m-d H:i');
-			}
-			elseif ($fecha >= $ayer.' 00:00:00' && $fecha < $ayer.' 23:59:59') {
-				$time_ago = 'Ayer '.$datetime1->format('H:i');
-			}
-			elseif ($datetime1->format('Y-m-d') == $hoy) {
-				if ($interval->format('%h') > 1)
-				{
-					$time_ago = $datetime1->format('H:i');
-				}
-				else {
-					$time_ago = 'Hace '.$datetime1->format('i').' minutos';
-				}
-			}
-			
+			$days_ago = $interval->format('%d');
 		}
 
-        return $time_ago;
+        return $days_ago;
 
 	}
 
@@ -667,7 +644,7 @@ class Functions
 	}
 
 	// Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
-	public function asignacionSubPaginas($pagina_empresa, $yml)
+	public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0)
 	{
 
 		$em = $this->em;
@@ -692,21 +669,28 @@ class Functions
                 // Nueva asignación
                 $subpagina_empresa = new CertiPaginaEmpresa();
             }
-            $subpagina_empresa->setEmpresa($pagina_empresa->getEmpresa());
-            $subpagina_empresa->setPagina($subpage);
-            $subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
-            $subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
-            $subpagina_empresa->setActivo($pagina_empresa->getActivo());
-            $subpagina_empresa->setAcceso($pagina_empresa->getAcceso());
-            $subpagina_empresa->setPruebaActiva($tiene_prueba ? $pagina_empresa->getPruebaActiva() : false);
-            $subpagina_empresa->setMaxIntentos($pagina_empresa->getMaxIntentos());
-            $subpagina_empresa->setPuntajeAprueba($pagina_empresa->getPuntajeAprueba());
-            $subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
-            $subpagina_empresa->setColaborativo($pagina_empresa->getColaborativo());
+            if ($onlyDates)
+            {
+            	$subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
+            	$subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
+            }
+            else {
+            	$subpagina_empresa->setEmpresa($pagina_empresa->getEmpresa());
+	            $subpagina_empresa->setPagina($subpage);
+	            $subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
+	            $subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
+	            $subpagina_empresa->setActivo($pagina_empresa->getActivo());
+	            $subpagina_empresa->setAcceso($pagina_empresa->getAcceso());
+	            $subpagina_empresa->setPruebaActiva($tiene_prueba ? $pagina_empresa->getPruebaActiva() : false);
+	            $subpagina_empresa->setMaxIntentos($pagina_empresa->getMaxIntentos());
+	            $subpagina_empresa->setPuntajeAprueba($pagina_empresa->getPuntajeAprueba());
+	            $subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
+	            $subpagina_empresa->setColaborativo($pagina_empresa->getColaborativo());
+            }
             $em->persist($subpagina_empresa);
             $em->flush();
 			
-			$this->asignacionSubPaginas($subpagina_empresa, $yml);
+			$this->asignacionSubPaginas($subpagina_empresa, $yml, $onlyDates);
 
 		}
 

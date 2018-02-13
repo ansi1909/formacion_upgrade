@@ -483,7 +483,7 @@ class PaginaController extends Controller
                                         WHERE p.pagina = :pagina_id')
                         ->setParameter('pagina_id', $pe->getPagina()->getId());
             $tiene_subpaginas = $query->getSingleScalarResult();
-            $html .= '<tr>
+            $html .= '<tr id="tr-'.$pe->getId().'">
                         <td id="td-'.$pe->getId().'">&nbsp;</td>
                         <td>'.$pe->getFechaVencimiento()->format('d/m/Y').'</td>
                         <td class="center">
@@ -684,7 +684,6 @@ class PaginaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
@@ -745,6 +744,83 @@ class PaginaController extends Controller
         return $this->render('LinkBackendBundle:Pagina:showAsignacion.html.twig', array('empresa' => $empresa,
                                                                                         'asignaciones' => $asignaciones,
                                                                                         'pagina_padre_id' => $pagina_padre_id));
+
+    }
+
+    public function editAsignacionAction($pagina_empresa_id, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->find($pagina_empresa_id);
+
+        if ($request->getMethod() == 'POST')
+        {
+
+            $activo = $request->request->get('activo');
+            $acceso = $request->request->get('acceso');
+            $muro = $request->request->get('muro');
+            $colaborativo = $request->request->get('colaborativo');
+            $fechaInicio = $request->request->get('fechaInicio');
+            $fechaVencimiento = $request->request->get('fechaVencimiento');
+            $apply = $request->request->get('apply');
+            $evaluacion = $request->request->get('evaluacion');
+            $puntajeAprueba = $request->request->get('puntajeAprueba');
+            $maxIntentos = $request->request->get('maxIntentos');
+
+            // Reformateo de fecha de inicio
+            $fi = explode("/", $fechaInicio);
+            $fechaInicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
+
+            // Reformateo de fecha de vencimiento
+            $fv = explode("/", $fechaVencimiento);
+            $fechaVencimiento = $fv[2].'-'.$fv[1].'-'.$fv[0];
+
+            $pagina_empresa->setActivo($activo ? true : false);
+            $pagina_empresa->setFechaInicio(new \DateTime($fechaInicio));
+            $pagina_empresa->setFechaVencimiento(new \DateTime($fechaVencimiento));
+            $pagina_empresa->setPruebaActiva($evaluacion ? true : false);
+            $pagina_empresa->setMaxIntentos($maxIntentos ? $maxIntentos : null);
+            $pagina_empresa->setPuntajeAprueba($puntajeAprueba ? $puntajeAprueba : null);
+            $pagina_empresa->setMuroActivo($muro ? true : false);
+            $pagina_empresa->setAcceso($acceso ? true : false);
+            $pagina_empresa->setColaborativo($colaborativo ? true : false);
+            $em->persist($pagina_empresa);
+            $em->flush();
+
+            // Si apply es true se setean la fecha de inicio y de vencimiento para las sub-páginas
+            $onlyDates = $apply ? 1 : 0;
+            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates);
+
+            return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
+                                                                   'pagina_id' => $pagina_empresa->getPagina()->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
+            
+        }
+
+        // Prueba activa
+        $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $pagina_empresa->getPagina()->getId(),
+                                                                                     'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']));
+
+        return $this->render('LinkBackendBundle:Pagina:editAsignacion.html.twig', array('pagina_empresa' => $pagina_empresa,
+                                                                                        'prueba' => $prueba,
+                                                                                        'days_ago' => $f->timeAgo($pagina_empresa->getEmpresa()->getFechaCreacion()->format('Y-m-d H:i:s'))));
 
     }
 
