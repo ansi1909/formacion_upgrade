@@ -9,3 +9,9 @@ _registroCertificado:
 _showCertificado:
     path:     /mostrarCertificado/{certificado_id}
     defaults: { _controller: LinkBackendBundle:Certificado:mostrar }
+
+_ajaxTipoCertificado:
+    path:     /ajaxTipoCertificado
+    defaults: { _controller: LinkBackendBundle:Certificado:ajaxTipoCertificado }
+    requirements:
+        method: GET

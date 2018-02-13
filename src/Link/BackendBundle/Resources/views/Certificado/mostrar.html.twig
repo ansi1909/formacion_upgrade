@@ -81,12 +81,14 @@
                                         <input type="hidden" id="tipo_certificado_id" value="{{ certificado.tipoCertificado.id }}" />
                                     </div>
                                 </div>
+                                {% if entidad != '' %}
                                 <div class="col-sm-8 col-md-8 col-lg-8 entidad">
                                     <h5>{{ 'Entidad'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.entidadId }}</p>
+                                        <p>{{ entidad }}</p>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                             <br>
                             <div class="wizard-footer">
