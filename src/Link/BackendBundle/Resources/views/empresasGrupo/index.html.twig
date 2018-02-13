@@ -11,7 +11,6 @@
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
-<input type="hidden" id="url_asig_pag" name="url_asig_pag" value="{{ path ('_ajaxEmpresasGrupo') }}">
 <input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
 
 <br>
@@ -30,6 +29,7 @@
 {% endif %}
 </div>
 {% if not usuario_empresa %}
+<input type="hidden" id="app_id" name="app_id" value="{{app_id}}">
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
         <div class="card">

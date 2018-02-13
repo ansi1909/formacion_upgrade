@@ -65,7 +65,8 @@ class EmpresasGrupoController extends Controller
         return $this->render('LinkBackendBundle:empresasGrupo:index.html.twig', array('empresas' => $empresas,
                                                                                         'usuario_empresa' => $usuario_empresa,
                                                                                         'usuario' => $usuario,
-                                                                                        'grupos' => $gruposdb));
+                                                                                        'grupos' => $gruposdb,
+                                                                                        'app_id' => $app_id));
 
     }
 
@@ -74,6 +75,7 @@ class EmpresasGrupoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
+        $app_id = $request->query->get('app_id');
         $f = $this->get('funciones');
 
         $qb = $em->createQueryBuilder();
@@ -109,7 +111,7 @@ class EmpresasGrupoController extends Controller
             $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td> <td> </td>
             <td class="center">
                 <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
-                <a href="#" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
+                <a href="'.$this->generateUrl('_grupoPaginas', array('app_id' => $app_id,'grupo_id' => $grupo->getId(), 'empresa_id' => $grupo->getEmpresa()->getId())).'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
@@ -231,7 +233,7 @@ class EmpresasGrupoController extends Controller
 
     }
 
-    public function grupoPaginasAction($app_id)
+    public function grupoPaginasAction($app_id,$grupo_id,$empresa_id)
     {
 
         $session = new Session();
@@ -253,35 +255,12 @@ class EmpresasGrupoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $usuario_empresa = 0;
-        $gruposdb= array();
-        $empresas = array();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
-
-        if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1; 
-
-            $query= $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g
-                                        WHERE g.empresa = :empresa_id
-                                        ORDER BY g.orden ASC')
-                                    ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
-            $grupos=$query->getResult();
-
-            foreach ($grupos as $grupo)
-            {
-                $gruposdb[]= array('id'=>$grupo->getId(),
-                              'nombre'=>$grupo->getNombre(),
-                              'orden'=>$grupo->getOrden(),
-                              'delete_disabled'=>$f->linkEliminar($grupo->getId(),'CertiGrupo'));
-
-            }
-        }
-        else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-        } 
+        $query = $em->createQuery("SELECT c FROM LinkComunBundle:CertiPagina c 
+                                    WHERE c.pagina IS NULL ");
+        $paginas = $query->getResult();
 
 
-        return $this->render('LinkBackendBundle:empresasGrupo:asignar_pagina.html.twig');
+        return $this->render('LinkBackendBundle:empresasGrupo:asignar_pagina.html.twig', array('paginas' =>$paginas));
 
     }
 

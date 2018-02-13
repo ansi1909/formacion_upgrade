@@ -8,12 +8,8 @@
 {% block body %}
 
 
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
-<input type="hidden" id="url_asig_pag" name="url_asig_pag" value="{{ path ('_ajaxEmpresasGrupo') }}">
-<input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
 
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -35,10 +31,11 @@
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
+                        {% for pagina in paginas %}
                         <tbody id="grupos" name="grupos">
-                            {# set eo = cycle(['odd', 'even'], loop.index) #}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{#eo#}">
-                                <td>{# grupo.nombre #}</td>
+                                <td>{{ pagina.nombre }}</td>
                                 <td> </td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{# grupo.id #}"><span class="fa fa-pencil"></span></a>
@@ -47,6 +44,7 @@
                                 </td>
                             </tr>
                         </tbody>
+                        {% endfor %}
                 </table>                 
             </div>
         </div>
