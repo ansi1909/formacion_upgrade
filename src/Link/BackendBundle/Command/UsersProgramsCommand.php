@@ -24,66 +24,39 @@ class UsersProgramsCommand extends ContainerAwareCommand
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
-    {
+  {
 
-      $em = $em = $this->getContainer()->get('doctrine')->getManager();
+      //$doctrine = $this->getContainer()->get('doctrine');
+      $em = $this->getContainer()->get('doctrine')->getManager();
       $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
-      $template = "LinkBackendBundle:Programados:email.html.twig";
+      // tomando fecha actual para buscar usuarios que no hallan ingresado en 5 días
+      $template = "LinkBackendBundle:Programados:emailCommand.html.twig";
+      $consulta = array();
+      $query = $em->getConnection()->prepare('SELECT fnprograma_usuarios() AS resultado;');
+      $query->execute();
+      $consulta = $query->fetchAll();
+      $output->writeln(var_dump($consulta));
+      $output->writeln('CANTIDAD: '.count($consulta));
+      for ($i = 0; $i < count($consulta); $i++) {
+          $valor = explode('__', $consulta[$i]['resultado']);
+          $_nombre = explode('"', $valor[0]);
+          $nombre = $_nombre[1];
+          $apellido = $valor[1];
+          $correo = $valor[2];
+          $asunto = $valor[3];
+          $mensaje = $valor[4];
+          $_id = explode('"', $valor[5]);
+          $id = $_id[0];
+          $output->writeln('NOMBRE: '.$nombre.' APELLIDO: '.$apellido.' EMAIL: '.$correo.' ASUNTO: '.$asunto.' MENSAJE: '.$mensaje.' ID NOTIFICACION: '.$id[0]);
+          $parametros = array();
+          $parametros= array('twig'=>$template,
+                             'asunto'=>$asunto,
+                             'remitente'=>array('info@formacion2-0.com' => 'Formación 2.0'),
+                             'destinatario'=>$correo,
+                             'datos'=>array('mensaje' => $mensaje, 'nombre'=> $nombre, 'apellido' => $apellido ));
 
-      // busco en notificacion_programada todas las notificaciones que el tipo destino sea "Usuarios que no han ingresado a un programa", que no sea una programacion hija y que no este enviada
-      $programada = $em->createQuery("SELECT p FROM LinkComunBundle:AdminNotificacionProgramada p
-                                      WHERE p.tipoDestino = 6
-                                      AND p.grupo IS NULL
-                                      AND p.enviado IS NULL
-                                      ORDER BY p.id ASC");
+          $f->sendEmailCommand($parametros);
 
-      $programadas = $programada->getResult();
-
-      // en caso de que existan notificaciones de este tipo
-      if(count($programadas) > 0){
-
-        foreach ($programadas as $prog){
-            $output->writeln('Programacion tipo "Usuarios que no han ingresado a un programa" - programacion_id:'.$prog->getId());
-            // busco en admin_notificacion la notificacion
-            $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($prog->getNotificacion()->getId());
-            $output->writeln('notificacion_id:'.$prog->getNotificacion()->getId());
-
-            // busco la empresa dueña de la notificacion y valido que este activa
-            $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
-                                       WHERE e.id = :empresa
-                                       AND e.activo = 'true'
-                                       ORDER BY e.id ASC")
-                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId()));
-            $empresa = $query->getResult(); 
-            $output->writeln('La empresa_id: '.$empresa[0]->getId().' esta activa');
-
-            // busco usuarios activos que tengan el nivel disponible para el programa en su empresa, que el programa tenga el contenido activo y que este activo para la empresa 
-            $query = $em->createQuery("SELECT u FROM 
-                                                    LinkComunBundle:AdminUsuario u,
-                                                    LinkComunBundle:CertiNivelPagina n,
-                                                    LinkComunBundle:CertiPaginaEmpresa pe,
-                                                    LinkComunBundle:CertiPagina p
-                                       WHERE p.id = :programa
-                                       AND p.estatusContenido = 2
-                                       AND pe.activo = 'true'
-                                       AND pe.empresa = :empresa
-                                       AND pe.pagina = p.id
-                                       AND n.paginaEmpresa = pe.id
-                                       AND n.nivel = u.nivel
-                                       AND u.activo = 'true'
-                                       ORDER BY u.id ASC")
-                        ->setParameters(array('programa' => $prog->getEntidadId(),
-                                              'empresa' => $empresa[0]->getId()));
-            $usuarios = $query->getResult();
-
-            // llamando a la funcion que recorre lo usuarios y envia el mail
-            $f->emailUsuarios($usuarios, $notificacion, $template);
-
-            // Cambio el estatus de la programacion a enviada, siempre que se cumplan las condiciones anteriores
-            $prog->setEnviado(true);
-            $em->persist($prog);
-            $em->flush();
-        }
       }
    }
 }

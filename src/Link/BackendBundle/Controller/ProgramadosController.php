@@ -742,7 +742,7 @@ class ProgramadosController extends Controller
                 $em->flush();
 
                 // busco si hay notificaciones hijas de la programación para cambiar a enviado
-                $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($prog->getId());
+                $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
                 foreach ($grupo_programada as $individual) {
                     $individual->setEnviado(true);
                     $em->persist($individual);
