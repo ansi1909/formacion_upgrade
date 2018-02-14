@@ -63,10 +63,10 @@ class EmpresasGrupoController extends Controller
 
 
         return $this->render('LinkBackendBundle:empresasGrupo:index.html.twig', array('empresas' => $empresas,
-                                                                                        'usuario_empresa' => $usuario_empresa,
-                                                                                        'usuario' => $usuario,
-                                                                                        'grupos' => $gruposdb,
-                                                                                        'app_id' => $app_id));
+                                                                                      'usuario_empresa' => $usuario_empresa,
+                                                                                      'usuario' => $usuario,
+                                                                                      'grupos' => $gruposdb,
+                                                                                      'app_id' => $app_id));
 
     }
 
@@ -254,13 +254,46 @@ class EmpresasGrupoController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+        $paginas_db = array();
 
         $query = $em->createQuery("SELECT c FROM LinkComunBundle:CertiPagina c 
                                     WHERE c.pagina IS NULL ");
+
         $paginas = $query->getResult();
 
+        $query = $em->createQuery("SELECT g FROM LinkComunBundle:CertiGrupo g 
+                                    WHERE g.empresa = :empresa_id ")
+                    ->setParameter('empresa_id', $empresa_id);
 
-        return $this->render('LinkBackendBundle:empresasGrupo:asignar_pagina.html.twig', array('paginas' =>$paginas));
+        $grupos = $query->getResult();
+
+        foreach ($paginas as $pagina)
+        {
+            $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPaginaEmpresa p 
+                                       WHERE p.empresa = :empresa_id AND p.pagina = :pagina_id')
+                        ->setParameters(array('empresa_id' => $empresa_id, 
+                                              'pagina_id' => $pagina->getId()));
+
+            $paginas_empresa = $query->getResult();
+
+            if ($paginas_empresa) 
+            {
+                $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoPagina gp 
+                                          WHERE gp.grupo = :grupo_id AND gp.pagina = :pagina_id')
+                            ->setParameters(array('grupo_id' => $grupo_id, 
+                                                  'pagina_id' => $pagina->getId()));
+
+                $paginas_grupo = $query->getResult();
+                
+                if (!$paginas_grupo) 
+                {
+                     $paginas_db[] = array('id'=>$pagina->getId(),
+                                           'nombre'=>$pagina->getNombre());   
+                }
+            }       
+        }
+
+        return $this->render('LinkBackendBundle:empresasGrupo:asignar_pagina.html.twig', array('paginas' =>$paginas_db));
 
     }
 
