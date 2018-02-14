@@ -8,30 +8,6 @@ SET client_min_messages = warning;
 
 SET search_path = public, pg_catalog;
 
---
--- Name: admin_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: develo
---
-
-SELECT pg_catalog.setval('admin_usuario_id_seq', 13, true);
-
-
---
--- Data for Name: admin_usuario; Type: TABLE DATA; Schema: public; Owner: develo
---
-
-INSERT INTO admin_usuario VALUES (1, 'admin', 'admin', 'Administrador', 'Sistema', 'soporte_link_gerencial@gmail.com', NULL, true, '2017-09-21 10:28:00', '1981-01-29', 'VEN', 'Caracas', 'Capital', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO admin_usuario VALUES (2, 'asegovia', '123456', 'Ansise', 'Segovia', 'ansi79@gmail.com', 'ansiisesegovia@linkgerencial.com', true, '2018-02-09 16:51:59', '1979-09-19', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de Tecnología', 'Gerente de Tecnoligía', 12);
-INSERT INTO admin_usuario VALUES (3, 'mdominguez', '123456', 'Mary Flor', 'Dominguez', '', 'marydominguez@linkgerencial.com', true, '2018-02-09 16:53:31', '1960-09-13', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia General', 'Directora', 12);
-INSERT INTO admin_usuario VALUES (4, 'eherrera', '123456', 'Elgui', 'Herrera', '', 'eherrera@linkgerencial.com', true, '2018-02-09 16:55:34', '1957-02-13', 'VEN', 'Caracas', 'Central', 1, '', 'Viceprensidencia', 'Vicepresidente Ejecutivo', 12);
-INSERT INTO admin_usuario VALUES (5, 'mdaza', '123456', 'Marianella', 'Daza', '', 'mdaza@linkgerencial.com', true, '2018-02-09 16:57:14', '1979-07-27', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de Mercadeo', 'Gerente de mercadeo', 11);
-INSERT INTO admin_usuario VALUES (8, 'jchiquin', '123456', 'Jeimy', 'Chiquin', '', 'jchiquin@linkgerencial.com', true, '2018-02-09 17:31:26', '1981-08-05', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de proyectos', 'Gerente de proyectos', 12);
-INSERT INTO admin_usuario VALUES (6, 'aalvarez', '123456', 'Alnahir', 'Alvarez', 'alnahir07@hotmail.com', 'aalvarez@formacion2puntocero.com', true, '2018-02-09 17:22:16', '1999-07-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de mercadeo', 'Jefe de mercadeo', 11);
-INSERT INTO admin_usuario VALUES (9, 'yavila', '123456', 'Yasaac', 'Ávila', 'yavila.linkgerencial.com@gmail.com', 'yavila@linkgerencial.com', true, '2018-02-09 17:47:49', '1999-06-30', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Analista', 17);
-INSERT INTO admin_usuario VALUES (10, 'rvirguez', '123456', 'Ricardo', 'Virguez', 'rvirguez.linkgerencial@gmail.com', 'rvirguez@linkgerencial.com', true, '2018-02-09 17:51:27', '1990-11-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Analista', 17);
-INSERT INTO admin_usuario VALUES (11, 'rvirguez', '123456', 'Ricardo', 'Virguez', 'rvirguez.linkgerencial@gmail.com', 'rvirguez@linkgerencial.com', true, '2018-02-09 17:51:27', '1990-11-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Analista', 17);
-INSERT INTO admin_usuario VALUES (7, 'mrodriguez', '123456', 'Maria Gabriela', 'Rodriguez', 'mgrodriguez.linkgerencial@gmail.com', 'mgrodriguez@linkgerencial.com', true, '2018-02-09 17:27:02', '1999-09-19', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Administrador de contenido', 16);
-INSERT INTO admin_usuario VALUES (12, 'cgonzalez', '123456', 'Celinet', 'Gonzalez', '', 'cgonzalez@linkgerencial.com', true, '2018-02-09 17:53:49', '1995-02-08', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia General', 'Asistente', 17);
-INSERT INTO admin_usuario VALUES (13, 'jvelasquez', '123456', 'José', 'Velásquez', 'Josenriquev@gmail.com', 'jvelasquez@linkgerencial.com', true, '2018-02-09 17:55:56', '1979-01-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnoligía', 'Coordinador de desarrollo', 16);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_permiso_seq;; Type: SEQUENCE SET; Schema: public;
@@ -119,6 +95,33 @@ INSERT INTO admin_nivel VALUES (12, 'Lideres', 1);
 INSERT INTO admin_nivel VALUES (13, 'Lideres', 4);
 INSERT INTO admin_nivel VALUES (14, 'Coordinadores', 4);
 INSERT INTO admin_nivel VALUES (15, 'Lideres', 7);
+
+---------------------------------------------------------------------------------------------------
+-- Name: admin_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: develo
+--
+
+SELECT pg_catalog.setval('admin_usuario_id_seq', 14, true);
+
+
+--
+-- Data for Name: admin_usuario; Type: TABLE DATA;
+ Schema: public; Owner: develo
+--
+
+INSERT INTO admin_usuario VALUES (1, 'admin', 'admin', 'Administrador', 'Sistema', 'soporte_link_gerencial@gmail.com', NULL, true, '2017-09-21 10:28:00', '1981-01-29', 'VEN', 'Caracas', 'Capital', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO admin_usuario VALUES (2, 'asegovia', '123456', 'Ansise', 'Segovia', 'ansi79@gmail.com', 'ansiisesegovia@linkgerencial.com', true, '2018-02-09 16:51:59', '1979-09-19', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de Tecnología', 'Gerente de Tecnoligía', 12);
+INSERT INTO admin_usuario VALUES (3, 'mdominguez', '123456', 'Mary Flor', 'Dominguez', '', 'marydominguez@linkgerencial.com', true, '2018-02-09 16:53:31', '1960-09-13', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia General', 'Directora', 12);
+INSERT INTO admin_usuario VALUES (4, 'eherrera', '123456', 'Elgui', 'Herrera', '', 'eherrera@linkgerencial.com', true, '2018-02-09 16:55:34', '1957-02-13', 'VEN', 'Caracas', 'Central', 1, '', 'Viceprensidencia', 'Vicepresidente Ejecutivo', 12);
+INSERT INTO admin_usuario VALUES (5, 'mdaza', '123456', 'Marianella', 'Daza', '', 'mdaza@linkgerencial.com', true, '2018-02-09 16:57:14', '1979-07-27', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de Mercadeo', 'Gerente de mercadeo', 11);
+INSERT INTO admin_usuario VALUES (8, 'jchiquin', '123456', 'Jeimy', 'Chiquin', '', 'jchiquin@linkgerencial.com', true, '2018-02-09 17:31:26', '1981-08-05', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de proyectos', 'Gerente de proyectos', 12);
+INSERT INTO admin_usuario VALUES (6, 'aalvarez', '123456', 'Alnahir', 'Alvarez', 'alnahir07@hotmail.com', 'aalvarez@formacion2puntocero.com', true, '2018-02-09 17:22:16', '1999-07-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de mercadeo', 'Jefe de mercadeo', 11);
+INSERT INTO admin_usuario VALUES (9, 'yavila', '123456', 'Yasaac', 'Ávila', 'yavila.linkgerencial.com@gmail.com', 'yavila@linkgerencial.com', true, '2018-02-09 17:47:49', '1999-06-30', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Analista', 12);
+INSERT INTO admin_usuario VALUES (10, 'rvirguez', '123456', 'Ricardo', 'Virguez', 'rvirguez.linkgerencial@gmail.com', 'rvirguez@linkgerencial.com', true, '2018-02-09 17:51:27', '1990-11-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Analista', 12);
+INSERT INTO admin_usuario VALUES (11, 'rvirguez', '123456', 'Ricardo', 'Virguez', 'rvirguez.linkgerencial@gmail.com', 'rvirguez@linkgerencial.com', true, '2018-02-09 17:51:27', '1990-11-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Analista', 12);
+INSERT INTO admin_usuario VALUES (7, 'mrodriguez', '123456', 'Maria Gabriela', 'Rodriguez', 'mgrodriguez.linkgerencial@gmail.com', 'mgrodriguez@linkgerencial.com', true, '2018-02-09 17:27:02', '1999-09-19', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnología', 'Administrador de contenido', 12);
+INSERT INTO admin_usuario VALUES (12, 'cgonzalez', '123456', 'Celinet', 'Gonzalez', '', 'cgonzalez@linkgerencial.com', true, '2018-02-09 17:53:49', '1995-02-08', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia General', 'Asistente', 12);
+INSERT INTO admin_usuario VALUES (13, 'jvelasquez', '123456', 'José', 'Velásquez', 'Josenriquev@gmail.com', 'jvelasquez@linkgerencial.com', true, '2018-02-09 17:55:56', '1979-01-29', 'VEN', 'Caracas', 'Central', 1, '', 'Gerencia de tecnoligía', 'Coordinador de desarrollo', 12);
+
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_rol_usuario_seq;; Type: SEQUENCE SET; Schema: public;
