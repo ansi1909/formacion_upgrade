@@ -24,6 +24,7 @@ Archivos: Archivos
 Asignación de página padre: Asignación de página padre
 Asignación de páginas: Asignación de páginas
 Asignación de páginas de la empresa: Asignación de páginas de la empresa
+Asignación de sub-páginas de la empresa: Asignación de sub-páginas de la empresa
 Asignación habilitada: Asignación habilitada
 Asignada: Asignada
 Asignar: Asignar
@@ -69,6 +70,7 @@ Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
 Confirmar: Confirmar
 Contenido: Contenido
+Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Continuar: Continuar
 Contraseña: Contraseña
 Copia: Copia
@@ -252,7 +254,6 @@ Modificado el: Modificado el
 Modificado por: Modificado por
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
-Mostrar asignaciones: Mostrar asignaciones
 Muro: Muro
 Ningún dato disponible en esta tabla: Ningún dato disponible en esta tabla
 Nivel: Nivel
@@ -302,6 +303,7 @@ Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
 Pregunta: Pregunta
 Preguntas: Preguntas
+Prelación: Prelación
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
 Procesando: Procesando
 Procesar: Procesar

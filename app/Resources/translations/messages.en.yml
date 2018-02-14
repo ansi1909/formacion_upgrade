@@ -24,6 +24,7 @@ Archivos: Files
 Asignación de página padre: Father page assignment
 Asignación de páginas: Page assignment
 Asignación de páginas de la empresa: Page assignment of company
+Asignación de sub-páginas de la empresa: Sub-page assignment of company
 Asignación habilitada: Enabled assignment
 Asignada: Assigned
 Asignar: Assign
@@ -69,6 +70,7 @@ Configurar evaluación: Configure test
 Configurar página: Configure page
 Confirmar: Confirm
 Contenido: Content
+Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
 Contraseña: Password
 Copia: Copy
@@ -252,7 +254,6 @@ Modificado el: Modified at
 Modificado por: Modified by
 Mostrando registros del: Showing items of
 Mostrar: Show
-Mostrar asignaciones: Show assignments
 Muro: Wall
 Ningún dato disponible en esta tabla: No data available in this table
 Nivel: Level
@@ -302,6 +303,7 @@ Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
 Pregunta: Question
 Preguntas: Questions
+Prelación: Prelation
 Presiona el botón finalizar para completar: Press finish button to complete
 Procesando: Processing
 Procesar: Process

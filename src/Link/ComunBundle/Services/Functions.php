@@ -649,7 +649,8 @@ class Functions
 
 		$em = $this->em;
 		
-		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId()),
+		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId(),
+																					'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']),
 																			  array('orden' => 'ASC'));
 		
 		foreach ($subpages as $subpage)
@@ -668,14 +669,7 @@ class Functions
             {
                 // Nueva asignación
                 $subpagina_empresa = new CertiPaginaEmpresa();
-            }
-            if ($onlyDates)
-            {
-            	$subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
-            	$subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
-            }
-            else {
-            	$subpagina_empresa->setEmpresa($pagina_empresa->getEmpresa());
+                $subpagina_empresa->setEmpresa($pagina_empresa->getEmpresa());
 	            $subpagina_empresa->setPagina($subpage);
 	            $subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
 	            $subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
@@ -687,6 +681,14 @@ class Functions
 	            $subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
 	            $subpagina_empresa->setColaborativo($pagina_empresa->getColaborativo());
             }
+            else {
+            	if ($onlyDates)
+	            {
+	            	$subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
+	            	$subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
+	            }
+            }
+            
             $em->persist($subpagina_empresa);
             $em->flush();
 			

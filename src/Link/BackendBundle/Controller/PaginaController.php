@@ -698,16 +698,17 @@ class PaginaController extends Controller
         if ($pagina_id)
         {
 
-            $qb->andWhere('pe.pagina = :pagina_id');
+            $qb->andWhere('p.pagina = :pagina_id');
             $parametros['pagina_id'] = $pagina_id;
 
             // Página padre asignada
             $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-            $pagina_padre_id = $pagina->getPagina()->getId();
+            $pagina_padre_id = $pagina->getPagina() ? $pagina->getPagina()->getId() : 0;
 
         }
         else {
             $qb->andWhere('p.pagina IS NULL');
+            $pagina = new CertiPagina();
             $pagina_padre_id = 0;
         }
         $qb->setParameters($parametros);
@@ -743,6 +744,7 @@ class PaginaController extends Controller
 
         return $this->render('LinkBackendBundle:Pagina:showAsignacion.html.twig', array('empresa' => $empresa,
                                                                                         'asignaciones' => $asignaciones,
+                                                                                        'pagina' => $pagina,
                                                                                         'pagina_padre_id' => $pagina_padre_id));
 
     }
@@ -784,6 +786,7 @@ class PaginaController extends Controller
             $evaluacion = $request->request->get('evaluacion');
             $puntajeAprueba = $request->request->get('puntajeAprueba');
             $maxIntentos = $request->request->get('maxIntentos');
+            $prelacion = $request->request->get('prelacion');
 
             // Reformateo de fecha de inicio
             $fi = explode("/", $fechaInicio);
@@ -792,6 +795,15 @@ class PaginaController extends Controller
             // Reformateo de fecha de vencimiento
             $fv = explode("/", $fechaVencimiento);
             $fechaVencimiento = $fv[2].'-'.$fv[1].'-'.$fv[0];
+
+            if ($prelacion)
+            {
+                $pagina_prelacion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($prelacion);
+                $pagina_empresa->setPrelacion($pagina_prelacion);
+            }
+            else {
+                $pagina_empresa->setPrelacion(null);
+            }
 
             $pagina_empresa->setActivo($activo ? true : false);
             $pagina_empresa->setFechaInicio(new \DateTime($fechaInicio));
@@ -810,7 +822,7 @@ class PaginaController extends Controller
             $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates);
 
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
-                                                                   'pagina_id' => $pagina_empresa->getPagina()->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
+                                                                   'pagina_id' => $pagina_empresa->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));
             
         }
 
@@ -818,9 +830,173 @@ class PaginaController extends Controller
         $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $pagina_empresa->getPagina()->getId(),
                                                                                      'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']));
 
+        // Páginas hermanas para la prelación
+        $prelaciones = array();
+        $qb = $em->createQueryBuilder();
+        $qb->select('pe')
+           ->from('LinkComunBundle:CertiPaginaEmpresa', 'pe')
+           ->leftJoin('pe.pagina', 'p')
+           ->andWhere('pe.empresa = :empresa_id')
+           ->andWhere('p.id != :pagina_id')
+           ->orderBy('p.orden', 'ASC');
+        $parametros['empresa_id'] = $pagina_empresa->getEmpresa()->getId();
+        $parametros['pagina_id'] = $pagina_empresa->getPagina()->getId();
+        if ($pagina_empresa->getPagina()->getPagina())
+        {
+            $qb->andWhere('p.pagina = :pagina_hermana_id');
+            $parametros['pagina_hermana_id'] = $pagina_empresa->getPagina()->getPagina()->getId();
+        }
+        else {
+            $qb->andWhere('p.pagina IS NULL');
+        }
+        $qb->setParameters($parametros);
+        $query = $qb->getQuery();
+        $pes = $query->getResult();
+
+        foreach ($pes as $pe)
+        {
+            $prelaciones[] = array('id' => $pe->getPagina()->getId(),
+                                   'nombre' => $pe->getPagina()->getNombre());
+        }
+
         return $this->render('LinkBackendBundle:Pagina:editAsignacion.html.twig', array('pagina_empresa' => $pagina_empresa,
                                                                                         'prueba' => $prueba,
-                                                                                        'days_ago' => $f->timeAgo($pagina_empresa->getEmpresa()->getFechaCreacion()->format('Y-m-d H:i:s'))));
+                                                                                        'days_ago' => $f->timeAgo($pagina_empresa->getEmpresa()->getFechaCreacion()->format('Y-m-d H:i:s')),
+                                                                                        'prelaciones' => $prelaciones));
+
+    }
+
+    public function ajaxAccesoPaginaAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $pagina_empresa_id = $request->request->get('pagina_empresa_id');
+        $checked = $request->request->get('checked');
+
+        $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->find($pagina_empresa_id);
+        $pagina_empresa->setAcceso($checked ? true : false);
+        $em->persist($pagina_empresa);
+        $em->flush();
+                    
+        $return = array('id' => $pagina_empresa->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function asignarSubpaginasAction($empresa_id, $pagina_padre_id, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+
+        if ($request->getMethod() == 'POST')
+        {
+            
+            // Se guardan las páginas seleccionadas
+            $asignaciones = $request->request->get('asignar') ? $request->request->get('asignar') : array();
+            $activaciones = $request->request->get('activar') ? $request->request->get('activar') : array();
+            $accesos = $request->request->get('acceso') ? $request->request->get('acceso') : array();
+
+            foreach ($asignaciones as $pagina_id)
+            {
+
+                $p = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+                $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
+                                                                                                            'empresa' => $empresa_id));
+
+                if (!$pagina_empresa)
+                {
+                    // Asignación de página padre
+                    $pagina_empresa = new CertiPaginaEmpresa();
+                    $pagina_empresa->setEmpresa($empresa);
+                    $pagina_empresa->setPagina($p);
+                    $date = new \DateTime();
+                    $date->modify('next monday');
+                    $next_monday = $date->format('Y-m-d');
+                    $date->modify('+1 year');
+                    $next_year = $date->format('Y-m-d');
+                    $pagina_empresa->setFechaInicio(new \DateTime($next_monday)); // Fecha de inicio el próximo lunes
+                    $pagina_empresa->setFechaVencimiento(new \DateTime($next_year)); // Fecha de vencimiento un año después
+                    $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
+                    $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $em->persist($pagina_empresa);
+                    $em->flush();
+
+                    // Asignación de sub-páginas
+                    $f->asignacionSubPaginas($pagina_empresa, $yml);
+
+                }
+                else {
+
+                    // Solo actualizamos las páginas padres
+                    $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
+                    $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $em->persist($pagina_empresa);
+                    $em->flush();
+
+                }
+
+            }
+            
+            return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $empresa_id,
+                                                                   'pagina_id' => $pagina_padre_id));
+
+        }
+        else {
+
+            $paginas = array();
+            $i = 0;
+
+            // Todas las sub-páginas activas
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                        WHERE p.pagina = :pagina_id AND p.estatusContenido = :activo 
+                                        ORDER BY p.orden ASC")
+                        ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                              'pagina_id' => $pagina_padre_id));
+            $pages = $query->getResult();
+
+            foreach ($pages as $page)
+            {
+
+                $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $page->getId(),
+                                                                                                            'empresa' => $empresa_id));
+
+                $paginas[] = array('id' => $page->getId(),
+                                   'nombre' => $page->getNombre(),
+                                   'subpaginas' => $f->subPaginas($page->getId()),
+                                   'asignada' => $pagina_empresa ? 1 : 0,
+                                   'activar' => $pagina_empresa ? $pagina_empresa->getActivo() ? true : false : true,
+                                   'acceso' => $pagina_empresa ? $pagina_empresa->getAcceso() ? true : false : true);
+
+            }
+
+            return $this->render('LinkBackendBundle:Pagina:asignarSubpaginas.html.twig', array('empresa' => $empresa,
+                                                                                               'paginas' => $paginas,
+                                                                                               'pagina' => $pagina));
+
+        }
 
     }
 
