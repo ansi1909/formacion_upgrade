@@ -4,6 +4,8 @@ Acción: Action
 Acciones: Actions
 Aceptar: Accept
 Activar: Enable
+Activar evaluación: Enable test
+Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activo: Active
@@ -17,10 +19,12 @@ Apellido: Last Name
 Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
+Aplicar periodo a las sub-páginas: Apply period to sub-pages
 Archivos: Files
 Asignación de página padre: Father page assignment
 Asignación de páginas: Page assignment
 Asignación de páginas de la empresa: Page assignment of company
+Asignación de sub-páginas de la empresa: Sub-page assignment of company
 Asignación habilitada: Enabled assignment
 Asignada: Assigned
 Asignar: Assign
@@ -43,9 +47,10 @@ Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
 Cantidad de registros creados: Number of records created
 Cantidad de sub-páginas: Number of sub-pages
+Cantidad máxima de intentos: Maximum number of attempts
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cargando..: Loading..
-Carga masiva: Bulk Load
+Carga masiva: Bulk load
 Cargo: Appointment
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
@@ -54,6 +59,7 @@ Ciudad: City
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
+Configuración de asignación: Assignment setting
 Configuración de evaluaciones: Tests setting
 Configuración de la evaluación: Test setting
 Configuración de páginas: Pages setting
@@ -64,6 +70,7 @@ Configurar evaluación: Configure test
 Configurar página: Configure page
 Confirmar: Confirm
 Contenido: Content
+Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
 Contraseña: Password
 Copia: Copy
@@ -163,6 +170,7 @@ Errores: Errors
 Errores de validación: Validation errors
 Espacio colaborativo: Collaborative space
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
+Esta página no tiene evaluación asignada: This page does not have assigned test
 Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
 Este campo es requerido.: This field is required.
@@ -214,6 +222,7 @@ La descripción es requerida.: Description is required.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
 La empresa es requerida.: Company is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
+La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
 La notificación ha sido almacenada con éxito: Notification has been saved successfully
@@ -287,12 +296,14 @@ Paso: Step
 País: Country
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Perfil Empresarial: Company Profile
+Periodo: Period
 Permisos: Permissions
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
 Pregunta: Question
 Preguntas: Questions
+Prelación: Prelation
 Presiona el botón finalizar para completar: Press finish button to complete
 Procesando: Processing
 Procesar: Process
@@ -301,6 +312,7 @@ Programas: Programs
 Prog. asociados: Associated Prog.
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
+Puntaje con que se aprueba: Score with which it is approved
 Recordarme: Remember me
 Región: Region
 Registrar Empresa: Add/Edit Company
@@ -319,6 +331,11 @@ Seleccione la empresa para mostrar los niveles: Select the company to show its l
 Seleccione fecha difusión: Select dissemination date
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
+Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
+Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: If check YES, page will have a section in which user can comment over the wall
+Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
+Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
+Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
 Siguiente: Next
 Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension

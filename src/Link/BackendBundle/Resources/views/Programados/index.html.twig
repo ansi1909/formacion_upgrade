@@ -222,16 +222,6 @@
         </div>
         <div class="card-footer">
             <div class="col-sm-16 col-md-16 text-right">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
-            </div>
-        </div>
-    </div>
-    <div class="card" id="detail" style="display:none;">
-        <div class="card-footer">
-            <div class="col-sm-16 col-md-16 text-right">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
@@ -260,6 +250,49 @@
                 $('#form').submit();
             }
         });*/
+        $('.add').click(function(){
+            $('#tipo_destino_id').val('');
+            $('#entidad_id').val('');
+            $('.jsonfileds').hide();
+            var notificacion_id = $(this).attr('data');
+            var asunto = $('#asuntoTable'+notificacion_id).val()
+            $('#asunto').val(asunto);
+            $('#notificacion_id').val(notificacion_id);
+
+        });
+
+        $('.see').click(function(){
+            var notificacion_id = $(this).attr('data');
+            $('#div-active-alert').hide();
+            $('#tbody_history_programation').hide();
+            $('#loading').show();
+            $.ajax({
+                type: "GET",
+                url: $('#url_programation').val(),
+                async: true,
+                data: { notificacion_id: notificacion_id },
+                dataType: "json",
+                success: function(data) {
+                    $('.tree').jstree();
+                    $('#tbody_history_programation').html(data.html);
+                    $('#tbody_history_programation').show();
+                    $('#notificacionTitle').html(data.notificacion);
+                    $('#loading').hide();
+                    $('.tree').jstree();
+                    editProgramacion();
+                    segundaTabla();
+                    clearTimeout( timerId );
+                },
+                error: function(){
+                    $('.tree').jstree();
+                    $('#active-error').html($('#error_msg_history').val());
+                    $('#div-active-alert').show();
+                    $('.tree').jstree();
+                    editProgramacion();
+                }
+            });
+            
+        });
 
         $("#form").validate({
             /*errorLabelContainer: "#active-formulario-error ul",

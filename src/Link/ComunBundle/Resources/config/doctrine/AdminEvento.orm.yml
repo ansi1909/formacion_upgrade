@@ -39,9 +39,14 @@ Link\ComunBundle\Entity\AdminEvento:
             length: null
             options:
                 fixed: false
-        fecha:
+        fechaInicio:
             type: datetime
             nullable: true
+            column: fecha_inicio
+        fechaFin:
+            type: datetime
+            nullable: true
+            column: fecha_fin
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

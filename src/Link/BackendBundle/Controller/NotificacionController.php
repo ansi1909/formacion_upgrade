@@ -45,14 +45,17 @@ class NotificacionController extends Controller
         }
         else {
             $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
-                                       WHERE e.activo = 'true'
-                                       ORDER BY e.id ASC");
+                                       WHERE e.activo = :activo
+                                       ORDER BY e.id ASC")
+                        ->setParameters(array('activo' => true));
             $empresas = $query->getResult();
             
             $query2 = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
                                        JOIN LinkComunBundle:AdminEmpresa e
-                                       WHERE e.activo = 'true' AND e.id = n.empresa
-                                       ORDER BY n.id ASC");
+                                       WHERE e.activo = :activo 
+                                       AND e.id = n.empresa
+                                       ORDER BY n.id ASC")
+                         ->setParameters(array('activo' => true));
             $notificaciones = $query2->getResult();
         }
 
@@ -231,7 +234,7 @@ class NotificacionController extends Controller
         }
         else {
 
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() != null and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
             {
                 return $this->redirectToRoute('_authException');
             }
@@ -272,7 +275,7 @@ class NotificacionController extends Controller
         }
         else {
 
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() != null and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
             {
                 return $this->redirectToRoute('_authException');
             }

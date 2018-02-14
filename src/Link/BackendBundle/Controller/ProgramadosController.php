@@ -15,6 +15,7 @@ use Link\ComunBundle\Entity\AdminEmpresa;
 use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
 use Link\ComunBundle\Entity\AdminUsuario;
+use Symfony\Component\Yaml\Yaml;
 
 class ProgramadosController extends Controller
 {
@@ -137,11 +138,13 @@ class ProgramadosController extends Controller
         $fecha_actual = date('d/m/Y');
         $deshabilitado = "";
         $trclass = "";
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
 
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminNotificacionProgramada p
-                                   WHERE p.notificacion = :notificacion_id AND p.grupo IS NULL
+                                   WHERE p.notificacion = :notificacion_id 
+                                   AND p.grupo IS NULL
                                    ORDER BY p.id ASC")
                             ->setParameters(array('notificacion_id' => $notificacion->getId()));
         $notificaciones_programadas = $query->getResult();
@@ -164,16 +167,16 @@ class ProgramadosController extends Controller
         {
             $delete_disabled = $f->linkEliminar($notificacion_programada->getId(), 'AdminNotificacionProgramada');
             $delete = $delete_disabled=='' ? 'delete' : '';
-            if($notificacion_programada->getTipoDestino()->getNombre() == 'Programa'){
+            if($notificacion_programada->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa']){
 
                 $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
                 $entidad = $programa->getNombre();
 
-            }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Nivel'){
+            }elseif($notificacion_programada->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['nivel']){
                 $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($notificacion_programada->getEntidadId());
                 $entidad = $nivel->getNombre();
 
-            }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Grupo de participantes'){
+            }elseif($notificacion_programada->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo']){
                 $programacion_grupo = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
                 $entidad .= '<div class="tree">
                                 <ul data-jstree=\'{ "opened": true }\'>
@@ -187,14 +190,14 @@ class ProgramadosController extends Controller
                                     </li>
                                 </ul>
                             </div>';
-            }elseif($notificacion_programada->getTipoDestino()->getNombre() == 'Usuarios que no han ingresado a un programa'){
+            }elseif($notificacion_programada->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['no_ingresado_programa']){
                 $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
                 $entidad = $programa->getNombre();
 
             }else{
                 $entidad = 'N/A';
             }
-            if ($notificacion_programada->getEnviado() == true) {
+            if ($notificacion_programada->getEnviado()) {
                 $trclass = 'class="table-active"';
                 $deshabilitado = 'disabled';
             }
@@ -234,8 +237,9 @@ class ProgramadosController extends Controller
         $tipo_destino = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoDestino')->find($tipo_destino_id);
         $fecha_difusion = date('d/m/Y');
         $aviso = '';
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if($tipo_destino->getNombre() == "Nivel"){
+        if($tipo_destino->getId() == $yml['parameters']['tipo_destino']['nivel']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($notificacion->getEmpresa()->getId());
@@ -254,18 +258,20 @@ class ProgramadosController extends Controller
                 </div>
                 <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
-        }elseif($tipo_destino->getNombre() == "Programa"){
+        }elseif($tipo_destino->getId() == $yml['parameters']['tipo_destino']['programa']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                        JOIN LinkComunBundle:CertiPaginaEmpresa pe 
-                                       WHERE p.estatusContenido = 2
-                                       AND pe.activo = 'true'
+                                       WHERE p.estatusContenido = :estatus
+                                       AND pe.activo = :activo
                                        AND pe.empresa = :empresa
                                        AND pe.pagina = p.id
                                        AND p.pagina IS NULL
                                        ORDER BY p.id ASC")
-                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId()));
+                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId(),
+                                              'activo' => true,
+                                              'estatus' => $yml['parameters']['estatus_contenido']['activo']));
 
             $programas_asignados = $query->getResult();
             $formulario .='<div class="jsonfileds">
@@ -284,7 +290,7 @@ class ProgramadosController extends Controller
             <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
 
             
-        }elseif($tipo_destino->getNombre() == "Grupo de participantes"){
+        }elseif($tipo_destino->getId() == $yml['parameters']['tipo_destino']['grupo']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
@@ -306,18 +312,20 @@ class ProgramadosController extends Controller
                         </div>
                         <label id="entidad_id_grupo-error" class="error" for="entidad_id_grupo" style="display:none;"></label>';
             
-        }elseif($tipo_destino->getNombre() == "Usuarios que no han ingresado a un programa"){
+        }elseif($tipo_destino->getId() == $yml['parameters']['tipo_destino']['no_ingresado_programa']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy').'</strong></em>';
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                        JOIN LinkComunBundle:CertiPaginaEmpresa pe 
-                                       WHERE p.estatusContenido = 2
-                                       AND pe.activo = 'true'
+                                       WHERE p.estatusContenido = :estatus
+                                       AND pe.activo = :activo
                                        AND pe.empresa = :empresa
                                        AND pe.pagina = p.id
                                        AND p.pagina IS NULL
                                        ORDER BY p.id ASC")
-                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId()));
+                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId(),
+                                              'activo' => true,
+                                              'estatus' => $yml['parameters']['estatus_contenido']['activo']));
 
             $programas_asignados = $query->getResult();
             $formulario .='<div class="jsonfileds">
@@ -335,7 +343,7 @@ class ProgramadosController extends Controller
             </div>
             <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
-        }elseif($tipo_destino->getNombre() == "Todos"){
+        }elseif($tipo_destino->getId() == $yml['parameters']['tipo_destino']['todos']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
 
@@ -381,8 +389,9 @@ class ProgramadosController extends Controller
         $tipo_destino = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoDestino')->find($tipo_destino_id);
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if($tipo_destino->getNombre() == "Grupo de participantes"){
+        if($tipo_destino->getId() == $yml['parameters']['tipo_destino']['grupo']){
 
             if ($programacion_id)
             {
@@ -494,8 +503,9 @@ class ProgramadosController extends Controller
         $fecha_difusion = $programacion->getFechaDifusion()->format('d/m/Y');
         $aviso = '';
         $selected = '';
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if($programacion->getTipoDestino()->getNombre() == "Nivel"){
+        if($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['nivel']){
 
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
@@ -519,18 +529,20 @@ class ProgramadosController extends Controller
                 </div>
                 <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
-        }elseif($programacion->getTipoDestino()->getNombre() == "Programa"){
+        }elseif($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                        JOIN LinkComunBundle:CertiPaginaEmpresa pe 
-                                       WHERE p.estatusContenido = 2
-                                       AND pe.activo = 'true'
+                                       WHERE p.estatusContenido = :estatus
+                                       AND pe.activo = :activo
                                        AND pe.empresa = :empresa
                                        AND pe.pagina = p.id
                                        AND p.pagina IS NULL
                                        ORDER BY p.id ASC")
-                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId()));
+                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId(),
+                                              'activo' => true,
+                                              'estatus' => $yml['parameters']['estatus_contenido']['activo']));
 
             $programas_asignados = $query->getResult();
             $formulario .='<div class="jsonfileds">
@@ -552,7 +564,7 @@ class ProgramadosController extends Controller
             </div>
             <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
-        }elseif($programacion->getTipoDestino()->getNombre() == "Grupo de participantes"){
+        }elseif($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
             $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
@@ -589,18 +601,20 @@ class ProgramadosController extends Controller
                         </div>
                         <label id="entidad_id_grupo-error" class="error" for="entidad_id_grupo" style="display:none;"></label>';
             
-        }elseif($programacion->getTipoDestino()->getNombre() == "Usuarios que no han ingresado a un programa"){
+        }elseif($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['no_ingresado_programa']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy').'</strong></em>';
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                        JOIN LinkComunBundle:CertiPaginaEmpresa pe 
-                                       WHERE p.estatusContenido = 2
-                                       AND pe.activo = 'true'
+                                       WHERE p.estatusContenido = :estatus
+                                       AND pe.activo = :activo
                                        AND pe.empresa = :empresa
                                        AND pe.pagina = p.id
                                        AND p.pagina IS NULL
                                        ORDER BY p.id ASC")
-                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId()));
+                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId(),
+                                              'activo' => true,
+                                              'estatus' => $yml['parameters']['estatus_contenido']['activo']));
 
             $programas_asignados = $query->getResult();
             $formulario .='<div class="jsonfileds">
@@ -622,7 +636,7 @@ class ProgramadosController extends Controller
             </div>
             <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
-        }elseif($programacion->getTipoDestino()->getNombre() == "Todos"){
+        }elseif($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['todos']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
 
@@ -657,15 +671,16 @@ class ProgramadosController extends Controller
         $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($programacion_id);
         $hoy = date('d/m/Y');
         $template = "LinkBackendBundle:Programados:email.html.twig";
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if($programacion->getTipoDestino()->getNombre() == "Nivel" or $programacion->getTipoDestino()->getNombre() == "Programa" or $programacion->getTipoDestino()->getNombre() == "Todos" or $programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
+        if($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['nivel'] or $programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa'] or $programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['todos'] or $programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
         {
             if($hoy == $programacion->getFechaDifusion()->format("d/m/Y"))
             {
 
                 $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($programacion->getNotificacion()->getId());
 
-                if($programacion->getTipoDestino()->getNombre() == "Nivel")
+                if($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['nivel'])
                 {
 
                     $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
@@ -678,7 +693,7 @@ class ProgramadosController extends Controller
                     $usuarios = $query->getResult();
 
                 }
-                elseif($programacion->getTipoDestino()->getNombre() == "Programa")
+                elseif($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['programa'])
                 {
 
                     $query = $em->createQuery("SELECT u FROM 
@@ -698,7 +713,7 @@ class ProgramadosController extends Controller
                     $usuarios = $query->getResult();
 
                 }
-                elseif($programacion->getTipoDestino()->getNombre() == "Todos")
+                elseif($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['todos'])
                 {
 
                     $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
@@ -727,7 +742,7 @@ class ProgramadosController extends Controller
                 $em->flush();
 
                 // busco si hay notificaciones hijas de la programación para cambiar a enviado
-                $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($prog->getId());
+                $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
                 foreach ($grupo_programada as $individual) {
                     $individual->setEnviado(true);
                     $em->persist($individual);

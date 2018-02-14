@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiCertificado;
+use Symfony\Component\Yaml\Yaml;
 
 class CertificadoController extends Controller
 {
@@ -72,10 +73,12 @@ class CertificadoController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
      
-        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
+
         $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
         $tipo_imagen_certificados = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->findAll(array('nombre' => 'ASC'));
 
@@ -92,27 +95,28 @@ class CertificadoController extends Controller
             $entidad = $request->request->get('entidad');
             $imagen = trim($request->request->get('imagen'));
             $encabezado = trim($request->request->get('encabezado'));
-            $nombre = trim($request->request->get('nombre'));
+            $nombre = 'Nombre del Participante';
             $descripcion = trim($request->request->get('descripcion'));
             $titulo = trim($request->request->get('titulo'));
-            $fecha = trim($request->request->get('fecha'));
-            $qr = trim($request->request->get('qr'));
+            $fecha = 'Caracas, 12 de Febero de 2018';
+            $qr = 'código qr';
 
             $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $tipoCertificado = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->find($tipo_certificado_id);
             $tipoImagenCertificado = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->find($tipo_imagen_certificado_id);
             
+            $certificado->setEntidadId($entidad);
             $certificado->setEmpresa($empresa);
             $certificado->setTipoCertificado($tipoCertificado);
             $certificado->setTipoImagenCertificado($tipoImagenCertificado);
-            $certificado->setEntidadId($entidad);
             $certificado->setImagen($imagen);
             $certificado->setEncabezado($encabezado);
             $certificado->setNombre($nombre);
             $certificado->setDescripcion($descripcion);
             $certificado->setTitulo($titulo);
             $certificado->setFecha($fecha);
-            $certificado->setQr($qr);            
+            $certificado->setQr($qr);
+
             $em->persist($certificado);
             $em->flush();
 
@@ -148,9 +152,113 @@ class CertificadoController extends Controller
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
 
-        return $this->render('LinkBackendBundle:Certificado:mostrar.html.twig', array('certificado' => $certificado));
+        $entidad='';
+        if($certificado->getEntidadId() != 0)
+        {
+            if($certificado->getTipoCertificado()->getId() == 2)
+            {
+                $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
+
+                $entidad = $pagina->getNombre();
+            }else
+            {
+                $grupoPaginas= $em->getRepository('LinkComunBundle:CertiGrupo')->find($certificado->getEntidadId());
+
+                $entidad = $grupoPaginas->getNombre();
+            }
+        }
+
+        return $this->render('LinkBackendBundle:Certificado:mostrar.html.twig', array('certificado' => $certificado,
+                                                                                      'entidad' => $entidad));
 
     }
 
+    public function ajaxTipoCertificadoAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $tipo = $request->query->get('tipo_certificado_id');
+        $empresa_id = $request->query->get('empresa_id');
+        $error = array('existente' => '');
+        $ok = 1;
+        $msg = '';
+        $html = '';
+       
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
+        if($tipo == 1)
+        {
+            $html .= '<div class="col-14">
+                        <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="0">
+                        <span class="fa fa-font"></span>
+                      </div>';
+        }else
+        {
+
+            if($tipo == 2)
+            {
+                
+                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                           JOIN pe.pagina p
+                                           WHERE pe.empresa= :empresa AND p.pagina IS NULL AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
+                            ->setParameters(array('empresa' => $empresa->getId(),
+                                                  'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                  'activo' => true ));
+                $paginaEmpresa = $query->getResult();
+                if($paginaEmpresa)
+                {
+                    $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
+                    $html .= '<div class="col-14">
+                                <select class="form-control form_sty_select" name="entidad" id="entidad">'; 
+                    foreach ($paginaEmpresa as $pagina)
+                    {
+                        $nombre = ucwords(mb_strtolower( $pagina->getPagina()->getNombre(),"UTF-8" ));
+                        $html .= '<option value="'.$pagina->getPagina()->getId().'">'.$nombre.'</option>';
+                    }
+                    $html .= '  </select>
+                                <span class="fa fa-industry"></span>
+                              </div>';                    
+
+                }else
+                {
+                     $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
+                                <label for="texto" class="col-20 col-form-label">La Empresa no tiene Páginas registradas</label>
+                                <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
+                               </div>';
+                }
+            }else
+            {
+                if($tipo == 3)
+                {
+                    $grupoPaginas = $em->getRepository('LinkComunBundle:CertiGrupo')->findByEmpresa($empresa->getId());
+                    if($grupoPaginas)
+                    {
+                        $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
+                        $html .= '<div class="col-14">
+                                    <select class="form-control form_sty_select" name="entidad" id="entidad">';                        
+                        foreach ($grupoPaginas as $pagina)
+                        {
+                            $nombre = ucwords(mb_strtolower( $pagina->getNombre(),"UTF-8" ));
+                            $html .= '<option value="'.$pagina->getId().'">'.$nombre.'</option>';
+                        }
+                        $html .= '  </select>
+                                <span class="fa fa-industry"></span>
+                              </div>';
+                    }else
+                    {
+                         $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
+                                    <label for="texto" class="col-20 col-form-label">La Empresa no tiene Grupo de Páginas registradas</label>
+                                    <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
+                                   </div>';
+                    }
+                }
+            }  
+        }
+
+        $return = array('ok' => $ok,'html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
 }

@@ -32,7 +32,7 @@ function observe()
 		var tr = $(this).attr('id');
 		if (!(typeof tr === 'undefined' || tr === null)){
 			var tr_arr = tr.split('tr-');
-			var pagina_id = tr_arr[1];
+			var pagina_empresa_id = tr_arr[1];
 			treePaginas(pagina_empresa_id);
 		}
 	});
@@ -67,7 +67,7 @@ function observe()
 			type: "POST",
 			url: $('#url_acceso').val(),
 			async: true,
-			data: { id: pagina_empresa_id, entity: 'CertiPaginaEmpresa', checked: checked },
+			data: { pagina_empresa_id: pagina_empresa_id, checked: checked },
 			dataType: "json",
 			success: function(data) {
 				console.log('Acceso concedido/No concedido realizado. Id '+data.id);

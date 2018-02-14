@@ -65,7 +65,8 @@ class EmpresasGrupoController extends Controller
         return $this->render('LinkBackendBundle:empresasGrupo:index.html.twig', array('empresas' => $empresas,
                                                                                         'usuario_empresa' => $usuario_empresa,
                                                                                         'usuario' => $usuario,
-                                                                                        'grupos' => $gruposdb));
+                                                                                        'grupos' => $gruposdb,
+                                                                                        'app_id' => $app_id));
 
     }
 
@@ -74,6 +75,7 @@ class EmpresasGrupoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
+        $app_id = $request->query->get('app_id');
         $f = $this->get('funciones');
 
         $qb = $em->createQueryBuilder();
@@ -109,6 +111,7 @@ class EmpresasGrupoController extends Controller
             $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td> <td> </td>
             <td class="center">
                 <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
+                <a href="'.$this->generateUrl('_grupoPaginas', array('app_id' => $app_id,'grupo_id' => $grupo->getId(), 'empresa_id' => $grupo->getEmpresa()->getId())).'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
@@ -227,6 +230,37 @@ class EmpresasGrupoController extends Controller
 
         $return = json_encode($return);
         return new Response($return,200,array('Content-Type' => 'application/json'));
+
+    }
+
+    public function grupoPaginasAction($app_id,$grupo_id,$empresa_id)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery("SELECT c FROM LinkComunBundle:CertiPagina c 
+                                    WHERE c.pagina IS NULL ");
+        $paginas = $query->getResult();
+
+
+        return $this->render('LinkBackendBundle:empresasGrupo:asignar_pagina.html.twig', array('paginas' =>$paginas));
 
     }
 

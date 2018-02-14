@@ -6,101 +6,45 @@
 {% endblock %}
 
 {% block body %}
-{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
+
+
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
-<input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
-
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{'Agrupación de páginas' | trans}}</h3>
     </div>
-{% if not usuario_empresa %}
-   <div class="col text-right">
-       <button type="button" id="new" class="bttn__nr new ocultar" data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
-   </div>
-{% else %}
-    <div class="col text-right">
-       <button type="button" id="new" class="bttn__nr new " data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
-   </div>
-{% endif %}
 </div>
-{% if not usuario_empresa %}
-<input type="hidden" id="app_id" name="app_id" value="{{app_id}}">
-<div class="row">
-    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
-        <div class="card">
-            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{'Elegir empresa' | trans}}</h5>
-            </div>
-            <div class="card-block">
-                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
-                    <div class="row">
-                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                <option value="0"></option>
-                                {% for empresa in empresas %}
-                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                            <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                        </div>
-                    </div>
-                <br>
-            </div>
-        </div>
-    </div>
-</div>
-{% else %}
-    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
-{% endif %}
 <div class="row">
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Listado de grupos' |trans}}</h5>
+                <h5 class="card-title">{{ 'Listado de paginas' |trans}}</h5>
             </div>
-            {% if not usuario_empresa %}
-            <div class="card-block" id="lpe">   
-            {% else %}
             <div class="card-block">
                 <table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title columorden">Orden</th>
-                            <th class="hd__title">{{'Id'|trans }}</th>
                             <th class="hd__title">{{'Nombre'|trans }}</th>
                             <th class="hd__title">{{'Prog. asociados'|trans }}</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-            {%endif%}
-                    {% if not usuario_empresa %}
+                        {% for pagina in paginas %}
                         <tbody id="grupos" name="grupos">
-                          
-                        </tbody>
-                    {% else %}
-                        <tbody id="grupos" name="grupos">
-                          {% for grupo in grupos %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
-                            <tr class="{{eo}}">
-                                <td class="columorden">{{ grupo.orden }}</td>
-                                <td>{{ grupo.id }}</td>
-                                <td>{{ grupo.nombre }}</td>
+                            <tr class="{#eo#}">
+                                <td>{{ pagina.nombre }}</td>
                                 <td> </td>
                                 <td class="center">
-                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="{{ path('_grupoPaginas', { 'app_id': app.session.get('app_id'),'grupo_id': grupo.id,'empresa_id': usuario.empresa.id }) }}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{# grupo.id #}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm ir" data-toggle="modal" data-target="#formModal" data="{# grupo.id #}"><span class="fa fa-sitemap"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {# if grupo.delete_disabled == '' #}delete{# endif #} {# grupo.delete_disabled #}" data="{#grupo.id#}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
-                          {% endfor %}
                         </tbody>
-                    {% endif %}
+                        {% endfor %}
                 </table>                 
             </div>
         </div>

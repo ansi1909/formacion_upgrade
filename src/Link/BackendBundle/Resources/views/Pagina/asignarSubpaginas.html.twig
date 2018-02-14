@@ -1,0 +1,99 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+{% set pagina_id = pagina.pagina ? pagina.pagina.id : 0 %}
+<br><br>
+<form role="form" method="POST" id="form" action="{{ path('_asignarSubpaginas', { 'empresa_id': empresa.id, 'pagina_padre_id': pagina.id }) }}">
+    <div class="row align-items-center justify-content-between">
+        <div class="col">
+            <a href="{{ path('_showAsignacion', { 'empresa_id': empresa.id, 'pagina_id': pagina_id })}}" class="bttn__bck3"><span class="fa fa-clipboard"></span><span class="text__bck3">{{ 'Asignación de página padre'|trans }}</span></a>
+        </div>
+        <div class="col text-right">
+            <button type="submit" id="save" class="bttn__nr"><span class="fa fa-save"></span><span class="text__nr">{{ 'Guardar'|trans }}</span></button>
+        </div>
+        <div class="col-16 col-sm-16 page-title">
+            <h3>{{ pagina.categoria.nombre }}: {{ pagina.nombre }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-16">
+            <div class="card">
+                <div class="card-header gradiente">
+                    <h5 class="card-title">{{ 'Asignación de sub-páginas de la empresa'|trans }} {{ empresa.nombre }}</h5>
+                </div>
+                <div class="card-block">
+                    <table class="table">
+                        <thead class="sty__title">
+                            <tr>
+                                <th class="hd__title">{{ 'Página'|trans }}</th>
+                                <th class="hd__title">{{ 'Estructura'|trans }}</th>
+                                <th class="hd__title">{{ 'Asignar'|trans }}</th>
+                                <th class="hd__title">{{ 'Activar'|trans }}</th>
+                                <th class="hd__title">{{ 'Dar acceso'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in paginas %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                <tr class="{{ eo }}">
+                                    <td>{{ p.nombre }}</td>
+                                    <td>
+                                        {% if p.subpaginas.tiene > 0 %}
+                                            <div class="tree">
+                                                <ul data-jstree='{ "opened" : true }'>
+                                                    {{ p.subpaginas.return|raw }}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            {{ 'No tiene sub-páginas'|trans }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if p.asignada %}
+                                            {{ 'Asignada'|trans }}
+                                            <input type="hidden" id="asignar{{ p.id }}" name="asignar[]" value="{{ p.id }}">
+                                        {% else %}
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="asignar{{ p.id }}" name="asignar[]" value="{{ p.id }}">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="can-toggle demo-rebrand-2 small">
+                                            <input id="activar{{ p.id }}" class="cb_activar" name="activar[]" value="{{ p.id }}" type="checkbox" {% if p.activar %}checked{% endif %}>
+                                            <label for="activar{{ p.id }}">
+                                                <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="can-toggle demo-rebrand-2 small">
+                                            <input id="acceso{{ p.id }}" class="cb_acceso" name="acceso[]" value="{{ p.id }}" type="checkbox" {% if p.acceso %}checked{% endif %}>
+                                            <label for="acceso{{ p.id }}">
+                                                <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/empresaPaginas.js') }}"></script>
+{% endblock %}

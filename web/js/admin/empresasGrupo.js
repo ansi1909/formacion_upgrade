@@ -3,7 +3,8 @@ $(document).ready(function() {
     $('#empresa_id').change(function(){
     	console.log('Usuario admin');
     	var empresa_id = $(this).val();
-		getListadoGrupos(empresa_id);
+    	var app_id = $('#app_id').val();
+		getListadoGrupos(empresa_id, app_id);
 	});
 
 	$('.new').click(function(){
@@ -85,12 +86,12 @@ $(document).ready(function() {
 });
 
 
-function getListadoGrupos(empresa_id){
+function getListadoGrupos(empresa_id, app_id){
 	$.ajax({
 		type: "GET",
 		url: $('#url_grupos').val(),
 		async: true,
-		data: { empresa_id: empresa_id },
+		data: { empresa_id: empresa_id, app_id: app_id},
 		dataType: "json",
 		success: function(data) {
 			$('#lpe').html(data.grupos);

@@ -46,9 +46,16 @@ class AdminEvento
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="datetime", nullable=true)
+     * @ORM\Column(name="fecha_inicio", type="datetime", nullable=true)
      */
-    private $fecha;
+    private $fechaInicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_fin", type="datetime", nullable=true)
+     */
+    private $fechaFin;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -165,27 +172,51 @@ class AdminEvento
     }
 
     /**
-     * Set fecha
+     * Set fechaInicio
      *
-     * @param \DateTime $fecha
+     * @param \DateTime $fechaInicio
      *
      * @return AdminEvento
      */
-    public function setFecha($fecha)
+    public function setFechaInicio($fechaInicio)
     {
-        $this->fecha = $fecha;
+        $this->fechaInicio = $fechaInicio;
     
         return $this;
     }
 
     /**
-     * Get fecha
+     * Get fechaInicio
      *
      * @return \DateTime
      */
-    public function getFecha()
+    public function getFechaInicio()
     {
-        return $this->fecha;
+        return $this->fechaInicio;
+    }
+
+    /**
+     * Set fechaFin
+     *
+     * @param \DateTime $fechaFin
+     *
+     * @return AdminEvento
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaFin
+     *
+     * @return \DateTime
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
     }
 
     /**
