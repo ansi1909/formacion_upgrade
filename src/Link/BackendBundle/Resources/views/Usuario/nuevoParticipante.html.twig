@@ -10,19 +10,19 @@
             z-index: 1;
         }
         .social-profile-pic img {
-            width: 150px;
-            height: 150px;
+            width: 10rem;
+            height: auto;
             overflow: hidden;
             border: 0;
-            -webkit-border-radius: 6px;
-            -moz-border-radius: 6px;
-            -ms-border-radius: 6px;
-            border-radius: 6px;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
             -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
             -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
             -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
             box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            margin: 0 20px 0 10px;
+            margin: -1rem 0 0 .8rem;
         }
         .sty__title {
             padding: 2px 5px;
@@ -36,6 +36,7 @@
 
 {% set uri = app.request.getbasepath %}
 <br><br>
+<input type="hidden" id="avatar" name="avatar" value="{{ asset('img/user.png') }}">
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_participantes', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
@@ -87,15 +88,22 @@
                                         <div class="row">
                                             <div class="col-sm-10 col-md-10 col-lg-10">
                                                 {% set img = usuario.foto ? uploads~usuario.foto : asset('img/user.png') %}
-                                                <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" style="background: transparent; border-radius: 50%;"></figure>
+                                                <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" class="img_figure"></figure>
                                             </div>
                                             <div class="col-sm-6 col-md-6 col-lg-6">
                                                 <div class="input-group">
                                                     <input type="hidden" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
                                                     <span class="input-group-addon">
                                                         <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&fldr=recursos/usuarios" class="btn iframe-btn" type="button">
-                                                            <span class="fa fa-photo"></span>
+                                                            <button type="button" class="btn_addImg">
+                                                                <span class="fa fa-photo"></span>
+                                                            </button>
                                                         </a>
+                                                    </span>
+                                                    <span class="input-group-addon">
+                                                        <button id="btn_clear" class="btn_clearImg" type="button">
+                                                            <span class="fa fa-times"></span>
+                                                        </button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -317,7 +325,11 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript">
 
-
+        $("#btn_clear").on("click",function(event) {
+            $("#foto").val("");
+            $("#figure").html('<img src="'+$('#avatar').val()+'" style="background: transparent; border-radius: 50%;">');
+        });
+        
         $('#finish').click(function(){
             var valid = $("#form").valid();
             if (!valid) 

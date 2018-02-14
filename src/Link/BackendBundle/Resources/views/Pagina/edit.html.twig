@@ -11,6 +11,21 @@
         .input-group {
             margin-top: 35px;
         }
+        .photo_img{
+            width: 35rem;
+            height: auto;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 1rem 1rem 0 3rem;
+        }
     </style>
 {% endblock %}
 
@@ -22,10 +37,11 @@
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <input type="hidden" id="deslen2" name="deslen2" value="0" />
 <br><br>
+<input type="hidden" id="photo" name="photo" value="{{ asset('img/picture.png') }}">
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         {% set pagina_id = pagina.id ? pagina.id : pagina.pagina.id %}
-        <a href="{{ path('_pagina', { 'pagina_id': pagina_id })}}" class="bttn__bck2"><span class="fa fa-clipboard"></span><span class="text__bck2">{{ 'Ir a detalles de la página'|trans }}</span></a>
+        <a href="{{ path('_pagina', { 'pagina_id': pagina_id })}}" class="bttn__bck3"><span class="fa fa-clipboard"></span><span class="text__bck3">{{ 'Ir a detalles de la página'|trans }}</span></a>
     </div>
     <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
         <ul></ul>
@@ -169,15 +185,22 @@
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     {{ form_label(form.foto) }}
                                     {% set img = pagina.foto ? uploads~pagina.foto : asset('img/picture.png') %}
-                                    <div id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
+                                    <div class="photo_img" id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}"></div>
                                 </div>
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <div class="input-group">
-                                        {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly' } }) }}
+                                        {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly', 'id':'form_photo'} }) }}
                                         <span class="input-group-addon">
                                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_foto&fldr=recursos/paginas" class="btn iframe-btn" type="button">
-                                                <span class="fa fa-photo"></span>
+                                                <button type="button" class="btn_addImg">
+                                                    <span class="fa fa-photo"></span>
+                                                </button>
                                             </a>
+                                        </span>
+                                        <span class="input-group-addon">
+                                            <button id="btn_clear" class="btn_clearImg" type="button">
+                                                <span class="fa fa-times"></span>
+                                            </button>
                                         </span>
                                     </div>
                                 </div>
@@ -225,6 +248,10 @@
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/pagina.js') }}"></script>
     <script type="text/javascript">
+        $("#btn_clear").on("click",function(event) {
+            $("#form_photo").val("");
+            $("#figure").html('<img src="'+$('#photo').val()+'">');
+        });
         
         $('#finish').click(function(){
             var valid = $("#form").valid();

@@ -25,7 +25,7 @@
 </div>
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
-        <a href="{{ path('_preguntas', { 'prueba_id': pregunta.prueba.id })}}" class="bttn__bck2"><span class="fa fa-list-ol"></span><span class="text__bck2">{{ 'Ir al listado de preguntas'|trans }}</span></a>
+        <a href="{{ path('_preguntas', { 'prueba_id': pregunta.prueba.id })}}" class="bttn__bck3"><span class="fa fa-list-ol"></span><span class="text__bck3">{{ 'Ir al listado de preguntas'|trans }}</span></a>
         {% if pregunta.id %}
             <a href="{{ path('_opciones', { 'pregunta_id': pregunta.id, 'cantidad': cantidad, 'total': total })}}" class="bttn__bck2"><span class="fa fa-list-ul"></span><span class="text__bck2">{{ 'Ir al listado de opciones'|trans }}</span></a>
         {% endif %}
