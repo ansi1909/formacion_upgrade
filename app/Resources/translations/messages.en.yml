@@ -140,6 +140,7 @@ El nombre de la evaluación debe ser mínimo de 3 caracteres.: Test name must ha
 El nombre de la evaluación es requerido.: Test name is required.
 El nombre de la página debe ser mínimo de 3 caracteres.: Page name must have at leat 3 characters.
 El nombre de la página es requerido.: Page name is required.
+El nombre del archivo no debe contener acentos o caracteres especiales: File name must not have neither accents nor special characters
 El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
@@ -189,6 +190,7 @@ Fila: Row
 filtrado de un total de: filtered of a total of
 Filtrar usuarios: Filter users
 Finalizar: Finish
+Formato sugerido se especifica en: Suggested format, see
 Foto de la página: Page picture
 Gráfico del promedio de conexiones: Connections average graph
 Guardar: Save
@@ -230,6 +232,7 @@ La imagen lado A es requerida.: Side A image is required.
 La notificación ha sido almacenada con éxito: Notification has been saved successfully
 La notificación ha sido programada con éxito: Programation has been saved successfully
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
+La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 Lado: Side
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
@@ -266,6 +269,7 @@ No existen páginas: There are no pages
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se permiten espacios en blanco.: Blank spaces are not allowed.
+No se permiten filas en blanco: Blank rows are not allowed
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.
 No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
@@ -338,9 +342,12 @@ Si marca SI, la página tendrá una sección en el que los usuarios podrán escr
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
+Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
+Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Siguiente: Next
 Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
+Solo es necesaria una columna que tendrá los nombres de los niveles: Only it is necessary one column for levels name
 Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
 Subir Archivo de participantes: Upload participants file

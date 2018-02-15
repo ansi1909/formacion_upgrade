@@ -764,32 +764,21 @@ class UsuarioController extends Controller
         // Lista de empresas
         $qb = $em->createQueryBuilder();
         $qb->select('e')
-           ->from('LinkComunBundle:AdminEmpresa', 'e');
+           ->from('LinkComunBundle:AdminEmpresa', 'e')
+           ->andWhere('e.activo = :activo');
+        $parametros['activo'] = true;
         if ($empresa_asignada)
         {
-            $qb->where('e.id = :empresa_asignada')
-               ->setParameter('empresa_asignada', $empresa_asignada);
+            $qb->where('e.id = :empresa_asignada');
+            $parametros['empresa_asignada'] = $empresa_asignada;
         }
+        $qb->setParameters($parametros);
         $qb->orderBy('e.nombre', 'ASC');
         $query = $qb->getQuery();
         $empresas = $query->getResult();
-<<<<<<< HEAD
-
-        // Niveles de la empresa asignada
-        $niveles = array();
-        if ($empresa_asignada)
-        {
-            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_asignada),
-                                                                                                 array('nombre' => 'ASC'));
-        }
-
-        return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresas' => $empresas,
-                                                                                              'niveles' => $niveles,
-=======
 
         return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresas' => $empresas,
                                                                                               'empresa_asignada' => $empresa_asignada,
->>>>>>> d4795af01616c773ea061423ae42ad02c6840b2e
                                                                                               'errores' => $errores,
                                                                                               'nuevos_registros' => $nuevos_registros));
 

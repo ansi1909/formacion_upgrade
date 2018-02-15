@@ -140,6 +140,7 @@ El nombre de la evaluación debe ser mínimo de 3 caracteres.: El nombre de la e
 El nombre de la evaluación es requerido.: El nombre de la evaluación es requerido.
 El nombre de la página debe ser mínimo de 3 caracteres.: El nombre de la página debe ser mínimo de 3 caracteres.
 El nombre de la página es requerido.: El nombre de la página es requerido.
+El nombre del archivo no debe contener acentos o caracteres especiales: El nombre del archivo no debe contener acentos o caracteres especiales
 El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
@@ -189,6 +190,7 @@ Fila: Fila
 filtrado de un total de: filtrado de un total de
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
+Formato sugerido se especifica en: Formato sugerido se especifica en
 Foto de la página: Foto de la página
 Gráfico del promedio de conexiones: Grafico del promedio de conexiones
 Guardar: Guardar
@@ -230,6 +232,7 @@ La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
 La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
+La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 Lado: Lado
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
@@ -266,6 +269,7 @@ No existen páginas: No existen páginas
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
+No se permiten filas en blanco: No se permiten filas en blanco
 No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.
 No se pudo almacenar este registro.: No se pudo almacenar este registro.
 No se pudo editar este registro.: No se pudo editar este registro.
@@ -338,6 +342,8 @@ Si marca SI, la página tendrá una sección en el que los usuarios podrán escr
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
+Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
+Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
 Siguiente: Siguiente
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
