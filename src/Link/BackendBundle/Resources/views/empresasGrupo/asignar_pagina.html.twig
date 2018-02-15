@@ -7,44 +7,40 @@
 
 {% block body %}
 
-
-
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
+<input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
+
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>{{'Agrupación de páginas' | trans}}</h3>
+        <a href="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard" style="margin-top: 8px;"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Listado de paginas' |trans}}</h5>
+                <h5 class="card-title">{{ 'Listado de grupos' |trans}}</h5>
             </div>
             <div class="card-block">
                 <table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">{{'Nombre'|trans }}</th>
-                            <th class="hd__title">{{'Prog. asociados'|trans }}</th>
-                            <th class="hd__title">{{'Acciones'|trans }}</th>
+                            <th class="hd__title">{{'Asignar'|trans }}</th>
                         </tr>
                     </thead>
-                        {% for pagina in paginas %}
                         <tbody id="grupos" name="grupos">
+                          {% for pagina in paginas %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
-                            <tr class="{#eo#}">
+                            <tr class="{{eo}}">
                                 <td>{{ pagina.nombre }}</td>
                                 <td> </td>
-                                <td class="center">
-                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{# grupo.id #}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm ir" data-toggle="modal" data-target="#formModal" data="{# grupo.id #}"><span class="fa fa-sitemap"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {# if grupo.delete_disabled == '' #}delete{# endif #} {# grupo.delete_disabled #}" data="{#grupo.id#}"><span class="fa fa-trash"></span></a>
-                                </td>
                             </tr>
+                          {% endfor %}
                         </tbody>
-                        {% endfor %}
                 </table>                 
             </div>
         </div>

@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block body %}
-{% set ruta = ' /formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=pdf&fldr=recursos/tutorial/ ' %}
+{% set ruta = ' /formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=pdf&rootFolder=recursos/tutorial/ ' %}
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_tutorial', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
 <br>
@@ -107,7 +107,7 @@
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value=" " >
                 <span class="input-group-addon">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&fldr=recursos/tutoriales" class="btn iframe-btn" type="button">
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>
@@ -118,7 +118,7 @@
             <div class="input-group">
                 <input type="text" class="form-control " name="video" id="video">
                 <span class="input-group-addon">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=3&field_id=video&fldr=recursos/tutoriales" class="btn iframe-btn" type="button">
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=3&field_id=video&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>

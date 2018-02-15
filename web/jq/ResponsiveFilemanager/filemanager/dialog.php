@@ -61,9 +61,17 @@ if(count($hidden_folders)){
  *SUB-DIR CODE
  ***/
 
-if (!isset($_SESSION['RF']["subfolder"])) 
+/*if (!isset($_SESSION['RF']["subfolder"])) 
 { 
 	$_SESSION['RF']["subfolder"] = '';
+}*/
+if (isset($_GET['rootFolder']))
+{
+    $_SESSION['RF']["subfolder"] = $_GET["rootFolder"];
+}
+else if (!isset($_SESSION['RF']["subfolder"]))
+{
+    $_SESSION['RF']["subfolder"] = '';
 }
 $rfm_subfolder = '';
 

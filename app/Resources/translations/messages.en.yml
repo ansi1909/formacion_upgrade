@@ -118,6 +118,7 @@ Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
 El apellido del usuario es requerido.: User last name is required.
 El archivo: The file
+El archivo es requerido.: File is required.
 El asunto de la notificación debe ser mínimo de 3 caracteres.: The subject of notification must have at least 3 characters.
 El asunto de la notificación es requerido.: The subject of notification is required.
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
@@ -173,6 +174,7 @@ Esta notificación será enviada por el sistema de forma automática, puede deja
 Esta página no tiene evaluación asignada: This page does not have assigned test
 Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
+este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Estructura: Structure
@@ -341,6 +343,7 @@ Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
+Subir Archivo de participantes: Upload participants file
 Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
@@ -368,6 +371,7 @@ Usuarios no iniciados: Uninitiated users
 Usuarios Notificados: Notified Users
 Usuarios reg.: Reg users
 Usuarios registrados: Registered users
+Validar: Validate
 Valor de la pregunta: Question weighing
 Vencimiento: Expiration
 Ver historial: See history

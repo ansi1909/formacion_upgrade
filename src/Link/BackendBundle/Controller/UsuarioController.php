@@ -773,6 +773,7 @@ class UsuarioController extends Controller
         $qb->orderBy('e.nombre', 'ASC');
         $query = $qb->getQuery();
         $empresas = $query->getResult();
+<<<<<<< HEAD
 
         // Niveles de la empresa asignada
         $niveles = array();
@@ -784,6 +785,11 @@ class UsuarioController extends Controller
 
         return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresas' => $empresas,
                                                                                               'niveles' => $niveles,
+=======
+
+        return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresas' => $empresas,
+                                                                                              'empresa_asignada' => $empresa_asignada,
+>>>>>>> d4795af01616c773ea061423ae42ad02c6840b2e
                                                                                               'errores' => $errores,
                                                                                               'nuevos_registros' => $nuevos_registros));
 

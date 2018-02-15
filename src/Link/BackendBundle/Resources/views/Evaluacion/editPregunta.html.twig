@@ -25,7 +25,7 @@
 </div>
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
-        <a href="{{ path('_preguntas', { 'prueba_id': pregunta.prueba.id })}}" class="bttn__bck2"><span class="fa fa-list-ol"></span><span class="text__bck2">{{ 'Ir al listado de preguntas'|trans }}</span></a>
+        <a href="{{ path('_preguntas', { 'prueba_id': pregunta.prueba.id })}}" class="bttn__bck3"><span class="fa fa-list-ol"></span><span class="text__bck3">{{ 'Ir al listado de preguntas'|trans }}</span></a>
         {% if pregunta.id %}
             <a href="{{ path('_opciones', { 'pregunta_id': pregunta.id, 'cantidad': cantidad, 'total': total })}}" class="bttn__bck2"><span class="fa fa-list-ul"></span><span class="text__bck2">{{ 'Ir al listado de opciones'|trans }}</span></a>
         {% endif %}
@@ -72,7 +72,7 @@
                             <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" style="background: transparent; width: 150px; height: auto;"></figure>
                             {{ form_widget(form.imagen, { 'attr': { 'readonly': 'readonly' } }) }}
                             <span class="input-group-addon" style="border: none;">
-                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_imagen&fldr=recursos/paginas" class="btn iframe-btn" type="button">
+                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_imagen&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
                                     <span class="fa fa-photo"></span>
                                 </a>
                             </span>
