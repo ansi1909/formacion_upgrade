@@ -581,9 +581,9 @@ class PaginaController extends Controller
         {
             
             // Se guardan las páginas seleccionadas
-            $asignaciones = $request->request->get('asignar');
-            $activaciones = $request->request->get('activar');
-            $accesos = $request->request->get('acceso');
+            $asignaciones = $request->request->get('asignar') ? $request->request->get('asignar') : array();
+            $activaciones = $request->request->get('activar') ? $request->request->get('activar') : array();
+            $accesos = $request->request->get('acceso') ? $request->request->get('acceso') : array();
 
             foreach ($asignaciones as $pagina_id)
             {

@@ -42,7 +42,7 @@
                         <div class="col-sm-3 col-md-3 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&fldr=recursos/niveles" class="btn iframe-btn" type="button">
+                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&rootFolder=recursos/niveles" class="btn iframe-btn" type="button">
                                         <span class="fa fa-file-excel-o"></span>
                                     </a>
                                 </span>
@@ -55,11 +55,11 @@
                             <div class="alert alert-link">
                                 <h4 class="alert-heading">Tomar encuenta que:</h4>
                                 <ul class="sty__list__opc">
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> El nombre del archivo no debe contener acentos o caracteres especiales.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> Solo es necesaria una columna que tendrá los nombres de los niveles.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> No se permiten filas en blanco.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> Si un nivel ya está registrado en la base de datos no se tomará en cuenta.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'El nombre del archivo no debe contener acentos o caracteres especiales'|trans }}.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'Solo es necesaria una columna que tendrá los nombres de los niveles'|trans }}.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos'|trans }}.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'No se permiten filas en blanco'|trans }}.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'Si un nivel ya está registrado en la base de datos no se tomará en cuenta'|trans }}.</span></li>
                                 </ul>
                             </div>
                         </div>

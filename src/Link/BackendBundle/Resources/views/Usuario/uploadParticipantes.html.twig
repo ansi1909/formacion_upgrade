@@ -18,23 +18,47 @@
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_participantes', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_niveles" name="url_niveles" value="{# path('_niveles', { 'empresa_id': empresa.id }) #}">
+{% set formato = uri~'/../docs/formatos/BD_Estructura.xlsx' %}
+<input type="hidden" id="url_procesar" name="url_procesar" value="{{ path('_procesarParticipantes') }}">
 <input type="hidden" id="errores" name="errores" value="{{ errores|length }}">
 <br><br>
 <div class="row align-items-center justify-content-between">
     <div class="col text-left">
         <a href="{{ path('_participantes', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard" style="margin-top: 8px;"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
 </div>
-<form id="form" name="form" action="{# path('_uploadNiveles', { 'empresa_id': empresa.id }) #}" class="container-fluid p-0" method="POST" enctype="multipart/form-data">
+<form id="form" name="form" action="{{ path('_uploadParticipantes') }}" class="container-fluid p-0" method="POST" enctype="multipart/form-data">
     <div class="row">
         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">
                 <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                    <h5 class="card-title">{{ 'Subir Archivo de participantes' |trans}} {# empresa.nombre #}</h5>
+                    <h5 class="card-title">{{ 'Subir Archivo de participantes'|trans }} {# empresa.nombre #}</h5>
                 </div>
                 <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8 offset-sm-4 offset-md-4 offset-lg-4">
+                            <label for="empresa_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Empresa'|trans }}</label>
+                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
+                                    {% if empresa_asignada %}
+                                        {% for empresa in empresas %}
+                                            <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value=""></option>
+                                        {% for empresa in empresas %}
+                                            <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                                <span class="fa fa-industry"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                             <input type="text" class="form-control" name="file" id="file" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}">
@@ -42,7 +66,7 @@
                         <div class="col-sm-3 col-md-3 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&fldr=recursos/niveles" class="btn iframe-btn" type="button">
+                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&rootFolder=recursos/participantes" class="btn iframe-btn" type="button">
                                         <span class="fa fa-file-excel-o"></span>
                                     </a>
                                 </span>
@@ -55,11 +79,10 @@
                             <div class="alert alert-link">
                                 <h4 class="alert-heading">Tomar encuenta que:</h4>
                                 <ul class="sty__list__opc">
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> El nombre del archivo no debe contener acentos o caracteres especiales.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> Solo es necesaria una columna que tendrá los nombres de los niveles.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> No se permiten filas en blanco.</span></li>
-                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> Si un participante ya está registrado en la base de datos no se tomará en cuenta.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'El nombre del archivo no debe contener acentos o caracteres especiales'|trans }}.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'No se permiten filas en blanco'|trans }}.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'Si un participante ya está registrado en la base de datos solo se actualizarán sus datos'|trans }}.</span></li>
+                                    <li><span class="txt__up" style="font-weight: normal;"><i class="fa fa-caret-right"></i> {{ 'Formato sugerido se especifica en'|trans }} <a href="{{ formato }}" target="_blank">{{ 'este archivo descargable'|trans }}.</a></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -67,7 +90,7 @@
                 </div>
                 <div class="card-footer">
                     <div class="col-sm-16 col-md-16 text-right">
-                        <button type="submit" id="save" class="bttn__saved edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Procesar'|trans }}"><span class="fa fa-upload"></span></button>
+                        <button type="submit" id="save" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Validar'|trans }}"><span class="fa fa-check"></span></button>
                     </div>
                 </div>
             </div>
@@ -120,15 +143,24 @@
     <script type="text/javascript">
         
         $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
             rules: {
+                'empresa_id': {
+                    required: true
+                },
                 'file': {
                     required: true,
                     extension: "xls|xlsx|csv"
                 }
             },
             messages: {
+                'empresa_id': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
+                },
                 'file': {
-                    required: "- {{ 'Este campo es requerido.'|trans }}",
+                    required: "- {{ 'El archivo es requerido.'|trans }}",
                     extension: "- {{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}"
                 }
             }
@@ -139,5 +171,5 @@
         {% endif %}
     </script>
     <script type="text/javascript" src="{{ asset('js/admin/upload.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/uploadNiveles.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/uploadParticipantes.js') }}"></script>
 {% endblock %}

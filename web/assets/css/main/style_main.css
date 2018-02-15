@@ -380,13 +380,14 @@
         }
 
         .bttn__bck2:hover{
-            width: 17em;
+            max-width: 20rem;
+            width: 17rem;
             background: linear-gradient(to right, #0084db 0%, #00558D 100%);
             color: #fff;
         }
 
         .bttn__bck3:hover{
-            width: 14em;
+            width: 15.5rem;
             background: linear-gradient(to right, #0084db 0%, #00558D 100%);
             color: #fff;
         }
@@ -863,12 +864,47 @@
     .gradiente2 {
         background: linear-gradient(to right, #0084db 0%, #00558D 100%) !important;
     }
-
+    
     .tt__txt{
         color: #fff; 
         margin-bottom: 0;
     }
 
+/*Avatar de usuario y botones*/
+    .img_figure{
+        border-radius: 50% !important;
+        background: transparent !important;   
+    }
+
+    .btn_addImg, .btn_clearImg{
+        border-radius: 50px; 
+        width: 3.6rem; 
+        height: 3.6rem; 
+        position: absolute; 
+        z-index: 1;  
+        left: -.55rem;  
+        cursor: pointer !important; 
+        background: #fff;
+    }
+
+    .btn_addImg{
+        top: -.4rem;
+    }
+
+    .btn_clearImg{ 
+        top: 3.3rem;
+    }
+
+    .btn_addImg span{
+        color: #00558D; 
+        padding-left: .25rem; 
+        font-size: 1.4rem
+    }
+
+    .btn_clearImg span{
+        color: #00558D; 
+        font-size: 1.4rem
+    }
     /**.emp_dash{
         display: none;
     }**7

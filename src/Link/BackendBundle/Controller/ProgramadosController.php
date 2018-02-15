@@ -213,6 +213,8 @@ class ProgramadosController extends Controller
                         </td>
                     </tr>';
             $entidad = '';
+            $trclass = '';
+            $deshabilitado = '';
         }
         $html .= '</tbody>
                 </table>';

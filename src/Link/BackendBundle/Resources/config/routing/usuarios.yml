@@ -37,3 +37,7 @@ _showParticipante:
 _uploadParticipantes:
     path:     /uploadParticipantes
     defaults: { _controller: LinkBackendBundle:Usuario:uploadParticipantes }
+
+_procesarParticipantes:
+    path:     /procesarParticipantes/{empresa_id}/{archivo}
+    defaults: { _controller: LinkBackendBundle:Usuario:uploadParticipantes, empresa_id: 0, archivo: 0 }
