@@ -118,6 +118,7 @@ Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
 El apellido del usuario es requerido.: El apellido del usuario es requerido.
 El archivo: El archivo
+El archivo es requerido.: El archivo es requerido.
 El asunto de la notificación debe ser mínimo de 3 caracteres.: El asunto de la notificación debe ser mínimo de 3 caracteres.
 El asunto de la notificación es requerido.: El asunto de la notificación es requerido.
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
@@ -173,6 +174,7 @@ Esta notificación será enviada por el sistema de forma automática, puede deja
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
+este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Estructura: Estructura
@@ -341,6 +343,7 @@ Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
 Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir Archivo de Niveles: Subir Archivo de Niveles
+Subir Archivo de participantes: Subir Archivo de participantes
 Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
@@ -368,6 +371,7 @@ Usuarios no iniciados: Usuarios no iniciados
 Usuarios Notificados: Usuarios Notificados
 Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
+Validar: Validar
 Valor de la pregunta: Valor de la pregunta
 Vencimiento: Vencimiento
 Ver historial: Ver historial

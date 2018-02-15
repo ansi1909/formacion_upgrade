@@ -6,13 +6,14 @@
 
 3. En el servidor web debe existir adicionalmente los siguientes directorios, con permisos de escritura:
 	uploads/
-		recursos/			# Aquí se podrían almacenan imágenes y videos subidos desde el ckeditor en mensajes de bienvenida
-			usuarios/		# Aquí se almacenan las fotos de perfil de los usuarios
-			niveles/		# Aquí se almacenan los archivos Excel de los niveles por empresa
-			paginas/		# Aquí se almacenan los archivos de las páginas
-			noticias/		# Aquí se almacenan los archivos de las noticias
+		recursos/				# Aquí se podrían almacenan imágenes y videos subidos desde el ckeditor en mensajes de bienvenida
+			usuarios/			# Aquí se almacenan las fotos de perfil de los usuarios
+			niveles/			# Aquí se almacenan los archivos Excel de los niveles por empresa
+			paginas/			# Aquí se almacenan los archivos de las páginas
+			noticias/			# Aquí se almacenan los archivos de las noticias
 			notificaciones/		# Aquí se almacenan los archivos de las notificaciones
-			tutoriales/		# Aquí se almacenan los archivos de los tutoriales
+			tutoriales/			# Aquí se almacenan los archivos de los tutoriales
+			participantes/		# Aquí se almacenan los archivos excel de los participantes
 
 4. Las constantes globales para twig están seteadas en app/config/config.yml:
 	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida

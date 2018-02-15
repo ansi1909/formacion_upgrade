@@ -756,14 +756,28 @@ class UsuarioController extends Controller
         $f->setRequest($session->get('sesion_id'));
         
         $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
         $errores = array();
         $nuevos_registros = 0;
         
-        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        // Lista de empresas
+        $qb = $em->createQueryBuilder();
+        $qb->select('e')
+           ->from('LinkComunBundle:AdminEmpresa', 'e');
+        if ($empresa_asignada)
+        {
+            $qb->where('e.id = :empresa_asignada')
+               ->setParameter('empresa_asignada', $empresa_asignada);
+        }
+        $qb->orderBy('e.nombre', 'ASC');
+        $query = $qb->getQuery();
+        $empresas = $query->getResult();
 
-         return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresa' => $empresa,
-                                                                                      'errores' => $errores,
-                                                                                      'nuevos_registros' => $nuevos_registros));
+        return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresas' => $empresas,
+                                                                                              'empresa_asignada' => $empresa_asignada,
+                                                                                              'errores' => $errores,
+                                                                                              'nuevos_registros' => $nuevos_registros));
 
     }
 
