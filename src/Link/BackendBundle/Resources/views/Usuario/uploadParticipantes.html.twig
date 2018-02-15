@@ -66,7 +66,11 @@
                         <div class="col-sm-3 col-md-3 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&rootFolder=recursos/participantes" class="btn iframe-btn" type="button">
+                                    {% empresa_asignada %}
+                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&rootFolder=recursos/participantes/{{ empresa_asignada }}" class="btn iframe-btn" type="button">
+                                    {% else %}
+                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&rootFolder=recursos/participantes" class="btn iframe-btn" type="button">
+                                    {% endif %}
                                         <span class="fa fa-file-excel-o"></span>
                                     </a>
                                 </span>

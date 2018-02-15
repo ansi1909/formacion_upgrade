@@ -103,7 +103,11 @@
                                                 <div class="input-group">
                                                     <input type="hidden" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
                                                     <span class="input-group-addon">
-                                                        <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios" class="btn iframe-btn" type="button" style="height: 2rem; width: 2rem;">
+                                                        {% empresa_asignada %}
+                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios/{{ empresa_asignada }}" class="btn iframe-btn" type="button" style="height: 2rem; width: 2rem;">
+                                                        {% else %}
+                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios" class="btn iframe-btn" type="button" style="height: 2rem; width: 2rem;">
+                                                        {% endif %}
                                                             <button type="button" class="btn_addImg">
                                                                 <span class="fa fa-photo"></span>
                                                             </button>
