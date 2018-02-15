@@ -36,7 +36,7 @@ parameters:
         no_ingresado_programa: 6
     folders:
         uploads: 'http://localhost/uploads/'
-        dir_uploads: 'C:/wamp64/www/uploads/'
+        dir_uploads: 'C:/wamp/www/uploads/'
         #dir_uploads: '/home/develo/public_html/uploads/'
         #dir_uploads: 'C:/xampp/htdocs/uploads/'
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

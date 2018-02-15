@@ -716,4 +716,30 @@ class Functions
         return true;
 	}
 
+	// Permite crear la carpeta empresa_id en cada sub-directorio de uploads/
+	public function subDirEmpresa($empresa_id, $dir_uploads)
+	{
+
+		$subdirectorios[] = 'recursos/usuarios/';
+		$subdirectorios[] = 'recursos/niveles/';
+		$subdirectorios[] = 'recursos/noticias/';
+		$subdirectorios[] = 'recursos/notificaciones/';
+		$subdirectorios[] = 'recursos/participantes/';
+
+		if ($empresa_id)
+		{
+
+			foreach ($subdirectorios as $subdirectorio)
+			{
+				$dir = $dir_uploads.$subdirectorio.$empresa_id.'/';
+		        if (!file_exists($dir) && !is_dir($dir))
+		        {
+		            mkdir($dir, 750, true);
+		        }
+			}
+
+		}
+
+	}
+
 }
