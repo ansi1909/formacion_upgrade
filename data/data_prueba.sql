@@ -135,3 +135,4 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_rol_usuario', 
 --
 
 INSERT INTO admin_rol_usuario (id, rol_id, usuario_id) VALUES (1, 1, 1);
+
