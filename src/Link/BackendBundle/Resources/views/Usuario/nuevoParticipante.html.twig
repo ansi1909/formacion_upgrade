@@ -94,7 +94,7 @@
                                                 <div class="input-group">
                                                     <input type="hidden" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
                                                     <span class="input-group-addon">
-                                                        {% empresa_asignada %}
+                                                        {% if empresa_asignada %}
                                                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios/{{ empresa_asignada }}" class="btn iframe-btn" type="button">
                                                         {% else %}
                                                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios" class="btn iframe-btn" type="button">
@@ -235,18 +235,18 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="ciudad" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Ciudad'|trans }}</label>
+                                            <label for="campo1" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo1'|trans }}</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
-                                                <input type="text" class="form-control form_sty1" name="ciudad" id="ciudad" value="{{ usuario.ciudad }}">
+                                                <input type="text" class="form-control form_sty1" name="campo1" id="campo1" value="{{ usuario.campo1 }}">
                                                 <span class="fa fa-map-marker"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="region" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Región'|trans }}</label>
+                                            <label for="campo2" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo2'|trans }}</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
-                                                <input type="text" class="form-control form_sty1" name="region" id="region" value="{{ usuario.region }}">
+                                                <input type="text" class="form-control form_sty1" name="campo2" id="campo2" value="{{ usuario.campo2 }}">
                                                 <span class="fa fa-map-signs"></span>
                                             </div>
                                         </div>
@@ -287,18 +287,18 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="division_funcional" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'División funcional'|trans }}</label>
+                                            <label for="campo3" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo3'|trans }}</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
-                                                <input type="text" class="form-control form_sty1" name="division_funcional" id="division_funcional" value="{{ usuario.divisionFuncional }}">
+                                                <input type="text" class="form-control form_sty1" name="campo3" id="campo3" value="{{ usuario.campo3 }}">
                                                 <span class="fa fa-cubes"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="cargo" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Cargo'|trans }}</label>
+                                            <label for="campo4" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo4'|trans }}</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
-                                                <input type="text" class="form-control form_sty1" name="cargo" id="cargo" value="{{ usuario.cargo }}">
+                                                <input type="text" class="form-control form_sty1" name="campo4" id="campo4" value="{{ usuario.campo4 }}">
                                                 <span class="fa fa-id-badge"></span>
                                             </div>
                                         </div>

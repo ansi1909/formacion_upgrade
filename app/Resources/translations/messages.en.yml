@@ -51,11 +51,9 @@ Cantidad máxima de intentos: Maximum number of attempts
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cargando..: Loading..
 Carga masiva: Bulk load
-Cargo: Appointment
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
-Ciudad: City
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
@@ -107,7 +105,6 @@ Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
 Destino: Destination
 Detalles de la página: Page details
-División funcional: Functional division
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
 Editar asignación: Edit assignment
@@ -320,7 +317,6 @@ Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You ca
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Puntaje con que se aprueba: Score with which it is approved
 Recordarme: Remember me
-Región: Region
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 registros: items

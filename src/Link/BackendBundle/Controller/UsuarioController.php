@@ -309,12 +309,12 @@ class UsuarioController extends Controller
             $activo = $request->request->get('activo');
             $correo_corporativo = $request->request->get('correo_corporativo');
             $pais_id = $request->request->get('pais_id');
-            $ciudad = $request->request->get('ciudad');
-            $region = $request->request->get('region');
+            $campo1 = $request->request->get('campo1');
+            $campo2 = $request->request->get('campo2');
             $empresa_id = $request->request->get('empresa_id');
             $nivel_id = $request->request->get('nivel_id');
-            $division_funcional = $request->request->get('division_funcional');
-            $cargo = $request->request->get('cargo');
+            $campo3 = $request->request->get('campo3');
+            $campo4 = $request->request->get('campo4');
             $roles_seleccionados = $request->request->get('roles');
 
             $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
@@ -338,12 +338,12 @@ class UsuarioController extends Controller
             $fecha_nacimiento = "$a-$m-$d";
             $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
             $usuario->setPais($pais);
-            $usuario->setCiudad($ciudad);
-            $usuario->setRegion($region);
+            $usuario->setCampo1($campo1);
+            $usuario->setCampo2($campo2);
             $usuario->setEmpresa($empresa);
             $usuario->setFoto($foto);
-            $usuario->setDivisionFuncional($division_funcional);
-            $usuario->setCargo($cargo);
+            $usuario->setCampo3($campo3);
+            $usuario->setCampo4($campo4);
             $usuario->setNivel($nivel);
             $em->persist($usuario);
             $em->flush();
@@ -645,12 +645,12 @@ class UsuarioController extends Controller
             $activo = $request->request->get('activo');
             $correo_corporativo = $request->request->get('correo_corporativo');
             $pais_id = $request->request->get('pais_id');
-            $ciudad = $request->request->get('ciudad');
-            $region = $request->request->get('region');
+            $campo1 = $request->request->get('campo1');
+            $campo2 = $request->request->get('campo2');
             $empresa_id = $request->request->get('empresa_id');
             $nivel_id = $request->request->get('nivel_id');
-            $division_funcional = $request->request->get('division_funcional');
-            $cargo = $request->request->get('cargo');
+            $campo3 = $request->request->get('campo3');
+            $campo4 = $request->request->get('campo4');
             
             $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -673,12 +673,12 @@ class UsuarioController extends Controller
             $fecha_nacimiento = "$a-$m-$d";
             $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
             $usuario->setPais($pais);
-            $usuario->setCiudad($ciudad);
-            $usuario->setRegion($region);
+            $usuario->setCampo1($campo1);
+            $usuario->setCampo2($campo2);
             $usuario->setEmpresa($empresa);
             $usuario->setFoto($foto);
-            $usuario->setDivisionFuncional($division_funcional);
-            $usuario->setCargo($cargo);
+            $usuario->setCampo3($campo3);
+            $usuario->setCampo4($campo4);
             $usuario->setNivel($nivel);
             $em->persist($usuario);
             $em->flush();

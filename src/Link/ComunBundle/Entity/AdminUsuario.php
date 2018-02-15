@@ -88,16 +88,16 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="ciudad", type="string", length=50, nullable=true)
+     * @ORM\Column(name="campo1", type="string", length=50, nullable=true)
      */
-    private $ciudad;
+    private $campo1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="region", type="string", length=50, nullable=true)
+     * @ORM\Column(name="campo2", type="string", length=50, nullable=true)
      */
-    private $region;
+    private $campo2;
 
     /**
      * @var string
@@ -109,16 +109,23 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="division_funcional", type="string", length=100, nullable=true)
+     * @ORM\Column(name="campo3", type="string", length=100, nullable=true)
      */
-    private $divisionFuncional;
+    private $campo3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cargo", type="string", length=100, nullable=true)
+     * @ORM\Column(name="campo4", type="string", length=100, nullable=true)
      */
-    private $cargo;
+    private $campo4;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="competencia", type="boolean", nullable=true)
+     */
+    private $competencia;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -379,51 +386,51 @@ class AdminUsuario
     }
 
     /**
-     * Set ciudad
+     * Set campo1
      *
-     * @param string $ciudad
+     * @param string $campo1
      *
      * @return AdminUsuario
      */
-    public function setCiudad($ciudad)
+    public function setCampo1($campo1)
     {
-        $this->ciudad = $ciudad;
+        $this->campo1 = $campo1;
     
         return $this;
     }
 
     /**
-     * Get ciudad
+     * Get campo1
      *
      * @return string
      */
-    public function getCiudad()
+    public function getCampo1()
     {
-        return $this->ciudad;
+        return $this->campo1;
     }
 
     /**
-     * Set region
+     * Set campo2
      *
-     * @param string $region
+     * @param string $campo2
      *
      * @return AdminUsuario
      */
-    public function setRegion($region)
+    public function setCampo2($campo2)
     {
-        $this->region = $region;
+        $this->campo2 = $campo2;
     
         return $this;
     }
 
     /**
-     * Get region
+     * Get campo2
      *
      * @return string
      */
-    public function getRegion()
+    public function getCampo2()
     {
-        return $this->region;
+        return $this->campo2;
     }
 
     /**
@@ -451,51 +458,75 @@ class AdminUsuario
     }
 
     /**
-     * Set divisionFuncional
+     * Set campo3
      *
-     * @param string $divisionFuncional
+     * @param string $campo3
      *
      * @return AdminUsuario
      */
-    public function setDivisionFuncional($divisionFuncional)
+    public function setCampo3($campo3)
     {
-        $this->divisionFuncional = $divisionFuncional;
+        $this->campo3 = $campo3;
     
         return $this;
     }
 
     /**
-     * Get divisionFuncional
+     * Get campo3
      *
      * @return string
      */
-    public function getDivisionFuncional()
+    public function getCampo3()
     {
-        return $this->divisionFuncional;
+        return $this->campo3;
     }
 
     /**
-     * Set cargo
+     * Set campo4
      *
-     * @param string $cargo
+     * @param string $campo4
      *
      * @return AdminUsuario
      */
-    public function setCargo($cargo)
+    public function setCampo4($campo4)
     {
-        $this->cargo = $cargo;
+        $this->campo4 = $campo4;
     
         return $this;
     }
 
     /**
-     * Get cargo
+     * Get campo4
      *
      * @return string
      */
-    public function getCargo()
+    public function getCampo4()
     {
-        return $this->cargo;
+        return $this->campo4;
+    }
+
+    /**
+     * Set competencia
+     *
+     * @param boolean $competencia
+     *
+     * @return AdminUsuario
+     */
+    public function setCompetencia($competencia)
+    {
+        $this->competencia = $competencia;
+    
+        return $this;
+    }
+
+    /**
+     * Get competencia
+     *
+     * @return boolean
+     */
+    public function getCompetencia()
+    {
+        return $this->competencia;
     }
 
     /**

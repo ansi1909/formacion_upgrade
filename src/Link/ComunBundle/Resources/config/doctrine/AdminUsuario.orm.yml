@@ -70,13 +70,13 @@ Link\ComunBundle\Entity\AdminUsuario:
             type: date
             nullable: true
             column: fecha_nacimiento
-        ciudad:
+        campo1:
             type: string
             nullable: true
             length: 50
             options:
                 fixed: false
-        region:
+        campo2:
             type: string
             nullable: true
             length: 50
@@ -88,19 +88,21 @@ Link\ComunBundle\Entity\AdminUsuario:
             length: 250
             options:
                 fixed: false
-        divisionFuncional:
+        campo3:
             type: string
             nullable: true
             length: 100
             options:
                 fixed: false
-            column: division_funcional
-        cargo:
+        campo4:
             type: string
             nullable: true
             length: 100
             options:
                 fixed: false
+        competencia:
+            type: boolean
+            nullable: true
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
