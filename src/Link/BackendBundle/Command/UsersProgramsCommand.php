@@ -19,7 +19,7 @@ class UsersProgramsCommand extends ContainerAwareCommand
     {
         $this
         ->setName('link:recordatorio-programas')
-        ->setDescription('Envía por correo notificaciones programadas y recordatorios a los usuarios que no han ingresado a alguno se sus programas disponibles')
+        ->setDescription('Envía por correo notificaciones programadas y recordatorios a los usuarios que no han ingresado a alguno de sus programas disponibles')
         ;
     }
 
