@@ -66,3 +66,8 @@
 	en config.yml, actualmente está en false porque estamos trabajando en entorno windows
 	
 16. En el php.ini setear allow_url_fopen = On
+
+---------------------------------------------------------------------------------------------------------
+OJO: Cuando se instaló el Bundle de html2pdf generó el siguiente warning:
+Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffice/phpspreadsheet instead.
+---------------------------------------------------------------------------------------------------------
