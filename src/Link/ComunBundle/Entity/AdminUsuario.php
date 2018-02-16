@@ -88,6 +88,13 @@ class AdminUsuario
     /**
      * @var string
      *
+     * @ORM\Column(name="foto", type="string", length=250, nullable=true)
+     */
+    private $foto;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="campo1", type="string", length=50, nullable=true)
      */
     private $campo1;
@@ -98,13 +105,6 @@ class AdminUsuario
      * @ORM\Column(name="campo2", type="string", length=50, nullable=true)
      */
     private $campo2;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="foto", type="string", length=250, nullable=true)
-     */
-    private $foto;
 
     /**
      * @var string
@@ -126,6 +126,13 @@ class AdminUsuario
      * @ORM\Column(name="competencia", type="boolean", nullable=true)
      */
     private $competencia;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=50, nullable=true)
+     */
+    private $codigo;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -386,6 +393,30 @@ class AdminUsuario
     }
 
     /**
+     * Set foto
+     *
+     * @param string $foto
+     *
+     * @return AdminUsuario
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+    
+        return $this;
+    }
+
+    /**
+     * Get foto
+     *
+     * @return string
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
      * Set campo1
      *
      * @param string $campo1
@@ -431,30 +462,6 @@ class AdminUsuario
     public function getCampo2()
     {
         return $this->campo2;
-    }
-
-    /**
-     * Set foto
-     *
-     * @param string $foto
-     *
-     * @return AdminUsuario
-     */
-    public function setFoto($foto)
-    {
-        $this->foto = $foto;
-    
-        return $this;
-    }
-
-    /**
-     * Get foto
-     *
-     * @return string
-     */
-    public function getFoto()
-    {
-        return $this->foto;
     }
 
     /**
@@ -527,6 +534,30 @@ class AdminUsuario
     public function getCompetencia()
     {
         return $this->competencia;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     *
+     * @return AdminUsuario
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+    
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
     }
 
     /**
