@@ -26,6 +26,12 @@ $(document).ready(function() {
 		saveGrupo();
 	});
 
+	afterPaginate();
+
+	$('.paginate_button').click(function(){
+		afterPaginate();
+	});
+
 	$('#aceptar').click(function(){
 		window.location.replace($('#url_list').val());
 	});
@@ -46,6 +52,8 @@ $(document).ready(function() {
         }
  
     }); 
+
+  /*  observe();*/
 
     $('.edit').click(function(){
 		var grupo_id = $(this).attr('data');
@@ -213,3 +221,27 @@ function saveGrupo()
 		}
 }
 
+function afterPaginate(){
+	$('#asignar').click(function(){
+		var gp_id = $(this).attr('data');	
+		$('#div-active-alert').hide();
+		$.ajax({
+			type: "GET",
+			url: $('#url_grupoPaginas').val(),
+			async: true,
+			data: { pg_id: pg_id },
+			dataType: "json",
+			success: function(data) {
+				$('#subapp').html(data.html);
+				$('#appTitle').html(data.nombre);
+				$('#div-subapps').show();
+				
+			},
+			error: function(){
+				$('#active-error').html($('#error_msg-subapps').val());
+				$('#div-active-alert').show();
+				$('#div-subapps').hide();
+			}
+		});
+	});
+}

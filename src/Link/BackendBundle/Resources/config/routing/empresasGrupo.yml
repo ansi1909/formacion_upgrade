@@ -2,9 +2,9 @@ _empresasGrupo:
     path:     /empresasGrupo/{app_id}
     defaults: { _controller: LinkBackendBundle:EmpresasGrupo:index }
 
-_grupoPaginas:
-    path:     /grupoPaginas/{app_id}/{grupo_id}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:EmpresasGrupo:grupoPaginas }
+_ajaxGrupoPaginas:
+    path:     /ajaxGrupoPaginas/
+    defaults: { _controller: LinkBackendBundle:EmpresasGrupo:ajaxGrupoPaginas }
 
 _ajaxEmpresasGrupo:
     path:     /ajaxEmpresasGrupo

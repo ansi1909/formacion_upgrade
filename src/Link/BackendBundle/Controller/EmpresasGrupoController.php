@@ -99,7 +99,6 @@ class EmpresasGrupoController extends Controller
                             <th class="hd__title columorden">'.$this->get('translator')->trans('Orden').'</th>
                             <th class="hd__title">Id</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Prog. asociados').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
                         </tr>
                     </thead>
@@ -108,13 +107,16 @@ class EmpresasGrupoController extends Controller
         foreach ($grupos_db as $grupo) {
             $delete_disabled = $f->linkEliminar($grupo->getId(), 'CertiGrupo');
             $class_delete = $delete_disabled == '' ? 'delete' : '';
-            $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td> <td> </td>
+            $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td>
             <td class="center">
                 <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
-                <a href="'.$this->generateUrl('_grupoPaginas', array('app_id' => $app_id,'grupo_id' => $grupo->getId(), 'empresa_id' => $grupo->getEmpresa()->getId())).'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
+                <a href="#" id="asignar" data="'. $grupo->getId() .'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
+
+        $grupos .='</tbody>
+                </table>';
         
         $return = array('grupos' => $grupos);
  
@@ -233,25 +235,8 @@ class EmpresasGrupoController extends Controller
 
     }
 
-    public function grupoPaginasAction($app_id,$grupo_id,$empresa_id)
+    public function ajaxGrupoPaginasAction(Request $request)
     {
-
-        $session = new Session();
-        $f = $this->get('funciones');
-        
-        if (!$session->get('ini'))
-        {
-            return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
-
-            $session->set('app_id', $app_id);
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
-                return $this->redirectToRoute('_authException');
-            }
-        }
-        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
         $paginas_db = array();
@@ -279,21 +264,22 @@ class EmpresasGrupoController extends Controller
             if ($paginas_empresa) 
             {
                 $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoPagina gp 
-                                          WHERE gp.grupo = :grupo_id AND gp.pagina = :pagina_id')
+                                           WHERE gp.grupo = :grupo_id AND gp.pagina = :pagina_id')
                             ->setParameters(array('grupo_id' => $grupo_id, 
                                                   'pagina_id' => $pagina->getId()));
 
                 $paginas_grupo = $query->getResult();
                 
-                if (!$paginas_grupo) 
+                if (!$paginas_grupo)
                 {
-                     $paginas_db[] = array('id'=>$pagina->getId(),
+                     $return[] = array('id'=>$pagina->getId(),
                                            'nombre'=>$pagina->getNombre());   
                 }
             }       
         }
 
-        return $this->render('LinkBackendBundle:empresasGrupo:asignar_pagina.html.twig', array('paginas' =>$paginas_db));
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
 
