@@ -79,6 +79,13 @@ class CertiPagina
     private $orden;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="encuesta", type="text", nullable=true)
+     */
+    private $encuesta;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPagina
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPagina")
@@ -320,6 +327,30 @@ class CertiPagina
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * Set encuesta
+     *
+     * @param string $encuesta
+     *
+     * @return CertiPagina
+     */
+    public function setEncuesta($encuesta)
+    {
+        $this->encuesta = $encuesta;
+    
+        return $this;
+    }
+
+    /**
+     * Get encuesta
+     *
+     * @return string
+     */
+    public function getEncuesta()
+    {
+        return $this->encuesta;
     }
 
     /**

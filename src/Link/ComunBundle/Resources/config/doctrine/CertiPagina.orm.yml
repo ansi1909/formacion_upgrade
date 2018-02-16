@@ -67,6 +67,12 @@ Link\ComunBundle\Entity\CertiPagina:
             nullable: true
             options:
                 unsigned: false
+        encuesta:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
     manyToOne:
         pagina:
             targetEntity: CertiPagina

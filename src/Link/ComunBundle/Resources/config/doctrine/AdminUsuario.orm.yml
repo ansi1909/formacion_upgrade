@@ -109,6 +109,10 @@ Link\ComunBundle\Entity\AdminUsuario:
             length: 50
             options:
                 fixed: false
+        fechaModificacion:
+            type: datetime
+            nullable: true
+            column: fecha_modificacion
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
