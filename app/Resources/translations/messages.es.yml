@@ -16,6 +16,8 @@ Agregar sub-página: Agregar sub-página
 Agrupación de páginas: Agrupación de páginas
 al: al
 Apellido: Apellido
+Apellido requerido: Apellido requerido
+Apellidos deben ser solo alfabéticos: Apellidos deben ser solo alfabéticos
 Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
@@ -43,6 +45,7 @@ Búsqueda de notificaciones empresa: Búsqueda de notificaciones empresa
 Búsqueda de notificaciones por empresa: Búsqueda de notificaciones por empresa
 Cambiar contraseña: Cambiar contraseña
 Cancelar: Cancelar
+Cantidad de filas: Cantidad de filas
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
 Cantidad de registros creados: Cantidad de registros creados
@@ -54,6 +57,11 @@ Carga masiva: Carga masiva
 Categoría: Categoría
 Categoría de las sub-paginas: Categoría de las sub-paginas
 Categorías: Categorías
+Código del empleado repetido: Código del empleado repetido
+Columna: Columna
+Competencia debe ser un valor entero: Competencia debe ser un valor entero
+Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
+Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
 Conceder: Conceder
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
@@ -73,6 +81,8 @@ Continuar: Continuar
 Contraseña: Contraseña
 Copia: Copia
 Correcta: Correcta
+Correo electrónico repetido: Correo electrónico repetido
+Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
 Creado el: Creado el
@@ -115,7 +125,9 @@ Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
 El apellido del usuario es requerido.: El apellido del usuario es requerido.
 El archivo: El archivo
+El archivo debe tener al menos una fila con datos: El archivo debe tener al menos una fila con datos
 El archivo es requerido.: El archivo es requerido.
+El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.
 El asunto de la notificación debe ser mínimo de 3 caracteres.: El asunto de la notificación debe ser mínimo de 3 caracteres.
 El asunto de la notificación es requerido.: El asunto de la notificación es requerido.
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
@@ -141,6 +153,7 @@ El nombre del archivo no debe contener acentos o caracteres especiales: El nombr
 El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
+El país no existe en la base de datos: El país no existe en la base de datos
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
 El tipo de elemento es requerido.: El tipo de elemento es requerido.
@@ -187,6 +200,7 @@ Fila: Fila
 filtrado de un total de: filtrado de un total de
 Filtrar usuarios: Filtrar usuarios
 Finalizar: Finalizar
+Formato de correo inválido: Formato de correo inválido
 Formato sugerido se especifica en: Formato sugerido se especifica en
 Foto de la página: Foto de la página
 Gráfico del promedio de conexiones: Grafico del promedio de conexiones
@@ -221,8 +235,11 @@ La clave es requerida.: La clave es requerida.
 La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mínimo de 3 caracteres.
 La descripción es requerida.: La descripción es requerida.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
+La empresa aún no tiene configurado ningún nivel: La empresa aún no tiene configurado ningún nivel
 La empresa es requerida.: La empresa es requerida.
 La faq ha sido almacenada con éxito: La faq ha sido almacenada con éxito
+La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA
+La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: La fecha de registro debe ser en formato DD/MM/AAAA y ser válida
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
@@ -231,6 +248,7 @@ La notificación ha sido programada con éxito: La notificación ha sido program
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 Lado: Lado
+Línea: Línea
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
@@ -247,6 +265,8 @@ Listado de Roles: Listado de Roles
 Listado de Tipos de Destinos: Listado de Tipos de Destinos
 Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Listado de tutoriales: Listado de tutoriales
+Login repetido: Login repetido
+Login requerido: Login requerido
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Material complementario: Material complementario
@@ -259,6 +279,7 @@ Mostrar: Mostrar
 Muro: Muro
 Ningún dato disponible en esta tabla: Ningún dato disponible en esta tabla
 Nivel: Nivel
+Nivel no existente para esta empresa: Nivel no existente para esta empresa
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
@@ -275,6 +296,8 @@ No se pudo habilitar/inhabilitar el acceso a esta página.: No se pudo habilitar
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
 Nombre para esta página: Nombre para esta página
+Nombre requerido: Nombre requerido
+Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Nueva evaluación: Nueva evaluación
 Nueva página: Nueva página
 Nueva pregunta: Nueva pregunta

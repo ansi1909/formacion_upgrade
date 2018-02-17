@@ -16,6 +16,8 @@ Agregar sub-página: Add sub-page
 Agrupación de páginas: Grouping pages
 al: to
 Apellido: Last Name
+Apellido requerido: Last name required
+Apellidos deben ser solo alfabéticos: Last names must be alphabetical
 Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
@@ -43,6 +45,7 @@ Búsqueda de notificaciones empresa: Search notifications company
 Búsqueda de notificaciones por empresa: Search notifications by company
 Cambiar contraseña: Change password
 Cancelar: Cancel
+Cantidad de filas: Number of rows
 Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
 Cantidad de registros creados: Number of records created
@@ -54,6 +57,11 @@ Carga masiva: Bulk load
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
+Código del empleado repetido: Employee code repeated
+Columna: Column
+Competencia debe ser un valor entero: Competition must be an integer value
+Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
+Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
@@ -73,6 +81,8 @@ Continuar: Continue
 Contraseña: Password
 Copia: Copy
 Correcta: Correct
+Correo electrónico repetido: Email repeated
+Correo electrónico requerido: Email required
 Correo corporativo: Company email
 Correo personal: Personal email
 Creado el: Created at
@@ -115,7 +125,9 @@ Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
 El apellido del usuario es requerido.: User last name is required.
 El archivo: The file
+El archivo debe tener al menos una fila con datos: File must have at least one row with data
 El archivo es requerido.: File is required.
+El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
 El asunto de la notificación debe ser mínimo de 3 caracteres.: The subject of notification must have at least 3 characters.
 El asunto de la notificación es requerido.: The subject of notification is required.
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
@@ -141,6 +153,7 @@ El nombre del archivo no debe contener acentos o caracteres especiales: File nam
 El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
+El país no existe en la base de datos: Country does not exist in database
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
 El tipo de elemento es requerido.: Element type is required.
@@ -187,6 +200,7 @@ Fila: Row
 filtrado de un total de: filtered of a total of
 Filtrar usuarios: Filter users
 Finalizar: Finish
+Formato de correo inválido: invalid email format
 Formato sugerido se especifica en: Suggested format, see
 Foto de la página: Page picture
 Gráfico del promedio de conexiones: Connections average graph
@@ -221,8 +235,11 @@ La clave es requerida.: Password is required.
 La descripción debe ser mínimo de 3 caracteres.: Description must have at least 3 characters.
 La descripción es requerida.: Description is required.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
+La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
 La empresa es requerida.: Company is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
+La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: Registration date cell must be of text type in format DD/MM/YYYY
+La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: Registration date must be in format DD/MM/YYYY and a valid date
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
@@ -231,6 +248,7 @@ La notificación ha sido programada con éxito: Programation has been saved succ
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 Lado: Side
+Línea: Line
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies
@@ -247,6 +265,8 @@ Listado de Roles: List of Roles
 Listado de Tipos de Destinos: List of Types of Destinies
 Listado de Tipos de Notificaciones: List of Types of Notifications
 Listado de tutoriales: List of tutorials
+Login repetido: Login repeated
+Login requerido: Login required
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Material complementario: Complementary content
@@ -259,6 +279,7 @@ Mostrar: Show
 Muro: Wall
 Ningún dato disponible en esta tabla: No data available in this table
 Nivel: Level
+Nivel no existente para esta empresa: No level for this company
 Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
@@ -275,6 +296,8 @@ No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/d
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nombre para esta página: Name for this page
+Nombre requerido: Name required
+Nombres deben ser solo alfabéticos: Names must be alphabetical
 Nueva evaluación: New test
 Nueva página: New page
 Nueva pregunta: New question
