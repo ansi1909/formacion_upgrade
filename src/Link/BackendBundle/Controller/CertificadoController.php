@@ -33,6 +33,15 @@ class CertificadoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $app_id = $session->get('app_id');
 
+        $usuario_empresa = 0;
+        if($session->get('administrador')==false)//si no es administrador
+        {
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+        }
+
         //contultamos el nombre de la aplicacion para reutilizarla en la vista
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
 
@@ -85,11 +94,10 @@ class CertificadoController extends Controller
 
             if ($usuario->getEmpresa()) 
                 $usuario_empresa = $usuario->getEmpresa()->getId(); 
-        }else
-        {
-            $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
         }
-
+     
+        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
+     
         $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
         $tipo_imagen_certificados = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->findAll(array('nombre' => 'ASC'));
 

@@ -5,6 +5,15 @@
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />    
     <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .input-group {
+            margin-top: 35px;
+        }
+    </style>    
 {% endblock %}
 
 {% block body %}
@@ -14,7 +23,7 @@
 <input type="hidden" id="certificado_id" name="certificado_id" value="{{ certificado.id }}" />
 <input type="hidden" id="url_tipo_certificado" name="url_tipo_certificado" value="{{ path('_ajaxTipoCertificado') }}">
 
-<br><br><br>
+<br><br>
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_certificados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
@@ -29,7 +38,7 @@
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Detalles de la Certificado y Constancia'|trans }}</h6>
+                    <h6>{{ 'Detalle del Certificado y Constancia'|trans }}</h6>
                 </div>
             </div>
             <div class="card-block">
@@ -139,12 +148,23 @@
                                             <span class="fa fa-file-picture-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2 col-md-2 col-lg-32">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
                                         <div class="input-group">
                                             <span class="input-group-addon">
+                                            {% if usuario_empresa %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/certificados/{{ usuario_empresa }}" class="btn iframe-btn" type="button">
+                                            {% else %}
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/certificados" class="btn iframe-btn" type="button">
-                                                    <span class="fa fa-file-picture-o"></span>
+                                            {% endif %}
+                                                    <button type="button" class="btn_addImg">
+                                                        <span class="fa fa-file-picture-o"></span>
+                                                    </button>
                                                 </a>
+                                            </span>
+                                            <span class="input-group-addon">
+                                                <button id="btn_clear" class="btn_clearImg" type="button">
+                                                    <span class="fa fa-times"></span>
+                                                </button>
                                             </span>
                                         </div>
                                     </div>
@@ -177,14 +197,12 @@
                                         <label for="texto" class="col-2 col-form-label">{{ 'Encabezado'|trans }}</label>
                                         <div class="col-14">
                                             <textarea type="text" class="form-control form_sty1" name="encabezado" id="encabezado">{{ certificado.encabezado }}</textarea>
-                                            <span class="fa fa-font"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-2 col-form-label">{{ 'Descripción'|trans }}</label>
                                         <div class="col-14">
                                             <textarea type="text" class="form-control form_sty1" name="descripcion" id="descripcion">{{ certificado.descripcion }}</textarea>
-                                            <span class="fa fa-font"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -223,6 +241,12 @@
     <script type="text/javascript">
 
         $("form :input").attr("autocomplete", "off");
+
+        $("#btn_clear").on("click",function(event) {
+            $("#imagen").val("");
+            $("#figure").html('<img src="'+$('#imagen').val()+'">');
+        });
+
         $('#finish').click(function()
         {
            var valid = $('#form_certificado').valid();
@@ -272,7 +296,7 @@
             },
             messages: {
                 'empresa_id': {
-                    required: "- {{ 'La empresa es requerido.'|trans }}"
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
                 },
                 'entidad': {
                     required: "- {{ 'La Entidad es requerida.'|trans }}"
@@ -284,7 +308,7 @@
                     required: "- {{ 'El Tipo de Certificado es requerido.'|trans }}"
                 },
                 'imagen': {
-                    required: "- {{ 'La Imagen es requerido.'|trans }}",
+                    required: "- {{ 'La Imagen es requerida.'|trans }}",
                     extension: "- {{ 'Sólo archivos con extensión .jpg o .png'|trans }}"
                 },
                 'encabezado': {
@@ -292,8 +316,8 @@
                     minlength: "- {{ 'El Encabezado debe ser mínimo de 3 caracteres.'|trans }}"
                 },
                 'descripcion': {
-                    required: "- {{ 'La Descripcion es requerida.'|trans }}",
-                    minlength: "- {{ 'La Descripcion debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'La descripcion es requerida.'|trans }}",
+                    minlength: "- {{ 'La descripcion debe ser mínimo de 3 caracteres.'|trans }}"
                 },
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",

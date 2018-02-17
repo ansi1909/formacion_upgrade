@@ -25,7 +25,7 @@
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>Listado de {{ aplicacion.nombre }}</h3>
+        <h3>{{ 'Listado de'|trans }} {{ aplicacion.nombre }}</h3>
     </div>
     <div class="col text-right">
         {% if aplicacion.id==26 %}
@@ -39,7 +39,7 @@
     <div class="col-sm-16 col-md-16 col-lg-16">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">Listado de {{ aplicacion.nombre }}</h5>
+                <h5 class="card-title">{{ 'Listado de'|trans }} {{ aplicacion.nombre }}</h5>
             </div>
             <div class="card-block">
                 <div class="row" id="div-active-alert" style="display:none;">

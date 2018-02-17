@@ -30,6 +30,7 @@ Asignada: Asignada
 Asignar: Asignar
 Asignar páginas: Asignar páginas
 Asunto: Asunto
+Autor: Autor
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aviso de cierre de sesión: Aviso de cierre de sesión
@@ -49,6 +50,8 @@ Cantidad de registros creados: Cantidad de registros creados
 Cantidad de sub-páginas: Cantidad de sub-páginas
 Cantidad máxima de intentos: Cantidad máxima de intentos
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
+Cantidad mínima de caracteres en el Resumen: Cantidad mínima de caracteres en el Resumen
+Cantidad mínima de caracteres en el Contenido: Cantidad mínima de caracteres en el Contenido
 Cargando..: Cargando..
 Carga masiva: Carga masiva
 Categoría: Categoría
@@ -98,13 +101,19 @@ de un total de: de un total de
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
+Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
+Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
 Descargue material complementario: Descargue material complementario
 Descargar: Descargar
 Descripción: Descripción
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Destino: Destino
+Detalle de la Biblioteca Virtual:
+Detalle de la Noticia y Novedad: Detalle de la Noticia y Novedad
 Detalles de la página: Detalles de la página
+Detalle del Certificado y Constancia: Detalle del Certificado y Constancia
+Diseño: Diseño
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
 Editar asignación: Editar asignación
@@ -118,13 +127,19 @@ El archivo: El archivo
 El archivo es requerido.: El archivo es requerido.
 El asunto de la notificación debe ser mínimo de 3 caracteres.: El asunto de la notificación debe ser mínimo de 3 caracteres.
 El asunto de la notificación es requerido.: El asunto de la notificación es requerido.
+El autor es requerido.: El autor es requerido.
+El autor debe ser mínimo de 3 caracteres.: El autor debe ser mínimo de 3 caracteres.
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
 El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
 El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
+El Encabezado es requerido.: El Encabezado es requerido.
+El Encabezado debe ser mínimo de 3 caracteres.: El Encabezado debe ser mínimo de 3 caracteres.
 El enunciado debe ser mínimo de 3 caracteres.: El enunciado debe ser mínimo de 3 caracteres.
 El enunciado es requerido.: El enunciado es requerido.
+El título es requerido.: El título es requerido.
+El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
 El grupo ha sido almacenada con éxito: El grupo ha sido almacenada con éxito
 El login ya existe.: El login ya existe.
 El material complementario debe ser sólo archivo con extensión pdf.: El material complementario debe ser sólo archivo con extensión pdf.
@@ -143,9 +158,14 @@ El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
+El Tipo de Certificado es requerido.: El Tipo de Certificado es requerido.
 El tipo de elemento es requerido.: El tipo de elemento es requerido.
+El Tipo de Imagen es requerido.: El Tipo de Imagen es requerido.
+El tipo de noticia es requerido.: El tipo de noticia es requerido.
 El tipo de notificación es requerida.: El tipo de notificación es requerida.
 El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
+El título es requerido.: El título es requerido.
+El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
 El valor de la pregunta debe ser un valor numérico.: El valor de la pregunta debe ser un valor numérico.
 El valor de la pregunta es requerido.: El valor de la pregunta es requerido.
 El tutorial ha sido almacenada con éxito: El tutorial ha sido almacenada con éxito
@@ -156,6 +176,7 @@ Empresas activas: Empresas activas
 Empresa con estatus inactivo: Empresa con estatus inactivo
 Empresas inactivas: Empresas inactivas
 Empresas registradas: Empresas registradas
+Encabezado: Encabezado
 Enunciado: Enunciado
 Enunciado (Lado A): Enunciado (Lado A)
 Entidad: Entidad
@@ -182,6 +203,8 @@ Fecha: Fecha
 Fecha Creación: Fecha Creación
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
+Fecha de Publicación: Publication date
+Fecha de Vencimiento: Due date
 Fecha Difusión: Fecha Difusión
 Fila: Fila
 filtrado de un total de: filtrado de un total de
@@ -220,8 +243,10 @@ La categoría ha sido almacenada con éxito: La categoría ha sido almacenada co
 La clave es requerida.: La clave es requerida.
 La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mínimo de 3 caracteres.
 La descripción es requerida.: La descripción es requerida.
+La descripcion debe ser mínimo de 3 caracteres.: The description must be at least 3 characters.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
 La empresa es requerida.: La empresa es requerida.
+La Entidad es requerida.: La Entidad es requerida.
 La faq ha sido almacenada con éxito: La faq ha sido almacenada con éxito
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
 La imagen es requerida.: La imagen es requerida.
@@ -231,6 +256,7 @@ La notificación ha sido programada con éxito: La notificación ha sido program
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 Lado: Lado
+Listado de: Listado de
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de Empresas: Listado de Empresas
@@ -298,6 +324,7 @@ Panel de acceso: Panel de acceso
 Paso: Paso
 País: País
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
+Pdf: Pdf
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
 Permisos: Permisos
@@ -321,6 +348,7 @@ Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
 registros: registros
 Resultado del archivo procesado: Resultado del archivo procesado
+Resumen: Resumen
 Rol: Rol
 Roles: Roles
 Roles asignados: Roles asignados
@@ -343,6 +371,8 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Siguiente: Siguiente
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
+Sólo archivos con extensión .jpg o .png: Sólo archivos con extensión .jpg o .png: 
+Sólo archivos con extensión .pdf: Sólo archivos con extensión .pdf
 Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir Archivo de Niveles: Subir Archivo de Niveles
 Subir Archivo de participantes: Subir Archivo de participantes
@@ -352,12 +382,18 @@ Sub-páginas: Sub-páginas
 Teléfono de contacto: Teléfono de Contacto
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Tiene muro: Tiene muro
+Tipo Certificado: Tipo Certificado
+Tipo de Certificado: Tipo de Certificado
 Tipo de elemento: Tipo de elemento
+Tipo de Imagen: Tipo de Imagen
+Tipo de Imagen Certificado: Tipo de Imagen Certificado
 Tipo de pregunta: Tipo de pregunta
+Tipo de Noticia: Tipo de Noticia
 Tipo notificación: Tipo notificación
 Tipo Destino: Tipo Destino
 Tipo de Destinos: Tipo de Destinos
 Tutoriales: Tutoriales
+Título: Título
 Últimos 12: Últimos 12
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
