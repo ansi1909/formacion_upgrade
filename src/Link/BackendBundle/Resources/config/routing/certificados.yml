@@ -15,3 +15,7 @@ _ajaxTipoCertificado:
     defaults: { _controller: LinkBackendBundle:Certificado:ajaxTipoCertificado }
     requirements:
         method: GET
+
+_generarPdf:
+    path:     /generarPdf
+    defaults: { _controller: LinkBackendBundle:Certificado:generarPdf }

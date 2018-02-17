@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiCertificado;
 use Symfony\Component\Yaml\Yaml;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class CertificadoController extends Controller
 {
@@ -291,4 +292,63 @@ class CertificadoController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
+
+    public function generarPdfAction()
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        //Recogemos el contenido de la vista
+        ob_start(); 
+        // $html= $this->render('LinkBackendBundle:Certificado:certificado.html.twig'); 
+        //les content pour le pdf
+
+        //require_once 'certificado.html.twig';
+        $html=ob_get_clean(); 
+
+        //Le indicamos el tipo de hoja y la codificación de caracteres
+        $certificado = new Html2Pdf('P','A4','es','true','UTF-8');
+        $certificado->writeHTML('<h1>Hola mundo</h1>');
+        //$certificado->writeHTML($html);
+        //Generamos el PDF
+        $certificado->output('certificiado.pdf');
+
+       
+
+//Incluimos la librería
+ /*   require_once 'html2pdf_v4.03/html2pdf.class.php';
+     
+    //Recogemos el contenido de la vista
+    ob_start(); 
+    require_once 'vistaImprimir.php';
+    $html=ob_get_clean(); 
+ 
+    //Pasamos esa vista a PDF
+     
+    //Le indicamos el tipo de hoja y la codificación de caracteres
+    $mipdf=new HTML2PDF('P','A4','es','true','UTF-8');
+ 
+    //Escribimos el contenido en el PDF
+    $mipdf->writeHTML($html);
+ 
+    //Generamos el PDF
+    $mipdf->Output('PdfGeneradoPHP.pdf');
+*/
+
+    }
+
 }
