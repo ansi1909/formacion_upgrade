@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	
 	var root_site = $('#root_site').val();
+	var usuario_empresa = $('#usuario_empresa').val();
 
 /*	$('#datetimepicker6').datepicker();
 	$('#datetimepicker7').datepicker({
@@ -43,9 +44,9 @@ $(document).ready(function() {
     });
 
     CKEDITOR.replace( 'resumen', {
-		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
-		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
-		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&editor=ckeditor&fldr=recursos/noticias',
+		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
+		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
+		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
 		on: {
 			instanceReady: function() {
 				var editor_data = CKEDITOR.instances.resumen.getData();
@@ -61,9 +62,9 @@ $(document).ready(function() {
 	} );
 
 	CKEDITOR.replace( 'contenido', {
-		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
-		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&fldr=recursos/noticias',
-		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&editor=ckeditor&fldr=recursos/noticias',
+		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
+		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
+		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
 		on: {
 			instanceReady: function() {
 				var editor_data = CKEDITOR.instances.contenido.getData();
@@ -99,7 +100,8 @@ function responsive_filemanager_callback(field_id)
 	var arr = url.split('uploads/');
 	var new_image = arr[arr.length-1];
 	$('#'+field_id).val(new_image);
-	
+
 	if(field_id=="imagen")
 		$('#figure').html('<img src="'+url+'" width="100%">');
+	
 }

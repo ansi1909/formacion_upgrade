@@ -5,28 +5,16 @@
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />    
     <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
-    <style>
-        .input-group-addon{padding:0px;}
-        .input-group .form-control {
-            z-index: 1;
-        }
-        .input-group {
-            margin-top: 35px;
-        }
-        img {
-            width: 100% !important;
-        }         
-    </style>
 {% endblock %}
 
 {% block body %}
 
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
-<input type="text" id="certificado_id" name="certificado_id" value="{{ certificado.id }}" />
+<input type="hidden" id="certificado_id" name="certificado_id" value="{{ certificado.id }}" />
 <input type="hidden" id="url_tipo_certificado" name="url_tipo_certificado" value="{{ path('_ajaxTipoCertificado') }}">
 
-<br><br>
+<br><br><br>
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_certificados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
@@ -35,6 +23,7 @@
         <ul></ul>
     </div>
 </div>
+
 <div class="row">
     <div class="col-sm-16">
         <div class="card">
@@ -77,6 +66,7 @@
                                 </div>
                                 <br>
                                 <div class="row">
+                                    {% if not usuario_empresa %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
                                         <div class="col-14">
@@ -90,6 +80,9 @@
                                             <span class="fa fa-industry"></span>
                                         </div>
                                     </div>
+                                    {% else %}
+                                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario_empresa }}"/>
+                                    {% endif %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-8 col-form-label">{{ 'Tipo de Imagen'|trans }}</label>
                                         <div class="col-14">

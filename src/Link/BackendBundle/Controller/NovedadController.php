@@ -53,11 +53,6 @@ class NovedadController extends Controller
             {
                 $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
 
-              /*  $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
-                                           WHERE e.activo = :activo ORDER BY e.nombre ASC')
-                            ->setParameters(array('activo' => true));
-                $empresas = $query->getResult();*/
-
                 if($app_id==26)//se consulta la informacion del tipo de noticia: biblioteca virtual
                 {
                     $noticias = $em->getRepository('LinkComunBundle:AdminNoticia')->findBy(array('tipoNoticia' => $tipo_noticia->getId()));
@@ -142,7 +137,7 @@ class NovedadController extends Controller
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        //$empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+
         $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
                                    WHERE e.activo = :activo ORDER BY e.nombre ASC')
                     ->setParameters(array('activo' => true));
@@ -152,7 +147,7 @@ class NovedadController extends Controller
         if($session->get('administrador')==false)//si no es administrador
         {
             if ($usuario->getEmpresa()) 
-                $usuario_empresa = 1; 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
         }
 
         if ($biblioteca_id)
@@ -167,7 +162,7 @@ class NovedadController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
-            if($usuario_empresa==1)
+            if($usuario_empresa != 0)
             {
                 $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
             }else
@@ -269,7 +264,7 @@ class NovedadController extends Controller
         if($session->get('administrador')==false)//si no es administrador
         {
             if ($usuario->getEmpresa()) 
-                $usuario_empresa = 1; 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
         }
 
         if ($noticia_id)
@@ -284,7 +279,7 @@ class NovedadController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
-            if($usuario_empresa==1)
+            if($usuario_empresa != 0)
             {
                 $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
             }else

@@ -1,16 +1,6 @@
 {% extends '::admin.html.twig'%}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        img {
-            width: 100% !important;
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
-
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="noticia_id" name="noticia_id" value="noticia.id">
@@ -165,7 +155,7 @@
                                 {% if noticia.imagen %}
                                     <div class="col-sm-6">
                                         {% set img = uploads~noticia.imagen %}
-                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }} " alt="{{ 'Imagen |trans' }}" width="100%"></figure>
+                                        <figure class="social-profile-pic" id="figure"><img style="width: 100% !important;" src="{{ img }} " alt="{{ 'Imagen |trans' }}" width="100%"></figure>
                                     </div>
                                 {% endif %}    
                                 <div class="col-sm-2">

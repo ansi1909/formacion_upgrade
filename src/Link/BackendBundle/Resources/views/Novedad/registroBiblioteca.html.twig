@@ -5,24 +5,17 @@
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />    
     <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
-    <style>
-        .input-group-addon{padding:0px;}
-        .input-group .form-control {
-            z-index: 1;
-        }
-        .input-group {
-            margin-top: 35px;
-        }
-        img {
-            width: 100% !important;
-        }        
-    </style>
 {% endblock %}
 
 {% block body %}
 
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+{% if usuario_empresa %}
+    <input type="text" id="usuario_empresa" name="usuario_empresa" value="/{{ usuario_empresa }}" />
+{% else %}    
+    <input type="text" id="usuario_empresa" name="usuario_empresa" value="" />    
+{% endif %}
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <br><br>
 <div class="row align-items-center justify-content-start">
@@ -75,7 +68,7 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    {% if not usuario_empresa %}                                
+                                    {% if not usuario_empresa %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
                                         <div class="col-14">
@@ -152,7 +145,11 @@
                                     <div class="col-sm-2 col-md-2 col-lg-32">
                                         <div class="input-group">
                                             <span class="input-group-addon">
-                                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
+                                            {% if usuario_empresa %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias/{{ usuario_empresa }}"  class="btn iframe-btn" type="button">
+                                            {% else %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias"  class="btn iframe-btn" type="button">
+                                            {% endif %}
                                                     <span class="fa fa-file-picture-o"></span>
                                                 </a>
                                             </span>
@@ -168,7 +165,11 @@
                                     <div class="col-sm-2 col-md-2 col-lg-2">
                                         <div class="input-group">
                                             <span class="input-group-addon">
+                                            {% if usuario_empresa %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button">
+                                            {% else %}
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
+                                            {% endif %}
                                                     <span class="fa fa-file-pdf-o"></span>
                                                 </a>
                                             </span>

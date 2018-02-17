@@ -22,7 +22,7 @@ class CertificadoController extends Controller
         }else 
         {
             $session->set('app_id', $app_id);
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id'))  && $session->get('administrador')==false )
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
             {
                 return $this->redirectToRoute('_authException');
             }
@@ -52,7 +52,8 @@ class CertificadoController extends Controller
         }
 
         return $this->render('LinkBackendBundle:Certificado:index.html.twig', array('aplicacion' => $aplicacion,
-                                                                                    'certificados' => $certificadodb ));
+                                                                                    'certificados' => $certificadodb,
+                                                                                    'usuario_empresa' => $usuario_empresa  ));
 
     }
 
@@ -67,7 +68,7 @@ class CertificadoController extends Controller
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) && $session->get('administrador')==false )
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
             {
                 return $this->redirectToRoute('_authException');
             }
@@ -77,7 +78,17 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
      
-        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
+        $usuario_empresa = 0;
+        if($session->get('administrador')==false)//si no es administrador
+        {
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+        }else
+        {
+            $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
+        }
 
         $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
         $tipo_imagen_certificados = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->findAll(array('nombre' => 'ASC'));
@@ -127,7 +138,8 @@ class CertificadoController extends Controller
         return $this->render('LinkBackendBundle:Certificado:registro.html.twig', array('empresas' => $empresas,
                                                                                        'certificado' => $certificado,
                                                                                        'tipoCertificados' => $tipo_certificados,
-                                                                                       'tipoImagenCertificados' => $tipo_imagen_certificados ));
+                                                                                       'tipoImagenCertificados' => $tipo_imagen_certificados,
+                                                                                       'usuario_empresa' => $usuario_empresa  ));
 
     }
 
@@ -141,7 +153,7 @@ class CertificadoController extends Controller
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) && $session->get('administrador')==false )
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
             {
                 return $this->redirectToRoute('_authException');
             }
@@ -149,6 +161,15 @@ class CertificadoController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+
+        $usuario_empresa = 0;
+        if($session->get('administrador')==false)//si no es administrador
+        {
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+        }
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
 
@@ -169,7 +190,8 @@ class CertificadoController extends Controller
         }
 
         return $this->render('LinkBackendBundle:Certificado:mostrar.html.twig', array('certificado' => $certificado,
-                                                                                      'entidad' => $entidad));
+                                                                                      'entidad' => $entidad,
+                                                                                      'usuario_empresa' => $usuario_empresa ));
 
     }
 

@@ -66,7 +66,7 @@ INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (20, 28, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (21, 29, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (22, 11, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (23, 31, 1);
-INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (23, 30, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (24, 30, 1);
 
 ------------------------------------------------------------------------------------------------------------
 -- Name: admin_empresa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: develo
