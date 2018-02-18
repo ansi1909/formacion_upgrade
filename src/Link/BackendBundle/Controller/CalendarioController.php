@@ -124,6 +124,8 @@ class CalendarioController extends Controller
         $format = "d-m-Y H:i:s";
         $empresa_admin = $request->request->get("empresa");
         $empresa_usuario = $request->request->get("empresa_usuario");
+        $fecha_inicio = $request->request->get("start_date");
+        $fecha_fin = $request->request->get("end_date");
         if($empresa_usuario){
             $empresa_id = $empresa_usuario;
         }else{
@@ -139,13 +141,8 @@ class CalendarioController extends Controller
         $evento->setNombre($request->request->get("title"));
         $evento->setDescripcion($request->request->get("descripcion"));
         $evento->setLugar($request->request->get("lugar"));
-        $evento->setFechaInicio(
-            \DateTime::createFromFormat($format, $request->request->get("start_date"))
-        );
-        $evento->setFechaFin(
-            \DateTime::createFromFormat($format, $request->request->get("end_date"))
-        );
-        
+        $evento->setFechaInicio(new \DateTime($fecha_inicio));
+        $evento->setFechaFin(new \DateTime($fecha_fin));
         $evento->setEmpresa($empresa);
         $evento->setNivel($nivel);
         $evento->setUsuario($usuario);
@@ -164,6 +161,8 @@ class CalendarioController extends Controller
         $evento_id = $request->request->get("evento_id");
         $empresa_admin = $request->request->get("empresa");
         $empresa_usuario = $request->request->get("empresa_usuario");
+        $fecha_inicio = $request->request->get("start_date");
+        $fecha_fin = $request->request->get("end_date");
         if($empresa_usuario){
             $empresa_id = $empresa_usuario;
         }else{
@@ -183,18 +182,11 @@ class CalendarioController extends Controller
             ));
         }
 
-        $format = "d-m-Y H:i:s";
-
         $evento->setNombre($request->request->get("title"));
         $evento->setDescripcion($request->request->get("descripcion"));
         $evento->setLugar($request->request->get("lugar"));
-        $evento->setFechaInicio(
-            \DateTime::createFromFormat($format, $request->request->get("start_date"))
-        );
-        $evento->setFechaFin(
-            \DateTime::createFromFormat($format, $request->request->get("end_date"))
-        );
-        
+        $evento->setFechaInicio(new \DateTime($fecha_inicio));
+        $evento->setFechaFin(new \DateTime($fecha_fin));
         $evento->setEmpresa($empresa);
         $evento->setNivel($nivel);
         $evento->setUsuario($usuario);

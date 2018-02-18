@@ -47,6 +47,7 @@
             {% if usuario_empresa %}
                 <input type="hidden" id="empresa_usuario" name="empresa_usuario" value="{{ empresa_id }}">
             {% endif %}
+            <input type="hidden" id="usuario" name="usuario" value="{{ usuario.id }}">
             <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Nuevo Evento'|trans }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -67,7 +68,7 @@
                     <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
                         <label for="asunto" class="form-control-label">{{ 'Descripción'|trans }}:</label>
                         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
-                            <textarea rows="4" class="form-control" placeholder="{{ 'Descripción'|trans }}..."></textarea>
+                            <textarea rows="4" class="form-control" id="descripcion" name="descripcion" placeholder="{{ 'Descripción'|trans }}..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -105,7 +106,7 @@
                             <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="nivel" name="nivel">
                                 <option value="0"></option>
                                 {% for nivel in niveles %}
-                                    <option value="{{ nivel.id }}" >{{ nivel.nombre }}</option>
+                                    <option value="{{ nivel.id }}" >{{ nivel.nombre }}{% if not usuario_empresa %} - ({{ nivel.empresa.nombre }}){% endif %}</option>
                                 {% endfor %}
                             </select>
                             <span class="fa fa-book"></span>
@@ -135,7 +136,7 @@
           </div>
           <div class="modal-footer">
                 <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
-                <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+                <button type="submit" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
           </div>
         </form>
         </div>
@@ -150,6 +151,7 @@
             {% if usuario_empresa %}
                 <input type="hidden" id="empresa_usuario" name="empresa_usuario" value="{{ empresa_id }}">
             {% endif %}
+            <input type="hidden" id="usuario" name="usuario" value="{{ usuario.id }}">
             <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Modificar Evento'|trans }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -170,7 +172,7 @@
                     <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
                         <label for="asunto" class="form-control-label">{{ 'Descripción'|trans }}:</label>
                         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
-                            <textarea rows="4" class="form-control" placeholder="{{ 'Descripción'|trans }}..."></textarea>
+                            <textarea rows="4" class="form-control" id="descripcion" name="descripcion" placeholder="{{ 'Descripción'|trans }}..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -208,7 +210,7 @@
                             <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="nivel" name="nivel">
                                 <option value="0"></option>
                                 {% for nivel in niveles %}
-                                    <option value="{{ nivel.id }}" >{{ nivel.nombre }}</option>
+                                    <option value="{{ nivel.id }}" >{{ nivel.nombre }}{% if not usuario_empresa %} - ({{ nivel.empresa.nombre }}){% endif %}</option>
                                 {% endfor %}
                             </select>
                             <span class="fa fa-book"></span>
@@ -238,7 +240,7 @@
           </div>
           <div class="modal-footer">
                 <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
-                <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+                <button type="submit" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
           </div>
         </form>
         </div>
