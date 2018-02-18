@@ -24,16 +24,226 @@
         font-weight: 500;
         text-transform: capitalize;
       }
+      .wrapper-content{
+        position: inherit !important;
+      }
     </style>
 {% endblock %}
 
 {% block body %}
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+{% set uri = app.request.getbasepath %}
 <br>
 <br>
 <div class="row">
-  <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
       <div id='calendar'></div>
-  </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <form id="form_add" class="form-horizontal" method="POST" action="{{ path( '_calendario_create')}}">
+            {% if usuario_empresa %}
+                <input type="hidden" id="empresa_usuario" name="empresa_usuario" value="{{ empresa_id }}">
+            {% endif %}
+            <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Nuevo Evento'|trans }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: #fff;">&times;</span>
+                </button>
+            </div>
+          <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Titulo'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input class="form-control form_sty_sel form_sty_modal" id="title" name="title" style="border-radius: 5px;" placeholder="{{ 'Titulo'|trans }}">
+                            <span class="fa fa-font"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Descripción'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <textarea rows="4" class="form-control" placeholder="{{ 'Descripción'|trans }}..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Lugar'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input class="form-control form_sty_sel form_sty_modal" id="lugar" name="lugar" style="border-radius: 5px;" placeholder="{{ 'Lugar'|trans }}">
+                            <span class="fa fa-location-arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                {% if not usuario_empresa %}
+                    <div class="row">
+                        <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <label for="tipo_destino_id" class="form-control-label">{{ 'Empresa'|trans }}:</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                                <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="empresa" name="empresa">
+                                    <option value="0"></option>
+                                    {% for empresa in empresas %}
+                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-industry"></span>
+                                <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                            </div>
+                            <label id="empresa-error" class="error" for="empresa" style="display:none;"></label>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="tipo_destino_id" class="form-control-label">{{ 'Nivel'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="nivel" name="nivel">
+                                <option value="0"></option>
+                                {% for nivel in niveles %}
+                                    <option value="{{ nivel.id }}" >{{ nivel.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-book"></span>
+                            <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                        </div>
+                        <label id="empresa-error" class="error" for="empresa" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha Inicio'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="text" class="form-control form_sty1" name="start" id="start" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha Fin'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="text" class="form-control form_sty1" name="end" id="end" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+                <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
+                <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div> 
+        
+    <!-- Modal -->
+    <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <form id="form_edit" class="form-horizontal" method="POST" action="{{ path( '_calendario_update') }}">
+            {% if usuario_empresa %}
+                <input type="hidden" id="empresa_usuario" name="empresa_usuario" value="{{ empresa_id }}">
+            {% endif %}
+            <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Modificar Evento'|trans }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: #fff;">&times;</span>
+                </button>
+            </div>
+          <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Titulo'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input class="form-control form_sty_sel form_sty_modal" id="title" name="title" style="border-radius: 5px;" placeholder="{{ 'Titulo'|trans }}">
+                            <span class="fa fa-font"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Descripción'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <textarea rows="4" class="form-control" placeholder="{{ 'Descripción'|trans }}..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Lugar'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input class="form-control form_sty_sel form_sty_modal" id="lugar" name="lugar" style="border-radius: 5px;" placeholder="{{ 'Lugar'|trans }}">
+                            <span class="fa fa-location-arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                {% if not usuario_empresa %}
+                    <div class="row">
+                        <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <label for="tipo_destino_id" class="form-control-label">{{ 'Empresa'|trans }}:</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                                <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="empresa" name="empresa">
+                                    <option value="0"></option>
+                                    {% for empresa in empresas %}
+                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-industry"></span>
+                                <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                            </div>
+                            <label id="empresa-error" class="error" for="empresa" style="display:none;"></label>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="tipo_destino_id" class="form-control-label">{{ 'Nivel'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="nivel" name="nivel">
+                                <option value="0"></option>
+                                {% for nivel in niveles %}
+                                    <option value="{{ nivel.id }}" >{{ nivel.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-book"></span>
+                            <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                        </div>
+                        <label id="empresa-error" class="error" for="empresa" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha Inicio'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="text" class="form-control form_sty1" name="start" id="start" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha Fin'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="text" class="form-control form_sty1" name="end" id="end" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+                <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
+                <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
 </div>
 
 {% endblock %}
@@ -46,5 +256,89 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/fullcalendar.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/locale/es.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/calendar.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+           var date = new Date();
+           var yyyy = date.getFullYear().toString();
+           var mm = (date.getMonth()+1).toString().length == 1 ? "0"+(date.getMonth()+1).toString() : (date.getMonth()+1).toString();
+           var dd  = (date.getDate()).toString().length == 1 ? "0"+(date.getDate()).toString() : (date.getDate()).toString();
+            
+            $('#calendar').fullCalendar({
+                header: {
+                     language: 'es',
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay',
+
+                },
+                defaultDate: yyyy+"-"+mm+"-"+dd,
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end) {
+                    
+                    $('#ModalAdd #start').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+                    $('#ModalAdd #end').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+                    $('#ModalAdd').modal('show');
+                },
+                eventRender: function(event, element) {
+                    element.bind('click', function() {
+                        $('#ModalEdit #id').val(event.id);
+                        $('#ModalEdit #title').val(event.title);
+                        $('#ModalEdit #start').val(event.start.format('YYYY-MM-DD HH:mm:ss'));
+                        $('#ModalEdit #end').val(event.end.format('YYYY-MM-DD HH:mm:ss'));
+                        $('#ModalEdit #descripcion').val(event.descripcion);
+                        $('#ModalEdit #empresa').val(event.empresa_id);
+                        $('#ModalEdit #nivel').val(event.nivel_id);
+                        $('#ModalEdit #lugar').val(event.lugar);
+                        $('#ModalEdit').modal('show');
+                    });
+                },
+                eventDrop: function(event, delta, revertFunc) { // si changement de position
+
+                    edit(event);
+
+                },
+                eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // si changement de longueur
+
+                    edit(event);
+
+                },
+                events: "{{ path('_eventos', { 'userID': usuario.id }) }}"
+            });
+            
+            function edit(event){
+                start = event.start.format('YYYY-MM-DD HH:mm:ss');
+                if(event.end){
+                    end = event.end.format('YYYY-MM-DD HH:mm:ss');
+                }else{
+                    end = start;
+                }
+                
+                id =  event.id;
+                
+                Event = [];
+                Event[0] = id;
+                Event[1] = start;
+                Event[2] = end;
+                
+                $.ajax({
+                 url: 'editEventDate.php',
+                 type: "POST",
+                 data: {Event:Event},
+                 success: function(rep) {
+                        if(rep == 'OK'){
+                            alert('Evento se ha guardado correctamente');
+                        }else{
+                            alert('No se pudo guardar. Inténtalo de nuevo.'); 
+                        }
+                    }
+                });
+            }
+            
+        });
+    </script>
     
 {% endblock %}
