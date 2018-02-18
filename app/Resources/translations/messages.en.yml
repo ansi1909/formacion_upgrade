@@ -32,6 +32,7 @@ Asignada: Assigned
 Asignar: Assign
 Asignar páginas: Assign page
 Asunto: Subject
+Autor: Author
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aviso de cierre de sesión: Notice of session closure
@@ -52,6 +53,8 @@ Cantidad de registros creados: Number of records created
 Cantidad de sub-páginas: Number of sub-pages
 Cantidad máxima de intentos: Maximum number of attempts
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
+Cantidad mínima de caracteres en el Resumen: Minimum number of characters in the Summary
+Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content 
 Cargando..: Loading..
 Carga masiva: Bulk load
 Categoría: Category
@@ -108,13 +111,19 @@ de un total de: of total of
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
+Debe seleccionar una fecha de publicación.: You must select a publication date.
+Debe seleccionar una fecha de vencimiento.: You must select a due date.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 Descargar: Download
 Descargue material complementario: Download complementary content
 Descripción: Description
 ¿Desea eliminar el registro?: Are you sure to delete this item?
 Destino: Destination
+Detalle de la Biblioteca Virtual: Detail of the Virtual Library
+Detalle de la Noticia y Novedad: Detail of the News and New
 Detalles de la página: Page details
+Detalle del Certificado y Constancia: Certificate and Certificate Detail
+Diseño: Design
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
 Editar asignación: Edit assignment
@@ -130,13 +139,19 @@ El archivo es requerido.: File is required.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
 El asunto de la notificación debe ser mínimo de 3 caracteres.: The subject of notification must have at least 3 characters.
 El asunto de la notificación es requerido.: The subject of notification is required.
+El autor es requerido.: The author is required.
+El autor debe ser mínimo de 3 caracteres.: The author must be at least 3 characters.
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
 El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
+El Encabezado es requerido.: The Header is required
+El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
 El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
 El enunciado es requerido.: Statement is required.
+El título es requerido.: The title is required.
+El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El grupo ha sido almacenada con éxito: The group has been stored successfully
 El login ya existe.: Login already exists.
 El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
@@ -156,9 +171,14 @@ El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
+El Tipo de Certificado es requerido.: The Type of Certificate is required.
 El tipo de elemento es requerido.: Element type is required.
+El Tipo de Imagen es requerido.: The type of image is required
+El tipo de noticia es requerido.: The type of news is required.
 El tipo de notificación es requerida.: The notification type is required.
 El tipo de pregunta es requerido.: Question type is required.
+El título es requerido.: The title is required.
+El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
 El valor de la pregunta es requerido.: Question weighing is required.
 El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
@@ -169,6 +189,7 @@ Empresas: Companies
 Empresas activas: Active companies
 Empresas inactivas: Inactive companies
 Empresas registradas: Registered companies
+Encabezado: Header
 Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
 Entidad: Entity
@@ -195,6 +216,8 @@ Fecha: Date
 Fecha Creación: Creation Date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
+Fecha de Publicación: Fecha de Publicación
+Fecha de Vencimiento: Fecha de Vencimiento
 Fecha Difusión: Dissemination Date
 Fila: Row
 filtrado de un total de: filtered of a total of
@@ -234,9 +257,11 @@ La categoría ha sido almacenada con éxito: Category has been saved successfull
 La clave es requerida.: Password is required.
 La descripción debe ser mínimo de 3 caracteres.: Description must have at least 3 characters.
 La descripción es requerida.: Description is required.
+La descripcion debe ser mínimo de 3 caracteres.: La descripcion debe ser mínimo de 3 caracteres.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
 La empresa es requerida.: Company is required.
+La Entidad es requerida.: The Entity is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
 La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: Registration date cell must be of text type in format DD/MM/YYYY
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: Registration date must be in format DD/MM/YYYY and a valid date
@@ -249,6 +274,7 @@ La página seleccionada ya está asociada a otra evaluación.: Selected page is 
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 Lado: Side
 Línea: Line
+Listado de: List of
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
 Listado de Empresas: List of Companies
@@ -321,6 +347,7 @@ Panel de acceso: Login
 Paso: Step
 País: Country
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
+Pdf: Pdf
 Perfil Empresarial: Company Profile
 Periodo: Period
 Permisos: Permissions
@@ -339,11 +366,13 @@ Prog. asociados: Associated Prog.
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Puntaje con que se aprueba: Score with which it is approved
+QR: QR
 Recordarme: Remember me
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 registros: items
 Resultado del archivo procesado: Result of the processed file
+Resumen: Summary
 Rol: Role
 Roles: Roles
 Roles asignados: Assigned roles
@@ -366,6 +395,8 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Siguiente: Next
 Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
+Sólo archivos con extensión .jpg o .png: Only files with extension .jpg or .png
+Sólo archivos con extensión .pdf: Only files with .pdf extension
 Solo es necesaria una columna que tendrá los nombres de los niveles: Only it is necessary one column for levels name
 Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
@@ -376,11 +407,17 @@ Sub-páginas: Sub-pages
 Teléfono de contacto: Contact Number
 Tiempo de duración de la evaluación: Duration of the test
 Tiene muro: Has wall
+Tipo Certificado: Type Certificate
+Tipo de Certificado: Type of Certificate
 Tipo de elemento: Element type
+Tipo de Imagen: Type of Image
+Tipo de Imagen Certificado: Type of Image Certified
 Tipo de pregunta: Question type
+Tipo de Noticia: Type of News
 Tipo notificación: Notification type
 Tipo Destino: Destinit Type
 Tipo de Destinos: Desnity Types
+Título: Title
 Tutoriales: Tutorials
 Últimos 12: Last 12
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
@@ -404,3 +441,4 @@ Ver historial: See history
 Ver páginas asignadas: View assigned pages
 Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
+Vista Previa: Preview

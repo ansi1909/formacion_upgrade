@@ -14,6 +14,7 @@ $(document).ready(function() {
 	});
 
 	$('#save').click(function(){
+		$('#div-e').hide();
         var valid = $("#form").valid();
         if (!valid) 
         {
@@ -25,4 +26,15 @@ $(document).ready(function() {
         }
     });
 
+    observe();
+
+    $('.paginate_button').click(function(){
+        observe();
+    });
+
 });
+
+function observe()
+{
+    $('.tree').jstree();
+}

@@ -1,5 +1,5 @@
 {% extends '::admin.html.twig'%}
- 
+
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroCertificado', { 'certificado_id': certificado.id }) }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_certificados', { 'app_id': app.session.get('app_id') }) }}">
@@ -157,7 +157,13 @@
                                         <p>{{ certificado.qr }}</p>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5><a href="{{ path('_generarPdf') }}" target="_blank">{{ 'Vista Previa'|trans }}</a></h5>
+                                </div>
+                            </div>
                             <br>
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">

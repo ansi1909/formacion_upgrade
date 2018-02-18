@@ -742,4 +742,24 @@ class Functions
 
 	}
 
+	// Retorna 0 si la fecha dada está en formato DD/MM/YYYY y es correcta
+    function checkFecha($fecha){
+
+        $ok = 1;
+
+        $fecha_arr = explode("/", $fecha);
+
+        if (count($fecha_arr) != 3){
+            $ok = 0;
+        }
+        else {
+            if (!checkdate($fecha_arr[1], $fecha_arr[0], $fecha_arr[2])){
+                $ok = 0;
+            }
+        }
+
+        return $ok;
+
+    }
+
 }

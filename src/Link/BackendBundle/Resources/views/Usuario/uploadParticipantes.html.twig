@@ -13,14 +13,17 @@
             box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
             font-weight: bold;
         }
+        thead.sty__title {
+            background: #ef5956 !important;
+        }
     </style>
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
 {% endblock %}
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
 {% set formato = uri~'/../docs/formatos/BD_Estructura.xlsx' %}
 <input type="hidden" id="url_procesar" name="url_procesar" value="{{ path('_procesarParticipantes') }}">
-<input type="hidden" id="errores" name="errores" value="{{ errores|length }}">
 <br><br>
 <div class="row align-items-center justify-content-between">
     <div class="col text-left">
@@ -50,7 +53,8 @@
                                     {% else %}
                                         <option value=""></option>
                                         {% for empresa in empresas %}
-                                            <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
+                                            {% set selected = empresa_id == empresa.id ? 'selected="selected"' : '' %}
+                                            <option value="{{ empresa.id }}" {{ selected }}>{{ empresa.nombre|trim }}</option>
                                         {% endfor %}
                                     {% endif %}
                                 </select>
@@ -61,7 +65,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <input type="text" class="form-control" name="file" id="file" value="" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}">
+                            <input type="text" class="form-control" name="file" id="file" value="{{ file }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}">
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-3">
                             <div class="input-group">
@@ -101,25 +105,80 @@
         </div>
     </div>
     <a id="div-errores" data-toggle="modal" data-target="#formModal">&nbsp;</a>
-    <div class="row" {% if errores|length < 1 %}style="display: none;"{% endif %}>
+    {% set e = 0 %}
+    {% set e_particulares = 0 %}
+    {% set error_msg = '' %}
+    {% set display = 'display: none;' %}
+    {% if errores.general is defined %}
+        {% if errores.general != '' %}
+            {% set e = 1 %}
+            {% set error_msg = errores.general %}
+        {% endif %}
+    {% endif %}
+    {% if e == 0 %}
+        {% if errores.particulares is defined %}
+            {% if errores.particulares|length > 1 %}
+                {% set e = 1 %}
+                {% set e_particulares = 1 %}
+                {% set error_msg = 'El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.' %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    {% if e > 0 %}
+        {% set display = '' %}
+    {% endif %}
+    <input type="hidden" id="errores" name="errores" value="{{ e }}">
+    <div class="row" style="{{ display }}" id="div-e">
         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">
                 <div class="card-header"></div>
                 <div class="card-block">
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8 offset-md-4  offset-sm-4  offset-lg-4  offset-xl-4">
+                        <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8 offset-md-4 offset-sm-4 offset-lg-4 offset-xl-4">
                             <div class="mpanel">
                                 <div class="sec1_title">
                                     <h5>{{ 'Errores'|trans }}</h5>
                                 </div>
-                                {% for error in errores %}
-                                    <div class="sec1">
-                                        {{ error }}
-                                    </div>
-                                {% endfor %}
+                                <div class="sec1">
+                                    {{ error_msg }}
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {% if e_particulares %}
+                        <br>
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8 offset-md-4 offset-sm-4 offset-lg-4 offset-xl-4">
+                                <table class="table" id="dt">
+                                    <thead class="sty__title">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{ 'Línea'|trans }}</th>
+                                            <th>{{ 'Errores'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for linea,columnas in errores.particulares %}
+                                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                            <tr class="{{ eo }}">
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ linea }}</td>
+                                                <td>
+                                                    <div class="tree">
+                                                        <ul data-jstree='{ "opened" : true }'>
+                                                            {% for columna,error in columnas %}
+                                                                <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ columna }}: {{ error }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="card-footer"></div>
             </div>
@@ -134,7 +193,7 @@
     </div>
     <div class="modal-body">
         <div class="alert alert-success" role="alert" id="alert-success"> 
-            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'Nuevos registros almacenados'|trans }}: {{ nuevos_registros }}. 
+            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'Cantidad de filas'|trans }}: {{ filas_analizadas }}. 
         </div>
     </div>
 {% endblock %}
@@ -170,10 +229,14 @@
             }
         });
 
-        {% if nuevos_registros > 0 %}
-            $('#div-errores').trigger("click");
+        {% if filas_analizadas > 0 %}
+            if ($('#errores').val() == 0)
+            {
+                $('#div-errores').trigger("click");
+            }
         {% endif %}
     </script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/upload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/uploadParticipantes.js') }}"></script>
 {% endblock %}
