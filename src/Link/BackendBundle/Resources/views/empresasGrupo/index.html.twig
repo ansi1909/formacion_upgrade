@@ -11,7 +11,7 @@
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
-<input type="hidden" id="url_grupoPaginas" name="url_grupoPaginas" value="{{ path ('_ajaxGrupoPaginas') }}">
+<input type="hidden" id="url_GrupoP" name="url_GrupoP" value="{{ path ('_ajaxGrupoPaginas') }}">
 <input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
 
 <br>
@@ -94,7 +94,7 @@
                                 <td>{{ grupo.nombre }}</td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" id="asignar" data="{{grupo.id}}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
+                                    <a href="#" class="asginar" id="asignar" data="{{grupo.id}}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>

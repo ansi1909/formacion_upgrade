@@ -3,8 +3,10 @@ _empresasGrupo:
     defaults: { _controller: LinkBackendBundle:EmpresasGrupo:index }
 
 _ajaxGrupoPaginas:
-    path:     /ajaxGrupoPaginas/
+    path:     /ajaxGrupoPaginas
     defaults: { _controller: LinkBackendBundle:EmpresasGrupo:ajaxGrupoPaginas }
+    requirements:
+        method: GET
 
 _ajaxEmpresasGrupo:
     path:     /ajaxEmpresasGrupo

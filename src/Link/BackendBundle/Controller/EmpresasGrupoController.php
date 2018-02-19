@@ -8,6 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\CertiGrupo; 
+use Link\ComunBundle\Entity\CertiGrupoPagina;
+use Link\ComunBundle\Entity\CertiPaginaEmpresa;
+use Link\ComunBundle\Entity\CertiPagina;
+use Symfony\Component\Yaml\Yaml;
 
 
 class EmpresasGrupoController extends Controller
@@ -110,7 +114,7 @@ class EmpresasGrupoController extends Controller
             $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td>
             <td class="center">
                 <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
-                <a href="#" id="asignar" data="'. $grupo->getId() .'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
+                <a href="#" class="asignar" id="asignar" data="'. $grupo->getId() .'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
@@ -239,46 +243,56 @@ class EmpresasGrupoController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-        $paginas_db = array();
+        $paginas = array();
+        $grupo_id = $request->query->get('gp_id');
 
-        $query = $em->createQuery("SELECT c FROM LinkComunBundle:CertiPagina c 
-                                    WHERE c.pagina IS NULL ");
+        $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->find($grupo_id);
 
-        $paginas = $query->getResult();
+        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                  JOIN pagina p
+                                  WHERE pe.empresa = :empresa_id
+                                  AND p.pagina IS NULL
+                                  AND pe.activo = :activo
+                                  AND p.estatusContenido = :contenido_activo')
+                    ->setParameters(array('empresa_id'=> $grupo->getEmpresa()->getId(),
+                                           'activo'=> true,
+                                            'contenido_activo'=> $yml['parameters']['estatus_contenido']['activo'] ));
 
-        $query = $em->createQuery("SELECT g FROM LinkComunBundle:CertiGrupo g 
-                                    WHERE g.empresa = :empresa_id ")
-                    ->setParameter('empresa_id', $empresa_id);
+        $pes = $query->getResult();
 
-        $grupos = $query->getResult();
+        $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoEmpresa gp
+                                   JOIN gp.grupo g
+                                   WHERE g.id != :grupo_id
+                                   AND g.empresa = :empresa_id ')
+                    ->setParameters(array('grupo_id'=> $grupo->getId(),
+                                          'empresa_id'=> $grupo->getEmpresa()->getId()));
 
-        foreach ($paginas as $pagina)
+        $pes_grupos = $query->getResult();
+
+        $paginas_id= array();
+
+        foreach($pes_grupos as $pes_g)
         {
-            $query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPaginaEmpresa p 
-                                       WHERE p.empresa = :empresa_id AND p.pagina = :pagina_id')
-                        ->setParameters(array('empresa_id' => $empresa_id, 
-                                              'pagina_id' => $pagina->getId()));
-
-            $paginas_empresa = $query->getResult();
-
-            if ($paginas_empresa) 
-            {
-                $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoPagina gp 
-                                           WHERE gp.grupo = :grupo_id AND gp.pagina = :pagina_id')
-                            ->setParameters(array('grupo_id' => $grupo_id, 
-                                                  'pagina_id' => $pagina->getId()));
-
-                $paginas_grupo = $query->getResult();
-                
-                if (!$paginas_grupo)
-                {
-                     $return[] = array('id'=>$pagina->getId(),
-                                           'nombre'=>$pagina->getNombre());   
-                }
-            }       
+            $pagina_id[] = $pes_g->getPagina()->getId();
         }
 
-        $return = json_encode($return);
+        foreach($pes as $pe)
+        {
+            if (! in_array($pe->getPagina()->getId(), $pagina_id)) 
+            {
+                $c = $em->createQuery('SELECT COUNT(pg.id)
+                                       WHERE pg.pagina = :pagina_id
+                                       AND pg.grupo = :grupo_id ')
+                        ->setParameters(array('pagina_id'=> $pe->getPagina()->getId(),
+                                              'grupo_id'=> $grupo->getId()));
+
+                $paginas[] = array('id'=> $pe->getPagina()->getId(),
+                                   'nombre'=> $pe->getPagina()->getNombre(),
+                                   'checked'=> $c ? 1 : 0);
+            }
+        }
+                   
+        $return = json_encode($paginas);
         return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
