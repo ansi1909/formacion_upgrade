@@ -345,6 +345,37 @@ class ProgramadosController extends Controller
             </div>
             <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
             
+        }elseif($tipo_destino->getId() == $yml['parameters']['tipo_destino']['aprobados']){
+
+            $aviso = '<em><strong>'.$this->get('translator')->trans('Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy').'</strong></em>';
+            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
+                                       JOIN LinkComunBundle:CertiPaginaEmpresa pe 
+                                       WHERE p.estatusContenido = :estatus
+                                       AND pe.activo = :activo
+                                       AND pe.empresa = :empresa
+                                       AND pe.pagina = p.id
+                                       AND p.pagina IS NULL
+                                       ORDER BY p.id ASC")
+                        ->setParameters(array('empresa' => $notificacion->getEmpresa()->getId(),
+                                              'activo' => true,
+                                              'estatus' => $yml['parameters']['estatus_contenido']['activo']));
+
+            $programas_asignados = $query->getResult();
+            $formulario .='<div class="jsonfileds">
+                <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el programa').':</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <select class="form-control form_sty_sel form_sty_modal" id="entidad_id" name="entidad_id" style="border-radius: 5px;">
+                        <option value=""></option>';
+                        foreach ($programas_asignados as $programa) {
+                            $formulario .='<option value="'.$programa->getId().'" >'.$programa->getNombre().'</option>';
+                        }
+             $formulario .= '</select>
+                    <span class="fa fa-book"></span>
+                    <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                </div>
+            </div>
+            <label id="entidad_id-error" class="error" for="entidad_id" style="display:none;"></label>';
+            
         }elseif($tipo_destino->getId() == $yml['parameters']['tipo_destino']['todos']){
 
             $aviso = '<em><strong>'.$this->get('translator')->trans('Para enviar la notificación inmediatamente seleccione la fecha de hoy').'</strong></em>';
