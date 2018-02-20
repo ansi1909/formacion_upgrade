@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiCertificado;
 use Symfony\Component\Yaml\Yaml;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class CertificadoController extends Controller
 {
@@ -22,7 +23,7 @@ class CertificadoController extends Controller
         }else 
         {
             $session->set('app_id', $app_id);
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id'))  && $session->get('administrador')==false )
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
             {
                 return $this->redirectToRoute('_authException');
             }
@@ -32,6 +33,15 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $app_id = $session->get('app_id');
+
+        $usuario_empresa = 0;
+        if($session->get('administrador')==false)//si no es administrador
+        {
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+        }
 
         //contultamos el nombre de la aplicacion para reutilizarla en la vista
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
@@ -52,7 +62,8 @@ class CertificadoController extends Controller
         }
 
         return $this->render('LinkBackendBundle:Certificado:index.html.twig', array('aplicacion' => $aplicacion,
-                                                                                    'certificados' => $certificadodb ));
+                                                                                    'certificados' => $certificadodb,
+                                                                                    'usuario_empresa' => $usuario_empresa  ));
 
     }
 
@@ -67,7 +78,7 @@ class CertificadoController extends Controller
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) && $session->get('administrador')==false )
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
             {
                 return $this->redirectToRoute('_authException');
             }
@@ -77,8 +88,17 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
      
-        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
+        $usuario_empresa = 0;
+        if($session->get('administrador')==false)//si no es administrador
+        {
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+        }
+     
+        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
+     
         $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
         $tipo_imagen_certificados = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->findAll(array('nombre' => 'ASC'));
 
@@ -127,7 +147,8 @@ class CertificadoController extends Controller
         return $this->render('LinkBackendBundle:Certificado:registro.html.twig', array('empresas' => $empresas,
                                                                                        'certificado' => $certificado,
                                                                                        'tipoCertificados' => $tipo_certificados,
-                                                                                       'tipoImagenCertificados' => $tipo_imagen_certificados ));
+                                                                                       'tipoImagenCertificados' => $tipo_imagen_certificados,
+                                                                                       'usuario_empresa' => $usuario_empresa  ));
 
     }
 
@@ -141,7 +162,7 @@ class CertificadoController extends Controller
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) && $session->get('administrador')==false )
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
             {
                 return $this->redirectToRoute('_authException');
             }
@@ -149,6 +170,15 @@ class CertificadoController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+
+        $usuario_empresa = 0;
+        if($session->get('administrador')==false)//si no es administrador
+        {
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            if ($usuario->getEmpresa()) 
+                $usuario_empresa = $usuario->getEmpresa()->getId(); 
+        }
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
 
@@ -169,7 +199,8 @@ class CertificadoController extends Controller
         }
 
         return $this->render('LinkBackendBundle:Certificado:mostrar.html.twig', array('certificado' => $certificado,
-                                                                                      'entidad' => $entidad));
+                                                                                      'entidad' => $entidad,
+                                                                                      'usuario_empresa' => $usuario_empresa ));
 
     }
 
@@ -261,4 +292,63 @@ class CertificadoController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
+
+    public function generarPdfAction()
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        //Recogemos el contenido de la vista
+        ob_start(); 
+        // $html= $this->render('LinkBackendBundle:Certificado:certificado.html.twig'); 
+        //les content pour le pdf
+
+        //require_once 'certificado.html.twig';
+        $html=ob_get_clean(); 
+
+        //Le indicamos el tipo de hoja y la codificación de caracteres
+        $certificado = new Html2Pdf('P','A4','es','true','UTF-8');
+        $certificado->writeHTML('<h1>Hola mundo</h1>');
+        //$certificado->writeHTML($html);
+        //Generamos el PDF
+        $certificado->output('certificiado.pdf');
+
+       
+
+//Incluimos la librería
+ /*   require_once 'html2pdf_v4.03/html2pdf.class.php';
+     
+    //Recogemos el contenido de la vista
+    ob_start(); 
+    require_once 'vistaImprimir.php';
+    $html=ob_get_clean(); 
+ 
+    //Pasamos esa vista a PDF
+     
+    //Le indicamos el tipo de hoja y la codificación de caracteres
+    $mipdf=new HTML2PDF('P','A4','es','true','UTF-8');
+ 
+    //Escribimos el contenido en el PDF
+    $mipdf->writeHTML($html);
+ 
+    //Generamos el PDF
+    $mipdf->Output('PdfGeneradoPHP.pdf');
+*/
+
+    }
+
 }

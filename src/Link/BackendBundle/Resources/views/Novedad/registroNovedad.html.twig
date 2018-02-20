@@ -14,9 +14,6 @@
         .input-group {
             margin-top: 35px;
         }
-        img {
-            width: 100% !important;
-        }
     </style>
 {% endblock %}
 
@@ -26,6 +23,12 @@
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <input type="hidden" id="deslen2" name="deslen2" value="0" />
+{% if usuario_empresa %}
+    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="/{{ usuario_empresa }}" />
+{% else %}    
+    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="" />    
+{% endif %}
+
 <br><br>
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -40,7 +43,7 @@
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Detalles de la Noticia y Novedad'|trans }}</h6>
+                    <h6>{{ 'Detalle de la Noticia y Novedad'|trans }}</h6>
                 </div>
             </div>
             <div class="card-block">
@@ -114,29 +117,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                              <!--   <div class="row">
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <div class="input-group date" id='datetimepicker6'>
-                                                <input type="text" class="form-control"/>
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <div class="input-group date" id='datetimepicker7'>
-                                                <input type="text" class="form-control"/>
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>                                    
-                                </div> -->
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-8 col-md-8 col-lg-8">
@@ -242,38 +222,60 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-lg-6 col-md-6">
                                         <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Imagen'|trans }}</label>
-                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                        <div class="col-sm-20 col-md-20 col-lg-20">
                                             <input type="text" class="form-control form_sty1" name="imagen" id="imagen" value="{{ noticia.imagen }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
                                             <span class="fa fa-file-picture-o"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2 col-md-2 col-lg-32">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
-                                                    <span class="fa fa-file-picture-o"></span>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-lg-6 col-md-6">
-                                        <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Pdf'|trans }}</label>
-                                        <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
-                                            <span class="fa fa-file-pdf-o"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-2 col-md-2 col-lg-2">
                                         <div class="input-group">
                                             <span class="input-group-addon">
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
-                                                    <span class="fa fa-file-pdf-o"></span>
+                                            {% if usuario_empresa %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias/{{ usuario_empresa }}"  class="btn iframe-btn" type="button">
+                                            {% else %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias"  class="btn iframe-btn" type="button">
+                                            {% endif %}
+                                                    <button type="button" class="btn_addImg">
+                                                        <span class="fa fa-file-picture-o"></span>
+                                                    </button>
                                                 </a>
+                                            </span>
+                                            <span class="input-group-addon">
+                                                <button id="btn_clear_img" class="btn_clearImg" type="button">
+                                                    <span class="fa fa-times"></span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6 col-md-6">
+                                        <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Pdf'|trans }}</label>
+                                        <div class="col-sm-20 col-md-20 col-lg-20">
+                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
+                                            <span class="fa fa-file-pdf-o"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2 col-md-2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                            {% if usuario_empresa %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button">
+                                            {% else %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
+                                            {% endif %}
+                                                    <button type="button" class="btn_addImg">
+                                                        <span class="fa fa-file-pdf-o"></span>
+                                                    </button>
+                                                </a>
+                                            </span>
+                                            <span class="input-group-addon">
+                                                <button id="btn_clear_pdf" class="btn_clearImg" type="button">
+                                                    <span class="fa fa-times"></span>
+                                                </button>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <br><br>
+                                <br><br><br><br>
                                 <div class="row">
                                     <div class="col-sm-6 col-md-6 col-lg-6">
                                         {% set img = noticia.imagen  ? uploads~noticia.imagen  : asset('img/picture.png') %}
@@ -311,6 +313,16 @@
     <script type="text/javascript">
 
         $("form :input").attr("autocomplete", "off");
+
+        $("#btn_clear_img").on("click",function(event) {
+            $("#imagen").val("");
+            $("#figure").html('<img src="'+$('#imagen').val()+'">');
+        });
+
+        $("#btn_clear_pdf").on("click",function(event) {
+            $("#pdf").val("");
+        });
+
         $('#finish').click(function()
         {
            var valid = $('#form_novedad').valid();
@@ -380,7 +392,7 @@
             },
             messages: {
                 'empresa_id': {
-                    required: "- {{ 'La empresa es requerido.'|trans }}"
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
                 },
                 'tipo_noticia_id': {
                     required: "- {{ 'El tipo de noticia es requerido.'|trans }}"

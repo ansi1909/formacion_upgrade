@@ -721,7 +721,7 @@ class ProgramadosController extends Controller
                     $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByEmpresa($notificacion->getEmpresa()->getId());
 
                 }
-                elseif($programacion->getTipoDestino()->getNombre() == "Grupo de usuarios")
+                elseif($programacion->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
                 {
                     $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
                                                JOIN LinkComunBundle:AdminNotificacionProgramada p 

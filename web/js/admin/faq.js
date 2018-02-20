@@ -34,8 +34,8 @@ $(document).ready(function() {
 	});
 
 	$('.delete').click(function(){
-		var rol_id = $(this).attr('data');
-		sweetAlertDelete(rol_id, 'AdminRol');
+		var faq_id = $(this).attr('data');
+		sweetAlertDelete(faq_id, 'AdminFaqs');
 	});
 
 	observe();

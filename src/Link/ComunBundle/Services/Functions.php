@@ -716,4 +716,60 @@ class Functions
         return true;
 	}
 
+	// Permite crear la carpeta empresa_id en cada sub-directorio de uploads/
+	public function subDirEmpresa($empresa_id, $dir_uploads)
+	{
+
+		$subdirectorios[] = 'recursos/usuarios/';
+		$subdirectorios[] = 'recursos/niveles/';
+		$subdirectorios[] = 'recursos/noticias/';
+		$subdirectorios[] = 'recursos/notificaciones/';
+		$subdirectorios[] = 'recursos/participantes/';
+
+		if ($empresa_id)
+		{
+
+			foreach ($subdirectorios as $subdirectorio)
+			{
+				$dir = $dir_uploads.$subdirectorio.$empresa_id.'/';
+		        if (!file_exists($dir) && !is_dir($dir))
+		        {
+		            mkdir($dir, 750, true);
+		        }
+			}
+
+		}
+
+	}
+
+	// Retorna 0 si la fecha dada está en formato DD/MM/YYYY y es correcta
+    function checkFecha($fecha){
+
+        $ok = 1;
+
+        $fecha_arr = explode("/", $fecha);
+
+        if (count($fecha_arr) != 3){
+            $ok = 0;
+        }
+        else {
+            if (!checkdate($fecha_arr[1], $fecha_arr[0], $fecha_arr[2])){
+                $ok = 0;
+            }
+        }
+
+        return $ok;
+
+    }
+
+    // Formatea la fecha dada en formato DD/MM/YYYY a YYYY-MM-DD
+    function formatDate($fecha){
+
+        $fecha_arr = explode("/", $fecha);
+        $new_fecha = $fecha_arr[2].'-'.$fecha_arr[1].'-'.$fecha_arr[0];
+
+        return $new_fecha;
+
+    }
+
 }

@@ -11,6 +11,7 @@
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
+<input type="hidden" id="url_GrupoP" name="url_GrupoP" value="{{ path ('_ajaxGrupoPaginas') }}">
 <input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
 
 <br>
@@ -59,13 +60,14 @@
     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
 {% endif %}
 <div class="row">
-    <div class="col-sm-16">
+    <div class=" col-sm-9 col-md-9 col-lg-9 col-xl-9 col-9">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
                 <h5 class="card-title">{{ 'Listado de grupos' |trans}}</h5>
             </div>
             {% if not usuario_empresa %}
             <div class="card-block" id="lpe">   
+            </div>
             {% else %}
             <div class="card-block">
                 <table class="table" id="dt">
@@ -74,7 +76,6 @@
                             <th class="hd__title columorden">Orden</th>
                             <th class="hd__title">{{'Id'|trans }}</th>
                             <th class="hd__title">{{'Nombre'|trans }}</th>
-                            <th class="hd__title">{{'Prog. asociados'|trans }}</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
@@ -91,21 +92,30 @@
                                 <td class="columorden">{{ grupo.orden }}</td>
                                 <td>{{ grupo.id }}</td>
                                 <td>{{ grupo.nombre }}</td>
-                                <td> </td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="{{ path('_grupoPaginas', { 'app_id': app.session.get('app_id'),'grupo_id': grupo.id,'empresa_id': usuario.empresa.id }) }}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
+                                    <a href="#" class="asginar" id="asignar" data="{{grupo.id}}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                           {% endfor %}
                         </tbody>
-                    {% endif %}
-                </table>                 
+                    </table>  
+                </div>
+            {% endif %}  
+        </div>
+    </div>
+    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7" style="display:none; " id="div-subapps">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Asignar'|trans }} <span id="appTitle"></span></h5>
+            </div>
+            <div class="card-block" id="subapp">
             </div>
         </div>
     </div>
 </div>
+
 
 {% endblock %}
 

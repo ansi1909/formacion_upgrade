@@ -26,6 +26,9 @@
     <div class="col text-left">
         <a href="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard" style="margin-top: 8px;"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
 </div>
 <form id="form" name="form" action="{{ path('_uploadNiveles', { 'empresa_id': empresa.id }) }}" class="container-fluid p-0" method="POST" enctype="multipart/form-data">
     <div class="row">
@@ -42,7 +45,7 @@
                         <div class="col-sm-3 col-md-3 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&rootFolder=recursos/niveles" class="btn iframe-btn" type="button">
+                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=file&rootFolder=recursos/niveles/{{ empresa.id }}" class="btn iframe-btn" type="button">
                                         <span class="fa fa-file-excel-o"></span>
                                     </a>
                                 </span>
@@ -120,6 +123,9 @@
     <script type="text/javascript">
         
         $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
             rules: {
                 'file': {
                     required: true,
@@ -128,7 +134,7 @@
             },
             messages: {
                 'file': {
-                    required: "- {{ 'Este campo es requerido.'|trans }}",
+                    required: "- {{ 'El archivo es requerido.'|trans }}",
                     extension: "- {{ 'Sólo archivos con extensión xls, xlsx o csv.'|trans }}"
                 }
             }

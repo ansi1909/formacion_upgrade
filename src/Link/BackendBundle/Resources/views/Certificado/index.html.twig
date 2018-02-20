@@ -28,7 +28,7 @@
         <h3>Listado de {{ aplicacion.nombre }}</h3>
     </div>
     <div class="col text-right">
-        <a href="{{ path('_registroCertificado')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nueva Registro'|trans }}</span></a>
+        <a href="{{ path('_registroCertificado')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo Registro'|trans }}</span></a>
     </div>
 </div>
 <div class="row">
@@ -54,7 +54,9 @@
                 <table class="table" id="listado_certificados">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title">{{ 'Empresa'|trans }}</th>
+                            {% if not usuario_empresa %}
+                                <th class="hd__title">{{ 'Empresa'|trans }}</th>
+                            {% endif %}
                             <th class="hd__title">{{ 'Tipo Certificado'|trans }}</th>
                             <th class="hd__title">{{ 'Tipo de Imagen Certificado'|trans }}</th>
                             <th class="hd__title">{{ 'Acciones'|trans }}</th>
@@ -63,7 +65,9 @@
                     <tbody>
                         {% for certificado in certificados %}
                             <tr class="odd">
-                                <td>{{ certificado.empresa }}</td>
+                                {% if not usuario_empresa %}
+                                    <td>{{ certificado.empresa }}</td>
+                                {% endif %}
                                 <td>{{ certificado.tipoCertificado }}</td>
                                 <td>{{ certificado.tipoImagenCertificado }}</td>
                                  <td class="center">

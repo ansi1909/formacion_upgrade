@@ -14,6 +14,8 @@
 			notificaciones/		# Aquí se almacenan los archivos de las notificaciones
 			tutoriales/			# Aquí se almacenan los archivos de los tutoriales
 			participantes/		# Aquí se almacenan los archivos excel de los participantes
+			certificados/		# Aquí se almacenan los archivos de los certificados
+			empresas/			# Aquí se almacenan los archivos provenientes del ckeditor en el registro de empresas
 
 4. Las constantes globales para twig están seteadas en app/config/config.yml:
 	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida
@@ -64,3 +66,8 @@
 	en config.yml, actualmente está en false porque estamos trabajando en entorno windows
 	
 16. En el php.ini setear allow_url_fopen = On
+
+---------------------------------------------------------------------------------------------------------
+OJO: Cuando se instaló el Bundle de html2pdf generó el siguiente warning:
+Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffice/phpspreadsheet instead.
+---------------------------------------------------------------------------------------------------------

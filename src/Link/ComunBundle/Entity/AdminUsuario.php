@@ -88,20 +88,6 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="ciudad", type="string", length=50, nullable=true)
-     */
-    private $ciudad;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="region", type="string", length=50, nullable=true)
-     */
-    private $region;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="foto", type="string", length=250, nullable=true)
      */
     private $foto;
@@ -109,16 +95,51 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="division_funcional", type="string", length=100, nullable=true)
+     * @ORM\Column(name="campo1", type="string", length=50, nullable=true)
      */
-    private $divisionFuncional;
+    private $campo1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cargo", type="string", length=100, nullable=true)
+     * @ORM\Column(name="campo2", type="string", length=50, nullable=true)
      */
-    private $cargo;
+    private $campo2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campo3", type="string", length=100, nullable=true)
+     */
+    private $campo3;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="campo4", type="string", length=100, nullable=true)
+     */
+    private $campo4;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="competencia", type="boolean", nullable=true)
+     */
+    private $competencia;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=50, nullable=true)
+     */
+    private $codigo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -379,54 +400,6 @@ class AdminUsuario
     }
 
     /**
-     * Set ciudad
-     *
-     * @param string $ciudad
-     *
-     * @return AdminUsuario
-     */
-    public function setCiudad($ciudad)
-    {
-        $this->ciudad = $ciudad;
-    
-        return $this;
-    }
-
-    /**
-     * Get ciudad
-     *
-     * @return string
-     */
-    public function getCiudad()
-    {
-        return $this->ciudad;
-    }
-
-    /**
-     * Set region
-     *
-     * @param string $region
-     *
-     * @return AdminUsuario
-     */
-    public function setRegion($region)
-    {
-        $this->region = $region;
-    
-        return $this;
-    }
-
-    /**
-     * Get region
-     *
-     * @return string
-     */
-    public function getRegion()
-    {
-        return $this->region;
-    }
-
-    /**
      * Set foto
      *
      * @param string $foto
@@ -451,51 +424,171 @@ class AdminUsuario
     }
 
     /**
-     * Set divisionFuncional
+     * Set campo1
      *
-     * @param string $divisionFuncional
+     * @param string $campo1
      *
      * @return AdminUsuario
      */
-    public function setDivisionFuncional($divisionFuncional)
+    public function setCampo1($campo1)
     {
-        $this->divisionFuncional = $divisionFuncional;
+        $this->campo1 = $campo1;
     
         return $this;
     }
 
     /**
-     * Get divisionFuncional
+     * Get campo1
      *
      * @return string
      */
-    public function getDivisionFuncional()
+    public function getCampo1()
     {
-        return $this->divisionFuncional;
+        return $this->campo1;
     }
 
     /**
-     * Set cargo
+     * Set campo2
      *
-     * @param string $cargo
+     * @param string $campo2
      *
      * @return AdminUsuario
      */
-    public function setCargo($cargo)
+    public function setCampo2($campo2)
     {
-        $this->cargo = $cargo;
+        $this->campo2 = $campo2;
     
         return $this;
     }
 
     /**
-     * Get cargo
+     * Get campo2
      *
      * @return string
      */
-    public function getCargo()
+    public function getCampo2()
     {
-        return $this->cargo;
+        return $this->campo2;
+    }
+
+    /**
+     * Set campo3
+     *
+     * @param string $campo3
+     *
+     * @return AdminUsuario
+     */
+    public function setCampo3($campo3)
+    {
+        $this->campo3 = $campo3;
+    
+        return $this;
+    }
+
+    /**
+     * Get campo3
+     *
+     * @return string
+     */
+    public function getCampo3()
+    {
+        return $this->campo3;
+    }
+
+    /**
+     * Set campo4
+     *
+     * @param string $campo4
+     *
+     * @return AdminUsuario
+     */
+    public function setCampo4($campo4)
+    {
+        $this->campo4 = $campo4;
+    
+        return $this;
+    }
+
+    /**
+     * Get campo4
+     *
+     * @return string
+     */
+    public function getCampo4()
+    {
+        return $this->campo4;
+    }
+
+    /**
+     * Set competencia
+     *
+     * @param boolean $competencia
+     *
+     * @return AdminUsuario
+     */
+    public function setCompetencia($competencia)
+    {
+        $this->competencia = $competencia;
+    
+        return $this;
+    }
+
+    /**
+     * Get competencia
+     *
+     * @return boolean
+     */
+    public function getCompetencia()
+    {
+        return $this->competencia;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     *
+     * @return AdminUsuario
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+    
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return AdminUsuario
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
     }
 
     /**

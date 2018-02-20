@@ -1,16 +1,6 @@
 {% extends '::admin.html.twig'%}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        img {
-            width: 100% !important;
-        }
-    </style>
-{% endblock %}
- 
 {% block body %}
-
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroCertificado', { 'certificado_id': certificado.id }) }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_certificados', { 'app_id': app.session.get('app_id') }) }}">
 
@@ -59,12 +49,14 @@
                         <div class="col-sm-16">
                             <br>
                             <div class="row">
+                                {% if not usuario_empresa %}
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Empresa'|trans }}</h5>
                                     <div class="col-14">
                                         <p>{{ certificado.empresa.nombre }}</p>
                                     </div>
                                 </div>
+                                {% endif %}
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Tipo de Imagen'|trans }}</h5>
                                     <div class="col-14">
@@ -108,7 +100,7 @@
                                 {% if certificado.imagen %}
                                     <div class="col-sm-6">
                                         {% set img = uploads~certificado.imagen %}
-                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }} " alt="{{ 'Imagen |trans' }}" width="100%"></figure>
+                                        <figure class="social-profile-pic" id="figure"><img style="width: 100% !important;" src="{{ img }} " alt="{{ 'Imagen |trans' }}" width="100%"></figure>
                                     </div>
                                 {% endif %}    
                             </div>
@@ -165,7 +157,13 @@
                                         <p>{{ certificado.qr }}</p>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5><a href="{{ path('_generarPdf') }}" target="_blank">{{ 'Vista Previa'|trans }}</a></h5>
+                                </div>
+                            </div>
                             <br>
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">

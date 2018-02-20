@@ -13,17 +13,14 @@
         .input-group {
             margin-top: 35px;
         }
-        img {
-            width: 100% !important;
-        }         
-    </style>
+    </style>    
 {% endblock %}
 
 {% block body %}
 
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
-<input type="text" id="certificado_id" name="certificado_id" value="{{ certificado.id }}" />
+<input type="hidden" id="certificado_id" name="certificado_id" value="{{ certificado.id }}" />
 <input type="hidden" id="url_tipo_certificado" name="url_tipo_certificado" value="{{ path('_ajaxTipoCertificado') }}">
 
 <br><br>
@@ -35,12 +32,13 @@
         <ul></ul>
     </div>
 </div>
+
 <div class="row">
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Detalles de la Certificado y Constancia'|trans }}</h6>
+                    <h6>{{ 'Detalle del Certificado y Constancia'|trans }}</h6>
                 </div>
             </div>
             <div class="card-block">
@@ -77,6 +75,7 @@
                                 </div>
                                 <br>
                                 <div class="row">
+                                    {% if not usuario_empresa %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
                                         <div class="col-14">
@@ -90,6 +89,9 @@
                                             <span class="fa fa-industry"></span>
                                         </div>
                                     </div>
+                                    {% else %}
+                                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario_empresa }}"/>
+                                    {% endif %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-8 col-form-label">{{ 'Tipo de Imagen'|trans }}</label>
                                         <div class="col-14">
@@ -146,12 +148,23 @@
                                             <span class="fa fa-file-picture-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2 col-md-2 col-lg-32">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
                                         <div class="input-group">
                                             <span class="input-group-addon">
+                                            {% if usuario_empresa %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/certificados/{{ usuario_empresa }}" class="btn iframe-btn" type="button">
+                                            {% else %}
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/certificados" class="btn iframe-btn" type="button">
-                                                    <span class="fa fa-file-picture-o"></span>
+                                            {% endif %}
+                                                    <button type="button" class="btn_addImg">
+                                                        <span class="fa fa-file-picture-o"></span>
+                                                    </button>
                                                 </a>
+                                            </span>
+                                            <span class="input-group-addon">
+                                                <button id="btn_clear" class="btn_clearImg" type="button">
+                                                    <span class="fa fa-times"></span>
+                                                </button>
                                             </span>
                                         </div>
                                     </div>
@@ -184,14 +197,12 @@
                                         <label for="texto" class="col-2 col-form-label">{{ 'Encabezado'|trans }}</label>
                                         <div class="col-14">
                                             <textarea type="text" class="form-control form_sty1" name="encabezado" id="encabezado">{{ certificado.encabezado }}</textarea>
-                                            <span class="fa fa-font"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-2 col-form-label">{{ 'Descripción'|trans }}</label>
                                         <div class="col-14">
                                             <textarea type="text" class="form-control form_sty1" name="descripcion" id="descripcion">{{ certificado.descripcion }}</textarea>
-                                            <span class="fa fa-font"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -230,6 +241,12 @@
     <script type="text/javascript">
 
         $("form :input").attr("autocomplete", "off");
+
+        $("#btn_clear").on("click",function(event) {
+            $("#imagen").val("");
+            $("#figure").html('<img src="'+$('#imagen').val()+'">');
+        });
+
         $('#finish').click(function()
         {
            var valid = $('#form_certificado').valid();
@@ -279,7 +296,7 @@
             },
             messages: {
                 'empresa_id': {
-                    required: "- {{ 'La empresa es requerido.'|trans }}"
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
                 },
                 'entidad': {
                     required: "- {{ 'La Entidad es requerida.'|trans }}"
@@ -291,7 +308,7 @@
                     required: "- {{ 'El Tipo de Certificado es requerido.'|trans }}"
                 },
                 'imagen': {
-                    required: "- {{ 'La Imagen es requerido.'|trans }}",
+                    required: "- {{ 'La Imagen es requerida.'|trans }}",
                     extension: "- {{ 'Sólo archivos con extensión .jpg o .png'|trans }}"
                 },
                 'encabezado': {
@@ -299,8 +316,8 @@
                     minlength: "- {{ 'El Encabezado debe ser mínimo de 3 caracteres.'|trans }}"
                 },
                 'descripcion': {
-                    required: "- {{ 'La Descripcion es requerida.'|trans }}",
-                    minlength: "- {{ 'La Descripcion debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'La descripcion es requerida.'|trans }}",
+                    minlength: "- {{ 'La descripcion debe ser mínimo de 3 caracteres.'|trans }}"
                 },
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",

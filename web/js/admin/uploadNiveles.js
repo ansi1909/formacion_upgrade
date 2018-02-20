@@ -13,10 +13,16 @@ $(document).ready(function() {
 		window.location.replace($('#url_niveles').val());
 	});
 
-	var valid = $("#form").valid();
-    if (valid) 
-    {
-    	$('#save').hide();
-    }
+    $('#save').click(function(){
+        var valid = $("#form").valid();
+        if (!valid) 
+        {
+            notify($('#div-error').html());
+        }
+        else {
+        	$('#save').hide();
+            $('#form').submit();
+        }
+    });
 
 });

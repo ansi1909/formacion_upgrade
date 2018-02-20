@@ -876,23 +876,29 @@
         background: transparent !important;   
     }
 
-    .btn_addImg, .btn_clearImg{
+    .btn_addImg, .btn_clearImg, .btn_clearImg2{
         border-radius: 50px; 
         width: 3.6rem; 
         height: 3.6rem; 
         position: absolute; 
-        z-index: 1;  
-        left: -.55rem;  
+        z-index: 1;   
         cursor: pointer !important; 
         background: #fff;
     }
 
     .btn_addImg{
         top: -.4rem;
+        left: -.55rem;
     }
 
     .btn_clearImg{ 
         top: 3.3rem;
+        left: -.55rem;
+    }
+
+    .btn_clearImg2{ 
+        top: -.4rem;
+        left: 3rem;
     }
 
     .btn_addImg span{
@@ -901,7 +907,7 @@
         font-size: 1.4rem
     }
 
-    .btn_clearImg span{
+    .btn_clearImg span, .btn_clearImg2 span{
         color: #00558D; 
         font-size: 1.4rem
     }

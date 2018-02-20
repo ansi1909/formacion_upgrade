@@ -3748,7 +3748,7 @@ table tr td img {
 }
 
 .dataTables_wrapper .dataTable tr:hover{
-    background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+    background: linear-gradient(to right, rgba(0, 132, 219, .7) 0%, rgba(0, 85, 141, .7) 100%);
     color: #fff;
     font-weight: bold;
     border-left: 0.3rem solid #fff;

@@ -14,10 +14,23 @@ DECLARE
   str text;
 BEGIN
 
-  FOR reg IN SELECT np.id as id, np.tipo_destino_id as tipo_destino_id, np.entidad_id as entidad_id, n.asunto as asunto, n.mensaje as mensaje, n.empresa_id as empresa_id FROM admin_notificacion_programada np JOIN admin_notificacion n ON np.notificacion_id = n.id JOIN admin_empresa e ON n.empresa_id = e.id AND e.activo = 'true' WHERE np.tipo_destino_id = 5 AND np.grupo_id IS NULL ORDER BY np.id ASC LOOP
+  FOR reg IN SELECT np.id as id, np.tipo_destino_id as tipo_destino_id, np.entidad_id as entidad_id, n.asunto as asunto, n.mensaje as mensaje, n.empresa_id as empresa_id 
+             FROM admin_notificacion_programada np 
+             JOIN admin_notificacion n ON np.notificacion_id = n.id 
+             JOIN admin_empresa e ON n.empresa_id = e.id 
+             WHERE np.tipo_destino_id = 5 
+                AND e.activo = true
+                AND np.grupo_id IS NULL 
+                ORDER BY np.id ASC LOOP
       
         -- Buscando usuarios que no han ingresado a la plaforma
-        FOR rst IN SELECT u.nombre as nombre, u.apellido as apellido, u.correo_corporativo as correo FROM admin_usuario u WHERE u.activo = 'true' AND u.empresa_id = reg.empresa_id AND NOT EXISTS (SELECT l FROM admin_sesion l WHERE l.usuario_id = u.id) ORDER BY u.id ASC LOOP
+        FOR rst IN SELECT u.nombre as nombre, u.apellido as apellido, u.correo_corporativo as correo 
+                   FROM admin_usuario u 
+                   WHERE u.activo = true 
+                   AND u.empresa_id = reg.empresa_id 
+                   AND NOT EXISTS (SELECT l FROM admin_sesion l 
+                                            WHERE l.usuario_id = u.id) 
+                   ORDER BY u.id ASC LOOP
             str = rst.nombre || '__' || rst.apellido || '__' || rst.correo || '__' || reg.asunto || '__' || reg.mensaje || '__' || reg.id;
             arr = '{}';
             arr[i] = str;

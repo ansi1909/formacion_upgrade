@@ -2,7 +2,6 @@ $(document).ready(function() {
 
     var root_site = $('#root_site').val();
 
-
     $('#empresa_id').change(function()
     {
         $('#tipo_certificado_id').val('');

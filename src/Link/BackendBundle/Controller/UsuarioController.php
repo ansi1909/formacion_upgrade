@@ -309,12 +309,12 @@ class UsuarioController extends Controller
             $activo = $request->request->get('activo');
             $correo_corporativo = $request->request->get('correo_corporativo');
             $pais_id = $request->request->get('pais_id');
-            $ciudad = $request->request->get('ciudad');
-            $region = $request->request->get('region');
+            $campo1 = $request->request->get('campo1');
+            $campo2 = $request->request->get('campo2');
             $empresa_id = $request->request->get('empresa_id');
             $nivel_id = $request->request->get('nivel_id');
-            $division_funcional = $request->request->get('division_funcional');
-            $cargo = $request->request->get('cargo');
+            $campo3 = $request->request->get('campo3');
+            $campo4 = $request->request->get('campo4');
             $roles_seleccionados = $request->request->get('roles');
 
             $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
@@ -338,12 +338,12 @@ class UsuarioController extends Controller
             $fecha_nacimiento = "$a-$m-$d";
             $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
             $usuario->setPais($pais);
-            $usuario->setCiudad($ciudad);
-            $usuario->setRegion($region);
+            $usuario->setCampo1($campo1);
+            $usuario->setCampo2($campo2);
             $usuario->setEmpresa($empresa);
             $usuario->setFoto($foto);
-            $usuario->setDivisionFuncional($division_funcional);
-            $usuario->setCargo($cargo);
+            $usuario->setCampo3($campo3);
+            $usuario->setCampo4($campo4);
             $usuario->setNivel($nivel);
             $em->persist($usuario);
             $em->flush();
@@ -645,12 +645,12 @@ class UsuarioController extends Controller
             $activo = $request->request->get('activo');
             $correo_corporativo = $request->request->get('correo_corporativo');
             $pais_id = $request->request->get('pais_id');
-            $ciudad = $request->request->get('ciudad');
-            $region = $request->request->get('region');
+            $campo1 = $request->request->get('campo1');
+            $campo2 = $request->request->get('campo2');
             $empresa_id = $request->request->get('empresa_id');
             $nivel_id = $request->request->get('nivel_id');
-            $division_funcional = $request->request->get('division_funcional');
-            $cargo = $request->request->get('cargo');
+            $campo3 = $request->request->get('campo3');
+            $campo4 = $request->request->get('campo4');
             
             $pais = $pais_id ? $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id) : null;
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -673,12 +673,12 @@ class UsuarioController extends Controller
             $fecha_nacimiento = "$a-$m-$d";
             $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
             $usuario->setPais($pais);
-            $usuario->setCiudad($ciudad);
-            $usuario->setRegion($region);
+            $usuario->setCampo1($campo1);
+            $usuario->setCampo2($campo2);
             $usuario->setEmpresa($empresa);
             $usuario->setFoto($foto);
-            $usuario->setDivisionFuncional($division_funcional);
-            $usuario->setCargo($cargo);
+            $usuario->setCampo3($campo3);
+            $usuario->setCampo4($campo4);
             $usuario->setNivel($nivel);
             $em->persist($usuario);
             $em->flush();
@@ -758,8 +758,16 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $empresa_asignada = $f->rolEmpresa($session->get('usuario')['id'], $session->get('usuario')['roles'], $yml);
+        $filas_analizadas = 0;
+        $file = '';
+        $empresa_id = 0;
+
+        // Estructura de los errores
+        /* 
+            array('general' => $error_msg,
+                  'particulares' => array('linea' => array('columna' => $error_msg)))
+        */
         $errores = array();
-        $nuevos_registros = 0;
         
         // Lista de empresas
         $qb = $em->createQueryBuilder();
@@ -777,10 +785,509 @@ class UsuarioController extends Controller
         $query = $qb->getQuery();
         $empresas = $query->getResult();
 
+        if ($request->getMethod() == 'POST')
+        {
+
+            $empresa_id = $request->request->get('empresa_id');
+            $file = $request->request->get('file');
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+            
+            if(!file_exists($fileWithPath)) 
+            {
+                $errores['general'] = $this->get('translator')->trans('El archivo').' '.$fileWithPath.' '.$this->get('translator')->trans('no existe');
+            } 
+            else {
+                
+                $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+              
+                // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
+                $total_sheets = $objPHPExcel->getSheetCount();
+                $allSheetName = $objPHPExcel->getSheetNames();
+                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+              
+                // Se obtiene el número máximo de filas y columnas
+                $highestRow = $objWorksheet->getHighestRow();
+                $highestColumn = $objWorksheet->getHighestColumn();
+                $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+              
+                if ($highestRow < 1)
+                {
+                    $errores['general'] = $this->get('translator')->trans('El archivo debe tener al menos una fila con datos').'.';
+                }
+                else {
+
+                    //Se recorre toda la hoja excel desde la fila 2
+                    $hay_data = 0;
+                    $particulares = array();
+                    $codigos = array(); // No pueden existir códigos repetidos
+                    $logins = array(); // No pueden existir logins repetidos
+                    $correos = array(); // No pueden existir correos repetidos
+                    for ($row=2; $row<=$highestRow; ++$row) 
+                    {
+
+                        $filas_analizadas++;
+
+                        // Código del empleado
+                        $col = 0;
+                        $col_name = 'A';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $codigo = trim($cell->getValue());
+                        if ($codigo)
+                        {
+                            $hay_data++;
+                            if (in_array($codigo, $codigos))
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Código del empleado repetido').'.';
+                            }
+                            else {
+                                $codigos[] = $codigo;
+                            }
+                        }
+                        
+                        // Login
+                        $col++;
+                        $col_name = 'B';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $login = trim($cell->getValue());
+                        if ($login)
+                        {
+                            $hay_data++;
+                            if (in_array($login, $logins))
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Login repetido').'.';
+                            }
+                            else {
+                                $logins[] = $login;
+                            }
+                        }
+                        else {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Login requerido').'.';
+                        }
+
+                        // Nombres
+                        $col++;
+                        $col_name = 'C';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $nombres = trim($cell->getValue());
+                        if ($nombres)
+                        {
+                            $hay_data++;
+                            if (preg_match('/[^A-Za-záÁéÉíÍóÓúÚñÑ ]/', $nombres))
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Nombres deben ser solo alfabético').'.';
+                            }
+                        }
+                        else {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Nombre requerido').'.';
+                        }
+
+                        // Apellidos
+                        $col++;
+                        $col_name = 'D';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $apellidos = trim($cell->getValue());
+                        if ($apellidos)
+                        {
+                            $hay_data++;
+                            if (preg_match('/[^A-Za-záÁéÉíÍóÓúÚñÑ ]/', $apellidos))
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Apellidos deben ser solo alfabéticos').'.';
+                            }
+                        }
+                        else {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Apellido requerido').'.';
+                        }
+
+                        // Fecha de registro
+                        $col++;
+                        $col_name = 'E';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $fecha_registro = trim($cell->getValue());
+                        if ($fecha_registro)
+                        {
+                            $hay_data++;
+                            if ($cell->getDataType() != 's')
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
+                            }
+                            else {
+                                if (\PHPExcel_Shared_Date::isDateTime($cell))
+                                {
+                                    $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA').'.';
+                                }
+                                else {
+                                    if (!$f->checkFecha($fecha_registro))
+                                    {
+                                        $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La fecha de registro debe ser en formato DD/MM/AAAA y ser válida').'.';
+                                    }
+                                }
+                            }
+                        }
+
+                        // Contraseña   
+                        $col++;
+                        $col_name = 'F';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $clave = trim($cell->getValue());
+                        if (!$clave)
+                        {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La clave es requerida.');
+                        }
+                        else {
+                            $hay_data++;
+                        }
+
+                        // Correo
+                        $col++;
+                        $col_name = 'G';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $correo = trim($cell->getValue());
+                        if ($correo)
+                        {
+                            $hay_data++;
+                            if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Formato de correo inválido').'.';
+                            }
+                            else {
+                                if (in_array($correo, $correos))
+                                {
+                                    $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico repetido').'.';
+                                }
+                                else {
+                                    $correos[] = $correo;
+                                }
+                            }
+                        }
+                        else {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Correo electrónico requerido').'.';
+                        }
+
+                        // Competencia
+                        $col++;
+                        $col_name = 'H';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $competencia = trim($cell->getValue());
+                        if ($competencia === null || $competencia == '')
+                        {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Competencia requerida. Valores válidos 0 o 1.');
+                        }
+                        else {
+                            $hay_data++;
+                            if ($cell->getDataType() != 'n')
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Competencia debe ser un valor entero').'.';
+                            }
+                            else {
+                                if (!($competencia == 0 || $competencia == 1))
+                                {
+                                    $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Competencia debe tener como valor 0 o 1').'.';
+                                }
+                            }
+                        }
+
+                        // País
+                        $col++;
+                        $col_name = 'I';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $pais = trim($cell->getValue());
+                        if ($pais)
+                        {
+                            $hay_data++;
+                            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPais p 
+                                                        WHERE LOWER(TRIM(p.nombre)) = LOWER(:pais)')
+                                        ->setParameter('pais', $pais);
+                            $existe_pais = $query->getSingleScalarResult();
+                            if (!$existe_pais)
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('El país no existe en la base de datos').'.';
+                            }
+                        }
+                        else {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('El país es requerido.');
+                        }
+
+                        // Nivel
+                        $col = $col+5;
+                        $col_name = 'N';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $nivel = trim($cell->getValue());
+                        if ($nivel)
+                        {
+                            $hay_data++;
+                            $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n 
+                                                        WHERE LOWER(TRIM(n.nombre)) = LOWER(:nivel) AND n.empresa = :empresa_id')
+                                        ->setParameters(array('nivel' => $nivel,
+                                                              'empresa_id' => $empresa_id));
+                            $existe_nivel = $query->getSingleScalarResult();
+                            if (!$existe_nivel)
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Nivel no existente para esta empresa').'.';
+                            }
+                        }
+                        else {
+                            $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n 
+                                                        WHERE n.empresa = :empresa_id')
+                                        ->setParameter('empresa_id', $empresa_id);
+                            $existe_nivel = $query->getSingleScalarResult();
+                            if (!$existe_nivel)
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La empresa aún no tiene configurado ningún nivel').'.';
+                            }
+                        }
+
+                        /*if (array_key_exists($this->get('translator')->trans('Línea').' '.$row, $particulares)) 
+                        {
+                            // Si existen errores en esta fila, se anexan al conjunto del arreglo de errores
+                        }*/
+
+                    }
+
+                    if ($hay_data == 0)
+                    {
+                        $errores['general'] = $this->get('translator')->trans('El archivo debe tener al menos una fila con datos').'.';
+                    }
+
+                    $errores['particulares'] = $particulares;
+
+                }
+
+
+            }
+
+            //return new Response(var_dump($errores));
+            
+        }
+
         return $this->render('LinkBackendBundle:Usuario:uploadParticipantes.html.twig', array('empresas' => $empresas,
                                                                                               'empresa_asignada' => $empresa_asignada,
+                                                                                              'empresa_id' => $empresa_id,
                                                                                               'errores' => $errores,
-                                                                                              'nuevos_registros' => $nuevos_registros));
+                                                                                              'file' => $file,
+                                                                                              'filas_analizadas' => $filas_analizadas));
+
+    }
+
+    public function procesarParticipantesAction($empresa_id, $archivo, Request $request){
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $file = str_replace(",", "/", $archivo);
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+        $transaccion = $f->generarClave();
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        // Ultimó código entero para la empresa
+        $query = $em->getConnection()->prepare("SELECT MAX(codigo) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+        $query->execute();
+        $r = $query->fetchAll();
+        $max = $r[0]['max'] != '' ? $r[0]['max'] : 0;
+
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+              
+        // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
+        $total_sheets = $objPHPExcel->getSheetCount();
+        $allSheetName = $objPHPExcel->getSheetNames();
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+      
+        // Se obtiene el número máximo de filas y columnas
+        $highestRow = $objWorksheet->getHighestRow();
+        $highestColumn = $objWorksheet->getHighestColumn();
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+
+        // Nuevo objeto Excel para el CSV
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setCreator("formacion")
+                       ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
+                       ->setTitle("CSV Autogenerado")
+                       ->setSubject("CSV Autogenerado")
+                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla tempral de BD.")
+                       ->setKeywords("office 2005 openxml php")
+                       ->setCategory("Archivo temporal");
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        for ($row=2; $row<=$highestRow; ++$row) 
+        {
+
+            $r = $row-1; // Se empieza desde la fila 1 el archivo CSV
+
+            // Código del empleado
+            $col = 0;
+            $col_name = 'A';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $codigo = trim($cell->getValue());
+            if (!$codigo)
+            {
+                // Se autogenera de acuerdo al último registro de usuario de esta empresa
+                $max++;
+                $codigo = $max;
+            }
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $codigo);
+            
+            // Login
+            $col++;
+            $col_name = 'B';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $login = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $login);
+
+            // Nombres
+            $col++;
+            $col_name = 'C';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $nombres = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $nombres);
+
+            // Apellidos
+            $col++;
+            $col_name = 'D';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $apellidos = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $apellidos);
+
+            // Fecha de registro
+            $col++;
+            $col_name = 'E';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $fecha_registro = trim($cell->getValue());
+            $fecha_registro = $f->formatDate($fecha_registro);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $fecha_registro);
+
+            // Contraseña   
+            $col++;
+            $col_name = 'F';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $clave = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $clave);
+
+            // Correo
+            $col++;
+            $col_name = 'G';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $correo = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $correo);
+
+            // Competencia
+            $col++;
+            $col_name = 'H';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $competencia = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $competencia);
+
+            // País
+            $col++;
+            $col_name = 'I';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $pais = trim($cell->getValue());
+            $query = $em->createQuery('SELECT p FROM LinkComunBundle:AdminPais p 
+                                        WHERE LOWER(TRIM(p.nombre)) = LOWER(:pais)')
+                        ->setParameter('pais', $pais);
+            $paises = $query->getResult();
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $paises[0]->getId());
+
+            // Campo1
+            $col++;
+            $col_name = 'J';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo1 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo1);
+
+            // Campo2
+            $col++;
+            $col_name = 'K';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo2 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo2);
+
+            // Campo3
+            $col++;
+            $col_name = 'L';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo3 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo3);
+
+            // Campo4
+            $col++;
+            $col_name = 'M';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo4 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo4);
+
+            // Nivel
+            $col = $col++;
+            $col_name = 'N';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $nivel = trim($cell->getValue());
+            if ($nivel)
+            {
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
+                                            WHERE LOWER(TRIM(n.nombre)) = LOWER(:nivel) AND n.empresa = :empresa_id')
+                            ->setParameters(array('nivel' => $nivel,
+                                                  'empresa_id' => $empresa_id));
+                $niveles = $query->getResult();
+                if (!$niveles)
+                {
+                    $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
+                                                WHERE n.empresa = :empresa_id 
+                                                ORDER BY n.id ASC')
+                                ->setParameter('empresa_id', $empresa_id);
+                    $niveles = $query->getResult();
+                }
+                $nivel_id = $niveles[0]->getId();
+            }
+            else {
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
+                                            WHERE n.empresa = :empresa_id 
+                                            ORDER BY n.id ASC')
+                            ->setParameter('empresa_id', $empresa_id);
+                $niveles = $query->getResult();
+                $nivel_id = $niveles[0]->getId();
+            }
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $nivel_id);
+
+            // Las últimas 2 columnas son para la empresa_id y transaccion
+            $col_name = 'O';
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $empresa_id);
+
+            $col_name = 'P';
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $transaccion);
+
+        }
+
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'CSV')
+                                        ->setDelimiter('|')
+                                        ->setEnclosure('');
+        $writer->setUseBOM(true);
+        $writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv');
+            
+        $arr = array('empresa_id' => $empresa_id,
+                     'archivo' => $archivo,
+                     'file' => $file,
+                     'fileWithPath' => $fileWithPath,
+                     'existe' => file_exists($fileWithPath) ? 'Si' : 'No',
+                     'csv' => $yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv');
+
+        return new Response(var_dump($arr));
+
+        //return $this->render('LinkBackendBundle:Usuario:showParticipante.html.twig', array('usuario' => $usuario));
 
     }
 

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\AdminEmpresa;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Yaml\Yaml;
 
 class EmpresaController extends Controller
 {
@@ -108,6 +109,10 @@ class EmpresaController extends Controller
             $empresa->setPais($pais);
             $em->persist($empresa);
             $em->flush();
+
+            // Se crea el directorio para los activos de la empresa
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $f->subDirEmpresa($empresa->getId(), $yml['parameters']['folders']['dir_uploads']);
 
             return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
 

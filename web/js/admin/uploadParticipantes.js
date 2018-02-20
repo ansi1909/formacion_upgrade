@@ -5,15 +5,18 @@ $(document).ready(function() {
 		$(document).scrollTop( $("#div-errores").offset().top );
 	}
 
-	$('#aceptar').show();
+	$('#aceptar').hide();
 	$('#guardar').hide();
 	$('#cancelar').hide();
+	$('#procesar').show();
 
-	$('#aceptar').click(function(){
-		window.location.replace($('#url_niveles').val());
+	$('#procesar').click(function(){
+        var file = $('#file').val().split('/').join(',');
+		window.location.replace($('#url_procesar').val()+'/'+$('#empresa_id').val()+'/'+file);
 	});
 
 	$('#save').click(function(){
+		$('#div-e').hide();
         var valid = $("#form").valid();
         if (!valid) 
         {
@@ -25,4 +28,15 @@ $(document).ready(function() {
         }
     });
 
+    observe();
+
+    $('.paginate_button').click(function(){
+        observe();
+    });
+
 });
+
+function observe()
+{
+    $('.tree').jstree();
+}

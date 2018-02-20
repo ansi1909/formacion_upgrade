@@ -30,7 +30,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "twig/twig": "^1.0||^2.0",
         "liuggio/excelbundle": "^2.1",
-        "aferrandini/phpqrcode": "1.0.1"
+        "aferrandini/phpqrcode": "1.0.1",
+        "spipu/html2pdf": "^5.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
