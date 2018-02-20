@@ -762,4 +762,14 @@ class Functions
 
     }
 
+    // Formatea la fecha dada en formato DD/MM/YYYY a YYYY-MM-DD
+    function formatDate($fecha){
+
+        $fecha_arr = explode("/", $fecha);
+        $new_fecha = $fecha_arr[2].'-'.$fecha_arr[1].'-'.$fecha_arr[0];
+
+        return $new_fecha;
+
+    }
+
 }

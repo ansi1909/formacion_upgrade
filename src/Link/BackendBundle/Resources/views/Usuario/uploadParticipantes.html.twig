@@ -120,7 +120,7 @@
             {% if errores.particulares|length > 1 %}
                 {% set e = 1 %}
                 {% set e_particulares = 1 %}
-                {% set error_msg = 'El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.' %}
+                {% set error_msg = 'El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.'|trans %}
             {% endif %}
         {% endif %}
     {% endif %}

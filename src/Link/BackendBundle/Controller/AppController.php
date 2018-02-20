@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\AdminAplicacion;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Yaml\Yaml;
 
 class AppController extends Controller
 {
@@ -67,7 +68,7 @@ class AppController extends Controller
         																	'aplicaciones_str' =>$aplicaciones_str));
 
         // Solicita el servicio de excel
-        /*   $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+           /*$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
            $phpExcelObject->getProperties()->setCreator("liuggio")
                ->setLastModifiedBy("Giulio De Donato")
@@ -77,14 +78,25 @@ class AppController extends Controller
                ->setKeywords("office 2005 openxml php")
                ->setCategory("Archivo de ejemplo");
            $phpExcelObject->setActiveSheetIndex(0)
-               ->setCellValue('A1', 'Hola')
-               ->setCellValue('B2', 'Mundo!');
+               ->setCellValue('A1', 'Juan')
+               ->setCellValue('B1', 'Villegas')
+               ->setCellValue('C1', '1988-12-01')
+               ->setCellValue('A2', 'Edward')
+               ->setCellValue('B2', 'Hernández')
+               ->setCellValue('C2', '1983-09-14');
            $phpExcelObject->getActiveSheet()->setTitle('Simple');
            // Define el indice de página al número 1, para abrir esa página al abrir el archivo
            $phpExcelObject->setActiveSheetIndex(0);
 
             // Crea el writer
-            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
+            //$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
+            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'CSV')
+                                            ->setDelimiter(',')
+                                            ->setEnclosure('');
+            $writer->setUseBOM(true);
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/data.csv');
+            /*
             // Envia la respuesta del controlador
             $response = $this->get('phpexcel')->createStreamedResponse($writer);
             // Agrega los headers requeridos
@@ -101,7 +113,7 @@ class AppController extends Controller
             return $response;*/
 
 
-
+            //return new Response('Archivo creado...');
 
 
         // estas lineas nos puede servir para comprobar que nuestro fichero

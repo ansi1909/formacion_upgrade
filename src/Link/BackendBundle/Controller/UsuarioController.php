@@ -811,10 +811,6 @@ class UsuarioController extends Controller
                 $highestColumn = $objWorksheet->getHighestColumn();
                 $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
               
-                // $headingsArray contiene las cabeceras de la hoja excel. Los titulos de columnas
-                $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
-                $headingsArray = $headingsArray[1];
-
                 if ($highestRow < 1)
                 {
                     $errores['general'] = $this->get('translator')->trans('El archivo debe tener al menos una fila con datos').'.';
@@ -1021,8 +1017,8 @@ class UsuarioController extends Controller
                         {
                             $hay_data++;
                             $query = $em->createQuery('SELECT COUNT(n.id) FROM LinkComunBundle:AdminNivel n 
-                                                        WHERE LOWER(TRIM(n.nombre)) = :nivel AND n.empresa = :empresa_id')
-                                        ->setParameters(array('nivel' => strtolower($nivel),
+                                                        WHERE LOWER(TRIM(n.nombre)) = LOWER(:nivel) AND n.empresa = :empresa_id')
+                                        ->setParameters(array('nivel' => $nivel,
                                                               'empresa_id' => $empresa_id));
                             $existe_nivel = $query->getSingleScalarResult();
                             if (!$existe_nivel)
@@ -1070,6 +1066,228 @@ class UsuarioController extends Controller
                                                                                               'errores' => $errores,
                                                                                               'file' => $file,
                                                                                               'filas_analizadas' => $filas_analizadas));
+
+    }
+
+    public function procesarParticipantesAction($empresa_id, $archivo, Request $request){
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $file = str_replace(",", "/", $archivo);
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+        $transaccion = $f->generarClave();
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        // Ultimó código entero para la empresa
+        $query = $em->getConnection()->prepare("SELECT MAX(codigo) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
+        $query->execute();
+        $r = $query->fetchAll();
+        $max = $r[0]['max'] != '' ? $r[0]['max'] : 0;
+
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+              
+        // Se obtienen las hojas, el nombre de las hojas y se pone activa la primera hoja
+        $total_sheets = $objPHPExcel->getSheetCount();
+        $allSheetName = $objPHPExcel->getSheetNames();
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+      
+        // Se obtiene el número máximo de filas y columnas
+        $highestRow = $objWorksheet->getHighestRow();
+        $highestColumn = $objWorksheet->getHighestColumn();
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+
+        // Nuevo objeto Excel para el CSV
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setCreator("formacion")
+                       ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
+                       ->setTitle("CSV Autogenerado")
+                       ->setSubject("CSV Autogenerado")
+                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla tempral de BD.")
+                       ->setKeywords("office 2005 openxml php")
+                       ->setCategory("Archivo temporal");
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        for ($row=2; $row<=$highestRow; ++$row) 
+        {
+
+            $r = $row-1; // Se empieza desde la fila 1 el archivo CSV
+
+            // Código del empleado
+            $col = 0;
+            $col_name = 'A';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $codigo = trim($cell->getValue());
+            if (!$codigo)
+            {
+                // Se autogenera de acuerdo al último registro de usuario de esta empresa
+                $max++;
+                $codigo = $max;
+            }
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $codigo);
+            
+            // Login
+            $col++;
+            $col_name = 'B';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $login = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $login);
+
+            // Nombres
+            $col++;
+            $col_name = 'C';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $nombres = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $nombres);
+
+            // Apellidos
+            $col++;
+            $col_name = 'D';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $apellidos = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $apellidos);
+
+            // Fecha de registro
+            $col++;
+            $col_name = 'E';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $fecha_registro = trim($cell->getValue());
+            $fecha_registro = $f->formatDate($fecha_registro);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $fecha_registro);
+
+            // Contraseña   
+            $col++;
+            $col_name = 'F';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $clave = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $clave);
+
+            // Correo
+            $col++;
+            $col_name = 'G';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $correo = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $correo);
+
+            // Competencia
+            $col++;
+            $col_name = 'H';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $competencia = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $competencia);
+
+            // País
+            $col++;
+            $col_name = 'I';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $pais = trim($cell->getValue());
+            $query = $em->createQuery('SELECT p FROM LinkComunBundle:AdminPais p 
+                                        WHERE LOWER(TRIM(p.nombre)) = LOWER(:pais)')
+                        ->setParameter('pais', $pais);
+            $paises = $query->getResult();
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $paises[0]->getId());
+
+            // Campo1
+            $col++;
+            $col_name = 'J';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo1 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo1);
+
+            // Campo2
+            $col++;
+            $col_name = 'K';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo2 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo2);
+
+            // Campo3
+            $col++;
+            $col_name = 'L';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo3 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo3);
+
+            // Campo4
+            $col++;
+            $col_name = 'M';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $campo4 = trim($cell->getValue());
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo4);
+
+            // Nivel
+            $col = $col++;
+            $col_name = 'N';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $nivel = trim($cell->getValue());
+            if ($nivel)
+            {
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
+                                            WHERE LOWER(TRIM(n.nombre)) = LOWER(:nivel) AND n.empresa = :empresa_id')
+                            ->setParameters(array('nivel' => $nivel,
+                                                  'empresa_id' => $empresa_id));
+                $niveles = $query->getResult();
+                if (!$niveles)
+                {
+                    $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
+                                                WHERE n.empresa = :empresa_id 
+                                                ORDER BY n.id ASC')
+                                ->setParameter('empresa_id', $empresa_id);
+                    $niveles = $query->getResult();
+                }
+                $nivel_id = $niveles[0]->getId();
+            }
+            else {
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n 
+                                            WHERE n.empresa = :empresa_id 
+                                            ORDER BY n.id ASC')
+                            ->setParameter('empresa_id', $empresa_id);
+                $niveles = $query->getResult();
+                $nivel_id = $niveles[0]->getId();
+            }
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $nivel_id);
+
+            // Las últimas 2 columnas son para la empresa_id y transaccion
+            $col_name = 'O';
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $empresa_id);
+
+            $col_name = 'P';
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $transaccion);
+
+        }
+
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'CSV')
+                                        ->setDelimiter('|')
+                                        ->setEnclosure('');
+        $writer->setUseBOM(true);
+        $writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv');
+            
+        $arr = array('empresa_id' => $empresa_id,
+                     'archivo' => $archivo,
+                     'file' => $file,
+                     'fileWithPath' => $fileWithPath,
+                     'existe' => file_exists($fileWithPath) ? 'Si' : 'No',
+                     'csv' => $yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv');
+
+        return new Response(var_dump($arr));
+
+        //return $this->render('LinkBackendBundle:Usuario:showParticipante.html.twig', array('usuario' => $usuario));
 
     }
 

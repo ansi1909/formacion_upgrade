@@ -506,3 +506,27 @@ usuario_id integer,
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (nivel_id) REFERENCES admin_nivel (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE tmp_participante(
+-- Attributes --
+id serial,
+codigo varchar(50),
+login varchar(50),
+nombre varchar(50),
+apellido varchar(50),
+fecha_registro date,
+clave varchar(50),
+correo_personal varchar(100),
+competencia boolean,
+pais_id varchar(3),
+campo1 varchar(50),
+campo2 varchar(50),
+campo3 varchar(100),
+campo4 varchar(100),
+nivel_id integer,
+empresa_id integer,
+transaccion varchar(10),
+ PRIMARY KEY (id),
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
+ FOREIGN KEY (nivel_id) REFERENCES admin_nivel (id),
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
