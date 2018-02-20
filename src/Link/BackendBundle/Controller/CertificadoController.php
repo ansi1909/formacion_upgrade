@@ -293,11 +293,10 @@ class CertificadoController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function generarPdfAction()
+    public function generarPdfAction($id_certificado)
     {
         $session = new Session();
         $f = $this->get('funciones');
-      
         if (!$session->get('ini'))
         {
             return $this->redirectToRoute('_loginAdmin');
@@ -310,45 +309,135 @@ class CertificadoController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
 
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
         $em = $this->getDoctrine()->getManager();
 
-        //Recogemos el contenido de la vista
-        ob_start(); 
-        // $html= $this->render('LinkBackendBundle:Certificado:certificado.html.twig'); 
-        //les content pour le pdf
-
-        //require_once 'certificado.html.twig';
-        $html=ob_get_clean(); 
+        $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($id_certificado);
 
         //Le indicamos el tipo de hoja y la codificación de caracteres
-        $certificado = new Html2Pdf('P','A4','es','true','UTF-8');
-        $certificado->writeHTML('<h1>Hola mundo</h1>');
-        //$certificado->writeHTML($html);
-        //Generamos el PDF
-        $certificado->output('certificiado.pdf');
+        $certificado_pdf = new Html2Pdf('P','letter','es','true','UTF-8');
+       // $certificado->writeHTML($html); 
+        //<div class="background_certificado"><img src="'.$certificado->getImagen().'" alt=""></div>
 
+        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
+        {
+            $certificado_pdf->writeHTML('<!DOCTYPE HTML>
+                                        <html>
+                                            <style>
+                                                .background_certificado {
+                                                    text-align: center;
+                                                }                    
+                                            </style>
+                                            <head>
+                                                <meta charset="UTF-8" />
+                                                <title>Certificado</title>       
+                                            </head>
+                                            <body>
+                                                <div class="background_certificado"><img src="http://localhost:8080/uploads/recursos/certificados/2/certificado.png" alt=""></div>
+                                            </body>
+                                        </html>');
+
+            $certificado_pdf->pdf->SetDisplayMode('fullpage');
+            //Generamos el PDF
+            $certificado_pdf->output('certificiado.pdf');
+        }else
+        {
+            if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['constancia'] )
+            {
+                $certificado_pdf->writeHTML('<!DOCTYPE HTML>
+                                            <html>
+                                                <style>
+                                                    .background_certificado {
+                                                        text-align: center;
+                                                    }                    
+                                                </style>
+                                                <head>
+                                                    <meta charset="UTF-8" />
+                                                    <title>Certificado</title>       
+                                                </head>
+                                                <body>
+                                                    <div class="background_certificado"><img src="http://localhost:8080/uploads/recursos/certificados/2/constancia.png" alt=""></div>
+                                                </body>
+                                            </html>');
+                $certificado_pdf->pdf->SetDisplayMode('fullpage');
+                //Generamos el PDF
+                $certificado_pdf->output('constancia.pdf');
+              /*  $certificado_pdf->writeHTML('<!DOCTYPE HTML>
+                <html lang="es">
+                    <head>
+                        <meta charset="UTF-8"/>
+                        <title>Generar PDF con PHP</title>
+                        <style type="text/css">
+                        #cabecera{
+                            background:#eee;
+                            padding:20px;
+                        }
+                        h2,h3{
+                            float:left;
+                        }
+                        #cabecera img{
+                            width: 140px;
+                            float:right;
+                        }
+                        </style>
+                    </head>
+                    <body>
+                        <div id="cabecera">
+                            <h2>Este PDF ha sido generado desde PHP</h2>
+                            <h3>Victor Robles - 
+                                <a href="http://victorroblesweb.es">
+                                    victorroblesweb.es
+                                </a>
+                            </h3>
+                        </div>
+                     
+                        <p>Lista ordenada:
+                            <ol>
+                                <li>PHP</li>
+                                <li>Python</li>
+                                <li>Ruby</li>
+                                <li>Java</li>
+                            </ol>
+                        </p>
+                    </body>
+                </html>');*/
+
+            }
+        }
+
+    }
+
+    public function generarVistaPdfAction($id_certificado)
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $em = $this->getDoctrine()->getManager();
        
-
-//Incluimos la librería
- /*   require_once 'html2pdf_v4.03/html2pdf.class.php';
-     
-    //Recogemos el contenido de la vista
-    ob_start(); 
-    require_once 'vistaImprimir.php';
-    $html=ob_get_clean(); 
+        //contultamos el nombre de la aplicacion para reutilizarla en la vista
+        $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($id_certificado);
  
-    //Pasamos esa vista a PDF
-     
-    //Le indicamos el tipo de hoja y la codificación de caracteres
-    $mipdf=new HTML2PDF('P','A4','es','true','UTF-8');
- 
-    //Escribimos el contenido en el PDF
-    $mipdf->writeHTML($html);
- 
-    //Generamos el PDF
-    $mipdf->Output('PdfGeneradoPHP.pdf');
-*/
-
+        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] ) 
+        {
+            return $this->render('LinkBackendBundle:Certificado:certificado.html.twig', array('certificado' => $certificado));
+        }else
+        {
+            if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['constancia'] ) 
+                return $this->render('LinkBackendBundle:Certificado:constancia.html.twig', array('certificado' => $certificado));
+        }
     }
 
 }
