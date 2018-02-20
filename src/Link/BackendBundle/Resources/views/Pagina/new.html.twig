@@ -11,6 +11,21 @@
         .input-group {
             margin-top: 35px;
         }
+        .photo_img{
+            width: 35rem;
+            height: auto;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 1rem 1rem 0 3rem;
+        }
     </style>
 {% endblock %}
 
@@ -22,6 +37,7 @@
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <input type="hidden" id="deslen2" name="deslen2" value="0" />
 <br><br>
+<input type="hidden" id="photo" name="photo" value="{{ asset('img/picture.png') }}">
 <div class="row align-items-center justify-content-start">
     <div class="col text-left">
         <a href="{{ path('_paginas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
@@ -174,15 +190,22 @@
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     {{ form_label(form.foto) }}
                                     {% set img = asset('img/picture.png') %}
-                                    <div id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
+                                    <div class="photo_img" id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
                                 </div>
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <div class="input-group">
                                         {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly' } }) }}
                                         <span class="input-group-addon">
                                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_foto&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
-                                                <span class="fa fa-photo"></span>
+                                                <button type="button" class="btn_addImg">
+                                                    <span class="fa fa-photo"></span>
+                                                </button>
                                             </a>
+                                        </span>
+                                        <span class="input-group-addon">
+                                            <button id="btn_clear" class="btn_clearImg" type="button">
+                                                <span class="fa fa-times"></span>
+                                            </button>
                                         </span>
                                     </div>
                                 </div>
@@ -192,7 +215,7 @@
                                 <div class="col-sm-8 col-lg-8 col-md-8">
                                     <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.pdf) }}</label>
                                     <div class="col-sm-16 col-md-16 col-lg-16">
-                                        {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF' } }) }}
+                                        {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF', 'id':'form_pdf' } }) }}
                                         <span class="fa fa-file-pdf-o"></span>
                                     </div>
                                 </div>
@@ -200,8 +223,15 @@
                                     <div class="input-group">
                                         <span class="input-group-addon">
                                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=form_pdf&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
-                                                <span class="fa fa-file-pdf-o"></span>
+                                                <button type="button" class="btn_addImg">
+                                                    <span class="fa fa-file-pdf-o"></span>
+                                                </button>
                                             </a>
+                                        </span>
+                                        <span class="input-group-addon">
+                                            <button id="btn_clear2" class="btn_clearImg2" type="button">
+                                                <span class="fa fa-times"></span>
+                                            </button>
                                         </span>
                                     </div>
                                 </div>
@@ -277,6 +307,14 @@
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/pagina.js') }}"></script>
     <script type="text/javascript">
+        $("#btn_clear").on("click",function(event) {
+            $("#form_photo").val("");
+            $("#figure").html('<img src="'+$('#photo').val()+'">');
+        });
+
+        $("#btn_clear2").on("click",function(event) {
+            $("#form_pdf").val("");
+        });
         
         $('#finish').click(function(){
             var valid = $("#form").valid();
