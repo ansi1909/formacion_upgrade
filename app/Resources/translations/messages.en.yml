@@ -89,6 +89,7 @@ Correo electrónico requerido: Email required
 Correo corporativo: Company email
 Correo personal: Personal email
 Creado el: Created at
+Crear evento: Create event
 Dato en nulo.: Null value
 Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
@@ -104,6 +105,7 @@ Datos del usuario: User details
 Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos del tutorial: Tutorial data
+Datos evento: Event data
 Datos notificación: Notification details
 Dar acceso: Provide access
 de la evaluación: of the test
@@ -150,10 +152,12 @@ El Encabezado es requerido.: The Header is required
 El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
 El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
 El enunciado es requerido.: Statement is required.
+El evento ha sido guardado con éxito: The event has been saved successfully
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El grupo ha sido almacenada con éxito: The group has been stored successfully
 El login ya existe.: Login already exists.
+El lugar es requerido.: The place is required.
 El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
 El mensaje es requerido.: The message is required.
 El nivel ha sido almacenado con éxito: Level has been saved successfully
@@ -212,8 +216,12 @@ Este rol aún no tiene permisos de acceso: This role does not have access permis
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
+Evento guardado: Saved event
+Evento no guardado: Unsaved event
 Fecha: Date
 Fecha Creación: Creation Date
+Fecha fin: End date
+Fecha inicio: Start date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
 Fecha de Publicación: Fecha de Publicación
@@ -263,6 +271,8 @@ La empresa aún no tiene configurado ningún nivel: Company has not any level ad
 La empresa es requerida.: Company is required.
 La Entidad es requerida.: The Entity is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
+La fecha de fin es requerida.: The end date is required.
+La fecha de inicio es requerida.: The start date is required.
 La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: Registration date cell must be of text type in format DD/MM/YYYY
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: Registration date must be in format DD/MM/YYYY and a valid date
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
@@ -293,6 +303,7 @@ Listado de Tipos de Notificaciones: List of Types of Notifications
 Listado de tutoriales: List of tutorials
 Login repetido: Login repeated
 Login requerido: Login required
+Lugar: Place
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Material complementario: Complementary content
@@ -300,6 +311,7 @@ Mensaje: Message
 Mensaje del servidor: Server message
 Modificado el: Modified at
 Modificado por: Modified by
+Modificar evento: Modify event
 Mostrando registros del: Showing items of
 Mostrar: Show
 Muro: Wall
@@ -318,6 +330,7 @@ No se pudo activar/desactivar este registro.: It could not enable/disable this i
 No se pudo almacenar este registro.: It could not save this item.
 No se pudo editar este registro.: It could not edit this item.
 No se pudo filtrar el listado.: It could not filter the list.
+No se pudo guardar el evento. Inténtalo de nuevo.: The event could not be saved. Try again.
 No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/deny the access to this page.
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name

@@ -6,20 +6,14 @@ _eventos:
     path:  /eventos/{userID}
     defaults: { _controller: LinkBackendBundle:Calendario:eventos }
 
-_calendario_create:
-    path:      /ajaxCrearEvento
-    defaults:  { _controller: LinkBackendBundle:Calendario:create }
-    requirements:
-        method: POST
-
 _calendario_update:
     path:      /ajaxEditarEvento
     defaults:  { _controller: LinkBackendBundle:Calendario:update }
     requirements:
         method: POST
 
-_calendario_delete:
-    path:      /ajaxEliminarEvento
-    defaults:  { _controller: LinkBackendBundle:Calendario:delete }
+_calendario_edit:
+    path:      /ajaxEditarFechaEvento
+    defaults:  { _controller: LinkBackendBundle:Calendario:editEventDate }
     requirements:
-        method: DELETE
+        method: POST

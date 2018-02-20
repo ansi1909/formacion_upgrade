@@ -69,6 +69,7 @@ class CalendarioController extends Controller
                                                                                    'usuario_empresa' => $usuario_empresa,
                                                                                    'eventos' => $eventos,
                                                                                    'niveles' => $niveles,
+                                                                                   'app_id' => $app_id,
                                                                                    'usuario' => $usuario));
     }
 
@@ -96,6 +97,14 @@ class CalendarioController extends Controller
         $return = array();
         
         foreach ($eventos as $evento){
+
+            if($evento->getNivel()){
+                $nombre_nivel = $evento->getNivel()->getNombre();
+                $id_nivel = $evento->getNivel()->getId();
+            }else{
+                $nombre_nivel = 'Todos los niveles';
+                $id_nivel = 0;
+            }
         
             $e = array('id' => $evento->getId(),
                        'title' => $evento->getNombre(),
@@ -104,8 +113,8 @@ class CalendarioController extends Controller
                        'descripcion' => $evento->getDescripcion(),
                        'empresa' => $evento->getEmpresa()->getNombre(),
                        'empresa_id' => $evento->getEmpresa()->getId(),
-                       'nivel' => $evento->getNivel()->getNombre(),
-                       'nivel_id' => $evento->getNivel()->getId(),
+                       'nivel' => $nombre_nivel,
+                       'nivel_id' => $id_nivel,
                        'lugar' => $evento->getLugar()
                        );
             
@@ -117,52 +126,17 @@ class CalendarioController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json')); // asegurando el correcto content type
     }
 
-    public function createAction(Request $request)
-    {
-
-        $em = $this->getDoctrine()->getManager();
-        $format = "d-m-Y H:i:s";
-        $empresa_admin = $request->request->get("empresa");
-        $empresa_usuario = $request->request->get("empresa_usuario");
-        $fecha_inicio = $request->request->get("start_date");
-        $fecha_fin = $request->request->get("end_date");
-        if($empresa_usuario){
-            $empresa_id = $empresa_usuario;
-        }else{
-            $empresa_id = $empresa_admin;
-        }
-        $nivel_id = $request->request->get("nivel");
-        $usuario_id = $request->request->get("usuario");
-        $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
-        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-
-        $evento = new AdminEvento();
-        $evento->setNombre($request->request->get("title"));
-        $evento->setDescripcion($request->request->get("descripcion"));
-        $evento->setLugar($request->request->get("lugar"));
-        $evento->setFechaInicio(new \DateTime($fecha_inicio));
-        $evento->setFechaFin(new \DateTime($fecha_fin));
-        $evento->setEmpresa($empresa);
-        $evento->setNivel($nivel);
-        $evento->setUsuario($usuario);
-        $em->persist($evento);
-        $em->flush();
-
-        return new JsonResponse(array(
-            "status" => "success"
-        ));
-    }
-    
     public function updateAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
         $evento_id = $request->request->get("evento_id");
         $empresa_admin = $request->request->get("empresa");
         $empresa_usuario = $request->request->get("empresa_usuario");
-        $fecha_inicio = $request->request->get("start_date");
-        $fecha_fin = $request->request->get("end_date");
+        $fecha_inicio = $request->request->get('start');
+        $fecha_fin = $request->request->get('end');
+
         if($empresa_usuario){
             $empresa_id = $empresa_usuario;
         }else{
@@ -170,16 +144,16 @@ class CalendarioController extends Controller
         }
         $nivel_id = $request->request->get("nivel");
         $usuario_id = $request->request->get("usuario");
-        $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+        if($nivel_id != 0){
+            $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+        }
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 
-
-        if(!$evento){
-            return new JsonResponse(array(
-                "status" => "error",
-                "message" => "The evento to update $evento_id doesn't exist."
-            ));
+        if($evento_id){
+            $evento = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEvento')->find($evento_id);
+        }else{
+            $evento = new AdminEvento();
         }
 
         $evento->setNombre($request->request->get("title"));
@@ -188,35 +162,75 @@ class CalendarioController extends Controller
         $evento->setFechaInicio(new \DateTime($fecha_inicio));
         $evento->setFechaFin(new \DateTime($fecha_fin));
         $evento->setEmpresa($empresa);
-        $evento->setNivel($nivel);
+        if($nivel_id != 0){
+            $evento->setNivel($nivel);
+        }
         $evento->setUsuario($usuario);
         $em->persist($evento);
         $em->flush();
 
-        return new JsonResponse(array(
-            "status" => "success"
-        ));
+        if($evento->getNivel()){
+            $nombre_nivel = $evento->getNivel()->getNombre();
+        }else{
+            $nombre_nivel = 'Todos los niveles';
+        }
+
+        $return = array('id' => $evento->getId(),
+                   'titulo' =>$evento->getNombre(),
+                   'descripcion' =>$evento->getDescripcion(),
+                   'lugar' =>$evento->getLugar(),
+                   'empresa' =>$evento->getEmpresa()->getNombre(),
+                   'nivel' =>$nombre_nivel,
+                   'fechainicio' =>$evento->getFechaInicio()->format('Y-m-d H:i:s'),
+                   'fechafin' =>$evento->getFechaFin()->format('Y-m-d H:i:s'),
+                   'status' => "success",
+                   'delete_disabled' =>$f->linkEliminar($evento->getId(),'AdminEvento'));
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function deleteAction(Request $request)
+    public function editEventDateAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $evento_id = $request->request->get("evento_id");
+        $f = $this->get('funciones');
+        $event = $request->request->get("Event");
+        $evento_id = $event[0];
+        $fecha_inicio = $event[1];
+        $fecha_fin = $event[2];
         $evento = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEvento')->find($evento_id);
 
         if(!$evento){
-            return new JsonResponse(array(
-                "status" => "error",
-                "message" => "The given evento $evento_id doesn't exist."
-            ));
+            $return = array('status' => "error");
+
+            $return = json_encode($return);
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
         }
 
-        $em->remove($evento);
-        $em->flush();       
+        $evento->setFechaInicio(new \DateTime($fecha_inicio));
+        $evento->setFechaFin(new \DateTime($fecha_fin));
+        $em->persist($evento);
+        $em->flush();
 
-        return new JsonResponse(array(
-            "status" => "success"
-        ));
+        if($evento->getNivel()){
+            $nombre_nivel = $evento->getNivel()->getNombre();
+        }else{
+            $nombre_nivel = 'Todos los niveles';
+        }
+
+        $return = array('id' => $evento->getId(),
+                        'titulo' =>$evento->getNombre(),
+                        'descripcion' =>$evento->getDescripcion(),
+                        'lugar' =>$evento->getLugar(),
+                        'empresa' =>$evento->getEmpresa()->getNombre(),
+                        'nivel' =>$nombre_nivel,
+                        'fechainicio' =>$evento->getFechaInicio()->format('Y-m-d H:i:s'),
+                        'fechafin' =>$evento->getFechaFin()->format('Y-m-d H:i:s'),
+                        'status' => "success",
+                        'delete_disabled' =>$f->linkEliminar($evento->getId(),'AdminEvento'));
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 }
