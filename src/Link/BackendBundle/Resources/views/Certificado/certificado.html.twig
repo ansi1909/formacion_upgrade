@@ -1,23 +1,70 @@
-<!DOCTYPE HTML>
-<html>
-{% block stylesheets %}
-    <style>
-        .background_certificado {
-            text-align: center;
-        }        
-    </style>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <title>Certificado</title>       
+        <title>certificado</title>
+        <style type="text/css">
+            html
+            {
+                margin-left:20% !important;
+            }
+            body{
+                background: url({{ file }}) no-repeat;
+            }
+            #encabezado{
+                margin-top:10%;
+                margin-left:2%;
+                font-family: Tahoma;
+                font-size: 2em;
+            }
+            #nombre{
+                margin-top:6%;
+                margin-left:-20%;
+                font-family: Tahoma;
+                font-weight:bold;
+                font-size: 1.8em;
+                text-transform:uppercase;
+                text-align:center;
+            }
+            #descripcion{
+                margin-top:7%;
+                margin-left:-20%;
+                font-family: Tahoma;
+                font-size: 1.6em;
+                text-align:center;
+            }
+            #titulo{
+                margin-top:5%;
+                margin-left:-20%;
+                font-family: Tahoma;
+                font-size: 2.3em;
+                text-transform:uppercase;
+                text-align:center;
+            }
+            #fecha{
+                margin-top:4%;
+                margin-left:-20%;
+                font-family: Tahoma;
+                font-size: 1em;
+                text-align:center;
+            }
+        </style>
     </head>
     <body>
-        {% set img = uploads~certificado.imagen %}
-        <figure class="background_certificado"><img src="{{ img }} " alt=""></figure>
-        <h3>Victor Robles - 
-            <a href="http://victorroblesweb.es">
-                victorroblesweb.es
-            </a>
-        </h3>
+        <div id="encabezado">
+            <span>{{ certificado.encabezado }}</span>
+        </div>
+        <div id="nombre">
+            <span>{{ certificado.nombre }}</span>
+        </div>
+        <div id="descripcion">
+            <span>{{ certificado.descripcion }}</span>
+        </div>        
+        <div id="titulo">
+            <span>{{ certificado.titulo }}</span>
+        </div>
+        <div id="fecha">
+            <span>{{ certificado.fecha }}</span>
+        </div>
+        <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-left:600px; width: 25mm; background-color: white; color: black; border:none"></qrcode>         
     </body>
 </html>
