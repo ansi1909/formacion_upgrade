@@ -16,6 +16,10 @@ _ajaxTipoCertificado:
     requirements:
         method: GET
 
+_generarVistaPdf:
+    path:     /vistaPreviaPdf/{id_certificado}
+    defaults: { _controller: LinkBackendBundle:Certificado:generarVistaPdf }
+
 _generarPdf:
-    path:     /generarPdf
+    path:     /generarPdf/{id_certificado}
     defaults: { _controller: LinkBackendBundle:Certificado:generarPdf }

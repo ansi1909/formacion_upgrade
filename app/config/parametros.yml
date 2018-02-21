@@ -34,6 +34,7 @@ parameters:
         grupo: 4
         no_ingresado: 5
         no_ingresado_programa: 6
+        aprobados: 7
     folders:
         uploads: 'http://localhost/uploads/'
         dir_uploads: 'C:/wamp/www/uploads/'

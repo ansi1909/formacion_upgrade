@@ -91,6 +91,8 @@ $(document).ready(function() {
 		sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
 	});
 
+	clearTimeout( timerId );
+
 });
 
 
@@ -106,6 +108,9 @@ function getListadoGrupos(empresa_id, app_id){
 			$('#id_empresa').val(empresa_id);
 			$('#new').removeClass("ocultar");
 			$('#grupo_id').val(data.grupo_id);
+			$('#div-paginas').hide();
+			$('#div-grupos').show();
+			$('#nombre-p').html(data.empresa);
 
 			var table = $('#dt').DataTable( {
 				destroy: true,
@@ -167,6 +172,9 @@ function getListadoGrupos(empresa_id, app_id){
 				var grupo_id = $(this).attr('data');
 				sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
 			});
+
+			afterPaginate();
+
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
@@ -254,7 +262,7 @@ function observe()
 		});
 	});
 
-	/*$('.cb_activo').click(function(){
+	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
 		var id_arr = id.split('f');
@@ -262,7 +270,7 @@ function observe()
 		$('#div-alert').hide();
 		$.ajax({
 			type: "POST",
-			url: $('#url_active').val(),
+			url: $('#url_activ').val(),
 			async: true,
 			data: { id: app_id, entity: 'AdminAplicacion', checked: checked },
 			dataType: "json",
@@ -274,7 +282,7 @@ function observe()
 				$('#div-active-alert').show();
 			}
 		});
-	});*/
+	});
 
 	var table2 = $('#dtSub').DataTable( {
         rowReorder: true,
@@ -319,18 +327,11 @@ function observe()
  
     });
 
-    $( ".columorden" )
-          .mouseover(function() {
-            $( '.columorden' ).css( 'cursor','move' );
-          })
-          .mouseout(function() {
-            $( '.columorden' ).css( 'cursor','auto' );
-    });
 
 }
 
 function afterPaginate(){
-	$('.asignar').click(function(){
+	$('.see').click(function(){
 		var gp_id = $(this).attr('data');
 		$('#div-active-alert').hide();
 		$.ajax({
@@ -340,15 +341,15 @@ function afterPaginate(){
 			data: { gp_id: gp_id },
 			dataType: "json",
 			success: function(data) {
-				$('#subapp').html(data.html);
-				$('#appTitle').html(data.nombre);
-				$('#div-subapps').show();
+				$('#paginas').html(data.paginas);
+				$('#grupoTitle').html(data.nombre);
+				$('#div-paginas').show();
 				observe();
 			},
 			error: function(){
 				$('#active-error').html($('#error_msg-subapps').val());
 				$('#div-active-alert').show();
-				$('#div-subapps').hide();
+				$('#div-paginas').hide();
 			}
 		});
 	});

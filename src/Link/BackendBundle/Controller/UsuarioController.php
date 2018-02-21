@@ -777,7 +777,7 @@ class UsuarioController extends Controller
         $parametros['activo'] = true;
         if ($empresa_asignada)
         {
-            $qb->where('e.id = :empresa_asignada');
+            $qb->andWhere('e.id = :empresa_asignada');
             $parametros['empresa_asignada'] = $empresa_asignada;
         }
         $qb->setParameters($parametros);
@@ -1189,6 +1189,7 @@ class UsuarioController extends Controller
             $col_name = 'H';
             $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
             $competencia = trim($cell->getValue());
+            $competencia = $competencia ? 1 : 0;
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $competencia);
 
             // País
@@ -1277,6 +1278,9 @@ class UsuarioController extends Controller
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
         $writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv');
+
+        // Llamada a la función que importa el CSV a la BD
+
             
         $arr = array('empresa_id' => $empresa_id,
                      'archivo' => $archivo,

@@ -82,6 +82,8 @@ class EmpresasGrupoController extends Controller
         $app_id = $request->query->get('app_id');
         $f = $this->get('funciones');
 
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
         $qb = $em->createQueryBuilder();
         $qb->select('g')
            ->from('LinkComunBundle:CertiGrupo', 'g')
@@ -114,7 +116,7 @@ class EmpresasGrupoController extends Controller
             $grupos .= '<tr><td class="columorden">'.$grupo->getOrden().'</td><td>'.$grupo->getId().'</td><td>'.$grupo->getNombre().'</td>
             <td class="center">
                 <a href="#" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$grupo->getId().'"><span class="fa fa-pencil"></span></a>
-                <a href="#" class="asignar" id="asignar" data="'. $grupo->getId() .'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
+                <a href="#" class="see" id="asignar" data="'. $grupo->getId() .'" title="'.$this->get('translator')->trans('Asignar').'" class="btn btn-link btn-sm "><span class="fa fa-sitemap"></span></a>
                 <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$grupo->getId().'"><span class="fa fa-trash"></span></a>
             </td> </tr>';
         }
@@ -122,7 +124,8 @@ class EmpresasGrupoController extends Controller
         $grupos .='</tbody>
                 </table>';
         
-        $return = array('grupos' => $grupos);
+        $return = array('grupos' => $grupos,
+                        'empresa' =>$empresa->getNombre());
  
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -245,22 +248,32 @@ class EmpresasGrupoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $paginas = array();
         $grupo_id = $request->query->get('gp_id');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pagina = '<table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Asignar').'</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
 
         $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->find($grupo_id);
 
         $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                  JOIN pagina p
+                                  JOIN pe.pagina p
                                   WHERE pe.empresa = :empresa_id
                                   AND p.pagina IS NULL
                                   AND pe.activo = :activo
-                                  AND p.estatusContenido = :contenido_activo')
+                                  AND p.estatusContenido = :contenido_activo
+                                  ORDER BY p.orden ASC')
                     ->setParameters(array('empresa_id'=> $grupo->getEmpresa()->getId(),
-                                           'activo'=> true,
-                                            'contenido_activo'=> $yml['parameters']['estatus_contenido']['activo'] ));
+                                          'activo'=> true,
+                                          'contenido_activo'=> $yml['parameters']['estatus_contenido']['activo'] ));
 
         $pes = $query->getResult();
 
-        $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoEmpresa gp
+        $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoPagina gp
                                    JOIN gp.grupo g
                                    WHERE g.id != :grupo_id
                                    AND g.empresa = :empresa_id ')
@@ -273,24 +286,37 @@ class EmpresasGrupoController extends Controller
 
         foreach($pes_grupos as $pes_g)
         {
-            $pagina_id[] = $pes_g->getPagina()->getId();
+            $paginas_id[] = $pes_g->getPagina()->getId();
         }
 
         foreach($pes as $pe)
         {
-            if (! in_array($pe->getPagina()->getId(), $pagina_id)) 
+            if (! in_array($pe->getPagina()->getId(), $paginas_id)) 
             {
-                $c = $em->createQuery('SELECT COUNT(pg.id)
+
+                $query = $em->createQuery('SELECT COUNT(pg.id) FROM LinkComunBundle:CertiGrupoPagina pg
                                        WHERE pg.pagina = :pagina_id
                                        AND pg.grupo = :grupo_id ')
                         ->setParameters(array('pagina_id'=> $pe->getPagina()->getId(),
                                               'grupo_id'=> $grupo->getId()));
+                $c = $query->getSingleScalarResult();
 
-                $paginas[] = array('id'=> $pe->getPagina()->getId(),
-                                   'nombre'=> $pe->getPagina()->getNombre(),
-                                   'checked'=> $c ? 1 : 0);
+                $checked = $c ? 'checked' : '';
+
+                $pagina .= '<tr><td>'.$pe->getPagina()->getNombre().'</td>
+                <td><div class="can-toggle demo-rebrand-2 small">
+                                <input id="f'.$pe->getPagina()->getId().'" class="cb_activo" type="checkbox" '.$checked.' >
+                                <label for="f'.$pe->getPagina()->getId().'">
+                                    <div class="can-toggle__switch" data-checked="'.$this->get('translator')->trans('Si').'" data-unchecked="No"></div>
+                                </label>
+                            </div></td></tr>';
             }
         }
+
+        $pagina .='</tbody>
+                </table>';
+        $paginas = array('paginas' => $pagina,
+                         'nombre' => $grupo->getNombre());
                    
         $return = json_encode($paginas);
         return new Response($return,200,array('Content-Type' => 'application/json'));

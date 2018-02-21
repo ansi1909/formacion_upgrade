@@ -12,7 +12,7 @@
         <a href="{{ path('_empresasPaginas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
     <div class="col text-right">
-            <a href="{{ path('_showAsignacion', { 'empresa_id': empresa.id, 'pagina_id': pagina_padre_id })}}" class="bttn__bck"><span class="fa fa-level-up"></span><span class="text__bck">{{ 'Asignación de página padre'|trans }}</span></a>
+            <a href="{{ path('_showAsignacion', { 'empresa_id': empresa.id, 'pagina_id': pagina_padre_id })}}" class="bttn__bck3"><span class="fa fa-level-up"></span><span class="text__bck3">{{ 'Asignación de página padre'|trans }}</span></a>
     </div>
     {% if pagina.id %}
         <div class="col-16 col-sm-16 page-title">
