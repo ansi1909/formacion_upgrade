@@ -1277,17 +1277,47 @@ class UsuarioController extends Controller
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
-        $writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv');
+        $csv = $yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
+        $writer->save($csv);
 
-        // Llamada a la función que importa el CSV a la BD
+        if (file_exists($csv))
+        {
 
+            // Llamada a la función que importa el CSV a la BD
+            $query = $em->getConnection()->prepare('SELECT
+                                                    fnimportar_participantes(:pcsv) as
+                                                    resultado;');
+            $query->bindValue(':pcsv', $csv, \PDO::PARAM_STR);
+            $query->execute();
+            $r = $query->fetchAll();
+
+            // Llamada a la función de BD que duplica la página
+            $query = $em->getConnection()->prepare('SELECT
+                                                    fncarga_participantes(:pempresa_id, :ptransaccion) as
+                                                    resultado;');
+            $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+            $query->bindValue(':ptransaccion', $transaccion, \PDO::PARAM_STR);
+            $query->execute();
+            $r = $query->fetchAll();
+
+            // La respuesta viene formada por Inserts__Updates
+            $r_arr = explode("__", $r[0]['resultado']);
+            
+            $return = array('inserts' => $r_arr[0],
+                            'updates' => $r_arr[1]);
+
+            // Se borra el archivo CSV
+            unlink($csv);
+
+        }
             
         $arr = array('empresa_id' => $empresa_id,
                      'archivo' => $archivo,
                      'file' => $file,
                      'fileWithPath' => $fileWithPath,
                      'existe' => file_exists($fileWithPath) ? 'Si' : 'No',
-                     'csv' => $yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv');
+                     'csv' => $csv,
+                     'return' => $return);
 
         return new Response(var_dump($arr));
 
