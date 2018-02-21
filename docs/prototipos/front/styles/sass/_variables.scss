@@ -1,0 +1,37 @@
+// aqui van todas las variables bases de todos los layouts
+
+// TIPOGRAFIAS
+
+// titulos principales, subtitulos, navegacion, botones
+$primary-font:                'Roboto';
+// parrafos en general
+$secondary-font:              'Open Sans';
+// solo utilizar en la sección de titulos y parrafos del contenido de las lecciones o módulos
+$lessons-font:                'Merriweather';
+
+
+$spacer: 1rem;
+
+$font-size-base:              1rem; // Assumes the browser default, typically `16px`
+$h1-font-size:                $font-size-base * 4.25 ; //68
+$h2-font-size:                $font-size-base * 2.25 ; //36
+$h3-font-size:                $font-size-base * 2 ;    //32
+$h4-font-size:                $font-size-base * 1.5;   //24
+$h5-font-size:                $font-size-base * 1.125; //18
+// $h6-font-size:                $font-size-base * 1.5;  //24
+$p-font-size:                 $font-size-base * 1.125; //18
+$font-size-sm:                $font-size-base * 0.87;  //14
+$font-size-xs:                $font-size-base * 0.75;  //12
+$font-size-xxs:               $font-size-base * 0.0625;//10
+
+$font-weight-light:           300;
+$font-weight-normal:          400;
+$font-weight-medium:          700;
+$font-weight-bold:            700;
+
+
+$headings-margin-bottom:      ($spacer / 2);
+$headings-font-family:        $primary-font;
+$headings-font-weight:        300;
+$headings-line-height:        1.2;
+$headings-color:              $primary;
