@@ -9,7 +9,7 @@
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
-<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasGrupo', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_Grupo', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
 <input type="hidden" id="url_GrupoP" name="url_GrupoP" value="{{ path ('_ajaxGrupoPaginas') }}">
 <input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
@@ -172,7 +172,7 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/empresasGrupo.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/Grupo.js') }}"></script>
     <script type="text/javascript">
 
         $("#form").validate({

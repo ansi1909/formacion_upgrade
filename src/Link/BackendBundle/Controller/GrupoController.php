@@ -14,7 +14,7 @@ use Link\ComunBundle\Entity\CertiPagina;
 use Symfony\Component\Yaml\Yaml;
 
 
-class EmpresasGrupoController extends Controller
+class GrupoController extends Controller
 {
    public function indexAction($app_id)
     {
@@ -66,7 +66,7 @@ class EmpresasGrupoController extends Controller
         } 
 
 
-        return $this->render('LinkBackendBundle:empresasGrupo:index.html.twig', array('empresas' => $empresas,
+        return $this->render('LinkBackendBundle:Grupo:index.html.twig', array('empresas' => $empresas,
                                                                                       'usuario_empresa' => $usuario_empresa,
                                                                                       'usuario' => $usuario,
                                                                                       'grupos' => $gruposdb,
