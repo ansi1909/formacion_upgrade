@@ -315,101 +315,60 @@ class CertificadoController extends Controller
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($id_certificado);
 
-        //Le indicamos el tipo de hoja y la codificación de caracteres
-        $certificado_pdf = new Html2Pdf('P','a4','es','true','UTF-8');
         $file = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$certificado->getImagen();
-
         if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
         {
-            $certificado_pdf->writeHTML('<page orientation="landscape" format="A4" pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm" footer="page">
-                                            <div style="margin-top:180px; text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="margin-top:30px; text-align:center; font-size:30px;">'.$certificado->getNombre().'</div>
-                                            <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
-                                            <div style="margin-top:30px; text-align:center; font-size:50px;">'.$certificado->getTitulo().'</div>
-                                            <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. </div>
-                                            <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getFecha().'</div>
-                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-left:600px; width: 25mm; background-color: white; color: black; border:none"></qrcode>                                                
+            //fehca del dia de hoy '.date('d/m/Y').' 
+            /*certificado numero 1*/
+            /*$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(45, 50, 0, 0));
+            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
+                                            <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
+                                            <div style="text-align:center; font-size:24px; margin-top:40px;">'.$certificado->getDescripcion().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; color: #FFFFFF; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
+                                            <div style=" font-size:14px; margin-top:40px;  margin-left:630px;">'.$certificado->getFecha().'</div>
+                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:20px; margin-left:770px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
+                                        </page>');*/
+            /*certificado numero 2*/
+            /*$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
+            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
+                                            <div style="font-size:24px;">'.$certificado->getEncabezado().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
+                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
+                                            <div style="text-align:center; font-size:50px; margin-top:60px; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
+                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$certificado->getFecha().'</div>
+                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:840px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
+                                        </page>'); */
+
+            /*certificado numero 3*/
+            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(58, 60, 0, 0));
+            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
+                                            <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
+                                            <div style="text-align:center; font-size:24px; margin-top:50px; ">'.$certificado->getDescripcion().'</div>
+                                            <div style="text-align:center; font-size:50px; margin-top:50px; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
+                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$certificado->getFecha().'</div>
+                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
                                         </page>');
-           /* $certificado_pdf->writeHTML('<!DOCTYPE html>
-                                            <html lang="en">
-                                                <head>
-                                                    <title>certificado</title>
-                                                    <style type="text/css">
-                                                        html
-                                                        {
-                                                            margin-left:20% !important;
-                                                        }
-                                                        body{
-                                                            background: url("'.$file.'") no-repeat;
-                                                        }
-                                                      
-                                                        #nombre{
-                                                            margin-top:6%;
-                                                            margin-left:-20%;
-                                                            font-weight:bold;
-                                                            font-size: 1.8em;
-                                                            text-transform:uppercase;
-                                                            text-align:center;
-                                                        }
-                                                        #descripcion{
-                                                            margin-top:7%;
-                                                            margin-left:-20%;
-                                                            font-size: 1.6em;
-                                                            text-align:center;
-                                                        }
-                                                        #titulo{
-                                                            margin-top:5%;
-                                                            margin-left:-20%;
-                                                            font-size: 2.3em;
-                                                            text-transform:uppercase;
-                                                            text-align:center;
-                                                        }
-                                                        #fecha{
-                                                            margin-top:4%;
-                                                            margin-left:-20%;
-                                                            font-size: 1em;
-                                                            text-align:center;
-                                                        }
-                                                    </style>
-                                                </head>
-                                                <body>
-                                                    <div style=" margin-top=:10%; margin-left=2%; font-size=4em;" >
-                                                        <span>'.$certificado->getEncabezado().'</span>
-                                                    </div>
-                                                    <div id="nombre">
-                                                        <span>'.$certificado->getNombre().'</span>
-                                                    </div>
-                                                    <div id="descripcion">
-                                                        <span>'.$certificado->getDescripcion().'</span>
-                                                    </div>        
-                                                    <div id="titulo">
-                                                        <span>'.$certificado->getTitulo().'</span>
-                                                    </div>
-                                                    <div id="fecha">
-                                                        <span>'.$certificado->getFecha().'</span>
-                                                    </div>
-                                                </body>
-                                            </html>');*/
-          
             //Generamos el PDF
             $certificado_pdf->output('certificiado.pdf');
         }else
         {
             if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['constancia'] )
-            {
-                $certificado_pdf->writeHTML('<page orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm" footer="page">
-                                                <div style="margin-top:180px; text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
-                                                <div style="margin-top:30px; text-align:center; font-size:30px;">'.$certificado->getNombre().'</div>
+            {                 
+                $certificado_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 60, 15, 5));
+                $certificado_pdf->writeHTML('<page orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
+                                                <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
+                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$certificado->getNombre().'</div>
                                                 <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
-                                                <div style="margin-top:30px; text-align:center; font-size:50px;">'.$certificado->getTitulo().'</div>
+                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:50px;">'.$certificado->getTitulo().'</div>
                                                 <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. </div>
-                                                <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getFecha().'</div>
-                                                <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-left:600px; width: 25mm; background-color: white; color: black; border:none"></qrcode>                                                
+                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$certificado->getFecha().'</div>
+                                                <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:50px; margin-left:530px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
                                             </page>');
                 $certificado_pdf->output('constancia.pdf');
             }
         }
-
     }
 
     public function generarVistaPdfAction($id_certificado)
