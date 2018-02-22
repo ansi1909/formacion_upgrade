@@ -1093,6 +1093,7 @@ class UsuarioController extends Controller
         $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
         $transaccion = $f->generarClave();
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         // Ultimó código entero para la empresa
         $query = $em->getConnection()->prepare("SELECT MAX(codigo) FROM admin_usuario where empresa_id = ".$empresa_id." AND codigo ~ '^\d+$'");
@@ -1311,17 +1312,8 @@ class UsuarioController extends Controller
 
         }
             
-        $arr = array('empresa_id' => $empresa_id,
-                     'archivo' => $archivo,
-                     'file' => $file,
-                     'fileWithPath' => $fileWithPath,
-                     'existe' => file_exists($fileWithPath) ? 'Si' : 'No',
-                     'csv' => $csv,
-                     'return' => $return);
-
-        return new Response(var_dump($arr));
-
-        //return $this->render('LinkBackendBundle:Usuario:showParticipante.html.twig', array('usuario' => $usuario));
+        return $this->render('LinkBackendBundle:Usuario:procesarParticipantes.html.twig', array('empresa' => $empresa,
+                                                                                                'return' => $return));
 
     }
 

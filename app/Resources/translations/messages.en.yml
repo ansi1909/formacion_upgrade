@@ -22,6 +22,7 @@ Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Aplicar periodo a las sub-páginas: Apply period to sub-pages
+Archivo procesado con éxito: File processed successfully
 Archivos: Files
 Asignación de página padre: Father page assignment
 Asignación de páginas: Page assignment
@@ -57,6 +58,7 @@ Cantidad mínima de caracteres en el Resumen: Minimum number of characters in th
 Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content 
 Cargando..: Loading..
 Carga masiva: Bulk load
+Carga masiva de particpantes de la empresa: Bulk load of participants of company
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
@@ -360,6 +362,7 @@ Panel de acceso: Login
 Paso: Step
 País: Country
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
+particpantes: participants
 Pdf: Pdf
 Perfil Empresarial: Company Profile
 Periodo: Period
@@ -384,6 +387,8 @@ Recordarme: Remember me
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 registros: items
+Registros actualizados: Updated items
+Registros nuevos: New items
 Resultado del archivo procesado: Result of the processed file
 Resumen: Summary
 Rol: Role
