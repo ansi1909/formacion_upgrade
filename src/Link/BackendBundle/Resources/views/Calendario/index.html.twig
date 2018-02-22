@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.print.css') }}" type="text/css"  media="print">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('jq/daterangepicker/daterangepicker.css') }}" type="text/css">
     <style type="text/css">
       .fc button{
         height: 100%;
@@ -27,6 +28,9 @@
       }
       .wrapper-content{
         position: inherit !important;
+      }
+      .daterangepicker.dropdown-menu.ltr.show-calendar.opensright{
+        z-index: 9999  !important;
       }
     </style>
 {% endblock %}
@@ -267,6 +271,7 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('jq/daterangepicker/daterangepicker.js') }}" charset="UTF-8"></script>
     <script type="text/javascript" src="{{ asset('js/admin/calendario.js') }}"></script>
     <script type="text/javascript">
        $(document).ready(function() {
@@ -566,6 +571,22 @@
                 format: 'dd-mm-yyyy',
                 language: 'es'
             });*/
+            $('#start').daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'MM/DD/YYYY h:mm A'
+                }
+            });
+            $('#end').daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'MM/DD/YYYY h:mm A'
+                }
+            });
         });
     </script>
     
