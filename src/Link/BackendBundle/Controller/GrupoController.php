@@ -306,6 +306,7 @@ class GrupoController extends Controller
                 $pagina .= '<tr><td>'.$pe->getPagina()->getNombre().'</td>
                 <td><div class="can-toggle demo-rebrand-2 small">
                                 <input id="f'.$pe->getPagina()->getId().'" class="cb_activo" type="checkbox" '.$checked.' >
+                                <input type="hidden" id="id_grupo" name="id_grupo" value="'.$grupo->getId().'">
                                 <label for="f'.$pe->getPagina()->getId().'">
                                     <div class="can-toggle__switch" data-checked="'.$this->get('translator')->trans('Si').'" data-unchecked="No"></div>
                                 </label>
@@ -320,6 +321,43 @@ class GrupoController extends Controller
                    
         $return = json_encode($paginas);
         return new Response($return,200,array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxAsignarAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $id_pagina= $request->request->get('id_pagina');
+        $grupo_id = $request->request->get('id_grupo');
+        $entity = $request->request->get('entity');
+        $checked = $request->request->get('checked');
+        
+
+        if ($checked=='0') 
+        {
+            $grupo_p = $em->getRepository('LinkComunBundle:'.$entity)->findOneBy(array('grupo' => $grupo_id,
+                                                                                       'pagina' => $id_pagina));
+            $em->remove($grupo_p);
+            $em->flush();
+        }
+        else
+        {
+            $grupo_p = new CertiGrupoPagina();
+            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($id_pagina);
+            $grupo = $em->getRepository('LinkComunBundle:CertiGrupo')->find($grupo_id);
+            $grupo_p->setGrupo($grupo);
+            $grupo_p->setPagina($pagina);
+
+            $em->persist($grupo_p);
+            $em->flush();
+
+        }
+
+        $return = array('id' => $grupo_p->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 

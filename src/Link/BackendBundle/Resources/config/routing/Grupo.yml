@@ -31,3 +31,9 @@ _ajaxDeleteGrupo:
     defaults: { _controller: LinkBackendBundle:Grupo:ajaxDeleteGrupo }
     requirements:
         method: POST
+
+_ajaxAsignar:
+    path:     /ajaxAsignar
+    defaults: { _controller: LinkBackendBundle:Grupo:ajaxAsignar }
+    requirements:
+        method: POST
