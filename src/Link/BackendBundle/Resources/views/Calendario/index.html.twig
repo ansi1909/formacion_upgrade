@@ -5,8 +5,7 @@
     <!-- Full calendar css -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.print.css') }}" type="text/css"  media="print">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('jq/daterangepicker/daterangepicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.min.css') }}" type="text/css">
     <style type="text/css">
       .fc button{
         height: 100%;
@@ -28,9 +27,6 @@
       }
       .wrapper-content{
         position: inherit !important;
-      }
-      .daterangepicker.dropdown-menu.ltr.show-calendar.opensright{
-        z-index: 9999  !important;
       }
     </style>
 {% endblock %}
@@ -71,6 +67,26 @@
                         </div>
                     </div>
                     <label id="title-error" class="error" for="title" style="display:none;"></label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha inicio'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="datetime" class="form-control form_sty1 form_datetime" name="start" id="start" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                    <label id="start-error" class="error" for="start" style="display:none;"></label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha fin'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="datetime" class="form-control form_sty1 form_datetime" name="end" id="end" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                    <label id="end-error" class="error" for="end" style="display:none;"></label>
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
@@ -125,26 +141,6 @@
                         <label id="nivel-error" class="error" for="nivel" style="display:none;"></label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
-                        <label for="asunto" class="form-control-label">{{ 'Fecha inicio'|trans }}:</label>
-                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
-                            <input type="datetime" class="form-control form_sty1" name="start" id="start" style="border-radius: 5px;">
-                            <span class="fa fa-calendar"></span>
-                        </div>
-                    </div>
-                    <label id="start-error" class="error" for="start" style="display:none;"></label>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
-                        <label for="asunto" class="form-control-label">{{ 'Fecha fin'|trans }}:</label>
-                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
-                            <input type="datetime" class="form-control form_sty1" name="end" id="end" style="border-radius: 5px;">
-                            <span class="fa fa-calendar"></span>
-                        </div>
-                    </div>
-                    <label id="end-error" class="error" for="end" style="display:none;"></label>
-                </div>
           </div>
           </form>
           <div class="modal-header" id="detail-title" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff; display:none;">
@@ -167,6 +163,20 @@
                             <div class="col-sm-16 col-md-16 show__details">
                                 <h5>{{ 'Título'|trans }}:</h5>
                                 <p id="p-titulo"></p>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{'Fecha inicio'| trans}}</h5>
+                                <p id="p-fechainicio"></p>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{'Fecha fin'| trans}}</h5>
+                                <p id="p-fechafin"></p>
                             </div>
                         </div>
                         <br>
@@ -197,20 +207,6 @@
                             <div class="col-sm-16 col-md-16 show__details">
                                 <h5>{{'Nivel'| trans}}</h5>
                                 <p id="p-nivel"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{'Fecha inicio'| trans}}</h5>
-                                <p id="p-fechainicio"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{'Fecha fin'| trans}}</h5>
-                                <p id="p-fechafin"></p>
                             </div>
                         </div>
                         <br>
@@ -269,10 +265,8 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/locale/es.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/calendar.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
-    <script type="text/javascript" src="{{ asset('jq/daterangepicker/daterangepicker.js') }}" charset="UTF-8"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/calendario.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.es.js') }}"></script>
     <script type="text/javascript">
        $(document).ready(function() {
             
@@ -353,8 +347,8 @@
                     $('#Modal #empresa').val('');
                     $('#Modal #nivel').val('');
                     $('#Modal #lugar').val('');
-                    $('#Modal #start').val(moment(start).format('DD-MM-YYYY HH:mm:ss'));
-                    $('#Modal #end').val(moment(end).format('DD-MM-YYYY HH:mm:ss'));
+                    $('#Modal #start').val(moment(start).format('DD-MM-YYYY hh:mm a'));
+                    $('#Modal #end').val(moment(end).format('DD-MM-YYYY hh:mm a'));
                     $('#save_create').show();
                     $('#detail-title').hide();
                     $('#detail').hide();
@@ -372,8 +366,8 @@
                 eventRender: function(event, element) {
                     element.bind('click', function() {
                         var eve_id = event.id;
-                        var comienzo = $.fullCalendar.formatDate(event.start, 'DD-MM-YYYY HH:mm:ss');
-                        var final = event.end ? $.fullCalendar.formatDate(event.end, 'DD-MM-YYYY HH:mm:ss') : '';
+                        var comienzo = $.fullCalendar.formatDate(event.start, 'DD-MM-YYYY hh:mm a');
+                        var final = event.end ? $.fullCalendar.formatDate(event.end, 'DD-MM-YYYY hh:mm a') : '';
                         $('#Modal #delete_save_update').attr("data",eve_id);
                         $('#CreateUpdateTitle').html("{{ 'Modificar evento'|trans }}");
                         $('#Modal #evento_id').val(eve_id);
@@ -410,13 +404,14 @@
                     edit(event);
 
                 },
-                events: "{{ path('_eventos', { 'userID': usuario.id }) }}"
+                events: "{{ path('_eventos', { 'userID': usuario.id }) }}",
+                timeFormat: 'hh:mm a'
             });
             
             function edit(event){
-                start = event.start.format('DD-MM-YYYY HH:mm:ss');
+                start = event.start.format('DD-MM-YYYY hh:mm a');
                 if(event.end){
-                    end = event.end.format('DD-MM-YYYY HH:mm:ss');
+                    end = event.end.format('DD-MM-YYYY hh:mm a');
                 }else{
                     end = start;
                 }
@@ -559,33 +554,13 @@
             $('#aceptar_save_error').click(function(){
                 location.reload();
             });
-            /*$('#start').datepicker({
-                startView: 1,
+            $('.form_datetime').datetimepicker({
+                language:  'es',
+                todayBtn:  true,
                 autoclose: true,
-                format: 'dd-mm-yyyy',
-                language: 'es'
-            });
-            $('#end').datepicker({
-                startView: 1,
-                autoclose: true,
-                format: 'dd-mm-yyyy',
-                language: 'es'
-            });*/
-            $('#start').daterangepicker({
-                singleDatePicker: true,
-                timePicker: true,
-                timePickerIncrement: 30,
-                locale: {
-                    format: 'MM/DD/YYYY h:mm A'
-                }
-            });
-            $('#end').daterangepicker({
-                singleDatePicker: true,
-                timePicker: true,
-                timePickerIncrement: 30,
-                locale: {
-                    format: 'MM/DD/YYYY h:mm A'
-                }
+                todayHighlight: true,
+                showMeridian: true,
+                format: 'dd-mm-yyyy HH:ii p'
             });
         });
     </script>
