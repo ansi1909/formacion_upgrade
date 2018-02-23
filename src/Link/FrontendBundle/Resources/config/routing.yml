@@ -1,0 +1,7 @@
+_inicio:
+    path:     /
+    defaults: { _controller: LinkFrontendBundle:Default:index }
+
+_login:
+    path:     /login
+    defaults: { _controller: LinkFrontendBundle:Default:login }

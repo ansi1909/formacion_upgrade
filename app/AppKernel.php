@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new Link\ComunBundle\LinkComunBundle(),
             new Link\BackendBundle\LinkBackendBundle(),
+            new Link\FrontendBundle\LinkFrontendBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
