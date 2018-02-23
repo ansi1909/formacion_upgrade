@@ -797,7 +797,7 @@ class ProgramadosController extends Controller
             ->setSubject('The Subject for this Message')
             ->setFrom('tutorvirtual@formacion2puntocero.com')
             ->setTo('ponceelrelajado@gmail.com')
-            ->setBody($this->renderView('LinkBackendBundle:Programados:emailTest.html.twig', ['this'=>$this_is, 'message'=>$the_message]));
+            ->setBody($this->renderView('LinkBackendBundle:Programados:emailTest.html.twig', ['this'=>$this_is, 'message'=>$the_message]), 'text/html');
         $mailer->send($message);
         return new Response('<html><body>The email has been sent successfully!</body></html>');
 

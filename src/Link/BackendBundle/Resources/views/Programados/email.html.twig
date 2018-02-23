@@ -6,7 +6,6 @@
     </head>
     <body>
         <p>Hola! {{ usuario.nombre }} {{ usuario.apellido }}</p>
-        {{ mensaje }}
-        ^{#{{ this }}{{ message }}#}
+        {{ mensaje|raw }}
     </body>
 </html>
