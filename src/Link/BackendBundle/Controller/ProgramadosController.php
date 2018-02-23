@@ -458,6 +458,8 @@ class ProgramadosController extends Controller
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
                 }
+
+                $this->sendNowEmail($programacion->getId());
                 
             }
             else {
@@ -484,6 +486,8 @@ class ProgramadosController extends Controller
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
                 }
+
+                $this->sendNowEmail($programacion->getId());
                 
             }
 
@@ -757,7 +761,7 @@ class ProgramadosController extends Controller
                     $query = $em->createQuery("SELECT u FROM LinkComunBundle:AdminUsuario u
                                                JOIN LinkComunBundle:AdminNotificacionProgramada p 
                                                WHERE p.grupo = :grupo
-                                               AND p.entidad = u.id
+                                               AND p.entidadId = u.id
                                                ORDER BY u.id ASC")
                                 ->setParameters(array('grupo' => $programacion->getId()));
 
