@@ -6,9 +6,13 @@
     top: 67px;
     left: 0;
     background-color: $bluedarkest;
-    overflow-x: hidden;
+    overflow: auto;
     transition: 0.6s;
     padding-top: 60px;
+
+    &:hover{
+        // overflow: auto;
+    }
 }
 
 .main-sidenav-open{
@@ -93,7 +97,7 @@ a.active {
     width: 240px;
     font-family: $primary-font;
     padding-bottom: 136px;
-    overflow-y: auto;
+
 
     ol {
 
