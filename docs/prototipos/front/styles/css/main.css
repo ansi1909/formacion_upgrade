@@ -5646,16 +5646,14 @@ a:hover {
 .perfil-dropdown {
   background-color: white;
   color: #AAAFB3;
-  padding: 1rem; }
+  padding: 1rem;
+  left: -150%;
+  text-align: center; }
 
 .perfil:hover {
   opacity: .8; }
 .perfil.dropdown-toggle:after {
   display: none; }
-
-.dropdown-menu {
-  left: -150%;
-  text-align: center; }
 
 .login-cover {
   background-image: url(../../assets/img/login_cover.jpg);
@@ -5676,7 +5674,7 @@ nav.navbar {
   top: 67px;
   left: 0;
   background-color: #00253D;
-  overflow-x: hidden;
+  overflow: auto;
   transition: 0.6s;
   padding-top: 60px; }
 
@@ -5737,8 +5735,7 @@ a.active {
   top: 80px;
   width: 240px;
   font-family: "Roboto";
-  padding-bottom: 136px;
-  overflow-y: auto; }
+  padding-bottom: 136px; }
   .nav-lesson ol {
     margin-bottom: 16px; }
     .nav-lesson ol > li {

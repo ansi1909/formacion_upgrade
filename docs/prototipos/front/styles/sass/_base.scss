@@ -31,6 +31,8 @@ a:hover {
     background-color: white;
     color: $gray-600;
     padding: 1rem;
+    left: -150%;
+    text-align: center;
 
 }
 
@@ -42,9 +44,4 @@ a:hover {
     &.dropdown-toggle:after {
         display: none;
     }
-}
-
-.dropdown-menu {
-    left: -150%;
-    text-align: center;
 }
