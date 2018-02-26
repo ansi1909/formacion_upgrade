@@ -266,13 +266,14 @@ function observe()
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
 		var id_arr = id.split('f');
-		var app_id = id_arr[1];
+		var pagina_id = id_arr[1];
+		var grupo_id = $('#id_grupo').val();
 		$('#div-alert').hide();
 		$.ajax({
 			type: "POST",
-			url: $('#url_activ').val(),
+			url: $('#url_asignar').val(),
 			async: true,
-			data: { id: app_id, entity: 'AdminAplicacion', checked: checked },
+			data: { id_pagina: pagina_id, id_grupo: grupo_id, entity: 'CertiGrupoPagina', checked: checked },
 			dataType: "json",
 			success: function(data) {
 				console.log('Activación/Desactivación realizada. Id '+data.id);
