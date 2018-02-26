@@ -109,7 +109,4 @@ begin
 
 end;
 $BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION fncarga_participantes(integer, text)
-  OWNER TO postgres;
+  LANGUAGE "plpgsql" VOLATILE;
