@@ -458,6 +458,8 @@ class ProgramadosController extends Controller
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
                 }
+
+                $this->sendNowEmail($programacion->getId());
                 
                 $this->sendNowEmail($programacion->getId());
                 
@@ -486,6 +488,8 @@ class ProgramadosController extends Controller
                         $em->persist($programacion_nuevo_grupo);
                         $em->flush();
                 }
+
+                $this->sendNowEmail($programacion->getId());
                 
                 $this->sendNowEmail($programacion->getId());
                 

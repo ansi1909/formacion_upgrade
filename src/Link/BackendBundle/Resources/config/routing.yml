@@ -93,9 +93,9 @@ certificados:
     resource: "@LinkBackendBundle/Resources/config/routing/certificados.yml"
     prefix: /certificados
 
-empresasGrupo:
-    resource: "@LinkBackendBundle/Resources/config/routing/empresasGrupo.yml"
-    prefix: /empresasGrupo
+Grupo:
+    resource: "@LinkBackendBundle/Resources/config/routing/Grupo.yml"
+    prefix: /Grupo
 
 calendario:
     resource: "@LinkBackendBundle/Resources/config/routing/calendario.yml"

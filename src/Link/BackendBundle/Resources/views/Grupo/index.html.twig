@@ -1,0 +1,196 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/css/rowReorder.dataTables.min.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_Grupo', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
+<input type="hidden" id="url_GrupoP" name="url_GrupoP" value="{{ path ('_ajaxGrupoPaginas') }}">
+<input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
+<input type="hidden" id="url_asignar" name="url_asignar" value="{{ path ('_ajaxAsignar') }}">
+
+<br>
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{'Agrupación de páginas' | trans}}</h3>
+    </div>
+{% if not usuario_empresa %}
+   <div class="col text-right">
+       <button type="button" id="new" class="bttn__nr new ocultar" data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+   </div>
+{% else %}
+    <div class="col text-right">
+       <button type="button" id="new" class="bttn__nr new " data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+   </div>
+{% endif %}
+</div>
+{% if not usuario_empresa %}
+<input type="hidden" id="app_id" name="app_id" value="{{app_id}}">
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{'Elegir empresa' | trans}}</h5>
+            </div>
+            <div class="card-block">
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                <option value="0"></option>
+                                {% for empresa in empresas %}
+                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                    </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+{% endif %}
+<div class="row">
+    <div class=" col-sm-9 col-md-9 col-lg-9 col-xl-9 col-9" {% if not usuario_empresa %} style="display:none;" {% endif %}  id="div-grupos">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title" >{{ 'Listado de grupos ' |trans}} <span id="nombre-p"></span></h5>
+            </div>
+            {% if not usuario_empresa %}
+            <div class="card-block" id="lpe">   
+            </div>
+            {% else %}
+            <div class="card-block">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title columorden">Orden</th>
+                            <th class="hd__title">{{'Id'|trans }}</th>
+                            <th class="hd__title">{{'Nombre'|trans }}</th>
+                            <th class="hd__title">{{'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+            {%endif%}
+            {% if not usuario_empresa %}
+                <tbody id="grupos" name="grupos">
+                  
+                </tbody>
+            {% else %}
+                    <tbody id="grupos" name="grupos">
+                      {% for grupo in grupos %}
+                        {% set eo = cycle(['odd', 'even'], loop.index) %}
+                        <tr class="{{eo}}">
+                            <td class="columorden">{{ grupo.orden }}</td>
+                            <td>{{ grupo.id }}</td>
+                            <td>{{ grupo.nombre }}</td>
+                            <td class="center">
+                                <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
+                                <a href="#" class="see" id="asignar" data="{{grupo.id}}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
+                                <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
+                            </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>  
+            </div>
+            {% endif %}  
+        </div>
+    </div>
+    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7" style="display:none; " id="div-paginas">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Asignar pagina al grupo '|trans }} <span id="grupoTitle"></span></h5>
+            </div>
+            <div class="card-block" id="paginas">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block formModal %}
+
+<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del grupo'|trans}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: #fff;">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateGrupo')}}"  method="POST">
+        <input type="hidden" id="grupo_id" name="grupo_id" value="">
+        <input type="hidden" id="id_empresa" name="id_empresa" value="">
+        <input type="hidden" id="orden" name="orden" value="">
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
+            <span class="fa fa-cubes"></span>
+        </div>
+    </form>
+    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El grupo ha sido almacenada con éxito'|trans }}. 
+    </div>
+    <div class="card" id="detail" style="display:none;">
+        <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
+        </div>
+        <div class="card-block">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Nombre'|trans }}:</h5>
+                        <p id="p-nombre">Lorem Ipsum</p>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-sm-16 col-md-16 text-right">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/Grupo.js') }}"></script>
+    <script type="text/javascript">
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+
+        
+    </script>
+{% endblock %}

@@ -181,8 +181,8 @@ class CalendarioController extends Controller
                    'lugar' =>$evento->getLugar(),
                    'empresa' =>$evento->getEmpresa()->getNombre(),
                    'nivel' =>$nombre_nivel,
-                   'fechainicio' =>$evento->getFechaInicio()->format('Y-m-d H:i:s'),
-                   'fechafin' =>$evento->getFechaFin()->format('Y-m-d H:i:s'),
+                   'fechainicio' =>$evento->getFechaInicio()->format('d-m-Y G:ia'),
+                   'fechafin' =>$evento->getFechaFin()->format('d-m-Y G:ia'),
                    'status' => "success",
                    'delete_disabled' =>$f->linkEliminar($evento->getId(),'AdminEvento'));
 
@@ -225,8 +225,8 @@ class CalendarioController extends Controller
                         'lugar' =>$evento->getLugar(),
                         'empresa' =>$evento->getEmpresa()->getNombre(),
                         'nivel' =>$nombre_nivel,
-                        'fechainicio' =>$evento->getFechaInicio()->format('Y-m-d H:i:s'),
-                        'fechafin' =>$evento->getFechaFin()->format('Y-m-d H:i:s'),
+                        'fechainicio' =>$evento->getFechaInicio()->format('d-m-Y G:ia'),
+                        'fechafin' =>$evento->getFechaFin()->format('d-m-Y G:ia'),
                         'status' => "success",
                         'delete_disabled' =>$f->linkEliminar($evento->getId(),'AdminEvento'));
 
