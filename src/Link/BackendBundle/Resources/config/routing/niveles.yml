@@ -39,3 +39,25 @@ _ajaxNiveles:
     defaults: { _controller: LinkBackendBundle:Nivel:ajaxNiveles }
     requirements:
         method: GET
+
+_paginasNiveles:
+    path:     /paginasNiveles/{app_id}
+    defaults: { _controller: LinkBackendBundle:Nivel:paginasNiveles }
+
+_ajaxPaginasNiveles:
+    path:     /ajaxPaginasNiveles
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxPaginasNiveles }
+    requirements:
+        method: GET
+
+_ajaxNivelPaginas:
+    path:     /ajaxNivelPaginas
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxNivelPaginas }
+    requirements:
+        method: POST
+
+_ajaxAsignarP:
+    path:     /ajaxAsignarP
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxAsignarP }
+    requirements:
+        method: POST

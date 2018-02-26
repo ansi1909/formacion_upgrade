@@ -79,13 +79,6 @@
                             <th class="hd__title">{{'Nombre'|trans }}</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
-                    </thead>
-            {%endif%}
-            {% if not usuario_empresa %}
-                <tbody id="grupos" name="grupos">
-                  
-                </tbody>
-            {% else %}
                     <tbody id="grupos" name="grupos">
                       {% for grupo in grupos %}
                         {% set eo = cycle(['odd', 'even'], loop.index) %}
