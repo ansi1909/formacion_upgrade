@@ -547,3 +547,12 @@ hex varchar(10),
  PRIMARY KEY (id),
  FOREIGN KEY (preferencia_id) REFERENCES admin_preferencia (id),
  FOREIGN KEY (atributo_id) REFERENCES admin_atributo (id));
+
+CREATE TABLE admin_thumbnail(
+-- Attributes --
+id serial,
+layout_id integer,
+nombre varchar(100),
+url varchar(250),
+ PRIMARY KEY (id),
+ FOREIGN KEY (layout_id) REFERENCES admin_layout (id));

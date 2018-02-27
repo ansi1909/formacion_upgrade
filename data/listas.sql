@@ -289,3 +289,15 @@ INSERT INTO admin_atributo (id, variable, descripcion) VALUES (9, 'gray-600', 'C
 INSERT INTO admin_atributo (id, variable, descripcion) VALUES (10, 'gray-700', 'Color de encabezado en las tarjetas, fuentes de los párrafos, etiquetas en los formularios, texto en los inputs de formularios, fuentes en los enlaces activos de la barra de navegación.');
 INSERT INTO admin_atributo (id, variable, descripcion) VALUES (11, 'gray-800', 'Color de fuentes de títulos de las lecciones o páginas.');
 INSERT INTO admin_atributo (id, variable, descripcion) VALUES (12, 'gray-900', 'Color de fuentes del body.');
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_layout_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_layout', 'id'), 2, false);
+
+--
+-- Data for Name: admin_layout; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_layout (id, twig) VALUES (1, 'base.html.twig');

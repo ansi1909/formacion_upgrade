@@ -1,0 +1,52 @@
+SESSION = [
+			'ini' = true,
+			'sesion_id' = 'Id creado de admin_sesion',
+			'code' = 'Código del país de admin_pais',
+			'usuario' = [
+						  'id' = 'Id del usuario',
+                          'nombre' = 'Nombre del usuario',
+                          'apellido' = 'Apellido del usuario',
+                          'correo' = 'Correo del usuario',
+                          'foto' = 'Url de la foto del usuario',
+                          'participante' = true o false,
+                          'tutor' = true o false,
+						],
+			'empresa' = [
+						  'id' = 'Id de la empresa',
+						  'nombre' = 'Nombre de la empresa',
+						  'chat' = true o false,
+						  'webinar' = true,
+						  'plantilla' = 'twig para el layout principal',
+						  'logo' = 'Url del logo de la empresa'
+						],
+			'paginas' = [
+						  0 = [
+						  		'id' = 'Id de la página',
+						  		'nombre' = 'Nombre de la pagina',
+						  		'categoria' = 'Categoría de la página',
+						  		'foto' = 'Foto de la página',
+						  		'tiene_evaluacion' = true o false,
+						  		'subpaginas' = [
+						  						Misma estructura de una página
+						  					   ]
+						  	  ],
+						  1 = [
+						  		'id' = 'Id de la página',
+						  		'nombre' = 'Nombre de la pagina',
+						  		'categoria' = 'Categoría de la página',
+						  		'foto' = 'Foto de la página',
+						  		'tiene_evaluacion' = true o false,
+						  		'subpaginas' = [
+						  						Misma estructura de una página
+						  					   ]
+						  	  ],
+						  etc...
+			            ]
+		  ]
+
+$datosUsuario = array('id' => $usuario->getId(),
+                                                      'nombre' => $usuario->getNombre(),
+                                                      'apellido' => $usuario->getApellido(),
+                                                      'correo' => $usuario->getCorreoPersonal(),
+                                                      'foto' => $usuario->getFoto(),
+                                                      'roles' => $roles_usuario);

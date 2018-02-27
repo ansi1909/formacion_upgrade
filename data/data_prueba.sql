@@ -409,3 +409,16 @@ INSERT INTO certi_pagina VALUES (10, 'INTELIGENCIA EMOCIONAL', NULL, 1, '<p>Prog
 INSERT INTO certi_pagina VALUES (11, 'Creativiad, una aproximación', 10, 2, '<p>adfadfafsaf</p>', '<p>adfadf</p>', 'recursos/paginas/flor3.jpg', 'recursos/paginas/177diferenciarseomorir%5B1%5D.pdf', '2018-02-17 17:10:40', '2018-02-17 17:10:40', 1, 1, 1, NULL);
 
 
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_thumbnail_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_thumbnail', 'id'), 4, false);
+
+--
+-- Data for Name: admin_thumbnail; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_thumbnail (id, layout_id, nombre, url) VALUES (1, 1, 'Dashboard', 'recursos/thumbnails/base_dashboard.png');
+INSERT INTO admin_thumbnail (id, layout_id, nombre, url) VALUES (2, 1, 'Vista Lección', 'recursos/thumbnails/base_leccion.png');
+INSERT INTO admin_thumbnail (id, layout_id, nombre, url) VALUES (3, 1, 'Login', 'recursos/thumbnails/base_login.png');
