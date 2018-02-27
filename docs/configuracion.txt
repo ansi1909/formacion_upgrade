@@ -16,6 +16,8 @@
 			participantes/		# Aquí se almacenan los archivos excel de los participantes
 			certificados/		# Aquí se almacenan los archivos de los certificados
 			empresas/			# Aquí se almacenan los archivos provenientes del ckeditor en el registro de empresas
+			thumbnails/			# Aquí se almacenan los archivos para los thumbnails de las plantillas
+								# 	OJO: Podemos importar las imágenes iniciales a este directorio desde docs/prototipos/front/thumbnails
 
 4. Las constantes globales para twig están seteadas en app/config/config.yml:
 	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida
