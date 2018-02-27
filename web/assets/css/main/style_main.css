@@ -436,7 +436,7 @@
             overflow-x: none;
         }
 
-        .bttn__nxt, .bttn__end, .bttn__save, .bttn__cancel{
+        .bttn__nxt, .bttn__end, .bttn__save, .bttn__cancel, .bttn__vp{
             width: 3em;
             height: 3em;
             border-radius: 50px;
@@ -458,22 +458,31 @@
 
         .bttn__nr .text__nr, .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck,
         .bttn__save .text__save, .bttn__cancel .text__cancel, .bttn__nre .text__nre, .bttn__preg .text__preg, 
-.bttn__bck2 .text__bck2, .bttn__bck3 .text__bck3, .bttn__pl1 .text__pl1{
+        .bttn__bck2 .text__bck2, .bttn__bck3 .text__bck3, .bttn__pl1 .text__pl1, .bttn__vp .text__vp{
             opacity: 0;
             display: none;
         }
 
-        .bttn__nxt span.fa{
-            margin: 5px 10px 0px 8px;
+        .bttn__nxt span.fa, .bttn__end span.fa, 
+        .bttn__edit span.fa, .bttn__elim span.fa, 
+        .bttn__save span.fa, .bttn__cancel span.fa, 
+        .bttn__vp span.fa{
             font-size: 18px;
             transition: margin .5s ease;
         }
 
+        .bttn__nxt span.fa{
+            margin: 5px 10px 0px 8px;
+        }
+
         .bttn__end span.fa, .bttn__edit span.fa,
-        .bttn__elim span.fa, .bttn__save span.fa, .bttn__cancel span.fa{
+        .bttn__elim span.fa, .bttn__save span.fa, 
+        .bttn__cancel span.fa{
             margin: 3px 8px 0px 4px;
-            font-size: 18px;
-            transition: margin .5s ease;
+        }
+
+        .bttn__vp span.fa{
+            margin: 3px 8px 0px 3px;
         }
 
         .bttn__nxt:hover, .bttn__end:hover{
@@ -481,12 +490,22 @@
             background: #d5ff00;
         }
 
+        .bttn__vp:hover{
+            width: 8.8rem;
+            background: #d5ff00;
+        }
+
         .bttn__nxt:hover span.fa{
             margin: 5px 5px 0 8px;
         }
 
-        .bttn__end:hover span.fa, .bttn__save:hover span.fa, .bttn__cancel:hover span.fa{
+        .bttn__end:hover span.fa, .bttn__save:hover span.fa, 
+        .bttn__cancel:hover span.fa{
             margin: 3px 5px 0 10px;
+        }
+
+        .bttn__vp:hover span.fa{
+            margin: 3px 5px 0 8px;
         }
         
         .bttn__nxt:hover .text__nxt{
@@ -499,7 +518,9 @@
         }
 
         .bttn__end:hover .text__end, 
-        .bttn__save:hover .text__save, .bttn__cancel:hover .text__cancel{
+        .bttn__save:hover .text__save, 
+        .bttn__cancel:hover .text__cancel, 
+        .bttn__vp:hover .text__vp {
             opacity: 1;
             display: inline-block;
             position: relative;
