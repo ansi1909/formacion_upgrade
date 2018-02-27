@@ -47,6 +47,14 @@
 	- data_prueba.sql
 	- funciones/fnduplicar_subpagina.sql
 	- funciones/fnduplicar_pagina.sql
+	- funciones/fncarga_participantes.sql
+	- funciones/fnimportar_participantes.sql
+	- funciones/fnplataforma_usuarios.sql
+	- funciones/fnprograma_usuarios.sql
+	- funciones/fnrecordatorios_usuarios.sql
+	OJO: El archivo reserialize_tables.sql se importará solo cuando se haya corrido el comando de symfony:
+		 php bin/console doctrine:schema:update --force
+		 Lo cual permite cambiar los id de las tablas al tipo serial.
 
 12. Aumentar las cantidad de memoria PHP de las siguientes variables en php.ini:
 	memory_limit = 128M

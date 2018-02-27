@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNivel;
+use Link\ComunBundle\Entity\CertiPaginaEmpresa;
+use Link\ComunBundle\Entity\CertiNivelPagina;
 use Symfony\Component\Yaml\Yaml;
 
 class NivelController extends Controller
@@ -306,6 +308,216 @@ class NivelController extends Controller
         return $this->render('LinkBackendBundle:Nivel:uploadNiveles.html.twig', array('empresa' => $empresa,
                                                                                       'errores' => $errores,
                                                                                       'nuevos_registros' => $nuevos_registros));
+
+    }
+
+    public function paginasNivelesAction($app_id)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario_empresa = 0;
+        $nivelesdb= array();
+        $empresas = array();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+
+        if ($usuario->getEmpresa()) {
+            $usuario_empresa = 1; 
+
+            $query= $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n
+                                        WHERE n.empresa = :empresa_id
+                                        ORDER BY n.nombre ASC')
+                                    ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
+            $niveles=$query->getResult();
+
+            foreach ($niveles as $nivel)
+            {
+                $nivelesdb[]= array('id'=>$nivel->getId(),
+                              'nombre'=>$nivel->getNombre());
+
+            }
+        }
+        else {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        } 
+
+
+        return $this->render('LinkBackendBundle:Nivel:paginasNiveles.html.twig', array('empresas' => $empresas,
+                                                                                      'usuario_empresa' => $usuario_empresa,
+                                                                                      'usuario' => $usuario,
+                                                                                      'niveles' => $nivelesdb)); 
+
+    }
+
+    public function ajaxPaginasNivelesAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        $f = $this->get('funciones');
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+           ->from('LinkComunBundle:AdminNivel', 'n')
+           ->orderBy('n.nombre', 'ASC');
+        $qb->andWhere('n.empresa = :empresa_id');
+        $parametros['empresa_id'] = $empresa_id;
+
+
+        if ($empresa_id)
+        {
+            $qb->setParameters($parametros);
+        }
+
+        $query = $qb->getQuery();
+        $niveles_db = $query->getResult();
+        $niveles = '<table class="table" id="">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Acciones').'</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+
+        foreach ($niveles_db as $nivel) {
+            $niveles .= '<td>'.$nivel->getNombre().'</td>
+            <td class="center">
+                
+                <a href="#" class="see" id="see" data="'. $nivel->getId() .'" title="'.$this->get('translator')->trans('Ver').'" class="btn btn-link btn-sm "><span class="fa fa-eye"></span></a>
+                
+            </td> </tr>';
+        }
+
+        $niveles .='</tbody>
+                </table>';
+        
+        $return = array('niveles' => $niveles,
+                        'empresa' =>$empresa->getNombre());
+ 
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxNivelPaginasAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $paginas = array();
+        $nivel_id = $request->query->get('nivel_id');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pagina = '<table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Categoria').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Asignar').'</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+
+        $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+
+        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                  JOIN pe.pagina p
+                                  WHERE pe.empresa = :empresa_id
+                                  AND p.pagina IS NULL
+                                  AND pe.activo = :activo
+                                  AND p.estatusContenido = :contenido_activo
+                                  ORDER BY p.orden ASC')
+                    ->setParameters(array('empresa_id'=> $nivel->getEmpresa()->getId(),
+                                          'activo'=> true,
+                                          'contenido_activo'=> $yml['parameters']['estatus_contenido']['activo'] ));
+
+        $pes = $query->getResult();
+
+        foreach($pes as $pe)
+        {
+
+            $query = $em->createQuery('SELECT COUNT(pn.id) FROM LinkComunBundle:CertiNivelPagina pn
+                                   WHERE pn.paginaEmpresa = :PaginaEmpresa_id
+                                   AND pn.nivel = :nivel_id ')
+                    ->setParameters(array('PaginaEmpresa_id'=> $pe->getId(),
+                                          'nivel_id'=> $nivel->getId()));
+            $c = $query->getSingleScalarResult();
+
+            $checked = $c ? 'checked' : '';
+
+            $pagina .= '<tr><td>'.$pe->getPagina()->getNombre().'</td>
+                            <td>'.$pe->getPagina()->getCategoria()->getNombre() .'</td>
+            <td><div class="can-toggle demo-rebrand-2 small">
+                            <input id="f'.$pe->getId().'" class="cb_activo" type="checkbox" '.$checked.' >
+                            <input type="hidden" id="id_nivel" name="id_nivel" value="'.$nivel->getId().'">
+                            <label for="f'.$pe->getId().'">
+                                <div class="can-toggle__switch" data-checked="'.$this->get('translator')->trans('Si').'" data-unchecked="No"></div>
+                            </label>
+                        </div></td></tr>';
+        }
+
+        $pagina .='</tbody>
+                </table>';
+        $paginas = array('paginas' => $pagina,
+                         'nombre' => $nivel->getNombre());
+                   
+        $return = json_encode($paginas);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxAsignarPAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $id_pagina= $request->request->get('id_pagina');
+        $nivel_id = $request->request->get('id_nivel');
+        $entity = $request->request->get('entity');
+        $checked = $request->request->get('checked');
+        
+
+        if ($checked=='0') 
+        {
+            $nivel_p = $em->getRepository('LinkComunBundle:'.$entity)->findOneBy(array('nivel' => $nivel_id,
+                                                                                       'paginaEmpresa' => $id_pagina));
+            $em->remove($nivel_p);
+            $em->flush();
+        }
+        else
+        {
+            $nivel_p = new CertiNivelPagina();
+            $pagina = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->find($id_pagina);
+            $nivel = $em->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+            $nivel_p->setNivel($nivel);
+            $nivel_p->setpaginaEmpresa($pagina);
+
+            $em->persist($nivel_p);
+            $em->flush();
+
+        }
+
+        $return = array('id' => $nivel_p->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 

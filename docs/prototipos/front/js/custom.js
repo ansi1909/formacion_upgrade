@@ -11,23 +11,24 @@ window.onload=function(){
     var body = document.getElementsByTagName('body')[0],
     sidebar = document.getElementById('mainSidenav');
 
-    sidebar.onmouseover = function() {
-        body.style.overflow = 'visible';
-    }
-    sidebar.onmouseout = function() {
-        body.style.overflow = 'auto';
-    }
+    // sidebar.onmouseover = function() {
+    //     body.style.overflow = 'hidden';
+    //
+    // }
+    // sidebar.onmouseout = function() {
+    //     body.style.overflow = 'auto';
+    // }
 
-    if (document.getElementById('comments')) {
-
-        var comments = document.getElementById('comments');
-        comments.onmouseover = function() {
-            body.style.overflow = 'hidden';
-        }
-        comments.onmouseout = function() {
-            body.style.overflow = 'auto';
-        }
-    }
+    // if (document.getElementById('comments')) {
+    //
+    //     var comments = document.getElementById('comments');
+    //     comments.onmouseover = function() {
+    //         body.style.overflow = 'hidden';
+    //     }
+    //     comments.onmouseout = function() {
+    //         body.style.overflow = 'auto';
+    //     }
+    // }
 
 };
 

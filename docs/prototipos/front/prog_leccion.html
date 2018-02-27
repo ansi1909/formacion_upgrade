@@ -7,8 +7,20 @@
     <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- <link rel="stylesheet" href="/styles/css/bootstrap/bootstrap.css"> -->
+    <link rel="stylesheet" href="styles/css/simplebar.css">
     <link rel="stylesheet" href="styles/css/main.css">
     <title>Dashboard</title>
+
+    <style>
+        .menu{
+            width: 60%;
+            height: 300px;
+        }
+
+        body {
+            margin-bottom: 300px;
+        }
+    </style>
 </head>
 <body class="lesson-body">
 
@@ -43,7 +55,10 @@
 
 <div class="container-fluid mt-6 ">
     <!-- SIDE MENU LESSON  -->
-    <div id="mainSidenav" class="main-sidenav nav-lesson ">
+    <div id="mainSidenav" class="main-sidenav nav-lesson "  >
+        <!-- <div class="" data-simplebar > -->
+
+
         <!-- <a href="javascript:void(0)" class="openbtn" onclick="openNav()"><i class="arrow right"></i></a> -->
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
         <a class="d-flex mt-1 mb-3 text-nowrap " href="#"> <i class="material-icons mr-2 rotate-180">exit_to_app</i> Volver al programa </a>
@@ -61,7 +76,7 @@
             </li>
         </ul>
 
-        <div class="tab-content menu-lesson" id="pills-tabContent">
+        <div class="tab-content menu-lesson" id="pills-tabContent" >
             <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
                 <h5 class="text-center mb-3 mt-1 color-light-grey font-normal "> Indice </h5>
                 <ol>
@@ -99,6 +114,9 @@
 
             </div>
         </div>
+
+
+    <!-- </div>    -->
     </div> <!-- END NAV-LESSON -->
 
     <div id="main" class="bg-white">
@@ -117,7 +135,7 @@
         </div>
     </div>
 
-    <div id="comments" class="px-3 pt-3">
+    <div id="comments" class="px-3 pt-3"  >
         <h5 class="color-grey text-center">Comentarios del módulo</h5>
         <form class=" mt-4  mb-6" action="index.html" method="post">
             <div class="form-group">
@@ -203,9 +221,10 @@
 </div>    <!-- END MAIN  -->
 
     <!-- JAVASCRIPT -->
-    <script src="js/jquery-3.2.1.min.js"  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
-    <script src="js/popper.min.js" charset="utf-8"></script>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" charset="utf-8"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/simplebar.js"></script>
     <script src="js/custom.js"></script>
 </body>
 </html>

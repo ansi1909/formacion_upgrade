@@ -100,3 +100,7 @@ Grupo:
 calendario:
     resource: "@LinkBackendBundle/Resources/config/routing/calendario.yml"
     prefix: /calendario
+
+preferencias:
+    resource: "@LinkBackendBundle/Resources/config/routing/preferencias.yml"
+    prefix: /preferencias
