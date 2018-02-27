@@ -1,0 +1,3 @@
+_preferencias:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Preferencia:index }

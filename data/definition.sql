@@ -530,3 +530,20 @@ transaccion varchar(10),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (nivel_id) REFERENCES admin_nivel (id),
  FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
+
+CREATE TABLE admin_atributo(
+-- Attributes --
+id serial,
+variable varchar(20),
+descripcion varchar(200),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_color(
+-- Attributes --
+id serial,
+preferencia_id integer,
+atributo_id integer,
+hex varchar(10),
+ PRIMARY KEY (id),
+ FOREIGN KEY (preferencia_id) REFERENCES admin_preferencia (id),
+ FOREIGN KEY (atributo_id) REFERENCES admin_atributo (id));

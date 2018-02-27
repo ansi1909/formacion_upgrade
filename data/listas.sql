@@ -167,7 +167,7 @@ INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (3, 'Felicitación');
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 32, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 34, false);
 
 --
 -- Data for Name: admin_aplicacion; Type: TABLE DATA; Schema: public;
@@ -203,8 +203,9 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (28, 'Notificaciones', '_notificacion', 'fa-inbox', TRUE, 27, 1);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (29, 'Programar avisos', '_programados', 'fa-clock-o', TRUE, 27, 2);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (30, 'Certificados y Constancias', '_certificados', 'fa-graduation-cap', TRUE, 9, 8);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (31, 'Calendario de eventos', '_calendario', 'fa-calendar', TRUE, NULL, 9);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (31, 'Calendario de eventos', '_calendario', 'fa-calendar', TRUE, NULL, 8);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (32, 'Páginas por niveles', '_paginasNiveles', 'fa-list-alt', TRUE, 9, 9);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (33, 'Preferencias de plantillas', '_preferencias', 'fa-desktop', TRUE, 9, 10);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_tipo_noticia_seq;; Type: SEQUENCE SET; Schema: public;
@@ -264,3 +265,27 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_tipo_imagen_ce
 
 INSERT INTO certi_tipo_imagen_certificado (id, nombre) VALUES (1, 'Certificado');
 INSERT INTO certi_tipo_imagen_certificado (id, nombre) VALUES (2, 'Constancia');
+
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_atributo_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_atributo', 'id'), 13, false);
+
+--
+-- Data for Name: admin_atributo; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (1, 'bluedarkest', 'Color de fondo de la barra de navegación.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (2, 'blue', 'Color de enlaces al pasar el mouse sobre él, fondo de botones primarios.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (3, 'lightblue', 'Color de borde al enfocar los input de los formularios, fondo de la caja que contiene el número de módulo.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (4, 'bluelightest', 'Color de fondo del muro.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (5, 'green', 'Color de enlaces activos, arrows, íconos al pasar el mouse sobre él, barra de progreso, cuadro de éxito.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (6, 'yellow', 'Color de botón de continuar, fondo de cuadro de warning.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (7, 'gray-150', 'Fondo del body, botones al pasar el mouse sobre él.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (8, 'gray-300', 'Color de fuentes en botones primarios, color de bordes en general.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (9, 'gray-600', 'Color de fuentes en enlaces de la barra de navegación.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (10, 'gray-700', 'Color de encabezado en las tarjetas, fuentes de los párrafos, etiquetas en los formularios, texto en los inputs de formularios, fuentes en los enlaces activos de la barra de navegación.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (11, 'gray-800', 'Color de fuentes de títulos de las lecciones o páginas.');
+INSERT INTO admin_atributo (id, variable, descripcion) VALUES (12, 'gray-900', 'Color de fuentes del body.');

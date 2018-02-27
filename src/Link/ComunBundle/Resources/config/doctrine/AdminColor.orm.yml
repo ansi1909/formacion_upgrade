@@ -1,0 +1,48 @@
+Link\ComunBundle\Entity\AdminColor:
+    type: entity
+    table: admin_color
+    indexes:
+        IDX_C67CB313432D1DA2:
+            columns:
+                - preferencia_id
+        IDX_C67CB313A55FF1F3:
+            columns:
+                - atributo_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        hex:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+    manyToOne:
+        preferencia:
+            targetEntity: AdminPreferencia
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                preferencia_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        atributo:
+            targetEntity: AdminAtributo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                atributo_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

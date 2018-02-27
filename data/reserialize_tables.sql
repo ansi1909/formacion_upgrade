@@ -42,3 +42,5 @@ ALTER TABLE certi_tipo_elemento ALTER COLUMN id SET DEFAULT nextval('certi_tipo_
 ALTER TABLE certi_tipo_imagen_certificado ALTER COLUMN id SET DEFAULT nextval('certi_tipo_imagen_certificado_id_seq');
 ALTER TABLE certi_tipo_pregunta ALTER COLUMN id SET DEFAULT nextval('certi_tipo_pregunta_id_seq');
 ALTER TABLE tmp_participante ALTER COLUMN id SET DEFAULT nextval('tmp_participante_id_seq');
+ALTER TABLE admin_atributo ALTER COLUMN id SET DEFAULT nextval('admin_atributo_id_seq');
+ALTER TABLE admin_color ALTER COLUMN id SET DEFAULT nextval('admin_color_id_seq');

@@ -6,9 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\Yaml\Yaml;
 
 class DefaultController extends Controller
 {
@@ -34,6 +34,32 @@ class DefaultController extends Controller
       	else {
       		return $this->redirectToRoute('_loginAdmin');
       	}
+
+        /*$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $archivo = $yml['parameters']['folders']['dir_project'].'web/front/farmatodo/_variables_color.scss';
+        $fp = fopen($archivo, 'r');
+        $arr = array();
+        while (!feof($fp))
+        {
+            $arr[] = fgets($fp);
+        }
+        fclose($fp);
+        $i = 0;
+        foreach ($arr as $a)
+        {
+            if (strpos($a, '$gray-100') === 0)
+            {
+                $arr[$i] = "\$gray-100: #CCDBAA;\n";
+            }
+            $i++;
+        }
+        $new_file = $yml['parameters']['folders']['dir_project'].'web/front/farmatodo/_variables_colorN.scss';
+        $fp = fopen($new_file, "w+");
+        foreach ($arr as $a){
+            fwrite($fp, $a);
+        }
+        fclose($fp);
+        return new Response(var_dump($arr));*/
 
         $response = $this->render('LinkBackendBundle:Default:index.html.twig');
 

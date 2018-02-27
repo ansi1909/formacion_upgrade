@@ -13,7 +13,7 @@ SET search_path = public, pg_catalog;
 -- Name: idadmin_permiso_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_permiso', 'id'), 25, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_permiso', 'id'), 26, false);
 
 --
 -- Data for Name: admin_permiso; Type: TABLE DATA; Schema: public;
@@ -43,6 +43,7 @@ INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (21, 29, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (22, 11, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (23, 31, 1);
 INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (24, 30, 1);
+INSERT INTO admin_permiso (id, aplicacion_id, rol_id) VALUES (25, 33, 1);
 
 ------------------------------------------------------------------------------------------------------------
 -- Name: admin_empresa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: develo

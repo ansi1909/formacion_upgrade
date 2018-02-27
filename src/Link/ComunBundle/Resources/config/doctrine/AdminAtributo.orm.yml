@@ -1,0 +1,26 @@
+Link\ComunBundle\Entity\AdminAtributo:
+    type: entity
+    table: admin_atributo
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        variable:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        descripcion:
+            type: string
+            nullable: true
+            length: 200
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }
