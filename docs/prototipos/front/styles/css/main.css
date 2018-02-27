@@ -5459,6 +5459,12 @@ a.text-dark:hover, a.text-dark:focus {
     .mt-25v {
       margin-top: 0; } }
 
+.mt-12v {
+  margin-top: 12vh; }
+  @media (max-width: 767.98px) {
+    .mt-12v {
+      margin-top: 0; } }
+
 .color-light-grey {
   color: #adb5bd; }
 

@@ -111,34 +111,43 @@
                     <div class="row setup-content" id="det1">
                         <div class="col-sm-16">
                             <br>
-                            {% if pagina.foto %}
-                                <div class="row">
-                                    <div class="col-sm-16">
-                                        {% set img = uploads~pagina.foto %}
-                                        <img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" width="100%">
+                            <div class="content__wrapper">
+                                <div class="container-fluid">
+                                    {% if pagina.foto %}
+                                        <div class="row">
+                                            <div class="col-sm-16">
+                                                {% set img = uploads~pagina.foto %}
+                                                <img src="{{ img }}" alt="{{ 'Foto de la página|trans' }}" width="100%">
+                                            </div>
                                     </div>
-                                </div>
-                            {% endif %}
-                            <div class="row">
-                                <div class="col-sm-16">
-                                    {{ pagina.descripcion|raw }}
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="col-sm-16">
+                                            {{ pagina.descripcion|raw }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-16">
+                                            {{ pagina.contenido|raw }}
+                                        </div>
+                                    </div>
+                                    {% if pagina.pdf %}
+                                        <div class="row">
+                                            <div class="col-sm-16">
+                                                {% set pdf = uploads~pagina.pdf %}
+                                                <p class="fa fa-file-pdf-o">
+                                                    <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
+                                                </p>
+                                            </div>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-16">
-                                    {{ pagina.contenido|raw }}
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                                    <button type="button" class="bttn__vp"><span class="text__vp">{{ 'Vista previa'|trans }}</span><span class="fa fa-eye"></span></button>
                                 </div>
                             </div>
-                            {% if pagina.pdf %}
-                                <div class="row">
-                                    <div class="col-sm-16">
-                                        {% set pdf = uploads~pagina.pdf %}
-                                        <p class="fa fa-file-pdf-o">
-                                            <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
