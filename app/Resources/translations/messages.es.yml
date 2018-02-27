@@ -80,6 +80,7 @@ Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
 Confirmar: Confirmar
+Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla
 Contenido: Contenido
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Continuar: Continuar
@@ -203,6 +204,7 @@ Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener el historial.: Error al obtener el historial.
 Error al obtener las páginas asignadas.: Error al obtener las páginas asignadas.
 Error al obtener la repuesta: Error al obtener la repuesta
+Error al obtener los thumbnails: Error al obtener los thumbnails
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
 Errores: Errores
@@ -210,6 +212,7 @@ Errores de validación: Errores de validación
 Espacio colaborativo: Espacio colaborativo
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
+Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee thumbnails en la base de datos
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
 este archivo descargable: este archivo descargable
@@ -370,6 +373,8 @@ Permisos: Permisos
 Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
+Plantilla: Plantilla
+Preferencia de plantillas de las empresas: Preferencia de plantillas de las empresas
 Pregunta: Pregunta
 Preguntas: Preguntas
 Prelación: Prelación
@@ -387,6 +392,7 @@ Recordarme: Recordarme
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
 registros: registros
+Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
 Resultado del archivo procesado: Resultado del archivo procesado
 Resumen: Resumen
@@ -422,6 +428,8 @@ Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
 Teléfono de contacto: Teléfono de Contacto
+Thumbnails de la plantilla: Thumbnails de la plantilla
+Thumbnails inexistentes: Thumbnails inexistentes
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Tiene muro: Tiene muro
 Tipo Certificado: Tipo Certificado
@@ -458,4 +466,5 @@ Ver historial: Ver historial
 Ver páginas asignadas: Ver páginas asignadas
 Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
+Ver thumbnails: Ver thumbnails
 Vista Previa: Vista Previa

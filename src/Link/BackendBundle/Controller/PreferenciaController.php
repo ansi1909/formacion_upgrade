@@ -47,20 +47,37 @@ class PreferenciaController extends Controller
         {
 
             $plantilla = $layout_base->getTwig();
+            $layout_id = $layout_base->getId();
             $preferencia = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa->getId());
             if ($preferencia)
             {
                 $plantilla = $preferencia->getLayout()->getTwig();
+                $layout_id = $preferencia->getLayout()->getId();
             }
 
             $empresas[] = array('id' => $empresa->getId(),
                                 'nombre' => $empresa->getNombre(),
-                                'pais' => $empresa->getPais(),
-                                'plantilla' => $plantilla);
-            
+                                'pais' => $empresa->getPais()->getNombre(),
+                                'plantilla' => $plantilla,
+                                'preferencia_id' => $preferencia ? $preferencia->getId() : 0,
+                                'layout_id' => $layout_id);
+
         }
 
-        return $this->render('LinkBackendBundle:Preferencia:index.html.twig', array('empresas'=>$empresas));
+        $layouts_bd = $em->getRepository('LinkComunBundle:AdminLayout')->findAll();
+        $layouts = array();
+        foreach ($layouts_bd as $layout)
+        {
+            $thumbnails = $em->getRepository('LinkComunBundle:AdminThumbnail')->findByLayout($layout->getId());
+            $layouts[] = array('id' => $layout->getId(),
+                               'twig' => $layout->getTwig(),
+                               'thumbnails' => $thumbnails);
+        }
+
+        //return new Response(var_dump($layouts));
+
+        return $this->render('LinkBackendBundle:Preferencia:index.html.twig', array('empresas'=>$empresas,
+                                                                                    'layouts' => $layouts));
 
     }
 

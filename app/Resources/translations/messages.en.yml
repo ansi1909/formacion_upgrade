@@ -80,6 +80,7 @@ Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
 Configurar página: Configure page
 Confirmar: Confirm
+Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contact to System Administrator to add thumbnails to this template
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
@@ -203,6 +204,7 @@ Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
 Error al obtener la repuesta: Error getting the answer
+Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
@@ -210,6 +212,7 @@ Errores de validación: Validation errors
 Espacio colaborativo: Collaborative space
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
+Esta plantilla no posee thumbnails en la base de datos: This template does not have thumbnails into database
 Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
 este archivo descargable: this downloadable file
@@ -370,6 +373,8 @@ Permisos: Permissions
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
+Plantilla: Template
+Preferencia de plantillas de las empresas: Layout preferences of the companies
 Pregunta: Question
 Preguntas: Questions
 Prelación: Prelation
@@ -423,6 +428,8 @@ Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
 Teléfono de contacto: Contact Number
+Thumbnails de la plantilla: Thumbnails of template
+Thumbnails inexistentes: No thumbnails
 Tiempo de duración de la evaluación: Duration of the test
 Tiene muro: Has wall
 Tipo Certificado: Type Certificate
@@ -459,4 +466,5 @@ Ver historial: See history
 Ver páginas asignadas: View assigned pages
 Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
+Ver thumbnails: See thumbnails
 Vista Previa: Preview
