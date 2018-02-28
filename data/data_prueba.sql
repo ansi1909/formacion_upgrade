@@ -132,8 +132,8 @@ INSERT INTO admin_usuario VALUES (14, 'minnie', '123456', 'Minnie', 'Mouse', 'mi
 INSERT INTO admin_usuario VALUES (15, 'tempmary', '123456', 'Mary Flor', 'Domínguez', 'dominguezmaryflor@gmail.com', 'marydominguez@linkgerencial.com', true, '2018-02-14 18:32:30', '1959-09-11', 'VEN', 1, 'recursos/usuarios/foto_mary_flor.jpg', 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO admin_usuario VALUES (16, 'luisito', '123456', 'Luisito', 'Luisito ', 'luisito@gmail.com', 'luisito@linkgerencial.com', true, '2018-02-14 18:39:38', '2000-01-03', 'DOM', 6, 'recursos/usuarios/g_etn_recoleccion_b.jpg', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO admin_usuario VALUES (17, 'temppepito', '123456', 'pepito', 'pepito', 'pepito@gmail.com', 'pepito@gmail.com', true, '2018-02-14 18:49:59', '1996-01-09', 'VEN', 1, 'recursos/usuarios/flor4.jpg', 16, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO admin_usuario VALUES (18, 'temptutorvirtual', '123456', 'TUTOR', 'VIRTUAL', 'correotutor@gmail.com', 'correocorporativo@gmail.com', true, '2018-02-17 14:22:44', '1999-01-01', 'VEN', 7, '', 15, 'campo1', 'campo2', 'campo3', 'campo4', false, NULL, NULL);
-INSERT INTO admin_usuario VALUES (19, 'ponceelrelajado', 'uprueba1', 'Jhonatan', 'Ponce', 'ponceelrelajado@gmail.com', 'ponceelrelajado@gmail.com', true, '2018-02-20 22:03:31', '1988-05-09', 'VEN', 1, '', 17, 'Caracas', 'Caracas', 'Prueba', 'Prueba', false, NULL, NULL);
+INSERT INTO admin_usuario VALUES (18, 'temptutorvirtual', '123456', 'TUTOR', 'VIRTUAL', 'correotutor@gmail.com', 'correocorporativo@gmail.com', true, '2018-02-17 14:22:44', '1999-01-01', 'VEN', 7, '', 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO admin_usuario VALUES (19, 'ponceelrelajado', 'uprueba1', 'Jhonatan', 'Ponce', 'ponceelrelajado@gmail.com', 'ponceelrelajado@gmail.com', true, '2018-02-20 22:03:31', '1988-05-09', 'VEN', 1, '', 17, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 ------------------------------------------------------------------------------------------------------------------------
