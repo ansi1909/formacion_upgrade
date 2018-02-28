@@ -2,6 +2,13 @@
 
 .btn-primary{
     color: $gray-300;
+    background-color: $blue;
+    border-color: $blue;
+
+    &:hover{
+        background-color: $bluedark;
+        border-color: $bluedark;
+    }
 }
 
 .btn-continuar{
@@ -20,7 +27,7 @@
     position: absolute;
     top: 0;
     width: 50%;
-    height: 100%;
+    height: 100px;
     padding-top: 8px;
     font-family: $primary-font;
     transition: .5s;
