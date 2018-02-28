@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="client_styles/formacion/css/main.css">
@@ -61,8 +62,53 @@
     </div>
 
 
-
-
+    <!-- Modal -->
+    <div class="modal modal-recuperacion" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-3 text-right offset-9">
+                    <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                        <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 text-center offset-1 mt-4">
+                    <h4 class="titulo">¿Olvidaste tu Contraseña?</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-4">
+                    <p class="txt-modal">No hay problema, te enviaremos un correo con<br/>instrucciones para reiniciarla. Ingresa tu correo</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <form action="">
+                    <div class="col-12 mt-3">
+                        <div class="form-group text-center">
+                            <label class="mb-2 text-center" for="mail-rec"> Correo Electrónico </label>
+                            <input  type="email" class="form-control mb-3" id="mail-rec" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
+                        </div>
+                    </div>
+                    <div class="col-4 mt-3">
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn_rc"> Reiniciar contraseña </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row justify-content-center mb-5">
+                <div class="col-6 text-center">
+                    <a href="#" class="close" data-dismiss="modal">Regresar al inicio</a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-8 text-center">
+                    <p class="txt-modal">Si necesitas ayuda escribenos a<br/><strong>soporte@formacion2puntocero.com</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
