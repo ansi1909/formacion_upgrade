@@ -74,47 +74,51 @@ class DefaultController extends Controller
         	$em = $this->getDoctrine()->getManager();
 
             $correo = $request->request->get('correo_corporativo');
-			$empresa_id = 1;
 
-			$usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByCorreoCorporativo($correo);
-			//return new response(var_dump($usuario));
-
-			if (!$usuario)//validamos que el correo exista
+            if($correo!="")
             {
-                $error = $this->get('translator')->trans('El correo no existe en la base de datos.');
-            }
-            else{
-            	if (!$usuario->getActivo()) //validamos que el usuario este activo
-                {
-                    $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
-                }
-                else {
-            		$empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-            		if ($usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
-	                {
-	                    $error = $this->get('translator')->trans('El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.');
-	                }
-	                else{
+				$empresa_id = 1;
 
-   			            // Envío de correo con los datos de acceso, usuario y clave
-			            $parametros = array('asunto' => 'Formación2.0 - Recuperación de usuario y clave',
-                             				'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación 2.0'),
-			                                'destinatario' => $correo,
-			                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
-			                                'datos' => array('usuario' => $usuario->getLogin(),
-			                                                 'clave' => $usuario->getClave()) );
-			            $correoRecuperacion = $f->sendEmail($parametros, $this);
-               			return $this->redirectToRoute('_login');
-	                }
+				$usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByCorreoCorporativo($correo);
+
+				if (!$usuario)//validamos que el correo exista
+	            {
+	                $error = $this->get('translator')->trans('El correo no existe en la base de datos.');
 	            }
+	            else{
+	            	if (!$usuario->getActivo()) //validamos que el usuario este activo
+	                {
+	                    $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
+	                }
+	                else {
+	            		$empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
+	            		if ($usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
+		                {
+		                    $error = $this->get('translator')->trans('El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.');
+		                }
+		                else{
+
+	   			            // Envío de correo con los datos de acceso, usuario y clave
+				            $parametros = array('asunto' => 'Formación2.0 - Recuperación de usuario y clave',
+	                             				'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación 2.0'),
+				                                'destinatario' => $correo,
+				                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
+				                                'datos' => array('usuario' => $usuario->getLogin(),
+				                                                 'clave' => $usuario->getClave()) );
+				            $correoRecuperacion = $f->sendEmail($parametros, $this);
+	               			return $this->redirectToRoute('_login');
+		                }
+		            }
+				}
+			}else
+			{
+                $error = $this->get('translator')->trans('Debe ingresar el correo electronico.');
 			}
         }
-
         return $this->render('LinkFrontendBundle:Default:recuperarClave.html.twig', array('error' => $error));   
     }
-
 
     public function loginAction(Request $request)
     {
@@ -171,22 +175,29 @@ class DefaultController extends Controller
 			                                                  'activo' => true ));
 			                $paginaEmpresa = $query->getResult();
 
-							if (!$paginaEmpresa)  //validamos que la empresa tenga paginas activas
+						/*	$query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+			                                           JOIN pe.pagina p
+													   JOIN pe.nivelPagina np
+			                                           WHERE np.paginaEmpresa= :nivel_pagina AND pe.empresa= :empresa AND p.pagina IS NULL AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
+			                            ->setParameters(array('empresa' => $empresa->getId(),
+			                            					  'nivel_pagina' => $usuario->getNivel()->getId(),
+			                                                  'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
+			                                                  'activo' => true ));
+			                $paginaEmpresa = $query->getResult();	*/		                
+
+							/*if (!$paginaEmpresa)  //validamos que la empresa tenga paginas activas
 			                {
 			                    $error = $this->get('translator')->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
 			                }
-			                else{
+			                else{*/
 
-								$roles_bk = array();
-		                        $roles_usuario = array();
-		                        $roles_bk[] = $yml['parameters']['rol']['administrador'];
-		                        $roles_bk[] = $yml['parameters']['rol']['empresa'];
-		                        $roles_bk[] = $yml['parameters']['rol']['tutor'];
+		                        $roles_bk = array();
 		                        $roles_bk[] = $yml['parameters']['rol']['participante'];
-		                        
+		                        $roles_bk[] = $yml['parameters']['rol']['tutor'];
 		                        $roles_ok = 0;
-		                        $administrador = false;
-		                        
+		                        $participante = false;
+		                        $tutor = false;
+
 		                        $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru WHERE ru.usuario = :usuario_id')
 		                                    ->setParameter('usuario_id', $usuario->getId());
 		                        $roles_usuario_db = $query->getResult();
@@ -198,28 +209,52 @@ class DefaultController extends Controller
 		                            {
 		                                $roles_ok = 1;
 		                            }
-
-		                            if ($rol_usuario->getRol()->getId() == $yml['parameters']['rol']['administrador'])
+		                            if ($rol_usuario->getRol()->getId() == $yml['parameters']['rol']['participante'])
 		                            {
-		                                $administrador = true;
+		                                $participante = true;
 		                            }
-		                            
-		                            $roles_usuario[] = $rol_usuario->getRol()->getId();
+		                            if ($rol_usuario->getRol()->getId() == $yml['parameters']['rol']['tutor'])
+		                            {
+		                                $tutor = true;
+		                            }
 		                        }
-
-								if (!$roles_ok)
+		                        
+		                        if (!$roles_ok)
 		                        {
 		                            $error = $this->get('translator')->trans('Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.');
 		                        }
 		                        else {
-		                            
-	                                // Se setea la sesion y se prepara el menu
+		                        
+	                                // Se setea los datos del usuario
 	                                $datosUsuario = array('id' => $usuario->getId(),
 	                                                      'nombre' => $usuario->getNombre(),
 	                                                      'apellido' => $usuario->getApellido(),
 	                                                      'correo' => $usuario->getCorreoPersonal(),
 	                                                      'foto' => $usuario->getFoto(),
-	                                                      'roles' => $roles_usuario);
+	                                                      'participante' => $participante,
+	                                                      'tutor' => $tutor);
+	                                
+	                                // Se setea los datos de la empresa
+	                                $datosEmpresa = array('id' => $empresa->getId(),
+	                                                      'nombre' => $empresa->getNombre(),
+	                                                      'chat' => $empresa->getChatActivo(),
+	                                                      'webinar' => $empresa->getWebinar(),
+	                                                      'platilla' => 'twig para el layout principal',
+	                                                      'logo' => 'url del logo de la empresa');
+
+									foreach ($paginaEmpresa as $pag)
+			                        {
+            							$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pag->getId());
+
+						                $datosPagina[] = array('id' => $pagina->getId(),
+		                                                        'nombre' => $pagina->getNombre(),
+		                                                        'categoria' => $pagina->getCategoria(),
+		                                                        'foto' => $pagina->getFoto(),
+		                                                        'tiene_evaluacion' => true,
+		                                                        'sub_paginas' =>  ''
+		                                                        );
+									}
+
 
 	                                // Cierre de sesiones activas
 	                                $sesiones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
@@ -240,12 +275,12 @@ class DefaultController extends Controller
 	                                $session->set('ini', true);
 	                                $session->set('sesion_id', $admin_sesion->getId());
 	                                $session->set('code', $f->getLocaleCode());
-	                                $session->set('administrador', $administrador);
 	                                $session->set('usuario', $datosUsuario);
-									$session->set('empresa_id', $empresa->getId());
+									$session->set('empresa', $datosEmpresa);
+									//$session->set('paginas', $datosPagina);
 
 	                                return $this->redirectToRoute('_inicio');
-	                            }
+	                            //}
 				            }
 		                }
 					}

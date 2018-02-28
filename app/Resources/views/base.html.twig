@@ -13,7 +13,12 @@
         {% endblock %}
     </head>
     <body>
-        
+        {% if (app.session.started and app.session.get('ini') ) %}
+            <input type="text" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario')['id'] }}">
+        {% else %}
+            <input type="text" id="usuario_id" name="usuario_id" value="">
+        {% endif %}
+
         {# HEADER #}
         <header>
             <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
@@ -29,7 +34,7 @@
                                 <img class="img-fluid mx-auto" src="{{ asset('front/assets/img/avatar_user.png') }}"  width="80%" alt="usuario">
                             </a>
                             <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a href="#"> Salir </a>
+                                <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">Salir</a>
                             </div>
                         </div>
                     </div>
