@@ -1,0 +1,45 @@
+.modal-recuperacion{
+    margin: 7.5vh 32.5vw;
+    height: 85vh;
+    width: 35vw;
+    border-radius: 1rem;
+    background: $gray-100;
+    .btn_close_modal{
+        position: relative;
+        top: 1.3125rem;
+        right: 0;
+        border: 0;
+        background: transparent;
+        .ic-close-white{
+            height: 1.5rem;
+            width: 1.5rem;
+            cursor: pointer;
+            color: $gray-600;
+        }
+    }
+    .titulo{
+        color: $gray-700;
+        font-family: $secondary-font;
+        font-weight: $font-weight-easy-medium;
+        font-size: $h4-font-size;
+        text-align: center;
+        line-height: 2.375rem;
+    }
+    .txt-modal{
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: $font-size-base;
+        line-height: 1.1875rem;
+        text-align: center;
+    }
+    input{
+        width: 22rem;
+        margin-left: 1.3rem;
+    }
+    .btn_rc{
+        margin: 0 6rem;
+        text-align: center;
+        width: 15vw;
+        padding: .5rem 1rem;
+    }
+}
