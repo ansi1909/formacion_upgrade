@@ -1,0 +1,19 @@
+- client_styles/
+	- 1/
+		- css/
+			main.css
+			main.css.map
+		- sass/
+			_variables_color.scss
+	- 2/
+		- css/
+			main.css
+			main.css.map
+		- sass/
+			_variables_color.scss
+	- 3/
+		- css/
+			main.css
+			main.css.map
+		- sass/
+			_variables_color.scss

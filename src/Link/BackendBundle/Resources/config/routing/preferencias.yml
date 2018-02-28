@@ -1,3 +1,7 @@
 _preferencias:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Preferencia:index }
+
+_preferencia:
+    path:     /edit/{empresa_id}/{preferencia_id}
+    defaults: { _controller: LinkBackendBundle:Preferencia:edit }

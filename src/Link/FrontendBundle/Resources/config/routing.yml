@@ -5,3 +5,8 @@ _inicio:
 _login:
     path:     /login
     defaults: { _controller: LinkFrontendBundle:Default:login }
+
+_recuperarClave:
+    path:     /recuperarClave
+    defaults: { _controller: LinkFrontendBundle:Default:recuperarClave }
+

@@ -1,0 +1,41 @@
+Link\ComunBundle\Entity\AdminThumbnail:
+    type: entity
+    table: admin_thumbnail
+    indexes:
+        IDX_2AA023D48C22AA1A:
+            columns:
+                - layout_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        url:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+    manyToOne:
+        layout:
+            targetEntity: AdminLayout
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                layout_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

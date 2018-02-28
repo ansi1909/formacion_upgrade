@@ -1,0 +1,35 @@
+{% extends '::login_fnd.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-5 d-none d-sm-none  login-cover d-md-flex align-content-center align-items-center justify-content-center">
+            <div class="row  d-flex align-content-center  justify-content-center  ">
+                <div class="col-8 text-center mb-3">
+                    <h3>{{ 'Experimenta la pontencialidad de la capacitación digital.' |trans }}</h3>
+                </div>
+                <div class="col-12 text-center">
+                    <img class="img-fluid" src="{{ asset('front/assets/img/logo_formacion.png') }}" alt="logo formación 2.0">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7  text-center mx-auto d-lg-flex justify-content-center">
+            <div class="d-sm-block d-md-none mt-5 mb-6">
+                <img width="65%" class="img-fluid" src="{{ asset('front/assets/img/logo_formacion.png') }}" alt="logo formación 2.0">
+            </div>
+            <div class="col-12 mt-25v">
+                <h3 class="title-grey mb-md-6 mb-sm-3">{{ 'Recuperar Usuario y Clave' |trans }}</h3>
+                <p class="mb-4">{{ 'Por favor, ingresa tu Correo corporativo' |trans }}</p>
+                <div class="col-lg-5 col-12 col-sm-12 mx-auto">
+                    <form action="{{ path('_recuperarClave') }}" method="POST">
+                        <div class="form-group text-left">
+                            <label class="mb-2" for="correo_corporativo">{{ 'Correo' |trans }}</label>
+                            <input  type="text" class="form-control mb-4" id="correo_corporativo" name="correo_corporativo" aria-describedby="usuarioHelp" placeholder="Ingresa tu correo corporativo">
+                            <span class="error error__style">{{ error }}</span>
+                        </div>
+                        <button type="submit" id="btnRecuperar" class="btn btn-primary mb-5">{{ 'Enviar Email' |trans }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

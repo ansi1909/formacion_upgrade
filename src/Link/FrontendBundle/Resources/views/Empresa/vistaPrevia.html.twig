@@ -1,0 +1,165 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+<div id="message" class="for-message well-message container py-6 px-6 mb-4">
+    <i id="equis" class="material-icons mr-2" >c</i>
+    <h1 class="mb-4">Bienvenido a Formación&nbsp;2.0 {{empresa.nombre}}</h1>
+    
+    {{empresa.bienvenida | raw}}
+    <img class="img-fluid img-message d-none d-lg-block" src="{{ asset('front/assets/img/well_hero.png') }}" alt="hero">
+</div>
+
+<div id="" class="for-message es-message container py-5 px-6 mb-4 ">
+    <h4 class="mb-4 title-grey">Actividades Recientes</h4>
+    <p>Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.</p>
+    <h5>¡Comencemos! Elige tu programa </h5>
+</div>
+
+<div class="for-message  container py-5 px-6 mb-4 ">
+
+    <h4 class="mb-4 title-grey">Actividades Recientes</h4>
+
+    {# CURSANDO #}
+    <div class="container d-flex flex-column justify-content-center align-items-center ">
+        
+        <div class="card-hrz card-current">
+            <img class="card-hrz-img " src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
+            <div class="card-hrz-body">
+                <h5 class="title-grey "> Liderazgo </h5>
+                <span class="text-sm title-grey d-none d-lg-block"> Módulo </span>
+                <span class="text-sm color-light-grey d-none d-lg-block"> 04. Liderazgo para la conducción de personas </span>
+                <div class="progress mt-3">
+                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
+                <div class="percent text-center mt-3">
+                    <h2 class="color-light-grey mb-0 pb-0"> 20% </h2>
+                    <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en 08 días</span>
+                </div>
+                <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+            </div>
+        </div>
+
+        <div class="card-hrz card-current">
+            <img class="card-hrz-img " src="{{ asset('front/assets/img/desarrollo_hrz.png') }}" alt="">
+            <div class="card-hrz-body ">
+                <h5 class="title-grey "> Desarrollo de otros </h5>
+                <span class="text-sm title-grey d-none d-lg-block"> Módulo </span>
+                <span class="text-sm color-light-grey d-none d-lg-block "> 04. Liderazgo para la conducción de personas </span>
+                <div class="progress mt-3">
+                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
+                <div class="percent text-center mt-3">
+                    <h2 class="color-light-grey mb-0 mt-0 pb-0"> 80% </h2>
+                </div>
+                <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en 08 días</span>
+                <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{# FILTERS #}
+<div class="container">
+    <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line "> Grupos </h4>
+    <div class="filter-group d-flex justify-content-around mb-3">
+        <a class="color-light-grey mt-3" href=""> Grupo a </a>
+        <a class="active-line color-light-grey mt-3" href=""> Grupo b </a>
+        <a class="color-light-grey mt-3" href=""> Grupo c </a>
+    </div>
+</div>
+
+<div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
+    <div class="card" >
+        <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo.png') }}" alt="Card image cap">
+        <div class="card-img-overlay">
+            <span class="count text-xs ">Finaliza en 08 días</span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-3"> Liderazgo </h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-continuar  mt-3">Continuar </a>
+        </div>
+    </div>
+    <div class="card" >
+        <img class="card-img-top" src="{{ asset('front/assets/img/negociacion.png') }}" alt="Card image cap">
+        <div class="card-img-overlay">
+            <span class="count text-xs ">Finaliza en 08 días</span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-3"> Negociación </h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary mt-3">Iniciar</a>
+        </div>
+    </div>
+    <div class="card" >
+        <img class="card-img-top" src="{{ asset('front/assets/img/desarrollo.png') }}" alt="Card image cap">
+        <div class="card-img-overlay">
+            <span class="count text-xs ">Finaliza en 08 días</span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-3"> Desarrollo de otros </h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary mt-3">Iniciar</a>
+        </div>
+    </div>
+    <div class="card" >
+        <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo.png') }}" alt="Card image cap">
+        <div class="card-img-overlay">
+            <span class="count text-xs ">Finaliza en 08 días</span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-3"> Comunicación </h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary mt-3"> Iniciar </a>
+        </div>
+    </div>
+    <div class="card">
+        <img class="card-img-top" src="{{ asset('front/assets/img/negociacion.png') }}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title mb-3"> Marketing Digital </h5>
+            <div class="badge-wrap">
+                <i class="material-icons badge-aprobado ">check_circle</i>
+                <span class="text-badge"> Aprobado </span>
+            </div>
+        </div>
+        <div class="card-footer  d-flex justify-content-around">
+            <a  href="#" class="flex-column align-items-center col-6 btn-edge btn-certificado">
+                <i class="material-icons d-block">aspect_ratio</i>
+                <small class=" d-block"> Certificado </small>
+            </a>
+            <a  href="#" class="flex-column align-items-center col-6 btn-edge btn-notas " >
+                <i class="material-icons   d-block">content_copy</i>
+                <small class=" d-block"> Notas </small>
+            </a>
+        </div>
+    </div>
+    <div class="card">
+        <img class="card-img-top" src="{{ asset('front/assets/img/desarrollo.png') }}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title mb-3"> Inteligencia emocional </h5>
+            <div class="badge-wrap">
+                <i class="material-icons badge-aprobado ">check_circle</i>
+                <span class="text-badge"> Aprobado </span>
+            </div>
+        </div>
+        <div class="card-footer  d-flex justify-content-around">
+            <a  href="#" class="flex-column align-items-center col-6 btn-edge btn-certificado">
+                <i class="material-icons d-block">aspect_ratio</i>
+                <small class=" d-block"> Certificado </small>
+            </a>
+            <a  href="#" class="flex-column align-items-center col-6 btn-edge btn-notas " >
+                <i class="material-icons   d-block">content_copy</i>
+                <small class=" d-block"> Notas </small>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
