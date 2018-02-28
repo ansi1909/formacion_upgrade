@@ -1,60 +1,12 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="/styles/css/bootstrap/bootstrap.css"> -->
-    <link rel="stylesheet" href="styles/css/main.css">
-    <title>Dashboard</title>
-</head>
-<body>
+{% extends '::base.html.twig' %}
 
+{% block body %}
 
-<!-- HEADER -->
-<header>
-        <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
-            <a class="navbar-brand" href="#">
-                <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
-            </a>
-            <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-                <i class="material-icons mr-3 color-light-grey">mail_outline</i>
-                <div class=" d-flex flex-column  ">
-                    <div class="dropdown show">
-                        <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="img-fluid mx-auto" src="assets/img/avatar_user.png"  width="80%" alt="usuario">
-                        </a>
-                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a href="#"> Salir </a>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-</header>
-
-<div class="container-fluid mt-6">
-    <!-- SIDE MENU  -->
-    <nav>
-        <div id="mainSidenav" class="main-sidenav ">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
-            <a class="d-flex mt-1 mb-3 text-nowrap active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
-            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
-            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
-            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
-            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
-        </div>
-    </nav>
-
-    <div id="main" class="">
-
-        <div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
+<div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
             <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
             <h5>Bienvenido al programa de </h5>
-            <h1 class="mb-5">Nombre del programa</h1>
-            <p class="text-left mx-auto">El Programa de Liderazgo de Formación 2.0 es un programa de desarrollo a distancia, que recopila las experiencias más exitosas de las mejores escuelas de negocios, seleccionando los mejores contenidos, enfoques y autores, incorporando tecnologías de información para generar un espacio de formación permanente las 24 horas al día, los 7 días de la semana, sin barreras de lugar, ni tiempo, con la finalidad de formar líderes integrales con una visión global, para potenciar  la capacidad de influencia e inspiración de manera tal que permita la transformación productiva en sus organizaciones, siempre pensando en la gente y en los resultados.</p>
+            <h1 class="mb-5">{{pagina.nombre}}</h1>
+            <p class="text-left mx-auto">{{pagina.contenido|raw}}</p>
 
         <!-- MAPA DE AVANCE -->
             <div id="mapAvance" class=" avance-message container py-3 px-6 mb-0 ">
@@ -162,16 +114,4 @@
                 </div>
         </div>
 
-
-
-
-    </div>
-</div>
-
-
-    <!-- JAVASCRIPT -->
-    <script src="js/jquery-3.2.1.min.js"  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/custom.js"></script>
-</body>
-</html>
+{% endblock %}
