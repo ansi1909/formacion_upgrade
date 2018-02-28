@@ -41,7 +41,7 @@ class DefaultController extends Controller
       		return $this->redirectToRoute('_login');
       	}*/
 
-      	/*$usuario_id = 2;
+      	/*	$usuario_id = 2;
       	$usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
       	$query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru WHERE ru.usuario = :usuario_id')
 		            ->setParameter('usuario_id', $usuario->getId());
