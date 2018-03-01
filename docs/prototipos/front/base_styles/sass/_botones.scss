@@ -37,7 +37,7 @@
 .btn-certificado {
     left: 0;
     border-radius: 0 0 0px calc(1.25rem - 4px);
-
+    font-size: .9rem;
     &:hover{
         background-color: $gray-150;
         text-decoration: none;
@@ -46,9 +46,19 @@
 }
 
 .btn-notas {
-    right: 0;
     border-radius: 0 0  calc(1.25rem - 4px) 0;
+    font-size: .9rem;
+    &:hover{
+        background-color: $gray-150;
+        text-decoration: none;
+        color: $green;
+    }
+}
 
+.btn-ver{
+    right: 0;
+    border-radius: 0 0 0px calc(1.25rem - 4px);
+    font-size: .9rem;
     &:hover{
         background-color: $gray-150;
         text-decoration: none;
