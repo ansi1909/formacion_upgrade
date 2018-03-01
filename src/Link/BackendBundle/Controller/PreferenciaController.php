@@ -194,7 +194,7 @@ class PreferenciaController extends Controller
         }
         
         return $this->render('LinkBackendBundle:Empresa:registro.html.twig', array('empresa' => $empresa,
-                                                                                   'paises' => $paises));*/
+                                                                                   'paises' => $paises));
 
     }
 
