@@ -5,10 +5,11 @@
 <div id="message" class="for-message well-message container py-6 px-6 mb-4">
     <i id="equis" class="material-icons mr-2" >c</i>
     <h1 class="mb-4">Bienvenido a Formación&nbsp;2.0</h1>
-    <p>A partir de ahora contarás con una plataforma innovadora, que te permitirá formarte y capacitarte de manera integral, atendiendo a las necesidades de desarrollo y crecimiento que la empresa espera de todos sus colaboradores.</p>
-    <p>Esta nueva herramienta de aprendizaje, te ofrece la posibilidad de planificar el tiempo que le dedicarás a tu propio desarrollo, sin barreras de lugar, ni tiempo, ya que contarás con diversas alternativas de aprendizaje a las que podrás acceder desde cualquier dispositivo y desde cualquier lugar con tan sólo contar con una conexión a internet.</p>
+    {{ bienvenida|raw }}
     <img class="img-fluid img-message d-none d-lg-block" src="{{ asset('front/assets/img/well_hero.png') }}" alt="hero">
 </div>
+
+{% if reciente == 0 %}
 
 <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
     <h4 class="mb-4 title-grey">Actividades Recientes</h4>
@@ -16,6 +17,7 @@
     <h5>¡Comencemos! Elige tu programa </h5>
 </div>
 
+{% else %}
 <div class="for-message  container py-5 px-6 mb-4 ">
 
     <h4 class="mb-4 title-grey">Actividades Recientes</h4>
@@ -64,7 +66,7 @@
     </div>
 
 </div>
-
+{% endif %}
 {# FILTERS #}
 <div class="container">
     <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line "> Grupos </h4>
