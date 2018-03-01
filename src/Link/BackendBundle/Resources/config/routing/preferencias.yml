@@ -4,4 +4,4 @@ _preferencias:
 
 _preferencia:
     path:     /edit/{empresa_id}/{preferencia_id}
-    defaults: { _controller: LinkBackendBundle:Preferencia:edit }
+    defaults: { _controller: LinkBackendBundle:Preferencia:edit, preferencia_id: 0 }

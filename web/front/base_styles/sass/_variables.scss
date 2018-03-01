@@ -26,6 +26,7 @@ $font-size-xxs:               $font-size-base * 0.0625;//10
 
 $font-weight-light:           300;
 $font-weight-normal:          400;
+$font-weight-easy-medium:     600;
 $font-weight-medium:          700;
 $font-weight-bold:            700;
 
@@ -35,3 +36,20 @@ $headings-font-family:        $primary-font;
 $headings-font-weight:        300;
 $headings-line-height:        1.2;
 $headings-color:              $primary;
+
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
+
+// @include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
+// @include _assert-starts-at-zero($grid-breakpoints);

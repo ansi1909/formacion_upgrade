@@ -97,8 +97,27 @@ class PreferenciaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        $atributos = array();
-        $variables = array();
+        $atributos = array(); // Atrinutos editables en el template
+        $variables = array(); // Solo tendrán los nombres de las variables editables
+        $content = array(); // Contenido del archivo _variables_color.scss
+
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        $layouts_bd = $em->getRepository('LinkComunBundle:AdminLayout')->findAll();
+        $layouts = array();
+        foreach ($layouts_bd as $layout)
+        {
+            $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPreferencia p 
+                                        WHERE p.empresa = :empresa_id AND p.layout = :layout_id')
+                        ->setParameters(array('empresa_id' => $empresa_id,
+                                              'layout_id' => $layout->getId()));
+            $tiene_layout = $query->getSingleScalarResult();
+            $thumbnails = $em->getRepository('LinkComunBundle:AdminThumbnail')->findByLayout($layout->getId());
+            $layouts[] = array('id' => $layout->getId(),
+                               'twig' => $layout->getTwig(),
+                               'thumbnails' => $thumbnails,
+                               'checked' => $tiene_layout ? true : false);
+        }
 
         $admin_atributos = $em->getRepository('LinkComunBundle:AdminAtributo')->findAll();
         foreach ($admin_atributos as $attr)
@@ -112,11 +131,12 @@ class PreferenciaController extends Controller
 
         // Atributos por defecto
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $archivo = $yml['parameters']['folders']['dir_project'].'web/front/styles/sass/_variables_color.scss';
+        $archivo = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/formacion/sass/_variables_color.scss';
         $fp = fopen($archivo, 'r');
         while (!feof($fp))
         {
             $linea = fgets($fp);
+            $content[] = $linea;
             if (strpos($linea, '$') === 0)
             {
                 // Es una variable. Se descompone
@@ -150,23 +170,14 @@ class PreferenciaController extends Controller
 
         }
         else {
-            
             $preferencia = new AdminPreferencia();
-            
-
+            $preferencia->setEmpresa($empresa);
         }
-
-        // Lista de paises
-        $qb = $em->createQueryBuilder();
-        $qb->select('p')
-           ->from('LinkComunBundle:AdminPais', 'p')
-           ->orderBy('p.nombre', 'ASC');
-        $query = $qb->getQuery();
-        $paises = $query->getResult();
 
         if ($request->getMethod() == 'POST')
         {
 
+            /*
             $nombre = $request->request->get('nombre');
             $pais_id = $request->request->get('pais_id');
             $bienvenida = $request->request->get('bienvenida');
@@ -189,12 +200,13 @@ class PreferenciaController extends Controller
             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
             $f->subDirEmpresa($empresa->getId(), $yml['parameters']['folders']['dir_uploads']);
 
-            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
+            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));*/
 
         }
         
-        return $this->render('LinkBackendBundle:Empresa:registro.html.twig', array('empresa' => $empresa,
-                                                                                   'paises' => $paises));
+        return $this->render('LinkBackendBundle:Preferencia:edit.html.twig', array('preferencia' => $preferencia,
+                                                                                   'layouts' => $layouts,
+                                                                                   'atributos' => $atributos));
 
     }
 
