@@ -1,0 +1,7 @@
+_vistaPreviaP:
+    path:     /vistaPreviaP/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:VistaPrevia:vistaPreviaP }
+
+_vistaPrevia:
+    path:     /vistaPrevia/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:VistaPrevia:vistaPreviaB }

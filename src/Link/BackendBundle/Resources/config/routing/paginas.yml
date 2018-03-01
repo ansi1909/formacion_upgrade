@@ -70,6 +70,4 @@ _showAsignacion:
     path:     /showAsignacion/{empresa_id}/{pagina_id}
     defaults: { _controller: LinkBackendBundle:Pagina:showAsignacion, pagina_id: 0 }
 
-_vistaPreviaP:
-    path:     /vistaPrevia/{pagina_id}
-    defaults: { _controller: LinkFrontendBundle:Pagina:vistaPrevia }
+

@@ -1,5 +1,5 @@
-_Grupo:
-    path:     /Grupo/{app_id}
+_grupo:
+    path:     /grupo/{app_id}
     defaults: { _controller: LinkBackendBundle:Grupo:index }
 
 _ajaxGrupoPaginas:
