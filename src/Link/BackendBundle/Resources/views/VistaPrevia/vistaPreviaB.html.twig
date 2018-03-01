@@ -3,13 +3,11 @@
 {% block body %}
 
 <div id="message" class="for-message well-message container py-6 px-6 mb-4">
-    <i id="equis" class="material-icons mr-2" >c</i>
-    <h1 class="mb-4">Bienvenido a Formación&nbsp;2.0 {{empresa.nombre}}</h1>
-    
-        {{empresa.bienvenida | raw}}
+    <i id="equis" class="material-icons mr-2" >close</i>
+    <h1 class="mb-4">Bienvenido a Formación&nbsp;2.0 {{ empresa.nombre }}</h1>
+    <p>{{ empresa.bienvenida| raw }}</p>
     <img class="img-fluid img-message d-none d-lg-block" src="{{ asset('front/assets/img/well_hero.png') }}" alt="hero">
 </div>
-
 <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
     <h4 class="mb-4 title-grey">Actividades Recientes</h4>
     <p>Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.</p>
@@ -17,12 +15,10 @@
 </div>
 
 <div class="for-message  container py-5 px-6 mb-4 ">
-
     <h4 class="mb-4 title-grey">Actividades Recientes</h4>
 
-    {# CURSANDO #}
+    <!-- CURSANDO -->
     <div class="container d-flex flex-column justify-content-center align-items-center ">
-        
         <div class="card-hrz card-current">
             <img class="card-hrz-img " src="{{ asset('front/assets/img/liderazgo-hrz.png') }}" alt="">
             <div class="card-hrz-body">
@@ -60,32 +56,32 @@
                 <a href="#" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
             </div>
         </div>
-
     </div>
 
 </div>
 
-{# FILTERS #}
+<!-- FILTERS -->
 <div class="container">
     <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line "> Grupos </h4>
     <div class="filter-group d-flex justify-content-around mb-3">
-        <a class="color-light-grey mt-3" href=""> Grupo a </a>
+        <a class=" color-light-grey mt-3" href=""> Grupo a </a>
         <a class="active-line color-light-grey mt-3" href=""> Grupo b </a>
         <a class="color-light-grey mt-3" href=""> Grupo c </a>
     </div>
 </div>
+<!-- CARD SECTION -->
 
 <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
     <div class="card" >
-        <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo.png') }}" alt="Card image cap">
-        <div class="card-img-overlay">
-            <span class="count text-xs ">Finaliza en 08 días</span>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title mb-3"> Liderazgo </h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-continuar  mt-3">Continuar </a>
-        </div>
+            <img class="card-img-top" src="{{ asset('front/assets/img/liderazgo.png') }}" alt="Card image cap">
+            <div class="card-img-overlay">
+                <span class="count text-xs ">Finaliza en 08 días</span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title mb-3"> Liderazgo </h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-continuar  mt-3">Continuar </a>
+            </div>
     </div>
     <div class="card" >
         <img class="card-img-top" src="{{ asset('front/assets/img/negociacion.png') }}" alt="Card image cap">
@@ -160,6 +156,7 @@
             </a>
         </div>
     </div>
+
 </div>
 
 {% endblock %}
