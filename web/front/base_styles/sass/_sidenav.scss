@@ -1,0 +1,150 @@
+.main-sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1031;
+    top: 67px;
+    left: 0;
+    background-color: $bluedarkest;
+    overflow: auto;
+    transition: 0.6s;
+    padding-top: 60px;
+
+    &:hover{
+        // overflow: auto;
+    }
+}
+
+.main-sidenav-open{
+    width: 200px;
+}
+
+#mainSidenav.main-sidenav-close{
+    width: 40px;
+    overflow: hidden;
+
+    a{
+        padding-left: 8px;
+    }
+
+}
+
+#main.ml-10{
+    margin-left: 10%;
+
+ }
+ #main.ml-comments{
+     margin-left: -6%;
+
+  }
+
+
+
+i.arrow {
+    height: 12px;
+    width: 12px;
+    border: solid $gray-500;
+    border-width: 0 4px 4px 0;
+    border-radius: 2px;
+    display: inline-block;
+    padding: 4px;
+    transition: .3s;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+
+.arrow.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.main-sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.main-sidenav a:hover {
+    color: $white;
+
+    i.arrow {
+        border-color: $green;
+    }
+}
+
+.main-sidenav .closebtn {
+    position: absolute;
+    top: 16px;
+    right: 0px;
+    margin-left: 50px;
+}
+
+a.active {
+    color: $green;
+}
+
+
+.nav-lesson {
+    top: 80px;
+    width: 240px;
+    font-family: $primary-font;
+    padding-bottom: 136px;
+
+
+    ol {
+
+        margin-bottom: 16px;
+
+        &>li {
+            margin: 1.5rem  auto 8px;
+            color: $gray-600;
+        }
+
+
+        a {
+            padding: 0;
+            font-size: $font-size-sm;
+            margin: 16px auto;
+
+
+
+            i {
+                font-size: 6px;
+                margin: 8px;
+            }
+        }
+    }
+    .ul-items {
+
+        list-style: disc;
+        padding-left: 8px;
+        margin-right: 16px;
+
+        li {
+            text-indent: 0.2em;
+            padding-left: 0rem;
+            color: $gray-600;
+
+            span {
+
+                a {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
+
+.nav-lesson #pills-tabContent{
+    transition: all .5s ease;
+    width: 240px;
+    max-height: 1000px;
+}
+
+.lesson-pending {
+    color: $gray-500 !important;
+}

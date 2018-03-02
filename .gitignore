@@ -24,3 +24,7 @@
 /docs/prototipos/front/styles/sass/.sass-cache/*
 !web/error_log
 web/error_log
+!/docs/prototipos/front/.sass-cache
+/docs/prototipos/front/.sass-cache/*
+!/docs/prototipos/front/client_styles/formacion/.sass-cache
+/docs/prototipos/front/client_styles/formacion/.sass-cache/*

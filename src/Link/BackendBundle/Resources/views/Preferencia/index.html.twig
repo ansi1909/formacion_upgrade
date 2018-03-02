@@ -58,9 +58,11 @@
                             <div class="media flex-column">
                                 <span class="projectpic"><img src="{{ img }}" alt="Thumbnail"><span class="user-status bg-success"></span></span>
                             </div>
+                            <p class="card-text">{{ thumbnail.nombre }}</p>
                         </div>
                         {% if loop.index is divisibleby(2) %}
                             </div>
+                            <br>
                             {% if not loop.last %}
                                 <div class="list-unstyled project-list row">
                             {% endif %}
