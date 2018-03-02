@@ -42,4 +42,12 @@
         width: 15vw;
         padding: .5rem 1rem;
     }
+    .link_ri{
+        font-size: .8rem;
+        color: $primary;
+        font-family: $secondary-font;
+        font-weight: $font-weight-normal;
+        position: relative;
+        left: -.5rem;
+    }
 }

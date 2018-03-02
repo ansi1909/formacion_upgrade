@@ -2,9 +2,7 @@
 
 {% block body %}
 
-{% set uri = app.request.getbasepath %}
 <form id="form" name="form" action="{{ path('_preferencia', { 'empresa_id': preferencia.empresa.id, 'preferencia_id': preferencia.id }) }}" method="POST">
-<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <br><br>
 <div class="row align-items-center justify-content-start">
     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -51,7 +49,7 @@
             				{% for layout in layouts %}
                                 {% if loop.first %}
                                     <div class="row">
-                                        <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7">
+                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
                                 {% endif %}
                                 <div class="card cardThumb"  id="thumbnails-{{ layout.id }}">
                                     <div class="card-header gradiente">
@@ -92,8 +90,8 @@
                                         <div class="col-12">
                                             <div class="can-toggle demo-rebrand-2 small">
                                                 {% set chk = layout.checked ? 'checked="checked"' : '' %}
-                                                <input id="layout_id{{ layout.id }}" name="layout_id" type="checkbox" {{ chk }}>
-                                                <label for="layout_id{{ layout.id }}">
+                                                <input id="f{{ layout.id }}" name="layout_id" class="layout" type="checkbox" {{ chk }}>
+                                                <label for="f{{ layout.id }}">
                                                     <div class="can-toggle__switch" data-checked="Ok" data-unchecked="No"></div>
                                                 </label>
                                             </div>
@@ -105,14 +103,14 @@
                                     </div>
                                     {% if not loop.last %}
                                         <div class="row">
-                                            <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7">
+                                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
                                     {% endif %}
                                 {% else %}
                                     </div>
                                     {% if loop.last %}
                                         </div>
                                     {% else %}
-                                        <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7">
+                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
@@ -184,12 +182,13 @@
 		</div>
 	</div>
 </div>
+</form>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {#<script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/preferencia.js') }}"></script>
     <script type="text/javascript">
         $('#finish').click(function(){
            var valid = $('#form').valid();
@@ -197,17 +196,7 @@
                notify($('#div-error').html());
            }
             else{
-                var deslen = $('#deslen').val();
-                if (deslen < {{ minlenght_bienvenida }} )
-                {
-                    $('#div-error ul').html("<li>- {{'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ minlenght_bienvenida }}</li>");
-                    $('#div-error ul').show();
-                    notify($('#div-error').html());
-                }
-                else
-                {
-                    $('#form').submit();
-                }
+                $('#form').submit();
             }
         });
         
@@ -234,5 +223,5 @@
                 }
             }
         });
-    </script>#}
+    </script>
 {% endblock %}
