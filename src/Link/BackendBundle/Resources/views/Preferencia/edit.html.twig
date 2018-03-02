@@ -1,0 +1,227 @@
+{% extends '::admin.html.twig'%}
+
+{% block body %}
+
+<form id="form" name="form" action="{{ path('_preferencia', { 'empresa_id': preferencia.empresa.id, 'preferencia_id': preferencia.id }) }}" method="POST">
+<br><br>
+<div class="row align-items-center justify-content-start">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="{{ path('_preferencias', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Preferencias de la empresa'|trans }} {{ preferencia.empresa.nombre }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Plantilla'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Customización'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Logo'|trans }}</p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+            		<div class="row setup-content" id="det0">	
+            			<div class="col-sm-16">
+            				{% for layout in layouts %}
+                                {% if loop.first %}
+                                    <div class="row">
+                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                {% endif %}
+                                <div class="card cardThumb"  id="thumbnails-{{ layout.id }}">
+                                    <div class="card-header gradiente">
+                                        <h5 class="card-title">{{ 'Thumbnails de la plantilla'|trans }} {{ layout.twig }}</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        {% for thumbnail in layout.thumbnails %}
+                                            {% if loop.first %}
+                                                <div class="list-unstyled project-list row">
+                                            {% endif %}
+                                            <div class="col-md-16 col-lg-8 col-xl-8">
+                                                {% set img = thumbnail.url ? uploads~thumbnail.url : asset('img/picture.png') %}
+                                                <div class="media flex-column">
+                                                    <span class="projectpic"><img src="{{ img }}" alt="Thumbnail"><span class="user-status bg-success"></span></span>
+                                                </div>
+                                                <p class="card-text">{{ thumbnail.nombre }}</p>
+                                            </div>
+                                            {% if loop.index is divisibleby(2) %}
+                                                </div>
+                                                <br>
+                                                {% if not loop.last %}
+                                                    <div class="list-unstyled project-list row">
+                                                {% endif %}
+                                            {% else %}
+                                                {% if loop.last %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="alert alert-danger" role="alert">
+                                                <h4 class="alert-heading">{{ 'Thumbnails inexistentes'|trans }}!</h4>
+                                                <p>{{ 'Esta plantilla no posee thumbnails en la base de datos'|trans }}.</p>
+                                                <p>{{ 'Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla'|trans }}.</b>.</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="col-12">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                {% set chk = layout.checked ? 'checked="checked"' : '' %}
+                                                <input id="f{{ layout.id }}" name="layout_id" class="layout" type="checkbox" {{ chk }}>
+                                                <label for="f{{ layout.id }}">
+                                                    <div class="can-toggle__switch" data-checked="Ok" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if loop.index is divisibleby(2) %}
+                                    </div>
+                                    </div>
+                                    {% if not loop.last %}
+                                        <div class="row">
+                                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    {% endif %}
+                                {% else %}
+                                    </div>
+                                    {% if loop.last %}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+                    <div class="row setup-content" id="det1">
+                        <div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    {#<div class="form-group">
+                                        <label for="texto" class="col-2 col-form-label">{{ 'Bienvenida'|trans }}</label>
+                                        <div class="col-16">
+                                            <textarea class="ckeditor" rows="3" id="bienvenida" name="bienvenida" cols="30" rows="10">{{ empresa.bienvenida }}</textarea>
+                                        </div>
+                                    </div>#}
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            		<div class="row setup-content" id="det2">
+            			<div class="col-sm-16">
+            				{#<div class="row">
+                                <div class="col-sm-16 col-md-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="texto" class="col-4 col-form-label">{{ 'Activar chat'|trans }}</label>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f2" id="activo2" name="activo2" type="checkbox" {% if empresa.ChatActivo %}checked{% endif %}>
+                                                <label for="f2">
+                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-16 col-md-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Activar webinar'|trans }}</label>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f3" id="activo3" name="activo3" type="checkbox" {% if empresa.webinar %}checked{% endif %}>
+                                                <label for="f3">
+                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>#}
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/preferencia.js') }}"></script>
+    <script type="text/javascript">
+        $('#finish').click(function(){
+           var valid = $('#form').valid();
+           if(!valid){
+               notify($('#div-error').html());
+           }
+            else{
+                $('#form').submit();
+            }
+        });
+        
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'pais_id': {
+                    required: true
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "- {{ 'El nombre de la empresa es requerido.'|trans }}",
+                    minlength: "- {{ 'El nombre de la empresa debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'pais_id': {
+                    required: "- {{ 'El país es requerido.'|trans }}",
+                }
+            }
+        });
+    </script>
+{% endblock %}

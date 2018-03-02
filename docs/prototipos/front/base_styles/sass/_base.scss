@@ -1,0 +1,47 @@
+// estilos estandar para todas los layouts y variaciones
+body {
+    background-color: $gray-150;
+
+}
+
+#main {
+    transition: margin-left .6s;
+    padding: 16px;
+    margin-left: 200px;
+    max-width: 90%;
+
+    @include media-breakpoint-down(sm) {
+
+            width: 90%;
+
+    }
+}
+
+body.lesson-body {
+    background-color: $white;
+}
+
+a:hover {
+    text-decoration: none;
+    color: $blue;
+}
+
+.perfil-dropdown {
+
+    background-color: white;
+    color: $gray-600;
+    padding: 1rem;
+    left: -150%;
+    text-align: center;
+
+}
+
+.perfil {
+    &:hover {
+        opacity: .8;
+    }
+
+    &.dropdown-toggle:after {
+        display: none;
+    }
+}

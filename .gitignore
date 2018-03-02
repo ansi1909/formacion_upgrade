@@ -17,3 +17,7 @@
 /docs/prototipos/front/styles/.sass-cache/*
 !/docs/prototipos/front/styles/sass/.sass-cache
 /docs/prototipos/front/styles/sass/.sass-cache/*
+!/docs/prototipos/front/.sass-cache
+/docs/prototipos/front/.sass-cache/*
+!/docs/prototipos/front/client_styles/formacion/.sass-cache
+/docs/prototipos/front/client_styles/formacion/.sass-cache/*

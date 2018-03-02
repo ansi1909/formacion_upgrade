@@ -5459,6 +5459,12 @@ a.text-dark:hover, a.text-dark:focus {
     .mt-25v {
       margin-top: 0; } }
 
+.mt-12v {
+  margin-top: 12vh; }
+  @media (max-width: 767.98px) {
+    .mt-12v {
+      margin-top: 0; } }
+
 .color-light-grey {
   color: #adb5bd; }
 
@@ -5646,16 +5652,14 @@ a:hover {
 .perfil-dropdown {
   background-color: white;
   color: #AAAFB3;
-  padding: 1rem; }
+  padding: 1rem;
+  left: -150%;
+  text-align: center; }
 
 .perfil:hover {
   opacity: .8; }
 .perfil.dropdown-toggle:after {
   display: none; }
-
-.dropdown-menu {
-  left: -150%;
-  text-align: center; }
 
 .login-cover {
   background-image: url(../../assets/img/login_cover.jpg);
@@ -5664,6 +5668,45 @@ a:hover {
   background-position: top;
   width: 100%;
   height: 100vh; }
+
+.modal-recuperacion {
+  margin: 7.5vh 32.5vw;
+  height: 85vh;
+  width: 35vw;
+  border-radius: 1rem;
+  background: #FAFAFA; }
+  .modal-recuperacion .btn_close_modal {
+    position: relative;
+    top: 1.3125rem;
+    right: 0;
+    border: 0;
+    background: transparent; }
+    .modal-recuperacion .btn_close_modal .ic-close-white {
+      height: 1.5rem;
+      width: 1.5rem;
+      cursor: pointer;
+      color: #AAAFB3; }
+  .modal-recuperacion .titulo {
+    color: #797D80;
+    font-family: "Open Sans";
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 2.375rem; }
+  .modal-recuperacion .txt-modal {
+    color: #797D80;
+    font-family: "Roboto";
+    font-size: 1rem;
+    line-height: 1.1875rem;
+    text-align: center; }
+  .modal-recuperacion input {
+    width: 22rem;
+    margin-left: 1.3rem; }
+  .modal-recuperacion .btn_rc {
+    margin: 0 6rem;
+    text-align: center;
+    width: 15vw;
+    padding: .5rem 1rem; }
 
 nav.navbar {
   box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56); }
@@ -5676,7 +5719,7 @@ nav.navbar {
   top: 67px;
   left: 0;
   background-color: #00253D;
-  overflow-x: hidden;
+  overflow: auto;
   transition: 0.6s;
   padding-top: 60px; }
 
@@ -5737,8 +5780,7 @@ a.active {
   top: 80px;
   width: 240px;
   font-family: "Roboto";
-  padding-bottom: 136px;
-  overflow-y: auto; }
+  padding-bottom: 136px; }
   .nav-lesson ol {
     margin-bottom: 16px; }
     .nav-lesson ol > li {
