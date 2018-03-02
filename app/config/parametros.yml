@@ -35,6 +35,10 @@ parameters:
         no_ingresado: 5
         no_ingresado_programa: 6
         aprobados: 7
+    estatus_pagina:
+        iniciada: 1
+        en_evaluación: 2
+        completada: 3
     layout:
         base: 1
     folders:
