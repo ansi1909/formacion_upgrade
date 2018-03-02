@@ -38,7 +38,11 @@ $headings-font-weight:        300;
 $headings-line-height:        1.2;
 $headings-color:              $primary;
 
-
+//Opciones de respuestas de imagenes;
+$tam-base:                    1rem;
+$tam-width:                   $tam-base * 18;
+$tam-height:                  $tam-base * 15;
+$tam-ha:                      $tam-base * 3;
 // Grid breakpoints
 //
 // Define the minimum dimensions at which your layout will change,
