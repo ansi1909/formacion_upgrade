@@ -12,8 +12,15 @@
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /web/bundles/
+!/app/config/config.yml
+/app/config/config.yml
 !/app/config/parameters.yml
+/app/config/parameters.yml
+!/app/config/parametros.yml
+/app/config/parametros.yml
 !/docs/prototipos/front/styles/.sass-cache
 /docs/prototipos/front/styles/.sass-cache/*
 !/docs/prototipos/front/styles/sass/.sass-cache
 /docs/prototipos/front/styles/sass/.sass-cache/*
+!web/error_log
+web/error_log
