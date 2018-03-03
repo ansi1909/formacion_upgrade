@@ -717,14 +717,18 @@ class Functions
 	}
 
 	// Permite crear la carpeta empresa_id en cada sub-directorio de uploads/
-	public function subDirEmpresa($empresa_id, $dir_uploads)
+	public function subDirEmpresa($empresa_id, $folder_yml)
 	{
+
+		$dir_uploads = $folder_yml['dir_uploads'];
+		$dir_project = $folder_yml['dir_project'];
 
 		$subdirectorios[] = 'recursos/usuarios/';
 		$subdirectorios[] = 'recursos/niveles/';
 		$subdirectorios[] = 'recursos/noticias/';
 		$subdirectorios[] = 'recursos/notificaciones/';
 		$subdirectorios[] = 'recursos/participantes/';
+		$subdirectorios[] = 'recursos/empresas/';
 
 		if ($empresa_id)
 		{
@@ -738,7 +742,34 @@ class Functions
 		        }
 			}
 
+			// Se crea el directorio para los archivos de hojas de estilos
+			$dir_web = $dir_project.'web/front/client_styles/'.$empresa_id.'/';
+			if (!file_exists($dir_web) && !is_dir($dir_web))
+	        {
+	            mkdir($dir_web, 750, true);
+	            $this->recurse_copy($dir_project.'web/front/client_styles/formacion/', $dir_web);
+	        }
+
 		}
+
+	}
+
+	function recurse_copy($src,$dst) {
+
+	    $dir = opendir($src); 
+	    @mkdir($dst); 
+	    
+	    while(false !== ( $file = readdir($dir)) ) { 
+	        if (( $file != '.' ) && ( $file != '..' )) { 
+	            if ( is_dir($src . '/' . $file) ) { 
+	                $this->recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+	            } 
+	            else { 
+	                copy($src . '/' . $file,$dst . '/' . $file); 
+	            } 
+	        } 
+	    } 
+	    closedir($dir);
 
 	}
 

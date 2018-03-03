@@ -129,6 +129,7 @@ Detalle de la Biblioteca Virtual: Detail of the Virtual Library
 Detalle de la Noticia y Novedad: Detail of the News and New
 Detalles de la página: Page details
 Detalle del Certificado y Constancia: Certificate and Certificate Detail
+Dimensiones recomendadas: Recommended dimensions
 Diseño: Design
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
@@ -210,6 +211,7 @@ Error de Excepción: Exception Error
 Error en el servidor: Error on server
 Errores: Errors
 Errores de validación: Validation errors
+Escoja una plantilla: Choose a template
 Espacio colaborativo: Collaborative space
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
@@ -248,6 +250,7 @@ Ha ocurrido un error en la validación del usuario.: An error ocurred validating
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
 Historial de programaciones de: Programation history of
 Icono: Icon
+Icono de la empresa: Company icon
 Imagen: Image
 Imagen lado: Image side
 Iniciar Sesión: Log in
@@ -309,6 +312,7 @@ Listado de Tipos de Notificaciones: List of Types of Notifications
 Listado de tutoriales: List of tutorials
 Login repetido: Login repeated
 Login requerido: Login required
+Logo de la empresa: Company logo
 Lugar: Place
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
@@ -419,6 +423,7 @@ Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimien
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Siguiente: Next
+Sistema Formación: System Training
 Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Sólo archivos con extensión .jpg o .png: Only files with extension .jpg or .png
@@ -446,6 +451,7 @@ Tipo notificación: Notification type
 Tipo Destino: Destinit Type
 Tipo de Destinos: Desnity Types
 Título: Title
+Título en la ventana del navegador: Title of browser window
 Tutoriales: Tutorials
 Últimos 12: Last 12
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
@@ -464,6 +470,7 @@ Usuarios reg.: Reg users
 Usuarios registrados: Registered users
 Validar: Validate
 Valor de la pregunta: Question weighing
+Variables de colores que se aplican a la plantilla: Color variables that are applied to the template
 Vencimiento: Expiration
 Ver historial: See history
 Ver páginas asignadas: View assigned pages
