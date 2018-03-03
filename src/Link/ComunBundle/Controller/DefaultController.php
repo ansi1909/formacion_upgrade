@@ -37,4 +37,40 @@ class DefaultController extends Controller
         return $this->redirectToRoute($ruta);
 
     }
+
+    public function logoutEmpresaAction()
+    {
+
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $error = '';
+        //return new response(var_dump($sesion));
+
+        $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
+        $empresa_id = $session->get('empresa')['id'];
+
+        if ($sesion)
+        {
+            $sesion->setDisponible(false);
+            $em->persist($sesion);
+            $em->flush();
+            $f->setRequest($session->get('sesion_id'));
+        }
+        
+        $session->invalidate();
+        $session->clear();
+
+        if($empresa_id)
+        {
+         
+            $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->findOneById($empresa_id);
+            return $this->redirectToRoute('_login', array('empresa_id' => $empresa->getId()));
+
+        }else
+        {
+
+        }        
+
+    }
 }

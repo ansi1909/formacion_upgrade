@@ -114,6 +114,7 @@ Datos notificación: Datos notificación
 Dar acceso: Dar acceso
 de la evaluación: de la evaluación
 de un total de: de un total de
+Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
@@ -152,6 +153,8 @@ El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser m�
 El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
 El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
+El correo no existe en la base de datos.: El correo no existe en la base de datos.
+El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
 El Encabezado es requerido.: El Encabezado es requerido.
 El Encabezado debe ser mínimo de 3 caracteres.: El Encabezado debe ser mínimo de 3 caracteres.
@@ -188,6 +191,7 @@ El tipo de notificación es requerida.: El tipo de notificación es requerida.
 El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
 El título es requerido.: El título es requerido.
 El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
+El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: El Usuario no pertenece a la empresa. Contacte al administrador del sistema.
 El valor de la pregunta debe ser un valor numérico.: El valor de la pregunta debe ser un valor numérico.
 El valor de la pregunta es requerido.: El valor de la pregunta es requerido.
 El tutorial ha sido almacenada con éxito: El tutorial ha sido almacenada con éxito
@@ -202,6 +206,7 @@ Encabezado: Encabezado
 Enunciado: Enunciado
 Enunciado (Lado A): Enunciado (Lado A)
 Entidad: Entidad
+Entrar: Entrar
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener el historial.: Error al obtener el historial.
 Error al obtener las páginas asignadas.: Error al obtener las páginas asignadas.
@@ -277,7 +282,9 @@ La descripción es requerida.: La descripción es requerida.
 La descripcion debe ser mínimo de 3 caracteres.: The description must be at least 3 characters.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
 La empresa aún no tiene configurado ningún nivel: La empresa aún no tiene configurado ningún nivel
+La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.: La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.
 La empresa es requerida.: La empresa es requerida.
+Error la empresa no existe: Error la empresa no existe
 La Entidad es requerida.: La Entidad es requerida.
 La faq ha sido almacenada con éxito: La faq ha sido almacenada con éxito
 La fecha de fin es requerida.: La fecha de fin es requerida.
@@ -314,6 +321,7 @@ Login repetido: Login repetido
 Login requerido: Login requerido
 Logo de la empresa: Logo de la empresa
 Lugar: Lugar
+Los roles que tiene el usuario no son permitidos para ingresar al sistema.: Los roles que tiene el usuario no son permitidos para ingresar al sistema.
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Material complementario: Material complementario
@@ -332,6 +340,7 @@ Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
 No existen páginas: No existen páginas
+No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
@@ -379,6 +388,7 @@ Permisos de Acceso: Permisos de Acceso
 Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
 Plantilla: Plantilla
+Por favor, ingresa tu usuario y contraseña: Por favor, ingresa tu usuario y contraseña
 Preferencias de la empresa: Preferencias de la empresa
 Preferencia de plantillas de las empresas: Preferencia de plantillas de las empresas
 Pregunta: Pregunta
@@ -395,6 +405,7 @@ Puede contactar con el Administrador del Sistema para otorgarle permisos de acce
 Puntaje con que se aprueba: Puntaje con que se aprueba
 QR: QR
 Recordarme: Recordarme
+Recordar mi contaseña: Recordar mi contaseña
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
 registros: registros
@@ -478,3 +489,4 @@ Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails
 Vista Previa: Vista Previa
+¿Olvidaste tu contraseña?: ¿Olvidaste tu contraseña?

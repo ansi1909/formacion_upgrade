@@ -3,8 +3,12 @@ _inicio:
     defaults: { _controller: LinkFrontendBundle:Default:index }
 
 _login:
-    path:     /login
+    path:     /login/{empresa_id}
     defaults: { _controller: LinkFrontendBundle:Login:login }
+
+_authExceptionEmpresa:
+    path:     /authExceptionEmpresa
+    defaults: { _controller: LinkFrontendBundle:Login:authExceptionEmpresa }
 
 _recuperarClave:
     path:     /recuperarClave

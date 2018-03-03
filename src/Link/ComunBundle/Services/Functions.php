@@ -803,4 +803,39 @@ class Functions
 
     }
 
+ // Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
+	public function subPaginasNivel($pagina_id, $nivel_id, $estatus_contenido)
+	{
+
+		$em = $this->em;
+		$subpaginas = array();
+
+		$query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
+                                   WHERE p.pagina = :pagina_id 
+                                   ORDER BY p.orden ASC")
+                    ->setParameters(array('pagina_id' => $pagina_id));
+        $subpages = $query->getResult();
+
+        if($subpages)
+        {
+	     	foreach ($subpages as $subpage)
+			{
+	            
+				$query = $em->createQuery('SELECT COUNT(p.id) as cantidad FROM LinkComunBundle:CertiPrueba p
+                                           WHERE p.estatusContenido = :activo and p.pagina = :pagina_id')
+                            ->setParameters(array('activo' => $estatus_contenido,
+                            					  'pagina_id' => $subpage->getPagina()->getId() ));
+                $tiene_evaluacion = $query->getSingleScalarResult();
+
+	            $subpaginas[] = array('id' => $subpage->getPagina()->getId(),
+                                      'nombre' => $subpage->getPagina()->getNombre(),
+                                      'categoria' => $subpage->getPagina()->getCategoria()->getNombre(),
+                                      'foto' => $subpage->getPagina()->getFoto(),
+                                      'tiene_evaluacion' => $tiene_evaluacion );
+			}
+		}
+
+		return $subpaginas; 
+	}
+
 }

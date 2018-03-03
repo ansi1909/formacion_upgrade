@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
 {
+
     public function indexAction()
     {
 

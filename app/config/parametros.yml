@@ -49,4 +49,7 @@ parameters:
         dir_project: '/home/develo/public_html/formacion2.0/'
         dir_uploads: '/home/develo/public_html/uploads/'
         #dir_uploads: 'C:/xampp/htdocs/uploads/'
+    correo_recuperacion:
+        asunto: 'Formación2.0 - Recuperación de usuario y clave.'
+        remitente: 'tutorvirtualformacion@gmail.com'
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

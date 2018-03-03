@@ -114,6 +114,7 @@ Datos notificación: Notification details
 Dar acceso: Provide access
 de la evaluación: of the test
 de un total de: of total of
+Debe ingresar el correo electronico.: You must enter the email.
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
@@ -152,6 +153,8 @@ El campo usuario debe ser mínimo de 3 caracteres.: User field must have at leas
 El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
+El correo no existe en la base de datos.: Mail does not exist in the database.
+El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El Encabezado es requerido.: The Header is required
 El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
@@ -188,6 +191,7 @@ El tipo de notificación es requerida.: The notification type is required.
 El tipo de pregunta es requerido.: Question type is required.
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
+El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
 El valor de la pregunta es requerido.: Question weighing is required.
 El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
@@ -202,6 +206,7 @@ Encabezado: Header
 Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
 Entidad: Entity
+Entrar: Get in
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
@@ -276,8 +281,10 @@ La descripción debe ser mínimo de 3 caracteres.: Description must have at leas
 La descripción es requerida.: Description is required.
 La descripcion debe ser mínimo de 3 caracteres.: La descripcion debe ser mínimo de 3 caracteres.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
+La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.: The company to which this user belongs is inactive. Contact the system administrator.
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
 La empresa es requerida.: Company is required.
+Error la empresa no existe: Error the company does not exist
 La Entidad es requerida.: The Entity is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
 La fecha de fin es requerida.: The end date is required.
@@ -314,6 +321,7 @@ Login repetido: Login repeated
 Login requerido: Login required
 Logo de la empresa: Company logo
 Lugar: Place
+Los roles que tiene el usuario no son permitidos para ingresar al sistema.: The roles that the user has are not allowed to enter the system.
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Material complementario: Complementary content
@@ -332,6 +340,7 @@ Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
 No existen páginas: There are no pages
+No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se permiten espacios en blanco.: Blank spaces are not allowed.
@@ -379,6 +388,7 @@ Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
 Plantilla: Template
+Por favor, ingresa tu usuario y contraseña: Please, enter your username and password
 Preferencias de la empresa: Preferences of company
 Preferencia de plantillas de las empresas: Layout preferences of the companies
 Pregunta: Question
@@ -395,6 +405,7 @@ Puede contactar con el Administrador del Sistema para otorgarle permisos de acce
 Puntaje con que se aprueba: Score with which it is approved
 QR: QR
 Recordarme: Remember me
+Recordar mi contaseña: Remember my password
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 registros: items
@@ -478,3 +489,4 @@ Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails
 Vista Previa: Preview
+¿Olvidaste tu contraseña?: Did you forget your password?
