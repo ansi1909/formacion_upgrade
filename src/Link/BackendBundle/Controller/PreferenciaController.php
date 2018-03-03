@@ -131,7 +131,11 @@ class PreferenciaController extends Controller
 
         // Atributos por defecto
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $archivo = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/formacion/sass/_variables_color.scss';
+        $archivo = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/_variables_color.scss';
+        if (!file_exists($archivo))
+        {
+            $archivo = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/formacion/sass/_variables_color.scss';
+        }
         $fp = fopen($archivo, 'r');
         while (!feof($fp))
         {
@@ -172,37 +176,82 @@ class PreferenciaController extends Controller
         else {
             $preferencia = new AdminPreferencia();
             $preferencia->setEmpresa($empresa);
+            $preferencia->setTitle($this->get('translator')->trans('Sistema Formación').' 2.0');
         }
 
         if ($request->getMethod() == 'POST')
         {
 
-            /*
-            $nombre = $request->request->get('nombre');
-            $pais_id = $request->request->get('pais_id');
-            $bienvenida = $request->request->get('bienvenida');
-            $activo = $request->request->get('activo');
-            $activo2 = $request->request->get('activo2');
-            $activo3 = $request->request->get('activo3');
+            return new Response($f->getWebDirectory());
+            $layout_id = $request->request->get('layout_id');
+            $title = $request->request->get('title');
+            $logo = trim($request->request->get('logo'));
+            $favicon = trim($request->request->get('favicon'));
 
-            $pais = $this->getDoctrine()->getRepository('LinkComunBundle:AdminPais')->find($pais_id);
-
-            $empresa->setNombre($nombre);
-            $empresa->setActivo($activo ? true : false);
-            $empresa->setChatActivo($activo2 ? true : false);
-            $empresa->setWebinar($activo3 ? true : false);
-            $empresa->setBienvenida($bienvenida);
-            $empresa->setPais($pais);
-            $em->persist($empresa);
+            $layout = $em->getRepository('LinkComunBundle:AdminLayout')->find($layout_id[0]);
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+            
+            // Preferencia
+            $preferencia->setLayout($layout);
+            $preferencia->setTitle($title);
+            $preferencia->setLogo($logo != '' ? $logo : null);
+            $preferencia->setFavicon($favicon != '' ? $favicon : null);
+            $preferencia->setUsuario($usuario);
+            $em->persist($preferencia);
             $em->flush();
 
-            // Se crea el directorio para los activos de la empresa
-            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            $f->subDirEmpresa($empresa->getId(), $yml['parameters']['folders']['dir_uploads']);
+            // Colores
+            foreach ($atributos as $atributo)
+            {
+                $hex = $request->request->get('atributos_id'.$atributo['id']);
+                if ($hex) 
+                {
 
-            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));*/
+                    $atributo_bd = $em->getRepository('LinkComunBundle:AdminAtributo')->find($atributo['id']);
+                    $color = $em->getRepository('LinkComunBundle:AdminColor')->findOneBy(array('preferencia' => $preferencia->getId(),
+                                                                                               'atributo' => $atributo_bd->getId()));
+                    if (!$color)
+                    {
+                        $color = new AdminColor();
+                    }
+                    $color->setPreferencia($preferencia);
+                    $color->setAtributo($atributo_bd);
+                    $color->setHex($hex);
+                    $em->persist($color);
+                    $em->flush();
+
+                    // Se escribe en el arreglo de contenido
+                    $i = 0;
+                    foreach ($content as $c)
+                    {
+                        if (strpos($c, '$'.$atributo['variable']) === 0)
+                        {
+                            $content[$i] = "\$".$atributo['variable'].": ".$hex.";\n";
+                        }
+                        $i++;
+                    }
+
+                }
+            }
+
+            $new_file = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/_variables_color.scss';
+            $fp = fopen($new_file, "w+");
+            foreach ($content as $c){
+                fwrite($fp, $c);
+            }
+            fclose($fp);
+
+            // Aquí se correría el comando que genera el nuevo main.css de la empresa
+            $css = 'front/client_styles/'.$empresa_id.'/css/main.css';
+            $preferencia->setCss($css);
+            $em->persist($preferencia);
+            $em->flush();
+
+            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
 
         }
+
+        //return new Response(var_dump($atributos));
         
         return $this->render('LinkBackendBundle:Preferencia:edit.html.twig', array('preferencia' => $preferencia,
                                                                                    'layouts' => $layouts,

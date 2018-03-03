@@ -5,13 +5,13 @@ parameters:
     database_path: null
     database_port: 5432
     # BD LOCAL
-    database_name: formacion
-    database_user: desa
-    database_password: desa1234
+    #database_name: formacion
+    #database_user: desa
+    #database_password: desa1234
     # BD DESARROLLO
-    #database_name: develo_formacion
-    #database_user: develo
-    #database_password: F0rm4c10n2.0
+    database_name: develo_formacion
+    database_user: develo
+    database_password: F0rm4c10n2.0
     # MAILER
     #mailer_transport: smtp
     #mailer_host: smtp.gmail.com

@@ -13,7 +13,8 @@
 	height: 30px;
 	background: url(../images/select.png) center;
 }
-#colorSelector2 {
+
+/*#colorSelector2 {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -76,6 +77,73 @@
 #colorpickerHolder2 .colorpicker input {
 	color: #778398;
 }
+*/
+
+.cs {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 36px;
+	height: 36px;
+	background: url(../images/select2.png);
+}
+.cs div {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 28px;
+	height: 28px;
+	background: url(../images/select2.png) center;
+}
+.ch {
+	top: 32px;
+	left: 0;
+	width: 356px;
+	height: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: 10;
+}
+.ch .colorpicker {
+	background-image: url(../images/custom_background.png);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+.ch .colorpicker_hue div {
+	background-image: url(../images/custom_indic.gif);
+}
+.ch .colorpicker_hex {
+	background-image: url(../images/custom_hex.png);
+}
+.ch .colorpicker_rgb_r {
+	background-image: url(../images/custom_rgb_r.png);
+}
+.ch .colorpicker_rgb_g {
+	background-image: url(../images/custom_rgb_g.png);
+}
+.ch .colorpicker_rgb_b {
+	background-image: url(../images/custom_rgb_b.png);
+}
+.ch .colorpicker_hsb_s {
+	background-image: url(../images/custom_hsb_s.png);
+	display: none;
+}
+.ch .colorpicker_hsb_h {
+	background-image: url(../images/custom_hsb_h.png);
+	display: none;
+}
+.ch .colorpicker_hsb_b {
+	background-image: url(../images/custom_hsb_b.png);
+	display: none;
+}
+.ch .colorpicker_submit {
+	background-image: url(../images/custom_submit.png);
+}
+.ch .colorpicker input {
+	color: #778398;
+}
+
 #customWidget {
 	position: relative;
 	height: 36px;

@@ -129,6 +129,7 @@ Detalle de la Biblioteca Virtual:
 Detalle de la Noticia y Novedad: Detalle de la Noticia y Novedad
 Detalles de la página: Detalles de la página
 Detalle del Certificado y Constancia: Detalle del Certificado y Constancia
+Dimensiones recomendadas: Dimensiones recomendadas
 Diseño: Diseño
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
@@ -210,6 +211,7 @@ Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
 Errores: Errores
 Errores de validación: Errores de validación
+Escoja una plantilla: Escoja una plantilla
 Espacio colaborativo: Espacio colaborativo
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
@@ -248,6 +250,7 @@ Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la 
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
 Historial de programaciones de: Historial de programaciones de
 Icono: Icono
+Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen lado: Imagen lado
 Iniciar Sesión: Iniciar Sesión
@@ -309,6 +312,7 @@ Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Listado de tutoriales: Listado de tutoriales
 Login repetido: Login repetido
 Login requerido: Login requerido
+Logo de la empresa: Logo de la empresa
 Lugar: Lugar
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
@@ -419,6 +423,7 @@ Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimien
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
 Siguiente: Siguiente
+Sistema Formación: Sistema Formación
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
 Sólo archivos con extensión .jpg o .png: Sólo archivos con extensión .jpg o .png: 
@@ -445,8 +450,9 @@ Tipo de Noticia: Tipo de Noticia
 Tipo notificación: Tipo notificación
 Tipo Destino: Tipo Destino
 Tipo de Destinos: Tipo de Destinos
-Tutoriales: Tutoriales
 Título: Título
+Título en la ventana del navegador: Título en la ventana del navegador
+Tutoriales: Tutoriales
 Últimos 12: Últimos 12
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
@@ -464,6 +470,7 @@ Usuarios reg.: Usuarios reg.
 Usuarios registrados: Usuarios registrados
 Validar: Validar
 Valor de la pregunta: Valor de la pregunta
+Variables de colores que se aplican a la plantilla: Variables de colores que se aplican a la plantilla
 Vencimiento: Vencimiento
 Ver historial: Ver historial
 Ver páginas asignadas: Ver páginas asignadas

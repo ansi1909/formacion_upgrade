@@ -42,9 +42,11 @@ parameters:
     layout:
         base: 1
     folders:
-        uploads: 'http://localhost/uploads/'
-        dir_uploads: 'C:/wamp/www/uploads/'
-        dir_project: 'C:/wamp/www/formacion2.0/'
-        #dir_uploads: '/home/develo/public_html/uploads/'
+        #uploads: 'http://localhost/uploads/'
+        uploads: 'http://develop.formacion2puntocero.com/uploads/'
+        #dir_uploads: 'C:/wamp/www/uploads/'
+        #dir_project: 'C:/wamp/www/formacion2.0/'
+        dir_project: '/home/develo/public_html/formacion2.0/'
+        dir_uploads: '/home/develo/public_html/uploads/'
         #dir_uploads: 'C:/xampp/htdocs/uploads/'
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
