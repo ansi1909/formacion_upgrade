@@ -178,15 +178,15 @@ class LoginController extends Controller
 
     		if($preferencia)
     		{
-    			$logo= $preferencia->getLogo();
-    			$favicon = $preferencia->getFavicon();
+    			$logo= 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$preferencia->getLogo();
+    			$favicon = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$preferencia->getFavicon();
 				$layout = explode("_", $preferencia->getLayout()->getTwig());
     			$layout = $layout[0]."_";
     			$title = $preferencia->getTitle();
     		}else
     		{
-    			$logo='recursos/empresa/logo_formacion.png';
-    			$favicon='recursos/empresa/logo_formacion.png';
+    			$logo='http://'.$_SERVER['HTTP_HOST'].'/uploads/recursos/empresas/logo_formacion.png';
+    			$favicon='http://'.$_SERVER['HTTP_HOST'].'/uploads/recursos/empresas/icono.png';
     			$layout='';
     			$title = 'Sistema Formación 2.0';
     		}
@@ -349,6 +349,7 @@ class LoginController extends Controller
 	        }
 
 	        $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa_id' => $empresa_id, 
+    																								  'logo' => $logo,
     																								  'title' => $title,
     																								  'favicon' => $favicon,
 	        																						  'error' => $error));
