@@ -28,3 +28,8 @@ web/error_log
 /docs/prototipos/front/.sass-cache/*
 !/docs/prototipos/front/client_styles/formacion/.sass-cache
 /docs/prototipos/front/client_styles/formacion/.sass-cache/*
+!/web/front/.sass-cache/
+/web/front/.sass-cache/*
+!/web/.sass-cache/
+/web/.sass-cache/*
+/web/front/client_styles/[1-9]*

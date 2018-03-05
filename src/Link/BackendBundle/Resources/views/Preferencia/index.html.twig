@@ -34,6 +34,10 @@
                                 <td class="center f_icon">
                                     <a href="{{ path('_preferencia', { 'empresa_id': empresa.id, 'preferencia_id': empresa.preferencia_id }) }}" title="{{ 'Configurar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
                                     <a href="#" title="{{ 'Ver thumbnails'|trans }}" class="btn btn-link btn-sm see" data="{{ empresa.layout_id }}"><span class="fa fa-picture-o"></span></a>
+                                    {% if empresa.preferencia_id %}
+                                        <a href="{{ path('_showPreferencia', { 'preferencia_id': empresa.preferencia_id }) }}" title="{{ 'Mostrar preferencia'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
+                                    {% endif %}
+                                    <a href="" title="{{ 'Vista previa del dashboard'|trans }}" class="btn btn-link btn-sm" target="_blank"><span class="fa fa-dashboard"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}

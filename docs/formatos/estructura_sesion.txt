@@ -17,7 +17,8 @@ SESSION = [
 						  'chat' = true o false,
 						  'webinar' = true,
 						  'plantilla' = 'twig para el layout principal',
-						  'logo' = 'Url del logo de la empresa'
+						  'logo' = 'Url del logo de la empresa',
+						  'favicon' = 'Url del ícono de la empresa'
 						],
 			'paginas' = [
 						  0 = [

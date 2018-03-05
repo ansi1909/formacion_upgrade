@@ -77,6 +77,15 @@
 	
 16. En el php.ini setear allow_url_fopen = On
 
+17. Instalación del compilador de SASS en Windows:
+	a. Descargar e instala Ruby de: http://rubyinstaller.org/
+	b. En la terminal ejecutar: gem install sass
+	c. Se puede confirmar la instalación con: sass -v
+	d. Correr el comando:
+	   		where sass 		--> En ambiente Windows
+	   		which sass 		--> En ambiente Linux
+	   Con el resultado, reemplazar la constante ['parameters']['comandos']['sass'] en app/config/parametros.yml
+
 ---------------------------------------------------------------------------------------------------------
 OJO: Cuando se instaló el Bundle de html2pdf generó el siguiente warning:
 Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffice/phpspreadsheet instead.

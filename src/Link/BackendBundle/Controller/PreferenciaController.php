@@ -105,6 +105,7 @@ class PreferenciaController extends Controller
 
         $layouts_bd = $em->getRepository('LinkComunBundle:AdminLayout')->findAll();
         $layouts = array();
+        $hay_layout = 0;
         foreach ($layouts_bd as $layout)
         {
             $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPreferencia p 
@@ -112,11 +113,20 @@ class PreferenciaController extends Controller
                         ->setParameters(array('empresa_id' => $empresa_id,
                                               'layout_id' => $layout->getId()));
             $tiene_layout = $query->getSingleScalarResult();
+            if ($tiene_layout)
+            {
+                $hay_layout = 1;
+            }
             $thumbnails = $em->getRepository('LinkComunBundle:AdminThumbnail')->findByLayout($layout->getId());
             $layouts[] = array('id' => $layout->getId(),
                                'twig' => $layout->getTwig(),
                                'thumbnails' => $thumbnails,
                                'checked' => $tiene_layout ? true : false);
+        }
+
+        if (!$hay_layout)
+        {
+            $layouts[0]['checked'] = true;
         }
 
         $admin_atributos = $em->getRepository('LinkComunBundle:AdminAtributo')->findAll();
@@ -182,7 +192,6 @@ class PreferenciaController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
-            return new Response($f->getWebDirectory());
             $layout_id = $request->request->get('layout_id');
             $title = $request->request->get('title');
             $logo = trim($request->request->get('logo'));
@@ -224,7 +233,7 @@ class PreferenciaController extends Controller
                     $i = 0;
                     foreach ($content as $c)
                     {
-                        if (strpos($c, '$'.$atributo['variable']) === 0)
+                        if (strpos($c, '$'.$atributo['variable'].':') === 0)
                         {
                             $content[$i] = "\$".$atributo['variable'].": ".$hex.";\n";
                         }
@@ -242,12 +251,16 @@ class PreferenciaController extends Controller
             fclose($fp);
 
             // Aquí se correría el comando que genera el nuevo main.css de la empresa
+            $command = $yml['parameters']['comandos']['sass'];
+            $source = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/main.scss';
+            $dest = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
+            shell_exec($command.' '.$source.':'.$dest);
             $css = 'front/client_styles/'.$empresa_id.'/css/main.css';
             $preferencia->setCss($css);
             $em->persist($preferencia);
             $em->flush();
 
-            return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
+            return $this->redirectToRoute('_showPreferencia', array('preferencia_id' => $preferencia->getId()));
 
         }
 
@@ -256,6 +269,57 @@ class PreferenciaController extends Controller
         return $this->render('LinkBackendBundle:Preferencia:edit.html.twig', array('preferencia' => $preferencia,
                                                                                    'layouts' => $layouts,
                                                                                    'atributos' => $atributos));
+
+    }
+
+    public function showAction($preferencia_id, Request $request){
+
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $atributos = array(); // Atrinutos editables en el template
+        $variables = array(); // Solo tendrán los nombres de las variables editables
+        
+        $admin_atributos = $em->getRepository('LinkComunBundle:AdminAtributo')->findAll();
+        foreach ($admin_atributos as $attr)
+        {
+            $variables[] = $attr->getVariable();
+            $atributos[$attr->getVariable()] = array('id' => $attr->getId(),
+                                                     'variable' => $attr->getVariable(),
+                                                     'descripcion' => $attr->getDescripcion(),
+                                                     'valor' => '');
+        }
+
+        $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->find($preferencia_id);
+
+        $thumbnails = $em->getRepository('LinkComunBundle:AdminThumbnail')->findByLayout($preferencia->getLayout()->getId());
+
+        // Atributos almacenados
+        $colores = $em->getRepository('LinkComunBundle:AdminColor')->findByPreferencia($preferencia->getId());
+        foreach ($colores as $color)
+        {
+            if (in_array($color->getAtributo()->getVariable(), $variables))
+            {
+                $atributos[$color->getAtributo()->getVariable()]['valor'] = $color->getHex();
+            }
+        }
+
+        return $this->render('LinkBackendBundle:Preferencia:show.html.twig', array('preferencia' => $preferencia,
+                                                                                   'atributos' => $atributos,
+                                                                                   'thumbnails' => $thumbnails));
 
     }
 

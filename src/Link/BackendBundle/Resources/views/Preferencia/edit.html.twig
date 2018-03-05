@@ -41,9 +41,6 @@
     <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="{{ path('_preferencias', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
     </div>
-    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
-        <ul></ul>
-    </div>
 </div>
 <div class="row">
 	<div class="col-sm-16">
@@ -222,7 +219,7 @@
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <label for="logo" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;Logo</label>
                                     {% set img = preferencia.logo ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
-                                    <div class="photo_img" id="figure_logo"><img src="{{ img }}" alt="{{ 'Logo de la empresa'|trans }}"></div>
+                                    <div class="photo_img" id="figure_logo"><img src="{{ img }}" alt="{{ 'Logo de la empresa'|trans }}" width="356px" height="87px"></div>
                                 </div>
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <div class="input-group">
@@ -250,7 +247,7 @@
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <label for="favicon" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;{{ 'Icono'|trans }}</label>
                                     {% set img = preferencia.favicon ? uploads~preferencia.favicon : asset('img/icono.png') %}
-                                    <div class="photo_img" id="figure_favicon"><img src="{{ img }}" alt="{{ 'Icono de la empresa'|trans }}"></div>
+                                    <div class="photo_img" id="figure_favicon"><img src="{{ img }}" alt="{{ 'Icono de la empresa'|trans }}" width="32px" height="32px"></div>
                                 </div>
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <div class="input-group">
