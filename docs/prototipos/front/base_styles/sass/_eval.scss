@@ -50,9 +50,6 @@
             top: -.2rem;
         }
     }
-    .opc_letra-activa{
-        background: $green;
-    }
     .opc_resp{
         display: inline-block;
         position: relative;
@@ -70,7 +67,11 @@
 
 .opc_activa{
     border: .125rem solid $green !important;
+    .opc_letra{
+        background: $green;
+    }
 }
+
 
 //Estilo para seleccion simple imagenes
 .opc_img{
@@ -87,6 +88,10 @@
         width: 18.1vw;
         height: 37.9vh;
     }
+}
+
+.opc_activa-img{
+    border: .1875rem solid $green !important;
 }
 
 //Estilos para preguntas de asignacion
