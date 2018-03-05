@@ -50,6 +50,9 @@
             top: -.2rem;
         }
     }
+    .opc_letra-activa{
+        background: $green;
+    }
     .opc_resp{
         display: inline-block;
         position: relative;
@@ -63,6 +66,10 @@
             line-height: calc($h4-font-size - 3px);
         }
     }
+}
+
+.opc_activa{
+    border: .125rem solid $green !important;
 }
 
 //Estilo para seleccion simple imagenes

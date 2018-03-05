@@ -674,6 +674,8 @@ p.up {
       text-align: center;
       position: relative;
       top: -.2rem; }
+  .opc .opc_letra-activa {
+    background: #CFE65C; }
   .opc .opc_resp {
     display: inline-block;
     position: relative;
@@ -685,6 +687,9 @@ p.up {
       font-family: "Roboto";
       font-size: 1.125rem;
       line-height: calc($h4-font-size - 3px); }
+
+.opc_activa {
+  border: 0.125rem solid #CFE65C !important; }
 
 .opc_img {
   width: calc($tam-width + .3125rem);

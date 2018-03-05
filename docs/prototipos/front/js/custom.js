@@ -36,7 +36,7 @@ window.onload=function(){
 $(document).ready(function() {
   // do stuff when DOM is ready
 // $("#message").fadeIn("slow");
-
+    var opc = $('.opc');
 $("#equis").click(function(){
         $("#message").fadeOut("slow");
     });
@@ -51,6 +51,13 @@ $("#iconComments").click(function(){
             $("#comments").toggleClass("open-comments");
             $("#main").toggleClass("ml-comments");
 
+        });
+        
+    
+        opc.on('click',function(){
+            $(this).toggleClass("opc_activa");
+            //var thisOpc = $(this).data('opc');
+            $('.opc_letra').toggleClass("opc_letra-activa");
         });
 
 });
