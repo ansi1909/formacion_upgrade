@@ -16,37 +16,34 @@ class DefaultController extends Controller
     public function indexAction()
     {
 
-    	$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        /*$session = new Session();
+        $session = new Session();
 
         if (!$session->get('ini'))
-      	{
-        	return $this->redirectToRoute('_login');
-      	}
+        {
+            return $this->redirectToRoute('_login');
+        }
         $f->setRequest($session->get('sesion_id'));
 
-      	if ($this->container->get('session')->isStarted())
-      	{
-        	$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        	$datos = $session;
-			$empresa_obj = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
-			$bienvenida = $empresa_obj->getBienvenida();
+        if ($this->container->get('session')->isStarted())
+        {
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            $datos = $session;
+            $empresa_obj = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
+            $bienvenida = $empresa_obj->getBienvenida();
 
-			$usuario_session = $session->get('usuario');
-			$usuario_id = $datos_usuario['nombre'];
-
-			$query_actividad = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
-												 WHERE ar.usuario = :usuario_id
+            $query_actividad = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
+                                                 WHERE ar.usuario = :usuario_id
                                                  AND ar.estatusPagina != :completada
-												 ORDER BY u.id DESC')
+                                                 ORDER BY ar.id DESC')
                                   ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
                                                         'completada' => $yml['parameters']['estatus_pagina']['completada']))
-		                          ->setMaxResults(3);
+                                  ->setMaxResults(3);
             $actividadreciente = $query_actividad->getResult();
 
             $actividad_reciente = array();
-            if(count($actividadreciente) > 1){
+            if(count($actividadreciente) >= 1){
                 $reciente = 1;
                 foreach ($actividadreciente as $ar) {
 
@@ -103,7 +100,7 @@ class DefaultController extends Controller
                     $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                      'pagina' => $pg['id']));
 
-                    $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id']
+                    $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                         'pagina' => $pg['id']));
                     if($datos_log){
                         $cotinuar = 1;
@@ -119,23 +116,24 @@ class DefaultController extends Controller
                                                     'nombre'=>$pg['nombre'],
                                                     'imagen'=>$imagen,
                                                     'descripcion'=>$pag_obj->getDescripcion(),
+                                                    'fecha_vencimiento'=>$f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
                                                     'continuar'=>$cotinuar);
                 }
                 
             }
-      	}
-      	else {
-      		return $this->redirectToRoute('_login');
-      	}*/
-      	$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-      	$datos = array();
+        }
+        else {
+            return $this->redirectToRoute('_login');
+        }
+        /*$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $datos = array();
 
-      	$usuario_id = 2;
-      	$usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-      	$paginaEmpresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findAll();
+        $usuario_id = 2;
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+        $paginaEmpresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findAll();
 
-      	$datosPagina = array();
-      	$roles_bk = array();
+        $datosPagina = array();
+        $roles_bk = array();
         $roles_bk[] = $yml['parameters']['rol']['participante'];
         $roles_bk[] = $yml['parameters']['rol']['tutor'];
         $roles_ok = 0;
@@ -163,7 +161,7 @@ class DefaultController extends Controller
             }
         }
 
-      	$datosUsuario = array('id' => $usuario->getId(),
+        $datosUsuario = array('id' => $usuario->getId(),
                               'nombre' => $usuario->getNombre(),
                               'apellido' => $usuario->getApellido(),
                               'correo' => $usuario->getCorreoPersonal(),
@@ -189,23 +187,23 @@ class DefaultController extends Controller
                                     'tiene_evaluacion' => true,
                                     'sub_paginas' =>  ''
                                     );
-		}
+        }
 
-		$bienvenida = $usuario->getEmpresa()->getBienvenida();
+        $bienvenida = $usuario->getEmpresa()->getBienvenida();
 
-		$query_actividad = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
-											 WHERE ar.usuario = :usuario_id
+        $query_actividad = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
+                                             WHERE ar.usuario = :usuario_id
                                              AND ar.estatusPagina != :completada
-											 ORDER BY ar.id DESC')
-	                          ->setParameters(array('usuario_id' => $usuario->getId(),
+                                             ORDER BY ar.id DESC')
+                              ->setParameters(array('usuario_id' => $usuario->getId(),
                                                     'completada' => $yml['parameters']['estatus_pagina']['completada']))
-	                          ->setMaxResults(3);
-	    $actividadreciente = $query_actividad->getResult();
+                              ->setMaxResults(3);
+        $actividadreciente = $query_actividad->getResult();
 
         
         $actividad_reciente = array();
-	    if(count($actividadreciente) > 1){
-			$reciente = 1;
+        if(count($actividadreciente) > 1){
+            $reciente = 1;
             foreach ($actividadreciente as $ar) {
 
                 if($ar->getPagina()->getPagina()){
@@ -248,10 +246,10 @@ class DefaultController extends Controller
                                              'porcentaje'=>$porcentaje);
             }
         }else{
-			$reciente = 0;
+            $reciente = 0;
         }
 
-		$datos = array('usuario'=>$datosUsuario,
+        $datos = array('usuario'=>$datosUsuario,
                        'empresa'=>$datosEmpresa,
                        'paginas'=>$datosPagina);
 
@@ -285,10 +283,9 @@ class DefaultController extends Controller
                                                 'continuar'=>$cotinuar);
             }
             
-        }
+        }*/
 
-        return $this->render('LinkFrontendBundle:Default:index.html.twig', array('sesion' => $datos,
-                                                                                 'bienvenida' => $bienvenida,
+        return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $bienvenida,
                                                                                  'reciente' => $reciente,
                                                                                  'actividad_reciente' => $actividad_reciente,
                                                                                  'programas_disponibles' => $programas_disponibles));
