@@ -5838,10 +5838,10 @@ a.active {
     color: #adb5bd;
     font-weight: 200; }
 
-.well-message img {
+.well-message /*img {
   position: absolute;
   bottom: 0;
-  right: 0; }
+  right: 0; }*/
 
 .wrap-move-map {
   overflow: hidden; }

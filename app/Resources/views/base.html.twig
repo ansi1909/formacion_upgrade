@@ -23,8 +23,8 @@
         <header>
             <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
                 <a class="navbar-brand" href="#">
-                    {% set img_logo = app.session.get('empresa').logo ? app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') %}
-                    <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+                    {{} set img_logo = app.session.get('empresa').logo ? app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') }}
+                    <img class="img-fluid py-1" src="{{} img_logo }}" width= "200" alt="logo formación 2.0">
                 </a>
                 {% block headertitle %}{% endblock %}
                 <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
