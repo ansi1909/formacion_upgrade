@@ -1,7 +1,12 @@
 {% extends '::base.html.twig' %}
 
-{% block body %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+{% endblock %}
 
+{% block body %}
+{% set uri = app.request.getbasepath %}
 <div id="message" class="for-message well-message container py-6 px-6 mb-4">
     <i id="equis" class="material-icons mr-2" >close</i>
     <h1 class="mb-4">Bienvenido a Formación&nbsp;2.0</h1>
@@ -51,35 +56,88 @@
 </div>
 {% endif %}
 {# FILTERS #}
-<div class="container">
-    <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line "> Grupos </h4>
-    <div class="filter-group d-flex justify-content-around mb-3">
-        <a class="color-light-grey mt-3" href=""> Grupo a </a>
-        <a class="active-line color-light-grey mt-3" href=""> Grupo b </a>
-        <a class="color-light-grey mt-3" href=""> Grupo c </a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mt-3 pt-3 mb-0 pb-1 title-grey sub-line "> Grupos </h4>
+        </div>
     </div>
-</div>
-
-<div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
-{% for pd in programas_disponibles %}
-    
-        <div class="card" >
-            <img class="card-img-top" src="{{ pd.imagen }}" alt="Card image cap">
-            <div class="card-img-overlay">
-                <span class="count text-xs ">Finaliza en {{ pd.fecha_vencimiento }} días</span>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title mb-3"> {{ pd.nombre }} </h5>
-                <p class="card-text">{{ pd.descripcion | raw }}</p>
-                {% if pd.continuar == 1 %}
-                    <a href="#{{ pd.id }}" class="btn btn-continuar  mt-3">Continuar </a>
-                {% else %}
-                    <a href="#{{ pd.id }}" class="btn btn-primary mt-3"> Iniciar </a>
-                {% endif %}
-                
+    <div class="row">
+        <div class="col-12">
+            <div class="filter-group d-flex justify-content-around mb-3">
+                <ul class="tabs">
+                    {% for g in grupos %}
+                    <li class="mt-3">
+                        <span>{{ g.nombre }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
-    
-{% endfor %}
+    </div>
+    <div class="row">
+        <ul class="tab__content">
+        {% for g in grupos %}
+            <li>
+                <div class="content__wrapper">
+                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
+                    {% for pd in programas_disponibles %}
+                        {% if pd.nombregrupo == g.nombre %}
+                            <div class="card">
+                                <img class="card-img-top" src="{{ pd.imagen }}" alt="Card image cap">
+                                <div class="card-img-overlay">
+                                    <span class="count text-xs ">Finaliza en {{ pd.fecha_vencimiento }} días</span>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3"> {{ pd.nombre }} </h5>
+                                    <p class="card-text">{{ pd.descripcion | raw }}</p>
+                                    {% if pd.continuar == 0 %}
+                                        <a href="#{{ pd.id }}" class="btn btn-primary mt-3"> Iniciar </a>
+                                    {% elseif pd.continuar == 1 %}
+                                        <a href="#{{ pd.id }}" class="btn btn-continuar  mt-3">Continuar </a>
+                                    {% elseif  pd.continuar in [2, 3] %}
+                                    <div class="badge-wrap">
+                                        <i class="material-icons badge-aprobado ">check_circle</i>
+                                        <span class="text-badge"> Aprobado </span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% if pd.continuar in [2, 3] %}
+                                    {% if pd.continuar == 2 %}
+                                        {% set class = '' %}
+                                    {% else %}
+                                        {% set class = 'disabled' %}
+                                    {% endif %}
+                                <div class="card-footer  d-flex justify-content-around">
+                                    <a  href="#" class="flex-column align-items-center col-4 btn-edge btn-certificado">
+                                        <i class="material-icons d-block">aspect_ratio</i>
+                                        <small class=" d-block"> Certificado </small>
+                                    </a>
+                                    <a  href="#" class="flex-column align-items-center col-4 btn-edge btn-notas " >
+                                        <i class="material-icons   d-block">content_copy</i>
+                                        <small class=" d-block"> Notas </small>
+                                    </a>
+                                    <a  href="#" class="flex-column align-items-center col-4 btn-edge btn-ver {{ class }}" >
+                                        <i class="material-icons   d-block">visibility</i>
+                                        <small class=" d-block"> Ver </small>
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('.tab__content li:first').addClass('activo');
+        $('.tabs li:first').addClass('activo');
+    </script>
 {% endblock %}

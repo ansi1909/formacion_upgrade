@@ -348,7 +348,7 @@ class Functions
 			$datetime1 = new \DateTime($fecha);
 			$datetime2 = new \DateTime("now");
 			$interval = $datetime1->diff($datetime2);
-			$days_ago = $interval->format('%d');
+			$days_ago = $interval->format('%a');
 		}
 
         return $days_ago;
