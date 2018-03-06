@@ -33,6 +33,7 @@ class DefaultController extends Controller
             $empresa_obj = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
             $bienvenida = $empresa_obj->getBienvenida();
 
+            // buscando las últimas 3 interacciones del usuario donde la página no este completada
             $query_actividad = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
                                                  WHERE ar.usuario = :usuario_id
                                                  AND ar.estatusPagina != :completada
@@ -43,16 +44,20 @@ class DefaultController extends Controller
             $actividadreciente = $query_actividad->getResult();
 
             $actividad_reciente = array();
+            // Si tiene actividades
             if(count($actividadreciente) >=  1){
                 $reciente = 1;
                 foreach ($actividadreciente as $ar) {
-
+                    // Si la actividad reciente es con una pagina hija
                     if($ar->getPagina()->getPagina()){
-
+                        // buscamos la página padre
                         $datos_log_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                                   'pagina' => $ar->getPagina()->getPagina()->getId()));
+                        // buscamos los datos de la pagina contra empresa para obntener la fecha de vencimiento
                         $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                   'pagina' => $ar->getPagina()->getPagina()->getId()));
+
+                        // creamos variables para añadir al array
                         $titulo_padre = $ar->getPagina()->getPagina()->getNombre();
                         $titulo_hijo = $ar->getPagina()->getNombre();
                         $imagen = $ar->getPagina()->getPagina()->getFoto();
@@ -60,10 +65,14 @@ class DefaultController extends Controller
                         $porcentaje = $datos_log_padre->getPorcentajeAvance();
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
 
+                    // Si la actividad reciente es con una pagina padre
                     }else{
                         
+                        // buscamos los datos de la pagina contra empresa para obntener la fecha de vencimiento
                         $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                   'pagina' => $ar->getPagina()->getId()));
+
+                        // creamos variables para añadir al array
                         $titulo_padre = $ar->getPagina()->getNombre();
                         $titulo_hijo = '';
                         $imagen = $ar->getPagina()->getFoto();
@@ -72,6 +81,7 @@ class DefaultController extends Controller
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
                     }
 
+                    // Validando si el programa tiene imagen para asignar una por defecto
                     if($imagen){
                         $imagen = $imagen;
                     }else{
@@ -86,18 +96,20 @@ class DefaultController extends Controller
                                                  'fecha_vencimiento'=>$fecha_vencimiento,
                                                  'porcentaje'=>$porcentaje);
                 }
+            // No tiene actividades
             }else{
                 $reciente = 0;
             }
 
             $programas_disponibles = array();
             
+            // Convertimos los id de las paginas de la sesion en un nuevo array
             $paginas_ids = array();
-
             foreach ($session->get('paginas') as $pg) {
                 $paginas_ids[] = $pg['id'];
             }
 
+            // Buscamos los grupos disponibles para el usuario por los programas disponibles en la sesión
             $group_query = $em->createQuery('SELECT cg FROM LinkComunBundle:CertiGrupo cg 
                                             JOIN LinkComunBundle:CertiGrupoPagina cgp
                                             WHERE cg.empresa = :empresa
@@ -108,6 +120,7 @@ class DefaultController extends Controller
                                                   'pagina' => $paginas_ids));
             $grupos = $group_query->getResult();
 
+            // Buscamos datos especificos de los programas de la sesion obteniendo el grupo al que pertenece cada programa
             $query_pages_by_group = $em->createQuery('SELECT cg.nombre as nombregrupo, cp.id as paginaid, cp.descripcion as descripcion, cp.nombre as nombrepagina, cp.foto as foto 
                                      FROM LinkComunBundle:CertiGrupo cg,
                                           LinkComunBundle:CertiGrupoPagina cgp,
@@ -123,6 +136,7 @@ class DefaultController extends Controller
             
             foreach ($pages_by_group as $pg) {
 
+                // contruimos un array con los datos necesarios para el template y el grupo de cada programa
                 $pag_obj = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pg['paginaid']);
 
 
