@@ -43,7 +43,7 @@ class DefaultController extends Controller
             $actividadreciente = $query_actividad->getResult();
 
             $actividad_reciente = array();
-            if(count($actividadreciente) >= 1){
+            if(count($actividadreciente) >=  1){
                 $reciente = 1;
                 foreach ($actividadreciente as $ar) {
 
