@@ -65,3 +65,17 @@
         color: $green;
     }
 }
+
+.btn_sp{
+    padding: calc(1.25rem - 8px) calc(1.5rem - 5.84px);
+    background: transparent !important;
+    border-radius: 2rem;
+    position: relative;
+    top: calc(1rem + 8px);
+    transition: all .25s ease-in-out;
+    &:hover{
+        width: 12vw;
+        background-color: $blue !important;
+        color: $white;
+    }
+}

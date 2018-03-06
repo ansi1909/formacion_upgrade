@@ -18,14 +18,172 @@
     line-height: $h4-font-size;
     font-size: $p-font-size;
     text-align: justify;
+    margin-top: .25rem;
+}
+
+//Estilo para seleccion simple
+.pdg{
+    padding-left: 4.575rem; 
 }
 
 .opc{
+    width: 26.5rem;
+    height: 3rem;
+    @extend %opc_sp;
     .opc_letra{
-        height: 3rem;
+        height: 2.9rem;
         width: 3.30rem;
         background: $lightblue;
-        border-radius: calc(1.25rem - 4px) 0 0 calc(1.25rem - 4px);
+        border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
         padding: 0;
+        position: relative;
+        top: -.075rem;
+        left: -.05rem;
+        display: inline-block;
+        .opc_l{
+            line-height: calc($h2-font-size + 4px);
+            font-size: $h3-font-size;
+            font-family: $primary-font;
+            color: $gray-700;
+            text-align: center;
+            position: relative;
+            top: -.2rem;
+        }
     }
+    .opc_resp{
+        display: inline-block;
+        position: relative;
+        margin: calc(1rem - 2px) 0;
+        top: -.4rem;
+        .opc_r{
+            color: $gray-600;
+            padding-left: calc(1rem + 1.85px);
+            font-family: $primary-font;
+            font-size: $h5-font-size;
+            line-height: calc($h4-font-size - 3px);
+        }
+    }
+}
+
+.opc_activa{
+    border: .125rem solid $green !important;
+    .opc_letra{
+        background: $green;
+    }
+}
+
+
+//Estilo para seleccion simple imagenes
+.opc_img{
+    width: calc($tam-width + .3125rem);
+    height: calc($tam-height+ .5rem);
+    @extend %op_img;
+    .opc_i-3{
+        @extend %op_i;
+        width: 25vw;
+        height: 37.9vh;
+    }
+    .opc_i-4{
+        @extend %op_i;
+        width: 18.1vw;
+        height: 37.9vh;
+    }
+}
+
+.opc_activa-img{
+    border: .1875rem solid $green !important;
+}
+
+//Estilos para preguntas de asignacion
+.mgn{
+    margin: .5rem 0; 
+}
+
+.opc_lado-a{
+    width: 18.75rem;
+    height: 3.75rem;
+    position: relative;
+    left: 15rem;
+    @extend %opc_sa;
+    @extend %opc_sac;
+    .opc_ra{
+        @extend %op_asig;
+    }
+}
+
+.opc_lado-b{
+    width: 18.75rem;
+    height: 3.75rem;
+    @extend %opc_sb;
+    @extend %opc_sbc;
+    .opc_rb{
+        @extend %op_asig;
+        margin-left: -1rem;
+    }
+    &:hover .opc_rb{
+        color: $white;
+    }
+}
+
+//Extends
+
+%opc_sp{
+    background: $white;
+    border: .125rem solid $gray-400;
+    border-radius: calc(1rem - 8px);
+    display: inline-block;
+    cursor: pointer;
+    margin: .35rem 0;
+    transition: all .25s ease;
+    &:hover{
+        border: .125rem solid $lightblue;
+    }
+}
+
+%opc_sa, %opc_sb{
+    border-radius: calc(1rem - 8px);
+    display: inline-block;
+    cursor: pointer;
+    margin: .35rem 0;
+    transition: all .25s ease;
+}
+
+%opc_sac{
+    background: $white;
+    border: .125rem solid $gray-400;
+    &:hover{
+        border: .125rem solid $lightblue;
+    }
+}
+
+%opc_sbc{
+    background: $gray-400;
+    border: .125rem solid $gray-400;
+    &:hover{
+        border: .125rem solid $lightblue;
+        background: $lightblue;
+    }
+}
+
+%op_asig{
+    color: $gray-600;
+    padding-left: calc(1rem + 1.85px);
+    font-family: $primary-font;
+    font-size: $h2-font-size;
+    line-height: calc($h2-font-size + 6px);
+}
+
+%op_img{
+    border: .1875rem solid $gray-400;
+    border-radius: calc(1rem - 8px);
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    &:hover{
+        border: .1875rem solid $lightblue;
+    }
+}
+
+%op_i{
+    border-radius: calc(1rem - 10px);
 }

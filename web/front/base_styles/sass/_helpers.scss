@@ -5,6 +5,13 @@
      }
  }
 
+.mt-22v{
+    margin-top: 22vh;
+    @include media-breakpoint-down(sm) {
+        margin-top: 0;
+    }
+}
+
 .mt-12v{
     margin-top: 12vh;
     @include media-breakpoint-down(sm) {
@@ -12,7 +19,7 @@
     }
 }
 
-.color-light-grey { color: $gray-500; }
+.color-light-grey { color: $gray-500;}
 .color-grey { color: $gray-700; }
 .color-dark-grey { color: $gray-800; }
 .bg-white { background-color: $white; }
@@ -24,7 +31,7 @@
     overflow: hidden;
 }
 
-a.active-line {
+a.active-line, .active-line {
     border-bottom: 3px solid $green;
 }
 
