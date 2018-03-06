@@ -1,4 +1,8 @@
-{% extends '::base.html.twig' %}
+{% extends '::'~layout %}
+
+{% block logout %}
+    <a href="" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
+{% endblock %}
 
 {% block body %}
 

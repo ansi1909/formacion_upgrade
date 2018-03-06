@@ -21,6 +21,8 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
+        $empresa_id = $session->get('empresa')['id'];
+
         $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
         if ($sesion)
         {
@@ -30,15 +32,21 @@ class DefaultController extends Controller
             $f->setRequest($session->get('sesion_id'));
         }
 
+        $parametros = array();
+
+        if ($empresa_id)
+        {
+            $parametros = array('empresa_id' => $empresa_id);
+        }
         
         $session->invalidate();
         $session->clear();
 
-        return $this->redirectToRoute($ruta);
+        return $this->redirectToRoute($ruta, $parametros);
 
     }
 
-    public function logoutEmpresaAction()
+    /*public function logoutEmpresaAction()
     {
 
         $session = new Session();
@@ -72,5 +80,5 @@ class DefaultController extends Controller
 
         }        
 
-    }
+    }*/
 }

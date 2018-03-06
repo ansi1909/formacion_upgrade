@@ -256,6 +256,14 @@ class PreferenciaController extends Controller
             $dest = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
             shell_exec($command.' '.$source.':'.$dest);
             $css = 'front/client_styles/'.$empresa_id.'/css/main.css';
+            $path_css = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
+            if (!file_exists($path_css))
+            {
+                $css = 'front/client_styles/formacion/css/main.css';
+            }
+            else {
+                $css = 'front/client_styles/'.$empresa_id.'/css/main.css';
+            }
             $preferencia->setCss($css);
             $em->persist($preferencia);
             $em->flush();

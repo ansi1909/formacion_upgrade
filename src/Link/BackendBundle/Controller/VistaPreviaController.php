@@ -14,7 +14,15 @@ class VistaPreviaController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-        return $this->render('LinkBackendBundle:VistaPrevia:vistaPreviaB.html.twig', array('empresa'=>$empresa));
+        $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
+        $layout = 'base.html.twig';
+        if ($preferencia)
+        {
+            $layout = $preferencia->getLayout()->getTwig();
+        }
+
+        return $this->render('LinkBackendBundle:VistaPrevia:vistaPreviaB.html.twig', array('empresa'=>$empresa,
+                                                                                           'layout' => $layout));
     }
 
     public function vistaPreviaPAction($pagina_id)

@@ -6,24 +6,29 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <title>{% block title %}Sistema Formación 2.0{% endblock %}</title>
-        <link rel="icon" type="image/x-icon" href="{{ asset('img/icono.png') }}" />
+        <title>
+        {% block title %}
+            {% if app.session.started and app.session.get('empresa').titulo is defined %}
+                {{ app.session.get('empresa').titulo }}
+            {% else %}
+                {{ 'Sistema Formación'|trans }} 2.0
+            {% endif %}
+        {% endblock %}</title>
+        {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
+        <link rel="icon" type="image/x-icon" href="{{ img }}" />
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('front/styles/css/main.css') }}">
+            <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
+            {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
+            <link rel="stylesheet" href="{{ css }}">
         {% endblock %}
     </head>
     <body>
-        {% if (app.session.started and app.session.get('ini') ) %}
-            <input type="text" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario')['id'] }}">
-        {% else %}
-            <input type="text" id="usuario_id" name="usuario_id" value="">
-        {% endif %}
-
+        
         {# HEADER #}
         <header>
-            <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
                 <a class="navbar-brand" href="#">
-                    {% set img_logo = app.session.get('empresa').logo ? app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') %}
+                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
                     <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
                 </a>
                 {% block headertitle %}{% endblock %}
@@ -32,11 +37,13 @@
                     <div class=" d-flex flex-column ">
                         <div class="dropdown show">
                             <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 {% set img = app.session.get('usuario').foto ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') %}
+                                 {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
                                 <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
                             </a>
                             <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a href="{{ path('_logoutEmpresa') }}" class="btn btn-link icon-header bttn1">Salir</a>
+                                {% block logout %}
+                                    <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
+                                {% endblock %}
                             </div>
                         </div>
                     </div>
@@ -51,7 +58,7 @@
                 <nav>
                     <div id="mainSidenav" class="main-sidenav ">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
-                        <a class="d-flex mt-1 mb-3 text-nowrap active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+                        <a class="d-flex mt-1 mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
                         <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
                         <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
                         <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
@@ -70,10 +77,9 @@
         </div>
 
         {% block javascripts %}
-            <script src="{{ asset('front/js/jquery-3.2.1.min.js') }}"></script>
+            <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('front/js/custom.js') }}"></script>
-
         {% endblock %}
     </body>
 </html>

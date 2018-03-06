@@ -6,6 +6,6 @@ _logout:
     path:     /logout/{ruta}
     defaults: { _controller: LinkComunBundle:Default:logout }
 
-_logoutEmpresa:
-    path:     /logoutEmpresa
-    defaults: { _controller: LinkComunBundle:Default:logoutEmpresa }
+#_logoutEmpresa:
+#    path:     /logoutEmpresa
+#    defaults: { _controller: LinkComunBundle:Default:logoutEmpresa }

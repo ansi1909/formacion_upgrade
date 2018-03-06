@@ -52,7 +52,7 @@ $(document).ready(function() {
     	var id = $(this).attr('id');
 		var id_arr = id.split('btn_clear_');
 		var field_id = id_arr[1];
-        $(field_id).val("");
+        $('#'+field_id).val("");
         $("#figure_"+field_id).html('<img src="'+$('#default_'+field_id).val()+'" width="100%" height="100%">');
     });
 

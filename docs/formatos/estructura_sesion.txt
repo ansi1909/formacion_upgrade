@@ -18,7 +18,9 @@ SESSION = [
 						  'webinar' = true,
 						  'plantilla' = 'twig para el layout principal',
 						  'logo' = 'Url del logo de la empresa',
-						  'favicon' = 'Url del ícono de la empresa'
+						  'favicon' = 'Url del ícono de la empresa',
+						  'titulo' = 'Lo configurado para la empresa',
+						  'css' = 'CSS configurado para la empresa'
 						],
 			'paginas' = [
 						  0 = [
