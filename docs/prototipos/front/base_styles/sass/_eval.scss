@@ -30,6 +30,11 @@
     width: 26.5rem;
     height: 3rem;
     @extend %opc_sp;
+    border: .125rem solid $gray-400;
+    transition: all .25s ease;
+    &:hover{
+        border: .125rem solid $lightblue;
+    }
     .opc_letra{
         height: 2.9rem;
         width: 3.30rem;
@@ -125,19 +130,117 @@
     }
 }
 
+//Resultado de evaluaciones
+
+.titulo-resul{
+    color: $blue;
+    font-family: $primary-font;
+    font-size: calc($h1-font-size - 4px);
+    line-height: calc($h1-font-size + 7px);
+    margin-top: 3rem;
+}
+
+.ic-resul{
+    font-size: $h1-font-size + 4rem;
+    color: $blue;
+    margin-top: calc(2rem - 7px);
+}
+
+.alreves{
+    transform: scaleX(-1) rotate(5deg);
+}
+
+.txt-resul{
+    font-family: $secondary-font;
+    font-size: $h4-font-size;
+    line-height: calc(2rem + 1px);
+    margin: calc(2rem - 1px) 0 calc(4rem + 4px) 0 ;
+}
+
+.mostrar-resul{
+    background: $white;
+    padding-top: calc(6rem - 6px);
+    margin-top: 1.5rem;
+    margin-bottom: 3rem;
+    overflow-x: hidden !important;
+    width: 98.78vw;
+    position: relative;
+    left: -1rem;
+    .calif{
+        @extend %cal-log;
+        left: 6rem;
+        .num{
+            @extend %number;
+        }
+    }
+    .logro{
+        @extend %cal-log;
+        left: -4rem;
+        .num{
+           @extend %number;
+            .unidad{
+                color: $blue;	
+                font-family: $primary-font;	
+                font-size: $h4-font-size;	
+                line-height: calc(2rem - 4px);
+                margin-left: calc(1rem - 8px);
+            }
+        }
+    }
+    .anun-resul{
+        margin: calc(2rem + 4px) 0 calc(1rem + 4px) 0;
+        color: $gray-650;	
+        font-family: $secondary-font;	
+        font-size: $p-font-size;	
+        line-height: calc(2rem - 8px);
+    }
+    .resp-eval{
+        position: relative;
+        left: 13vw;
+        margin-bottom: calc(4rem + 4px);
+        li{
+            list-style-type: none;
+            position: relative;
+            .preg-aprob{
+                @extend %pregunta;
+                border: .125rem solid;
+                border-color: $green;
+                @extend %opc_sp;
+                .preg_num-aprob{
+                    @extend %num-preg;
+                    background: $green;
+                }
+                .preg_enun{
+                    @extend %enun-preg;
+                }
+            }
+            .preg-reprob{
+                @extend %pregunta;
+                border: .125rem solid;
+                border-color: $red;
+                @extend %opc_sp;
+                .preg_num-reprob{
+                    @extend %num-preg;
+                    background: $red;
+                    .preg_n{
+                        color: $white !important; 
+                    }
+                }
+                .preg_enun{
+                    @extend %enun-preg;
+                }
+            }
+        }
+    }
+}
 //Extends
 
 %opc_sp{
     background: $white;
-    border: .125rem solid $gray-400;
     border-radius: calc(1rem - 8px);
     display: inline-block;
     cursor: pointer;
     margin: .35rem 0;
-    transition: all .25s ease;
-    &:hover{
-        border: .125rem solid $lightblue;
-    }
 }
 
 %opc_sa, %opc_sb{
@@ -186,4 +289,62 @@
 
 %op_i{
     border-radius: calc(1rem - 10px);
+}
+
+%cal-log{
+    font-family: $primary-font;
+    font-size: $h3-font-size;
+    line-height: calc(2rem + 6px);
+    margin-right: calc(3rem + 7px);
+    color: $gray-600;
+    position: relative;
+}
+
+%pregunta{
+    width: 52vw;
+    height: 8vh;
+}
+
+%number{
+    color: $blue;	
+    font-family: $primary-font;	
+    font-size: 2rem;	
+    line-height: calc(2rem + 6px);
+    position: relative;
+    left: calc(1rem + 7px);
+    top: .05rem;
+}
+
+%num-preg{
+    height: 7.5vh;
+    width: 4vw;
+    border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
+    padding: 0;
+    position: relative;
+    top: 0;
+    left: -.2rem;
+    display: inline-block;
+    .preg_n{
+        line-height: calc($h2-font-size + 4px);
+        font-size: $h3-font-size;
+        font-family: $primary-font;
+        color: $gray-700;
+        text-align: center;
+        position: relative;
+        top: 0; 
+    }
+}
+
+%enun-preg{
+    display: inline-block;
+    position: relative;
+    margin: calc(1rem - 2px) 0;
+    top: -.25rem;
+    .preg_e{
+        color: $gray-600;
+        padding-left: calc(1rem + 1.85px);
+        font-family: $primary-font;
+        font-size: $h5-font-size;
+        line-height: calc($h4-font-size - 3px);
+    }
 }
