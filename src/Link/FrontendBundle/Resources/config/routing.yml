@@ -14,3 +14,6 @@ _recuperarClave:
     path:     /recuperarClave
     defaults: { _controller: LinkFrontendBundle:Login:recuperarClave }
 
+lecciones:
+    resource: "@LinkFrontendBundle/Resources/config/routing/lecciones.yml"
+    prefix: /lecciones

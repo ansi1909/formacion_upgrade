@@ -1,0 +1,3 @@
+_lecciones:
+    path:     /{programa_id}/{subpagina_id}
+    defaults: { _controller: LinkFrontendBundle:Leccion:index, subpagina_id: 0 }
