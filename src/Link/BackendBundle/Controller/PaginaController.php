@@ -274,10 +274,13 @@ class PaginaController extends Controller
                                                         'label' => $this->get('translator')->trans('Categoría'),
                                                         'placeholder' => ''))
             ->add('descripcion', TextareaType::class, array('label' => $this->get('translator')->trans('Descripción')))
-            ->add('contenido', TextareaType::class, array('label' => $this->get('translator')->trans('Contenido')))
+            ->add('contenido', TextareaType::class, array('label' => $this->get('translator')->trans('Contenido'),
+                                                          'required' => false))
             ->add('foto', HiddenType::class, array('label' => $this->get('translator')->trans('Foto de la página'),
                                                    'required' => false))
             ->add('pdf', TextType::class, array('label' => $this->get('translator')->trans('Material complementario'),
+                                                'required' => false))
+            ->add('encuesta', TextType::class, array('label' => $this->get('translator')->trans('Enlace de la encuesta'),
                                                 'required' => false))
             ->add('estatusContenido', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiEstatusContenido',
                                                                'choice_label' => 'nombre',

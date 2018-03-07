@@ -236,6 +236,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 col-md-12">
+                                    <label for="encuesta" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.encuesta) }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        {{ form_widget(form.encuesta, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                                        <span class="fa fa-link"></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">
                                     <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
@@ -334,7 +344,7 @@
                     $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
                 }
 
-                if (deslen2 < {{ minlenght_bienvenida }} )
+                if (deslen2 < {{ minlenght_bienvenida }} && parseInt($('#subpaginas').val()) == 0)
                 {
                     error = 1;
                     $('#div-error ul').html("<li>- {{ 'El contenido es requerido.'|trans }}</li>");
@@ -368,10 +378,6 @@
                     required: true,
                     min: 3
                 },
-                'deslen2': {
-                    required: true,
-                    min: 3
-                },
                 'form[pdf]': {
                     extension: "pdf"
                 },
@@ -391,10 +397,6 @@
                 'deslen': {
                     required: "- {{ 'La descripción es requerida.'|trans }}",
                     min: "- {{ 'La descripción es requerida.'|trans }}"
-                },
-                'deslen2': {
-                    required: "- {{ 'El contenido es requerido.'|trans }}",
-                    min: "- {{ 'El contenido es requerido.'|trans }}"
                 },
                 'form[pdf]': {
                     extension: "- {{ 'El material complementario debe ser sólo archivo con extensión pdf.'|trans }}"
