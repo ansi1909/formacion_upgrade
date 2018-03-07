@@ -61,7 +61,27 @@ class DefaultController extends Controller
         fclose($fp);
         return new Response(var_dump($arr));*/
 
-        $response = $this->render('LinkBackendBundle:Default:index.html.twig');
+        $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        $empresas=0;
+        $empresas_a=0;
+        $empresas_i=0;
+        foreach($empresas_db as $empresa)
+        {
+            $empresas=$empresas+'1';
+            if($empresa->getActivo() == 'true') 
+            {
+                $empresas_a=$empresas_a+1;
+            }
+            else
+            {
+                $empresas_i=$empresas_i+1;
+            }
+
+        }
+
+        $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresas'=>$empresas,
+                                                                                     'activas'=>$empresas_a,
+                                                                                     'inactivas'=>$empresas_i));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 
