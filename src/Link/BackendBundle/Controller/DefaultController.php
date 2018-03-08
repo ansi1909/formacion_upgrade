@@ -35,32 +35,6 @@ class DefaultController extends Controller
       		return $this->redirectToRoute('_loginAdmin');
       	}
 
-        /*$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $archivo = $yml['parameters']['folders']['dir_project'].'web/front/farmatodo/_variables_color.scss';
-        $fp = fopen($archivo, 'r');
-        $arr = array();
-        while (!feof($fp))
-        {
-            $arr[] = fgets($fp);
-        }
-        fclose($fp);
-        $i = 0;
-        foreach ($arr as $a)
-        {
-            if (strpos($a, '$gray-100') === 0)
-            {
-                $arr[$i] = "\$gray-100: #CCDBAA;\n";
-            }
-            $i++;
-        }
-        $new_file = $yml['parameters']['folders']['dir_project'].'web/front/farmatodo/_variables_colorN.scss';
-        $fp = fopen($new_file, "w+");
-        foreach ($arr as $a){
-            fwrite($fp, $a);
-        }
-        fclose($fp);
-        return new Response(var_dump($arr));*/
-
         $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
         $empresas=0;
         $empresas_a=0;
@@ -159,7 +133,7 @@ class DefaultController extends Controller
 
     public function loginAction(Request $request)
     {
-        $session = new session();
+        $session = new Session();
         $f = $this->get('funciones');
         $error = '';
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
