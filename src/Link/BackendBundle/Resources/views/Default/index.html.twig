@@ -6,19 +6,10 @@
 {% endblock %}
 
 {% block body %}
-	<br><br>
-    <div class="row align-items-center justify-content-between">
-        <div class="col-8 col-sm-8 col-md-8 col-xl-8 col-lg-8 offset-md-4 offset-sm-4 offset-lg-4 offset-xl-4" style="margin-top: 2rem; margin-bottom: 2rem">
-            <select class="form-control form_sty_sel" id="dash_sel" style="border-radius: 5px;">
-                <option value="1" selected>Dashboard(Administrador)</option>
-                <option value="2">Dashboard(Empresa)</option>
-            </select>
-            <span class="fa fa-dashboard"></span>
-            <span class="bttn_d"><img src="{{ asset('img/down-arrowwht.png') }}" alt=""></span>
-        </div>
-    </div>
-    <br>
-    <div class="admin_dash">
+    {% set rol = app.session.get('administrador') ? 'true' : 'false' %}
+    <br><br>
+    {% if rol == 'true' %}
+    <div class="admin_dash" >
         <div class="row">
             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                 <div class="activity-block linkg1">
@@ -76,12 +67,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {# set eo = cycle(['odd', 'even'], loop.index) #}
-                                <tr class="odd">
-                                    <td>Link Gerencial</td>
-                                    <td><div id="frmt1" class="demo"></div></td>
-                                    <td class="text-center"><span>300 <i class="fa fa-user"></i></span></td>
+                                {% for empresaA in empresasA %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                <tr class="{{eo}}">
+                                    <td>{{empresaA.nombre}}</td>
+                                    <td>  </td>
+                                    <td class="text-center"><span>{{empresaA.usuarios}} <i class="fa fa-user"></i></span></td>
                                 </tr>
+                                {%endfor%}
                             </tbody>
                         </table>
                     </div>
@@ -102,12 +95,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {# set eo = cycle(['odd', 'even'], loop.index) #}
-                                <tr class="odd">
-                                    <td>Banesco</td>
+                                {% for empresaI in empresasI %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                <tr class="{{eo}}">
+                                    <td>{{empresaI.nombre}}</td>
                                     <td><div id="frmt2" class="demo"></div></td>
-                                    <td class="text-center"><span>300 <i class="fa fa-user"></i></span></td>
+                                    <td class="text-center"><span>{{empresaI.usuarios}} <i class="fa fa-user"></i></span></td>
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -151,6 +146,7 @@
             </div>
         </div>
     </div>
+    {% else %}
     <div class="emp_dash">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
@@ -163,19 +159,6 @@
                         <i class="fa fa-users"></i>
                     </div>
                     <br>
-                    <div class="media">
-                        <div class="media-body">
-                            <span class="progress-heading">{{'Últimos 12' |trans}}</span>
-                        </div>
-                        <span><span class="dynamicsparkline">{{'Cargando..' |trans}}</span></span>
-                    </div>
-                    <div class="row">
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">
-                                <span class="trackerball"></span>
-                            </div>
-                        </div>
-                    </div>
                     <i class="bg-icon text-center fa fa-pencil"></i>
                 </div>
             </div>
@@ -188,14 +171,6 @@
                         </div>
                         <i class="fa fa-user"></i> </div>
                     <br>
-                    <div class="media">
-                        <div class="media-body"><span class="progress-heading">{{'Últimos 12' |trans}}</span></div>
-                        <span><span class="dynamicsparkline">{{'Cargando..' |trans}}</span> </span> </div>
-                    <div class="row">
-                        <div class="progress ">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="trackerball"></span></div>
-                        </div>
-                    </div>
                     <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i> 
                 </div>
             </div>
@@ -208,14 +183,6 @@
                         </div>
                         <i class="fa fa-user-times"></i> </div>
                     <br>
-                    <div class="media">
-                        <div class="media-body"><span class="progress-heading">{{'Últimos 12' |trans}}</span></div>
-                        <span><span class="dynamicsparkline">{{'Cargando..' |trans}}</span> </span> </div>
-                    <div class="row">
-                        <div class="progress ">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"><span class="trackerball"></span></div>
-                        </div>
-                    </div>
                     <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i> 
                 </div>
             </div>
@@ -285,7 +252,7 @@
                         <div class="card-title">{{'Gráfico del promedio de Conexiones' |trans}}</div>
                     </div>
                     <div class="card-block">
-                        <div id="morris-bar-chart2"></div>
+                        <div id="morris-bar-chart"></div>
                     </div>
                     <div class="card-footer">
                         <div class="col-sm-16 col-md-16 text-right">
@@ -294,48 +261,49 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="card">
-                    <div class="card-header gradiente">
-                        <div class="card-title">{{'Generar codigo QR' |trans}}</div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+        <div class="card">
+            <div class="card-header gradiente">
+                <div class="card-title">{{'Generar codigo QR' |trans}}</div>
+            </div>
+            <br>
+            <div class="col-sm-5" style="float:left;">
+                <form id="form" name="form" action="{{ path( '_ajaxQR')}}"  method="POST">
+                    <div class="form-group">
+                        <label for="texto" class="form-control-label">{{ 'Nombre'|trans }}</label>
+                        <div class="col-14">
+                            <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="">
+                            <span class="fa fa-user"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="form-control-label">{{ 'Contenido'|trans }}:</label>
+                            <textarea class="form-control" id="contenido" name="contenido"></textarea>
+                        </div> 
                     </div>
-                    <br>
-                    <div class="col-sm-5" style="float:left;">
-                        <form id="form" name="form" action="{{ path( '_ajaxQR')}}"  method="POST">
-                            <div class="form-group">
-                                <label for="texto" class="form-control-label">{{ 'Nombre'|trans }}</label>
-                                <div class="col-14">
-                                    <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="">
-                                    <span class="fa fa-user"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="form-control-label">{{ 'Contenido'|trans }}:</label>
-                                    <textarea class="form-control" id="contenido" name="contenido"></textarea>
-                                </div> 
-                            </div>
-                            <div class="form-group">
-                                <label for="texto" class="form-control-label">{{ 'Tamaño'|trans }}</label>
-                                <div class="col-14">
-                                    <select class="form-control form_sty1" name="size" id="size">
-                                            <option value="4">4</option>
-                                            <option value="6">6</option>
-                                            <option value="8">8</option>
-                                    </select>
-                                    <span class="fa fa-industry"></span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="" style="float:right;"  >
-                        <div id="qri">
-            
+                    <div class="form-group">
+                        <label for="texto" class="form-control-label">{{ 'Tamaño'|trans }}</label>
+                        <div class="col-14">
+                            <select class="form-control form_sty1" name="size" id="size">
+                                    <option value="4">4</option>
+                                    <option value="6">6</option>
+                                    <option value="8">8</option>
+                            </select>
+                            <span class="fa fa-industry"></span>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <div class="col-sm-16 col-md-16 text-right">
-                            <button type="submit" id="qr" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'QR' |trans}}"><span class="fa fa-qrcode"></span></button>
-                        </div>
-                    </div>
+                </form>
+            </div>
+            <div class="" style="float:right;"  >
+                <div id="qri">
+    
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-sm-16 col-md-16 text-right">
+                    <button type="submit" id="qr" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'QR' |trans}}"><span class="fa fa-qrcode"></span></button>
                 </div>
             </div>
         </div>
@@ -371,16 +339,6 @@
                         ]
                     }
                 ]
-            }
-        });
-        $('#dash_sel').change(function(){
-           var select = $('#dash_sel').val();
-            if(select == 1){
-                $('.admin_dash').show()
-                $('.emp_dash').hide()
-            }else{
-                $('.admin_dash').hide();
-                $('.emp_dash').show();
             }
         });
     </script>
