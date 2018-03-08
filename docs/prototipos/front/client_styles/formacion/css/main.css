@@ -667,7 +667,7 @@ p.up {
 .card-table {
   position: relative;
   width: 35vw;
-  height: 80vh;
+  height: 120vh;
   display: flex;
   flex-direction: column;
   word-wrap: break-word;
@@ -688,6 +688,65 @@ p.up {
       font-weight: 500;
       line-height: calc(2rem - 4px);
       text-align: center; }
+
+.rank-table {
+  display: block;
+  width: 32.5vw;
+  margin: 0 calc(1rem + 7px); }
+  .rank-table thead {
+    border-bottom: 1px solid #DAE1E6; }
+    .rank-table thead th {
+      color: #AAAFB3; }
+      .rank-table thead th:first-child {
+        padding-right: calc(2rem - 4px); }
+      .rank-table thead th:nth-child(3) {
+        padding: 0 calc(4rem - 15px); }
+      .rank-table thead th:nth-child(5) {
+        padding: 0 calc(1rem - 1px); }
+      .rank-table thead th:last-child {
+        padding-left: calc(1rem - 6px); }
+  .rank-table tbody tr {
+    color: #5CAEE6;
+    cursor: default; }
+    .rank-table tbody tr td {
+      padding: calc(1rem - 6px) 0; }
+      .rank-table tbody tr td:first-child {
+        font-family: "Roboto";
+        font-size: 1.5rem;
+        font-weight: 500;
+        line-height: calc(2rem - 4px);
+        text-align: left;
+        position: relative;
+        left: calc(1rem + 8px); }
+      .rank-table tbody tr td:nth-child(2) .up {
+        width: 2.5vw;
+        height: 5vh;
+        position: relative;
+        left: 0rem;
+        border-radius: calc(3rem + 4px); }
+      .rank-table tbody tr td:last-child .level {
+        color: #CFE65C;
+        font-size: calc(1rem - 4px);
+        padding-left: calc(1rem - 4px); }
+    .rank-table tbody tr:hover {
+      color: #fff;
+      background: rgba(92, 174, 230, 0.7); }
+  .rank-table tbody .me-i {
+    color: #000;
+    background: rgba(207, 230, 92, 0.7); }
+    .rank-table tbody .me-i:hover {
+      color: #000;
+      background: rgba(207, 230, 92, 0.7); }
+    .rank-table tbody .me-i td:last-child .level {
+      color: #5CAEE6 !important;
+      font-size: calc(1rem - 4px);
+      padding-left: calc(1rem - 4px); }
+
+.rank-table thead th, .rank-table tbody tr td:nth-child(3), .rank-table tbody tr td:nth-child(4), .rank-table tbody tr td:nth-child(5) {
+  font-family: "Roboto";
+  font-size: 0.87rem;
+  line-height: 1rem;
+  font-weight: 400; }
 
 .num_preg {
   color: #797D80;
