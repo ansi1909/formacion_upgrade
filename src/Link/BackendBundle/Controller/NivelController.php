@@ -403,7 +403,7 @@ class NivelController extends Controller
             $niveles .= '<td>'.$nivel->getNombre().'</td>
             <td class="center">
                 
-                <a href="#" class="see" id="see" data="'. $nivel->getId() .'" title="'.$this->get('translator')->trans('Ver').'" class="btn btn-link btn-sm "><span class="fa fa-eye"></span></a>
+                <a href="#subPanel" class="see" id="see" data="'. $nivel->getId() .'" title="'.$this->get('translator')->trans('Ver').'" class="btn btn-link btn-sm "><span class="fa fa-eye"></span></a>
                 
             </td> </tr>';
         }

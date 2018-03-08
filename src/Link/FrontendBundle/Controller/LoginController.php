@@ -166,8 +166,12 @@ class LoginController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-		$session = new session();
-        $session->set('ini', false);
+		$session = new Session();
+
+		if ($session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_inicio');
+        }
 
 		$empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->findOneById($empresa_id);
 

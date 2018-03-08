@@ -87,9 +87,9 @@
                             <td>{{ grupo.id }}</td>
                             <td>{{ grupo.nombre }}</td>
                             <td class="center">
-                                <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
-                                <a href="#" class="see" id="asignar" data="{{grupo.id}}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
-                                <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
+                                <a href="#subPanel" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ grupo.id }}"><span class="fa fa-pencil"></span></a>
+                                <a href="#subPanel" class="see" id="asignar" data="{{grupo.id}}" title="{{ 'Asignar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
+                                <a href="#subPanel" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if grupo.delete_disabled == '' %}delete{% endif %} {{ grupo.delete_disabled }}" data="{{grupo.id}}"><span class="fa fa-trash"></span></a>
                             </td>
                         </tr>
                       {% endfor %}
@@ -99,6 +99,7 @@
             {% endif %}  
         </div>
     </div>
+    <a id="subPanel"></a>
     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7" style="display:none; " id="div-paginas">
         <div class="card">
             <div class="card-header gradiente">

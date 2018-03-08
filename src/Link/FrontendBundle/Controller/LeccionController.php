@@ -17,7 +17,7 @@ class LeccionController extends Controller
     	$session = new Session();
         $f = $this->get('funciones');
         
-        /*if (!$session->get('ini'))
+        /*if (!$session->get('iniFront'))
         {
             return $this->redirectToRoute('_authExceptionEmpresa');
         }
@@ -26,6 +26,7 @@ class LeccionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Menú lateral dinámico
+        $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id);
 
         return new Response('Hay que desarrollar este controlador');
 

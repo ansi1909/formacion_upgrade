@@ -838,4 +838,32 @@ class Functions
 		return $subpaginas; 
 	}
 
+	// Retorna un arreglo multidimensional con la estructura del menú lateral para la vista de las lecciones
+	public function menuLecciones($programa, $subpagina_id, $dimension = 1)
+	{
+
+		$em = $this->em;
+		$menu_str = '';
+		
+		foreach ($programa['subpaginas'] as $subpagina)
+		{
+			if ($subpagina['acceso'])
+			{
+				$active = $subpagina['id'] == $subpagina_id ? ' active' : '';
+				$menu_str .= '<li>
+								<a href="" class="menuLeccion'.$active.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
+				if (count($subpagina['subpaginas']) && $dimension == 1)
+				{
+					$menu_str .= '<ul class="ul-items">';
+					$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, 2);
+					$menu_str .= '</ul>';
+				}
+				$menu_str .= '</li>';
+			}
+		}
+
+		return $menu_str;
+
+	}
+
 }

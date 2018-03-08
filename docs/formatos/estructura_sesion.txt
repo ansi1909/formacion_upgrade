@@ -1,5 +1,5 @@
 SESSION = [
-			'ini' = true,
+			'iniFront' = true,
 			'sesion_id' = 'Id creado de admin_sesion',
 			'code' = 'Código del país de admin_pais',
 			'usuario' = [
@@ -23,22 +23,13 @@ SESSION = [
 						  'css' = 'CSS configurado para la empresa'
 						],
 			'paginas' = [
-						  0 = [
+						  pagina_id = [
 						  		'id' = 'Id de la página',
 						  		'nombre' = 'Nombre de la pagina',
 						  		'categoria' = 'Categoría de la página',
 						  		'foto' = 'Foto de la página',
 						  		'tiene_evaluacion' = true o false,
-						  		'subpaginas' = [
-						  						Misma estructura de una página
-						  					   ]
-						  	  ],
-						  1 = [
-						  		'id' = 'Id de la página',
-						  		'nombre' = 'Nombre de la pagina',
-						  		'categoria' = 'Categoría de la página',
-						  		'foto' = 'Foto de la página',
-						  		'tiene_evaluacion' = true o false,
+						  		'acceso' => true o false,
 						  		'subpaginas' = [
 						  						Misma estructura de una página
 						  					   ]
