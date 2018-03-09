@@ -7,7 +7,7 @@ _login:
     defaults: { _controller: LinkFrontendBundle:Login:login }
 
 _authExceptionEmpresa:
-    path:     /authExceptionEmpresa
+    path:     /authExceptionEmpresa/{mensaje}
     defaults: { _controller: LinkFrontendBundle:Login:authExceptionEmpresa }
 
 _recuperarClave:

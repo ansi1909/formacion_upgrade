@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\Cookie;
 class LoginController extends Controller
 {
 
-    public function authExceptionEmpresaAction()
+    public function authExceptionEmpresaAction($mensaje)
     {
-        return $this->render('LinkFrontendBundle:Default:authException.html.twig');
+        return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje));
     }
 
 	/*public function ajaxMainCorreoAction(Request $request)
@@ -168,34 +168,50 @@ class LoginController extends Controller
 
 		$session = new Session();
 
-		if ($session->get('iniFront'))
-        {
-            return $this->redirectToRoute('_inicio');
-        }
+		$empresa_bd = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-		$empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->findOneById($empresa_id);
-
-		if ($empresa )
+		if ($empresa_bd)
         {
+			
 			//se consulta la preferencia de la empresa
     		$preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
 
-    		if($preferencia)
+    		if ($preferencia)
     		{
-    			$logo= 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$preferencia->getLogo();
-    			$favicon = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$preferencia->getFavicon();
-				$layout = explode("_", $preferencia->getLayout()->getTwig());
+    			$logo = $preferencia->getLogo();
+    			$favicon = $preferencia->getFavicon();
+				$layout = explode(".", $preferencia->getLayout()->getTwig());
     			$layout = $layout[0]."_";
     			$title = $preferencia->getTitle();
-    		}else
-    		{
-    			$logo='http://'.$_SERVER['HTTP_HOST'].'/uploads/recursos/empresas/logo_formacion.png';
-    			$favicon='http://'.$_SERVER['HTTP_HOST'].'/uploads/recursos/empresas/icono.png';
-    			$layout='';
-    			$title = 'Sistema Formación 2.0';
+    			$css = $preferencia->getCss();
+    			$webinar = $empresa_bd->getWebinar();
+    			$chat = $empresa_bd->getChatActivo();
+    			$plantilla = $preferencia->getLayout()->getTwig();
     		}
+    		else {
+    			$logo = '';
+    			$favicon = '';
+    			$layout = 'base_';
+    			$title = '';
+    			$css = '';
+    			$webinar = false;
+    			$chat = false;
+    			$plantilla = 'base.html.twig';
+    		}
+
+    		$empresa = array('id' => $empresa_id,
+						  	 'nombre' => $empresa_bd->getNombre(),
+						  	 'chat' => $chat,
+						  	 'webinar' => $webinar,
+						  	 'plantilla' => $plantilla,
+						  	 'logo' => $logo,
+						  	 'favicon' => $favicon,
+						  	 'titulo' => $title,
+						  	 'css' => $css);
+
 	        if ($request->getMethod() == 'POST')
 	        {
+	            
 	            $login = $request->request->get('usuario');
 	            $clave = $request->request->get('password');
 
@@ -206,40 +222,33 @@ class LoginController extends Controller
 	                $error = $this->get('translator')->trans('Usuario o clave incorrecta.');
 	            }
 	            else {
+	                
 	                if (!$usuario->getActivo()) //validamos que el usuario este activo
 	                {
 	                    $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
 	                }
 	                else {
 
-						if (!$empresa->getActivo()) //validamos que la empresa este activa
+						if (!$empresa_bd->getActivo()) //validamos que la empresa este activa
 		                {
-		                    $error = $this->get('translator')->trans('La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.');
+		                    $error = $this->get('translator')->trans('La empresa está inactiva. Contacte al administrador del sistema.');
 		                }
 		                else {
-		            		if ($usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
-			                {
-			                    $error = $this->get('translator')->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
-			                }		        		
-			                else {
-								//se consulta si la empresa tien paginas activas
-				 				$query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
-				                                           JOIN np.paginaEmpresa pe
-				                                           WHERE pe.empresa= :empresa AND np.nivel = :nivel_usuario and pe.activo = :activo')
-				                            ->setParameters(array('empresa' => $empresa->getId(),
-				                                                  'nivel_usuario' => $usuario->getNivel()->getId(),
-				                                                  'activo' => true ));
-				                $paginaEmpresa = $query->getResult();
-
-								if (!$paginaEmpresa)  //validamos que la empresa tenga paginas activas
+		            		
+		            		if (!$usuario->getEmpresa())
+		            		{
+		            			$error = $this->get('translator')->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
+		            		}
+		            		else {
+		            			if ($usuario->getEmpresa()->getId() != $empresa_bd->getId()) //validamos que el usuario pertenezca a la empresa
 				                {
-				                    $error = $this->get('translator')->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
-				                }
-				                else{
+				                    $error = $this->get('translator')->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
+				                }		        		
+				                else {
 
-			                        $roles_bk = array();
-			                        $roles_bk[] = $yml['parameters']['rol']['participante'];
-			                        $roles_bk[] = $yml['parameters']['rol']['tutor'];
+				                	$roles_front = array();
+			                        $roles_front[] = $yml['parameters']['rol']['participante'];
+			                        $roles_front[] = $yml['parameters']['rol']['tutor'];
 			                        $roles_ok = 0;
 			                        $participante = false;
 			                        $tutor = false;
@@ -251,7 +260,7 @@ class LoginController extends Controller
 			                        foreach ($roles_usuario_db as $rol_usuario)
 			                        {
 			                            // Verifico si el rol está dentro de los roles de backend
-			                            if (in_array($rol_usuario->getRol()->getId(), $roles_bk))
+			                            if (in_array($rol_usuario->getRol()->getId(), $roles_front))
 			                            {
 			                                $roles_ok = 1;
 			                            }
@@ -264,105 +273,105 @@ class LoginController extends Controller
 			                                $tutor = true;
 			                            }
 			                        }
-			                        
+
 			                        if (!$roles_ok)
 			                        {
 			                            $error = $this->get('translator')->trans('Los roles que tiene el usuario no son permitidos para ingresar al sistema.');
 			                        }
-			                        else {
-			                        
-		                                // Se setea los datos del usuario
-		                                $datosUsuario = array('id' => $usuario->getId(),
-		                                                      'nombre' => $usuario->getNombre(),
-		                                                      'apellido' => $usuario->getApellido(),
-		                                                      'correo' => $usuario->getCorreoPersonal(),
-		                                                      'foto' => $usuario->getFoto(),
-		                                                      'participante' => $participante,
-		                                                      'tutor' => $tutor);
-		                                
-		                                // Se setea los datos de la empresa
-		                                $datosEmpresa = array('id' => $empresa->getId(),
-		                                                      'nombre' => $empresa->getNombre(),
-		                                                      'chat' => $empresa->getChatActivo(),
-		                                                      'webinar' => $empresa->getWebinar(),
-		                                                      'favicon' => $favicon,
-		                                                      'platilla' => $layout,
-		                                                      'logo' => $logo);
-										//se consulta las paginas padres
-						 				$query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
+					                else {
+
+				                        // se consulta si la empresa tiene paginas activas
+										$query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
 						                                           JOIN np.paginaEmpresa pe
 						                                           JOIN pe.pagina p
-						                                           WHERE pe.empresa= :empresa AND p.pagina IS NULL AND np.nivel = :nivel_usuario and pe.activo = :activo')
-						                            ->setParameters(array('empresa' => $empresa->getId(),
+						                                           WHERE pe.empresa = :empresa 
+						                                           	AND p.pagina IS NULL 
+						                                           	AND np.nivel = :nivel_usuario 
+						                                           	AND pe.activo = :activo 
+						                                           ORDER BY p.orden')
+						                            ->setParameters(array('empresa' => $empresa_bd->getId(),
 						                                                  'nivel_usuario' => $usuario->getNivel()->getId(),
-						                                                  'activo' => true ));
-						                $paginaPadres = $query->getResult();
-
-						                if($paginaPadres)
+						                                                  'activo' => true));
+						                $paginas_bd = $query->getResult();
+				                        
+				                        if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
 						                {
-											foreach ($paginaPadres as $pagina)
+						                    $error = $this->get('translator')->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
+						                }
+				                        else {
+				                        
+			                                // Se setea los datos del usuario
+			                                $datosUsuario = array('id' => $usuario->getId(),
+			                                                      'nombre' => $usuario->getNombre(),
+			                                                      'apellido' => $usuario->getApellido(),
+			                                                      'correo' => $usuario->getCorreoPersonal(),
+			                                                      'foto' => $usuario->getFoto(),
+			                                                      'participante' => $participante,
+			                                                      'tutor' => $tutor);
+			                                
+			                                // Estructura de páginas
+							 				$paginas = array();
+							                foreach ($paginas_bd as $pagina)
 					                        {
-												$query = $em->createQuery('SELECT COUNT(cp.id) as cantidad FROM LinkComunBundle:CertiPrueba cp
+												$query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
 								                                           WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
 								                            ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
-								                            					  'pagina_id' => $pagina->getId() ));
+								                            					  'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
 								                $tiene_evaluacion = $query->getSingleScalarResult();
 
-										        $subPaginas = $f->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $usuario->getNivel()->getId(), $yml['parameters']['estatus_contenido']['activo'] );
+										        $subPaginas = $f->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $usuario->getNivel()->getId(), $yml['parameters']['estatus_contenido']['activo'], $empresa_bd->getId());
 
-								                $datosPagina[] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
-				                                                        'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
-				                                                        'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
-				                                                        'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
-				                                                        'tiene_evaluacion' => $tiene_evaluacion,
-				                                                        'sub_paginas' => $subPaginas);
+								                $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
+				                                                        											'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
+				                                                        											'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
+				                                                        											'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
+				                                                        											'tiene_evaluacion' => $tiene_evaluacion ? true : false,
+				                                                        											'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
+				                                                        											'subpaginas' => $subPaginas);
 											}
-										}
 
-		                                // Cierre de sesiones activas
-		                                $sesiones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
-		                                                                                                                             'disponible' => true));
-		                                foreach ($sesiones as $s)
-		                                {
-		                                    $s->setDisponible(false);
-		                                }
+			                                // Cierre de sesiones activas
+			                                $sesiones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
+			                                                                                                                             'disponible' => true));
+			                                foreach ($sesiones as $s)
+			                                {
+			                                    $s->setDisponible(false);
+			                                }
 
-		                                // Se crea la sesión en BD
-		                                $admin_sesion = new AdminSesion();
-		                                $admin_sesion->setFechaIngreso(new \DateTime('now'));
-		                                $admin_sesion->setUsuario($usuario);
-		                                $admin_sesion->setDisponible(true);
-		                                $em->persist($admin_sesion);
-		                                $em->flush();
+			                                // Se crea la sesión en BD
+			                                $admin_sesion = new AdminSesion();
+			                                $admin_sesion->setFechaIngreso(new \DateTime('now'));
+			                                $admin_sesion->setUsuario($usuario);
+			                                $admin_sesion->setDisponible(true);
+			                                $em->persist($admin_sesion);
+			                                $em->flush();
 
-        								//$session = new session();
-		                                $session->set('ini', true);
-		                                $session->set('sesion_id', $admin_sesion->getId());
-		                                $session->set('code', $f->getLocaleCode());
-		                                $session->set('usuario', $datosUsuario);
-										$session->set('empresa', $datosEmpresa);
-										$session->set('paginas', $datosPagina);
+	        								//$session = new session();
+			                                $session->set('iniFront', true);
+			                                $session->set('sesion_id', $admin_sesion->getId());
+			                                $session->set('code', $f->getLocaleCode());
+			                                $session->set('usuario', $datosUsuario);
+											$session->set('empresa', $empresa);
+											$session->set('paginas', $paginas);
 
-		                                return $this->redirectToRoute('_inicio');
-		                            }
-					            }
-			                }
+			                                return $this->redirectToRoute('_inicio');
+			                                
+			                            }
+						            }
+				                }
+		            		}
 						}
 	                }
 	            }
 	        }
 
-	        $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa_id' => $empresa_id, 
-    																								  'logo' => $logo,
-    																								  'title' => $title,
-    																								  'favicon' => $favicon,
-	        																						  'error' => $error));
+	        $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+    																								 'error' => $error));
 	        return $response;
 
-	    }else
-	    {
-
-    		return $this->redirectToRoute('_authExceptionEmpresa');
+	    }
+	    else {
+    		return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Url de la empresa no existe')));
 	    }
     }
 

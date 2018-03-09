@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <title>{{ empresa.titulo != '' ? empresa.titulo : 'Sistema Formación'|trans ~ '2.0' }}</title>
+        {% set img = empresa.favicon is not null and empresa.favicon != '' ? uploads~empresa.favicon : asset('img/icono.png') %}
+        <link rel="icon" type="image/x-icon" href="{{ img }}" />
+        <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
+        {% set css = empresa.css is not null and empresa.css != '' ? asset(empresa.css) : asset('front/client_styles/formacion/css/main.css') %}
+        <link rel="stylesheet" href="{{ css }}">
+    </head>
+    <body class="bg-white">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-5 d-none d-sm-none login-cover d-md-flex align-content-center align-items-center justify-content-center">
+                    <div class="row  d-flex align-content-center  justify-content-center  ">
+                        <div class="col-8 text-center mb-3">
+                            <h3>{{ 'Experimenta la pontencialidad de la capacitación digital'|trans }}. </h3>
+                        </div>
+                        <div class="col-12 text-center">
+                            {% set img_logo = empresa.logo is not null and empresa.logo != '' ? uploads~empresa.logo : asset('front/assets/img/logo_formacion.png') %}
+                            <img class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 text-center mx-auto d-lg-flex justify-content-center">
+                    <div class="d-sm-block d-md-none mt-5 mb-6">
+                        <img width="65%" class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
+                    </div>
+                    <div class="col-12 mt-12v">
+                        <h3 class="title-grey mb-md-6 mb-sm-3">{{ 'Iniciar Sesión'|trans }}</h3>
+                        <p class="mb-4">{{ 'Por favor, ingresa tu usuario y contraseña'|trans }}</p>
+                        <div class="col-lg-5 col-12 col-sm-12 mx-auto">
+                            <form action="{{ path('_login', { 'empresa_id': empresa.id }) }}" method="POST">
+                                <div class="form-group text-left">
+                                    <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
+                                    <input type="text" class="form-control mb-4" id="usuario" name="usuario" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
+                                </div>
+                                <div class="form-group text-left">
+                                    <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
+                                    <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
+                                    <span class="error error__style">{{ error }}</span>
+                                </div>
+                                <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start">
+                                  <input type="checkbox" id="check_recordar" class="mr-2">
+                                  <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contaseña'|trans }}</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-5" id="entrar">{{ 'Entrar'|trans }}</button>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3 text-center">
+                                <a href="#" class="links" data-toggle="modal" data-target="#modal1">{{ '¿Olvidaste tu contraseña?'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Modal #}
+        <div class="modal modal-recuperacion" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 text-right offset-9">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 text-center offset-1 mt-4">
+                        <h4 class="titulo">{{ '¿Olvidaste tu contraseña?'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <p class="txt-modal">{{ 'No hay problema, te enviaremos un correo con'|trans }}<br/>{{ 'instrucciones para reiniciarla. Ingresa tu correo.'|trans }}</p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <form id="form-restore">
+                        <div class="col-12 mt-3">
+                            <div class="form-group text-center">
+                                <label class="mb-2 text-center" for="mail-rec">{{ 'Correo Electrónico'|trans }}</label>
+                                <input  type="email" class="form-control mb-3" id="mail-rec" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
+                            </div>
+                        </div>
+                        <div class="col-4 mt-3">
+                            <div class="form-group text-center">
+                                <button type="button" class="btn btn-primary btn_rc">{{ 'Reiniciar contraseña'|trans }}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-8 text-center">
+                        <a href="#" class="close link_ri" data-dismiss="modal">{{ 'Regresar al inicio'|trans }}</a>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-8 text-center">
+                        <p class="txt-modal">{{ 'Si necesitas ayuda escribenos a'|trans }}<br/><strong>{{ email_soporte }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript">
+            $('#entrar').click(function(){
+                $('#entrar').hide();
+                $('.error').hide();
+            });
+        </script>
+    </body>
+</html>

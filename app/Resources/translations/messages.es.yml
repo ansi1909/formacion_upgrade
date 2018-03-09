@@ -87,6 +87,7 @@ Continuar: Continuar
 Contraseña: Contraseña
 Copia: Copia
 Correcta: Correcta
+Correo Electrónico: Correo Electrónico
 Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
@@ -232,6 +233,7 @@ Evaluación: Evaluación
 Evaluación activa: Evaluación activa
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
+Experimenta la pontencialidad de la capacitación digital: Experimenta la pontencialidad de la capacitación digital
 Fecha: Fecha
 Fecha Creación: Fecha Creación
 Fecha fin: Fecha fin 
@@ -259,8 +261,10 @@ Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen lado: Imagen lado
+Ingresa tu usuario: Ingresa tu usuario
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
+instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
 Ir al listado de evaluaciones: Ir al listado de evaluaciones
@@ -282,6 +286,7 @@ La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mín
 La descripción es requerida.: La descripción es requerida.
 La descripcion debe ser mínimo de 3 caracteres.: The description must be at least 3 characters.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
+La empresa está inactiva. Contacte al administrador del sistema.: La empresa está inactiva. Contacte al administrador del sistema.
 La empresa aún no tiene configurado ningún nivel: La empresa aún no tiene configurado ningún nivel
 La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.: La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.
 La empresa es requerida.: La empresa es requerida.
@@ -318,13 +323,14 @@ Listado de Roles: Listado de Roles
 Listado de Tipos de Destinos: Listado de Tipos de Destinos
 Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Listado de tutoriales: Listado de tutoriales
+Lo sentimos. Sesión expirada.: Lo sentimos. Sesión expirada.
 Login repetido: Login repetido
 Login requerido: Login requerido
 Logo de la empresa: Logo de la empresa
-Lugar: Lugar
 Los roles que tiene el usuario no son permitidos para ingresar al sistema.: Los roles que tiene el usuario no son permitidos para ingresar al sistema.
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
+Lugar: Lugar
 Material complementario: Material complementario
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
@@ -342,6 +348,7 @@ Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
 No existen páginas: No existen páginas
+No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
@@ -413,13 +420,15 @@ Registrar Usuario: Registrar Usuario
 registros: registros
 Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
+Regresar al inicio: Regresar al inicio
+Reiniciar contraseña: Reiniciar contraseña
 Resultado del archivo procesado: Resultado del archivo procesado
 Resumen: Resumen
+Respuesta: Respuesta
 Rol: Rol
 Roles: Roles
 Roles asignados: Roles asignados
 Roles a seleccionar: Roles a seleccionar
-Respuesta: Respuesta
 Salir: Salir
 Seleccionado: Seleccionado
 Seleccione el/los usuarios: Seleccione el/los usuarios
@@ -434,6 +443,7 @@ Si marca SI, la página tendrá una sección en el que los usuarios podrán escr
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
+Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
 Siguiente: Siguiente
@@ -468,6 +478,7 @@ Título: Título
 Título en la ventana del navegador: Título en la ventana del navegador
 Tutoriales: Tutoriales
 Últimos 12: Últimos 12
+Url de la empresa no existe: Url de la empresa no existe
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usuario: Usuario
