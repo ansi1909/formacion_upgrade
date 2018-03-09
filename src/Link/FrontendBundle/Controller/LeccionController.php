@@ -26,11 +26,17 @@ class LeccionController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id);
+        $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)));
 
-        return new Response('Hay que desarrollar este controlador');
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
-        return $this->render('LinkFrontendBundle:App:index.html.twig');
+        $lecciones = $f->contenidoLecciones($session->get('paginas')[$programa_id]);
+
+        // Se reinicia el reinicia el reloj de pagina_log
+
+        return new Response(var_dump($menu_str));
+
+        //return $this->render('LinkFrontendBundle:App:index.html.twig');
 
     }
 

@@ -847,10 +847,9 @@ class Functions
 	}
 
 	// Retorna un arreglo multidimensional con la estructura del menú lateral para la vista de las lecciones
-	public function menuLecciones($programa, $subpagina_id, $dimension = 1)
+	public function menuLecciones($programa, $subpagina_id, $href, $dimension = 1)
 	{
 
-		$em = $this->em;
 		$menu_str = '';
 		
 		foreach ($programa['subpaginas'] as $subpagina)
@@ -859,18 +858,45 @@ class Functions
 			{
 				$active = $subpagina['id'] == $subpagina_id ? ' active' : '';
 				$menu_str .= '<li>
-								<a href="" class="menuLeccion'.$active.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
+								<a href="'.$href.'/'.$subpagina['id'].'" class="menuLeccion'.$active.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
 				if (count($subpagina['subpaginas']) && $dimension == 1)
 				{
-					$menu_str .= '<ul class="ul-items">';
-					$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, 2);
-					$menu_str .= '</ul>';
+					// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
+					$acceso = 0;
+					foreach ($subpagina['subpaginas'] as $sub)
+					{
+						if ($sub['acceso'])
+						{
+							$acceso = 1;
+							break;
+						}
+					}
+					if ($acceso)
+					{
+						$menu_str .= '<ul class="ul-items">';
+						$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, $href, 2);
+						$menu_str .= '</ul>';
+					}
 				}
 				$menu_str .= '</li>';
 			}
 		}
 
 		return $menu_str;
+
+	}
+
+	public function contenidoLecciones($programa, $depth = 1)
+	{
+
+		$em = $this->em;
+		$lecciones = array();
+
+		foreach ($programa['subpaginas'] as $subpagina)
+		{
+			$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina['id']);
+			//$lecciones 
+		}
 
 	}
 
