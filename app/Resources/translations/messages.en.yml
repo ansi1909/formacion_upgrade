@@ -286,7 +286,7 @@ La descripción debe ser mínimo de 3 caracteres.: Description must have at leas
 La descripción es requerida.: Description is required.
 La descripcion debe ser mínimo de 3 caracteres.: La descripcion debe ser mínimo de 3 caracteres.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
-La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.: The company to which this user belongs is inactive. Contact the system administrator.
+La empresa está inactiva. Contacte al administrador del sistema.: The company is inactive. Contact the system administrator.
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
 La empresa es requerida.: Company is required.
 Error la empresa no existe: Error the company does not exist

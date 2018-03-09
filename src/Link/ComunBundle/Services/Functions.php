@@ -810,17 +810,16 @@ class Functions
 		$em = $this->em;
 		$subpaginas = array();
 
-		$query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
-                                   JOIN np.paginaEmpresa pe
+		$query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
                                    WHERE pe.empresa = :empresa 
                                    	AND p.pagina = :pagina_id 
-                                   	AND np.nivel = :nivel_usuario 
+                                   	AND p.estatusContenido = :estatus_activo 
                                    	AND pe.activo = :activo 
                                    ORDER BY p.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                     					  'pagina_id' => $pagina_id,
-                                          'nivel_usuario' => $nivel_id,
+                                          'estatus_activo' => $estatus_contenido,
                                           'activo' => true));
         $subpages = $query->getResult();
 
@@ -830,16 +829,16 @@ class Functions
 			$query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
                                        WHERE p.estatusContenido = :activo AND p.pagina = :pagina_id')
                         ->setParameters(array('activo' => $estatus_contenido,
-                        					  'pagina_id' => $subpage->getPaginaEmpresa()->getPagina()->getId()));
+                        					  'pagina_id' => $subpage->getPagina()->getId()));
             $tiene_evaluacion = $query->getSingleScalarResult();
 
-            $subpaginas[$subpage->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $subpage->getPaginaEmpresa()->getPagina()->getId(),
-                                    											 'nombre' => $subpage->getPaginaEmpresa()->getPagina()->getNombre(),
-                                    											 'categoria' => $subpage->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
-                                    											 'foto' => $subpage->getPaginaEmpresa()->getPagina()->getFoto(),
-                                    											 'tiene_evaluacion' => $tiene_evaluacion ? true : false,
-                                    											 'acceso' => $subpage->getPaginaEmpresa()->getAcceso(),
-                                    											 'subpaginas' => $this->subPaginasNivel($subpage->getPaginaEmpresa()->getPagina()->getId(), $nivel_id, $estatus_contenido, $empresa_id));
+            $subpaginas[$subpage->getPagina()->getId()] = array('id' => $subpage->getPagina()->getId(),
+                                    							'nombre' => $subpage->getPagina()->getNombre(),
+                                    							'categoria' => $subpage->getPagina()->getCategoria()->getNombre(),
+                                    							'foto' => $subpage->getPagina()->getFoto(),
+                                    							'tiene_evaluacion' => $tiene_evaluacion ? true : false,
+                                    							'acceso' => $subpage->getAcceso(),
+                                    							'subpaginas' => $this->subPaginasNivel($subpage->getPagina()->getId(), $nivel_id, $estatus_contenido, $empresa_id));
 		
 		}
 
