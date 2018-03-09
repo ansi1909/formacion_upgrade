@@ -7,13 +7,14 @@
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>
-        {% block title %}
-            {% if app.session.started and app.session.get('empresa').titulo is defined %}
-                {{ app.session.get('empresa').titulo }}
-            {% else %}
-                {{ 'Sistema Formación'|trans }} 2.0
-            {% endif %}
-        {% endblock %}</title>
+            {% block title %}
+                {% if app.session.started and app.session.get('empresa').titulo is defined %}
+                    {{ app.session.get('empresa').titulo }}
+                {% else %}
+                    {{ 'Sistema Formación'|trans }} 2.0
+                {% endif %}
+            {% endblock %}
+        </title>
         {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
         <link rel="icon" type="image/x-icon" href="{{ img }}" />
         {% block stylesheets %}

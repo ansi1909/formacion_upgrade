@@ -1,0 +1,91 @@
+.rank-table{
+    display: block;
+    width: 32.5vw;
+    margin: 0 calc(1rem + 7px);
+    thead{
+        border-bottom: 1px solid $gray-400;
+        th{
+            color: $gray-600;
+            @extend %font-table;
+            &:first-child{
+                padding-right: calc(2rem - 4px);
+            }
+            &:nth-child(3){
+                padding: 0 calc(4rem - 15px);
+            }
+            &:nth-child(5){
+                padding: 0 calc(1rem - 1px);
+            }
+            &:last-child{
+                padding-left: calc(1rem - 6px);
+            }
+        }
+    }
+    tbody{
+        tr{
+            color: $blue;
+            cursor: default;
+            td{
+                padding: calc(1rem - 6px) 0;
+                &:first-child{
+                    font-family: $primary-font;	
+                    font-size: $h4-font-size;	
+                    font-weight: $font-weight-normal-hard;
+                    line-height: calc(2rem - 4px);
+                    text-align: left;
+                    position: relative;
+                    left: calc(1rem + 8px);
+                }
+                &:nth-child(2){
+                    .up{
+                        width: 2.5vw;
+                        height: 5vh;
+                        position: relative;
+                        left: 0rem;
+                        border-radius: calc(3rem + 4px);
+                    }
+                }
+                &:nth-child(3), &:nth-child(4), &:nth-child(5){
+                    @extend %font-table;
+                }
+                &:last-child{
+                    .level{
+                        color: $green;
+                        font-size: calc(1rem - 4px);
+                        padding-left: calc(1rem - 4px);
+                    }
+                }
+            }
+            &:hover{
+                color: $white;
+                background: $blue-700;
+            }
+        }
+        .me-i{
+            color: $black;
+            background: $green-700;
+            &:hover{
+                color: $black;
+                background: $green-700;
+            }
+            td{
+                &:last-child{
+                    .level{
+                        color: $blue !important;
+                        font-size: calc(1rem - 4px);
+                        padding-left: calc(1rem - 4px);
+                    }
+                }
+            }
+        }
+    }
+}
+
+//extend
+
+%font-table{
+    font-family: $primary-font;	
+    font-size: $font-size-sm;	
+    line-height: 1rem;
+    font-weight: $font-weight-normal;
+}

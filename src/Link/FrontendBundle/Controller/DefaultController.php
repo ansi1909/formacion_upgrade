@@ -20,9 +20,9 @@ class DefaultController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('ini'))
+        if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_login');
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
         }
         $f->setRequest($session->get('sesion_id'));
 

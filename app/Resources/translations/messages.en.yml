@@ -87,6 +87,7 @@ Continuar: Continue
 Contraseña: Password
 Copia: Copy
 Correcta: Correct
+Correo Electrónico: Email
 Correo electrónico repetido: Email repeated
 Correo electrónico requerido: Email required
 Correo corporativo: Company email
@@ -232,6 +233,7 @@ Evaluación: Test
 Evaluación activa: Enabled test
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
+Experimenta la pontencialidad de la capacitación digital: Experience the potential of digital training
 Fecha: Date
 Fecha Creación: Creation Date
 Fecha fin: End date
@@ -259,8 +261,10 @@ Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
 Imagen lado: Image side
+Ingresa tu usuario: Enter your username
 Iniciar Sesión: Log in
 Inicio: Begin
+instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
 Ir al listado de evaluaciones: Go to tests list
@@ -318,13 +322,14 @@ Listado de Roles: List of Roles
 Listado de Tipos de Destinos: List of Types of Destinies
 Listado de Tipos de Notificaciones: List of Types of Notifications
 Listado de tutoriales: List of tutorials
+Lo sentimos. Sesión expirada.: We are sorry. Session is expired.
 Login repetido: Login repeated
 Login requerido: Login required
 Logo de la empresa: Company logo
-Lugar: Place
 Los roles que tiene el usuario no son permitidos para ingresar al sistema.: The roles that the user has are not allowed to enter the system.
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
+Lugar: Place
 Material complementario: Complementary content
 Mensaje: Message
 Mensaje del servidor: Server message
@@ -342,6 +347,7 @@ Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
 No existen páginas: There are no pages
+No hay problema, te enviaremos un correo con: No problem, we send you an email with
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
@@ -413,13 +419,15 @@ Registrar Usuario: Add/Edit User
 registros: items
 Registros actualizados: Updated items
 Registros nuevos: New items
+Regresar al inicio: Back to login
+Reiniciar contraseña: Restore password
 Resultado del archivo procesado: Result of the processed file
 Resumen: Summary
+Respuesta: Answer
 Rol: Role
 Roles: Roles
 Roles asignados: Assigned roles
 Roles a seleccionar: Selectable roles
-Respuesta: Answer
 Salir: Log out
 Seleccionado: Selected
 Seleccione el/los usuarios: Select the user
@@ -434,6 +442,7 @@ Si marca SI, la página tendrá una sección en el que los usuarios podrán escr
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
+Si necesitas ayuda escribenos a: If you need help email us to
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Siguiente: Next
@@ -468,6 +477,7 @@ Título: Title
 Título en la ventana del navegador: Title of browser window
 Tutoriales: Tutorials
 Últimos 12: Last 12
+Url de la empresa no existe: Url for this company not found
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
 Usuario: User
