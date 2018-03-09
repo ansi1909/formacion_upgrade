@@ -28,7 +28,106 @@ class DefaultController extends Controller
       	if ($this->container->get('session')->isStarted())
       	{
         	
-        	// Lógica para mostrar el dashboard del backend
+        	if($session->get('administrador') == 'true')
+            {
+                $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+                $empresas=0;
+                $empresasA=array();
+                $empresasI=array();
+                $programasE=array();
+                $empresas_a=0;
+                $empresas_i=0;
+                
+                foreach($empresas_db as $empresa)
+                {
+                    $empresas=$empresas+'1';
+                    if($empresa->getActivo() == 'true') 
+                    {
+                        $empresas_a=$empresas_a+1;
+
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                                   WHERE u.empresa = :empresa_id')
+                                    ->setParameter('empresa_id', $empresa->getId());
+                        $usuarios = $query->getSingleScalarResult();
+
+
+                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                                   JOIN pe.pagina p
+                                                   WHERE pe.empresa = :empresa_id
+                                                   AND p.pagina IS NULL')
+                                    ->setParameter('empresa_id', $empresa->getId());
+                        $paginas = $query->getResult();
+
+                        $empresasA[]=array('nombre'=> $empresa->getNombre(),
+                                           'usuarios'=>$usuarios,
+                                           'programas'=>$paginas); 
+                    }
+                    else
+                    {
+                        $empresas_i=$empresas_i+1;
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                                   WHERE u.empresa = :empresa_id')
+                                    ->setParameter('empresa_id', $empresa->getId());
+                        $usuarios = $query->getSingleScalarResult();
+
+                        $empresasI[]=array('nombre'=> $empresa->getNombre(),
+                                           'usuarios'=>$usuarios);
+                    }
+                }
+
+
+                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresas'=>$empresas,
+                                                                                             'activas'=>$empresas_a,
+                                                                                             'inactivas'=>$empresas_i,
+                                                                                             'empresasA'=>$empresasA,
+                                                                                             'empresasI'=>$empresasI));
+
+                $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+                return $response;
+
+            }
+            else
+            {
+
+                $usuarioS = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+                                            WHERE u.empresa = :empresa_id')
+                            ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
+                $usuarios = $query->getResult();
+
+                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                           JOIN pe.pagina p
+                                           WHERE pe.empresa = :empresa_id
+                                           AND p.pagina IS NULL')
+                            ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
+                $paginas = $query->getResult();
+
+                $usuariosA = 0;
+                $usuariosI = 0;
+                foreach( $usuarios as $usuario )
+                {
+                    if($usuario->getActivo() == 'true')
+                    {
+                        $usuariosA = $usuariosA + 1;
+                    }
+                    else
+                    {
+                        $usuariosI = $usuariosI + 1;
+                    }
+
+                }
+
+                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuariosA,
+                                                                                             'inactivos'=> $usuariosI,
+                                                                                             'total'=> $usuariosA + $usuariosI,
+                                                                                             'paginas'=>$paginas));
+
+                $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+                return $response;
+            }
 
       	}
       	else {
@@ -61,6 +160,8 @@ class DefaultController extends Controller
         fclose($fp);
         return new Response(var_dump($arr));*/
 
+        if($session->get('administrador') == 'true')
+        {
         $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
         $empresas=0;
         $empresasA=array();
@@ -106,6 +207,8 @@ class DefaultController extends Controller
             }
         }
 
+
+
         $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresas'=>$empresas,
                                                                                      'activas'=>$empresas_a,
                                                                                      'inactivas'=>$empresas_i,
@@ -115,6 +218,8 @@ class DefaultController extends Controller
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 
         return $response;
+
+        }
 
     }
 
