@@ -202,3 +202,138 @@
     }
 }
 
+//Card profile
+.card-datos{
+    width: 81vw;
+    height: auto;
+    position: relative;
+    top: calc(2rem - 6px);
+    left: 13rem;
+    background: $gray-200;
+    border-radius: 1rem 1rem 0 0 ;
+    padding: calc(7rem - 6px) calc(2rem + 3px) calc(2rem + 3px) calc(2rem + 3px);
+    .pic-img{
+        height: calc(1rem * 10);
+        width: calc(1rem * 10);
+        position: relative;
+        overflow: hidden;
+        left:5rem;
+        top: 0;
+        padding: 0;
+        border-radius: 50rem;
+        .img-user-pic{
+            height: calc(1rem * 10);
+            width: calc(1rem * 10);
+            border-radius: 50rem;
+            position: relative;
+            right: 0;
+            top: 0;
+            padding: 0;
+            cursor: pointer;
+            
+        }
+        .add-img{
+            width: calc(1rem * 10);
+            height: calc(1rem * 10);
+            position: absolute;
+            border-radius: 50rem;
+            left: 0;
+            transform: translateY(0%);
+            background: $blue-500;
+            cursor: pointer;
+            .ic-add-img{
+                color: $white;
+                font-size: calc(2rem + 5px);
+                position: relative;
+                left: -4rem;
+                top: 3rem;
+                display: block;
+                opacity: .5;
+            }
+            .title-img{
+                color: $white;
+                font-size: $font-size-base;
+                font-weight: $font-weight-normal-hard;
+                display: block;
+                position: relative;
+                top: 3rem;
+                left: -3rem;
+                opacity: .5;
+            }
+        }
+        &:hover .add-img{
+            transform: translateY(-100%);
+        }
+    }
+    .puntos{
+        display: block;
+        position: relative;
+        right: calc(2rem + 8px);
+        top: calc(1rem - 4px);
+        color: $blue;	
+        font-family: $primary-font;	
+        font-size: calc(2rem - 8px);
+        line-height: calc(2rem - 4px);
+    }
+    .name-titulo{
+        font-family: $primary-font;	
+        font-size: $h2-font-size;	
+        font-weight: $font-weight-normal-hard;	
+        line-height: calc(3rem - 6px);
+        position: relative;
+        left: calc(-1 * calc(2rem + 4px));
+        color: $gray-700;
+    }
+    .info_datos{
+        @extend %sty_user;
+    }
+    .datos_user{
+        @extend %sty_user;
+    }
+    .ajustar{
+        position: relative;
+        left: -.5rem;
+        top: 0rem;
+        .nivel{
+            color: $gray-600;	
+            font-family: $primary-font;	
+            font-size: $p-font-size;	
+            line-height: calc(1rem + 5px);	
+            text-align: center;
+            .ic-nivel{
+                font-size: calc(1rem - 3px);
+                color: $lightblue;
+            }
+        }
+    }
+    .aj_link{
+        position: relative;
+        left: 0rem;
+        top: calc(1rem - 8px);
+    }
+}
+
+.card-pwd{
+    width: 81vw;
+    height: auto;
+    position: relative;
+    top: calc(2rem - 6px);
+    left: 13rem;
+    background: $white;
+    border-radius: 0 0 1rem 1rem;
+    padding: calc(7rem - 6px) calc(2rem + 3px) calc(calc(1rem * 9) - 3px) calc(2rem + 3px);
+    margin-bottom: calc(2rem + 3px);
+}
+.marcador{
+    border: 1px solid $black;
+}
+
+//Extend
+
+%sty_user{
+    color: $gray-600;	
+    font-family: $primary-font;	
+    font-size: $font-size-base;	
+    line-height: calc(1rem + 3px);
+    font-weight: $font-weight-normal;
+}
