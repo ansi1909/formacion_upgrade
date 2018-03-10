@@ -19,6 +19,68 @@
 
 
 
+}
+
+.nav-less-container {
+    overflow: auto;
+    white-space: nowrap;
+  //   -webkit-overflow-scrolling: touch;
+  // -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+#navlesson {
+    &.nav{
+        border: none;
+        flex-wrap: nowrap;
+        justify-content: center;
+        @include media-breakpoint-down(xs) {
+            justify-content: start;
+        }
+    }
+    &.nav-tabs, .nav-link.active {
+        border: none;
+    }
+
+    .circle-nav {
+        background-color: $gray-400;
+        color: $gray-600;
+        width: 50px;
+        height: 50px;
+        margin: 1.5rem;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        position: relative;
+        font-size: 1.4rem;
+
+    }
+    a.circle-nav:not(#one-tab):before {
+        content: "";
+        position: absolute;
+        right: 50px;
+        top: 22px;
+        width: 48px;
+        height: 7px;
+        border-top: 8px solid $gray-400;
+    }
+
+    .circle-less-viendo {
+        background-color: $lightblue;
+        color: $blue;
+    }
+
+    a.circle-nav.circle-less-viendo:before,  a.circle-nav.circle-less-vista:before{
+        border-top-color: $green !important;
+    }
 
 
+    .active {
+        opacity: .7;
+    }
+
+    .circle-less-vista {
+        background-color: $green;
+        color: $gray-500;
+    }
 }

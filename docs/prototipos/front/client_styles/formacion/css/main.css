@@ -484,9 +484,9 @@ p.up {
   -webkit-transform: rotate(-90deg); }
 
 .lesson-container h2 {
-  font-family: "Merriweather"; }
+  font-family: "Open Sans"; }
 .lesson-container p {
-  font-family: "Merriweather";
+  font-family: "Open Sans";
   font-size: 1rem;
   line-height: 1.6;
   color: #7b7b7b;
@@ -494,6 +494,51 @@ p.up {
   font-weight: 200;
   text-align: left;
   margin: 1.6rem auto; }
+
+.nav-less-container {
+  overflow: auto;
+  white-space: nowrap; }
+
+#navlesson.nav {
+  border: none;
+  flex-wrap: nowrap;
+  justify-content: center; }
+  @media (max-width: 575.98px) {
+    #navlesson.nav {
+      justify-content: start; } }
+#navlesson.nav-tabs, #navlesson .nav-link.active {
+  border: none; }
+#navlesson .circle-nav {
+  background-color: #DAE1E6;
+  color: #AAAFB3;
+  width: 50px;
+  height: 50px;
+  margin: 1.5rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: relative;
+  font-size: 1.4rem; }
+#navlesson a.circle-nav:not(#one-tab):before {
+  content: "";
+  position: absolute;
+  right: 50px;
+  top: 22px;
+  width: 48px;
+  height: 7px;
+  border-top: 8px solid #DAE1E6; }
+#navlesson .circle-less-viendo {
+  background-color: #80CCFF;
+  color: #5CAEE6; }
+#navlesson a.circle-nav.circle-less-viendo:before, #navlesson a.circle-nav.circle-less-vista:before {
+  border-top-color: #CFE65C !important; }
+#navlesson .active {
+  opacity: .7; }
+#navlesson .circle-less-vista {
+  background-color: #CFE65C;
+  color: #adb5bd; }
 
 .tabs {
   position: relative; }
