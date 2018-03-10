@@ -293,6 +293,13 @@ a:hover {
     position: relative;
     left: -.5rem; }
 
+.avatar-img {
+  width: 2.5vw;
+  height: 2.5vw;
+  border-radius: 50rem;
+  position: relative;
+  top: -.2rem; }
+
 .eval_header {
   height: 18vh; }
   .eval_header .exit_eval {
@@ -688,6 +695,117 @@ p.up {
       font-weight: 500;
       line-height: calc(2rem - 4px);
       text-align: center; }
+
+.card-datos {
+  width: 81vw;
+  height: auto;
+  position: relative;
+  top: calc(2rem - 6px);
+  left: 13rem;
+  background: #F7FAFC;
+  border-radius: 1rem 1rem 0 0;
+  padding: calc(7rem - 6px) calc(2rem + 3px) calc(2rem + 3px) calc(2rem + 3px); }
+  .card-datos .pic-img {
+    height: calc(1rem * 10);
+    width: calc(1rem * 10);
+    position: relative;
+    overflow: hidden;
+    left: 5rem;
+    top: 0;
+    padding: 0;
+    border-radius: 50rem; }
+    .card-datos .pic-img .img-user-pic {
+      height: calc(1rem * 10);
+      width: calc(1rem * 10);
+      border-radius: 50rem;
+      position: relative;
+      right: 0;
+      top: 0;
+      padding: 0;
+      cursor: pointer; }
+    .card-datos .pic-img .add-img {
+      width: calc(1rem * 10);
+      height: calc(1rem * 10);
+      position: absolute;
+      border-radius: 50rem;
+      left: 0;
+      transform: translateY(0%);
+      background: rgba(92, 174, 230, 0.5);
+      cursor: pointer; }
+      .card-datos .pic-img .add-img .ic-add-img {
+        color: #fff;
+        font-size: calc(2rem + 5px);
+        position: relative;
+        left: -4rem;
+        top: 3rem;
+        display: block;
+        opacity: .5; }
+      .card-datos .pic-img .add-img .title-img {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+        display: block;
+        position: relative;
+        top: 3rem;
+        left: -3rem;
+        opacity: .5; }
+    .card-datos .pic-img:hover .add-img {
+      transform: translateY(-100%); }
+  .card-datos .puntos {
+    display: block;
+    position: relative;
+    right: calc(2rem + 8px);
+    top: calc(1rem - 4px);
+    color: #5CAEE6;
+    font-family: "Roboto";
+    font-size: calc(2rem - 8px);
+    line-height: calc(2rem - 4px); }
+  .card-datos .name-titulo {
+    font-family: "Roboto";
+    font-size: 2.25rem;
+    font-weight: 500;
+    line-height: calc(3rem - 6px);
+    position: relative;
+    left: calc(-1 * calc(2rem + 4px));
+    color: #797D80; }
+  .card-datos .ajustar {
+    position: relative;
+    left: -.5rem;
+    top: 0rem; }
+    .card-datos .ajustar .nivel {
+      color: #AAAFB3;
+      font-family: "Roboto";
+      font-size: 1.125rem;
+      line-height: calc(1rem + 5px);
+      text-align: center; }
+      .card-datos .ajustar .nivel .ic-nivel {
+        font-size: calc(1rem - 3px);
+        color: #80CCFF; }
+  .card-datos .aj_link {
+    position: relative;
+    left: 0rem;
+    top: calc(1rem - 8px); }
+
+.card-pwd {
+  width: 81vw;
+  height: auto;
+  position: relative;
+  top: calc(2rem - 6px);
+  left: 13rem;
+  background: #fff;
+  border-radius: 0 0 1rem 1rem;
+  padding: calc(7rem - 6px) calc(2rem + 3px) calc(calc(1rem * 9) - 3px) calc(2rem + 3px);
+  margin-bottom: calc(2rem + 3px); }
+
+.marcador {
+  border: 1px solid #000; }
+
+.card-datos .info_datos, .card-datos .datos_user {
+  color: #AAAFB3;
+  font-family: "Roboto";
+  font-size: 1rem;
+  line-height: calc(1rem + 3px);
+  font-weight: 400; }
 
 .rank-table {
   display: block;
