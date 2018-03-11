@@ -22,6 +22,7 @@
 }
 
 .nav-less-container {
+    margin-left: 5%;
     overflow: auto;
     white-space: nowrap;
   //   -webkit-overflow-scrolling: touch;
@@ -31,9 +32,11 @@
     &.nav{
         border: none;
         flex-wrap: nowrap;
-        justify-content: center;
+        padding-left: 35%;
+        // justify-content: center;
         @include media-breakpoint-down(xs) {
             justify-content: start;
+            padding-left: 1%;
         }
     }
     &.nav-tabs, .nav-link.active {
@@ -69,6 +72,8 @@
         background-color: $lightblue;
         color: $blue;
     }
+
+
 
     a.circle-nav.circle-less-viendo:before,  a.circle-nav.circle-less-vista:before{
         border-top-color: $green !important;
