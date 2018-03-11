@@ -851,12 +851,20 @@ class Functions
 	{
 
 		$menu_str = '';
+		$i = 0;
 		
 		foreach ($programa['subpaginas'] as $subpagina)
 		{
 			if ($subpagina['acceso'])
 			{
-				$active = $subpagina['id'] == $subpagina_id ? ' active' : '';
+				$i++;
+				if ($subpagina_id)
+				{
+					$active = $subpagina['id'] == $subpagina_id ? ' active' : '';
+				}
+				else {
+					$active = $i == 1 ? ' active' : '';
+				}
 				$menu_str .= '<li>
 								<a href="'.$href.'/'.$subpagina['id'].'" class="menuLeccion'.$active.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
 				if (count($subpagina['subpaginas']) && $dimension == 1)
@@ -886,17 +894,50 @@ class Functions
 
 	}
 
-	public function contenidoLecciones($programa, $depth = 1)
+	public function indexPages($pagina)
+	{
+
+		$indexedPages = array();
+		$sobrinos = 0;
+
+		// Recorrido inicial de las sub-páginas para determinar si a este nivel tienen sobrinos (sub-páginas de los hermanos)
+		foreach ($pagina['subpaginas'] as $subpagina)
+		{
+			if (count($subpagina['subpaginas']))
+			{
+				$sobrinos++;
+			}
+		}
+
+		// Indexar las sub-páginas
+		foreach ($pagina['subpaginas'] as $subpagina)
+		{
+			$subpagina['padre'] = $pagina['id'];
+			$subpagina['sobrinos'] = $sobrinos;
+			$subpagina['hijos'] = count($subpagina['subpaginas']);
+			$indexedPages[$subpagina['id']] = $subpagina;
+			if (count($subpagina['subpaginas']))
+			{
+				$indexedPages += $this->indexPages($subpagina);
+			}
+		}
+
+		return $indexedPages;
+
+	}
+
+	public function contenidoLecciones($programa, $subpagina_id)
 	{
 
 		$em = $this->em;
+		$prelecciones = $this->prelecciones($programa['subpaginas'], $subpagina_id); // Se guardan las hipotéticas lecciones sin consultar las entidades
 		$lecciones = array();
+		$wizard = 1;
 
-		foreach ($programa['subpaginas'] as $subpagina)
+		/*foreach ($programa['subpaginas'] as $subpagina)
 		{
-			$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina['id']);
-			//$lecciones 
-		}
+			//$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina['id']);
+		}*/
 
 	}
 

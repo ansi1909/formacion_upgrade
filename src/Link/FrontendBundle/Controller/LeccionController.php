@@ -28,9 +28,54 @@ class LeccionController extends Controller
         // Menú lateral dinámico
         $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)));
 
-        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
 
-        $lecciones = $f->contenidoLecciones($session->get('paginas')[$programa_id]);
+        // También se anexa a la indexación el programa padre
+        $pagina = $session->get('paginas')[$programa_id];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $indexedPages[$pagina['id']] = $pagina;
+
+        return new Response(var_dump($indexedPages));
+
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $master_content = 1; // Contenido principal antes de mostrar el wizard
+
+        if ($subpagina_id == 0 || $subpagina_id == $programa_id)
+        {
+            foreach ($indexedPages[$programa_id]['subpaginas'] as $subpagina)
+            {
+                if ($subpagina['sobrinos'] > 0)
+                {
+                    $pagina_id = $subpagina['id'];
+                }
+                else {
+                    $pagina_id = $programa_id;
+                    $master_content = 0;
+                }
+                break;  // Solo la primera iteración. Se mostrará el primer módulo por defecto.
+            }
+        }
+        else {
+            if ($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0)
+            {
+                $pagina_id = $indexedPages[$subpagina_id]['id'];
+            }
+            else {
+                if ($indexedPages[$subpagina_id]['padre'] == $programa_id)
+                {
+                    $pagina_id = $programa_id;
+                    $master_content = 0;
+                }
+                else {
+                    $pagina_id = $indexedPages[$subpagina_id]['padre'];
+                }
+            }
+        }
+
+        $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $subpagina_id);
 
         // Se reinicia el reinicia el reloj de pagina_log
 
