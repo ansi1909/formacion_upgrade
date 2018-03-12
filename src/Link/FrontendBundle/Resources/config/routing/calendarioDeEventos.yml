@@ -4,4 +4,4 @@ _calendarioDeEventos:
 
 _eventosDelUsuario:
     path:  /eventos/{userID}
-    defaults: { _controller: LinkBackendBundle:CalendarioDeEventos:eventos }
+    defaults: { _controller: LinkFrontendBundle:CalendarioDeEventos:eventos }

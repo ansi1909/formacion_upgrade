@@ -13,85 +13,51 @@ use Symfony\Component\HttpFoundation\Cookie;
 class CalendarioDeEventosController extends Controller
 {
 
-    public function indexAction($app_id, Request $request)
+    public function indexAction()
     {
-        $session = new Session();
+       $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        if (!$session->get('ini'))
-        {
-            return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
+        $session = new Session();
 
-            $session->set('app_id', $app_id);
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-            {
-                return $this->redirectToRoute('_authException');
-            }
+        if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
         }
         $f->setRequest($session->get('sesion_id'));
-        $em = $this->getDoctrine()->getManager();
-        $usuario_empresa = 0;
-        $empresas = array();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
-        if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1;
-            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($usuario->getEmpresa());
-            $eventos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEvento')->findByEmpresa($usuario->getEmpresa());
-        }
-        else {
-            $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
-                                       WHERE e.activo = :activo
-                                       ORDER BY e.id ASC")
-                        ->setParameters(array('activo' => true));
-            $empresas = $query->getResult();
-            
-            $query2 = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNivel n
-                                       JOIN LinkComunBundle:AdminEmpresa e
-                                       WHERE e.activo = :activo 
-                                       AND e.id = n.empresa
-                                       ORDER BY n.id ASC")
-                         ->setParameters(array('activo' => true));
-            $niveles = $query2->getResult();
+        if ($this->container->get('session')->isStarted())
+        {
 
-            $query3 = $em->createQuery("SELECT ev FROM LinkComunBundle:AdminEvento ev
-                                       JOIN LinkComunBundle:AdminEmpresa e
-                                       WHERE e.activo = :activo 
-                                       AND e.id = ev.empresa
-                                       ORDER BY ev.id ASC")
-                         ->setParameters(array('activo' => true));
-            $eventos = $query3->getResult();
+          $usuario_id = $session->get('usuario')['id'];
+
+        }else {
+            return $this->redirectToRoute('_login');
         }
 
-        return $this->render('LinkBackendBundle:Calendario:index.html.twig', array('empresas' => $empresas,
-                                                                                   'usuario_empresa' => $usuario_empresa,
-                                                                                   'eventos' => $eventos,
-                                                                                   'niveles' => $niveles,
-                                                                                   'app_id' => $app_id,
-                                                                                   'usuario' => $usuario));
+        return $this->render('LinkFrontendBundle:CalendarioDeEventos:index.html.twig', array('usuario_id' => $usuario_id));
+
+        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+        return $response;
+
     }
 
     public function eventosAction($userID)
     {
         
         $em = $this->getDoctrine()->getManager();
-        $usuario_empresa = 0;
-        $empresas = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($userID); 
 
-        if ($usuario->getEmpresa()) {
-            $eventos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEvento')->findByEmpresa($usuario->getEmpresa());
-        }
-        else {
-            $query = $em->createQuery("SELECT ev FROM LinkComunBundle:AdminEvento ev
-                                       JOIN LinkComunBundle:AdminEmpresa e
-                                       WHERE e.activo = :activo 
-                                       AND e.id = ev.empresa
-                                       ORDER BY ev.id ASC")
-                         ->setParameters(array('activo' => true));
-            $eventos = $query->getResult();
-        }
+        $consult_eventos = $em->createQuery('SELECT ae FROM LinkComunBundle:AdminEvento ae
+                                             JOIN LinkComunBundle:AdminEmpresa e 
+                                             WHERE e.id = :empresa_id
+                                             AND e.id = ae.empresa
+                                             AND ae.nivel IS NULL
+                                             OR ae.nivel = :nivel_usuario
+                                             ORDER BY ae.id DESC')
+                              ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId(),
+                                                    'nivel_usuario' => $usuario->getNivel()->getId()));
+        $eventos = $consult_eventos->getResult();
 
         $return = array();
         

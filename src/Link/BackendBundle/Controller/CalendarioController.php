@@ -82,7 +82,7 @@ class CalendarioController extends Controller
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($userID); 
 
         if ($usuario->getEmpresa()) {
-            $eventos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEvento')->findByEmpresa($usuario->getEmpresa());
+            $eventos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEvento')->findByEmpresa($usuario->getEmpresa()->getId());
         }
         else {
             $query = $em->createQuery("SELECT ev FROM LinkComunBundle:AdminEvento ev
