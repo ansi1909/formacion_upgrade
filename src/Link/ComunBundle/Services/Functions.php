@@ -804,7 +804,7 @@ class Functions
     }
 
  	// Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
-	public function subPaginasNivel($pagina_id, $nivel_id, $estatus_contenido, $empresa_id)
+	public function subPaginasNivel($pagina_id, $estatus_contenido, $empresa_id)
 	{
 
 		$em = $this->em;
@@ -816,11 +816,14 @@ class Functions
                                    	AND p.pagina = :pagina_id 
                                    	AND p.estatusContenido = :estatus_activo 
                                    	AND pe.activo = :activo 
+                                   	AND pe.fechaInicio <= :hoy 
+						            AND pe.fechaVencimiento >= :hoy
                                    ORDER BY p.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                     					  'pagina_id' => $pagina_id,
                                           'estatus_activo' => $estatus_contenido,
-                                          'activo' => true));
+                                          'activo' => true,
+                                          'hoy' => date('Y-m-d')));
         $subpages = $query->getResult();
 
 		foreach ($subpages as $subpage)
@@ -838,7 +841,9 @@ class Functions
                                     							'foto' => $subpage->getPagina()->getFoto(),
                                     							'tiene_evaluacion' => $tiene_evaluacion ? true : false,
                                     							'acceso' => $subpage->getAcceso(),
-                                    							'subpaginas' => $this->subPaginasNivel($subpage->getPagina()->getId(), $nivel_id, $estatus_contenido, $empresa_id));
+                                    							'muro_activo' => $subpage->getMuroActivo(),
+                                    							'prelacion' => $subpage->getPrelacion() ? $subpage->getPrelacion()->getId() : 0,
+                                    							'subpaginas' => $this->subPaginasNivel($subpage->getPagina()->getId(), $estatus_contenido, $empresa_id));
 		
 		}
 
@@ -926,18 +931,100 @@ class Functions
 
 	}
 
-	public function contenidoLecciones($programa, $subpagina_id)
+	// Retorna un arreglo con toda la información de la lecciones de una página, con su muro.
+	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $estatus_completada)
 	{
 
 		$em = $this->em;
-		$prelecciones = $this->prelecciones($programa['subpaginas'], $subpagina_id); // Se guardan las hipotéticas lecciones sin consultar las entidades
 		$lecciones = array();
-		$wizard = 1;
 
-		/*foreach ($programa['subpaginas'] as $subpagina)
+		$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_arr['id']);
+
+		$lecciones = $pagina_arr;
+		$lecciones['descripcion'] = $pagina->getDescripcion();
+		$lecciones['contenido'] = $pagina->getContenido();
+		$lecciones['foto'] = $pagina->getFoto();
+		$lecciones['pdf'] = $pagina->getPdf();
+		$lecciones['next_subpage'] = 0;
+		$bloqueda = 0;
+		if ($pagina_arr['prelacion'])
 		{
-			//$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina['id']);
-		}*/
+			// Se determina si el contenido estará bloqueado
+			$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+			                            WHERE pl.pagina = :pagina_id 
+			                            AND pl.usuario = :usuario_id 
+			                            AND pl.estatusPagina = :completada')
+			            ->setParameters(array('pagina_id' => $pagina_arr['prelacion'],
+			            					  'usuario_id' => $usuario_id,
+			                        		  'completada' => $estatus_completada));
+			$leccion_completada = $query->getSingleScalarResult();
+			$bloqueda = $leccion_completada ? 0 : 1;
+		}
+		$lecciones['bloqueda'] = $bloqueda;
+
+		// Muros recientes
+		//$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5);
+
+		$sublecciones = array();
+		$i = 0;
+        foreach ($pagina_arr['subpaginas'] as $subpagina_arr)
+		{
+
+			$i++;
+
+			if (!$wizard && $i==1)
+			{
+				// Al terminar la lectura del contenido, el botón "Siguiente" se debe redireccionar a su primer hijo
+				$lecciones['next_subpage'] = $subpagina_arr['id'];
+			}
+
+			$subpagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina_arr['id']);
+			$subleccion = $subpagina_arr;
+			$subleccion['descripcion'] = $subpagina->getDescripcion();
+			$subleccion['contenido'] = $subpagina->getContenido();
+			$subleccion['foto'] = $subpagina->getFoto();
+			$subleccion['pdf'] = $subpagina->getPdf();
+			$bloqueda = 0;
+			if ($subpagina_arr['prelacion'])
+			{
+				// Se determina si el contenido estará bloqueado
+				$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+				                            WHERE pl.pagina = :pagina_id 
+				                            AND pl.usuario = :usuario_id 
+				                            AND pl.estatusPagina = :completada')
+				            ->setParameters(array('pagina_id' => $subpagina_arr['prelacion'],
+				            					  'usuario_id' => $usuario_id,
+				                        		  'completada' => $estatus_completada));
+				$leccion_completada = $query->getSingleScalarResult();
+				$bloqueda = $leccion_completada ? 0 : 1;
+			}
+			$subleccion['bloqueda'] = $bloqueda;
+
+			$sublecciones[] = $subleccion;
+
+		}
+		$lecciones['subpaginas'] = $sublecciones;
+
+		return $lecciones;
+
+	}
+
+	// Arreglo de comentarios en el muro de una página y sus respuestas
+	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit)
+	{
+
+		$qb = $em->createQueryBuilder();
+        $qb->select('m')
+           ->from('LinkComunBundle:CertiMuro', 'm')
+           ->andWhere('m.pagina = :pagina_id')
+           ->andWhere('m.muro IS NULL')
+           ->orderBy('m.'.$orderCriteria, $asc)
+           ->setFirstResult(0)
+           ->setMaxResults(5)
+           ->setParameter('pagina_id', $pagina_id);
+        $query = $qb->getQuery();
+        $muros_bd = $query->getResult();
+        $muros = array();
 
 	}
 

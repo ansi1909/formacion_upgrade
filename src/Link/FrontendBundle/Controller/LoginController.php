@@ -288,10 +288,13 @@ class LoginController extends Controller
 						                                           	AND p.pagina IS NULL 
 						                                           	AND np.nivel = :nivel_usuario 
 						                                           	AND pe.activo = :activo 
+						                                           	AND pe.fechaInicio <= :hoy 
+						                                           	AND pe.fechaVencimiento >= :hoy
 						                                           ORDER BY p.orden')
 						                            ->setParameters(array('empresa' => $empresa_bd->getId(),
 						                                                  'nivel_usuario' => $usuario->getNivel()->getId(),
-						                                                  'activo' => true));
+						                                                  'activo' => true,
+						                                                  'hoy' => date('Y-m-d')));
 						                $paginas_bd = $query->getResult();
 				                        
 				                        if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
@@ -319,7 +322,7 @@ class LoginController extends Controller
 								                            					  'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
 								                $tiene_evaluacion = $query->getSingleScalarResult();
 
-										        $subPaginas = $f->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $usuario->getNivel()->getId(), $yml['parameters']['estatus_contenido']['activo'], $empresa_bd->getId());
+										        $subPaginas = $f->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $yml['parameters']['estatus_contenido']['activo'], $empresa_bd->getId());
 
 								                $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
 				                                                        											'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
@@ -327,6 +330,8 @@ class LoginController extends Controller
 				                                                        											'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
 				                                                        											'tiene_evaluacion' => $tiene_evaluacion ? true : false,
 				                                                        											'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
+				                                                        											'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
+				                                                        											'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
 				                                                        											'subpaginas' => $subPaginas);
 											}
 

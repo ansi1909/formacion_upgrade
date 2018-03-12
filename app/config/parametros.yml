@@ -39,6 +39,7 @@ parameters:
         iniciada: 1
         en_evaluación: 2
         completada: 3
+        pausada: 4
     layout:
         base: 1
     folders:
