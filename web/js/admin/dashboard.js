@@ -5,6 +5,8 @@ $(document).ready(function() {
          fill: {gradient: ["#2ec7cb", "#6c8bef"]},
          lineCap: 'butt'
      });
+
+     $('.tree').jstree();
     
      /* Sparklines can also take their values from the first argument   passed to the sparkline() function */
     

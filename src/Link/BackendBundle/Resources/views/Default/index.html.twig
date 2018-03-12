@@ -71,7 +71,17 @@
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
                                 <tr class="{{eo}}">
                                     <td>{{empresaA.nombre}}</td>
-                                    <td>  </td>
+                                    <td>
+                                        {% if empresaA.tiene > 0 %}
+                                            <div class="tree">
+                                                <ul data-jstree='{ "opened" : true }'>
+                                                    {{ empresaA.programas|raw }}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            {{ 'No tiene sub-páginas'|trans }}
+                                        {% endif %}
+                                    </td>
                                     <td class="text-center"><span>{{empresaA.usuarios}} <i class="fa fa-user"></i></span></td>
                                 </tr>
                                 {%endfor%}
@@ -99,17 +109,22 @@
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
                                 <tr class="{{eo}}">
                                     <td>{{empresaI.nombre}}</td>
-                                    <td><div id="frmt2" class="demo"></div></td>
+                                    <td>
+                                        {% if empresaI.tiene > 0 %}
+                                            <div class="tree">
+                                                <ul data-jstree='{ "opened" : true }'>
+                                                    {{ empresaI.programas|raw }}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            {{ 'No tiene sub-páginas'|trans }}
+                                        {% endif %}
+                                    </td>
                                     <td class="text-center"><span>{{empresaI.usuarios}} <i class="fa fa-user"></i></span></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div>
-                    <div class="card-footer">
-                        <div class="col-sm-16 col-md-16 text-right">
-                            <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
-                        </div>
                     </div>
                 </div>
             </div>

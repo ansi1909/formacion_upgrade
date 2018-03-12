@@ -31,18 +31,18 @@ class DefaultController extends Controller
         	if($session->get('administrador') == 'true')
             {
                 $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-                $empresas=0;
                 $empresasA=array();
                 $empresasI=array();
-                $programasE=array();
                 $empresas_a=0;
                 $empresas_i=0;
                 
                 foreach($empresas_db as $empresa)
                 {
-                    $empresas=$empresas+'1';
+                    
                     if($empresa->getActivo() == 'true') 
                     {
+                        $tieneA = 0;
+                        $paginasA= "";
                         $empresas_a=$empresas_a+1;
 
                         $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
@@ -50,33 +50,72 @@ class DefaultController extends Controller
                                     ->setParameter('empresa_id', $empresa->getId());
                         $usuarios = $query->getSingleScalarResult();
 
+                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                                   JOIN pe.pagina p
+                                                   WHERE pe.empresa = :empresa_id
+                                                   AND p.pagina IS NULL')
+                                    ->setParameter('empresa_id', $empresa->getId());
+                        $paginas_db = $query->getResult();
+
+                        foreach( $paginas_db as $pagina )
+                        {
+                            $tieneA++;
+                            $paginasA .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$pagina->getPagina()->getId().'" p_str="'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre().'">'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre();
+                            $subpaginas = $f->subPaginasEmpresa($pagina->getPagina()->getId(), $empresa->getId());     
+                            if ($subpaginas['tiene'] > 0)
+                            {
+                                $paginasA .= '<ul>';
+                                $paginasA .= $subpaginas['return'];
+                                $paginasA .= '</ul>';
+                            }
+                            $paginasA .= '</li>'; 
+                        }
+
+                        $empresasA[]=array('nombre'=> $empresa->getNombre(),
+                                           'usuarios'=>$usuarios,
+                                           'programas'=>$paginasA,
+                                           'tiene'=>$tieneA);                        
+                    }
+                    else
+                    {
+                        $empresas_i=$empresas_i+1;
+                        $tieneI=0;
+                        $paginasI="";
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                                   WHERE u.empresa = :empresa_id')
+                                    ->setParameter('empresa_id', $empresa->getId());
+                        $usuarios = $query->getSingleScalarResult();
 
                         $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                                    JOIN pe.pagina p
                                                    WHERE pe.empresa = :empresa_id
                                                    AND p.pagina IS NULL')
                                     ->setParameter('empresa_id', $empresa->getId());
-                        $paginas = $query->getResult();
+                        $paginas_db = $query->getResult();
 
-                        $empresasA[]=array('nombre'=> $empresa->getNombre(),
-                                           'usuarios'=>$usuarios,
-                                           'programas'=>$paginas); 
-                    }
-                    else
-                    {
-                        $empresas_i=$empresas_i+1;
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
-                                                   WHERE u.empresa = :empresa_id')
-                                    ->setParameter('empresa_id', $empresa->getId());
-                        $usuarios = $query->getSingleScalarResult();
+                        foreach( $paginas_db as $pagina )
+                        {
+                            $paginasI .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$pagina->getPagina()->getId().'" p_str="'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre().'">'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre();
+                            $subpaginas = $f->subPaginasEmpresa($pagina->getPagina()->getId(), $empresa->getId());     
+                            if ($subpaginas['tiene'] > 0)
+                            {
+                                $paginasI .= '<ul>';
+                                $paginasI .= $subpaginas['return'];
+                                $paginasI .= '</ul>';
+                            }
+                            $paginasI .= '</li>';
+                            $tieneI++;
+                        }
 
                         $empresasI[]=array('nombre'=> $empresa->getNombre(),
-                                           'usuarios'=>$usuarios);
+                                           'usuarios'=>$usuarios,
+                                           'programas'=>$paginasI,
+                                           'tiene'=>$tieneI);
                     }
                 }
 
 
-                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresas'=>$empresas,
+                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresas'=>$empresas_a + $empresas_i,
                                                                                              'activas'=>$empresas_a,
                                                                                              'inactivas'=>$empresas_i,
                                                                                              'empresasA'=>$empresasA,
@@ -102,27 +141,25 @@ class DefaultController extends Controller
                                            WHERE pe.empresa = :empresa_id
                                            AND p.pagina IS NULL')
                             ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
-                $paginas = $query->getResult();
+                $paginas_db = $query->getResult();
+
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n
+                                           WHERE n.empresa = :empresa_id')
+                            ->setParameter('empresa_id',$usuarioS->getEmpresa()->getId());
+                $niveles = $query->getResult(); 
 
                 $usuariosA = 0;
                 $usuariosI = 0;
-                foreach( $usuarios as $usuario )
+                
+                foreach($paginas_db as $pagina)
                 {
-                    if($usuario->getActivo() == 'true')
-                    {
-                        $usuariosA = $usuariosA + 1;
-                    }
-                    else
-                    {
-                        $usuariosI = $usuariosI + 1;
-                    }
 
                 }
 
                 $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuariosA,
                                                                                              'inactivos'=> $usuariosI,
                                                                                              'total'=> $usuariosA + $usuariosI,
-                                                                                             'paginas'=>$paginas));
+                                                                                             'paginas'=>$paginas_db));
 
                 $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 
