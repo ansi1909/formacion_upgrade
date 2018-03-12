@@ -1,0 +1,3 @@
+_programas:
+    path:     /
+    defaults: { _controller: LinkFrontendBundle:programas:index }

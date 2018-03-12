@@ -59,11 +59,11 @@
                 <nav>
                     <div id="mainSidenav" class="main-sidenav ">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
-                        <a class="d-flex mt-1 mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
-                        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
-                        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+                        <a class="d-flex mt-1 mb-3 text-nowrap" href="{{ path('_inicio') }}"> <i class="material-icons mr-2">home</i> Dashboard </a>
+                        <a class="d-flex mb-3 text-nowrap" href="{{ path('_misProgramas') }}"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+                        <a class="d-flex mb-3 text-nowrap" href="{{ path('_programas') }}"> <i class="material-icons mr-2">dashboard</i> Programas </a>
                         <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
-                        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+                        <a class="d-flex mb-3 text-nowrap" href="{{ path('_calendarioDeEventos') }}"> <i class="material-icons mr-2">event</i>  Calendario </a>
                     </div>
                 </nav>
             {% endblock %}

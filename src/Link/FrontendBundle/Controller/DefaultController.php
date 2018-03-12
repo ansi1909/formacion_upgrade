@@ -76,7 +76,7 @@ class DefaultController extends Controller
                         $titulo_padre = $ar->getPagina()->getNombre();
                         $titulo_hijo = '';
                         $imagen = $ar->getPagina()->getFoto();
-                        $categoria = $ar->getPagina()->getNombre();
+                        $categoria = $ar->getCategoria()->getNombre();
                         $porcentaje = $ar->getPorcentajeAvance();
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
                     }

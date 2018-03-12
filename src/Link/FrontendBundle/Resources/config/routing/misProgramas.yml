@@ -1,0 +1,3 @@
+_misProgramas:
+    path:     /
+    defaults: { _controller: LinkFrontendBundle:MisProgramas:index }
