@@ -37,6 +37,7 @@ Autor: Author
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aviso de cierre de sesión: Notice of session closure
+Ayer: Yesterday
 Bienvenida: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
@@ -286,8 +287,8 @@ La descripción debe ser mínimo de 3 caracteres.: Description must have at leas
 La descripción es requerida.: Description is required.
 La descripcion debe ser mínimo de 3 caracteres.: La descripcion debe ser mínimo de 3 caracteres.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
-La empresa está inactiva. Contacte al administrador del sistema.: The company is inactive. Contact the system administrator.
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
+La empresa está inactiva. Contacte al administrador del sistema.: The company is inactive. Contact the system administrator.
 La empresa es requerida.: Company is required.
 Error la empresa no existe: Error the company does not exist
 La Entidad es requerida.: The Entity is required.
@@ -333,6 +334,7 @@ Lugar: Place
 Material complementario: Complementary content
 Mensaje: Message
 Mensaje del servidor: Server message
+minutos: minutes
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
@@ -503,4 +505,5 @@ Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails
 Vista Previa: Preview
 Vista previa del dashboard: Dashboard preview
+Yo: Me
 ¿Olvidaste tu contraseña?: Did you forget your password?

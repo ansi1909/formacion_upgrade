@@ -37,6 +37,7 @@ Autor: Autor
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aviso de cierre de sesión: Aviso de cierre de sesión
+Ayer: Ayer
 Bienvenida: Bienvenida
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
@@ -286,9 +287,8 @@ La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mín
 La descripción es requerida.: La descripción es requerida.
 La descripcion debe ser mínimo de 3 caracteres.: The description must be at least 3 characters.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
-La empresa está inactiva. Contacte al administrador del sistema.: La empresa está inactiva. Contacte al administrador del sistema.
 La empresa aún no tiene configurado ningún nivel: La empresa aún no tiene configurado ningún nivel
-La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.: La empresa a la que pertenece este usuario está inactiva. Contacte al administrador del sistema.
+La empresa está inactiva. Contacte al administrador del sistema.: La empresa está inactiva. Contacte al administrador del sistema.
 La empresa es requerida.: La empresa es requerida.
 Error la empresa no existe: Error la empresa no existe
 La Entidad es requerida.: La Entidad es requerida.
@@ -334,6 +334,7 @@ Lugar: Lugar
 Material complementario: Material complementario
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
+minutos: minutos
 Modificado el: Modificado el
 Modificado por: Modificado por
 Modificar evento: Modificar evento
@@ -504,4 +505,5 @@ Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails
 Vista Previa: Vista Previa
 Vista previa del dashboard: Vista previa del dashboard
+Yo: Yo
 ¿Olvidaste tu contraseña?: ¿Olvidaste tu contraseña?

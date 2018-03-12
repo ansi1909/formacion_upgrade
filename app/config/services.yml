@@ -9,4 +9,4 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     funciones:
         class: Link\ComunBundle\Services\Functions
-        arguments: ["@doctrine.orm.default_entity_manager", "@service_container", "@templating"]
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container", "@templating", "@translator"]

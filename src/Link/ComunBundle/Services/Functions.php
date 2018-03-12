@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class Functions
 {	
@@ -14,6 +15,7 @@ class Functions
 	protected $container;
 	protected $mailer;
 	private $templating;
+	private $translator;
 
 	public function __construct(\Doctrine\ORM\EntityManager $em, ContainerInterface $container)
 	{
@@ -22,6 +24,7 @@ class Functions
 		$this->container = $container;
 		$this->mailer = $container->get('mailer');
         $this->templating = $container->get('templating');
+        $this->translator = $container->get('translator');
 	}
 
 	// Función que valida si un registro de una tabla puede ser eliminado dependiendo de su relación con otras tablas
@@ -352,6 +355,49 @@ class Functions
 		}
 
         return $days_ago;
+
+	}
+
+	// Calcula la diferencia de tiempo entre fecha y hoy
+	// Si es menos de una hora retorna la cantidad de minutos
+	// Si es más de una hora y fecha es hoy retorna la hora de fecha
+	// Si fecha es ayer retorna "Ayer Hora"
+	// Si fecha es menor que ayer se muestra fecha formateado con la hora
+	public function sinceTime($fecha)
+	{
+
+		$hoy = date('Y-m-d');
+		$ayer = date('Y-m-d', strtotime('yesterday'));
+		$time_ago = '';
+		
+		if ($fecha)
+		{
+			
+			$datetime1 = new \DateTime($fecha);
+			$datetime2 = new \DateTime("now");
+			$interval = $datetime1->diff($datetime2);
+
+			if ($fecha < $ayer)
+			{
+				$time_ago = $datetime1->format('Y-m-d H:i');
+			}
+			elseif ($fecha >= $ayer.' 00:00:00' && $fecha < $ayer.' 23:59:59') 
+			{
+				$time_ago = $this->translator->trans('Ayer').' '.$datetime1->format('H:i');
+			}
+			elseif ($datetime1->format('Y-m-d') == $hoy) {
+				if ($interval->format('%h') > 1)
+				{
+					$time_ago = $datetime1->format('H:i');
+				}
+				else {
+					$time_ago = 'Hace '.$datetime1->format('i').' '.$this->translator->trans('minutos');
+				}
+			}
+			
+		}
+
+        return $time_ago;
 
 	}
 
@@ -946,7 +992,7 @@ class Functions
 		$lecciones['foto'] = $pagina->getFoto();
 		$lecciones['pdf'] = $pagina->getPdf();
 		$lecciones['next_subpage'] = 0;
-		$bloqueda = 0;
+		$bloqueada = 0;
 		if ($pagina_arr['prelacion'])
 		{
 			// Se determina si el contenido estará bloqueado
@@ -958,12 +1004,13 @@ class Functions
 			            					  'usuario_id' => $usuario_id,
 			                        		  'completada' => $estatus_completada));
 			$leccion_completada = $query->getSingleScalarResult();
-			$bloqueda = $leccion_completada ? 0 : 1;
+			$bloqueada = $leccion_completada ? 0 : 1;
 		}
-		$lecciones['bloqueda'] = $bloqueda;
+		$lecciones['bloqueada'] = $bloqueada;
 
 		// Muros recientes
-		//$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5);
+		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id);
+		$lecciones['muros_recientes'] = $muros_recientes;
 
 		$sublecciones = array();
 		$i = 0;
@@ -984,7 +1031,7 @@ class Functions
 			$subleccion['contenido'] = $subpagina->getContenido();
 			$subleccion['foto'] = $subpagina->getFoto();
 			$subleccion['pdf'] = $subpagina->getPdf();
-			$bloqueda = 0;
+			$bloqueada = 0;
 			if ($subpagina_arr['prelacion'])
 			{
 				// Se determina si el contenido estará bloqueado
@@ -996,9 +1043,12 @@ class Functions
 				            					  'usuario_id' => $usuario_id,
 				                        		  'completada' => $estatus_completada));
 				$leccion_completada = $query->getSingleScalarResult();
-				$bloqueda = $leccion_completada ? 0 : 1;
+				$bloqueada = $leccion_completada ? 0 : 1;
 			}
-			$subleccion['bloqueda'] = $bloqueda;
+			$subleccion['bloqueada'] = $bloqueada;
+
+			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id);
+			$subleccion['muros_recientes'] = $muros_recientes;
 
 			$sublecciones[] = $subleccion;
 
@@ -1010,21 +1060,45 @@ class Functions
 	}
 
 	// Arreglo de comentarios en el muro de una página y sus respuestas
-	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit)
+	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit, $usuario_id)
 	{
 
+		$em = $this->em;
 		$qb = $em->createQueryBuilder();
         $qb->select('m')
            ->from('LinkComunBundle:CertiMuro', 'm')
            ->andWhere('m.pagina = :pagina_id')
            ->andWhere('m.muro IS NULL')
            ->orderBy('m.'.$orderCriteria, $asc)
-           ->setFirstResult(0)
-           ->setMaxResults(5)
+           ->setFirstResult($offset)
+           ->setMaxResults($limit)
            ->setParameter('pagina_id', $pagina_id);
         $query = $qb->getQuery();
         $muros_bd = $query->getResult();
         $muros = array();
+
+        foreach ($muros_bd as $muro)
+        {
+        	$submuros_bd = $em->getRepository('LinkComunBundle:CertiMuro')->findBy(array('muro' => $muro->getId()),
+        																		   array('id' => 'DESC'));
+        	$submuros = array();
+        	foreach ($submuros_bd as $submuro)
+        	{
+        		$submuros[] = array('id' => $submuro->getId(),
+        							'mensaje' => $submuro->getMensaje(),
+        							'usuario' => $submuro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $submuro->getUsuario()->getNombre().' '.$submuro->getUsuario()->getApellido(),
+        							'foto' => $submuro->getUsuario()->getFoto(),
+        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')));
+        	}
+        	$muros[] = array('id' => $muro->getId(),
+    						 'mensaje' => $muro->getMensaje(),
+    						 'usuario' => $muro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido(),
+    						 'foto' => $muro->getUsuario()->getFoto(),
+    						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
+    						 'submuros' => $submuros);
+        }
+
+        return $muros;
 
 	}
 
