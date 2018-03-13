@@ -131,11 +131,6 @@ class DefaultController extends Controller
 
                 $usuarioS = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
-                                            WHERE u.empresa = :empresa_id')
-                            ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
-                $usuarios = $query->getResult();
-
                 $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                            JOIN pe.pagina p
                                            WHERE pe.empresa = :empresa_id
@@ -150,16 +145,70 @@ class DefaultController extends Controller
 
                 $usuariosA = 0;
                 $usuariosI = 0;
+                $paginas = array();
                 
                 foreach($paginas_db as $pagina)
                 {
+                    $usuariosT=0;
+                    $usuariosCur=0;
+                    $usuariosF=0;
+                    $usuariosN=0;
+                    foreach($niveles as $nivel)
+                    {
+                        $nivel_paginas = $em->getRepository('LinkComunBundle:CertiNivelPagina')->findOneBy(array('paginaEmpresa' =>$pagina->getId(),
+                                                                                                                 'nivel' => $nivel->getId()));
 
+                        if ($nivel_paginas) 
+                        {
+                            //foreach($nivel_paginas as $nivel_pagina)
+                            //{
+                                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                                           WHERE u.nivel = :nivel_id')
+                                            ->setParameter('nivel_id', $nivel_paginas->getNivel()->getId());
+                                $usuarios = $query->getResult();
+
+                                foreach( $usuarios as $usuario)
+                                {   
+                                    $usuariosT++;
+                                    $query = $em->createQuery('SELECT cpl FROM LinkComunBundle:CertiPaginaLog cpl
+                                                               WHERE cpl.pagina = :pagina_id
+                                                               AND cpl.usuario = :usuario_id')
+                                                ->setParameters(array('pagina_id'=>$pagina->getPagina()->getId(),
+                                                                      'usuario_id'=>$usuario->getId()));
+                                    $cpls = $query->getResult();
+
+                                    //return new Response(var_dump($nivel_paginas));
+                                    foreach($cpls as $cpl )
+                                    {
+                                        if ( $cpl->getEstatusPagina() == '1' || $cpl->getEstatusPagina() == '2' ) 
+                                        {
+                                            $usuariosCur++;
+                                        }
+                                        elseif ($cpl->getEstatusPagina() == '3') 
+                                        {
+                                            $usuariosF++;    
+                                        }
+                                        else
+                                        {
+                                            $usuariosN++;    
+                                        }
+                                    }
+                                }
+                            //}
+                        }
+                    }
+
+                    $paginas[] = array('pagina'=>$pagina->getPagina()->getNombre(),
+                                       'usuariosT'=>$usuariosT,
+                                       'usuariosCur'=>$usuariosCur,
+                                       'usuariosF'=>$usuariosF,
+                                       'usuariosN'=>$usuariosN);
                 }
 
                 $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuariosA,
                                                                                              'inactivos'=> $usuariosI,
                                                                                              'total'=> $usuariosA + $usuariosI,
-                                                                                             'paginas'=>$paginas_db));
+                                                                                             'paginas'=>$paginas));
 
                 $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

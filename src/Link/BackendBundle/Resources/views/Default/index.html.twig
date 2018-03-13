@@ -225,11 +225,11 @@
                                 {% for pagina in paginas %}
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
                                 <tr class="{{eo}}">
-                                    <td>{{pagina.pagina.nombre}}</td>
-                                    <td class="text-center"><span>0300 <i class="fa fa-user"></i></span></td>
-                                    <td class="text-center"><span>0300 <i class="fa fa-user"></i></span></td>
-                                    <td class="text-center"><span>0300 <i class="fa fa-user"></i></span></td>
-                                    <td class="text-center"><span>0300 <i class="fa fa-user"></i></span></td>
+                                    <td>{{pagina.pagina}}</td>
+                                    <td class="text-center"><span>{{pagina.usuariosT}} <i class="fa fa-user"></i></span></td>
+                                    <td class="text-center"><span>{{pagina.usuariosCur}} <i class="fa fa-user"></i></span></td>
+                                    <td class="text-center"><span>{{pagina.usuariosF}} <i class="fa fa-user"></i></span></td>
+                                    <td class="text-center"><span>{{pagina.usuariosN}} <i class="fa fa-user"></i></span></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
