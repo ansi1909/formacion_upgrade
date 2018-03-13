@@ -1,0 +1,169 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu{
+            width: 60%;
+            height: 300px;
+        }
+        body {
+            margin-bottom: 300px;
+        }
+    </style>
+{% endblock %}
+
+{% block clbody %}
+    lesson-body
+{% endblock %}
+
+{% block header %}
+    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <a class="navbar-brand" href="#">
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+        </a>
+        <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+            <i class="material-icons mr-3 color-light-grey">mail_outline</i>
+            <div class=" d-flex flex-column ">
+                <div class="dropdown show">
+                    <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
+                        <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
+                    </a>
+                    <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        {% block logout %}
+                            <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <a class="navbar-brand d-none d-md-block" href="#">
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+        </a>
+        <div class="wraper-title-lesson d-flex flex-column  align-items-center">
+            <h3 class="mt-2 mb-1 color-grey" >{{ titulo }}</h3>
+            <h5 class="mt-0 color-grey" >{{ subtitulo }}</h5>
+        </div>
+        <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            <div class="d-flex flex-column">
+                <div class="dropdown show">
+                    <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
+                        <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
+                    </a>
+                    <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+            {% set display = lecciones.muro_activo ? '' : 'display:none;' %}
+            <a id="iconComments" href="#" style="{{ display }}">
+                <i class="material-icons mx-3 color-light-grey">comment</i>
+            </a>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sidemenu %}
+    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson  "  >
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+        <a class="d-flex mt-1 mb-3 text-nowrap " href="{{ path('_programa', { 'programa_id': programa.id }) }}"> <i class="material-icons mr-2 rotate-180">exit_to_app</i> Volver al programa </a>
+
+        <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active " id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
+                     <i class="material-icons">view_list</i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
+                    <i class="material-icons">widgets</i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content menu-lesson" id="pills-tabContent" >
+            <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
+                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal "> Indice </h5>
+                <ol>
+                    {{ menu_str|raw }}
+                    {% if prueba_activa %}
+                        <li><a href="">{{ 'Evaluación'|trans }}</a></li>
+                    {% endif %}
+                </ol>
+            </div>
+            <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <h5 class="text-center my-3 color-light-grey font-normal "> Recursos </h5>
+                <a href="">Espacio colaborativo</a>
+                <a href="">Tutor</a>
+                <a href="">Recursos</a>
+                <a href="">Reportar problema</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bg %}
+    bg-white
+{% endblock %}
+
+{% block body %}
+
+    {% if wizard %}
+        {# NAVEGACION LECCION #}
+        {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
+        <div class=" nav-less-container text-center  lesson-nav py-2 mb-1 mt-3">
+            <ul class="nav nav-tabs" id="navlesson" role="tablist">
+                {% for subpagina in lecciones.subpaginas %}
+                    {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
+                    {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
+                    <li class="nav-item">
+                        <a class="circle-nav {{ vista~disabled }}" id="tab-{{ subpagina.id }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="false">{{ loop.index }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {# CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL SK-EDITOR #}
+    <div class="tab-content" id="myTabContent">
+        {% if not wizard %}
+            <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
+                <div class="lesson-container container py-6 text-center">
+                    <h2 class="color-dark-grey">{{ lecciones.nombre }}</h2>
+                    {% if lecciones.foto %}
+                        {% set img = uploads~lecciones.foto %}
+                        <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
+                    {% endif %}
+                    {{ lecciones.contenido|raw }}
+                </div>
+            </div>
+        {% else %}
+            {% for subpagina in lecciones.subpaginas %}
+                <div class="tab-pane fade {% if loop.index == 0 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="tab-{{ subpagina.id }}">
+                    <div class="lesson-container container py-6 text-center">
+                        <h2 class="color-dark-grey">{{ subpagina.nombre }}</h2>
+                        {% if subpagina.foto %}
+                            {% set img = uploads~subpagina.foto %}
+                            <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
+                        {% endif %}
+                        {{ subpagina.contenido|raw }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('.tab__content li:first').addClass('activo');
+        $('.tabs li:first').addClass('activo');
+    </script>
+{% endblock %}

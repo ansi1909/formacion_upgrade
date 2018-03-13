@@ -23,33 +23,32 @@
             <link rel="stylesheet" href="{{ css }}">
         {% endblock %}
     </head>
-    <body>
+    <body class="{% block clbody %}{% endblock %}">
         
         {# HEADER #}
         <header>
-            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
-                <a class="navbar-brand" href="#">
-                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                    <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
-                </a>
-                {% block headertitle %}{% endblock %}
-                <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-                    <i class="material-icons mr-3 color-light-grey">mail_outline</i>
-                    <div class=" d-flex flex-column ">
-                        <div class="dropdown show">
-                            <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
-                                <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
-                            </a>
-                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                {% block logout %}
+            {% block header %}
+                <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+                    <a class="navbar-brand" href="#">
+                        {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+                        <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+                    </a>
+                    <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+                        <i class="material-icons mr-3 color-light-grey">mail_outline</i>
+                        <div class=" d-flex flex-column ">
+                            <div class="dropdown show">
+                                <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
+                                    <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
+                                </a>
+                                <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
-                                {% endblock %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            {% endblock %}
         </header>
 
         <div class="container-fluid mt-6">

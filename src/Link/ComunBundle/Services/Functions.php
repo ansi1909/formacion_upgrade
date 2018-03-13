@@ -898,7 +898,7 @@ class Functions
 	}
 
 	// Retorna un arreglo multidimensional con la estructura del menú lateral para la vista de las lecciones
-	public function menuLecciones($programa, $subpagina_id, $href, $dimension = 1)
+	public function menuLecciones($programa, $subpagina_id, $href, $usuario_id, $estatus_completada, $dimension = 1)
 	{
 
 		$menu_str = '';
@@ -914,10 +914,24 @@ class Functions
 					$active = $subpagina['id'] == $subpagina_id ? ' active' : '';
 				}
 				else {
-					$active = $i == 1 ? ' active' : '';
+					$active = $i == 1 ? 'active' : '';
+				}
+				$bloqueada = '';
+				if ($subpagina['prelacion'])
+				{
+					// Se determina si el contenido estará bloqueado
+					$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+					                            WHERE pl.pagina = :pagina_id 
+					                            AND pl.usuario = :usuario_id 
+					                            AND pl.estatusPagina = :completada')
+					            ->setParameters(array('pagina_id' => $subpagina['prelacion'],
+					            					  'usuario_id' => $usuario_id,
+					                        		  'completada' => $estatus_completada));
+					$leccion_completada = $query->getSingleScalarResult();
+					$bloqueada = $leccion_completada ? '' : 'less-disabled';
 				}
 				$menu_str .= '<li>
-								<a href="'.$href.'/'.$subpagina['id'].'" class="menuLeccion'.$active.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
+								<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
 				if (count($subpagina['subpaginas']) && $dimension == 1)
 				{
 					// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
@@ -933,7 +947,7 @@ class Functions
 					if ($acceso)
 					{
 						$menu_str .= '<ul class="ul-items">';
-						$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, $href, 2);
+						$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, $href, $usuario_id, $estatus_completada, 2);
 						$menu_str .= '</ul>';
 					}
 				}
@@ -978,7 +992,7 @@ class Functions
 	}
 
 	// Retorna un arreglo con toda la información de la lecciones de una página, con su muro.
-	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $estatus_completada)
+	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $estatus_completada, $estatus_evaluacion)
 	{
 
 		$em = $this->em;
@@ -1047,6 +1061,17 @@ class Functions
 			}
 			$subleccion['bloqueada'] = $bloqueada;
 
+			// Se verifica si esta sublección ya fue vista
+			$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+			                            WHERE pl.pagina = :pagina_id 
+			                            AND pl.usuario = :usuario_id 
+			                            AND pl.estatusPagina IN (:vista)')
+			            ->setParameters(array('pagina_id' => $subpagina_arr['id'],
+			            					  'usuario_id' => $usuario_id,
+			                        		  'vista' => array($estatus_completada, $estatus_evaluacion)));
+			$vista = $query->getSingleScalarResult();
+			$subleccion['vista'] = $vista;
+
 			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id);
 			$subleccion['muros_recientes'] = $muros_recientes;
 
@@ -1099,6 +1124,37 @@ class Functions
         }
 
         return $muros;
+
+	}
+
+	// Retorna 1 si la prueba está habilitada
+	public function pruebaActiva($pagina, $usuario_id, $estatus_completada)
+	{
+
+		$em = $this->em;
+		$activar = 1;
+
+		foreach ($pagina['subpaginas'] as $subpagina)
+		{
+
+			$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+			                            WHERE pl.pagina = :pagina_id 
+			                            AND pl.usuario = :usuario_id 
+			                            AND pl.estatusPagina = :completada')
+			            ->setParameters(array('pagina_id' => $subpagina['id'],
+			            					  'usuario_id' => $usuario_id,
+			                        		  'completada' => $estatus_completada));
+			$leccion_completada = $query->getSingleScalarResult();
+
+			if (!$leccion_completada)
+			{
+				$activar = 0;
+				break;
+			}
+
+		}
+
+		return $activar;
 
 	}
 
