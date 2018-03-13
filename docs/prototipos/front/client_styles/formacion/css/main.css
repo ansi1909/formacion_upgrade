@@ -227,7 +227,8 @@ input.form-control:focus {
     color: #DAE1E6; }
 
 body {
-  background-color: #F7F7F7; }
+  background-color: #F7F7F7;
+  overflow-x: hidden; }
 
 #main {
   transition: margin-left .6s;
@@ -238,7 +239,7 @@ body {
     #main {
       width: 90%; } }
 
-body.lesson-body {
+body.lesson-body, body.detalle-noticias {
   background-color: #fff; }
 
 a:hover {
@@ -865,12 +866,78 @@ p.up {
 .marcador {
   border: 1px solid #000; }
 
+.card-anuncio {
+  height: 18.375rem;
+  width: 15.25rem;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19);
+  cursor: pointer;
+  margin-bottom: calc(3rem + 1px); }
+  .card-anuncio:hover .card_footer .fecha_anuncio {
+    color: #5CAEE6; }
+  .card-anuncio .card_header {
+    height: 9rem; }
+    .card-anuncio .card_header .card_img {
+      width: 15.25rem;
+      height: 9rem;
+      border-radius: 1rem 1rem 0 0; }
+  .card-anuncio .card_body {
+    height: 5.5rem;
+    padding: 0 calc(1rem - 2px); }
+    .card-anuncio .card_body .titulo_anuncio {
+      padding-top: calc(1rem + 3px);
+      color: #5C6266;
+      font-family: "Roboto";
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: calc(1rem + 5px); }
+  .card-anuncio .card_footer {
+    height: 3.5rem;
+    position: relative;
+    bottom: 0;
+    margin: 0;
+    padding: 0 calc(1rem - 2px); }
+    .card-anuncio .card_footer .separador {
+      box-sizing: border-box;
+      border: 1px solid #DAE1E6;
+      width: 13.75rem;
+      margin-bottom: calc(1rem - 8px); }
+    .card-anuncio .card_footer .fecha_anuncio {
+      color: #AAAFB3;
+      font-family: "Roboto";
+      font-size: 0.75rem;
+      line-height: calc(1rem - 2px); }
+    .card-anuncio .card_footer .tipo_anuncio1 {
+      color: #5C6266; }
+    .card-anuncio .card_footer .tipo_anuncio2 {
+      color: #FFAF61; }
+
+.card_noticia-detalle {
+  width: 84vw;
+  height: 80vh;
+  position: relative;
+  top: 2rem;
+  left: 14vw;
+  background: red;
+  margin: 0;
+  padding: 0; }
+  .card_noticia-detalle .header-titulo .img-detalle {
+    height: 5rem;
+    width: 5rem; }
+
 .card-datos .info_datos, .card-datos .datos_user {
   color: #AAAFB3;
   font-family: "Roboto";
   font-size: 1rem;
   line-height: calc(1rem + 3px);
   font-weight: 400; }
+
+.card-anuncio .card_footer .tipo_anuncio1, .card-anuncio .card_footer .tipo_anuncio2 {
+  font-family: "Roboto";
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: calc(1rem - 2px); }
 
 .rank-table {
   display: block;
@@ -1228,5 +1295,28 @@ p.up {
 
 #iconComments i:hover {
   color: #CFE65C; }
+
+.box-pag {
+  height: 3rem;
+  width: 22rem;
+  border: 2px solid #DAE1E6;
+  border-radius: calc(2rem - 4px);
+  background-color: transparent; }
+  .box-pag .pag {
+    margin: 0;
+    padding: 0;
+    list-style-type: none; }
+    .box-pag .pag .pag-item {
+      color: #5CAEE6;
+      font-family: "Roboto";
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: calc(1rem + 5px);
+      border: 2px solid #DAE1E6; }
+      .box-pag .pag .pag-item:first-child, .box-pag .pag .pag-item:last-child {
+        padding: calc(1rem - 3px) calc(1rem + 2px) calc(1rem - 4px) calc(1rem + 2px); }
+      .box-pag .pag .pag-item:nth-child(n) {
+        padding: calc(1rem - 3px) calc(1rem - 3px) calc(1rem - 4px) calc(1rem - 3px);
+        border: 2px solid #DAE1E6; }
 
 /*# sourceMappingURL=main.css.map */

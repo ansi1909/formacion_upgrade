@@ -1,0 +1,27 @@
+.box-pag{
+    height: 3rem;
+    width: 22rem;
+    border: 2px solid $gray-400;	
+    border-radius: calc(2rem - 4px);	
+    background-color: transparent;
+    .pag{
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        .pag-item{
+            color: $blue;	
+            font-family: $primary-font;	
+            font-size: $p-font-size;	
+            font-weight: $font-weight-normal-hard;	
+            line-height: calc(1rem + 5px);
+            border: 2px solid $gray-400;
+            &:first-child, &:last-child{
+                padding: calc(1rem - 3px) calc(1rem + 2px) calc(1rem - 4px) calc(1rem + 2px);
+            }
+            &:nth-child(n){
+                padding: calc(1rem - 3px) calc(1rem - 3px) calc(1rem - 4px) calc(1rem - 3px);
+                border: 2px solid $gray-400;
+            }
+        }
+    }
+}

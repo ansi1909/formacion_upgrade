@@ -1,7 +1,7 @@
 // estilos estandar para todas los layouts y variaciones
 body {
     background-color: $gray-150;
-
+    overflow-x: hidden;
 }
 
 #main {
@@ -17,7 +17,7 @@ body {
     }
 }
 
-body.lesson-body {
+body.lesson-body, body.detalle-noticias{
     background-color: $white;
 }
 

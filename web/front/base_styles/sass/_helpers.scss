@@ -43,3 +43,7 @@ a.active-line, .active-line {
     border-bottom: 1px solid $gray-400;
 
 }
+
+.less-disabled {
+    pointer-events: none;
+}
