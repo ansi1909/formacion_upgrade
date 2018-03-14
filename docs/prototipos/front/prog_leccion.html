@@ -122,7 +122,10 @@
 
         <!-- NAVEGACION LECCION -->
         <!-- La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo -->
-            <div class=" nav-less-container text-center  lesson-nav py-2 mb-1 mt-3">
+        <div class="wraper-nav-less" id="wraperNavLess">
+            <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
+            <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
+            <div class=" nav-less-container text-center  lesson-nav py-2 mb-1 mt-3" id="NavLess">
                 <ul class="nav  nav-tabs" id="navlesson" role="tablist">
                     <li class="nav-item">
                         <a class="circle-nav circle-less-vista" id="one-tab" data-toggle="tab" href="#uno" role="tab" aria-controls="uno" aria-selected="true">1</a>
@@ -175,6 +178,7 @@
                 </ul>
             </div>
 
+        </div>
 
         <!-- CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL SK-EDITOR -->
         <div class="tab-content" id="myTabContent">
@@ -223,7 +227,20 @@
         </div>
     </div>
 
-
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-end">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+    
     <nav class="container text-right">
         <div class="btn-primary btn"> Siguiente </div>
     </nav>

@@ -21,19 +21,58 @@
 
 }
 
-.nav-less-container {
+.wraper-nav-less {
+    position: relative;
     margin-left: 5%;
-    overflow: auto;
+    overflow: hidden;
+    height: 120px;
+
+    &:hover .btn-lessons {
+        opacity: 1;
+    }
+    .btn-lessons {
+        opacity: 0;
+        position: absolute;
+        top: 45%;
+        z-index: 5;
+        cursor: pointer;
+        transition: 0.4s;
+        color: $gray-500;
+
+        &:hover {
+            color: $green;
+        }
+        i {
+            font-size: 36px;
+        }
+    }
+    #btnLessLeft {
+
+    }
+    #btnLessRight {
+        right: 0;
+    }
+}
+
+.nav-less-container {
+    margin-left: 4%;
+    margin-right: 4%;
+    overflow-x: auto;
     white-space: nowrap;
+    padding-bottom: 0;
+
   //   -webkit-overflow-scrolling: touch;
   // -ms-overflow-style: -ms-autohiding-scrollbar;
+
 }
 #navlesson {
+
     &.nav{
         border: none;
         flex-wrap: nowrap;
-        padding-left: 35%;
-        // justify-content: center;
+        padding-left: 5%;
+        padding-right: 5%;
+        justify-content: space-between;
         @include media-breakpoint-down(xs) {
             justify-content: start;
             padding-left: 1%;
@@ -42,6 +81,7 @@
     &.nav-tabs, .nav-link.active {
         border: none;
     }
+
 
     .circle-nav {
         background-color: $gray-400;
