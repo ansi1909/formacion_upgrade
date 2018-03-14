@@ -45,3 +45,11 @@ a:hover {
         display: none;
     }
 }
+
+//Recuadro de tabs y filtro de noticias
+.cont-noticias{
+    margin-top: calc(1rem - 5px);
+    border-radius: 1rem;	
+    background-color: $gray-200;
+    padding: calc(2rem + 3px) 0;
+}
