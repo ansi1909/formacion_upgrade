@@ -192,7 +192,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (16, 'Administrar ayuda', NULL, 'fa-info-circle', TRUE, NULL, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (17, 'Noticias y novedades', '_bibliotecas', 'fa-bell', TRUE, 9, 6);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (18, 'Reportes y consultas', NULL, NULL, TRUE, NULL, 6);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (19, 'Sesiones de usuarios', NULL, NULL, TRUE, 18, 1);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (19, 'Participantes por empresa', '_participantesEmpresa', 'fa-th-list', TRUE, 18, 1);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (20, 'Usuarios sin ingresar', NULL, NULL, TRUE, 18, 2);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (21, 'Estadisticas de las páginas', NULL, NULL, TRUE, 18, 3);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (22, 'Auditoria de evaluaciones', NULL, NULL, TRUE, 18, 4);

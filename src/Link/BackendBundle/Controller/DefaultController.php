@@ -157,44 +157,39 @@ class DefaultController extends Controller
                     {
                         $nivel_paginas = $em->getRepository('LinkComunBundle:CertiNivelPagina')->findOneBy(array('paginaEmpresa' =>$pagina->getId(),
                                                                                                                  'nivel' => $nivel->getId()));
-
                         if ($nivel_paginas) 
                         {
-                            //foreach($nivel_paginas as $nivel_pagina)
-                            //{
-                                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
-                                                           WHERE u.nivel = :nivel_id')
-                                            ->setParameter('nivel_id', $nivel_paginas->getNivel()->getId());
-                                $usuarios = $query->getResult();
+                            $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                                       WHERE u.nivel = :nivel_id')
+                                        ->setParameter('nivel_id', $nivel_paginas->getNivel()->getId());
+                            $usuarios = $query->getResult();
+                            $usu[] = $usuarios;
+                            foreach( $usuarios as $usuario)
+                            {   
+                                $usuariosT++;
+                                $query = $em->createQuery('SELECT cpl FROM LinkComunBundle:CertiPaginaLog cpl
+                                                           WHERE cpl.pagina = :pagina_id
+                                                           AND cpl.usuario = :usuario_id')
+                                            ->setParameters(array('pagina_id'=>$pagina->getPagina()->getId(),
+                                                                  'usuario_id'=>$usuario->getId()));
+                                $cpls = $query->getResult();
 
-                                foreach( $usuarios as $usuario)
-                                {   
-                                    $usuariosT++;
-                                    $query = $em->createQuery('SELECT cpl FROM LinkComunBundle:CertiPaginaLog cpl
-                                                               WHERE cpl.pagina = :pagina_id
-                                                               AND cpl.usuario = :usuario_id')
-                                                ->setParameters(array('pagina_id'=>$pagina->getPagina()->getId(),
-                                                                      'usuario_id'=>$usuario->getId()));
-                                    $cpls = $query->getResult();
-
-                                    //return new Response(var_dump($nivel_paginas));
-                                    foreach($cpls as $cpl )
+                                foreach($cpls as $cpl )
+                                {
+                                    if ( $cpl->getEstatusPagina() == '1' || $cpl->getEstatusPagina() == '2' ) 
                                     {
-                                        if ( $cpl->getEstatusPagina() == '1' || $cpl->getEstatusPagina() == '2' ) 
-                                        {
-                                            $usuariosCur++;
-                                        }
-                                        elseif ($cpl->getEstatusPagina() == '3') 
-                                        {
-                                            $usuariosF++;    
-                                        }
-                                        else
-                                        {
-                                            $usuariosN++;    
-                                        }
+                                        $usuariosCur++;
+                                    }
+                                    elseif ($cpl->getEstatusPagina() == '3') 
+                                    {
+                                        $usuariosF++;    
+                                    }
+                                    else
+                                    {
+                                        $usuariosN++;    
                                     }
                                 }
-                            //}
+                            }
                         }
                     }
 

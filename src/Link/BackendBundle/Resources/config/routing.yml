@@ -108,3 +108,7 @@ preferencias:
 vista:
     resource: "@LinkBackendBundle/Resources/config/routing/vista.yml"
     prefix: /vista
+
+reportes:
+    resource: "@LinkBackendBundle/Resources/config/routing/reportes.yml"
+    prefix: /reportes
