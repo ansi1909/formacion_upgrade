@@ -65,6 +65,8 @@ Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
 Código del empleado repetido: Employee code repeated
 Columna: Column
+Comentar: Comment
+Comentarios: Comments
 Competencia debe ser un valor entero: Competition must be an integer value
 Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
 Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
@@ -220,6 +222,7 @@ Error en el servidor: Error on server
 Errores: Errors
 Errores de validación: Validation errors
 Escoja una plantilla: Choose a template
+Escriba su comentario: Post a comment
 Espacio colaborativo: Collaborative space
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
@@ -262,6 +265,7 @@ Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
 Imagen lado: Image side
+Indice: Index
 Ingresa tu usuario: Enter your username
 Iniciar Sesión: Log in
 Inicio: Begin
@@ -331,6 +335,8 @@ Los roles que tiene el usuario no son permitidos para ingresar al sistema.: The 
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Lugar: Place
+Más recientes: Most recent
+Más valorados: Most valued
 Material complementario: Complementary content
 Mensaje: Message
 Mensaje del servidor: Server message
@@ -423,9 +429,10 @@ Registros actualizados: Updated items
 Registros nuevos: New items
 Regresar al inicio: Back to login
 Reiniciar contraseña: Restore password
+Responder: Answer
+Respuesta: Answer
 Resultado del archivo procesado: Result of the processed file
 Resumen: Summary
-Respuesta: Answer
 Rol: Role
 Roles: Roles
 Roles asignados: Assigned roles
@@ -505,5 +512,6 @@ Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails
 Vista Previa: Preview
 Vista previa del dashboard: Dashboard preview
+Volver al programa: Back to program page
 Yo: Me
 ¿Olvidaste tu contraseña?: Did you forget your password?

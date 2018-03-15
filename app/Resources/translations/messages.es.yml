@@ -65,6 +65,8 @@ Categoría de las sub-paginas: Categoría de las sub-paginas
 Categorías: Categorías
 Código del empleado repetido: Código del empleado repetido
 Columna: Columna
+Comentar: Comentar
+Comentarios: Comentarios
 Competencia debe ser un valor entero: Competencia debe ser un valor entero
 Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
@@ -220,6 +222,7 @@ Error en el servidor: Error en el servidor
 Errores: Errores
 Errores de validación: Errores de validación
 Escoja una plantilla: Escoja una plantilla
+Escriba su comentario: Escriba su comentario
 Espacio colaborativo: Espacio colaborativo
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
@@ -262,6 +265,7 @@ Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen lado: Imagen lado
+Indice: Indice
 Ingresa tu usuario: Ingresa tu usuario
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
@@ -331,6 +335,8 @@ Los roles que tiene el usuario no son permitidos para ingresar al sistema.: Los 
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Lugar: Lugar
+Más recientes: Más recientes
+Más valorados: Más valorados
 Material complementario: Material complementario
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
@@ -423,9 +429,10 @@ Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
 Regresar al inicio: Regresar al inicio
 Reiniciar contraseña: Reiniciar contraseña
+Responder: Responder
+Respuesta: Respuesta
 Resultado del archivo procesado: Resultado del archivo procesado
 Resumen: Resumen
-Respuesta: Respuesta
 Rol: Rol
 Roles: Roles
 Roles asignados: Roles asignados
@@ -505,5 +512,6 @@ Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails
 Vista Previa: Vista Previa
 Vista previa del dashboard: Vista previa del dashboard
+Volver al programa: Volver al programa
 Yo: Yo
 ¿Olvidaste tu contraseña?: ¿Olvidaste tu contraseña?

@@ -19,33 +19,11 @@
 
 {% block header %}
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
-        <a class="navbar-brand" href="#">
-            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
-        </a>
-        <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-            <i class="material-icons mr-3 color-light-grey">mail_outline</i>
-            <div class=" d-flex flex-column ">
-                <div class="dropdown show">
-                    <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
-                        <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
-                    </a>
-                    <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        {% block logout %}
-                            <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
-                        {% endblock %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <a class="navbar-brand d-none d-md-block" href="#">
             {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
             <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
         </a>
-        <div class="wraper-title-lesson d-flex flex-column  align-items-center">
+        <div class="wraper-title-lesson d-flex flex-column align-items-center">
             <h3 class="mt-2 mb-1 color-grey" >{{ titulo }}</h3>
             <h5 class="mt-0 color-grey" >{{ subtitulo }}</h5>
         </div>
@@ -70,18 +48,18 @@
 {% endblock %}
 
 {% block sidemenu %}
-    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson  "  >
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
-        <a class="d-flex mt-1 mb-3 text-nowrap " href="{{ path('_programa', { 'programa_id': programa.id }) }}"> <i class="material-icons mr-2 rotate-180">exit_to_app</i> Volver al programa </a>
+    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
+        <a class="d-flex mt-1 mb-3 text-nowrap" href="{{ path('_programa', { 'programa_id': programa.id }) }}"> <i class="material-icons mr-2 rotate-180">exit_to_app</i>{{ 'Volver al programa'|trans }}</a>
 
         <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active " id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
+                <a class="nav-link active" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
                      <i class="material-icons">view_list</i>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
                     <i class="material-icons">widgets</i>
                 </a>
             </li>
@@ -89,7 +67,7 @@
 
         <div class="tab-content menu-lesson" id="pills-tabContent" >
             <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
-                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal "> Indice </h5>
+                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Indice'|trans }}</h5>
                 <ol>
                     {{ menu_str|raw }}
                     {% if prueba_activa %}
@@ -117,16 +95,20 @@
     {% if wizard %}
         {# NAVEGACION LECCION #}
         {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
-        <div class=" nav-less-container text-center  lesson-nav py-2 mb-1 mt-3">
-            <ul class="nav nav-tabs" id="navlesson" role="tablist">
-                {% for subpagina in lecciones.subpaginas %}
-                    {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
-                    {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
-                    <li class="nav-item">
-                        <a class="circle-nav {{ vista~disabled }}" id="tab-{{ subpagina.id }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="false">{{ loop.index }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
+        <div class="wraper-nav-less" id="wraperNavLess">
+            <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
+            <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
+            <div class=" nav-less-container text-center lesson-nav py-2 mb-1 mt-3" id="NavLess">
+                <ul class="nav nav-tabs" id="navlesson" role="tablist">
+                    {% for subpagina in lecciones.subpaginas %}
+                        {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
+                        {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
+                        <li class="nav-item">
+                            <a class="circle-nav {{ vista~disabled }}" id="tab-{{ subpagina.id }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="false">{{ loop.index }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     {% endif %}
 
@@ -142,10 +124,13 @@
                     {% endif %}
                     {{ lecciones.contenido|raw }}
                 </div>
+                <nav class="container text-right">
+                    <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.next_subpage }}">{{ 'Siguiente'|trans }}</div>
+                </nav>
             </div>
         {% else %}
             {% for subpagina in lecciones.subpaginas %}
-                <div class="tab-pane fade {% if loop.index == 0 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="tab-{{ subpagina.id }}">
+                <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="tab-{{ subpagina.id }}">
                     <div class="lesson-container container py-6 text-center">
                         <h2 class="color-dark-grey">{{ subpagina.nombre }}</h2>
                         {% if subpagina.foto %}
@@ -154,12 +139,51 @@
                         {% endif %}
                         {{ subpagina.contenido|raw }}
                     </div>
+                    <nav class="container text-right">
+                        {% set last = loop.last ? 1 : 0 %}
+                        <div class="btn-primary btn next_lesson" data="{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Siguiente'|trans }}</div>
+                    </nav>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
 
 {% endblock %}
+
+{% block comments %}
+
+    <div id="comments" class="px-3 pt-3"  >
+        <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
+        <form class="mt-4 mb-6" id="form-comment" method="POST">
+            <input type="hidden" id="pagina_id" name="pagina_id" value="">
+            <div class="form-group">
+                <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
+            </div>
+            <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-comment">{{ 'Comentar'|trans }}</button>
+        </form>
+        <div class="tab mt-6 d-flex justify-content-around text-xs ">
+            <a href="#" class="active-line color-light-grey mt-3" id="mas_recientes">{{ 'Más recientes'|trans }}</a>
+            <a href="#" class="color-light-grey mt-3" id="mas_valorados">{{ 'Más valorados'|trans }} </a>
+        </div>
+
+        <div id="mas_recientes_comments">
+            {% if not wizard %}
+                {% for muro in lecciones.muros_recientes %}
+                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro }) }}
+                {% endfor %}
+            {% else %}
+                {% for subpagina in lecciones.subpaginas|slice(0,1) %}
+                    {# Solo el muro de la primera sub-página #}
+                    {% for muro in subpagina.muros_recientes %}
+                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro }) }}
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
