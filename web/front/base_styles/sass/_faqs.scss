@@ -1,0 +1,15 @@
+.titulo_faqs{
+    color: $blue;	
+    font-family: $primary-font;	
+    font-size: $h2-font-size;	
+    font-weight: $font-weight-light;	
+    line-height: calc(3rem - 6px);
+}
+
+.subtitulo_faqs{
+    color: $gray-700;	
+    font-family: $primary-font;	
+    font-size: $h4-font-size;	
+    line-height: calc(2rem - 4px);
+    font-weight: $font-weight-normal;
+}

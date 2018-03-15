@@ -226,6 +226,13 @@ input.form-control:focus {
     cursor: pointer;
     color: #DAE1E6; }
 
+.bttn_fm {
+  font-family: "Roboto";
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: calc(1rem + 3px);
+  text-align: center; }
+
 body {
   background-color: #F7F7F7;
   overflow-x: hidden; }
@@ -599,6 +606,63 @@ p.up {
 #navlesson .circle-less-vista {
   background-color: #CFE65C;
   color: #adb5bd; }
+
+.s1_fin-materia {
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+  background: #F7FAFC;
+  border-radius: 1rem;
+  position: relative;
+  left: 1rem; }
+  .s1_fin-materia .titulo_fin-materia {
+    color: #5CAEE6;
+    font-family: "Roboto";
+    font-size: 4.25rem;
+    line-height: calc(5rem - 5px); }
+  .s1_fin-materia .ic-verify {
+    color: #CFE65C;
+    font-size: 8rem;
+    opacity: 0.8;
+    margin-top: 1rem;
+    margin-bottom: 1rem; }
+  .s1_fin-materia .text_fin-materia {
+    color: #9B9B9B;
+    font-family: "Roboto";
+    font-size: 1.5rem;
+    line-height: calc(2rem + 1px);
+    margin: 2rem 0; }
+  .s1_fin-materia .logro {
+    font-family: "Roboto";
+    font-size: 1.5rem;
+    line-height: calc(2rem + 6px);
+    margin-right: calc(3rem + 7px);
+    color: #AAAFB3;
+    position: relative;
+    left: -2rem;
+    margin-top: calc(2rem - 6px); }
+    .s1_fin-materia .logro .num {
+      color: #5CAEE6;
+      font-family: "Roboto";
+      font-size: 1.5rem;
+      line-height: calc(2rem + 6px);
+      position: relative;
+      left: calc(1rem + 7px);
+      top: .05rem; }
+      .s1_fin-materia .logro .num .unidad {
+        color: #5CAEE6;
+        font-family: "Roboto";
+        font-size: calc($h5-font-size + 2px);
+        line-height: calc(2rem - 4px);
+        margin-left: calc(1rem - 8px); }
+
+.s2_fin-materia {
+  padding-top: 6rem; }
+  .s2_fin-materia .text_fin-materia {
+    color: #9B9B9B;
+    font-family: "Roboto";
+    font-size: 1.5rem;
+    line-height: calc(2rem + 1px);
+    margin: 2rem 0; }
 
 .tabs {
   position: relative; }
@@ -1027,18 +1091,46 @@ p.up {
   width: 17.56rem;
   border-radius: 1rem;
   background-color: #fff;
-  box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19); }
+  box-shadow: 4px 4px 10px 0px rgba(92, 98, 102, 0.32);
+  cursor: pointer;
+  margin-bottom: calc(1rem + 2px); }
   .card_biblio .card_biblio-left {
     height: 6.5rem;
     width: 4.8rem;
     background: #80CCFF;
     padding: calc(1rem + 5px);
     color: #5CAEE6;
-    border-radius: 1rem 0 0 1rem; }
+    border-radius: 1rem 0 0 1rem;
+    transition: all .25s ease-in; }
+    .card_biblio .card_biblio-left .ic-recurso {
+      font-size: calc(2rem + 4px);
+      margin-top: .7rem; }
   .card_biblio .card_biblio-right {
     height: 6.5rem;
     width: 12.76rem;
     padding: 1rem calc(1rem - 2px); }
+    .card_biblio .card_biblio-right .titulo_recurso {
+      color: #797D80;
+      font-family: "Roboto";
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: calc(1rem + 3px); }
+    .card_biblio .card_biblio-right .pos-recurso {
+      position: absolute;
+      bottom: .4rem;
+      left: 0; }
+      .card_biblio .card_biblio-right .pos-recurso .tipo_recurso {
+        color: #AAAFB3;
+        font-family: "Roboto";
+        font-size: 0.75rem;
+        line-height: calc(1rem - 2px);
+        transition: all .25s ease-in; }
+  .card_biblio:hover .card_biblio-left {
+    background: #CFE65C;
+    color: #a6ba47; }
+  .card_biblio:hover .card_biblio-right .tipo_recurso {
+    color: #5CAEE6;
+    font-weight: 700; }
 
 .card-datos .info_datos, .card-datos .datos_user {
   color: #AAAFB3;
@@ -1416,27 +1508,59 @@ p.up {
 #iconComments i:hover {
   color: #CFE65C; }
 
-.box-pag {
-  height: 3rem;
-  width: 22rem;
-  border: 2px solid #DAE1E6;
-  border-radius: calc(2rem - 4px);
-  background-color: transparent; }
-  .box-pag .pag {
-    margin: 0;
-    padding: 0;
-    list-style-type: none; }
-    .box-pag .pag .pag-item {
-      color: #5CAEE6;
-      font-family: "Roboto";
-      font-size: 1.125rem;
-      font-weight: 500;
-      line-height: calc(1rem + 5px);
-      border: 2px solid #DAE1E6; }
-      .box-pag .pag .pag-item:first-child, .box-pag .pag .pag-item:last-child {
-        padding: calc(1rem - 3px) calc(1rem + 2px) calc(1rem - 4px) calc(1rem + 2px); }
-      .box-pag .pag .pag-item:nth-child(n) {
-        padding: calc(1rem - 3px) calc(1rem - 3px) calc(1rem - 4px) calc(1rem - 3px);
-        border: 2px solid #DAE1E6; }
+.subtitulo-recurso {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 2.25rem;
+  line-height: calc(3rem - 6px); }
+
+.biblio_detalle-recurso {
+  padding: 2rem; }
+  .biblio_detalle-recurso .img-recurso {
+    box-sizing: border-box;
+    height: 29rem;
+    width: 18rem;
+    border: 1px solid #565656; }
+  .biblio_detalle-recurso .text-recurso {
+    color: #797D80;
+    font-family: "Roboto";
+    font-size: 0.87rem;
+    line-height: calc(2rem - 4px);
+    margin: calc(2rem + 3px) 0; }
+  .biblio_detalle-recurso .lk-volver {
+    position: relative;
+    top: calc(2rem + 3px);
+    right: 1.5rem;
+    color: #5CAEE6;
+    font-family: "Roboto";
+    font-size: 0.87rem;
+    line-height: 1rem;
+    padding: 1rem 1rem;
+    border-radius: 25rem; }
+    .biblio_detalle-recurso .lk-volver:hover {
+      color: #fff;
+      background: linear-gradient(to right, #80CCFF 0%, #3D93CC 100%);
+      font-weight: 500; }
+    .biblio_detalle-recurso .lk-volver .ic-bck {
+      position: relative;
+      top: .45rem;
+      right: .5rem; }
+  .biblio_detalle-recurso .biblio_detalle-catag {
+    padding: 0 2rem;
+    margin-top: 2rem; }
+
+.titulo_faqs {
+  color: #5CAEE6;
+  font-family: "Roboto";
+  font-size: 2.25rem;
+  font-weight: 300;
+  line-height: calc(3rem - 6px); }
+
+.subtitulo_faqs {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 1.5rem;
+  line-height: calc(2rem - 4px);
+  font-weight: 400; }
 
 /*# sourceMappingURL=main.css.map */

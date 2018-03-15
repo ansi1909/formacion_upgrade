@@ -97,3 +97,16 @@
         color: $gray-400;
     }
 }
+
+.bttn_fm{
+    @extend %bttn;
+}
+
+//Extend
+%bttn{
+    font-family: $primary-font;	
+    font-size: $p-font-size;	
+    font-weight: $font-weight-normal-hard;	
+    line-height: calc(1rem + 3px);	
+    text-align: center;
+}

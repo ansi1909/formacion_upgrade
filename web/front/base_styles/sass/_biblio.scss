@@ -1,0 +1,48 @@
+.subtitulo-recurso{
+    color: $gray-700;	
+    font-family: $primary-font;	
+    font-size: $h2-font-size;	
+    line-height: calc(3rem - 6px);
+}
+
+.biblio_detalle-recurso{
+    padding: 2rem;
+    .img-recurso{
+        box-sizing: border-box;	
+        height: 29rem;	
+        width: 18rem;	
+        border: 1px solid $gray-850;
+    }
+    .text-recurso{
+        color: $gray-700;	
+        font-family: $primary-font;	
+        font-size: $font-size-sm;	
+        line-height: calc(2rem - 4px);
+        margin: calc(2rem + 3px) 0;
+    }
+    .lk-volver{
+        position: relative;
+        top: calc(2rem + 3px);
+        right: 1.5rem;
+        color: $blue;
+        font-family: $primary-font;	
+        font-size: $font-size-sm;	
+        line-height: 1rem;
+        padding: 1rem 1rem;
+        border-radius: 25rem;
+        &:hover{
+            color: $white;
+            background: linear-gradient(to right, $lightblue 0%, $bluedark 100%);
+            font-weight: $font-weight-normal-hard;
+        }
+        .ic-bck{
+            position: relative;
+            top: .45rem;
+            right: .5rem;
+        }
+    }
+    .biblio_detalle-catag{
+        padding: 0 2rem;
+        margin-top: 2rem;
+    }
+}

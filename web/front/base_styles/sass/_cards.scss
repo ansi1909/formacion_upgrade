@@ -456,7 +456,6 @@
             line-height: 1rem;
             padding: 1rem 1rem;
             border-radius: 25rem;
-            
             .ic-bck{
                 position: relative;
                 top: .45rem;
@@ -484,7 +483,9 @@
     width: 17.56rem;	
     border-radius: 1rem;	
     background-color: $white;	
-    box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19);
+    box-shadow: 4px 4px 10px 0px rgba(92,98,102,0.32);
+    cursor: pointer;
+    margin-bottom: calc(1rem + 2px);
     .card_biblio-left{
         height: 6.5rem;
         width: 4.8rem;
@@ -492,11 +493,47 @@
         padding: calc(1rem + 5px);
         color: $blue;
         border-radius: 1rem 0 0 1rem;
+        transition: all .25s ease-in;
+        .ic-recurso{
+            font-size: calc(2rem + 4px);
+            margin-top: .7rem;
+        }
     }
     .card_biblio-right{
         height: 6.5rem;
         width: 12.76rem;
         padding: 1rem calc(1rem - 2px);
+        .titulo_recurso{
+            color: $gray-700;	
+            font-family: $primary-font;	
+            font-size: $p-font-size;	
+            font-weight: $font-weight-normal-hard;	
+            line-height: calc(1rem + 3px);
+        }
+        .pos-recurso{
+            position: absolute;
+            bottom: .4rem;
+            left: 0;
+            .tipo_recurso{
+                color: $gray-600;	
+                font-family: $primary-font;	
+                font-size: $font-size-xs;	
+                line-height: calc(1rem - 2px);
+                transition: all .25s ease-in;
+            }
+        }
+    }
+    &:hover{
+        .card_biblio-left{
+            background: $green;
+            color: $greendark;
+        }
+        .card_biblio-right{
+            .tipo_recurso{
+                color: $blue;
+                font-weight: $font-weight-bold;
+            }
+        }
     }
 }
 
