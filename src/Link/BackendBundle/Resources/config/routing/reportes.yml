@@ -17,3 +17,21 @@ _ajaxParticipantesR:
     defaults: { _controller: LinkBackendBundle:Reportes:ajaxParticipantesR }
     requirements:
         method: GET
+
+_participantesCursando:
+    path:     /participantesCursando/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 3 }
+
+_ajaxProgramasE:
+    path:     /ajaxProgramasE
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxProgramasE }
+    requirements:
+        method: GET
+
+_participantesAprobados:
+    path:     /participantesAprobados/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 4 }
+
+_participantesNoIniciados:
+    path:     /participantesNoIniciados/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 5 }

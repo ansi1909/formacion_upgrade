@@ -1,11 +1,11 @@
 {% extends '::admin.html.twig' %}
 
 {% block body %}
-{% set encabezado = usuario_empresa ? 'Reporte de participantes de'|trans~' '~usuario.empresa.nombre : 'Reporte de participantes por empresa'|trans %}
+{% set encabezado =  'Reporte de participantes no iniciados en programas'|trans %}
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
 <br><br>
-<input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+<input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
 <input type="hidden" id="url_participantesE" name="url_participantesE" value="{{ path ('_ajaxParticipantesE') }}">
 <input type="hidden" id="reporte" name="reporte" value="{{ reporte }}">
@@ -35,10 +35,10 @@
                 {% else %}
                     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
                 {% endif %}
-                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Nivel' |trans}}</label>
+                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
                 <div class="row">
                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="nivel_id" name="nivel_id">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
                         </select>
                         <span class="fa fa-industry"></span>
                         <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
