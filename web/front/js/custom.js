@@ -42,7 +42,7 @@ $(document).ready(function() {
     var activeTabHeight = activeTab.outerHeight();
     var clickedOpc = $(".opc");
     var clickedOpcImg = $(".opc_img");
-    
+
 $("#equis").click(function(){
         $("#message").fadeOut("slow");
     });
@@ -58,7 +58,35 @@ $("#iconComments").click(function(){
             $("#main").toggleClass("ml-comments");
 
         });
-        
+
+// BOTONES PARA LA NAVEGACION DE LAS LECCIONES
+    $('#btnLessRight').click(function() {
+        event.preventDefault();
+        $('.nav-less-container').animate({
+            scrollLeft: "+=300px"
+        }, "slow");
+    });
+
+    $('#btnLessLeft').click(function() {
+        event.preventDefault();
+        $('.nav-less-container').animate({
+            scrollLeft: "-=300px"
+        }, "slow");
+    });
+// FIN
+// CENTRAR NAVEGACION
+    var parent=$('#wraperNavLess');
+    var child=$('#navlesson');
+
+    var scrollChild = child.get(0).scrollWidth;
+    var scrollParent = parent.get(0).scrollWidth;
+    console.log(scrollChild)
+    console.log(scrollParent)
+    if ( scrollChild < scrollParent ) {
+        child.css("justify-content", "center");
+    }
+//FIN CENTRAR NAVEGACION
+
     // Muestra el tab al cargar la pagina load
     activeTab.show();
     // Establecer la altura del contenedor en la carga de la página
@@ -91,12 +119,12 @@ $("#iconComments").click(function(){
             });
         });
     });
-    
+
     clickedOpc.on('click',function(){
         clickedOpc.removeClass("opc_activa");
         $(this).toggleClass("opc_activa").fadein(300).delay(1000);
     });
-        
+
     clickedOpcImg.on('click',function(){
         clickedOpcImg.removeClass("opc_activa-img");
         $(this).toggleClass("opc_activa-img");
