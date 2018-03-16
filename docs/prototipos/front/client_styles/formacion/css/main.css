@@ -1549,6 +1549,70 @@ p.up {
     padding: 0 2rem;
     margin-top: 2rem; }
 
+.enun_faqs.active, .enun_faqs.active + p {
+  background: #F0F4F7;
+  padding: 0 calc(2rem + 3px); }
+
+.accordion {
+  max-width: 49.25rem;
+  margin: calc(2rem + 3px) auto calc(1rem + 4px) auto;
+  list-style-type: none; }
+  .accordion li {
+    position: relative;
+    max-height: 64rem;
+    border-bottom: 1px solid #DAE1E6;
+    padding: calc(2rem - 4px) 0 calc(2rem - 7px) 0; }
+    .accordion li p {
+      display: none; }
+  .accordion .enun_faqs {
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    color: #797D80;
+    font-weight: 600;
+    line-height: calc(1rem + 8px);
+    font-family: "Roboto";
+    font-size: 16px;
+    font-size: 1rem;
+    user-select: none;
+    padding-top: 1rem;
+    padding-bottom: 1rem; }
+    .accordion .enun_faqs:after {
+      width: calc(1rem - 4px);
+      height: calc(1rem - 4px);
+      border-right: 2px solid #9B9B9B;
+      border-bottom: 2px solid #9B9B9B;
+      position: absolute;
+      right: calc(1rem - 1px);
+      content: " ";
+      top: calc(3rem - 4px);
+      transform: rotate(-45deg);
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
+    .accordion .enun_faqs .num {
+      margin-right: calc(1rem + 4px); }
+  .accordion p {
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: calc(1rem + 8px);
+    color: #797D80;
+    text-align: justify;
+    font-family: "Roboto"; }
+
+.enun_faqs.active {
+  border-radius: 1rem 1rem 0 0; }
+
+.enun_faqs.active + p {
+  border-radius: 0 0 1rem 1rem;
+  padding-bottom: calc(2rem + 3px); }
+
+.enun_faqs.active:after {
+  transform: rotate(45deg);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; }
+
 .titulo_faqs {
   color: #5CAEE6;
   font-family: "Roboto";
