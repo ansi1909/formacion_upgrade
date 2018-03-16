@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.print.css') }}" type="text/css"  media="print">
     <link rel="stylesheet" href="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('front/styles/css/main.css') }}">
     <style type="text/css">
       .fc button{
         height: 100%;
@@ -40,67 +41,59 @@
       <div id='calendar'></div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos Evento'|trans}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" style="color: #fff;">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{ 'Título'|trans }}:</h5>
-                                <p id="p-titulo"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{'Fecha inicio'| trans}}</h5>
-                                <p id="p-fechainicio"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{'Fecha fin'| trans}}</h5>
-                                <p id="p-fechafin"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{'Descripción'| trans}}</h5>
-                                <p id="p-descripcion"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{'Lugar'| trans}}</h5>
-                                <p id="p-lugar"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-16 col-md-16 show__details">
-                                <h5>{{'Nivel'| trans}}</h5>
-                                <p id="p-nivel"></p>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar_save_update"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
-                    </div>
+    <div class="modal modal-recuperacion" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-3 text-right offset-9">
+                    <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                        <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 text-center offset-1 mt-4">
+                    <h4 class="titulo">{{'Datos Evento'|trans}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-4">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td class="col-6 text-right"><h5>{{ 'Título'|trans }}:</h5></td>
+                                <td class="col-6"><p id="p-titulo"></p></td>
+                            </tr>
+                            <tr>
+                                <td class="col-6 text-right"><h5>{{'Fecha inicio'| trans}}</h5></td>
+                                <td class="col-6"><p id="p-fechainicio"></p></td>
+                            </tr>
+                            <tr>
+                                <td class="col-6 text-right"><h5>{{'Fecha fin'| trans}}</h5></td>
+                                <td class="col-6"><p id="p-fechafin"></p></td>
+                            </tr>
+                            <tr>
+                                <td class="col-6 text-right"><h5>{{'Descripción'| trans}}</h5></td>
+                                <td class="col-6"><p id="p-descripcion"></p></td>
+                            </tr>
+                            <tr>
+                                <td class="col-6 text-right"><h5>{{'Lugar'| trans}}</h5></td>
+                                <td class="col-6"><p id="p-lugar"></p></td>
+                            </tr>
+                            <tr>
+                                <td class="col-6 text-right"><h5>{{'Nivel'| trans}}</h5></td>
+                                <td class="col-6"><p id="p-nivel"></p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-4 text-center">
+                    <button type="button" class="btn btn-primary btn_rc" data-dismiss="modal">{{ 'Aceptar'|trans }}</button>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 
 {% endblock %}
