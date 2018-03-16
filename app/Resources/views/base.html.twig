@@ -39,7 +39,7 @@
                             <div class="dropdown show">
                                 <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
-                                    <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
+                                    <img class="img-fluid mx-auto avatar-img" src="{{ img }}"  width="80%" alt="usuario">
                                 </a>
                                 <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>

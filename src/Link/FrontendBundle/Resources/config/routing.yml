@@ -10,9 +10,11 @@ _authExceptionEmpresa:
     path:     /authExceptionEmpresa/{mensaje}
     defaults: { _controller: LinkFrontendBundle:Login:authExceptionEmpresa }
 
-_recuperarClave:
-    path:     /recuperarClave
-    defaults: { _controller: LinkFrontendBundle:Login:recuperarClave }
+_ajaxCorreo:
+    path:     /ajaxCorreo
+    defaults: { _controller: LinkFrontendBundle:Login:ajaxCorreo }
+    requirements:
+        _method: POST
 
 lecciones:
     resource: "@LinkFrontendBundle/Resources/config/routing/lecciones.yml"

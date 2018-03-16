@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>{{ empresa.titulo != '' ? empresa.titulo : 'Sistema Formación'|trans ~ '2.0' }}</title>
         {% set img = empresa.favicon is not null and empresa.favicon != '' ? uploads~empresa.favicon : asset('img/icono.png') %}
         <link rel="icon" type="image/x-icon" href="{{ img }}" />
@@ -82,7 +83,7 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <form id="form-restore">
+                    <form id="form_clave" name="form_clave" action="{{ path('_ajaxCorreo') }}" method="POST">
                         <div class="col-12 mt-3">
                             <div class="form-group text-center">
                                 <label class="mb-2 text-center" for="mail-rec">{{ 'Correo Electrónico'|trans }}</label>
