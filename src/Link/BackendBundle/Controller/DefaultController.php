@@ -138,11 +138,6 @@ class DefaultController extends Controller
                             ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
                 $paginas_db = $query->getResult();
 
-                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNivel n
-                                           WHERE n.empresa = :empresa_id')
-                            ->setParameter('empresa_id',$usuarioS->getEmpresa()->getId());
-                $niveles = $query->getResult(); 
-
                 $usuariosA = 0;
                 $usuariosI = 0;
                 $paginas = array();
@@ -153,45 +148,37 @@ class DefaultController extends Controller
                     $usuariosCur=0;
                     $usuariosF=0;
                     $usuariosN=0;
-                    foreach($niveles as $nivel)
-                    {
-                        $nivel_paginas = $em->getRepository('LinkComunBundle:CertiNivelPagina')->findOneBy(array('paginaEmpresa' =>$pagina->getId(),
-                                                                                                                 'nivel' => $nivel->getId()));
-                        if ($nivel_paginas) 
-                        {
-                            $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
-                                                       WHERE u.nivel = :nivel_id')
-                                        ->setParameter('nivel_id', $nivel_paginas->getNivel()->getId());
-                            $usuarios = $query->getResult();
-                            $usu[] = $usuarios;
-                            foreach( $usuarios as $usuario)
-                            {   
-                                $usuariosT++;
-                                $query = $em->createQuery('SELECT cpl FROM LinkComunBundle:CertiPaginaLog cpl
-                                                           WHERE cpl.pagina = :pagina_id
-                                                           AND cpl.usuario = :usuario_id')
-                                            ->setParameters(array('pagina_id'=>$pagina->getPagina()->getId(),
-                                                                  'usuario_id'=>$usuario->getId()));
-                                $cpls = $query->getResult();
 
-                                foreach($cpls as $cpl )
-                                {
-                                    if ( $cpl->getEstatusPagina() == '1' || $cpl->getEstatusPagina() == '2' ) 
-                                    {
-                                        $usuariosCur++;
-                                    }
-                                    elseif ($cpl->getEstatusPagina() == '3') 
-                                    {
-                                        $usuariosF++;    
-                                    }
-                                    else
-                                    {
-                                        $usuariosN++;    
-                                    }
-                                }
-                            }
-                        }
+                    $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
+                                               WHERE np.paginaEmpresa = :pe_id')
+                                ->setParameter('pe_id', $pagina->getId());
+                    $nivel_pagina = $query->getResult();
+
+                    foreach ($nivel_pagina as $np)
+                    {
+                        $nivel_id = $np->getNivel()->getId();
+                        $pagina_id = $np->getPaginaEmpresa()->getPagina()->getId();
+
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                                   WHERE u.nivel = :nivel_id')
+                                    ->setParameter('nivel_id', $nivel_id);
+                        $usuarios = $query->getSingleScalarResult();
+
+                        $usuariosT = $usuariosT + $usuarios;
+
+                       /* $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                                   JOIN pl.usuario u
+                                                   WHERE u.nivel = :nivel_id
+                                                   AND pl.pagina = :pagina_id
+                                                   AND pl.estatusPagina IN (iniciada , cursando )')
+                                    ->setParameters(array('nivel_id'=> $nivel_id
+                                                          'pagina_id'=> $pagina_id
+                                                          ''))*/
+
                     }
+                    
+
+                        
 
                     $paginas[] = array('pagina'=>$pagina->getPagina()->getNombre(),
                                        'usuariosT'=>$usuariosT,
