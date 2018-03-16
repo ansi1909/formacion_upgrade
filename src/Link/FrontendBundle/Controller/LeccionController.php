@@ -109,7 +109,7 @@ class LeccionController extends Controller
 
         // Se reinicia el reinicia el reloj de pagina_log
 
-        return new Response(var_dump($lecciones));
+        //return new Response(var_dump($lecciones));
 
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
                                                                                  'subpagina_id' => $subpagina_id,

@@ -92,6 +92,8 @@
 
 {% block body %}
 
+    <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
+    <input type="hidden" id="wizard" name="wizard" value="{{ wizard }}">
     {% if wizard %}
         {# NAVEGACION LECCION #}
         {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
@@ -104,7 +106,7 @@
                         {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
                         {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
                         <li class="nav-item">
-                            <a class="circle-nav {{ vista~disabled }}" id="tab-{{ subpagina.id }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="false">{{ loop.index }}</a>
+                            <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -112,7 +114,7 @@
         </div>
     {% endif %}
 
-    {# CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL SK-EDITOR #}
+    {# CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL CK-EDITOR #}
     <div class="tab-content" id="myTabContent">
         {% if not wizard %}
             <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
@@ -130,7 +132,7 @@
             </div>
         {% else %}
             {% for subpagina in lecciones.subpaginas %}
-                <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="tab-{{ subpagina.id }}">
+                <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}">
                     <div class="lesson-container container py-6 text-center">
                         <h2 class="color-dark-grey">{{ subpagina.nombre }}</h2>
                         {% if subpagina.foto %}
@@ -186,8 +188,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-        $('.tab__content li:first').addClass('activo');
-        $('.tabs li:first').addClass('activo');
-    </script>
+    <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('front/js/jquery.scrollTo.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ asset('js/front/lecciones.js') }}"></script>
 {% endblock %}

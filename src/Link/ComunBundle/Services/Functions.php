@@ -911,7 +911,20 @@ class Functions
 				$i++;
 				if ($subpagina_id)
 				{
-					$active = $subpagina['id'] == $subpagina_id ? ' active' : '';
+					$active = '';
+					if ($subpagina['id'] == $subpagina_id)
+					{
+						$active = ' active';
+					}
+					else {
+						if ($dimension == 2 && count($subpagina['subpaginas']))
+						{
+							if (array_key_exists($subpagina_id, $subpagina['subpaginas']))
+							{
+								$active = ' active';
+							}
+						}
+					}
 				}
 				else {
 					$active = $i == 1 ? 'active' : '';
