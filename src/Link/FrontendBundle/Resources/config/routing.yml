@@ -18,18 +18,10 @@ lecciones:
     resource: "@LinkFrontendBundle/Resources/config/routing/lecciones.yml"
     prefix: /lecciones
 
-misProgramas:
-    resource: "@LinkFrontendBundle/Resources/config/routing/misProgramas.yml"
-    prefix: /misProgramas
-
-programas:
-    resource: "@LinkFrontendBundle/Resources/config/routing/programas.yml"
-    prefix: /programas
-
 calendarioDeEventos:
     resource: "@LinkFrontendBundle/Resources/config/routing/calendarioDeEventos.yml"
     prefix: /calendarioDeEventos
 
 programa:
     resource: "@LinkFrontendBundle/Resources/config/routing/programa.yml"
-    prefix: /programa
+    prefix: /

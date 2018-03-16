@@ -8,8 +8,18 @@
 {% block body %}
 {% set uri = app.request.getbasepath %}
 
+{% if reciente == 1 %}
+    {% set cursando = '' %}
+{% else %}
+    {% set cursando = 'disabled' %}
+{% endif %}
+{% if completado == 1 %}
+    {% set aprobado = '' %}
+{% else %}
+    {% set aprobado = 'disabled' %}
+{% endif %}
 
-{% if reciente == 0 %}
+{% if reciente == 0 and completado == 0 %}
 
 <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
     <h4 class="mb-4 title-grey">Actividades Recientes</h4>
@@ -18,39 +28,6 @@
 </div>
 
 {% else %}
-<div class="for-message  container py-5 px-6 mb-4 ">
-
-    <h4 class="mb-4 title-grey">Actividades Recientes</h4>
-
-    {# CURSANDO #}
-    <div class="container d-flex flex-column justify-content-center align-items-center ">
-        
-        {% for ar in actividad_reciente %}
-            <div class="card-hrz card-current">
-            <img class="card-hrz-img " src="{{ ar.imagen }}" alt="">
-            <div class="card-hrz-body">
-                <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
-                <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>
-                <span class="text-sm color-light-grey d-none d-lg-block"> {{ ar.titulo_hijo }} </span>
-                <div class="progress mt-3">
-                    <div class="progress-bar" role="progressbar" style="width: {{ ar.porcentaje }}%" aria-valuenow="{{ ar.porcentaje }}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
-                <div class="percent text-center mt-3">
-                    <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
-                    <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ ar.fecha_vencimiento }} días</span>
-                </div>
-                <a href="{{ path('_programa', { 'programa_id':  ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-            </div>
-        </div>
-        {% endfor %}
-
-    </div>
-
-</div>
-{% endif %}
-{# FILTERS #}
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -61,10 +38,10 @@
         <div class="col-12">
             <div class="filter-group d-flex justify-content-around mb-3">
                 <ul class="tabs">
-                    <li class="activo mt-3">
+                    <li class="mt-3 {{ cursando }}">
                         <span>En curso</span>
                     </li>
-                    <li class="mt-3">
+                    <li class="mt-3 {{ aprobado }}">
                         <span>Finalizados</span>
                     </li>
                 </ul>
@@ -73,10 +50,11 @@
     </div>
     <div class="row">
         <ul class="tab__content">
+            {% if reciente == 1 %}
             <li>
                 <div class="content__wrapper">
                     <div class="d-flex flex-column justify-content-center align-items-center">
-                         {% for pec in programas_en_curso %}
+                         {% for pec in actividad_reciente %}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card-hrz card-current">
@@ -103,6 +81,8 @@
                     </div>
                 </div>
             </li>
+            {% endif %}
+            {% if completado == 1 %}
             <li>
                 <div class="content__wrapper">
                     <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
@@ -152,9 +132,11 @@
                     </div>
                 </div>
             </li>
+            {% endif %}
         </ul>
     </div>
 </div>
+{% endif %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

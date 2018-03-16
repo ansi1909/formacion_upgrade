@@ -1,0 +1,126 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+{% endblock %}
+
+{% block body %}
+{% set uri = app.request.getbasepath %}
+
+        <div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
+            <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
+            <h5>Bienvenido al programa de </h5>
+            <h1 class="mb-5">{{ pagina.nombre }}</h1>
+            <p class="text-left mx-auto">{{ pagina.descripcion|raw }}</p>
+
+        <!-- MAPA DE AVANCE -->
+            <div id="mapAvance" class=" avance-message container py-3 px-6 mb-0 ">
+                <h4 class="mb-4 title-grey">Tu Avance</h4>
+                <img  class="img-fluid" src="http://localhost/formacion2.0/docs/prototipos/front/assets/img/map_avance.png" alt="">
+            </div>
+
+        </div>
+
+        <!-- MODULOS -->
+        <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line container ">Módulos</h4>
+
+        <!--CONTENDOR DE LAS CARDS  -->
+        <div class="container d-flex flex-column justify-content-center align-items-center ">
+
+                <!-- CARDS MODULOS HZR -->
+                <div class="card-hrz card-mod">
+                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
+                        <h1>02</h1>
+                    </div>
+                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
+                        <div class="card-hrz-body ">
+                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
+                                <div class="card-mod-less text-sm color-light-grey">
+                                    <ol>
+                                        <li class="my-1 " > Liderazgo para la conducción de personas  </li>
+                                        <li class="my-1 " > Liderazgo para </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción  personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para l de personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas</li>
+                                    </ol>
+                                </div>
+                            <div class="progress mt-4 mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">
+                            <div class="percent text-center mt-3">
+                                <h2 class="color-light-grey mb-0 pb-0"> 20% </h2>
+
+                            </div>
+                            <a href="#" class="btn btn-sm btn-continuar mt-6 mb-4"> Continuar </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hrz card-mod">
+                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
+                        <h1>03</h1>
+                    </div>
+                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
+                        <div class="card-hrz-body ">
+                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
+                                <div class="card-mod-less text-sm color-light-grey">
+                                    <ol>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas  </li>
+                                        <li class="my-1 color-grey" > Liderazgo para </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción  personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para l de personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas</li>
+                                    </ol>
+                                </div>
+                            <div class="progress mt-4 mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">
+                            <div class="percent text-center mt-3">
+                                <h2 class="color-light-grey mb-0 pb-0"> 0%</h2>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-primary mt-6 mb-4 px-4"> Iniciar </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hrz card-mod">
+                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
+                        <h1>01</h1>
+                    </div>
+                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
+                        <div class="card-hrz-body ">
+                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
+                                <div class="card-mod-less text-sm color-light-grey">
+                                    <ol>
+                                        <li class="my-1 " > Liderazgo para la conducción de personas  </li>
+                                        <li class="my-1 " > Liderazgo para </li>
+                                        <li class="my-1 " > Liderazgo para la conducción  personas </li>
+                                        <li class="my-1 " > Liderazgo para l de personas </li>
+                                        <li class="my-1 " > Liderazgo para la conducción de personas</li>
+                                    </ol>
+                                </div>
+                            <div class="progress mt-4 mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">
+                            <div class="percent text-center mt-5">
+                                <h2 class="color-light-grey mb-0 pb-0"> 100 </h2>
+                                <span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>
+                            </div>
+                            <div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">
+                                <i class="material-icons badge-aprobado ">check_circle</i>
+                                <span class="text-badge"> Aprobado </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
