@@ -1,0 +1,96 @@
+//funciones
+@function calculateRem($size){
+    $remSize: $size / 16px;
+    @return $remSize * 1rem;
+}
+
+//Mixin
+@mixin font-size($size){
+    font-size: $size;
+    font-size: calculateRem($size);
+}
+
+// transition
+@mixin transition($transition-property, $transition-time, $method){
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+
+@mixin size($width, $height){
+    width: $width;
+    height: $height;   
+}
+
+//Extend
+%change{
+    background: $gray-300;
+    padding: 0 calc(2rem + 3px);
+}
+
+//Acordion
+.accordion{
+    max-width: 49.25rem;
+    margin: calc(2rem + 3px) auto calc(1rem + 4px) auto;
+    list-style-type: none;
+    li{
+        position: relative;
+        max-height: 64rem;
+        border-bottom: 1px solid $gray-400;
+        padding: calc(2rem - 4px) 0 calc(2rem - 7px) 0; 
+        p{
+            display: none;
+        }
+    }
+    .enun_faqs{
+        width: 100%;
+        display: block;
+        cursor: pointer;
+        color: $gray-700;
+        font-weight: $font-weight-easy-medium;
+        line-height: calc(1rem + 8px);
+        font-family: $primary-font;	
+        @include font-size(16px);
+        user-select: none;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        &:after{
+            @include size (calc(1rem - 4px), calc(1rem - 4px));
+            border-right: 2px solid $gray-650;
+            border-bottom: 2px solid $gray-650;
+            position: absolute;
+            right: calc(1rem - 1px);
+            content: " ";
+            top: calc(3rem - 4px);
+            transform: rotate(-45deg);
+            @include transition(all, 0.2s, ease-in-out);
+        }
+        .num{
+            margin-right: calc(1rem + 4px);
+        }
+    }
+    p {
+        @include font-size(16px);
+        line-height: calc(1rem + 8px);
+        color: $gray-700;
+        text-align: justify;
+        font-family: $primary-font;
+    }
+}
+
+.enun_faqs.active {
+    @extend %change;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.enun_faqs.active + p {
+    @extend %change;
+    border-radius: 0 0 1rem 1rem;
+    padding-bottom: calc(2rem + 3px);
+}
+
+.enun_faqs.active:after{
+    transform: rotate(45deg);
+    @include transition(all, 0.2s, ease-in-out);
+}
