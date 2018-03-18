@@ -1,0 +1,19 @@
+#percent {
+        transform: translateX(35%);
+    }
+
+#grey {
+        stroke-dasharray:1016 1018;
+        stroke:$gray-400;
+    }
+
+.progress-bar {
+        stroke:$green ;
+        stroke-dasharray:1016 1018;
+        /* stroke-dashoffset:1017; */
+        animation: ani-progress 3s ease 0.2s forwards;
+    }
+
+@keyframes ani-progress {
+        0% { stroke-dashoffset:1017; }
+    }
