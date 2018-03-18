@@ -238,7 +238,7 @@ body {
   overflow-x: hidden; }
 
 #main {
-  transition: margin-left .6s;
+  transition: all .6s;
   padding: 16px;
   margin-left: 200px;
   max-width: 90%; }
@@ -383,10 +383,14 @@ nav.navbar {
     padding-left: 8px; }
 
 #main.ml-10 {
-  margin-left: 10%; }
+  margin-left: 6%; }
 
 #main.ml-comments {
-  margin-left: -6%; }
+  margin-left: -8%; }
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    #main.ml-comments {
+      margin-left: 0;
+      margin-right: 38%; } }
 
 i.arrow {
   height: 12px;
@@ -431,6 +435,9 @@ a.active {
   width: 240px;
   font-family: "Roboto";
   padding-bottom: 136px; }
+  @media (max-width: 991.98px) {
+    .nav-lesson {
+      top: 68px; } }
   .nav-lesson ol {
     margin-bottom: 16px; }
     .nav-lesson ol > li {
@@ -526,10 +533,10 @@ p.up {
   font-family: "Open Sans"; }
 .lesson-container p {
   font-family: "Open Sans";
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   color: #7b7b7b;
-  width: 80%;
+  width: 75%;
   font-weight: 200;
   text-align: left;
   margin: 1.6rem auto; }
@@ -544,7 +551,7 @@ p.up {
   .wraper-nav-less .btn-lessons {
     opacity: 0;
     position: absolute;
-    top: 45%;
+    top: 60%;
     z-index: 5;
     cursor: pointer;
     transition: 0.4s;
@@ -560,6 +567,7 @@ p.up {
   margin-left: 4%;
   margin-right: 4%;
   overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
   padding-bottom: 0; }
 
@@ -1477,7 +1485,11 @@ p.up {
   right: -400px;
   padding: 64px 24px 128px 24px;
   transition: .8s ease;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  z-index: 6; }
+  @media (max-width: 991.98px) {
+    #comments {
+      top: 70px; } }
   #comments.open-comments {
     right: 0%; }
   #comments textarea {

@@ -30,11 +30,15 @@
 }
 
 #main.ml-10{
-    margin-left: 10%;
+    margin-left: 6%;
 
  }
  #main.ml-comments{
-     margin-left: -6%;
+     margin-left: -8%;
+     @include media-breakpoint-only(lg) {
+         margin-left: 0;
+         margin-right: 38%;
+     }
 
   }
 
@@ -93,6 +97,9 @@ a.active {
     width: 240px;
     font-family: $primary-font;
     padding-bottom: 136px;
+    @include media-breakpoint-down(md) {
+        top: 68px;
+    }
 
 
     ol {
