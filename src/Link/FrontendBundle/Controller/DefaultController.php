@@ -121,30 +121,26 @@ class DefaultController extends Controller
             $grupos = $group_query->getResult();
 
             // Buscamos datos especificos de los programas de la sesion obteniendo el grupo al que pertenece cada programa
-            $query_pages_by_group = $em->createQuery('SELECT cg.nombre as nombregrupo, cp.id as paginaid, cp.descripcion as descripcion, cp.nombre as nombrepagina, cp.foto as foto 
-                                     FROM LinkComunBundle:CertiGrupo cg,
-                                          LinkComunBundle:CertiGrupoPagina cgp,
-                                          LinkComunBundle:CertiPagina cp
-                                    WHERE cg.empresa = :empresa
-                                    AND  cgp.grupo = cg.id
-                                    AND cp.id IN (:pagina)
-                                    AND cgp.pagina = cp.id
-                                    ORDER BY cg.id ASC')
-                            ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                                  'pagina' => $paginas_ids));
+            $query_pages_by_group = $em->createQuery('SELECT cgp 
+                                                      FROM LinkComunBundle:CertiGrupo cg,
+                                                           LinkComunBundle:CertiGrupoPagina cgp,
+                                                           LinkComunBundle:CertiPagina cp
+                                                      WHERE cg.empresa = :empresa
+                                                      AND  cgp.grupo = cg.id
+                                                      AND cp.id IN (:pagina)
+                                                      AND cgp.pagina = cp.id
+                                                      ORDER BY cg.id ASC')
+                                        ->setParameters(array('empresa' => $session->get('empresa')['id'],
+                                                              'pagina' => $paginas_ids));
             $pages_by_group = $query_pages_by_group->getResult();
             
             foreach ($pages_by_group as $pg) {
 
-                // contruimos un array con los datos necesarios para el template y el grupo de cada programa
-                $pag_obj = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pg['paginaid']);
-
-
                 $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                                 'pagina' => $pg['paginaid']));
+                                                                                                                                 'pagina' => $pg->getPagina()->getId()));
 
                 $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                    'pagina' => $pg['paginaid']));
+                                                                                                                    'pagina' => $pg->getPagina()->getId()));
                 if($datos_log){
                     if($datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
                         if($datos_certi_pagina->getAcceso()){
@@ -163,17 +159,17 @@ class DefaultController extends Controller
                     // si registros - iniciar
                     $continuar = 0;
                 }
-                if($pg['foto']){
-                    $imagen = $pg['foto'];
+                if($pg->getPagina()->getFoto()){
+                    $imagen = $pg->getPagina()->getFoto();
                 }else{
                     $imagen = 'http://localhost/formacion2.0/web/front/assets/img/liderazgo.png';
                 }
                
-                $programas_disponibles[]= array('id'=>$pg['paginaid'],
-                                                'nombre'=>$pg['nombrepagina'],
-                                                'nombregrupo'=>$pg['nombregrupo'],
+                $programas_disponibles[]= array('id'=>$pg->getPagina()->getId(),
+                                                'nombre'=>$pg->getPagina()->getNombre(),
+                                                'nombregrupo'=>$pg->getGrupo()->getNombre(),
                                                 'imagen'=>$imagen,
-                                                'descripcion'=>$pag_obj->getDescripcion(),
+                                                'descripcion'=>$pg->getPagina()->getDescripcion(),
                                                 'fecha_vencimiento'=>$f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
                                                 'continuar'=>$continuar);
                 
