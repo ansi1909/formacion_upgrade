@@ -93,7 +93,7 @@ class ProgramaController extends Controller
                     if($imagen){
                         $imagen = $imagen;
                     }else{
-                        $imagen = 'http://localhost/formacion2.0/web/front/assets/img/liderazgo.png';
+                        $imagen = 'front/assets/img/liderazgo.png';
                     }
 
                     $actividad_reciente[]= array('id'=>$ar->getPagina()->getId(),
@@ -149,7 +149,7 @@ class ProgramaController extends Controller
                     if($pg['foto']){
                         $imagen = $pg['foto'];
                     }else{
-                        $imagen = 'http://localhost/formacion2.0/web/front/assets/img/liderazgo.png';
+                        $imagen = 'front/assets/img/liderazgo.png';
                     }
                    
                     $programas_aprobados[]= array('id'=>$pg['paginaid'],
@@ -263,7 +263,7 @@ class ProgramaController extends Controller
                 if($pg['foto']){
                     $imagen = $pg['foto'];
                 }else{
-                    $imagen = 'http://localhost/formacion2.0/web/front/assets/img/liderazgo.png';
+                    $imagen = 'front/assets/img/liderazgo.png';
                 }
                
                 $programas_disponibles[]= array('id'=>$pg['paginaid'],

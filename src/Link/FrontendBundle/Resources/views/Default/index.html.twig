@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '::'~app.session.get('empresa').plantilla %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -32,7 +32,7 @@
         
         {% for ar in actividad_reciente %}
             <div class="card-hrz card-current">
-            <img class="card-hrz-img " src="{{ ar.imagen }}" alt="">
+            <img class="card-hrz-img " src="{{  uploads ~ ar.imagen }}" alt="">
             <div class="card-hrz-body">
                 <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
                 <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>

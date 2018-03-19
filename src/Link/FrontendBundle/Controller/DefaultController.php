@@ -85,7 +85,7 @@ class DefaultController extends Controller
                     if($imagen){
                         $imagen = $imagen;
                     }else{
-                        $imagen = 'http://localhost/formacion2.0/web/front/assets/img/liderazgo.png';
+                        $imagen = 'front/assets/img/liderazgo.png';
                     }
 
                     $actividad_reciente[]= array('id'=>$ar->getPagina()->getId(),
@@ -162,7 +162,7 @@ class DefaultController extends Controller
                 if($pg->getPagina()->getFoto()){
                     $imagen = $pg->getPagina()->getFoto();
                 }else{
-                    $imagen = 'http://localhost/formacion2.0/web/front/assets/img/liderazgo.png';
+                    $imagen = 'front/assets/img/liderazgo.png';
                 }
                
                 $programas_disponibles[]= array('id'=>$pg->getPagina()->getId(),

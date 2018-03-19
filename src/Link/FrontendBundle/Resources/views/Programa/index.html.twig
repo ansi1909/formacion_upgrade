@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '::'~app.session.get('empresa').plantilla %}
 
 {% block stylesheets %}
     {{ parent() }}

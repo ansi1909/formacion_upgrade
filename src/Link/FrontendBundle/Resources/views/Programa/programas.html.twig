@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '::'~app.session.get('empresa').plantilla %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -36,7 +36,7 @@
                     {% for pd in programas_disponibles %}
                         {% if pd.nombregrupo == g.nombre %}
                             <div class="card">
-                                <img class="card-img-top" src="{{ pd.imagen }}" alt="Card image cap">
+                                <img class="card-img-top" src="{{  uploads ~ pd.imagen }}" alt="Card image cap">
                                 <div class="card-img-overlay">
                                     <span class="count text-xs ">Finaliza en {{ pd.fecha_vencimiento }} días</span>
                                 </div>
