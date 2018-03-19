@@ -167,7 +167,7 @@ INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (3, 'Felicitación');
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 34, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 35, false);
 
 --
 -- Data for Name: admin_aplicacion; Type: TABLE DATA; Schema: public;
@@ -192,9 +192,9 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (17, 'Noticias y novedades', '_bibliotecas', 'fa-bell', TRUE, 9, 6);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (18, 'Reportes y consultas', NULL, NULL, TRUE, NULL, 6);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (19, 'Participantes por empresa', '_participantesEmpresa', 'fa-th-list', TRUE, 18, 1);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (20, 'Usuarios sin ingresar', NULL, NULL, TRUE, 18, 2);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (21, 'Estadisticas de las páginas', NULL, NULL, TRUE, 18, 3);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (22, 'Auditoria de evaluaciones', NULL, NULL, TRUE, 18, 4);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (20, 'Participantes registrados en programas', '_participantesRegistrados', 'fa-th-list', TRUE, 18, 2);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (21, 'Participantes cursando el programa', '_participantesCursando','fa-th-list', TRUE, 18, 3);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (22, 'Participantes aprobados en el programa','_participantesAprobados','fa-th-list', TRUE, 18, 4);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (23, 'Roles de usuarios', '_roles', 'fa-group', TRUE, 1, 4);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (24, 'Faqs', '_faqs', 'fa-question', TRUE, 16, 1);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (25, 'Tutorial', '_tutorial', 'fa-desktop', TRUE, 16, 2);
@@ -206,6 +206,8 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (31, 'Calendario de eventos', '_calendario', 'fa-calendar', TRUE, NULL, 8);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (32, 'Páginas por niveles', '_paginasNiveles', 'fa-list-alt', TRUE, 9, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (33, 'Preferencias de plantillas', '_preferencias', 'fa-desktop', TRUE, 9, 10);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (34, 'Participantes no iniciados en programas','_participantesNoIniciados','fa-th-list', TRUE, 18, 5);
+
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_tipo_noticia_seq;; Type: SEQUENCE SET; Schema: public;

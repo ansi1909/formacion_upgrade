@@ -31,7 +31,6 @@ $(document).ready(function() {
 		{
 			var usuario_empresa = $("#usuario_empresa").val();
 			if (usuario_empresa != '0'){
-				var nivel_id = 0;
 				getProgramas(usuario_empresa);
 			}
 
@@ -51,13 +50,11 @@ $(document).ready(function() {
 			{
 				var usuario_empresa = $("#usuario_empresa").val();
 				if (usuario_empresa != '0'){
-					var nivel_id = 0;
 					getProgramas(usuario_empresa);
 				}
 
 				$('#empresa_id').change(function(){
 		    		var empresa_id = $(this).val();
-		    		var nivel_id = 0;
 					getProgramas(empresa_id);
 				});
 			}
@@ -66,13 +63,11 @@ $(document).ready(function() {
 				{
 					var usuario_empresa = $("#usuario_empresa").val();
 					if (usuario_empresa != '0'){
-						var nivel_id = 0;
 						getProgramas(usuario_empresa);
 					}
 
 					$('#empresa_id').change(function(){
 		    			var empresa_id = $(this).val();
-		    			var nivel_id = 0;
 						getProgramas(empresa_id);
 					});
 				}
@@ -81,13 +76,11 @@ $(document).ready(function() {
 					{
 						var usuario_empresa = $("#usuario_empresa").val();
 						if (usuario_empresa != '0'){
-							var nivel_id = 0;
 							getProgramas(usuario_empresa);
 						}
 
 						$('#empresa_id').change(function(){
 		    				var empresa_id = $(this).val();
-		    				var nivel_id = 0;
 							getProgramas(empresa_id);
 						});
 					}

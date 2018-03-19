@@ -138,17 +138,35 @@ class DefaultController extends Controller
                             ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
                 $paginas_db = $query->getResult();
 
+                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                           WHERE u.empresa = :empresa_id')
+                            ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
+                $usuarios_db = $query->getResult();
+
                 $usuariosA = 0;
                 $usuariosI = 0;
+
+                foreach ($usuarios_db as $usuario)
+                {
+                    if ($usuario->getActivo() == 'true') 
+                    {
+                        $usuariosA++;
+                    }
+                    else
+                    {
+                        $usuariosI++;
+                    }
+                }
+
                 $paginas = array();
                 
                 foreach($paginas_db as $pagina)
                 {
-                    $usuariosT=0;
-                    $usuariosCur=0;
-                    $usuariosF=0;
-                    $usuariosN=0;
-
+                    $usuariosT =0;
+                    $usuariosCur =0;
+                    $usuariosF =0;
+                    $usuariosN =0;
+            
                     $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
                                                WHERE np.paginaEmpresa = :pe_id')
                                 ->setParameter('pe_id', $pagina->getId());
@@ -164,22 +182,51 @@ class DefaultController extends Controller
                                     ->setParameter('nivel_id', $nivel_id);
                         $usuarios = $query->getSingleScalarResult();
 
-                        $usuariosT = $usuariosT + $usuarios;
+                        if ($usuarios) 
+                        {
+                            $usuariosT++;
+                        }
 
-                       /* $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
                                                    JOIN pl.usuario u
                                                    WHERE u.nivel = :nivel_id
                                                    AND pl.pagina = :pagina_id
-                                                   AND pl.estatusPagina IN (iniciada , cursando )')
-                                    ->setParameters(array('nivel_id'=> $nivel_id
-                                                          'pagina_id'=> $pagina_id
-                                                          ''))*/
+                                                   AND pl.estatusPagina IN ( 1 , 2 )')
+                                    ->setParameters(array('nivel_id'=> $nivel_id,
+                                                          'pagina_id'=> $pagina_id));
+
+                        $cursando = $query->getSingleScalarResult();
+
+                        if (!$cursando) 
+                        {
+                            $usuariosN++;
+                        }
+                        else
+                        {
+                            $usuariosCur=$usuariosCur+$cursando;
+                        }
+
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
+                                                   JOIN pl.usuario u
+                                                   WHERE u.nivel = :nivel_id
+                                                   AND pl.pagina = :pagina_id
+                                                   AND pl.estatusPagina = :culminado')
+                                    ->setParameters(array('nivel_id'=> $nivel_id,
+                                                          'pagina_id'=> $pagina_id,
+                                                          'culminado'=> 3));
+
+                        $culminado = $query->getSingleScalarResult();
+
+                        if ($culminado) 
+                        {
+                            $usuariosF++;
+                        }
+
 
                     }
+
+                    //return new Response (var_dump($usuariosCur));
                     
-
-                        
-
                     $paginas[] = array('pagina'=>$pagina->getPagina()->getNombre(),
                                        'usuariosT'=>$usuariosT,
                                        'usuariosCur'=>$usuariosCur,

@@ -42,42 +42,10 @@ class ReportesController extends Controller
             $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
         } 
 
-        if ($r == 1) 
-        {
-        	return $this->render('LinkBackendBundle:Reportes:participantesEmpresa.html.twig', array('empresas' => $empresas,
+        return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
 			                                                                                        'usuario_empresa' => $usuario_empresa,
 			                                                                                        'usuario' => $usuario,
 			                                                                                        'reporte'=>$r));	
-        }
-        elseif ($r == 2)
-        {
-        	return $this->render('LinkBackendBundle:Reportes:participantesRegistrados.html.twig', array('empresas' => $empresas,
-				                                                                                        'usuario_empresa' => $usuario_empresa,
-				                                                                                        'usuario' => $usuario,
-				                                                                                        'reporte'=>$r));
-        }
-        elseif ($r == 3)
-        {
-        	return $this->render('LinkBackendBundle:Reportes:participantesCursando.html.twig', array('empresas' => $empresas,
-				                                                                                     'usuario_empresa' => $usuario_empresa,
-				                                                                                     'usuario' => $usuario,
-				                                                                                     'reporte'=>$r));
-        }
-        elseif ($r == 4) 
-        {
-        	return $this->render('LinkBackendBundle:Reportes:participantesAprobados.html.twig', array('empresas' => $empresas,
-				                                                                                      'usuario_empresa' => $usuario_empresa,
-				                                                                                      'usuario' => $usuario,
-				                                                                                      'reporte'=>$r));
-        }
-        elseif ($r == 5) 
-        {
-        	return $this->render('LinkBackendBundle:Reportes:participantesNoIniciados.html.twig', array('empresas' => $empresas,
-				                                                                                      'usuario_empresa' => $usuario_empresa,
-				                                                                                      'usuario' => $usuario,
-				                                                                                      'reporte'=>$r));
-        }
-        
     }
 
     public function ajaxProgramasEAction(Request $request)
