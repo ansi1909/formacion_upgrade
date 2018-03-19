@@ -50,6 +50,7 @@ class DefaultController extends Controller
                 foreach ($actividadreciente as $ar) {
                     // Si la actividad reciente es con una pagina hija
                     if($ar->getPagina()->getPagina()){
+                        $es_hija = 1;
                         // buscamos la página padre
                         $datos_log_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                                   'pagina' => $ar->getPagina()->getPagina()->getId()));
@@ -58,6 +59,7 @@ class DefaultController extends Controller
                                                                                                                                   'pagina' => $ar->getPagina()->getPagina()->getId()));
 
                         // creamos variables para añadir al array
+                        $padre_id = $ar->getPagina()->getPagina()->getId();
                         $titulo_padre = $ar->getPagina()->getPagina()->getNombre();
                         $titulo_hijo = $ar->getPagina()->getNombre();
                         $imagen = $ar->getPagina()->getPagina()->getFoto();
@@ -67,12 +69,13 @@ class DefaultController extends Controller
 
                     // Si la actividad reciente es con una pagina padre
                     }else{
-                        
+                        $es_hija = 0;
                         // buscamos los datos de la pagina contra empresa para obntener la fecha de vencimiento
                         $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                   'pagina' => $ar->getPagina()->getId()));
 
                         // creamos variables para añadir al array
+                        $padre_id = 0;
                         $titulo_padre = $ar->getPagina()->getNombre();
                         $titulo_hijo = '';
                         $imagen = $ar->getPagina()->getFoto();
@@ -89,6 +92,8 @@ class DefaultController extends Controller
                     }
 
                     $actividad_reciente[]= array('id'=>$ar->getPagina()->getId(),
+                                                 'padre_id'=>$padre_id,
+                                                 'es_hija'=>$es_hija,
                                                  'titulo_padre'=>$titulo_padre,
                                                  'titulo_hijo'=>$titulo_hijo,
                                                  'imagen'=>$imagen,
@@ -136,6 +141,7 @@ class DefaultController extends Controller
             
             foreach ($pages_by_group as $pg) {
 
+                // contruimos un array con los datos necesarios para el template y el grupo de cada programa
                 $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                  'pagina' => $pg->getPagina()->getId()));
 

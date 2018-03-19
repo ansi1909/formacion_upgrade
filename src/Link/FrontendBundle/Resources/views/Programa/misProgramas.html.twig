@@ -50,8 +50,8 @@
     </div>
     <div class="row">
         <ul class="tab__content">
-            {% if reciente == 1 %}
             <li>
+                {% if reciente == 1 %}
                 <div class="content__wrapper">
                     <div class="d-flex flex-column justify-content-center align-items-center">
                          {% for pec in actividad_reciente %}
@@ -72,7 +72,11 @@
                                                 <h2 class="color-light-grey mb-0 pb-0"> {{ pec.porcentaje }}% </h2>
                                                 <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ pec.fecha_vencimiento }} días</span>
                                             </div>
+                                            {% if pec.es_hija == 1 %}
+                                            <a href="{{ path('_lecciones', { 'programa_id':  pec.padre_id, 'subpagina_id': pec.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                                            {% else %}
                                             <a href="{{ path('_programa', { 'programa_id':  pec.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -80,10 +84,22 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% else %}
+                    <div class="content__wrapper">
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <div class="row">
+                                <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
+                                    <h4 class="mb-4 title-grey">Actividades en curso</h4>
+                                    <p>Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.</p>
+                                    <h5>¡Comencemos! Elige tu programa </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </li>
-            {% endif %}
-            {% if completado == 1 %}
             <li>
+                {% if completado == 1 %}
                 <div class="content__wrapper">
                     <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
                     {% for pa in programas_aprobados %}
@@ -131,8 +147,20 @@
                     {% endfor %}
                     </div>
                 </div>
+                {% else %}
+                    <div class="content__wrapper">
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <div class="row">
+                                <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
+                                    <h4 class="mb-4 title-grey">Programas Finalizados</h4>
+                                    <p>Aquí podrás ver tus actividades finalizadas.</p>
+                                    <h5>¡Comencemos! Elige tu programa y complétalo</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </li>
-            {% endif %}
         </ul>
     </div>
 </div>

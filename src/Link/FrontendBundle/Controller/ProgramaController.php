@@ -58,6 +58,7 @@ class ProgramaController extends Controller
                 foreach ($actividadreciente as $ar) {
                     // Si la actividad reciente es con una pagina hija
                     if($ar->getPagina()->getPagina()){
+                        $es_hija = 1;
                         // buscamos la página padre
                         $datos_log_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                                   'pagina' => $ar->getPagina()->getPagina()->getId()));
@@ -66,6 +67,7 @@ class ProgramaController extends Controller
                                                                                                                                   'pagina' => $ar->getPagina()->getPagina()->getId()));
 
                         // creamos variables para añadir al array
+                        $padre_id = $ar->getPagina()->getPagina()->getId();
                         $titulo_padre = $ar->getPagina()->getPagina()->getNombre();
                         $titulo_hijo = $ar->getPagina()->getNombre();
                         $imagen = $ar->getPagina()->getPagina()->getFoto();
@@ -75,12 +77,13 @@ class ProgramaController extends Controller
 
                     // Si la actividad reciente es con una pagina padre
                     }else{
-                        
+                        $es_hija = 0;
                         // buscamos los datos de la pagina contra empresa para obntener la fecha de vencimiento
                         $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                   'pagina' => $ar->getPagina()->getId()));
 
                         // creamos variables para añadir al array
+                        $padre_id = 0;
                         $titulo_padre = $ar->getPagina()->getNombre();
                         $titulo_hijo = '';
                         $imagen = $ar->getPagina()->getFoto();
@@ -97,6 +100,8 @@ class ProgramaController extends Controller
                     }
 
                     $actividad_reciente[]= array('id'=>$ar->getPagina()->getId(),
+                                                 'padre_id'=>$padre_id,
+                                                 'es_hija'=>$es_hija,
                                                  'titulo_padre'=>$titulo_padre,
                                                  'titulo_hijo'=>$titulo_hijo,
                                                  'imagen'=>$imagen,
@@ -118,7 +123,7 @@ class ProgramaController extends Controller
             }
 
             // Buscamos los programas finalizados y disponibles en la sesion
-            $group_query_completados = $em->createQuery('SELECT cp.id as paginaid, cp.descripcion as descripcion, cp.nombre as nombrepagina, cp.foto as foto
+            $group_query_completados = $em->createQuery('SELECT cp
                                                         FROM LinkComunBundle:CertiPagina cp, 
                                                              LinkComunBundle:CertiPaginaLog cpl
                                                         WHERE cp.id IN (:pagina)
@@ -136,7 +141,7 @@ class ProgramaController extends Controller
                 foreach ($prog_completados as $pg) {
 
                     $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                                     'pagina' => $pg['paginaid']));
+                                                                                                                                     'pagina' => $pg->getId()));
 
                     if($datos_certi_pagina->getAcceso()){
                         // aprobado y con acceso de seguir viendo
@@ -146,18 +151,18 @@ class ProgramaController extends Controller
                         $continuar = 3;
                     }
                         
-                    if($pg['foto']){
-                        $imagen = $pg['foto'];
+                    if($pg->getFoto()){
+                        $imagen = $pg->getFoto();
                     }else{
                         $imagen = 'front/assets/img/liderazgo.png';
                     }
                    
-                    $programas_aprobados[]= array('id'=>$pg['paginaid'],
-                                                    'nombre'=>$pg['nombrepagina'],
-                                                    'imagen'=>$imagen,
-                                                    'descripcion'=>$pg['descripcion'],
-                                                    'fecha_vencimiento'=>$f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
-                                                    'continuar'=>$continuar);
+                    $programas_aprobados[]= array('id'=>$pg->getId(),
+                                                  'nombre'=>$pg->getNombre(),
+                                                  'imagen'=>$imagen,
+                                                  'descripcion'=>$pg->getDescripcion(),
+                                                  'fecha_vencimiento'=>$f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
+                                                  'continuar'=>$continuar);
                     
                 }
             }else{
@@ -218,30 +223,27 @@ class ProgramaController extends Controller
             $grupos = $group_query->getResult();
 
             // Buscamos datos especificos de los programas de la sesion obteniendo el grupo al que pertenece cada programa
-            $query_pages_by_group = $em->createQuery('SELECT cg.nombre as nombregrupo, cp.id as paginaid, cp.descripcion as descripcion, cp.nombre as nombrepagina, cp.foto as foto 
-                                     FROM LinkComunBundle:CertiGrupo cg,
-                                          LinkComunBundle:CertiGrupoPagina cgp,
-                                          LinkComunBundle:CertiPagina cp
-                                    WHERE cg.empresa = :empresa
-                                    AND  cgp.grupo = cg.id
-                                    AND cp.id IN (:pagina)
-                                    AND cgp.pagina = cp.id
-                                    ORDER BY cg.id ASC')
-                            ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                                  'pagina' => $paginas_ids));
+            $query_pages_by_group = $em->createQuery('SELECT cgp 
+                                                      FROM LinkComunBundle:CertiGrupo cg,
+                                                           LinkComunBundle:CertiGrupoPagina cgp,
+                                                           LinkComunBundle:CertiPagina cp
+                                                      WHERE cg.empresa = :empresa
+                                                      AND  cgp.grupo = cg.id
+                                                      AND cp.id IN (:pagina)
+                                                      AND cgp.pagina = cp.id
+                                                      ORDER BY cg.id ASC')
+                                        ->setParameters(array('empresa' => $session->get('empresa')['id'],
+                                                              'pagina' => $paginas_ids));
             $pages_by_group = $query_pages_by_group->getResult();
             
             foreach ($pages_by_group as $pg) {
 
                 // contruimos un array con los datos necesarios para el template y el grupo de cada programa
-                $pag_obj = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pg['paginaid']);
-
-
                 $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                                 'pagina' => $pg['paginaid']));
+                                                                                                                                 'pagina' => $pg->getPagina()->getId()));
 
                 $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                    'pagina' => $pg['paginaid']));
+                                                                                                                    'pagina' => $pg->getPagina()->getId()));
                 if($datos_log){
                     if($datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
                         if($datos_certi_pagina->getAcceso()){
@@ -260,17 +262,17 @@ class ProgramaController extends Controller
                     // si registros - iniciar
                     $continuar = 0;
                 }
-                if($pg['foto']){
-                    $imagen = $pg['foto'];
+                if($pg->getPagina()->getFoto()){
+                    $imagen = $pg->getPagina()->getFoto();
                 }else{
                     $imagen = 'front/assets/img/liderazgo.png';
                 }
                
-                $programas_disponibles[]= array('id'=>$pg['paginaid'],
-                                                'nombre'=>$pg['nombrepagina'],
-                                                'nombregrupo'=>$pg['nombregrupo'],
+                $programas_disponibles[]= array('id'=>$pg->getPagina()->getId(),
+                                                'nombre'=>$pg->getPagina()->getNombre(),
+                                                'nombregrupo'=>$pg->getGrupo()->getNombre(),
                                                 'imagen'=>$imagen,
-                                                'descripcion'=>$pag_obj->getDescripcion(),
+                                                'descripcion'=>$pg->getPagina()->getDescripcion(),
                                                 'fecha_vencimiento'=>$f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
                                                 'continuar'=>$continuar);
                 
@@ -281,7 +283,7 @@ class ProgramaController extends Controller
         }
 
         return $this->render('LinkFrontendBundle:Programa:programas.html.twig', array('grupos' => $grupos,
-                                                                                         'programas_disponibles' => $programas_disponibles));
+                                                                                      'programas_disponibles' => $programas_disponibles));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

@@ -32,7 +32,7 @@
         
         {% for ar in actividad_reciente %}
             <div class="card-hrz card-current">
-            <img class="card-hrz-img " src="{{  uploads ~ ar.imagen }}" alt="">
+            <img class="card-hrz-img " src="{{ uploads ~ ar.imagen }}" alt="">
             <div class="card-hrz-body">
                 <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
                 <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>
@@ -46,7 +46,11 @@
                     <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
                     <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ ar.fecha_vencimiento }} días</span>
                 </div>
+                {% if ar.es_hija == 1 %}
+                <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                {% else %}
                 <a href="{{ path('_programa', { 'programa_id':  ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -84,7 +88,7 @@
                     {% for pd in programas_disponibles %}
                         {% if pd.nombregrupo == g.nombre %}
                             <div class="card">
-                                <img class="card-img-top" src="{{ pd.imagen }}" alt="Card image cap">
+                                <img class="card-img-top" src="{{ uploads ~ pd.imagen }}" alt="Card image cap">
                                 <div class="card-img-overlay">
                                     <span class="count text-xs ">Finaliza en {{ pd.fecha_vencimiento }} días</span>
                                 </div>
