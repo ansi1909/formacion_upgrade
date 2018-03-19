@@ -39,7 +39,7 @@ class CertiPruebaLog
     /**
      * @var string
      *
-     * @ORM\Column(name="porcentaje_avance", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="porcentaje_avance", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $porcentajeAvance;
 
@@ -60,7 +60,7 @@ class CertiPruebaLog
     /**
      * @var string
      *
-     * @ORM\Column(name="nota", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="nota", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $nota;
 

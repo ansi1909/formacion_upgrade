@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
+use Link\ComunBundle\Entity\CertiPaginaLog;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class Functions
@@ -898,72 +899,107 @@ class Functions
 	}
 
 	// Retorna un arreglo multidimensional con la estructura del menú lateral para la vista de las lecciones
-	public function menuLecciones($programa, $subpagina_id, $href, $usuario_id, $estatus_completada, $dimension = 1)
+	public function menuLecciones($programa, $subpagina_id, $href, $usuario_id, $estatus_completada, $dimension = 1, $to_activate = 1)
 	{
 
+		$em = $this->em;
 		$menu_str = '';
 		$i = 0;
-		
-		foreach ($programa['subpaginas'] as $subpagina)
+
+		if (count($programa['subpaginas']))
 		{
-			if ($subpagina['acceso'])
+			foreach ($programa['subpaginas'] as $subpagina)
 			{
-				$i++;
-				if ($subpagina_id)
+				if ($subpagina['acceso'])
 				{
+					$i++;
 					$active = '';
-					if ($subpagina['id'] == $subpagina_id)
+					if ($subpagina_id && $to_activate)
 					{
-						$active = ' active';
-					}
-					else {
-						if ($dimension == 2 && count($subpagina['subpaginas']))
+						if ($subpagina['id'] == $subpagina_id)
 						{
-							if (array_key_exists($subpagina_id, $subpagina['subpaginas']))
+							$active = ' active';
+							$to_activate = 0;
+						}
+						else {
+							if ($dimension == 2 && count($subpagina['subpaginas']))
 							{
-								$active = ' active';
+								if (array_key_exists($subpagina_id, $subpagina['subpaginas']))
+								{
+									$active = ' active';
+									$to_activate = 0;
+								}
 							}
 						}
 					}
+					else {
+						if ($i==1 && $to_activate)
+						{
+							$active = ' active';
+							$to_activate = 0;
+						}
+					}
+					$bloqueada = '';
+					if ($subpagina['prelacion'])
+					{
+						// Se determina si el contenido estará bloqueado
+						$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+						                            WHERE pl.pagina = :pagina_id 
+						                            AND pl.usuario = :usuario_id 
+						                            AND pl.estatusPagina = :completada')
+						            ->setParameters(array('pagina_id' => $subpagina['prelacion'],
+						            					  'usuario_id' => $usuario_id,
+						                        		  'completada' => $estatus_completada));
+						$leccion_completada = $query->getSingleScalarResult();
+						$bloqueada = $leccion_completada ? '' : 'less-disabled';
+					}
+					$menu_str .= '<li>
+									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
+					if (count($subpagina['subpaginas']) && $dimension == 1)
+					{
+						// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
+						$acceso = 0;
+						foreach ($subpagina['subpaginas'] as $sub)
+						{
+							if ($sub['acceso'])
+							{
+								$acceso = 1;
+								break;
+							}
+						}
+						if ($acceso)
+						{
+							$menu_str .= '<ul class="ul-items">';
+							$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, $href, $usuario_id, $estatus_completada, 2, $to_activate);
+							$menu_str .= '</ul>';
+						}
+					}
+					$menu_str .= '</li>';
 				}
-				else {
-					$active = $i == 1 ? 'active' : '';
-				}
+			}
+		}
+		else {
+			// Se verifica si es una página padre
+			$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa['id']);
+			if ($programa['acceso'] && !$pagina->getPagina())
+			{
+				$active = ' active';
 				$bloqueada = '';
-				if ($subpagina['prelacion'])
+				if ($programa['prelacion'])
 				{
 					// Se determina si el contenido estará bloqueado
 					$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
 					                            WHERE pl.pagina = :pagina_id 
 					                            AND pl.usuario = :usuario_id 
 					                            AND pl.estatusPagina = :completada')
-					            ->setParameters(array('pagina_id' => $subpagina['prelacion'],
+					            ->setParameters(array('pagina_id' => $programa['prelacion'],
 					            					  'usuario_id' => $usuario_id,
 					                        		  'completada' => $estatus_completada));
 					$leccion_completada = $query->getSingleScalarResult();
 					$bloqueada = $leccion_completada ? '' : 'less-disabled';
 				}
 				$menu_str .= '<li>
-								<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
-				if (count($subpagina['subpaginas']) && $dimension == 1)
-				{
-					// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
-					$acceso = 0;
-					foreach ($subpagina['subpaginas'] as $sub)
-					{
-						if ($sub['acceso'])
-						{
-							$acceso = 1;
-							break;
-						}
-					}
-					if ($acceso)
-					{
-						$menu_str .= '<ul class="ul-items">';
-						$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, $href, $usuario_id, $estatus_completada, 2);
-						$menu_str .= '</ul>';
-					}
-				}
+								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
 			}
 		}
@@ -1044,12 +1080,11 @@ class Functions
         foreach ($pagina_arr['subpaginas'] as $subpagina_arr)
 		{
 
-			$i++;
-
-			if (!$wizard && $i==1)
+			if (!$wizard && $i==0 && $subpagina_arr['acceso'])
 			{
-				// Al terminar la lectura del contenido, el botón "Siguiente" se debe redireccionar a su primer hijo
+				// Al terminar la lectura del contenido, el botón "Siguiente" se debe redireccionar al primer hijo con acceso
 				$lecciones['next_subpage'] = $subpagina_arr['id'];
+				$i++;
 			}
 
 			$subpagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpagina_arr['id']);
@@ -1168,6 +1203,204 @@ class Functions
 		}
 
 		return $activar;
+
+	}
+
+	public function startLesson($indexedPages, $pagina_id, $usuario_id, $pagina_iniciada)
+	{
+
+		$em = $this->em;
+		$logs = array();
+
+		$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+		$estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($pagina_iniciada);
+
+		$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $pagina_id,
+                                                                                            'usuario' => $usuario_id));
+
+        if (!$pagina_log)
+        {
+
+        	//Revisar antes si el padre ya tiene log
+        	if ($indexedPages[$pagina_id]['padre'] > 0)
+        	{
+        		$logs_padre = $this->startLesson($indexedPages, $indexedPages[$pagina_id]['padre'], $usuario_id, $pagina_iniciada);
+        		if (count($logs_padre))
+        		{
+        			$logs += $logs_padre;
+        		}
+        	}
+
+            $pagina_log = new CertiPaginaLog();
+            $pagina_log->setPagina($pagina);
+            $pagina_log->setUsuario($usuario);
+            $pagina_log->setFechaInicio(new \DateTime('now'));
+            $pagina_log->setEstatusPagina($estatus_pagina);
+            $pagina_log->setPorcentajeAvance(0);
+            $em->persist($pagina_log);
+        	$em->flush();
+
+        	$logs[] = $pagina_log->getId();
+
+        }
+
+		return $logs;
+
+	}
+
+	public function finishLesson($indexedPages, $pagina_id, $usuario_id, $yml)
+	{
+
+		$em = $this->em;
+		$log_id = 0;
+
+		$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $pagina_id,
+                                                                                            'usuario' => $usuario_id,
+                                                                                            'estatusPagina' => $yml['parameters']['estatus_pagina']['iniciada']));
+
+        if ($pagina_log)
+        {
+
+        	// Revisar antes si tiene sub-páginas iniciadas
+        	$subpaginas_iniciadas = $this->subpaginasIniciadas($indexedPages, $pagina_id, $usuario_id, $yml['parameters']['estatus_pagina']['completada']);
+        	if (!$subpaginas_iniciadas)
+        	{
+        		// Se completa o se coloca en evaluación la lección
+        		if ($indexedPages[$pagina_id]['tiene_evaluacion'])
+        		{
+        			$estatus = $yml['parameters']['estatus_pagina']['en_evaluación'];
+        			$avance = 80;
+        		}
+        		else {
+        			$estatus = $yml['parameters']['estatus_pagina']['completada'];
+        			$avance = 100;
+        		}
+        		$status_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($estatus);
+        		$pagina_log->setFechaFin(new \DateTime('now'));
+	            $pagina_log->setEstatusPagina($status_pagina);
+	            $pagina_log->setPorcentajeAvance($avance);
+	            $em->persist($pagina_log);
+	        	$em->flush();
+	        	$log_id = $pagina_log->getId();
+
+	        	// Cálculo del porcentaje de avance de toda la línea de ascendente
+	        	$this->calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml);
+
+        	}
+
+        }
+
+		return $log_id;
+
+	}
+
+	public function subpaginasIniciadas($indexedPages, $pagina_id, $usuario_id, $estatus_completada)
+	{
+
+		$em = $this->em;
+		$iniciada = 0;
+
+		foreach ($indexedPages[$pagina_id]['subpaginas'] as $subpagina)
+		{
+			$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+			                            WHERE pl.pagina = :pagina_id 
+			                            AND pl.usuario = :usuario_id 
+			                            AND pl.estatusPagina != :completada')
+			            ->setParameters(array('pagina_id' => $subpagina['id'],
+			            					  'usuario_id' => $usuario_id,
+			                        		  'completada' => $estatus_completada));
+			$subpagina_iniciada = $query->getSingleScalarResult();
+			if ($subpagina_iniciada)
+			{
+				$iniciada = 1;
+				break;
+			}
+			else {
+				// Repetir el ciclo con las subpáginas
+				if (count($subpagina['subpaginas']))
+				{
+					$subpagina_iniciada = $this->subpaginasIniciadas($indexedPages, $subpagina['id'], $usuario_id, $estatus_completada);
+					if ($subpagina_iniciada)
+					{
+						$iniciada = 1;
+						break;
+					}
+				}
+			}
+		}
+
+        return $iniciada;
+
+	}
+
+	public function calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml)
+	{
+
+		$em = $this->em;
+
+		if ($indexedPages[$pagina_id]['padre'])
+		{
+
+			$pagina_padre_id = $indexedPages[$pagina_id]['padre'];
+			$pagina_padre_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $pagina_padre_id,
+		                                                                                        	  'usuario' => $usuario_id));
+
+			if ($pagina_padre_log)
+			{
+
+				$n = count($indexedPages[$pagina_padre_id]['subpaginas']);
+				$max_porcentaje = $indexedPages[$pagina_padre_id]['tiene_evaluacion'] ? (1 - $yml['ponderacion']['evaluacion']) : 1;
+				$avance_total = 0;
+				$avance_parcial = 0;
+
+				foreach ($indexedPages[$pagina_padre_id]['subpaginas'] as $subpagina)
+				{
+					$subpagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $subpagina['id'],
+			                                                                                        	   'usuario' => $usuario_id));
+					if ($subpagina_log)
+					{
+						$avance_parcial += $subpagina_log->getPorcentajeAvance();
+					}
+				}
+
+				$avance_total = ($avance_parcial/$n)*$max_porcentaje;
+
+				if ($indexedPages[$pagina_padre_id]['tiene_evaluacion'])
+				{
+					$avance_prueba = 0;
+					$query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
+			                                    JOIN pl.prueba p 
+			                                    WHERE pl.usuario = :usuario_id AND p.pagina = :pagina_id 
+			                                    ORDER BY pl.id DESC")
+			                    ->setParameters(array('usuario_id' => $usuario_id,
+			                    					  'pagina_id' => $pagina_padre_id));
+			        $pruebas_log = $query->getResult();
+			        if ($pruebas_log)
+			        {
+			        	$avance_prueba = $pruebas_log[0]->getPorcentajeAvance();
+			        }
+			        $avance_total += $avance_prueba*$yml['ponderacion']['evaluacion'];
+				}
+
+				// Finalmente se almacena el avance calculado en la página padre
+				$avance_total = round($avance_total, 2);
+				$pagina_padre_log->setPorcentajeAvance($avance_total);
+				if ($avance_total >= 100)
+				{
+					$estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['completada']);
+					$pagina_padre_log->setEstatusPagina($estatus_pagina);
+					$pagina_padre_log->setFechaFin(new \DateTime('now'));
+				}
+	            $em->persist($pagina_padre_log);
+	        	$em->flush();
+
+			}
+
+			// Calcular el avance del abuelo
+			$this->calculoAvance($indexedPages, $pagina_padre_id, $usuario_id, $yml);
+
+		}
 
 	}
 

@@ -1,3 +1,15 @@
 _lecciones:
-    path:     /{programa_id}/{subpagina_id}
+    path:     /ver/{programa_id}/{subpagina_id}
     defaults: { _controller: LinkFrontendBundle:Leccion:index, subpagina_id: 0 }
+
+_ajaxIniciarPagina:
+    path:     /ajaxIniciarPagina
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxIniciarPagina }
+    requirements:
+        _method: POST
+
+_ajaxProcesarPagina:
+    path:     /ajaxProcesarPagina
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxProcesarPagina }
+    requirements:
+        _method: POST

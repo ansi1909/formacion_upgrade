@@ -32,6 +32,7 @@ class LeccionController extends Controller
 
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+        //return new Response(var_dump($indexedPages));
 
         // Prueba activa
         $prueba_activa = 0;
@@ -41,18 +42,24 @@ class LeccionController extends Controller
         }
 
         // También se anexa a la indexación el programa padre
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $pagina = $session->get('paginas')[$programa_id];
         $pagina['padre'] = 0;
         $pagina['sobrinos'] = 0;
         $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
         $indexedPages[$pagina['id']] = $pagina;
 
-        //return new Response(var_dump($indexedPages));
-
-        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        return new Response(var_dump($indexedPages));
+        
         $wizard = 0; // 1 Indica que llevan los círculos de navegación
         $titulo = '';
         $subtitulo = '';
+        $pagina_id = $programa_id;
 
         if ($subpagina_id == 0 || $subpagina_id == $programa_id)
         {
@@ -108,7 +115,10 @@ class LeccionController extends Controller
         $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación']);
 
         // Se reinicia el reinicia el reloj de pagina_log
+        $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
+        $logs = $f->startLesson($indexedPages, $id_pagina_log, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
 
+        //return new Response(var_dump($logs));
         //return new Response(var_dump($lecciones));
 
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
@@ -119,6 +129,78 @@ class LeccionController extends Controller
                                                                                  'subtitulo' => $subtitulo,
                                                                                  'wizard' => $wizard,
                                                                                  'prueba_activa' => $prueba_activa));
+
+    }
+
+    public function ajaxIniciarPaginaAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $programa_id = $request->request->get('programa_id');
+        $pagina_id = $request->request->get('pagina_id');
+
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+
+        // También se anexa a la indexación el programa padre
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $pagina = $session->get('paginas')[$programa_id];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
+        $indexedPages[$pagina['id']] = $pagina;
+
+        $logs = $f->startLesson($indexedPages, $pagina_id, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
+
+        $return = array('logs' => $logs);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxProcesarPaginaAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $programa_id = $request->request->get('programa_id');
+        $pagina_id = $request->request->get('pagina_id');
+
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+
+        // También se anexa a la indexación el programa padre
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $pagina = $session->get('paginas')[$programa_id];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
+        $indexedPages[$pagina['id']] = $pagina;
+
+        $log_id = $f->finishLesson($indexedPages, $pagina_id, $session->get('usuario')['id'], $yml);
+
+        $return = array('id' => $log_id);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 

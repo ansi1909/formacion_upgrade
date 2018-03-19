@@ -39,7 +39,6 @@ parameters:
         iniciada: 1
         en_evaluación: 2
         completada: 3
-        pausada: 4
     layout:
         base: 1
     folders:
@@ -60,4 +59,6 @@ parameters:
         sass: 'C:\Ruby24-x64\bin\sass'
         # Compilador SASS en Linux
         #sass: '/usr/bin/sass'
+    ponderacion:
+        evaluacion: 0.2
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

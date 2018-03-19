@@ -33,7 +33,7 @@ Link\ComunBundle\Entity\CertiPruebaLog:
         porcentajeAvance:
             type: decimal
             nullable: true
-            precision: 3
+            precision: 5
             scale: 2
             column: porcentaje_avance
         correctas:
@@ -49,7 +49,7 @@ Link\ComunBundle\Entity\CertiPruebaLog:
         nota:
             type: decimal
             nullable: true
-            precision: 3
+            precision: 5
             scale: 2
         estado:
             type: string

@@ -68,7 +68,7 @@
         <div class="tab-content menu-lesson" id="pills-tabContent" >
             <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
                 <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Indice'|trans }}</h5>
-                <ol>
+                <ol id="menu_indice">
                     {{ menu_str|raw }}
                     {% if prueba_activa %}
                         <li><a href="">{{ 'Evaluación'|trans }}</a></li>
@@ -92,9 +92,15 @@
 
 {% block body %}
 
+    <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
     <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
-    <input type="hidden" id="wizard" name="wizard" value="{{ wizard }}">
-    {% if wizard %}
+    <input type="hidden" id="pagina_id_viendo" name="pagina_id_viendo" value="{{ wizard ? lecciones.subpaginas[0].id : lecciones.id }}">
+    <input type="hidden" id="wizard" name="wizard" value="{{ wizard and lecciones.subpaginas|length > 1 ? '1' : '0' }}">
+    <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id }) }}">
+    <input type="hidden" id="url_procesar" name="url_procesar" value="{{ path('_ajaxProcesarPagina') }}">
+    <input type="hidden" id="url_iniciar" name="url_iniciar" value="{{ path('_ajaxIniciarPagina') }}">
+    {% if wizard and lecciones.subpaginas|length > 1 %}
+        <input type="hidden" id="tab_activo" name="tab_activo" value="one-tab">
         {# NAVEGACION LECCION #}
         {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
         <div class="wraper-nav-less" id="wraperNavLess">
@@ -106,7 +112,7 @@
                         {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
                         {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
                         <li class="nav-item">
-                            <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
+                            <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data="{{ subpagina.id }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -125,9 +131,15 @@
                         <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
                     {% endif %}
                     {{ lecciones.contenido|raw }}
+                    {% if lecciones.pdf != '' %}
+                        {% set pdf = uploads~lecciones.pdf %}
+                        <p class="fa fa-file-pdf-o">
+                            <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
+                        </p>
+                    {% endif %}
                 </div>
                 <nav class="container text-right">
-                    <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.next_subpage }}">{{ 'Siguiente'|trans }}</div>
+                    <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ 'Continuar'|trans }}</div>
                 </nav>
             </div>
         {% else %}
@@ -140,10 +152,16 @@
                             <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
                         {% endif %}
                         {{ subpagina.contenido|raw }}
+                        {% if subpagina.pdf != '' %}
+                            {% set pdf = uploads~subpagina.pdf %}
+                            <p>
+                                <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
+                            </p>
+                        {% endif %}
                     </div>
                     <nav class="container text-right">
                         {% set last = loop.last ? 1 : 0 %}
-                        <div class="btn-primary btn next_lesson" data="{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Siguiente'|trans }}</div>
+                        <div class="btn-primary btn next_lesson" data="{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Continuar'|trans }}</div>
                     </nav>
                 </div>
             {% endfor %}

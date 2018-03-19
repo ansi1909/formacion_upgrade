@@ -8,7 +8,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>
             {% block title %}
-                {% if app.session.started and app.session.get('empresa').titulo is defined %}
+                {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
                     {{ app.session.get('empresa').titulo }}
                 {% else %}
                     {{ 'Sistema Formación'|trans }} 2.0

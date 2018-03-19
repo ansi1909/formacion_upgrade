@@ -36,7 +36,7 @@ Link\ComunBundle\Entity\CertiPaginaLog:
         porcentajeAvance:
             type: decimal
             nullable: true
-            precision: 3
+            precision: 5
             scale: 2
             column: porcentaje_avance
     manyToOne:

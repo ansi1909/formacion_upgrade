@@ -139,7 +139,7 @@ INSERT INTO certi_tipo_pregunta (id, nombre) VALUES (3, 'Asociacion');
 -- Name: idcerti_estatus_pagina_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_estatus_pagina', 'id'), 5, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_estatus_pagina', 'id'), 4, false);
 
 --
 -- Data for Name: certi_estatus_pagina; Type: TABLE DATA; Schema: public;
@@ -148,7 +148,6 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_estatus_pagina
 INSERT INTO certi_estatus_pagina (id, nombre) VALUES (1, 'Iniciada');
 INSERT INTO certi_estatus_pagina (id, nombre) VALUES (2, 'En evaluación');
 INSERT INTO certi_estatus_pagina (id, nombre) VALUES (3, 'Completada');
-INSERT INTO certi_estatus_pagina (id, nombre) VALUES (4, 'Pausada');
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_tipo_notificacion_seq;; Type: SEQUENCE SET; Schema: public;
