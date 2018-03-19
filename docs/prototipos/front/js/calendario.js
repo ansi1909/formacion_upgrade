@@ -31,7 +31,26 @@ $(document).ready(function() {
                 $('#Modal').modal('show');
             });
         },
-        events: "",
+        events: [
+            {
+              title: 'Evento de Prueba 1',
+              start: '2018-03-19 17:00:00',
+              end: '2018-03-19 18:30:00',
+              descripcion: 'Evento de prueba',
+              empresa: 'Linkgerencial',
+              nivel: 'Analistas',
+              lugar: 'Terraza del CCCT'
+            },
+            {
+              title: 'Evento de Prueba 2',
+              start: '2018-03-20 08:00:00',
+              end: '2018-03-20 10:30:00',
+              descripcion: 'Evento de prueba 2',
+              empresa: 'Linkgerencial',
+              nivel: 'Coordinadores',
+              lugar: 'Lobby del Eurobuilding'
+            }
+        ],
         timeFormat: 'hh:mm a'
     });
 });
