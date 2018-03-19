@@ -12,8 +12,8 @@
             <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
             <h5>Bienvenido al programa de </h5>
             <h1 class="mb-5">{{ pagina.nombre }}</h1>
-            <p class="text-left mx-auto">{{ pagina.descripcion|raw }}</p>
-
+            {{ pagina.descripcion|raw }}
+            
         <!-- MAPA DE AVANCE -->
             <div id="mapAvance" class=" avance-message container py-3 px-6 mb-0 ">
                 <h4 class="mb-4 title-grey">Tu Avance</h4>
@@ -123,4 +123,9 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript">
+       $(document).ready(function() {
+           $('p').addClass('text-left mx-auto');
+        });
+    </script>
 {% endblock %}

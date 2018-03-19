@@ -16,8 +16,59 @@ class ProgramaController extends Controller
     public function programaAction($programa_id, Request $request)
     {
 
-       $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-       return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina));
+         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $session = new Session();
+
+        if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        if ($this->container->get('session')->isStarted())
+        {
+
+            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+            $pagina_sesion = $session->get('paginas')[$programa_id];
+
+            $subpaginas_array = array();
+
+            if (count($pagina_sesion['subpaginas']) > 0) {
+                $modulos = 1;
+
+                $next_pagina_id = 0;
+                foreach ($pagina_sesion['subpaginas'] as $subpagina){
+
+                    $query_actividad = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
+                                                         WHERE ar.usuario = :usuario_id
+                                                         AND ar.pagina = :pagina
+                                                         AND ar.estatusPagina = :completada
+                                                         ORDER BY ar.id DESC')
+                                          ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                                'pagina' => $subpagina['id'],
+                                                                'completada' => $yml['parameters']['estatus_pagina']['completada']));
+                    $actividadreciente = $query_actividad->getResult();
+
+                    if($$actividadreciente and $next_pagina == 0){
+                        $next_pagina_id = $subpagina['id'];
+                    }
+                }
+            }
+            else{
+                $modulos = 0;
+            }
+
+        }
+        else {
+            return $this->redirectToRoute('_login');
+        }
+
+        return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina));
+
+        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+        return $response; 
 
     }
 
