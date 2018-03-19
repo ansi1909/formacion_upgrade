@@ -123,9 +123,5 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-       $(document).ready(function() {
-           $('p').addClass('text-left mx-auto');
-        });
-    </script>
+    <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
 {% endblock %}

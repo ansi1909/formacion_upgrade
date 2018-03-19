@@ -88,8 +88,5 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-        $('.tab__content li:first').addClass('activo');
-        $('.tabs li:first').addClass('activo');
-    </script>
+    <script type="text/javascript" src="{{ asset('js/front/programas.js') }}"></script>
 {% endblock %}
