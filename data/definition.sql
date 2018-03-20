@@ -292,6 +292,7 @@ fecha_inicio timestamp without time zone,
 fecha_fin timestamp without time zone,
 porcentaje_avance numeric(5,2),
 estatus_pagina_id integer,
+puntos integer,
  PRIMARY KEY (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
@@ -556,3 +557,38 @@ nombre varchar(100),
 url varchar(250),
  PRIMARY KEY (id),
  FOREIGN KEY (layout_id) REFERENCES admin_layout (id));
+
+CREATE TABLE admin_social(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_like(
+-- Attributes --
+id serial,
+social_id integer,
+entidad_id integer,
+usuario_id integer,
+ PRIMARY KEY (id),
+ FOREIGN KEY (social_id) REFERENCES admin_social (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_tipo_alarma(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_alarma(
+-- Attributes --
+id serial,
+tipo_alarma_id integer,
+descripcion text,
+usuario_id integer,
+entidad_id integer,
+leido boolean,
+fecha_creacion timestamp without time zone,
+ PRIMARY KEY (id),
+ FOREIGN KEY (tipo_alarma_id) REFERENCES admin_tipo_alarma (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));

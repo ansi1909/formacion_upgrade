@@ -44,3 +44,8 @@ ALTER TABLE certi_tipo_pregunta ALTER COLUMN id SET DEFAULT nextval('certi_tipo_
 ALTER TABLE tmp_participante ALTER COLUMN id SET DEFAULT nextval('tmp_participante_id_seq');
 ALTER TABLE admin_atributo ALTER COLUMN id SET DEFAULT nextval('admin_atributo_id_seq');
 ALTER TABLE admin_color ALTER COLUMN id SET DEFAULT nextval('admin_color_id_seq');
+ALTER TABLE admin_thumbnail ALTER COLUMN id SET DEFAULT nextval('admin_thumbnail_id_seq');
+ALTER TABLE admin_social ALTER COLUMN id SET DEFAULT nextval('admin_social_id_seq');
+ALTER TABLE admin_like ALTER COLUMN id SET DEFAULT nextval('admin_like_id_seq');
+ALTER TABLE admin_tipo_alarma ALTER COLUMN id SET DEFAULT nextval('admin_tipo_alarma_id_seq');
+ALTER TABLE admin_alarma ALTER COLUMN id SET DEFAULT nextval('admin_alarma_id_seq');

@@ -890,6 +890,7 @@ class Functions
                                     							'acceso' => $subpage->getAcceso(),
                                     							'muro_activo' => $subpage->getMuroActivo(),
                                     							'prelacion' => $subpage->getPrelacion() ? $subpage->getPrelacion()->getId() : 0,
+                                    							'vencimiento' => $subpage->getFechaVencimiento()->format('d/m/Y'),
                                     							'subpaginas' => $this->subPaginasNivel($subpage->getPagina()->getId(), $estatus_contenido, $empresa_id));
 		
 		}
@@ -1270,7 +1271,7 @@ class Functions
         		if ($indexedPages[$pagina_id]['tiene_evaluacion'])
         		{
         			$estatus = $yml['parameters']['estatus_pagina']['en_evaluación'];
-        			$avance = 80;
+        			$avance = (1 - $yml['parameters']['ponderacion']['evaluacion'])*100;
         		}
         		else {
         			$estatus = $yml['parameters']['estatus_pagina']['completada'];
@@ -1385,7 +1386,7 @@ class Functions
 
 				// Finalmente se almacena el avance calculado en la página padre
 				$avance_total = round($avance_total, 2);
-				$pagina_padre_log->setPorcentajeAvance($avance_total);
+				$pagina_padre_log->setPorcentajeAvance($avance_total > 100 ? 100 : $avance_total);
 				if ($avance_total >= 100)
 				{
 					$estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['completada']);

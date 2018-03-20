@@ -60,5 +60,5 @@ parameters:
         # Compilador SASS en Linux
         #sass: '/usr/bin/sass'
     ponderacion:
-        evaluacion: 0.2
+        evaluacion: 0.5
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

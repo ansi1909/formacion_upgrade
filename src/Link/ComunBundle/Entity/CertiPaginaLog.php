@@ -44,6 +44,13 @@ class CertiPaginaLog
     private $porcentajeAvance;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="puntos", type="integer", nullable=true)
+     */
+    private $puntos;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPagina
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPagina")
@@ -155,6 +162,30 @@ class CertiPaginaLog
     public function getPorcentajeAvance()
     {
         return $this->porcentajeAvance;
+    }
+
+    /**
+     * Set puntos
+     *
+     * @param integer $puntos
+     *
+     * @return CertiPaginaLog
+     */
+    public function setPuntos($puntos)
+    {
+        $this->puntos = $puntos;
+    
+        return $this;
+    }
+
+    /**
+     * Get puntos
+     *
+     * @return integer
+     */
+    public function getPuntos()
+    {
+        return $this->puntos;
     }
 
     /**

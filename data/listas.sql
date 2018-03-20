@@ -303,3 +303,31 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_layout', 'id')
 --
 
 INSERT INTO admin_layout (id, twig) VALUES (1, 'base.html.twig');
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_social_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_social', 'id'), 3, false);
+
+--
+-- Data for Name: admin_social; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_social (id, nombre) VALUES (1, 'Muro');
+INSERT INTO admin_social (id, nombre) VALUES (2, 'Espacio colaborativo');
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_tipo_alarma_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_alarma', 'id'), 5, false);
+
+--
+-- Data for Name: admin_tipo_alarma; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_tipo_alarma (id, nombre) VALUES (1, 'Notificación de respuesta a una interacción al comentario en el muro');
+INSERT INTO admin_tipo_alarma (id, nombre) VALUES (2, 'Notificación del espacio colaborativo');
+INSERT INTO admin_tipo_alarma (id, nombre) VALUES (3, 'Notificación de un evento creado');
+INSERT INTO admin_tipo_alarma (id, nombre) VALUES (4, 'Notificación de un aporte al espacio colaborativo');

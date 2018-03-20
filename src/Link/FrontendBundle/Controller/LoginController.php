@@ -332,6 +332,7 @@ class LoginController extends Controller
 				                                                        											'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
 				                                                        											'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
 				                                                        											'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
+				                                                        											'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
 				                                                        											'subpaginas' => $subPaginas);
 											}
 

@@ -2,9 +2,9 @@ _participantesEmpresa:
     path:     /participantesEmpresa/{app_id},{r}
     defaults: { _controller: LinkBackendBundle:Reportes:index, r: 1 }
 
-_ajaxParticipantesE:
-    path:     /ajaxParticipantesE
-    defaults: { _controller: LinkBackendBundle:Reportes:ajaxParticipantesE }
+_ajaxListadoParticipantes:
+    path:     /ajaxListadoParticipantes
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxListadoParticipantes }
     requirements:
         method: GET
 

@@ -72,33 +72,30 @@ class ReportesController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function ajaxParticipantesEAction(Request $request)
+    public function ajaxListadoParticipantesAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $empresa_id = $request->query->get('empresa_id');
-        $nivel_id = $request->query->get('nivel_id');
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        $qb = $em->createQueryBuilder();
-        $qb->select('ru, u')
-           ->from('LinkComunBundle:AdminRolUsuario', 'ru')
-           ->leftJoin('ru.usuario', 'u')
-           ->andWhere('u.empresa = :empresa_id')
-           ->andWhere('ru.rol = :participante');
-        $parametros['empresa_id'] = $empresa_id;
-        $parametros['participante'] = $yml['parameters']['rol']['participante'];
+        $empresa_id = $request->query->get('empresa_id');
+        $nivel_id = $request->query->get('nivel_id');
+        $pagina_id = $request->query->get('pagina_id');
+        $reporte = $request->query->get('reporte');
 
-        if ($nivel_id)
-        {
-            $qb->andWhere('u.nivel = :nivel_id');
-            $parametros['nivel_id'] = $nivel_id;
-        }
-
-        $qb->setParameters($parametros);
-        $query = $qb->getQuery();
-        $rus = $query->getResult();
+        // Llamada a la función de BD que duplica la página
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':preporte', $reporte, \PDO::PARAM_INT);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->execute();
+        $r = $query->fetchAll();
         
         $html = '<table class="table" id="dt">
                     <thead class="sty__title">
@@ -116,19 +113,19 @@ class ReportesController extends Controller
                     </thead>
                     <tbody>';
         
-        foreach ($rus as $ru)
+        foreach ($r as $ru)
         {
-            $activo = $ru->getUsuario()->getActivo() == 'true' ? 'Si' : 'No';
+            $activo = $ru['activo'] ? $this->get('translator')->trans('Sí') : 'No';
             $html .= '<tr>
-                        <td>'.$ru->getUsuario()->getNombre().'</td>
-                        <td>'.$ru->getUsuario()->getApellido().'</td>
-                        <td>'.$ru->getUsuario()->getLogin().'</td>
-                        <td>'.$ru->getUsuario()->getCorreoPersonal().'</td>
+                        <td>'.$ru['nombre'].'</td>
+                        <td>'.$ru['apellido'].'</td>
+                        <td>'.$ru['login'].'</td>
+                        <td>'.$ru['correo'].'</td>
                         <td>'.$activo.'</td>
-                        <td></td>
-                        <td></td>
-                        <td>'.$ru->getUsuario()->getPais()->getId().'</td>
-                        <td>'.$ru->getUsuario()->getNivel()->getNombre().'</td>
+                        <td>'.$ru['fecha_registro'].'</td>
+                        <td>'.$ru['fecha_nacimiento'].'</td>
+                        <td>'.$ru['pais'].'</td>
+                        <td>'.$ru['nivel'].'</td>
                     </tr>';
         }
 

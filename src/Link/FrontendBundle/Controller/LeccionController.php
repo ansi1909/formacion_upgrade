@@ -54,7 +54,7 @@ class LeccionController extends Controller
         $pagina['next_subpage'] = 0;
         $indexedPages[$pagina['id']] = $pagina;
 
-        return new Response(var_dump($indexedPages));
+        //return new Response(var_dump($indexedPages));
         
         $wizard = 0; // 1 Indica que llevan los círculos de navegación
         $titulo = '';
