@@ -9,6 +9,11 @@
     padding: 64px 24px 128px 24px;
     transition: .8s ease;
     overflow-y: scroll;
+    z-index: 6;
+
+    @include media-breakpoint-down(md) {
+        top: 70px;
+    }
 
     // box-shadow: -4px 2px 28px -9px rgba(38,38,38,1);
 
