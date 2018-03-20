@@ -9,3 +9,9 @@
 
 
 }
+
+a.links{
+    &:focus{
+        outline: none !important;
+    }
+}

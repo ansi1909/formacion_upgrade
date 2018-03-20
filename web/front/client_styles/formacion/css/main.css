@@ -279,6 +279,16 @@ a:hover {
   width: 100%;
   min-height: 100vh; }
 
+a.links:focus {
+  outline: none !important; }
+
+.modal-recuperacion .titulo {
+  margin-top: calc(-1*calc(2rem - 7px)); }
+.modal-recuperacion .btn_rc {
+  margin: 1rem 0;
+  padding: auto 0; }
+.modal-recuperacion .txt-modal-footer {
+  margin-top: 2rem; }
 .modal-recuperacion .txt-modal {
   color: #797D80;
   font-family: "Roboto";
@@ -302,6 +312,10 @@ a:hover {
   text-align: center !important;
   float: none !important; }
 
+.modal-calendario .titulo {
+  margin-top: calc(-1*calc(2rem - 7px)); }
+.modal-calendario .btn_rc {
+  margin-top: -2rem; }
 .modal-calendario .text-calendar {
   color: #797D80;
   font-family: "Roboto";
@@ -315,7 +329,10 @@ a:hover {
   height: 40rem;
   width: 33.5rem;
   border-radius: 1rem;
-  background: #FAFAFA; }
+  background: #FAFAFA;
+  margin: 2rem auto;
+  height: 36rem;
+  width: 30.5rem; }
   .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal {
     position: relative;
     top: 1.3125rem;
