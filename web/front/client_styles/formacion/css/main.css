@@ -1167,6 +1167,61 @@ p.up {
     color: #5CAEE6;
     font-weight: 700; }
 
+.table-card {
+  list-style-type: none;
+  margin: 2rem auto 1rem auto;
+  padding: calc(1rem - 4px) 2rem calc(1rem - 8px) 2rem;
+  background: #fff !important;
+  border: 1px solid #F0F4F7;
+  border-radius: 1rem;
+  box-shadow: 0 0 1px 0 rgba(170, 175, 179, 0.72);
+  width: 62.25rem; }
+  .table-card .f-table {
+    padding: calc(1rem - 4px) 0 calc(1rem - 8px) 0;
+    border-bottom: 1px solid #F0F4F7; }
+    .table-card .f-table:last-child {
+      border-bottom: 0px; }
+    .table-card .f-table .titulo_f-table {
+      color: #5CAEE6;
+      font-family: "Roboto";
+      font-size: calc($h5-font-size + 2px);
+      line-height: calc(1rem + 8px); }
+    .table-card .f-table .status_f-table {
+      border-radius: 1rem;
+      background-color: #DAE1E6;
+      float: right;
+      width: 4.5rem;
+      height: 1.125rem; }
+      .table-card .f-table .status_f-table .status_ft {
+        color: #797D80;
+        font-family: "Roboto";
+        font-size: 0.75rem;
+        line-height: calc(1rem - 5px);
+        font-weight: 400;
+        text-align: center;
+        margin: auto calc(1rem - 8px);
+        position: relative;
+        top: calc(-1*calc(1rem - 11px)); }
+    .table-card .f-table .txt-description {
+      color: #AAAFB3;
+      font-family: "Roboto";
+      font-size: 0.87rem;
+      line-height: 1rem; }
+    .table-card .f-table .name_ft {
+      color: #5C6266;
+      font-family: "Roboto";
+      font-size: 0.75rem;
+      line-height: calc(1rem - 2px);
+      font-weight: bold; }
+    .table-card .f-table .coment_f-table {
+      line-height: calc(1rem - 5px); }
+    .table-card .f-table .resp_ft {
+      line-height: 1rem; }
+      .table-card .f-table .resp_ft .ic-msg {
+        font-size: 1rem;
+        position: relative;
+        top: calc(1rem - 11px); }
+
 .card-datos .info_datos, .card-datos .datos_user {
   color: #AAAFB3;
   font-family: "Roboto";
@@ -1185,6 +1240,11 @@ p.up {
   top: 0;
   width: 34rem;
   height: 31.85rem; }
+
+.table-card .f-table .coment_f-table, .table-card .f-table .resp_ft {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 0.75rem; }
 
 .rank-table {
   display: block;
@@ -1682,5 +1742,24 @@ p.up {
 @keyframes ani-progress {
   0% {
     stroke-dashoffset: 1017; } }
+.titulo-ec {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 2.25rem;
+  line-height: calc(3rem - 6px);
+  font-weight: 500; }
+
+.esp_col {
+  margin: 1rem calc(5rem - 6px);
+  width: 62.25rem; }
+  .esp_col .btn-nw-tema {
+    width: 10rem;
+    padding: calc(1rem - 8px) 0;
+    color: #F0F4F7;
+    font-family: "Roboto";
+    font-size: calc($p-font-size - 2px);
+    font-weight: 600;
+    line-height: calc(1rem + 3px);
+    text-align: center; }
 
 /*# sourceMappingURL=main.css.map */
