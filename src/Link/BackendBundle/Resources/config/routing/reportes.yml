@@ -12,12 +12,6 @@ _participantesRegistrados:
     path:     /participantesRegistrados/{app_id},{r}
     defaults: { _controller: LinkBackendBundle:Reportes:index, r: 2 }
 
-_ajaxParticipantesR:
-    path:     /ajaxParticipantesR
-    defaults: { _controller: LinkBackendBundle:Reportes:ajaxParticipantesR }
-    requirements:
-        method: GET
-
 _participantesCursando:
     path:     /participantesCursando/{app_id},{r}
     defaults: { _controller: LinkBackendBundle:Reportes:index, r: 3 }
@@ -35,3 +29,9 @@ _participantesAprobados:
 _participantesNoIniciados:
     path:     /participantesNoIniciados/{app_id},{r}
     defaults: { _controller: LinkBackendBundle:Reportes:index, r: 5 }
+
+_excelReporte:
+    path:     /excelReporte/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r:0 }
+    requirements:
+        method: POST

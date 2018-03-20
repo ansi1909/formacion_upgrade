@@ -181,11 +181,9 @@ class DefaultController extends Controller
                                                    WHERE u.nivel = :nivel_id')
                                     ->setParameter('nivel_id', $nivel_id);
                         $usuarios = $query->getSingleScalarResult();
-
-                        if ($usuarios) 
-                        {
-                            $usuariosT++;
-                        }
+                      
+                        $usuariosT = $usuariosT + $usuarios;
+                      
 
                         $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
                                                    JOIN pl.usuario u
@@ -197,14 +195,8 @@ class DefaultController extends Controller
 
                         $cursando = $query->getSingleScalarResult();
 
-                        if (!$cursando) 
-                        {
-                            $usuariosN++;
-                        }
-                        else
-                        {
-                            $usuariosCur=$usuariosCur+$cursando;
-                        }
+                        $usuariosCur=$usuariosCur+$cursando;
+                       
 
                         $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
                                                    JOIN pl.usuario u
@@ -217,12 +209,8 @@ class DefaultController extends Controller
 
                         $culminado = $query->getSingleScalarResult();
 
-                        if ($culminado) 
-                        {
-                            $usuariosF++;
-                        }
-
-
+                        $usuariosF = $usuariosF + $culminado;
+                       
                     }
 
                     //return new Response (var_dump($usuariosCur));
