@@ -74,7 +74,7 @@
                         <div id="usuarios">
                             
                         </div>
-                        <div class="card-footer" id="excel" ">
+                        <div class="card-footer" id="excel" style="display: none;">
                             <div class="col-sm-16 col-md-16 text-right">
                                 <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
                             </div>
@@ -163,7 +163,7 @@
     </form>           
 {% elseif reporte == '3' %}
 
-    <form>
+    <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
         {% set encabezado =  'Reporte de participantes cursando por programas'|trans %}
         {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
@@ -235,7 +235,7 @@
                         <div id="usuarios">
                             
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer" id="excel" style="display: none;">
                             <div class="col-sm-16 col-md-16 text-right">
                                 <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
                             </div>
@@ -244,7 +244,7 @@
     </form>
 {% elseif reporte == '4' %}
 
-    <form>
+    <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
         {% set encabezado =  'Reporte de participantes aprobados por programas'|trans %}
         {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
@@ -316,7 +316,7 @@
                         <div id="usuarios">
                             
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer" id="excel" style="display: none;">
                             <div class="col-sm-16 col-md-16 text-right">
                                 <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
                             </div>
@@ -325,7 +325,7 @@
     </form>
 {% elseif reporte == '5' %}
 
-    <form>
+    <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
     {% set encabezado =  'Reporte de participantes no iniciados en programas'|trans %}
     {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
@@ -397,7 +397,7 @@
                     <div id="usuarios">
                         
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer" id="excel" style="display: none;">
                         <div class="col-sm-16 col-md-16 text-right">
                             <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
                         </div>

@@ -41,7 +41,7 @@ class ReportesController extends Controller
             $nivel_id = $request->request->get('nivel_id');
         	$nivel_id = $nivel_id ? $nivel_id : 0;
         	$pagina_id = $pagina_id ? $pagina_id : 0;
-        	$i = 0;
+        	$i = 1;
         	$query = $em->getConnection()->prepare('SELECT
 	                                                fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
 	                                                resultado; fetch all from re;');
@@ -66,10 +66,26 @@ class ReportesController extends Controller
                ->setCategory("Reportes");
             foreach ($r as $re) {
       		    $i++;
+      		    $activo = $re['activo'] ? 'Sí' : 'No';
        		    $phpExcelObject->setActiveSheetIndex(0)
+       		   				   ->setCellValue('A1', 'Nombre')
+                               ->setCellValue('B1', 'Apellido')
+                               ->setCellValue('C1', 'Login')
+                               ->setCellValue('D1', 'Correo')
+                               ->setCellValue('E1', 'Activo')
+                               ->setCellValue('F1', 'Fecha de registro')
+                               ->setCellValue('G1', 'Fecha de nacimiento')
+                               ->setCellValue('H1', 'País')
+                               ->setCellValue('I1', 'Nivel')
                                ->setCellValue('A'.$i, $re['nombre'])
                                ->setCellValue('B'.$i, $re['apellido'])
-                               ->setCellValue('C'.$i, $re['login']);
+                               ->setCellValue('C'.$i, $re['login'])
+                               ->setCellValue('D'.$i, $re['correo'])
+                               ->setCellValue('E'.$i, $activo)
+                               ->setCellValue('F'.$i, $re['fecha_registro'])
+                               ->setCellValue('G'.$i, $re['fecha_nacimiento'])
+                               ->setCellValue('H'.$i, $re['pais'])
+                               ->setCellValue('I'.$i, $re['nivel']);
         	}
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
@@ -84,7 +100,7 @@ class ReportesController extends Controller
             // Agrega los headers requeridos
             $dispositionHeader = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                'Pholae.xlsx'
+                'ListadoDeParticipantes.xlsx'
             );
 
             $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');

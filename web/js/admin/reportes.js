@@ -137,7 +137,6 @@ function getProgramas(empresa_id){
 		dataType: "json",
 		success: function(data) {
 			$('#programa_id').html(data.options);
-			$('#excel').show();
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
@@ -155,6 +154,7 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 		dataType: "json",
 		success: function(data) {
 			$('#usuarios').html(data.html);
+			$('#excel').show();
 			applyDataTable();
 			clearTimeout( timerId );
 		},
