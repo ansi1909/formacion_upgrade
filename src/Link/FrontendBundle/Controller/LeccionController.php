@@ -63,18 +63,24 @@ class LeccionController extends Controller
 
         if ($subpagina_id == 0 || $subpagina_id == $programa_id)
         {
-            foreach ($indexedPages[$programa_id]['subpaginas'] as $subpagina_arr)
+            if (count($indexedPages[$programa_id]['subpaginas']))
             {
-                $subpagina = $indexedPages[$subpagina_arr['id']];
-                if ($subpagina['sobrinos'] > 0)
+                foreach ($indexedPages[$programa_id]['subpaginas'] as $subpagina_arr)
                 {
-                    $pagina_id = $subpagina['id'];
+                    $subpagina = $indexedPages[$subpagina_arr['id']];
+                    if ($subpagina['sobrinos'] > 0)
+                    {
+                        $pagina_id = $subpagina['id'];
+                    }
+                    else {
+                        $pagina_id = $programa_id;
+                        $wizard = 1;
+                    }
+                    break;  // Solo la primera iteración. Se mostrará el primer módulo por defecto.
                 }
-                else {
-                    $pagina_id = $programa_id;
-                    $wizard = 1;
-                }
-                break;  // Solo la primera iteración. Se mostrará el primer módulo por defecto.
+            }
+            else {
+                $pagina_id = $programa_id;
             }
             $titulo = $indexedPages[$programa_id]['nombre'];
         }

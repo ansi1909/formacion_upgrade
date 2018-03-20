@@ -32,7 +32,7 @@
                 <div class="dropdown show">
                     <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
-                        <img class="img-fluid mx-auto" src="{{ img }}"  width="80%" alt="usuario">
+                        <img class="img-fluid mx-auto" src="{{ img }}" width="80%" alt="usuario">
                     </a>
                     <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
@@ -70,16 +70,11 @@
                 <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Indice'|trans }}</h5>
                 <ol id="menu_indice">
                     {{ menu_str|raw }}
-                    {% if prueba_activa %}
-                        <li><a href="">{{ 'Evaluación'|trans }}</a></li>
-                    {% endif %}
                 </ol>
             </div>
             <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <h5 class="text-center my-3 color-light-grey font-normal "> Recursos </h5>
                 <a href="">Espacio colaborativo</a>
-                <a href="">Tutor</a>
-                <a href="">Recursos</a>
                 <a href="">Reportar problema</a>
             </div>
         </div>
@@ -104,15 +99,16 @@
         {# NAVEGACION LECCION #}
         {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
         <div class="wraper-nav-less" id="wraperNavLess">
+            <h5 class="text-center mt-4 mb-0 color-light-grey">{{ 'Lecciones'|trans }}</h5>
             <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
             <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
-            <div class=" nav-less-container text-center lesson-nav py-2 mb-1 mt-3" id="NavLess">
+            <div class=" nav-less-container text-center lesson-nav py-0 mb-1 mt-0" id="NavLess">
                 <ul class="nav nav-tabs" id="navlesson" role="tablist">
                     {% for subpagina in lecciones.subpaginas %}
                         {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
                         {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
                         <li class="nav-item">
-                            <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data="{{ subpagina.id }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
+                            <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data="{{ subpagina.id }}" data-tooltip="{{ subpagina.nombre }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -138,7 +134,7 @@
                         </p>
                     {% endif %}
                 </div>
-                <nav class="container text-right">
+                <nav class="container text-center">
                     <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ 'Continuar'|trans }}</div>
                 </nav>
             </div>
@@ -159,7 +155,7 @@
                             </p>
                         {% endif %}
                     </div>
-                    <nav class="container text-right">
+                    <nav class="container text-center">
                         {% set last = loop.last ? 1 : 0 %}
                         <div class="btn-primary btn next_lesson" data="{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Continuar'|trans }}</div>
                     </nav>
@@ -208,5 +204,6 @@
     {{ parent() }}
     <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('front/js/jquery.scrollTo.min.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('front/js/navlecciones.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/lecciones.js') }}"></script>
 {% endblock %}

@@ -223,6 +223,7 @@ Errores: Errores
 Errores de validación: Errores de validación
 Escoja una plantilla: Escoja una plantilla
 Escriba su comentario: Escriba su comentario
+Escriba su respuesta: Escriba su respuesta
 Espacio colaborativo: Espacio colaborativo
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
@@ -309,6 +310,7 @@ La notificación ha sido programada con éxito: La notificación ha sido program
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 Lado: Lado
+Lecciones: Lecciones
 Línea: Línea
 Listado de: Listado de
 Listado de Aplicaciones: Listado de Aplicaciones
@@ -506,6 +508,8 @@ Valor de la pregunta: Valor de la pregunta
 Variables de colores que se aplican a la plantilla: Variables de colores que se aplican a la plantilla
 Vencimiento: Vencimiento
 Ver historial: Ver historial
+Ver más comentarios: Ver más comentarios
+Ver más repuestas: Ver más repuestas
 Ver páginas asignadas: Ver páginas asignadas
 Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones

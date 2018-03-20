@@ -223,6 +223,7 @@ Errores: Errors
 Errores de validación: Validation errors
 Escoja una plantilla: Choose a template
 Escriba su comentario: Post a comment
+Escriba su respuesta: Response to this comment
 Espacio colaborativo: Collaborative space
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
@@ -309,6 +310,7 @@ La notificación ha sido programada con éxito: Programation has been saved succ
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 Lado: Side
+Lecciones: Lessons
 Línea: Line
 Listado de: List of
 Listado de Aplicaciones: List of Applications
@@ -506,6 +508,8 @@ Valor de la pregunta: Question weighing
 Variables de colores que se aplican a la plantilla: Color variables that are applied to the template
 Vencimiento: Expiration
 Ver historial: See history
+Ver más comentarios: See more comments
+Ver más repuestas: See more resplies
 Ver páginas asignadas: View assigned pages
 Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications

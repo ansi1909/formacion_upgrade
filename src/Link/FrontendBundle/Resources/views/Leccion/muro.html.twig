@@ -16,13 +16,13 @@
         </a>
         <a href="#" class="links text-right text-xs reply_comment" data="{{ muro.id }}">{{ 'Responder'|trans }}</a>
     </div>
-    <div class="response d-flex align-items-center justify-content-between">
+    <div class="response d-flex align-items-center justify-content-between" style="display:none;">
         {% set img_me = app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user-default.png') %}
         <img src="{{ img_me }}" alt="">
         <form class="mt-3" id="form-reply" method="POST">
             <input type="hidden" id="muro_id" name="muro_id" value="{{ muro.id }}">
             <div class="form-group">
-                <textarea class="form-control" id="respuesta" name="respuesta" rows="5" placeholder="Escriba su respuesta"></textarea>
+                <textarea class="form-control" id="respuesta" name="respuesta" rows="5" placeholder="{{ 'Escriba su respuesta'|trans }}"></textarea>
             </div>
             <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-reply">{{ 'Responder'|trans }}</button>
         </form>
@@ -46,7 +46,9 @@
                         <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
                     </a>
                 </div>
+                <a href="#" class="links text-center d-block">{{ 'Ver más repuestas'|trans }}</a>
             </div>
         {% endfor %}
     </div>
 </div>
+<a href="#" class="links text-center d-block">{{ 'Ver más comentarios'|trans }}</a>
