@@ -64,7 +64,7 @@ class DefaultController extends Controller
                         $titulo_hijo = $ar->getPagina()->getNombre();
                         $imagen = $ar->getPagina()->getPagina()->getFoto();
                         $categoria = $ar->getPagina()->getCategoria()->getNombre();
-                        $porcentaje = $datos_log_padre->getPorcentajeAvance();
+                        $porcentaje = round($datos_log_padre->getPorcentajeAvance());
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
 
                     // Si la actividad reciente es con una pagina padre
@@ -80,7 +80,7 @@ class DefaultController extends Controller
                         $titulo_hijo = '';
                         $imagen = $ar->getPagina()->getFoto();
                         $categoria = $ar->getPagina()->getCategoria()->getNombre();
-                        $porcentaje = $ar->getPorcentajeAvance();
+                        $porcentaje = round($ar->getPorcentajeAvance());
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
                     }
 

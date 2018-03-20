@@ -164,89 +164,6 @@ class ProgramaController extends Controller
 
     }
 
-    /*public function listadoModulo($programa, $usuario_id, $estatus_completada, $dimension = 1)
-    {
-
-        $em = $this->em;
-        
-        $lis_mods = '<div class="card-hrz card-mod">';
-        $lis_mods = '<div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">';
-        $lis_mods = '<h1>'.$programa['id'].'</h1>';
-        $lis_mods = '</div>';
-        $lis_mods = '<div class="wraper d-flex flex-wrap flex-row justify-content-center">';
-        $lis_mods = '<div class="card-hrz-body ">';
-
-        if (count($programa['subpaginas']))
-        {
-            foreach ($programa['subpaginas'] as $subpagina)
-            {
-                $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                    'pagina' => $subpagina['id']));
-                if ($subpagina['acceso'])
-                {
-
-                    $lis_mods .= '<h4 class="title-grey my-3 font-weight-normal ">'.$subpagina['nombre'].'</h4>';
-                    if (count($subpagina['subpaginas']) && $dimension == 1)
-                    {
-                        $lis_mods .= '<div class="card-mod-less text-sm color-light-grey">';
-                        $lis_mods .= '<ol>';
-                        // Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
-                        $acceso = 0;
-                        foreach ($subpagina['subpaginas'] as $sub)
-                        {
-                            $visto = '';
-                            $next_pagina_id = 0;
-                            // Se determina si el contenido estará bloqueado
-                            $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                                       WHERE pl.pagina = :pagina_id 
-                                                       AND pl.usuario = :usuario_id 
-                                                       AND pl.estatusPagina = :completada')
-                                        ->setParameters(array('pagina_id' => $sub['id'],
-                                                              'usuario_id' => $usuario_id,
-                                                              'completada' => $estatus_completada));
-                            $leccion_completada = $query->getSingleScalarResult();
-
-                            if(!$leccion_completada){
-                                $visto = 'color-grey';
-                                if($next_pagina == 0){
-                                    $next_pagina == $sub['id'];
-                                }
-                            }
-
-                            if ($sub['acceso'])
-                            {
-                                 $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub['nombre'].'</li>';
-                            }
-                        }
-                        $lis_mods .= '</ol>'
-                        $lis_mods .= '</div>'
-                    }
-                    if($datos_log->getPorcentajeAvance()){
-                        $boton = 'Continuar';
-                    }else{
-                        $boton = 'Iniciar';
-                    }
-                    $lis_mods .= '<div class="progress mt-4 mb-3">';
-                    $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.round($datos_log->getPorcentajeAvance()).'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
-                    $lis_mods .= '</div>';
-                    $lis_mods .= '</div>';
-                    $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">';
-                    $lis_mods .= '<div class="percent text-center mt-3">';
-                    $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.round($datos_log->getPorcentajeAvance()).' </h2>';
-                    $lis_mods .= '</div>';
-                    $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa['id'], 'subpagina_id' => $next_pagina)).'" class="btn btn-sm btn-continuar mt-6 mb-4"> '.$boton.' </a>';
-                    $lis_mods .= '</div>';
-                }
-            }
-        }
-
-        $lis_mods .= '</div>';
-        $lis_mods .= '</div>';
-
-        return $lis_mods;
-
-    }*/
-
     public function misProgramasAction()
     {
 
@@ -298,7 +215,7 @@ class ProgramaController extends Controller
                         $titulo_hijo = $ar->getPagina()->getNombre();
                         $imagen = $ar->getPagina()->getPagina()->getFoto();
                         $categoria = $ar->getPagina()->getCategoria()->getNombre();
-                        $porcentaje = $datos_log_padre->getPorcentajeAvance();
+                        $porcentaje = round($datos_log_padre->getPorcentajeAvance());
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
 
                     // Si la actividad reciente es con una pagina padre
@@ -314,7 +231,7 @@ class ProgramaController extends Controller
                         $titulo_hijo = '';
                         $imagen = $ar->getPagina()->getFoto();
                         $categoria = $ar->getPagina()->getNombre();
-                        $porcentaje = $ar->getPorcentajeAvance();
+                        $porcentaje = round($ar->getPorcentajeAvance());
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
                     }
 
