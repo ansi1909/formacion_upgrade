@@ -61,4 +61,12 @@ parameters:
         #sass: '/usr/bin/sass'
     ponderacion:
         evaluacion: 0.5
+    puntos:
+        mitad_periodo: 100
+        aprobar_primer_intento: 500
+        aprobar_perfecto: 1000
+        escribir_muro: 50
+        like_recibido: 100
+        respuesta_muro: 50
+        espacio_colaborativo: 100
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b

@@ -111,8 +111,10 @@ function nextPage(pagina_id)
 	var nav_item = $( "#tab-"+pagina_id );
 	if (nav_item.length)
 	{
-		nav_item.trigger( "click" );
+		$('#tab_activo').val('tab-'+pagina_id);
+		$('#pagina_id_viendo').val(pagina_id);
 		nav_item.removeClass('less-disabled');
+		nav_item.trigger( "click" );
 	}
 	else {
 		$('#one-tab').trigger( "click" );

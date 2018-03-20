@@ -402,6 +402,29 @@ class Functions
 
 	}
 
+	// Retorna la fecha intermedia entre inicio y final en formato AAAA-MM-DD
+	// Formato de inicio y final: DD/MM/AAAA
+	public function mitadPeriodo($inicio, $final)
+	{
+
+		$inicio_arr = explode("/", $inicio);
+		$inicio = $inicio_arr[2].'-'.$inicio_arr[1].'-'.$inicio_arr[0];
+		$final_arr = explode("/", $final);
+		$final = $final_arr[2].'-'.$final_arr[1].'-'.$final_arr[0];
+		
+		$datetime1 = new \DateTime($inicio);
+		$datetime2 = new \DateTime($final);
+		$interval = $datetime1->diff($datetime2);
+		$dias_mitad = $interval->format('%a')/2;
+
+		// Fecha intermedia
+		$datetime1->modify('+'.$dias_mitad.' days');
+		$fecha_intermedia = $datetime1->format('Y-m-d');
+
+		return $fecha_intermedia;
+
+	}
+
 	// Verifica si los roles tienen acceso a una aplicacion
 	public function accesoRoles($roles, $app_id)
 	{
@@ -890,6 +913,7 @@ class Functions
                                     							'acceso' => $subpage->getAcceso(),
                                     							'muro_activo' => $subpage->getMuroActivo(),
                                     							'prelacion' => $subpage->getPrelacion() ? $subpage->getPrelacion()->getId() : 0,
+                                    							'inicio' => $subpage->getFechaInicio()->format('d/m/Y'),
                                     							'vencimiento' => $subpage->getFechaVencimiento()->format('d/m/Y'),
                                     							'subpaginas' => $this->subPaginasNivel($subpage->getPagina()->getId(), $estatus_contenido, $empresa_id));
 		
@@ -1276,6 +1300,15 @@ class Functions
         		else {
         			$estatus = $yml['parameters']['estatus_pagina']['completada'];
         			$avance = 100;
+        			// Si la completó en menos de la mitad del período se gana unos puntos
+        			$mitad_periodo = $this->mitadPeriodo($indexedPages[$pagina_id]['inicio'], $indexedPages[$pagina_id]['vencimiento']);
+        			$inicio_arr = explode("/", $indexedPages[$pagina_id]['inicio']);
+					$inicio = $inicio_arr[2].'-'.$inicio_arr[1].'-'.$inicio_arr[0];
+					if ($inicio <= $mitad_periodo)
+					{
+						$puntos = $pagina_log->getPuntos() + $yml['parameters']['puntos']['mitad_periodo'];
+						$pagina_log->setPuntos($puntos);
+					}
         		}
         		$status_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($estatus);
         		$pagina_log->setFechaFin(new \DateTime('now'));
