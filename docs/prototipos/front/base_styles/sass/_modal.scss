@@ -2,6 +2,19 @@
 
 .modal-recuperacion{
     @extend %modal;
+    @include media-breakpoint-down(xl){
+        .titulo{
+            margin-top: calc(-1*calc(2rem - 7px));
+        }
+        .btn_rc{
+            margin: 1rem 0;
+            padding: auto 0;
+            
+        }
+        .txt-modal-footer{
+            margin-top: 2rem;
+        }
+    }
     .txt-modal{
         color: $gray-700;
         font-family: $primary-font;
@@ -34,6 +47,14 @@
 //Modal calendario
 .modal-calendario{
     @extend %modal;
+    @include media-breakpoint-down(xl){
+        .titulo{
+            margin-top: calc(-1*calc(2rem - 7px));
+        }
+        .btn_rc{
+            margin-top: -2rem; 
+        }
+    }
     .text-calendar{
         color: $gray-700;
         font-family: $primary-font;
@@ -50,6 +71,11 @@
     width: 33.5rem;
     border-radius: 1rem;
     background: $gray-100;
+    @include media-breakpoint-down(xl){
+        margin: 2rem auto;
+        height: 36rem;
+        width: 30.5rem;
+    }
     .btn_close_modal{
         position: relative;
         top: 1.3125rem;
