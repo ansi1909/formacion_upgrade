@@ -33,16 +33,15 @@ class ReportesController extends Controller
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
 
-        $empresa_id = $request->request->get('empresa_id');
-        $reporte = $request->request->get('reporte');
-        $pagina_id = $request->request->get('programa_id');
-        $nivel_id = $request->request->get('nivel_id');
-
-        if ($nivel_id || $pagina_id) 
+        if ($request->getMethod() == 'POST')
         {
+            $empresa_id = $request->request->get('empresa_id');
+            $reporte = $request->request->get('reporte');
+            $pagina_id = $request->request->get('programa_id');
+            $nivel_id = $request->request->get('nivel_id');
         	$nivel_id = $nivel_id ? $nivel_id : 0;
         	$pagina_id = $pagina_id ? $pagina_id : 0;
-        	$i = 1;
+        	$i = 0;
         	$query = $em->getConnection()->prepare('SELECT
 	                                                fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
 	                                                resultado; fetch all from re;');
@@ -56,51 +55,44 @@ class ReportesController extends Controller
 	        $r = $query->fetchAll();
 
 	        // Solicita el servicio de excel
-	           $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+            $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
-	           $phpExcelObject->getProperties()->setCreator("liuggio")
-	               ->setLastModifiedBy("Giulio De Donato")
-	               ->setTitle("Office 2005 XLSX Test Document")
-	               ->setSubject("Office 2005 XLSX Test Document")
-	               ->setDescription("Test document for Office 2005 XLSX, generado usando clases de PHP")
-	               ->setKeywords("office 2005 openxml php")
-	               ->setCategory("Archivo de ejemplo");
-	                foreach ( $r as $re)
-	          		{
-	          		$i++;
-	           		$phpExcelObject->setActiveSheetIndex(0)
-	          	
-		               ->setCellValue('A'.$i, $re['nombre'])
-		               ->setCellValue('B'.$i, $re['apellido'])
-		               ->setCellValue('C'.$i, $re['login']);
-	            	}
-	           $phpExcelObject->getActiveSheet()->setTitle('Simple');
-	           // Define el indice de página al número 1, para abrir esa página al abrir el archivo
-	           $phpExcelObject->setActiveSheetIndex(0);
+            $phpExcelObject->getProperties()->setCreator("formacion")
+               ->setLastModifiedBy($session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'])
+               ->setTitle("Listado de participantes")
+               ->setSubject("Listado de participantes")
+               ->setDescription("Listado de participantes")
+               ->setKeywords("office 2005 openxml php")
+               ->setCategory("Reportes");
+            foreach ($r as $re) {
+      		    $i++;
+       		    $phpExcelObject->setActiveSheetIndex(0)
+                               ->setCellValue('A'.$i, $re['nombre'])
+                               ->setCellValue('B'.$i, $re['apellido'])
+                               ->setCellValue('C'.$i, $re['login']);
+        	}
+            $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
-	            // Crea el writer
-	            //$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
-	            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'CSV')
-	                                            ->setDelimiter(',')
-	                                            ->setEnclosure('');
-	            $writer->setUseBOM(true);
-	            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-	            $writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/data.csv');
-	            
-	            // Envia la respuesta del controlador
-	            $response = $this->get('phpexcel')->createStreamedResponse($writer);
-	            // Agrega los headers requeridos
-	            $dispositionHeader = $response->headers->makeDisposition(
-	                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-	                'Pholae.xlsx'
-	            );
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
+            //$writer->setUseBOM(true);
+            //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            //$writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/data.csv');
+            
+            // Envia la respuesta del controlador
+            $response = $this->get('phpexcel')->createStreamedResponse($writer);
+            // Agrega los headers requeridos
+            $dispositionHeader = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                'Pholae.xlsx'
+            );
 
-	            $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-	            $response->headers->set('Pragma', 'public');
-	            $response->headers->set('Cache-Control', 'maxage=1');
-	            $response->headers->set('Content-Disposition', $dispositionHeader);
+            $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+            $response->headers->set('Pragma', 'public');
+            $response->headers->set('Cache-Control', 'maxage=1');
+            $response->headers->set('Content-Disposition', $dispositionHeader);
 
-	            return $response;
+            return $response;
 
 
 	            //return new Response('Archivo creado...');
