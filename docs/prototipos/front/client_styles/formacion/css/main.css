@@ -279,51 +279,61 @@ a:hover {
   width: 100%;
   min-height: 100vh; }
 
-.modal-recuperacion {
-  margin: 7.5vh 32.5vw;
-  height: 85vh;
-  width: 35vw;
+.modal-recuperacion .txt-modal {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 1rem;
+  line-height: 1.1875rem;
+  text-align: center; }
+.modal-recuperacion .txt-modal-footer {
+  position: relative;
+  bottom: calc(-1 * calc(2rem + 3px)); }
+.modal-recuperacion input {
+  align-items: center; }
+.modal-recuperacion .btn_rc {
+  text-align: center;
+  margin: 1rem 0 calc(1rem - 8px) 0; }
+.modal-recuperacion .link_ri {
+  font-size: 0.87rem;
+  color: #5CAEE6;
+  font-family: "Open Sans";
+  font-weight: 400;
+  position: relative;
+  text-align: center !important;
+  float: none !important; }
+
+.modal-calendario .text-calendar {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: calc($p-font-size - 2px);
+  line-height: 1.1875rem;
+  text-align: center;
+  font-weight: 300; }
+
+.modal-recuperacion, .modal-calendario {
+  margin: 10rem auto;
+  height: 40rem;
+  width: 33.5rem;
   border-radius: 1rem;
   background: #FAFAFA; }
-  .modal-recuperacion .btn_close_modal {
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
     font-size: 1.5rem;
     text-align: center;
     line-height: 2.375rem; }
-  .modal-recuperacion .txt-modal {
-    color: #797D80;
-    font-family: "Roboto";
-    font-size: 1rem;
-    line-height: 1.1875rem;
-    text-align: center; }
-  .modal-recuperacion input {
-    width: 22rem;
-    margin-left: 1.3rem; }
-  .modal-recuperacion .btn_rc {
-    margin: 0 6rem;
-    text-align: center;
-    width: 15vw;
-    padding: .5rem 1rem; }
-  .modal-recuperacion .link_ri {
-    font-size: .8rem;
-    color: #5CAEE6;
-    font-family: "Open Sans";
-    font-weight: 400;
-    position: relative;
-    left: -.5rem; }
 
 .avatar-img {
   width: 2.5vw;

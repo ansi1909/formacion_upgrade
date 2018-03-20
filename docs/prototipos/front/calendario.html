@@ -87,7 +87,7 @@
                 </div>
             </section>
             <section>
-                <div class="modal modal-recuperacion" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal modal-calendario" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-3 text-right offset-9">
@@ -96,41 +96,52 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-10 text-center offset-1 mt-4">
+                        <div class="row mt-5 mb-2 justify-content-center align-items-center">
+                            <div class="col-10 text-center">
                                 <h4 class="titulo">Datos Evento</h4>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 mt-4">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td class="col-6 text-right"><h5>Título:</h5></td>
-                                            <td class="col-6"><p id="p-titulo"></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-6 text-right"><h5>Fecha inicio</h5></td>
-                                            <td class="col-6"><p id="p-fechainicio"></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-6 text-right"><h5>Fecha fin</h5></td>
-                                            <td class="col-6"><p id="p-fechafin"></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-6 text-right"><h5>Descripción</h5></td>
-                                            <td class="col-6"><p id="p-descripcion"></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-6 text-right"><h5>Lugar</h5></td>
-                                            <td class="col-6"><p id="p-lugar"></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-6 text-right"><h5>Nivel</h5></td>
-                                            <td class="col-6"><p id="p-nivel"></p></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="col-10 offset-1">
+                                <h5 class="sub-line">Título:</h5>
+                            </div>
+                            <div class="col-auto offset-1">
+                                <p class="pl-4" id="p-titulo"></p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-10 offset-1">
+                                <h5 class="sub-line">Fecha</h5>
+                            </div>
+                            <div class="col-auto offset-1">
+                                <span class="pl-4 text-calendar px-0 mx-0">Desde: <span id="p-fechainicio"></span></span>
+                            </div>
+                            <div class="col-auto offset-1">
+                                <span class="pl-4 text-calendar px-0">Hasta: <span id="p-fechafin"></span></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10 offset-1">
+                                <h5 class="sub-line">Descripción:</h5>
+                            </div>
+                            <div class="col-auto offset-1">
+                                <p class="pl-4" id="p-descripcion"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10 offset-1">
+                                <h5 class="sub-line">Lugar:</h5>
+                            </div>
+                            <div class="col-auto offset-1">
+                                <p class="pl-4" id="p-lugar"></p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-10 offset-1">
+                                <h5 class="sub-line">Nivel:</h5>
+                            </div>
+                            <div class="col-auto offset-1">
+                                <p class="pl-4" id="p-nivel"></p>
                             </div>
                         </div>
                         <div class="row">

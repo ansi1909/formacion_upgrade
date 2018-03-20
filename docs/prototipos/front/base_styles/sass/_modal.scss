@@ -1,7 +1,53 @@
+//Modal recuperar contraseña
+
 .modal-recuperacion{
-    margin: 7.5vh 32.5vw;
-    height: 85vh;
-    width: 35vw;
+    @extend %modal;
+    .txt-modal{
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: $font-size-base;
+        line-height: 1.1875rem;
+        text-align: center;
+    }
+    .txt-modal-footer{
+        position: relative;
+        bottom: calc(-1 * calc(2rem + 3px));
+    }
+    input{
+        align-items: center;
+    }
+    .btn_rc{
+        text-align: center;
+        margin: 1rem 0 calc(1rem - 8px) 0; 
+    }
+    .link_ri{
+        font-size: $font-size-sm;
+        color: $primary;
+        font-family: $secondary-font;
+        font-weight: $font-weight-normal;
+        position: relative;
+        text-align: center !important;
+        float: none !important;
+    }
+}
+
+//Modal calendario
+.modal-calendario{
+    @extend %modal;
+    .text-calendar{
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: calc($p-font-size - 2px);
+        line-height: 1.1875rem;
+        text-align: center;
+        font-weight: $font-weight-light;
+    }
+}
+//Extend
+%modal{
+    margin: 10rem auto;
+    height: 40rem;
+    width: 33.5rem;
     border-radius: 1rem;
     background: $gray-100;
     .btn_close_modal{
@@ -24,30 +70,5 @@
         font-size: $h4-font-size;
         text-align: center;
         line-height: 2.375rem;
-    }
-    .txt-modal{
-        color: $gray-700;
-        font-family: $primary-font;
-        font-size: $font-size-base;
-        line-height: 1.1875rem;
-        text-align: center;
-    }
-    input{
-        width: 22rem;
-        margin-left: 1.3rem;
-    }
-    .btn_rc{
-        margin: 0 6rem;
-        text-align: center;
-        width: 15vw;
-        padding: .5rem 1rem;
-    }
-    .link_ri{
-        font-size: .8rem;
-        color: $primary;
-        font-family: $secondary-font;
-        font-weight: $font-weight-normal;
-        position: relative;
-        left: -.5rem;
     }
 }
