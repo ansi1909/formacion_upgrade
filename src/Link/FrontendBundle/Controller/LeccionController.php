@@ -65,18 +65,29 @@ class LeccionController extends Controller
         {
             if (count($indexedPages[$programa_id]['subpaginas']))
             {
+                $i = 0;
                 foreach ($indexedPages[$programa_id]['subpaginas'] as $subpagina_arr)
                 {
+                    $i++;
                     $subpagina = $indexedPages[$subpagina_arr['id']];
-                    if ($subpagina['sobrinos'] > 0)
+                    if ($i == 1)
+                    {
+                        // Solo la primera iteración. Se mostrará el primer módulo por defecto.
+                        if ($subpagina['sobrinos'] > 0)
+                        {
+                            $pagina_id = $subpagina['id'];
+                        }
+                        else {
+                            $pagina_id = $programa_id;
+                            $wizard = 1;
+                        }
+                    }
+                    if ($subpagina['tiene_evaluacion'])
                     {
                         $pagina_id = $subpagina['id'];
+                        $wizard = 0;
+                        break;
                     }
-                    else {
-                        $pagina_id = $programa_id;
-                        $wizard = 1;
-                    }
-                    break;  // Solo la primera iteración. Se mostrará el primer módulo por defecto.
                 }
             }
             else {
@@ -85,7 +96,7 @@ class LeccionController extends Controller
             $titulo = $indexedPages[$programa_id]['nombre'];
         }
         else {
-            if ($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0)
+            if ($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0 || $indexedPages[$subpagina_id]['tiene_evaluacion'])
             {
                 $pagina_id = $indexedPages[$subpagina_id]['id'];
                 if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre'])
