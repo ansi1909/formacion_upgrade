@@ -16,6 +16,10 @@ _ajaxCorreo:
     requirements:
         _method: POST
 
+_generarCertificado:
+    path:     /pdf/{programa_id}
+    defaults: { _controller: LinkFrontendBundle:Login:pdf }
+
 lecciones:
     resource: "@LinkFrontendBundle/Resources/config/routing/lecciones.yml"
     prefix: /lecciones

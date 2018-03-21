@@ -115,11 +115,8 @@ class CertificadoController extends Controller
             $entidad = $request->request->get('entidad');
             $imagen = trim($request->request->get('imagen'));
             $encabezado = trim($request->request->get('encabezado'));
-            $nombre = 'Nombre del Participante';
             $descripcion = trim($request->request->get('descripcion'));
             $titulo = trim($request->request->get('titulo'));
-            $fecha = 'Caracas, 12 de Febero de 2018';
-            $qr = 'código qr';
 
             $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $tipoCertificado = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->find($tipo_certificado_id);
@@ -131,11 +128,9 @@ class CertificadoController extends Controller
             $certificado->setTipoImagenCertificado($tipoImagenCertificado);
             $certificado->setImagen($imagen);
             $certificado->setEncabezado($encabezado);
-            $certificado->setNombre($nombre);
             $certificado->setDescripcion($descripcion);
             $certificado->setTitulo($titulo);
-            $certificado->setFecha($fecha);
-            $certificado->setQr($qr);
+
 
             $em->persist($certificado);
             $em->flush();
@@ -181,6 +176,7 @@ class CertificadoController extends Controller
         }
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
+        $fecha = $f->fechaNatural(date('Y-m-d'));
 
         $entidad='';
         if($certificado->getEntidadId() != 0)
@@ -200,6 +196,7 @@ class CertificadoController extends Controller
 
         return $this->render('LinkBackendBundle:Certificado:mostrar.html.twig', array('certificado' => $certificado,
                                                                                       'entidad' => $entidad,
+                                                                                      'fecha' => $fecha,
                                                                                       'usuario_empresa' => $usuario_empresa ));
 
     }
@@ -312,44 +309,38 @@ class CertificadoController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
+     
+        $fecha = $f->fechaNatural(date('Y-m-d'));
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($id_certificado);
+
+        $ruta ='<img src="'.'http://'.$_SERVER['HTTP_HOST'].'/formacion2.0/web/img/codigo_qr.png">';
 
         $file = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$certificado->getImagen();
         if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
         {
             //fehca del dia de hoy '.date('d/m/Y').' 
-            /*certificado numero 1*/
-            /*$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(45, 50, 0, 0));
-            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
-                                            <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
-                                            <div style="text-align:center; font-size:24px; margin-top:40px;">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; color: #FFFFFF; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
-                                            <div style=" font-size:14px; margin-top:40px;  margin-left:630px;">'.$certificado->getFecha().'</div>
-                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:20px; margin-left:770px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
-                                        </page>');*/
-            /*certificado numero 2*/
-            /*$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
+            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
             $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
                                             <div style="font-size:24px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
                                             <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:50px; margin-top:60px; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
-                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$certificado->getFecha().'</div>
-                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:840px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
-                                        </page>'); */
-
-            /*certificado numero 3*/
-            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(58, 60, 0, 0));
+                                            <div style="text-align:center; font-size:50px; margin-top:60px; text-transform:uppercase;">Formación2.0</div>
+                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
+                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+                                        </page>');
+            /*certificado numero 3
+            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(48, 60, 0, 0));
             $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
                                             <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
                                             <div style="text-align:center; font-size:24px; margin-top:50px; ">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:50px; margin-top:50px; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
-                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$certificado->getFecha().'</div>
-                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
-                                        </page>');
+                                            <div style="text-align:center; font-size:30px; margin-top:50px; text-transform:uppercase;">Formación2.0</div>
+                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$fecha.'</div>
+                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+                                            
+                                        </page>');*/
+//<qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>                                        
             //Generamos el PDF
             $certificado_pdf->output('certificiado.pdf');
         }else
@@ -359,12 +350,12 @@ class CertificadoController extends Controller
                 $certificado_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 60, 15, 5));
                 $certificado_pdf->writeHTML('<page orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
                                                 <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
-                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$certificado->getNombre().'</div>
+                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
                                                 <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
-                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:50px;">'.$certificado->getTitulo().'</div>
-                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. </div>
-                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$certificado->getFecha().'</div>
-                                                <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:50px; margin-left:530px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
+                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">Formación2.0</div>
+                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getTitulo().'</div>
+                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$fecha.'</div>
+                                                <div style="margin-top:50px; margin-left:500px; ">'.$ruta.'</div>
                                             </page>');
                 $certificado_pdf->output('constancia.pdf');
             }

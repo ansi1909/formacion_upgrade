@@ -1438,4 +1438,19 @@ class Functions
 
 	}
 
+    //requiere formato 2001-12-11 hora, retorna 'dia de mes de año'
+    public function fechaNatural($fecha)
+    {
+        if($fecha!="")
+        {
+            $arreglo=explode(" ",$fecha);
+            $arreglo=$arreglo[0];
+            $arreglo=explode("-",$arreglo);
+            return $arreglo[2]." de ".$this->meses[(int)$arreglo[1]]." de ".$arreglo[0];
+        }else
+        {
+            return "";
+        }
+    }
+
 }

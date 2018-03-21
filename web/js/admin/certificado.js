@@ -2,6 +2,11 @@ $(document).ready(function() {
 
     var root_site = $('#root_site').val();
 
+    if($('#certificado_id').val()!='' && $('#tipo_imagen_certificado_id').val()==2)
+        $('.resumen_constancia').show();
+    else
+        $('.resumen_constancia').hide();
+
     $('#empresa_id').change(function()
     {
         $('#tipo_certificado_id').val('');
@@ -14,6 +19,15 @@ $(document).ready(function() {
     {
         var tipo_certificado_id = $(this).val();
         buscarEntidad(tipo_certificado_id);
+    });
+
+    $('#tipo_imagen_certificado_id').change(function()
+    {
+        if($(this).val()==2)
+            $('.resumen_constancia').show();
+        else
+            $('.resumen_constancia').hide();
+
     });
 
     $('.iframe-btn').fancybox({ 

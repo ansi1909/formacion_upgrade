@@ -122,9 +122,9 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Nombre'|trans }}</h5>
+                                    <h5>{{ 'Nombre del Participante'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.nombre }}</p>
+                                        <p> {{ app.session.get('usuario')['apellido'] ~' '~ app.session.get('usuario')['nombre']}} </p>
                                     </div>
                                 </div>
                             </div>
@@ -136,19 +136,21 @@
                                         <p>{{ certificado.descripcion }}</p>
                                     </div>
                                 </div>
-                                <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5>{{ 'Título'|trans }}</h5>
-                                    <div class="col-14">
-                                        <p>{{ certificado.titulo }}</p>
+                                {% if certificado.tipoImagenCertificado.id == 2 %}
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <h5>{{ 'Resumen'|trans }}</h5>
+                                        <div class="col-14">
+                                            <p>{{ certificado.titulo }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                             <br>
                             <div class="row">
                                 <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Fecha'|trans }}</h5>
                                     <div class="col-14">
-                                        <p>{{ certificado.fecha }}</p>
+                                        <p>{{ fecha }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8">
