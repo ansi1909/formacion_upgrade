@@ -1278,7 +1278,7 @@ class Functions
 	{
 
 		$em = $this->em;
-		$log_id = 0;
+		$log_id = '0_0'; // logid_puntos
 
 		$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $pagina_id,
                                                                                             'usuario' => $usuario_id,
@@ -1287,6 +1287,7 @@ class Functions
         if ($pagina_log)
         {
 
+        	$puntos_agregados = 0;
         	// Revisar antes si tiene sub-páginas iniciadas
         	$subpaginas_iniciadas = $this->subpaginasIniciadas($indexedPages, $pagina_id, $usuario_id, $yml['parameters']['estatus_pagina']['completada']);
         	if (!$subpaginas_iniciadas)
@@ -1306,7 +1307,8 @@ class Functions
 					$inicio = $inicio_arr[2].'-'.$inicio_arr[1].'-'.$inicio_arr[0];
 					if ($inicio <= $mitad_periodo)
 					{
-						$puntos = $pagina_log->getPuntos() + $yml['parameters']['puntos']['mitad_periodo'];
+						$puntos_agregados = $yml['parameters']['puntos']['mitad_periodo'];
+						$puntos = $pagina_log->getPuntos() + $puntos_agregados;
 						$pagina_log->setPuntos($puntos);
 					}
         		}
@@ -1316,12 +1318,13 @@ class Functions
 	            $pagina_log->setPorcentajeAvance($avance);
 	            $em->persist($pagina_log);
 	        	$em->flush();
-	        	$log_id = $pagina_log->getId();
 
 	        	// Cálculo del porcentaje de avance de toda la línea de ascendente
 	        	$this->calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml);
 
         	}
+
+        	$log_id = $pagina_log->getId().'_'.$puntos_agregados;
 
         }
 
@@ -1334,33 +1337,37 @@ class Functions
 
 		$em = $this->em;
 		$iniciada = 0;
+		$completadas = 0;
 
-		foreach ($indexedPages[$pagina_id]['subpaginas'] as $subpagina)
+		if (count($indexedPages[$pagina_id]['subpaginas']))
 		{
-			$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-			                            WHERE pl.pagina = :pagina_id 
-			                            AND pl.usuario = :usuario_id 
-			                            AND pl.estatusPagina != :completada')
-			            ->setParameters(array('pagina_id' => $subpagina['id'],
-			            					  'usuario_id' => $usuario_id,
-			                        		  'completada' => $estatus_completada));
-			$subpagina_iniciada = $query->getSingleScalarResult();
-			if ($subpagina_iniciada)
+			foreach ($indexedPages[$pagina_id]['subpaginas'] as $subpagina)
 			{
-				$iniciada = 1;
-				break;
-			}
-			else {
-				// Repetir el ciclo con las subpáginas
-				if (count($subpagina['subpaginas']))
+				$qb = $em->createQueryBuilder();
+		        $qb->select('pl')
+		           ->from('LinkComunBundle:CertiPaginaLog', 'pl')
+		           ->andWhere('pl.pagina = :pagina_id')
+		           ->andWhere('pl.usuario = :usuario_id')
+		           ->orderBy('pl.id', 'DESC')
+		           ->setParameters(array('pagina_id' => $subpagina['id'],
+	            					  	 'usuario_id' => $usuario_id));
+		        $query = $qb->getQuery();
+		        $subpagina_iniciada = $query->getResult();
+				if ($subpagina_iniciada)
 				{
-					$subpagina_iniciada = $this->subpaginasIniciadas($indexedPages, $subpagina['id'], $usuario_id, $estatus_completada);
-					if ($subpagina_iniciada)
+					if ($subpagina_iniciada[0]->getEstatusPagina()->getId() != $estatus_completada)
 					{
 						$iniciada = 1;
 						break;
 					}
+					else {
+						$completadas++;
+					}
 				}
+			}
+			if (!$iniciada && count($indexedPages[$pagina_id]['subpaginas']) != $completadas)
+			{
+				$iniciada = 1;
 			}
 		}
 

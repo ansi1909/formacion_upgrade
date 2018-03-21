@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class LeccionController extends Controller
 {
-    public function indexAction($programa_id, $subpagina_id, Request $request)
+    public function indexAction($programa_id, $subpagina_id, $puntos, Request $request)
     {
 
     	$session = new Session();
@@ -130,6 +130,7 @@ class LeccionController extends Controller
         }
 
         $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación']);
+        $lecciones['wizard'] = $wizard;
 
         // Se reinicia el reinicia el reloj de pagina_log
         $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
@@ -145,7 +146,8 @@ class LeccionController extends Controller
                                                                                  'titulo' => $titulo,
                                                                                  'subtitulo' => $subtitulo,
                                                                                  'wizard' => $wizard,
-                                                                                 'prueba_activa' => $prueba_activa));
+                                                                                 'prueba_activa' => $prueba_activa,
+                                                                                 'puntos' => $puntos));
 
     }
 
