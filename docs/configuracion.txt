@@ -54,6 +54,7 @@
 	- funciones/fnplataforma_usuarios.sql
 	- funciones/fnprograma_usuarios.sql
 	- funciones/fnrecordatorios_usuarios.sql
+	- funciones/fnlistado_participantes.sql
 	OJO: El archivo reserialize_tables.sql se importará solo cuando se haya corrido el comando de symfony:
 		 php bin/console doctrine:schema:update --force
 		 Lo cual permite cambiar los id de las tablas al tipo serial.
