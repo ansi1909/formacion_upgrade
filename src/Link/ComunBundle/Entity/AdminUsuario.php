@@ -88,13 +88,6 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="foto", type="string", length=250, nullable=true)
-     */
-    private $foto;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="campo1", type="string", length=50, nullable=true)
      */
     private $campo1;
@@ -105,6 +98,13 @@ class AdminUsuario
      * @ORM\Column(name="campo2", type="string", length=50, nullable=true)
      */
     private $campo2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="foto", type="string", length=250, nullable=true)
+     */
+    private $foto;
 
     /**
      * @var string
@@ -140,6 +140,13 @@ class AdminUsuario
      * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
      */
     private $fechaModificacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cookies", type="string", length=100, nullable=true)
+     */
+    private $cookies;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -400,30 +407,6 @@ class AdminUsuario
     }
 
     /**
-     * Set foto
-     *
-     * @param string $foto
-     *
-     * @return AdminUsuario
-     */
-    public function setFoto($foto)
-    {
-        $this->foto = $foto;
-    
-        return $this;
-    }
-
-    /**
-     * Get foto
-     *
-     * @return string
-     */
-    public function getFoto()
-    {
-        return $this->foto;
-    }
-
-    /**
      * Set campo1
      *
      * @param string $campo1
@@ -469,6 +452,30 @@ class AdminUsuario
     public function getCampo2()
     {
         return $this->campo2;
+    }
+
+    /**
+     * Set foto
+     *
+     * @param string $foto
+     *
+     * @return AdminUsuario
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+    
+        return $this;
+    }
+
+    /**
+     * Get foto
+     *
+     * @return string
+     */
+    public function getFoto()
+    {
+        return $this->foto;
     }
 
     /**
@@ -589,6 +596,30 @@ class AdminUsuario
     public function getFechaModificacion()
     {
         return $this->fechaModificacion;
+    }
+
+    /**
+     * Set cookies
+     *
+     * @param string $cookies
+     *
+     * @return AdminUsuario
+     */
+    public function setCookies($cookies)
+    {
+        $this->cookies = $cookies;
+    
+        return $this;
+    }
+
+    /**
+     * Get cookies
+     *
+     * @return string
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
     }
 
     /**
