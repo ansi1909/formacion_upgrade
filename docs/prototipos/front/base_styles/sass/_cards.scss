@@ -539,21 +539,11 @@
 
 // Espacio colaborativo
 .table-card{
-    list-style-type: none;
-    margin: 2rem auto 1rem auto;
-    padding: calc(1rem - 4px) 2rem calc(1rem - 8px) 2rem;
-    background: $white !important;
-    border: 1px solid $gray-300;
-    border-radius: 1rem;
-    box-shadow: 0 0 1px 0 rgba(170,175,179,0.72);
-    width: 62.25rem;
-    .f-table{
-        padding: calc(1rem - 4px) 0 calc(1rem - 8px) 0;
-        border-bottom: 1px solid $gray-300;
-        &:last-child{
-            border-bottom: 0px;
-        }
-        
+    @extend %table-card;
+    .f-table, .f-table-last{
+        padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
+        height: 8rem;
+        width: 62.25rem;
         .titulo_f-table{
             color: $blue;	
             font-family: $primary-font;	
@@ -561,21 +551,14 @@
             line-height: calc(1rem + 8px);
         }
         .status_f-table{
-            border-radius: 1rem;	
-            background-color: $gray-400;
-            float: right;
-            width: 4.5rem;
-            height: 1.125rem;
-            .status_ft{
-                color: $gray-700;	
-                font-family: $primary-font;	
-                font-size: $font-size-xs;	
-                line-height: calc(1rem - 5px);
-                font-weight: $font-weight-normal;
-                text-align: center;
-                margin: auto calc(1rem - 8px);
-                position: relative;
-                top: calc(-1*calc(1rem - 11px));
+            display: none;
+            @extend %status-ft;
+            &:hover{
+                .status_ft{
+                    font-weight: 600 !important;
+                }
+                cursor: pointer;
+                background: $bluedark;
             }
         }
         .txt-description{
@@ -584,28 +567,113 @@
             font-size: $font-size-sm;	
             line-height: 1rem;
         }
-        .name_ft{
-            color: $gray-800;	
-            font-family: $primary-font;	
-            font-size: $font-size-xs;	
-            line-height: calc(1rem - 2px);
-            font-weight: bold;
+        .foo-esp_col{
+            position: relative;
+            top: .3rem;
+            .name_ft{
+                @extend %name_table-card
+            }
+            .coment_f-table{
+                @extend %texto-ct;		
+                line-height: calc(1rem - 5px);
+            }
+            .resp_ft{
+                @extend %texto-ct;	
+                line-height: 1rem;
+                .ic-msg{
+                    font-size: 1rem;
+                    position: relative;
+                    top: calc(1rem - 11px);
+                }
+            }
         }
-        .coment_f-table{
-            @extend %card-table;		
-            line-height: calc(1rem - 5px);
+        .activar-destacado{
+            display: flex;
         }
-        .resp_ft{
-            @extend %card-table;	
-            line-height: 1rem;
-            .ic-msg{
-                font-size: 1rem;
-                position: relative;
-                top: calc(1rem - 11px);
+    }
+    .f-table{
+        border-bottom: 1px solid $gray-300;
+    }
+}
+
+//Espacio colaborativo detalle
+.table-card-det{
+    @extend %table-card;
+    .titulo-det{
+        color: $gray-700;	
+        font-family: $primary-font;	
+        font-size: $h2-font-size;	
+        line-height: calc(3rem - 6px);
+        font-weight: $font-weight-normal-hard;
+        margin-top: calc(1rem - 6px);
+    }
+    .status_f-table{
+        display: none;
+        @extend %status-ft;
+        margin-bottom: 1rem;
+        &:hover{
+            .status_ft{
+                font-weight: 600 !important;
+            }
+            cursor: pointer;
+            background: $bluedark;
+        }
+    }
+    .f-card-det{
+        padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
+        width: 62.25rem;
+        .cont-det{
+            padding: 0 calc(7rem - 4px) 0 calc(2rem + 6px); 
+            .img-ec-det{
+                height: calc(3rem - 6px);
+                width: calc(3rem - 6px);
+                border-radius: 50rem;
+                box-shadow: 1px 1px 2px rgba(92,98,102,0.32);
+            }
+            .name_ft{
+                margin-left: calc(1rem - 5px);
+                @extend %name_table-card;
+                .coment_ft{
+                    margin-left: 1rem;
+                    @extend %texto-ct;
+                }
+            }
+            .ic-edit{
+                @extend %icon-ct;
+                &:hover{
+                    color: $blue;
+                }
+            }
+            .ic-del{
+                @extend %icon-ct;
+                &:hover{
+                    color: $red;
+                }
+            }
+            .txt-desc-det{
+                margin: 1rem 0 calc(2rem - 8px) 0;
+                padding-left: calc(2rem - 4px);
+                color: $gray-700;	
+                font-family: $primary-font;	
+                font-size: $font-size-sm;	
+                line-height: calc(1rem - 2px);
+                font-weight: $font-weight-normal;
+            }
+            .foo-esp_col-det{
+                padding-left: calc(2rem - 4px);
+                .like-ft{
+                    color: $gray-700;	
+                    font-family: $primary-font;	
+                    font-size: $font-size-xs;	
+                    line-height: calc(1rem - 2px);	
+                    text-align: center;
+                }
             }
         }
     }
-    
+    .activar-destacado{
+        display: flex;
+    }
 }
 //Extend
 
@@ -630,9 +698,56 @@
     width: 34rem;
     height: 31.85rem;
 }
-
-%card-table{
+%texto-ct{
     color: $gray-700;	
     font-family: $primary-font;
     font-size: $font-size-xs;
+}
+
+%table-card{
+    list-style-type: none;
+    margin: 2rem auto 1rem auto;
+    padding: calc(1rem - 4px) 0 0 0;
+    background: $white;
+    border: 1px solid $gray-300;
+    border-radius: 1rem;
+    box-shadow: 0 0 1px 0 rgba(170,175,179,0.72);
+    width: 62.25rem;
+}
+
+%status-ft{
+    border-radius: 1rem;	
+    background-color: $blue;
+    float: right;
+    width: 4.5rem;
+    height: 1.125rem;
+    position: relative;
+    top: 0.1rem;
+    .status_ft{
+        color: $white;	
+        font-family: $primary-font;	
+        font-size: $font-size-xs;	
+        line-height: calc(1rem - 5px);
+        font-weight: $font-weight-normal;
+        text-align: center;
+        margin: auto calc(1rem - 8px);
+        position: relative;
+        top: calc(1rem - 15px);
+    }
+}
+
+%name_table-card{
+    color: $gray-800;	
+    font-family: $primary-font;	
+    font-size: $font-size-xs;	
+    line-height: calc(1rem - 2px);
+    font-weight: bold;
+}
+
+%icon-ct{
+    font-size: $p-font-size;
+    color: $black;
+    position: relative;
+    top: .6rem;
+    opacity: .7;
 }

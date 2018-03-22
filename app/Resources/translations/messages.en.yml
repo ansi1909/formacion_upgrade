@@ -140,6 +140,7 @@ Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
 Editar asignación: Edit assignment
 Editar página: Edit page
+el: the
 Elegir empresa: Choose company
 Eliminado: Deleted
 Eliminar: Remove
@@ -219,6 +220,7 @@ Error al obtener la repuesta: Error getting the answer
 Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
+Error la empresa no existe: Error the company does not exist
 Errores: Errors
 Errores de validación: Validation errors
 Escoja una plantilla: Choose a template
@@ -261,6 +263,8 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
+Has completado con éxito: You have completed successfully
+Has ganado: You win
 Historial de programaciones de: Programation history of
 Icono: Icon
 Icono de la empresa: Company icon
@@ -276,6 +280,7 @@ Ir al listado: Go to list
 Ir al listado de evaluaciones: Go to tests list
 Ir al listado de opciones: Go to options list
 Ir al listado de preguntas: Go to questions list
+la: the
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: The number of questions to show must be greater or equal than 1.
 La cantidad de preguntas a mostrar debe ser un valor entero.: The number of questions to show must be a integer value.
@@ -295,7 +300,6 @@ La empresa a la que pertenece este usuario está inactiva: The company which thi
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
 La empresa está inactiva. Contacte al administrador del sistema.: The company is inactive. Contact the system administrator.
 La empresa es requerida.: Company is required.
-Error la empresa no existe: Error the company does not exist
 La Entidad es requerida.: The Entity is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
 La fecha de fin es requerida.: The end date is required.
@@ -456,6 +460,7 @@ Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimien
 Si necesitas ayuda escribenos a: If you need help email us to
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
+Sigue aprendiendo: Keep learning
 Siguiente: Next
 Sistema Formación: System Training
 Sólo archivo en PDF: Only PDF file
@@ -486,6 +491,7 @@ Tipo Destino: Destinit Type
 Tipo de Destinos: Desnity Types
 Título: Title
 Título en la ventana del navegador: Title of browser window
+Tomar evaluación: Take test
 Tutoriales: Tutorials
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found

@@ -1,0 +1,148 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu{
+            width: 60%;
+            height: 300px;
+        }
+        body {
+            margin-bottom: 300px;
+        }
+    </style>
+{% endblock %}
+
+{% block clbody %}
+    lesson-body
+{% endblock %}
+
+{% block header %}
+    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <a class="navbar-brand d-none d-md-block" href="#">
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+        </a>
+        <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            <div class="d-flex flex-column">
+                <div class="dropdown show">
+                    <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
+                        <img class="img-fluid mx-auto" src="{{ img }}" width="80%" alt="usuario">
+                    </a>
+                    <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sidemenu %}
+    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
+        <a class="d-flex mt-1 mb-3 text-nowrap" href="{{ path('_programa', { 'programa_id': programa.id }) }}"> <i class="material-icons mr-2 rotate-180">exit_to_app</i>{{ 'Volver al programa'|trans }}</a>
+
+        <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
+                     <i class="material-icons">view_list</i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
+                    <i class="material-icons">widgets</i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content menu-lesson" id="pills-tabContent" >
+            <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
+                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Indice'|trans }}</h5>
+                <ol id="menu_indice">
+                    {{ menu_str|raw }}
+                </ol>
+            </div>
+            <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <h5 class="text-center my-3 color-light-grey font-normal "> Recursos </h5>
+                <a href="">Espacio colaborativo</a>
+                <a href="">Reportar problema</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bg %}
+    bg-white
+{% endblock %}
+
+{% block body %}
+
+    <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
+    <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': next_lesson }) }}">
+    <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': subpagina.id }) }}">
+    
+    <section class="s1_fin-materia mt-3">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-8 text-center">
+                <h1 class="titulo_fin-materia">¡Excelente!</h1>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-8 text-center">
+                <span class="material-icons ic-verify">check_circle</span>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-10 text-center">
+                {% set articulo = subpagina.categoria != 'Materia' ? 'el'|trans : 'la'|trans %}
+                <p class="text_fin-materia">{{ 'Has completado con éxito'|trans }} {{ articulo~' '~subpagina.categoria }} <strong>{{ subpagina.nombre }}</strong>.</p>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-end">
+            <div class="col-6 text-right">
+                <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Pts</span></span></span>
+            </div>
+        </div>
+    </section>
+    <section class="s2_fin-materia">
+        {% if boton_evaluacion == 1 %}
+            <div class="row align-items-center justify-content-center">
+                <div class="col-8 text-center">
+                    <p class="text_fin-materia">Si deseas puedes tomar la evaluación en este momento</p>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-6 text-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row align-items-center justify-content-center">
+            <div class="col-8 text-center">
+                <p class="text_fin-materia">¡{{ 'Sigue aprendiendo'|trans }}!</p>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-6 text-center">
+                <div class="text-center">
+                    {% if next_lesson %}
+                        <button type="button" class="btn btn-warning bttn_fm continuar" id="next"> {{ 'Continuar'|trans }} </button>
+                    {% else %}
+                        <button type="button" class="btn btn-warning bttn_fm continuar" id="programa"> {{ 'Continuar'|trans }} </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ asset('js/front/finLecciones.js') }}"></script>
+{% endblock %}

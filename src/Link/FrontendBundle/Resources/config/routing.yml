@@ -31,3 +31,7 @@ calendarioDeEventos:
 programa:
     resource: "@LinkFrontendBundle/Resources/config/routing/programa.yml"
     prefix: /
+
+tests:
+    resource: "@LinkFrontendBundle/Resources/config/routing/tests.yml"
+    prefix: /tests

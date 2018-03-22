@@ -128,7 +128,7 @@ begin
             WHERE u.empresa_id = pempresa_id 
                 AND NOT EXISTS 
                 (SELECT * FROM certi_pagina_log pl 
-                    WHERE  pl.usuario_id = u.id  )
+                    WHERE  pl.usuario_id = u.id AND pl.pagina_id = ppagina_id )
                 AND pe.pagina_id = ppagina_id
             ORDER BY u.nombre ASC;
 
@@ -145,6 +145,8 @@ $BODY$
 
   --select * from fnlistado_participantes('re', 1, 1, 0, 0) as resultado; fetch all from re;
   --select * from fnlistado_participantes('re', 1, 1, 1, 0) as resultado; fetch all from re;
-  --select * from fnlistado_participantes('re', 2, 1, 0, 16) as resultado; fetch all from re;
-  --select * from fnlistado_participantes('re', 3, 1, 0, 16) as resultado; fetch all from re;
+  --select * from fnlistado_participantes('re', 2, 1, 0, 1) as resultado; fetch all from re;
+  --select * from fnlistado_participantes('re', 3, 1, 0, 1) as resultado; fetch all from re;
+  --select * from fnlistado_participantes('re', 4, 1, 0, 1) as resultado; fetch all from re;
+  --select * from fnlistado_participantes('re', 5, 1, 0, 1) as resultado; fetch all from re;
 
