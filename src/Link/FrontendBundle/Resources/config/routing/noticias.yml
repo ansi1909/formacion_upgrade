@@ -1,0 +1,7 @@
+_noticias:
+    path:     /noticias
+    defaults: { _controller: LinkFrontendBundle:Noticias:index }
+
+_noticiaDetalle:
+    path:     /noticiasDetalle/{noticia_id}
+    defaults: { _controller: LinkFrontendBundle:Noticias:detalle }
