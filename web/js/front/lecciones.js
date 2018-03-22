@@ -125,6 +125,28 @@ $(document).ready(function() {
 
 	});
 
+	// FUNCIONALIDADES DEL MURO
+	$('#button-comment').click(function(){
+		var comentario = $.trim($('#comentario').val());
+		if (comentario != '')
+		{
+			$.ajax({
+				type: "POST",
+				url: $('#form-comment').attr('action'),
+				async: true,
+				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: comentario, muro_id: 0 },
+				dataType: "json",
+				success: function(data) {
+					// Se anexa el comentario en la lista más recientes
+					//clearTimeout( timerId );
+				},
+				error: function(){
+					console.log('Error iniciando la lección'); // Hay que implementar los mensajes de error para el frontend
+				}
+			});
+		}
+	});
+
 });
 
 function nextPage(pagina_id)

@@ -17,3 +17,9 @@ _ajaxProcesarPagina:
     defaults: { _controller: LinkFrontendBundle:Leccion:ajaxProcesarPagina }
     requirements:
         _method: POST
+
+_ajaxEnviarComentario:
+    path:     /ajaxEnviarComentario
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxEnviarComentario }
+    requirements:
+        _method: POST

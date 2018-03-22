@@ -40,7 +40,7 @@
                 </div>
             </div>
             {% set display = lecciones.muro_activo ? '' : 'display:none;' %}
-            <a id="iconComments" href="#" style="{{ display }}">
+            <a id="iconComments" href="javascript:void(0)" style="{{ display }}">
                 <i class="material-icons mx-3 color-light-grey">comment</i>
             </a>
         </div>
@@ -172,8 +172,7 @@
 
     <div id="comments" class="px-3 pt-3"  >
         <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
-        <form class="mt-4 mb-6" id="form-comment" method="POST">
-            <input type="hidden" id="pagina_id" name="pagina_id" value="">
+        <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
             <div class="form-group">
                 <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
             </div>
@@ -186,14 +185,14 @@
 
         <div id="mas_recientes_comments">
             {% if not wizard %}
-                {% for muro in lecciones.muros_recientes %}
-                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro }) }}
+                {% for muro in lecciones.muros_recientes.muros %}
+                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'total_comentarios': lecciones.muros_recientes.total_comentarios, 'total_muro': lecciones.muros_recientes.muros|length }) }}
                 {% endfor %}
             {% else %}
                 {% for subpagina in lecciones.subpaginas|slice(0,1) %}
                     {# Solo el muro de la primera sub-página #}
-                    {% for muro in subpagina.muros_recientes %}
-                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro }) }}
+                    {% for muro in subpagina.muros_recientes.muros %}
+                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'total_comentarios': subpagina.muros_recientes.total_comentarios, 'total_muro': subpagina.muros_recientes.muros|length }) }}
                     {% endfor %}
                 {% endfor %}
             {% endif %}

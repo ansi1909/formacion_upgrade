@@ -1067,7 +1067,7 @@ class Functions
 	}
 
 	// Retorna un arreglo con toda la información de la lecciones de una página, con su muro.
-	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $estatus_completada, $estatus_evaluacion)
+	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $estatus_completada, $estatus_evaluacion, $empresa_id)
 	{
 
 		$em = $this->em;
@@ -1098,7 +1098,7 @@ class Functions
 		$lecciones['bloqueada'] = $bloqueada;
 
 		// Muros recientes
-		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id);
+		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id);
 		$lecciones['muros_recientes'] = $muros_recientes;
 
 		$sublecciones = array();
@@ -1146,7 +1146,7 @@ class Functions
 			$vista = $query->getSingleScalarResult();
 			$subleccion['vista'] = $vista;
 
-			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id);
+			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id);
 			$subleccion['muros_recientes'] = $muros_recientes;
 
 			$sublecciones[] = $subleccion;
@@ -1159,7 +1159,7 @@ class Functions
 	}
 
 	// Arreglo de comentarios en el muro de una página y sus respuestas
-	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit, $usuario_id)
+	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit, $usuario_id, $empresa_id)
 	{
 
 		$em = $this->em;
@@ -1167,19 +1167,45 @@ class Functions
         $qb->select('m')
            ->from('LinkComunBundle:CertiMuro', 'm')
            ->andWhere('m.pagina = :pagina_id')
+           ->andWhere('m.empresa = :empresa_id')
            ->andWhere('m.muro IS NULL')
            ->orderBy('m.'.$orderCriteria, $asc)
            ->setFirstResult($offset)
            ->setMaxResults($limit)
-           ->setParameter('pagina_id', $pagina_id);
+           ->setParameters(array('pagina_id' => $pagina_id,
+           						 'empresa_id' => $empresa_id));
         $query = $qb->getQuery();
         $muros_bd = $query->getResult();
         $muros = array();
 
+        // Total de comentarios en este muro
+        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+		                            WHERE m.pagina = :pagina_id 
+		                            AND m.empresa = :empresa_id')
+		            ->setParameters(array('pagina_id' => $pagina_id,
+		            					  'empresa_id' => $empresa_id));
+		$total_comentarios = $query->getSingleScalarResult();
+
         foreach ($muros_bd as $muro)
         {
-        	$submuros_bd = $em->getRepository('LinkComunBundle:CertiMuro')->findBy(array('muro' => $muro->getId()),
-        																		   array('id' => 'DESC'));
+
+        	$qb = $em->createQueryBuilder();
+	        $qb->select('m')
+	           ->from('LinkComunBundle:CertiMuro', 'm')
+	           ->andWhere('m.muro = :muro_id')
+	           ->orderBy('m.id', 'DESC')
+	           ->setFirstResult(0)
+	           ->setMaxResults(5)
+	           ->setParameter('muro_id', $muro->getId());
+	        $query = $qb->getQuery();
+	        $submuros_bd = $query->getResult();
+
+	        // Total de respuestas de este comentario
+	        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+			                            WHERE m.muro = :muro_id')
+			            ->setParameter('muro_id', => $muro->getId());
+			$total_respuestas = $query->getSingleScalarResult();
+        	
         	$submuros = array();
         	foreach ($submuros_bd as $submuro)
         	{
@@ -1194,10 +1220,13 @@ class Functions
     						 'usuario' => $muro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido(),
     						 'foto' => $muro->getUsuario()->getFoto(),
     						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
+    						 'total_respuestas' => $total_respuestas,
     						 'submuros' => $submuros);
         }
 
-        return $muros;
+        $return = array('muros' => $muros,
+        				'total_comentarios' => $total_comentarios);
+        return $return;
 
 	}
 

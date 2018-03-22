@@ -129,7 +129,7 @@ class LeccionController extends Controller
             }
         }
 
-        $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación']);
+        $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación'], $session->get('empresa')['id']);
         $lecciones['wizard'] = $wizard;
 
         // Se reinicia el reinicia el reloj de pagina_log

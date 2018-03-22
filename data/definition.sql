@@ -347,11 +347,13 @@ mensaje varchar(350),
 pagina_id integer,
 usuario_id integer,
 muro_id integer,
+empresa_id integer,
 fecha_registro timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (muro_id) REFERENCES certi_muro (id));
+ FOREIGN KEY (muro_id) REFERENCES certi_muro (id),
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
 
 CREATE TABLE certi_foro(
 -- Attributes --
