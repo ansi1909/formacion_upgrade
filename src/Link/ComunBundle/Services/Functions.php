@@ -1415,7 +1415,7 @@ class Functions
 			                                    JOIN pl.prueba p 
 			                                    WHERE pl.usuario = :usuario_id 
 			                                    AND p.pagina = :pagina_id 
-			                                    AND p.estado != :estado 
+			                                    AND pl.estado != :estado 
 			                                    ORDER BY pl.id DESC")
 			                    ->setParameters(array('usuario_id' => $usuario_id,
 			                    					  'pagina_id' => $pagina_padre_id,

@@ -144,5 +144,12 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
-    <script type="text/javascript" src="{{ asset('js/front/finLecciones.js') }}"></script>
+    <script type="text/javascript">
+        $('.continuar').click(function(){
+            var button = $(this);
+            button.hide();
+            var id = button.attr('id');
+            window.location.replace($('#url_'+id).val());
+        });
+    </script>
 {% endblock %}

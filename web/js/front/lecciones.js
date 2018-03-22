@@ -47,8 +47,9 @@ $(document).ready(function() {
 	}
 
 	$('.next_lesson').click(function(){
-		$(this).hide();
-		var str = $(this).attr('data');
+		var button = $(this);
+		button.hide();
+		var str = button.attr('data');
 		var arr = str.split('-');
 		var programa_id = arr[0];
 		var subpagina_id = arr[1];
@@ -102,7 +103,7 @@ $(document).ready(function() {
 
 	$('#next_subpage').click(function(){
 		
-		$(this).hide();
+		$('#next_subpage').hide();
 		var str = $(this).attr('data');
 		var arr = str.split('-');
 		var prog_id = arr[0];
