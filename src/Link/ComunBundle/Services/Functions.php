@@ -1203,7 +1203,7 @@ class Functions
 	        // Total de respuestas de este comentario
 	        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
 			                            WHERE m.muro = :muro_id')
-			            ->setParameter('muro_id', => $muro->getId());
+			            ->setParameter('muro_id', $muro->getId());
 			$total_respuestas = $query->getSingleScalarResult();
         	
         	$submuros = array();
