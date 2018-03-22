@@ -223,4 +223,120 @@ class LeccionController extends Controller
 
     }
 
+    public function finLeccionesAction($programa_id, $subpagina_id, $puntos, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        /*if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        }
+        $f->setRequest($session->get('sesion_id'));*/
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Menú lateral dinámico
+        $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
+
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+
+        // También se anexa a la indexación el programa padre
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $pagina = $session->get('paginas')[$programa_id];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
+        $indexedPages[$pagina['id']] = $pagina;
+
+        // Se completa la lección
+        $log_id = $f->finishLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $yml);
+        
+        // Extraer los puntos generados
+        $log_id_arr = explode("_", $log_id);
+        $puntos += $log_id[1];
+
+        // Determinar siguiente lección a ver
+        $next_lesson = 0;
+        if ($indexedPages[$subpagina_id]['padre'])
+        {
+            $pagina_padre_id = $indexedPages[$subpagina_id]['padre'];
+            $keys = array_keys($indexedPages[$pagina_padre_id]['subpaginas']);
+            if (isset($keys[array_search($subpagina_id,$keys)+1]))
+            {
+                $next_lesson = $keys[array_search($subpagina_id,$keys)+1];
+            }
+        }
+
+        // Si tiene evaluación, verificar que ya no haya presentado y aprobado.
+        $boton_evaluacion = 0;
+        if ($indexedPages[$subpagina_id]['tiene_evaluacion'])
+        {
+            $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
+                                        JOIN pl.prueba p 
+                                        WHERE pl.usuario = :usuario_id 
+                                        AND p.pagina = :pagina_id 
+                                        ORDER BY pl.id DESC")
+                        ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                              'pagina_id' => $subpagina_id));
+            $pruebas_log = $query->getResult();
+            if ($pruebas_log)
+            {
+                switch ($pruebas_log[0]->getEstado())
+                {
+                    case 'EN CURSO':
+                        $boton_evaluacion = 1;
+                        break;
+                    case 'APROBADO':
+                        $boton_evaluacion = 0;
+                        break;
+                    case 'REPROBADO':
+                        // Cantidad de intentos
+                        $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
+                                                    JOIN pl.prueba p 
+                                                    WHERE pl.usuario = :usuario_id 
+                                                    AND p.pagina = :pagina_id 
+                                                    ORDER BY pl.id DESC")
+                                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                          'pagina_id' => $subpagina_id));
+                        $intentos = $query->getSingleScalarResult();
+                        $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                    WHERE pe.empresa = :empresa_id 
+                                                    AND pe.pagina = :pagina_id")
+                                    ->setParameters(array('empresa_id' => $session->get('empresa')['id'],
+                                                          'pagina_id' => $subpagina_id));
+                        $pe = $query->getResult();
+                        $max_intentos = $pe[0]->getMaxIntentos();
+                        if ($intentos < $max_intentos)
+                        {
+                            $boton_evaluacion = 1;
+                        }
+                        break;
+                }
+            }
+            else {
+                $boton_evaluacion = 1;
+            }
+        }
+
+        //return new Response('next_lesson: '.$next_lesson.', puntos: '.$puntos);
+        //return new Response(var_dump($indexedPages[$subpagina_id]));
+
+        return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
+                                                                                        'subpagina' => $indexedPages[$subpagina_id],
+                                                                                        'menu_str' => $menu_str,
+                                                                                        'next_lesson' => $next_lesson,
+                                                                                        'puntos' => $puntos,
+                                                                                        'boton_evaluacion' => $boton_evaluacion));
+
+    }
+
 }

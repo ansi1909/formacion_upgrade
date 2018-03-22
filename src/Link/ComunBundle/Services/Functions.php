@@ -799,6 +799,7 @@ class Functions
 		$subdirectorios[] = 'recursos/notificaciones/';
 		$subdirectorios[] = 'recursos/participantes/';
 		$subdirectorios[] = 'recursos/empresas/';
+		$subdirectorios[] = 'recursos/qr/';
 
 		if ($empresa_id)
 		{
@@ -1391,7 +1392,7 @@ class Functions
 			{
 
 				$n = count($indexedPages[$pagina_padre_id]['subpaginas']);
-				$max_porcentaje = $indexedPages[$pagina_padre_id]['tiene_evaluacion'] ? (1 - $yml['ponderacion']['evaluacion']) : 1;
+				$max_porcentaje = $indexedPages[$pagina_padre_id]['tiene_evaluacion'] ? (1 - $yml['parameters']['ponderacion']['evaluacion']) : 1;
 				$avance_total = 0;
 				$avance_parcial = 0;
 
@@ -1412,16 +1413,19 @@ class Functions
 					$avance_prueba = 0;
 					$query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
 			                                    JOIN pl.prueba p 
-			                                    WHERE pl.usuario = :usuario_id AND p.pagina = :pagina_id 
+			                                    WHERE pl.usuario = :usuario_id 
+			                                    AND p.pagina = :pagina_id 
+			                                    AND p.estado != :estado 
 			                                    ORDER BY pl.id DESC")
 			                    ->setParameters(array('usuario_id' => $usuario_id,
-			                    					  'pagina_id' => $pagina_padre_id));
+			                    					  'pagina_id' => $pagina_padre_id,
+			                    					  'estado' => 'REPROBADO'));
 			        $pruebas_log = $query->getResult();
 			        if ($pruebas_log)
 			        {
 			        	$avance_prueba = $pruebas_log[0]->getPorcentajeAvance();
 			        }
-			        $avance_total += $avance_prueba*$yml['ponderacion']['evaluacion'];
+			        $avance_total += $avance_prueba*$yml['parameters']['ponderacion']['evaluacion'];
 				}
 
 				// Finalmente se almacena el avance calculado en la página padre

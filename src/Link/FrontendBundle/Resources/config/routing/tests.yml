@@ -1,0 +1,3 @@
+_test:
+    path:     /test/{pagina_id}
+    defaults: { _controller: LinkFrontendBundle:Test:index }
