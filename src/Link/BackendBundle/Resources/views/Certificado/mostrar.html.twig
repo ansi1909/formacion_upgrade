@@ -157,15 +157,19 @@
                                     <h5>{{ 'QR'|trans }}</h5>
                                     <div class="col-14">
                                         <p>{{ certificado.qr }}</p>
+
+                                        <div class="col-sm-6">
+                                            <figure class="social-profile-pic" id="figure"><img style="width: 5
+                                            30% !important;" src="{{ asset('img/codigo_qr.png') }} " alt="{{ 'QR'|trans }}" width="30%"></figure>
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>
                             <br>
                             <div class="row">
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <h5><a href="{{ path('_generarPdf', { 'id_certificado': certificado.id }) }}" target="_blank">{{ 'Vista Previa PDF'|trans }}</a></h5>
-                                   <!--  - 
-                                    <h5><a href="{{ path('_generarVistaPdf', { 'id_certificado': certificado.id }) }}" target="_blank">{{ 'Vista Previa HTML'|trans }}</a></h5> -->
+                                   <a href="{{ path('_generarPdf', { 'id_certificado': certificado.id }) }}" target="_blank"> <button type="button" class="bttn__vp"><span class="text__vp">{{ 'Vista previa'|trans }}</span><span class="fa fa-eye"></span></button></a>
+                                   <!-- <a href="{{ path('_generarVistaPdf', { 'id_certificado': certificado.id }) }}" target="_blank"> <button type="button" class="bttn__vp"><span class="text__vp">{{ 'Vista previa'|trans }}</span><span class="fa fa-eye"></span></button></a> -->
                                 </div>
                             </div>
                             <br>

@@ -2,6 +2,9 @@ $(document).ready(function() {
 
     var root_site = $('#root_site').val();
 
+    if($('#tipo_certificado_id').val()!=1 )
+        buscarEntidad($('#tipo_certificado_id').val());
+
     if($('#certificado_id').val()!='' && $('#tipo_imagen_certificado_id').val()==2)
         $('.resumen_constancia').show();
     else
@@ -12,7 +15,6 @@ $(document).ready(function() {
         $('#tipo_certificado_id').val('');
         $('#entidad').val('');
         $('.tipo_entidad').html('');
-
     });
 
     $('#tipo_certificado_id').change(function()
@@ -21,13 +23,21 @@ $(document).ready(function() {
         buscarEntidad(tipo_certificado_id);
     });
 
+    $('#entidad').change(function()
+    {
+        alert(entidad_id);
+
+        var tipo_certificado_id = $('#tipo_certificado_id').val('');
+        var entidad_id = $(this).val();
+        buscarRegistro(entidad_id,tipo_certificado_id);
+    });
+
     $('#tipo_imagen_certificado_id').change(function()
     {
         if($(this).val()==2)
             $('.resumen_constancia').show();
         else
             $('.resumen_constancia').hide();
-
     });
 
     $('.iframe-btn').fancybox({ 
@@ -40,6 +50,30 @@ $(document).ready(function() {
 
  });
 
+function buscarRegistro(entidad_id,tipo_certificado_id)
+{
+    var url_buscar = $('#url_buscar').val();
+    var entidad_id = $('#entidad_id').val();
+    var tipo_certificado_id = $('#tipo_certificado_id').val();
+
+    if(entidad_id!="" && tipo_certificado_id!="")
+    {
+        $.ajax({
+            type: "GET",
+            url: url_buscar,
+            dataType: "json",
+            data: { tipo_certificado_id: tipo_certificado_id, entidad_id: entidad_id },
+            success: function(data){
+                alert(data.$msg);
+                //$('.tipo_entidad').html(data.html);
+            },
+            error: function(){
+                $('#alert-error').html($('#error_msg-edit').val());
+                $('#div-alert').show();
+            }
+        });
+    }
+}
 
 function buscarEntidad(tipo_certificado_id)
 {
@@ -62,9 +96,6 @@ function buscarEntidad(tipo_certificado_id)
                 $('#div-alert').show();
             }
         });
-    }else
-    {
-        alert('Tiene que indicar la empresa y el tipo de certificado');
     }
 }
 
