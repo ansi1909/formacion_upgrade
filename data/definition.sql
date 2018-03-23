@@ -321,6 +321,12 @@ id serial,
 nombre varchar(20),
  PRIMARY KEY (id));
 
+CREATE TABLE admin_tipo_biblioteca(
+-- Attributes --
+id serial,
+nombre varchar(20),
+ PRIMARY KEY (id));
+
 CREATE TABLE admin_noticia(
 -- Attributes --
 id serial,
@@ -336,10 +342,12 @@ titulo varchar(500),
 autor varchar(250),
 pdf varchar(250),
 imagen varchar(250),
+tipo_bilioteca_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (tipo_noticia_id) REFERENCES admin_tipo_noticia (id));
+ FOREIGN KEY (tipo_noticia_id) REFERENCES admin_tipo_noticia (id),
+ FOREIGN KEY (tipo_bilioteca_id) REFERENCES admin_tipo_biblioteca (id));
 
 CREATE TABLE certi_muro(
 -- Attributes --

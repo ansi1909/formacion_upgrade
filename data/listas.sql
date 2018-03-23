@@ -164,6 +164,21 @@ INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (2, 'Recordatorio');
 INSERT INTO admin_tipo_notificacion (id, nombre) VALUES (3, 'Felicitación');
 
 ------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_tipo_biblioteca_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_biblioteca', 'id'), 5, false);
+
+--
+-- Data for Name: admin_tipo_notificacion; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_tipo_biblioteca (id, nombre) VALUES (1, 'Video');
+INSERT INTO admin_tipo_biblioteca (id, nombre) VALUES (2, 'Postcast');
+INSERT INTO admin_tipo_biblioteca (id, nombre) VALUES (3, 'Artículo');
+INSERT INTO admin_tipo_biblioteca (id, nombre) VALUES (4, 'Libro');
+
+------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 

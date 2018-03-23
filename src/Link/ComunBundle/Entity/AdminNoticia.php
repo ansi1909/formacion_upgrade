@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminNoticia
  *
- * @ORM\Table(name="admin_noticia", indexes={@ORM\Index(name="noticia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_F51CDD1FDB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_F51CDD1F8146238", columns={"tipo_noticia_id"})})
+ * @ORM\Table(name="admin_noticia", indexes={@ORM\Index(name="noticia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_F51CDD1FDB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_F51CDD1F8146238", columns={"tipo_noticia_id"}), @ORM\Index(name="IDX_F51CDD1F6AED89B7", columns={"tipo_biblioteca_id"})})
  * @ORM\Entity
  */
 class AdminNoticia
@@ -114,6 +114,16 @@ class AdminNoticia
      * })
      */
     private $tipoNoticia;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminTipoBiblioteca
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminTipoBiblioteca")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipo_biblioteca_id", referencedColumnName="id")
+     * })
+     */
+    private $tipoBiblioteca;
 
 
 
@@ -413,5 +423,29 @@ class AdminNoticia
     public function getTipoNoticia()
     {
         return $this->tipoNoticia;
+    }
+
+    /**
+     * Set tipoBiblioteca
+     *
+     * @param \Link\ComunBundle\Entity\AdminTipoBiblioteca $tipoBiblioteca
+     *
+     * @return AdminNoticia
+     */
+    public function setTipoBiblioteca(\Link\ComunBundle\Entity\AdminTipoBiblioteca $tipoBiblioteca = null)
+    {
+        $this->tipoBiblioteca = $tipoBiblioteca;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoBiblioteca
+     *
+     * @return \Link\ComunBundle\Entity\AdminTipoBiblioteca
+     */
+    public function getTipoBiblioteca()
+    {
+        return $this->tipoBiblioteca;
     }
 }
