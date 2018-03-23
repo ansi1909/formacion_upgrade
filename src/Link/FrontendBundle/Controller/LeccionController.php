@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPaginaLog;
+use Link\ComunBundle\Entity\CertiMuro;
 use Symfony\Component\Yaml\Yaml;
 
 class LeccionController extends Controller
@@ -336,6 +337,69 @@ class LeccionController extends Controller
                                                                                         'next_lesson' => $next_lesson,
                                                                                         'puntos' => $puntos,
                                                                                         'boton_evaluacion' => $boton_evaluacion));
+
+    }
+
+    public function ajaxEnviarComentarioAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $pagina_id = $request->request->get('pagina_id');
+        $mensaje = $request->request->get('mensaje');
+        $muro_id = $request->request->get('muro_id');
+
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
+
+        $muro = new CertiMuro();
+        $muro->setMensaje($mensaje);
+        $muro->setPagina($pagina);
+        $muro->setUsuario($usuario);
+        if ($muro_id)
+        {
+            $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+            $muro->setMuro($muro_padre);
+        }
+        $muro->setEmpresa($empresa);
+        $muro->setFechaRegistro(new \DateTime('now'));
+        $em->persist($muro);
+        $em->flush();
+
+        // HTML para anexar al muro
+        $uploads = $yml['parameters']['folders']['uploads'];
+        $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+        $html = '<div class="comment">
+                    <div class="comm-header d-flex align-items-center mb-2">
+                        <img src="'.$img_user.'" alt="">
+                        <div class="wrap-info-user flex-column ml-2">
+                            <div class="name text-xs color-dark-grey">'.$this->get('translator')->trans('Yo').'</div>
+                            <div class="date text-xs color-grey">'.$this->get('translator')->trans('Ahora').'</div>
+                        </div>
+                    </div>
+                    <div class="comm-body">
+                        <p>'.$mensaje.'</p>
+                    </div>
+                    <div class="comm-footer d-flex justify-content-between align-items-center">
+                        <a href="" class="mr-0 text-sm color-light-grey">
+                            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
+                        </a>
+                        <a href="#" class="links text-right text-xs reply_comment" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>
+                    </div>
+                    <div id="div-response-'.$muro->getId().'"></div>
+                    <div id="respuestas-'.$muro->getId().'">
+                    </div>
+                </div>';
+
+        $return = array('html' => $html,
+                        'muro_id' => $muro->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 

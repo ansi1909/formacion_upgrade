@@ -130,7 +130,7 @@ class Functions
 
 	}
 
-	// Retorna el URL hasta el directorio web/ de la aplicación
+	// Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.
 	public function getWebDirectory()
 	{
 		$request = Request::createFromGlobals();
@@ -375,12 +375,12 @@ class Functions
 		{
 			
 			$datetime1 = new \DateTime($fecha);
-			$datetime2 = new \DateTime("now");
+			$datetime2 = new \DateTime(date('Y-m-d H:i:s'));
 			$interval = $datetime1->diff($datetime2);
 
 			if ($fecha < $ayer)
 			{
-				$time_ago = $datetime1->format('Y-m-d H:i');
+				$time_ago = $datetime1->format('d/m/Y H:i');
 			}
 			elseif ($fecha >= $ayer.' 00:00:00' && $fecha < $ayer.' 23:59:59') 
 			{
@@ -392,7 +392,7 @@ class Functions
 					$time_ago = $datetime1->format('H:i');
 				}
 				else {
-					$time_ago = 'Hace '.$datetime1->format('i').' '.$this->translator->trans('minutos');
+					$time_ago = 'Hace '.$interval->format('%i').' '.$this->translator->trans('minutos');
 				}
 			}
 			

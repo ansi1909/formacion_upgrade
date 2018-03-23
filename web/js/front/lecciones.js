@@ -137,15 +137,18 @@ $(document).ready(function() {
 				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: comentario, muro_id: 0 },
 				dataType: "json",
 				success: function(data) {
-					// Se anexa el comentario en la lista más recientes
+					$('#mas_recientes_comments').prepend(data.html);
+					$('#response-'+data.muro_id).hide();
 					//clearTimeout( timerId );
 				},
 				error: function(){
-					console.log('Error iniciando la lección'); // Hay que implementar los mensajes de error para el frontend
+					console.log('Error comentando el muro'); // Hay que implementar los mensajes de error para el frontend
 				}
 			});
 		}
 	});
+
+	$('.response').hide();
 
 });
 
