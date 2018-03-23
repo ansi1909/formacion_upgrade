@@ -1,6 +1,7 @@
 //Modal recuperar contraseña
 
 .modal-recuperacion{
+    @extend %modal-m;
     @extend %modal;
     @include media-breakpoint-down(xl){
         .titulo{
@@ -46,6 +47,7 @@
 
 //Modal calendario
 .modal-calendario{
+    @extend %modal-m;
     @extend %modal;
     @include media-breakpoint-down(xl){
         .titulo{
@@ -64,17 +66,43 @@
         font-weight: $font-weight-light;
     }
 }
+
+//Modal editar hilo en espacio colaborativo
+.modal-edit{
+    @extend %modal-l;
+    @extend %modal;
+    width: 45rem;
+}
 //Extend
-%modal{
-    margin: 10rem auto;
+
+%modal-l{
+    height: 40rem;
+    width: 60rem;
+    @include media-breakpoint-down(xl){
+        height: 36rem;
+        width: 57rem;
+    }
+}
+
+%modal-s{
+    
+}
+
+%modal-m{
     height: 40rem;
     width: 33.5rem;
+    @include media-breakpoint-down(xl){
+        height: 36rem;
+        width: 30.5rem;
+    }
+}
+
+%modal{
+    margin: 10rem auto;
     border-radius: 1rem;
     background: $gray-100;
     @include media-breakpoint-down(xl){
         margin: 2rem auto;
-        height: 36rem;
-        width: 30.5rem;
     }
     .btn_close_modal{
         position: relative;

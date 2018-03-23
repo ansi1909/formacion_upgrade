@@ -694,10 +694,16 @@
                 border-radius: 1rem;
                 padding: calc(2rem - 4px) calc(1rem - 4px) calc(2rem - 4px) calc(1rem - 4px);
                 margin-bottom: calc(4rem - 4px);
+                .resp_2{
+                    padding-left: calc(2rem - 4px);
+                    padding-bottom: calc(3rem - 8px);
+                }
             }
         }
     }
-    .f-card-det-resp{}
+    .f-card-det-resp{
+        padding: calc(3rem - 6px) calc(5rem + 5px) calc(3rem - 8px) calc(5rem + 5px);
+    }
     .activar-destacado{
         display: flex;
     }

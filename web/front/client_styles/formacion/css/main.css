@@ -282,6 +282,9 @@ a:hover {
 a.links:focus {
   outline: none !important; }
 
+a:focus {
+  outline: none !important; }
+
 .modal-recuperacion .titulo {
   margin-top: calc(-1*calc(2rem - 7px)); }
 .modal-recuperacion .btn_rc {
@@ -324,27 +327,38 @@ a.links:focus {
   text-align: center;
   font-weight: 300; }
 
+.modal-edit {
+  width: 45rem; }
+
+.modal-edit {
+  height: 40rem;
+  width: 60rem;
+  height: 36rem;
+  width: 57rem; }
+
 .modal-recuperacion, .modal-calendario {
-  margin: 10rem auto;
   height: 40rem;
   width: 33.5rem;
-  border-radius: 1rem;
-  background: #FAFAFA;
-  margin: 2rem auto;
   height: 36rem;
   width: 30.5rem; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal {
+
+.modal-recuperacion, .modal-calendario, .modal-edit {
+  margin: 10rem auto;
+  border-radius: 1rem;
+  background: #FAFAFA;
+  margin: 2rem auto; }
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
@@ -1265,6 +1279,11 @@ p.up {
       border-radius: 1rem;
       padding: calc(2rem - 4px) calc(1rem - 4px) calc(2rem - 4px) calc(1rem - 4px);
       margin-bottom: calc(4rem - 4px); }
+      .table-card-det .f-card-det .cont-det .resp-rply .resp_2 {
+        padding-left: calc(2rem - 4px);
+        padding-bottom: calc(3rem - 8px); }
+.table-card-det .f-card-det-resp {
+  padding: calc(3rem - 6px) calc(5rem + 5px) calc(3rem - 8px) calc(5rem + 5px); }
 .table-card-det .activar-destacado {
   display: flex; }
 .table-card-det .disable-fun {
