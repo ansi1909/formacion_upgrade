@@ -33,7 +33,9 @@ class NoticiasController extends Controller
             $empresa_id = $session->get('empresa')['id'];
             $hoy = new \DateTime();
             $now = strtotime($hoy->format('d-m-Y'));
-            $noticias= array();
+            $todos = array();
+            $noticias = array();
+            $novedades = array();
 
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.empresa = :empresa_id')
@@ -46,12 +48,31 @@ class NoticiasController extends Controller
                 $fecha_f = strtotime($noticia->getFechaVencimiento()->format('d-m-Y'));
                 if ($now >= $fecha_i && $now < $fecha_f) 
                {
-                    $noticias[] =array('id'=>$noticia->getId(),
+                    $todos[] =array('id'=>$noticia->getId(),
                                        'titulo'=>$noticia->getTitulo(),
                                        'fecha'=>$noticia->getFechaPublicacion()->format('d/m/Y'),
                                        'tipo'=>$noticia->getTipoNoticia()->getNombre(),
                                        'imagen'=>$noticia->getImagen(),
                                        'tid'=>$noticia->getTipoNoticia()->getId());
+
+                    if($noticia->getTipoNoticia()->getId() == '1')
+                    {
+                        $noticias[] =array('id'=>$noticia->getId(),
+                                       'titulo'=>$noticia->getTitulo(),
+                                       'fecha'=>$noticia->getFechaPublicacion()->format('d/m/Y'),
+                                       'tipo'=>$noticia->getTipoNoticia()->getNombre(),
+                                       'imagen'=>$noticia->getImagen(),
+                                       'tid'=>$noticia->getTipoNoticia()->getId());
+
+                    }elseif ($noticia->getTipoNoticia()->getId() == '2') 
+                    {
+                        $novedades[] =array('id'=>$noticia->getId(),
+                                       'titulo'=>$noticia->getTitulo(),
+                                       'fecha'=>$noticia->getFechaPublicacion()->format('d/m/Y'),
+                                       'tipo'=>$noticia->getTipoNoticia()->getNombre(),
+                                       'imagen'=>$noticia->getImagen(),
+                                       'tid'=>$noticia->getTipoNoticia()->getId());
+                    }
                 }
             }
 
@@ -60,7 +81,9 @@ class NoticiasController extends Controller
         }
 
         return $this->render('LinkFrontendBundle:Noticias:index.html.twig', array('usuario_id' => $usuario_id,
-                                                                                  'noticias' => $noticias));
+                                                                                  'todos' => $todos,
+                                                                                  'noticias' => $noticias,
+                                                                                  'novedades' => $novedades));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 
@@ -84,14 +107,27 @@ class NoticiasController extends Controller
         {
 
             $noticia = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
+            $noticias=array();
 
-            $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
-                                       WHERE n.tipoNoticia = :noticia
-                                       AND n.id != :noticia_id')
-                        ->setMaxResults(3)
-                        ->setParameters(array('noticia'=> 1,
-                                              'noticia_id'=> $noticia_id));
-            $noticias = $query->getResult();
+            if ($noticia->getTipoNoticia()->getId() == 1) {
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
+                                           WHERE n.tipoNoticia = :noticia
+                                           AND n.id != :noticia_id')
+                            ->setMaxResults(3)
+                            ->setParameters(array('noticia'=> 1,
+                                                  'noticia_id'=> $noticia_id));
+                $noticias = $query->getResult();
+            }elseif ($noticia->getTipoNoticia()->getId() == 2) {
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
+                                           WHERE n.tipoNoticia = :noticia
+                                           AND n.id != :noticia_id')
+                            ->setMaxResults(3)
+                            ->setParameters(array('noticia'=> 2,
+                                                  'noticia_id'=> $noticia_id));
+                $noticias = $query->getResult();
+            }
+
+            
 
         }else {
             return $this->redirectToRoute('_login');

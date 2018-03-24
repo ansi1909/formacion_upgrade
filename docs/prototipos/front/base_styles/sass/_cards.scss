@@ -621,10 +621,13 @@
     }
     .f-card-det{
         padding: calc(3rem - 6px) 2rem calc(2rem - 5px) 2rem;
-        width: 62.25rem;
+        width: 72.25rem;
         border-bottom: 1px solid $gray-300;
         &:last-child{
             border-bottom: 0px;
+        }
+        @include media-breakpoint-down(xl){
+            width: 62.25rem;
         }
         .cont-det{
             padding: 0 calc(7rem - 4px) 0 calc(2rem + 6px); 
@@ -742,13 +745,17 @@
 
 %table-card{
     list-style-type: none;
-    margin: 2rem auto 1rem auto;
+    margin: 2rem 0 1rem 11.5rem;
     padding: calc(1rem - 4px) 0 0 0;
     background: $white;
     border: 1px solid $gray-300;
     border-radius: 1rem;
     box-shadow: 0 0 1px 0 rgba(170,175,179,0.72);
-    width: 62.25rem;
+    width: 72.25rem;
+    @include media-breakpoint-down(xl){
+        margin: 2rem auto 1rem auto;
+        width: 62.25rem;
+    }
 }
 
 %status-ft{

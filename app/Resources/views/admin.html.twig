@@ -34,6 +34,10 @@
             {# Admin CSS #}
             <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 
+            {# Video y Podcast CSS #}
+            <link href="{{ asset('front/js/plugins/video.js/video-js.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('front/js/plugins/video.js/vsg-skin.css') }}" rel="stylesheet">
+
         {% endblock %}
     </head>
     <body class="rounded">
@@ -211,6 +215,10 @@
             
             {# IE10 viewport hack for Surface/desktop Windows 8 bug #} 
             <script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js') }}"></script>
+
+            {# Video y Podcast #}
+            <script src="{{ asset('front/js/plugins/video.js/video.min.js') }}"></script>
+
             
             {# DataTables JavaScript #}
             <script src="{{ asset('assets/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>

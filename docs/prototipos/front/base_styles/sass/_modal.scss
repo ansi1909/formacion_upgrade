@@ -1,6 +1,7 @@
 //Modal recuperar contraseña
 
 .modal-recuperacion{
+    @extend %modal-m;
     @extend %modal;
     @include media-breakpoint-down(xl){
         .titulo{
@@ -46,6 +47,7 @@
 
 //Modal calendario
 .modal-calendario{
+    @extend %modal-m;
     @extend %modal;
     @include media-breakpoint-down(xl){
         .titulo{
@@ -64,17 +66,85 @@
         font-weight: $font-weight-light;
     }
 }
+
+//Modal editar hilo en espacio colaborativo
+.modal-edit{
+    @extend %modal-l;
+    @extend %modal;
+    &::-webkit-scrollbar {
+        width: 1rem;
+    }
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        -webkit-border-radius: 0 1rem 1rem 0;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-600;
+        outline: 1px solid $gray-850;
+        -webkit-border-radius: 0 1rem 1rem 0;
+    }
+    .titulo-form{
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: $font-size-base;
+        line-height: 1.1875rem;
+        font-weight: $font-weight-normal-hard;
+        text-align: left;
+    }
+}
+
+//Modal responder hilo en espacio colaborativo
+.modal-resp{
+    @extend %modal-sl;
+    @extend %modal;
+    .titulo-form{
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: $font-size-base;
+        line-height: 1.1875rem;
+        font-weight: $font-weight-normal-hard;
+        text-align: left;
+    }
+}
 //Extend
-%modal{
-    margin: 10rem auto;
+
+%modal-sl{
+    height: 37rem;
+    width: 65rem;
+    @include media-breakpoint-down(xl){
+        height: 33rem;
+        width: 62rem;
+    }
+}
+
+%modal-l{
+    height: 43rem;
+    width: 65rem;
+    @include media-breakpoint-down(xl){
+        height: 39rem;
+        width: 62rem;
+    }
+}
+
+%modal-s{
+    
+}
+
+%modal-m{
     height: 40rem;
     width: 33.5rem;
+    @include media-breakpoint-down(xl){
+        height: 36rem;
+        width: 30.5rem;
+    }
+}
+
+%modal{
+    margin: 8rem auto;
     border-radius: 1rem;
     background: $gray-100;
     @include media-breakpoint-down(xl){
         margin: 2rem auto;
-        height: 36rem;
-        width: 30.5rem;
     }
     .btn_close_modal{
         position: relative;

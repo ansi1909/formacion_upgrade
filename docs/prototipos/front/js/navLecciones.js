@@ -2,10 +2,13 @@
     var parent=$('#wraperNavLess');
     var child=$('#navlesson');
 
-    var scrollChild = child.get(0).scrollWidth;
-    var scrollParent = parent.get(0).scrollWidth;
-    if ( scrollChild < scrollParent ) {
-        child.css("justify-content", "center");
+    if (parent.length && child.length)
+    {
+        var scrollChild = child.get(0).scrollWidth;
+        var scrollParent = parent.get(0).scrollWidth;
+        if ( scrollChild < scrollParent ) {
+            child.css("justify-content", "center");
+        }
     }
 //FIN CENTRAR NAVEGACION
 
