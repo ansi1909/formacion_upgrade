@@ -11,6 +11,9 @@ Link\ComunBundle\Entity\AdminNoticia:
         IDX_F51CDD1F8146238:
             columns:
                 - tipo_noticia_id
+        IDX_F51CDD1F6AED89B7:
+            columns:
+                - tipo_biblioteca_id
     id:
         id:
             type: integer
@@ -98,6 +101,16 @@ Link\ComunBundle\Entity\AdminNoticia:
             inversedBy: null
             joinColumns:
                 tipo_noticia_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoBiblioteca:
+            targetEntity: AdminTipoBiblioteca
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_biblioteca_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

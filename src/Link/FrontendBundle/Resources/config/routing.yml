@@ -32,6 +32,10 @@ tests:
     resource: "@LinkFrontendBundle/Resources/config/routing/tests.yml"
     prefix: /tests
 
+noticias:
+    resource: "@LinkFrontendBundle/Resources/config/routing/noticias.yml"
+    prefix: /noticias
+
 certificados:
     resource: "@LinkFrontendBundle/Resources/config/routing/certificados.yml"
     prefix: /certificados

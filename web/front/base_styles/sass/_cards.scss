@@ -540,7 +540,7 @@
 // Espacio colaborativo
 .table-card{
     @extend %table-card;
-    .f-table, .f-table-last{
+    .f-table, .f-table-lt{
         padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
         height: 8rem;
         width: 62.25rem;
@@ -620,8 +620,12 @@
         }
     }
     .f-card-det{
-        padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
+        padding: calc(3rem - 6px) 2rem calc(2rem - 5px) 2rem;
         width: 62.25rem;
+        border-bottom: 1px solid $gray-300;
+        &:last-child{
+            border-bottom: 0px;
+        }
         .cont-det{
             padding: 0 calc(7rem - 4px) 0 calc(2rem + 6px); 
             .img-ec-det{
@@ -641,7 +645,7 @@
             .ic-edit{
                 @extend %icon-ct;
                 &:hover{
-                    color: $blue;
+                    color: $yellowdark;
                 }
             }
             .ic-del{
@@ -661,18 +665,44 @@
             }
             .foo-esp_col-det{
                 padding-left: calc(2rem - 4px);
-                .like-ft{
-                    color: $gray-700;	
-                    font-family: $primary-font;	
-                    font-size: $font-size-xs;	
-                    line-height: calc(1rem - 2px);	
-                    text-align: center;
+                .like_ft{
+                    @extend %row_bttm;
+                    .ic-lke{
+                        @extend %icon_row_bttm;
+                        cursor: pointer;
+                    }
+                    .ic-lke-act{
+                        color: $blue;
+                    }
                 }
+                .resp_ft{
+                    @extend %row_bttm;
+                    cursor: pointer;
+                    .ic-rpy{
+                        @extend %icon_row_bttm;
+                    }
+                    &:hover{
+                        color: $blue;
+                        .ic-rpy{
+                            color: $green;
+                        }
+                    }
+                }
+            }
+            .resp-rply{
+                background: $gray-100;
+                border-radius: 1rem;
+                padding: calc(2rem - 4px) calc(1rem - 4px) calc(2rem - 4px) calc(1rem - 4px);
+                margin-bottom: calc(4rem - 4px);
             }
         }
     }
+    .f-card-det-resp{}
     .activar-destacado{
         display: flex;
+    }
+    .disable-fun{
+        display: none;
     }
 }
 //Extend
@@ -750,4 +780,19 @@
     position: relative;
     top: .6rem;
     opacity: .7;
+}
+
+%row_bttm{
+    color: $gray-700;	
+    font-family: $primary-font;	
+    font-size: $font-size-xs;	
+    line-height: calc(1rem - 2px);	
+    text-align: center;
+    font-weight: $font-weight-normal-hard;
+}
+
+%icon_row_bttm{
+    font-size: $p-font-size;
+    position: relative;
+    top: .15rem;
 }
