@@ -227,6 +227,9 @@ input.form-control:focus {
     color: #DAE1E6; }
 
 .bttn_fm {
+  color: #797D80; }
+
+.bttn_fm {
   font-family: "Roboto";
   font-size: 1.125rem;
   font-weight: 500;
@@ -236,6 +239,13 @@ input.form-control:focus {
 body {
   background-color: #F7F7F7;
   overflow-x: hidden; }
+  body::-webkit-scrollbar {
+    width: calc(1rem - 8px); }
+  body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+  body::-webkit-scrollbar-thumb {
+    background-color: #AAAFB3;
+    outline: 1px solid #565656; }
 
 #main {
   transition: all .6s;
@@ -285,13 +295,14 @@ a.links:focus {
 a:focus {
   outline: none !important; }
 
-.modal-recuperacion .titulo {
-  margin-top: calc(-1*calc(2rem - 7px)); }
-.modal-recuperacion .btn_rc {
-  margin: 1rem 0;
-  padding: auto 0; }
-.modal-recuperacion .txt-modal-footer {
-  margin-top: 2rem; }
+@media (max-width: 1899.98px) {
+  .modal-recuperacion .titulo {
+    margin-top: calc(-1*calc(2rem - 7px)); }
+  .modal-recuperacion .btn_rc {
+    margin: 1rem 0;
+    padding: auto 0; }
+  .modal-recuperacion .txt-modal-footer {
+    margin-top: 2rem; } }
 .modal-recuperacion .txt-modal {
   color: #797D80;
   font-family: "Roboto";
@@ -315,10 +326,11 @@ a:focus {
   text-align: center !important;
   float: none !important; }
 
-.modal-calendario .titulo {
-  margin-top: calc(-1*calc(2rem - 7px)); }
-.modal-calendario .btn_rc {
-  margin-top: -2rem; }
+@media (max-width: 1899.98px) {
+  .modal-calendario .titulo {
+    margin-top: calc(-1*calc(2rem - 7px)); }
+  .modal-calendario .btn_rc {
+    margin-top: -2rem; } }
 .modal-calendario .text-calendar {
   color: #797D80;
   font-family: "Roboto";
@@ -327,38 +339,74 @@ a:focus {
   text-align: center;
   font-weight: 300; }
 
-.modal-edit {
-  width: 45rem; }
+.modal-edit::-webkit-scrollbar {
+  width: 1rem; }
+.modal-edit::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 0 1rem 1rem 0; }
+.modal-edit::-webkit-scrollbar-thumb {
+  background-color: #AAAFB3;
+  outline: 1px solid #565656;
+  -webkit-border-radius: 0 1rem 1rem 0; }
+.modal-edit .titulo-form {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 1rem;
+  line-height: 1.1875rem;
+  font-weight: 500;
+  text-align: left; }
+
+.modal-resp .titulo-form {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 1rem;
+  line-height: 1.1875rem;
+  font-weight: 500;
+  text-align: left; }
+
+.modal-resp {
+  height: 37rem;
+  width: 65rem; }
+  @media (max-width: 1899.98px) {
+    .modal-resp {
+      height: 33rem;
+      width: 62rem; } }
 
 .modal-edit {
-  height: 40rem;
-  width: 60rem;
-  height: 36rem;
-  width: 57rem; }
+  height: 43rem;
+  width: 65rem; }
+  @media (max-width: 1899.98px) {
+    .modal-edit {
+      height: 39rem;
+      width: 62rem; } }
 
 .modal-recuperacion, .modal-calendario {
   height: 40rem;
-  width: 33.5rem;
-  height: 36rem;
-  width: 30.5rem; }
+  width: 33.5rem; }
+  @media (max-width: 1899.98px) {
+    .modal-recuperacion, .modal-calendario {
+      height: 36rem;
+      width: 30.5rem; } }
 
-.modal-recuperacion, .modal-calendario, .modal-edit {
-  margin: 10rem auto;
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp {
+  margin: 8rem auto;
   border-radius: 1rem;
-  background: #FAFAFA;
-  margin: 2rem auto; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal {
+  background: #FAFAFA; }
+  @media (max-width: 1899.98px) {
+    .modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp {
+      margin: 2rem auto; } }
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
@@ -413,6 +461,13 @@ nav.navbar {
   overflow: auto;
   transition: 0.6s;
   padding-top: 60px; }
+  .main-sidenav::-webkit-scrollbar {
+    width: calc(1rem - 8px); }
+  .main-sidenav::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+  .main-sidenav::-webkit-scrollbar-thumb {
+    background-color: #AAAFB3;
+    outline: 1px solid #565656; }
 
 .main-sidenav-open {
   width: 200px; }
@@ -1235,10 +1290,13 @@ p.up {
       font-weight: 600 !important; }
 .table-card-det .f-card-det {
   padding: calc(3rem - 6px) 2rem calc(2rem - 5px) 2rem;
-  width: 62.25rem;
+  width: 72.25rem;
   border-bottom: 1px solid #F0F4F7; }
   .table-card-det .f-card-det:last-child {
     border-bottom: 0px; }
+  @media (max-width: 1899.98px) {
+    .table-card-det .f-card-det {
+      width: 62.25rem; } }
   .table-card-det .f-card-det .cont-det {
     padding: 0 calc(7rem - 4px) 0 calc(2rem + 6px); }
     .table-card-det .f-card-det .cont-det .img-ec-det {
@@ -1315,13 +1373,17 @@ p.up {
 
 .table-card, .table-card-det {
   list-style-type: none;
-  margin: 2rem auto 1rem auto;
+  margin: 2rem 0 1rem 11.5rem;
   padding: calc(1rem - 4px) 0 0 0;
   background: #fff;
   border: 1px solid #F0F4F7;
   border-radius: 1rem;
   box-shadow: 0 0 1px 0 rgba(170, 175, 179, 0.72);
-  width: 62.25rem; }
+  width: 72.25rem; }
+  @media (max-width: 1899.98px) {
+    .table-card, .table-card-det {
+      margin: 2rem auto 1rem auto;
+      width: 62.25rem; } }
 
 .table-card .f-table .status_f-table, .table-card .f-table-lt .status_f-table, .table-card-det .status_f-table {
   border-radius: 1rem;
@@ -1697,6 +1759,13 @@ p.up {
   transition: .8s ease;
   overflow-y: scroll;
   z-index: 6; }
+  #comments::-webkit-scrollbar {
+    width: calc(1rem - 8px); }
+  #comments::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+  #comments::-webkit-scrollbar-thumb {
+    background-color: #DAE1E6;
+    outline: 1px solid #565656; }
   @media (max-width: 991.98px) {
     #comments {
       top: 70px; } }
@@ -1726,6 +1795,8 @@ p.up {
     padding: 16px 0;
     border-top: solid 1px #DAE1E6;
     border-radius: 0; }
+  #comments .ic-lke-act {
+    color: #5CAEE6; }
 
 #iconComments i:hover {
   color: #CFE65C; }
