@@ -45,8 +45,9 @@ parameters:
         ########## CONFIGURACIÓN AMBIENTE LOCAL ##########
         uploads: 'http://localhost/uploads/'
         dir_uploads: 'C:/wamp/www/uploads/'
-        #dir_uploads: 'C:/xampp/htdocs/uploads/'
         dir_project: 'C:/wamp/www/formacion2.0/'
+        #dir_uploads: 'C:/xampp/htdocs/uploads/'
+        #dir_project: 'C:/xampp/htdocs/formacion2.0/'
         ########## CONFIGURACIÓN AMBIENTE DESARROLLO ##########
         #uploads: 'http://develop.formacion2puntocero.com/uploads/'
         #dir_project: '/home/develo/public_html/formacion2.0/'
