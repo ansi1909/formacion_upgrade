@@ -9,7 +9,7 @@
 {% set uri = app.request.getbasepath %}
 <div id="message" class="for-message well-message container py-6 px-6 mb-4">
     <i id="equis" class="material-icons mr-2" >close</i>
-    <h1 class="mb-4">Bienvenido a Formación&nbsp;2.0</h1>
+    <h1 class="mb-4">Bienvenido a Formación 2.0</h1>
     {{ bienvenida|raw }}
     <img class="img-fluid img-message d-none d-lg-block" src="{{ asset('front/assets/img/well_hero.png') }}" alt="hero">
 </div>
@@ -46,11 +46,7 @@
                     <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
                     <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ ar.fecha_vencimiento }} días</span>
                 </div>
-                {% if ar.es_hija == 1 %}
                 <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                {% else %}
-                <a href="{{ path('_programa', { 'programa_id':  ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -96,9 +92,17 @@
                                     <h5 class="card-title mb-3"> {{ pd.nombre }} </h5>
                                     <p class="card-text">{{ pd.descripcion | raw }}</p>
                                     {% if pd.continuar == 0 %}
-                                        <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3"> Iniciar </a>
+                                        {% if pd.tiene_subpaginas == 1 %}
+                                            <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3"> Iniciar </a>
+                                        {% else %}
+                                            <a href="{{ path('_lecciones', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3"> Iniciar </a>
+                                        {% endif %}
                                     {% elseif pd.continuar == 1 %}
-                                        <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">Continuar </a>
+                                        {% if pd.tiene_subpaginas == 1 %}
+                                            <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">Continuar </a>
+                                        {% else %}
+                                            <a href="{{ path('_lecciones', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">Continuar </a>
+                                        {% endif %}
                                     {% elseif  pd.continuar in [2, 3] %}
                                     <div class="badge-wrap">
                                         <i class="material-icons badge-aprobado ">check_circle</i>

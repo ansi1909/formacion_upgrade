@@ -32,59 +32,67 @@ class DefaultController extends Controller
         $bienvenida = $empresa_obj->getBienvenida();
 
         // buscando las últimas 3 interacciones del usuario donde la página no este completada
-        $query_actividad = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
-                                             WHERE ar.usuario = :usuario_id
-                                             AND ar.estatusPagina != :completada
-                                             ORDER BY ar.id DESC')
-                              ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                                    'completada' => $yml['parameters']['estatus_pagina']['completada']))
-                              ->setMaxResults(3);
-        $actividadreciente = $query_actividad->getResult();
+        $query_actividad_padre = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar
+                                                   JOIN LinkComunBundle:CertiPagina p 
+                                                   WHERE ar.usuario = :usuario_id
+                                                   AND ar.estatusPagina != :completada
+                                                   AND p.id = ar.pagina
+                                                   AND p.pagina IS NULL
+                                                   ORDER BY ar.id DESC')
+                                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                          'completada' => $yml['parameters']['estatus_pagina']['completada']))
+                                    ->setMaxResults(3);
+        $actividadreciente_padre = $query_actividad_padre->getResult();
 
         $actividad_reciente = array();
         // Si tiene actividades
-        if(count($actividadreciente) >=  1){
+        if(count($actividadreciente_padre) >=  1){
             $reciente = 1;
-            foreach ($actividadreciente as $ar) {
-                // Si la actividad reciente es con una pagina hija
-                if($ar->getPagina()->getPagina()){
-                    $es_hija = 1;
-                    // buscamos la página padre
-                    $datos_log_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                              'pagina' => $ar->getPagina()->getPagina()->getId()));
-                    // buscamos los datos de la pagina contra empresa para obntener la fecha de vencimiento
-                    $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                              'pagina' => $ar->getPagina()->getPagina()->getId()));
+            foreach ($actividadreciente_padre as $arp) {
+                
+                $pagina_sesion = $session->get('paginas')[$arp->getPagina()->getId()];
+                $subpaginas_ids = $f->hijas($pagina_sesion['subpaginas']);
+                $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                                 'pagina' => $arp->getPagina()->getId()));
+                $query_actividad_hija = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar
+                                                          JOIN LinkComunBundle:CertiPagina p 
+                                                          WHERE ar.usuario = :usuario_id
+                                                          AND ar.estatusPagina != :completada
+                                                          AND p.id = ar.pagina
+                                                          AND p.id IN (:hijas)
+                                                          ORDER BY ar.id DESC')
+                                            ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                                  'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                                                  'hijas' => $subpaginas_ids))
+                                    ->setMaxResults(1);
+                $ar = $query_actividad_hija->getResult();
 
-                    // creamos variables para añadir al array
-                    $padre_id = $ar->getPagina()->getPagina()->getId();
-                    $titulo_padre = $ar->getPagina()->getPagina()->getNombre();
-                    $titulo_hijo = $ar->getPagina()->getNombre();
-                    $imagen = $ar->getPagina()->getPagina()->getFoto();
-                    $categoria = $ar->getPagina()->getCategoria()->getNombre();
-                    $porcentaje = round($datos_log_padre->getPorcentajeAvance());
+                if($ar[0]){
+
+                    $id =  $ar[0]->getPagina()->getId();
+                    $padre_id = $arp->getPagina()->getId();
+                    $titulo_padre = $arp->getPagina()->getNombre();
+                    $titulo_hijo = $ar[0]->getPagina()->getNombre();
+                    $imagen = $arp->getPagina()->getFoto();
+                    $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
+                    $porcentaje = round($arp->getPorcentajeAvance());
                     $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
 
-                // Si la actividad reciente es con una pagina padre
                 }else{
-                    $es_hija = 0;
-                    // buscamos los datos de la pagina contra empresa para obntener la fecha de vencimiento
-                    $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                              'pagina' => $ar->getPagina()->getId()));
 
-                    // creamos variables para añadir al array
-                    $padre_id = 0;
-                    $titulo_padre = $ar->getPagina()->getNombre();
+                    $id = 0;
+                    $padre_id = $arp->getPagina()->getId();
+                    $titulo_padre = $arp->getPagina()->getNombre();
                     $titulo_hijo = '';
-                    $imagen = $ar->getPagina()->getFoto();
-                    $categoria = $ar->getPagina()->getCategoria()->getNombre();
-                    $porcentaje = round($ar->getPorcentajeAvance());
+                    $imagen = $arp->getPagina()->getFoto();
+                    $categoria = $arp->getPagina()->getCategoria()->getNombre();
+                    $porcentaje = round($arp->getPorcentajeAvance());
                     $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+
                 }
 
-                $actividad_reciente[]= array('id'=>$ar->getPagina()->getId(),
+                $actividad_reciente[]= array('id'=>$id,
                                              'padre_id'=>$padre_id,
-                                             'es_hija'=>$es_hija,
                                              'titulo_padre'=>$titulo_padre,
                                              'titulo_hijo'=>$titulo_hijo,
                                              'imagen'=>$imagen,
@@ -136,6 +144,14 @@ class DefaultController extends Controller
             $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                              'pagina' => $pg->getPagina()->getId()));
 
+            $pagina_sesion = $session->get('paginas')[$pg->getPagina()->getId()];
+
+            if(count($pagina_sesion['subpaginas']) >= 1){
+                $tiene_subpaginas = 1;
+            }else{
+                $tiene_subpaginas = 0;
+            }
+
             $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                 'pagina' => $pg->getPagina()->getId()));
             if($datos_log){
@@ -163,6 +179,7 @@ class DefaultController extends Controller
                                             'imagen'=>$pg->getPagina()->getFoto(),
                                             'descripcion'=>$pg->getPagina()->getDescripcion(),
                                             'fecha_vencimiento'=>$f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
+                                            'tiene_subpaginas'=>$tiene_subpaginas,
                                             'continuar'=>$continuar);
             
         }

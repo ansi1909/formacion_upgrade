@@ -1495,4 +1495,29 @@ class Functions
         }
     }
 
+    // función para retornar todos los ids de las sugpaginas de una programa
+    public function hijas($subpagina)
+    {
+        $hijas = array();
+        foreach ($subpagina as $sub) {
+            $hijas[] = $sub['id'];
+            if($sub['subpaginas']){
+                foreach ($sub['subpaginas'] as $key) {
+                    $hijas[] = $key['id'];
+                    if($key['subpaginas']){
+                        foreach ($key['subpaginas'] as $keysub) {
+                            $hijas[] = $keysub['id'];
+                            if($keysub['subpaginas']){
+                               $subpagina = $keysub['subpaginas'];
+                               return $this->hijas($subpagina); 
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $hijas;
+    }
+
 }

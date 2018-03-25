@@ -72,11 +72,7 @@
                                                 <h2 class="color-light-grey mb-0 pb-0"> {{ pec.porcentaje }}% </h2>
                                                 <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ pec.fecha_vencimiento }} días</span>
                                             </div>
-                                            {% if pec.es_hija == 1 %}
                                             <a href="{{ path('_lecciones', { 'programa_id':  pec.padre_id, 'subpagina_id': pec.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                                            {% else %}
-                                            <a href="{{ path('_programa', { 'programa_id':  pec.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
