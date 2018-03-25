@@ -670,6 +670,7 @@
                 padding-left: calc(2rem - 4px);
                 .like_ft{
                     @extend %row_bttm;
+                    color: $gray-700;
                     .ic-lke{
                         @extend %icon_row_bttm;
                         cursor: pointer;
@@ -680,6 +681,7 @@
                 }
                 .resp_ft{
                     @extend %row_bttm;
+                    color: $gray-700;
                     cursor: pointer;
                     .ic-rpy{
                         @extend %icon_row_bttm;
@@ -700,6 +702,14 @@
                 .resp_2{
                     padding-left: calc(2rem - 4px);
                     padding-bottom: calc(3rem - 8px);
+                }
+            }
+            .link{
+                @extend %row_bttm;
+                color: $blue;
+                .ic-plus{
+                    position: relative;
+                    top: .5rem;
                 }
             }
         }
@@ -795,8 +805,7 @@
     opacity: .7;
 }
 
-%row_bttm{
-    color: $gray-700;	
+%row_bttm{	
     font-family: $primary-font;	
     font-size: $font-size-xs;	
     line-height: calc(1rem - 2px);	

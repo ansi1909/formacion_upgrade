@@ -118,10 +118,10 @@
 }
 
 %modal-l{
-    height: 43rem;
+    height: 46rem;
     width: 65rem;
     @include media-breakpoint-down(xl){
-        height: 39rem;
+        height: 36rem;
         width: 62rem;
     }
 }
@@ -140,11 +140,11 @@
 }
 
 %modal{
-    margin: 8rem auto;
+    margin: 8rem auto !important;
     border-radius: 1rem;
     background: $gray-100;
     @include media-breakpoint-down(xl){
-        margin: 2rem auto;
+        margin: 2rem auto !important;
     }
     .btn_close_modal{
         position: relative;

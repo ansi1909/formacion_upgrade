@@ -7,8 +7,11 @@
 }
 
 .esp_col{
-    margin: 1rem calc(5rem - 6px);
+    margin: 1rem auto;
     width: 62.25rem;
+    @include media-breakpoint-down(xl){
+        margin: 1rem auto;
+    }
     .btn-nw-tema{
         width: 10rem;
         padding: calc(1rem - 8px) 0;
@@ -18,5 +21,8 @@
         font-weight: $font-weight-easy-medium;	
         line-height: calc(1rem + 3px);	
         text-align: center;
+        &:focus{
+            outline: none;
+        }
     }
 }
