@@ -25,7 +25,7 @@
     position: relative;
     margin-left: 5%;
     overflow: hidden;
-    height: 120px;
+    height: 165px;
 
     &:hover .btn-lessons {
         opacity: 1;
@@ -33,7 +33,7 @@
     .btn-lessons {
         opacity: 0;
         position: absolute;
-        top: 60%;
+        top: 70%;
         z-index: 5;
         cursor: pointer;
         transition: 0.4s;
@@ -68,9 +68,15 @@
 }
 #navlesson {
 
+    li {
+        position: relative;
+
+    }
+
     &.nav{
         border: none;
         flex-wrap: nowrap;
+        padding-top: 40px;
         padding-left: 5%;
         padding-right: 5%;
         justify-content: start;
@@ -97,6 +103,10 @@
         border-radius: 50%;
         position: relative;
         font-size: 1.4rem;
+
+        &:hover {
+            opacity: .9;
+        }
 
     }
     a.circle-nav:not(#one-tab):before {
@@ -129,6 +139,47 @@
         background-color: $green;
         color: $gray-500;
     }
+
+    //tooltip
+    .tooltip-titulo {
+      position: absolute;
+      z-index: 200;
+      cursor: pointer;
+      transition: 0.5s;
+      top: -25%;
+      left: -10%;
+      height: auto;
+      background-color: $gray-300;
+      color: $gray-700;
+      padding: .6rem;
+      font-size: 12px;
+      border-radius: 8px;
+      opacity: 0;
+
+      // &:after {
+      //     position: absolute;
+      //     bottom: 150%;
+      //     left: -95px;
+      //     margin-left: -5px;
+      //     width: 0;
+      //     border-top: 5px solid #000;
+      //     border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+      //     border-right: 5px solid transparent;
+      //     border-left: 5px solid transparent;
+      //     content: " ";
+      //     font-size: 0;
+      //     line-height: 0;
+      //   }
+    }
+
+
+    /* Show tooltip content on hover */
+    .nav-item:hover  .tooltip-titulo {
+      visibility: visible;
+      opacity: 1;
+    }
+
+
 }
 
 .s1_fin-materia{
