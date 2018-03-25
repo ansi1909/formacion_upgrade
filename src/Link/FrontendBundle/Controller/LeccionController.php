@@ -130,7 +130,7 @@ class LeccionController extends Controller
             }
         }
 
-        $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación'], $session->get('empresa')['id']);
+        $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml, $session->get('empresa')['id']);
         $lecciones['wizard'] = $wizard;
 
         // Se reinicia el reinicia el reloj de pagina_log
@@ -293,13 +293,13 @@ class LeccionController extends Controller
             {
                 switch ($pruebas_log[0]->getEstado())
                 {
-                    case 'EN CURSO':
+                    case $yml['parameters']['estado_prueba']['curso']:
                         $boton_evaluacion = 1;
                         break;
-                    case 'APROBADO':
+                    case $yml['parameters']['estado_prueba']['aprobado']:
                         $boton_evaluacion = 0;
                         break;
-                    case 'REPROBADO':
+                    case $yml['parameters']['estado_prueba']['reprobado']:
                         // Cantidad de intentos
                         $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
                                                     JOIN pl.prueba p 
@@ -324,7 +324,17 @@ class LeccionController extends Controller
                 }
             }
             else {
-                $boton_evaluacion = 1;
+                // Se verifica si la página tiene creada una evaluación
+                $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p 
+                                            WHERE p.pagina = :pagina_id 
+                                            AND p.estatusContenido = :activo")
+                            ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                  'pagina_id' => $subpagina_id));
+                $evaluaciones = $query->getSingleScalarResult();
+                if ($evaluaciones)
+                {
+                    $boton_evaluacion = 1;
+                }
             }
         }
 
@@ -385,14 +395,13 @@ class LeccionController extends Controller
                         <p>'.$mensaje.'</p>
                     </div>
                     <div class="comm-footer d-flex justify-content-between align-items-center">
-                        <a href="" class="mr-0 text-sm color-light-grey">
+                        <a href="" class="mr-0 text-sm color-light-grey like">
                             <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
                         </a>
                         <a href="#" class="links text-right text-xs reply_comment" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>
                     </div>
                     <div id="div-response-'.$muro->getId().'"></div>
-                    <div id="respuestas-'.$muro->getId().'">
-                    </div>
+                    <div id="respuestas-'.$muro->getId().'"></div>
                 </div>';
 
         $return = array('html' => $html,

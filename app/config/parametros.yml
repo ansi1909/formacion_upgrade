@@ -39,6 +39,13 @@ parameters:
         iniciada: 1
         en_evaluación: 2
         completada: 3
+    estado_prueba:
+        aprobado: 'APROBADO'
+        curso: 'EN CURSO'
+        reprobado: 'REPROBADO'
+    social:
+        muro: 1
+        espacio_colaborativo: 2
     layout:
         base: 1
     folders:
