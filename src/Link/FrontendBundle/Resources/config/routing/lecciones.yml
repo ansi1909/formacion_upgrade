@@ -23,3 +23,9 @@ _ajaxEnviarComentario:
     defaults: { _controller: LinkFrontendBundle:Leccion:ajaxEnviarComentario }
     requirements:
         _method: POST
+
+_ajaxDivResponse:
+    path:     /ajaxDivResponse
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxDivResponse }
+    requirements:
+        _method: GET

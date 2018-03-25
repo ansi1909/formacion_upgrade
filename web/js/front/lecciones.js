@@ -137,8 +137,8 @@ $(document).ready(function() {
 				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: comentario, muro_id: 0 },
 				dataType: "json",
 				success: function(data) {
-					$('#mas_recientes_comments').prepend(data.html);
-					$('#response-'+data.muro_id).hide();
+					$('#comentario').val('');
+					$('#mas_recientes_comments-'+$('#pagina_id_viendo').val()).prepend(data.html);
 					//clearTimeout( timerId );
 				},
 				error: function(){
@@ -148,7 +148,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.response').hide();
+	observeMuro();
 
 });
 
@@ -211,4 +211,34 @@ function finishLesson(programa_id, pagina_id)
 		}
 	});
 	return ok;
+}
+
+function observeMuro()
+{
+
+	$('.reply_comment').click(function(){
+		var muro_id = $(this).attr('data');
+		var response_container = $('#response-'+muro_id);
+		if (response_container.length)
+		{
+			$('#respuesta_'+muro_id).focus();
+		}
+		else {
+			$.ajax({
+				type: "GET",
+				url: $('#url_response').val(),
+				async: false,
+				data: { muro_id: muro_id },
+				dataType: "json",
+				success: function(data) {
+					$('#div-response-'+muro_id).prepend(data.html);
+					//clearTimeout( timerId );
+				},
+				error: function(){
+					console.log('Error renderizando el campo de respuesta'); // Hay que implementar los mensajes de error para el frontend
+				}
+			});
+		}
+	});
+
 }

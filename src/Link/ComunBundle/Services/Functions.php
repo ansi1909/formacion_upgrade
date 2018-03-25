@@ -1067,7 +1067,7 @@ class Functions
 	}
 
 	// Retorna un arreglo con toda la información de la lecciones de una página, con su muro.
-	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $estatus_completada, $estatus_evaluacion, $empresa_id)
+	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $yml, $empresa_id)
 	{
 
 		$em = $this->em;
@@ -1091,14 +1091,14 @@ class Functions
 			                            AND pl.estatusPagina = :completada')
 			            ->setParameters(array('pagina_id' => $pagina_arr['prelacion'],
 			            					  'usuario_id' => $usuario_id,
-			                        		  'completada' => $estatus_completada));
+			                        		  'completada' => $yml['parameters']['estatus_pagina']['completada']));
 			$leccion_completada = $query->getSingleScalarResult();
 			$bloqueada = $leccion_completada ? 0 : 1;
 		}
 		$lecciones['bloqueada'] = $bloqueada;
 
 		// Muros recientes
-		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id);
+		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 		$lecciones['muros_recientes'] = $muros_recientes;
 
 		$sublecciones = array();
@@ -1129,7 +1129,7 @@ class Functions
 				                            AND pl.estatusPagina = :completada')
 				            ->setParameters(array('pagina_id' => $subpagina_arr['prelacion'],
 				            					  'usuario_id' => $usuario_id,
-				                        		  'completada' => $estatus_completada));
+				                        		  'completada' => $yml['parameters']['estatus_pagina']['completada']));
 				$leccion_completada = $query->getSingleScalarResult();
 				$bloqueada = $leccion_completada ? 0 : 1;
 			}
@@ -1142,11 +1142,11 @@ class Functions
 			                            AND pl.estatusPagina IN (:vista)')
 			            ->setParameters(array('pagina_id' => $subpagina_arr['id'],
 			            					  'usuario_id' => $usuario_id,
-			                        		  'vista' => array($estatus_completada, $estatus_evaluacion)));
+			                        		  'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación'])));
 			$vista = $query->getSingleScalarResult();
 			$subleccion['vista'] = $vista;
 
-			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id);
+			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 			$subleccion['muros_recientes'] = $muros_recientes;
 
 			$sublecciones[] = $subleccion;
@@ -1159,7 +1159,7 @@ class Functions
 	}
 
 	// Arreglo de comentarios en el muro de una página y sus respuestas
-	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit, $usuario_id, $empresa_id)
+	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit, $usuario_id, $empresa_id, $social)
 	{
 
 		$em = $this->em;
@@ -1213,7 +1213,8 @@ class Functions
         							'mensaje' => $submuro->getMensaje(),
         							'usuario' => $submuro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $submuro->getUsuario()->getNombre().' '.$submuro->getUsuario()->getApellido(),
         							'foto' => $submuro->getUsuario()->getFoto(),
-        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')));
+        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')),
+        							'likes' => $this->likes($social['muro'], $submuro->getId(), $usuario_id));
         	}
         	$muros[] = array('id' => $muro->getId(),
     						 'mensaje' => $muro->getMensaje(),
@@ -1221,6 +1222,7 @@ class Functions
     						 'foto' => $muro->getUsuario()->getFoto(),
     						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
     						 'total_respuestas' => $total_respuestas,
+    						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
     						 'submuros' => $submuros);
         }
 
@@ -1448,7 +1450,7 @@ class Functions
 			                                    ORDER BY pl.id DESC")
 			                    ->setParameters(array('usuario_id' => $usuario_id,
 			                    					  'pagina_id' => $pagina_padre_id,
-			                    					  'estado' => 'REPROBADO'));
+			                    					  'estado' => $yml['parameters']['estado_prueba']['reprobado']));
 			        $pruebas_log = $query->getResult();
 			        if ($pruebas_log)
 			        {
@@ -1475,6 +1477,30 @@ class Functions
 			$this->calculoAvance($indexedPages, $pagina_padre_id, $usuario_id, $yml);
 
 		}
+
+	}
+
+	public function likes($social_muro, $entidad_id, $usuario_id)
+	{
+
+		$em = $this->em;
+		$cantidad = 0;
+		$ilike = 0;
+
+		$likes = $em->getRepository('LinkComunBundle:AdminLike')->findBy(array('social' => $social_muro,
+                                                                               'entidadId' => $entidad_id));
+
+		foreach ($likes as $like)
+		{
+			$cantidad++;
+			if ($like->getUsuario()->getId() == $usuario_id)
+			{
+				$ilike = 1;
+			}
+		}
+
+		return array('cantidad' => $cantidad,
+					 'ilike' => $ilike);
 
 	}
 
