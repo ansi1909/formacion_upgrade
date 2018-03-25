@@ -37,7 +37,7 @@ class ProgramaController extends Controller
         $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                              'pagina' => $programa_id));
 
-        if(!$pagina_log){
+        /*if(!$pagina_log){
 
             $pagina_log = new CertiPaginaLog();
             $pagina_log->setPagina($pagina_obj);
@@ -47,7 +47,7 @@ class ProgramaController extends Controller
             $pagina_log->setPorcentajeAvance(0);
             $em->persist($pagina_log);
             $em->flush();
-        }
+        }*/
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $pagina_sesion = $session->get('paginas')[$programa_id];
@@ -247,16 +247,18 @@ class ProgramaController extends Controller
                                     ->setMaxResults(1);
                 $ar = $query_actividad_hija->getResult();
 
-                if($ar[0]){
+                if($ar){
+                    if($ar[0]){
 
-                    $id =  $ar[0]->getPagina()->getId();
-                    $padre_id = $arp->getPagina()->getId();
-                    $titulo_padre = $arp->getPagina()->getNombre();
-                    $titulo_hijo = $ar[0]->getPagina()->getNombre();
-                    $imagen = $arp->getPagina()->getFoto();
-                    $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
-                    $porcentaje = round($arp->getPorcentajeAvance());
-                    $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+                        $id =  $ar[0]->getPagina()->getId();
+                        $padre_id = $arp->getPagina()->getId();
+                        $titulo_padre = $arp->getPagina()->getNombre();
+                        $titulo_hijo = $ar[0]->getPagina()->getNombre();
+                        $imagen = $arp->getPagina()->getFoto();
+                        $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
+                        $porcentaje = round($arp->getPorcentajeAvance());
+                        $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+                    }
 
                 }else{
 

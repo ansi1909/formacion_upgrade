@@ -66,7 +66,7 @@ class DefaultController extends Controller
                                                                   'hijas' => $subpaginas_ids))
                                     ->setMaxResults(1);
                 $ar = $query_actividad_hija->getResult();
-
+                                
                 if($ar[0]){
 
                     $id =  $ar[0]->getPagina()->getId();
