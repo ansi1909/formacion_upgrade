@@ -72,6 +72,7 @@
                                 <td>{{ certificado.tipoImagenCertificado }}</td>
                                  <td class="center">
                                     <a href="{{ path('_registroCertificado', { 'certificado_id': certificado.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_generarPdf', { 'id_certificado': certificado.id }) }}" target="_blank" title="{{ 'Vista Previa'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-eye"></span></a>
                                     <a href="#" class="btn btn-link btn-sm {% if certificado.delete_disabled == '' %}delete{% endif %} {{ certificado.delete_disabled }}" data="{{ certificado.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>

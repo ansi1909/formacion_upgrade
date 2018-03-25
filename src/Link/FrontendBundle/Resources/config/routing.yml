@@ -4,15 +4,15 @@ _inicio:
 
 _login:
     path:     /login/{empresa_id}
-    defaults: { _controller: LinkFrontendBundle:Login:login }
+    defaults: { _controller: LinkFrontendBundle:Default:login }
 
 _authExceptionEmpresa:
     path:     /authExceptionEmpresa/{mensaje}
-    defaults: { _controller: LinkFrontendBundle:Login:authExceptionEmpresa }
+    defaults: { _controller: LinkFrontendBundle:Default:authExceptionEmpresa }
 
 _ajaxCorreo:
     path:     /ajaxCorreo
-    defaults: { _controller: LinkFrontendBundle:Login:ajaxCorreo }
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxCorreo }
     requirements:
         _method: POST
 
@@ -35,3 +35,7 @@ tests:
 noticias:
     resource: "@LinkFrontendBundle/Resources/config/routing/noticias.yml"
     prefix: /noticias
+
+certificados:
+    resource: "@LinkFrontendBundle/Resources/config/routing/certificados.yml"
+    prefix: /certificados

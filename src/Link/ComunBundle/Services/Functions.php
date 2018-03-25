@@ -18,6 +18,8 @@ class Functions
 	private $templating;
 	private $translator;
 
+    var $meses=array("1"=>"Enero","2"=>"Febrero","3"=>"Marzo","4"=>"Abril","5"=>"Mayo","6"=>"Junio","7"=>"Julio","8"=>"Agosto","9"=>"Septiembre","10"=>"Octubre","11"=>"Noviembre","12"=>"Diciembre");
+
 	public function __construct(\Doctrine\ORM\EntityManager $em, ContainerInterface $container)
 	{
 
@@ -1503,5 +1505,45 @@ class Functions
 					 'ilike' => $ilike);
 
 	}
+
+	//requiere formato 2001-12-11 hora, retorna 'dia de mes de año'
+    public function fechaNatural($fecha)
+    {
+        if($fecha!="")
+        {
+            $arreglo=explode(" ",$fecha);
+            $arreglo=$arreglo[0];
+            $arreglo=explode("-",$arreglo);
+            return $arreglo[2]." de ".$this->meses[(int)$arreglo[1]]." de ".$arreglo[0];
+        }else
+        {
+            return "";
+        }
+    }
+
+    // función para retornar todos los ids de las sugpaginas de una programa
+    public function hijas($subpagina)
+    {
+        $hijas = array();
+        foreach ($subpagina as $sub) {
+            $hijas[] = $sub['id'];
+            if($sub['subpaginas']){
+                foreach ($sub['subpaginas'] as $key) {
+                    $hijas[] = $key['id'];
+                    if($key['subpaginas']){
+                        foreach ($key['subpaginas'] as $keysub) {
+                            $hijas[] = $keysub['id'];
+                            if($keysub['subpaginas']){
+                               $subpagina = $keysub['subpaginas'];
+                               return $this->hijas($subpagina); 
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $hijas;
+    }
 
 }

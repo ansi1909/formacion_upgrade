@@ -2,18 +2,33 @@ $(document).ready(function() {
 
     var root_site = $('#root_site').val();
 
+    if($('#tipo_certificado_id').val()!=1 )
+        buscarEntidad($('#tipo_certificado_id').val());
+
+    if($('#certificado_id').val()!='' && $('#tipo_imagen_certificado_id').val()==2)
+        $('.resumen_constancia').show();
+    else
+        $('.resumen_constancia').hide();
+
     $('#empresa_id').change(function()
     {
         $('#tipo_certificado_id').val('');
         $('#entidad').val('');
         $('.tipo_entidad').html('');
-
     });
 
     $('#tipo_certificado_id').change(function()
     {
         var tipo_certificado_id = $(this).val();
         buscarEntidad(tipo_certificado_id);
+    });
+
+    $('#tipo_imagen_certificado_id').change(function()
+    {
+        if($(this).val()==2)
+            $('.resumen_constancia').show();
+        else
+            $('.resumen_constancia').hide();
     });
 
     $('.iframe-btn').fancybox({ 
@@ -26,19 +41,19 @@ $(document).ready(function() {
 
  });
 
-
 function buscarEntidad(tipo_certificado_id)
 {
     var url_tipo_certificado = $('#url_tipo_certificado').val();
     var empresa_id = $('#empresa_id').val();
-
+    var certificado_id = $('#certificado_id').val();
+    
     if(empresa_id!="" )//&& tipo_certificado_id!="")
     {
         $.ajax({
             type: "GET",
             url: url_tipo_certificado,
             dataType: "json",
-            data: { tipo_certificado_id: tipo_certificado_id, empresa_id: empresa_id },
+            data: { tipo_certificado_id: tipo_certificado_id, empresa_id: empresa_id, certificado_id: certificado_id },
             success: function(data){
 
                 $('.tipo_entidad').html(data.html);
@@ -48,9 +63,6 @@ function buscarEntidad(tipo_certificado_id)
                 $('#div-alert').show();
             }
         });
-    }else
-    {
-        alert('Tiene que indicar la empresa y el tipo de certificado');
     }
 }
 

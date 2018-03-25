@@ -8,7 +8,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
         <link rel="stylesheet" href="client_styles/formacion/css/main.css">
-        <title>Espacio colaborativo</title>
+        <title>Espacio colaborativo detalle</title>
 
         <style>
             .menu{
@@ -182,7 +182,9 @@
                                             <span class="like_ft"><i class="material-icons ic-lke ic-lke-act">thumb_up</i> 20</span>
                                         </div>
                                         <div class="col-auto">
-                                            <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                            <a href="#" class="resp-down">
+                                                <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -244,28 +246,14 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div class="resp_2 disable-fun">
-                                                <form action="">
-                                                    <div class="row align-items-center justify-content-center">
-                                                        <div class="form-group">
-                                                            <div class="col-12">
-                                                                <textarea class="ckeditor" rows="3" id="resp2" name="" cols="30"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row align-items-center justify-content-end">
-                                                        <div class="col-auto text-right">
-                                                            <button type="submit" class="btn btn-primary">Publicar</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
                                             <div class="row align-items-end foo-esp_col-det justify-content-between">
                                                 <div class="col-auto">
                                                     <span class="like_ft"><i class="material-icons ic-lke ic-lke-act">thumb_up</i> 8</span>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                                    <a href="#" data-toggle="modal" data-target="#modalresp">
+                                                        <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,7 +263,169 @@
                                             <span class="like_ft"><i class="material-icons ic-lke ic-lke-act">thumb_up</i> 5</span>
                                         </div>
                                         <div class="col-auto">
-                                            <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                            <a href="#" data-toggle="modal" data-target="#modalresp">
+                                                <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="f-card-det">
+                                <div class="row justify-content-end">
+                                    <div class="col-2">
+                                        <div class="status_f-table activar-destacado disable-fun">
+                                            <span class="status_ft">Destacado</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cont-det">
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <img class="img-ec-det" src="assets/img/pic4.jpg" alt="">
+                                            <span class="name_ft">Negan Parker<span class="coment_ft">Hace 3 dias</span></span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="text-right">
+                                                <a href="#"><span class="material-icons ic-edit disable-fun">mode_edit</span></a>
+                                                <a href="#"><span class="material-icons ic-del">delete</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-12 text-justify">
+                                            <p class="txt-desc-det">
+                                                You asked me if we were in the meth business or the money business. 
+                                                Neither, I’m in the empire business. I was under the impression that 
+                                                you had this under control. Well, that's what this is - problem solving. 
+                                                Skyler this is a simple division of labor - I bring in the money, you launder 
+                                                the money. This is what you wanted. 
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row resp-rply justify-content-center">
+                                        <div class="col-12 text-justify">
+                                            <div class="row justify-content-between">
+                                                <div class="col-auto">
+                                                    <img class="img-ec-det" src="assets/img/pic6.jpg" alt="">
+                                                    <span class="name_ft">Moana Maui Tomatoa <span class="coment_ft">Hace 1 día</span></span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="text-right">
+                                                        <a href="#"><span class="material-icons ic-edit disable-fun">mode_edit</span></a>
+                                                        <a href="#"><span class="material-icons ic-del">delete</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                <div class="col-12 text-justify">
+                                                    <p class="txt-desc-det">
+                                                        I have been waiting. I've been waiting all day. Waiting for Gus to send one of his men 
+                                                        to kill me. And it's you. Who do you know, who's okay with using children, Jesse? Who 
+                                                        do you know... who's allowed children to be murdered... hmm? Gus! He has, he has been 
+                                                        ten steps ahead of me at every turn. And now, the one thing that he needed to finally 
+                                                        get rid of me is your consent and boy he's got that now. 
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                                <div class="col-auto">
+                                                    <span class="like_ft"><i class="material-icons ic-lke ic-lke-act">thumb_up</i> 8</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="#" data-toggle="modal" data-target="#modalresp">
+                                                        <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row resp-rply justify-content-center">
+                                        <div class="col-12 text-justify">
+                                            <div class="row justify-content-between">
+                                                <div class="col-auto">
+                                                    <img class="img-ec-det" src="assets/img/pic3.jpg" alt="">
+                                                    <span class="name_ft">Bill Guarnere<span class="coment_ft">Hace 1 día</span></span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="text-right">
+                                                        <a href="#"><span class="material-icons ic-edit disable-fun">mode_edit</span></a>
+                                                        <a href="#"><span class="material-icons ic-del">delete</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                <div class="col-12 text-justify">
+                                                    <p class="txt-desc-det">
+                                                        I have been waiting. I've been waiting all day. Waiting for Gus to send one of his men 
+                                                        to kill me. And it's you. Who do you know, who's okay with using children, Jesse? Who 
+                                                        do you know... who's allowed children to be murdered... hmm? Gus! He has, he has been 
+                                                        ten steps ahead of me at every turn. And now, the one thing that he needed to finally 
+                                                        get rid of me is your consent and boy he's got that now. 
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                                <div class="col-auto">
+                                                    <span class="like_ft"><i class="material-icons ic-lke ic-lke-act">thumb_up</i> 8</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="#" data-toggle="modal" data-target="#modalresp">
+                                                        <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row resp-rply justify-content-center">
+                                        <div class="col-12 text-justify">
+                                            <div class="row justify-content-between">
+                                                <div class="col-auto">
+                                                    <img class="img-ec-det" src="assets/img/pic7.jpg" alt="">
+                                                    <span class="name_ft">Eugene Doc Roe<span class="coment_ft">Hace 1 día</span></span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="text-right">
+                                                        <a href="#"><span class="material-icons ic-edit disable-fun">mode_edit</span></a>
+                                                        <a href="#"><span class="material-icons ic-del">delete</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                <div class="col-12 text-justify">
+                                                    <p class="txt-desc-det">
+                                                        I have been waiting. I've been waiting all day. Waiting for Gus to send one of his men 
+                                                        to kill me. And it's you. Who do you know, who's okay with using children, Jesse? Who 
+                                                        do you know... who's allowed children to be murdered... hmm? Gus! He has, he has been 
+                                                        ten steps ahead of me at every turn. And now, the one thing that he needed to finally 
+                                                        get rid of me is your consent and boy he's got that now. 
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                                <div class="col-auto">
+                                                    <span class="like_ft"><i class="material-icons ic-lke ic-lke-act">thumb_up</i> 8</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="#" data-toggle="modal" data-target="#modalresp">
+                                                        <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-0 mb-3 align-items-center justify-content-center">
+                                        <div class="col-auto">
+                                            <a href="#" class="link"><i class="material-icons ic-plus">add</i>ver más </a> 
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                        <div class="col-auto">
+                                            <span class="like_ft"><i class="material-icons ic-lke ic-lke-act">thumb_up</i> 5</span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="#" data-toggle="modal" data-target="#modalresp">
+                                                <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>Responder</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -297,25 +447,6 @@
                                 </form>
                             </li>
                         </ul>
-                    </div>
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-auto 
-                                    col-lg-auto 
-                                    col-xl-auto 
-                                    col-md-auto 
-                                    col-sm-auto 
-                                    col-xs-auto 
-                                    px-0 pt-3">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
                 </section>
                 <section>
@@ -359,6 +490,39 @@
                         </div>
                     </div>
                 </section>
+                <section>
+                    <div class="modal modal-resp" id="modalresp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="container-fluid">
+                            <div class="row align-items-center justify-content-end">
+                                <div class="col-auto">
+                                    <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                                        <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mt-3 mb-2 align-items-center justify-content-center">
+                                <div class="col-auto text-center">
+                                    <h4 class="titulo">Responder tema</h4>
+                                </div>
+                            </div>
+                            <form action="">
+                                <div class="row pl-3 align-items-center justify-content-center">
+                                    <div class="form-group">
+                                        <div class="col-12">
+                                            <label class="mb-2 titulo-form" for="cont_tema"> Respuesta del tema </label>
+                                            <textarea class="ckeditor" rows="3" id="resp2" name="cont_tema" cols="30"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 align-items-center justify-content-end">
+                                    <div class="col-auto text-right">
+                                        <button type="submit" class="btn btn-primary">publicar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
                 <div id="comments" class="px-3 pt-3"  >
                     <h5 class="color-grey text-center">Comentarios del módulo</h5>
                     <form class=" mt-4  mb-6" action="index.html" method="post">
@@ -386,7 +550,7 @@
                         </div>
                         <div class="comm-footer d-flex justify-content-between align-items-center">
                             <a href="" class="mr-0 text-sm color-light-grey">
-                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                                <i class="material-icons mr-1 text-sm color-light-grey ic-lke-act">thumb_up</i> 3
                             </a>
                             <a href="" class="links text-right text-xs ">Responder</a>
                         </div>
@@ -449,6 +613,7 @@
         <script src="js/jquery-3.3.1.min.js" ></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/custom.js"></script>
+        <script type="text/javascript" src="js/esp_col.js"></script>
         <script type="text/javascript" src="../../../web/assets/vendor/ckeditor/ckeditor.js"></script>
         <script type="text/javascript" src="../../../web/assets/vendor/ckeditor/config.js"></script>
         <script type="text/javascript" src="js/ckedit.js"></script>

@@ -18,122 +18,43 @@ class LoginController extends Controller
         return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje));
     }
 
-	/*public function ajaxMainCorreoAction(Request $request)
+	public function ajaxCorreoAction(Request $request)
     {
-        
-        $em = $this->getDoctrine()->getManager();
-        
+              
         $correo = trim($request->request->get('correo'));
+        $empresa_id = $request->request->get('empresa_id');
         $ok = 1;
         $error = '';
         
-        $usuario = $this->getDoctrine()->getRepository('PetsComunBundle:Usuario')->findOneByCorreo($correo);
-
-        if (!$usuario)
+		if($correo!="")
         {
-            $ok = 0;
-            $error = 'No existen registros de usuario con este correo.';
-        }
-        
-		$correo = $request->request->get('correo_corporativo');
-
-        if($correo!="")
-        {
-			$empresa_id = 1;
-
 			$usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByCorreoCorporativo($correo);
 
 			if (!$usuario)//validamos que el correo exista
             {
-	            $ok = 0;
-	            $error = $this->get('translator')->trans('El correo no existe en la base de datos.');
+                $error = $this->get('translator')->trans('El correo no existe en la base de datos.');
             }
             else{
             	if (!$usuario->getActivo()) //validamos que el usuario este activo
                 {
-            	    $ok = 0;
                     $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
                 }
                 else {
-            		$empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+                	if(!$usuario->getEmpresa())
+                	{
+						$error = $this->get('translator')->trans('El usuario no tiene empresa asignada. Contacte al administrador del sistema.');
+                	}else
+                	{
+	            		$empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-            		if ($usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
-	                {
-                	    $ok = 0;
-	                    $error = $this->get('translator')->trans('El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.');
-	                }
-	                else{
-						$ok = 1;
-   			            // Envío de correo con los datos de acceso, usuario y clave
-			            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                             				'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] => 'Formación 2.0'),
-			                                'destinatario' => $correo,
-			                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
-			                                'datos' => array('usuario' => $usuario->getLogin(),
-			                                                 'clave' => $usuario->getClave()) );
-			            $correoRecuperacion = $f->sendEmail($parametros, $this);
-               			return $this->redirectToRoute('_login');
-	                }
-	            }
-			}
-		}
-
-        if ($ok == 1)
-        {
-
-            // Envío de correo con el usuario y clave provisional
-            $f = $this->get('funciones');
-            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                 				'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] => 'Formación 2.0'),
-                                'destinatario' => $correo,
-                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
-                                'datos' => array('usuario' => $usuario->getLogin(),
-                                                 'clave' => $usuario->getClave()) );
-            $correoRecuperacion = $f->sendEmail($parametros, $this);
-        }
-        
-        $return = array('ok' => $ok, 'error' => $error);
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
-    }*/
-
-	public function recuperarClaveAction($empresa_id, Request $request)
-    {
-
-		$f = $this->get('funciones');
-		$error = '';
-
-		if ($request->getMethod() == 'POST')
-        {
-        	$em = $this->getDoctrine()->getManager();
-
-            $correo = $request->request->get('correo_corporativo');
-
-            if($correo!="")
-            {
-				$empresa_id = 1;
-
-				$usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByCorreoCorporativo($correo);
-
-				if (!$usuario)//validamos que el correo exista
-	            {
-	                $error = $this->get('translator')->trans('El correo no existe en la base de datos.');
-	            }
-	            else{
-	            	if (!$usuario->getActivo()) //validamos que el usuario este activo
-	                {
-	                    $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
-	                }
-	                else {
-	            		$empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-
-	            		if ($usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
+	            		if ($empresa && $usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
 		                {
 		                    $error = $this->get('translator')->trans('El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.');
 		                }
 		                else{
+
+        					$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+							$f = $this->get('funciones');
 
 	   			            // Envío de correo con los datos de acceso, usuario y clave
 				            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
@@ -146,16 +67,33 @@ class LoginController extends Controller
 	               			return $this->redirectToRoute('_login');
 		                }
 		            }
-				}
-			}else
-			{
-                $error = $this->get('translator')->trans('Debe ingresar el correo electronico.');
+	            }
 			}
-        }
+		}else
+		{
+            $error = $this->get('translator')->trans('Debe ingresar el correo electronico.');
+		}
 
-        return $this->render('LinkFrontendBundle:Default:recuperarClave.html.twig', array('error' => $error));   
+      /*  if ($ok == 1)
+        {
+
+            // Envío de correo con el usuario y clave provisional
+            $f = $this->get('funciones');
+            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
+                 				'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] => 'Formación 2.0'),
+                                'destinatario' => $correo,
+                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
+                                'datos' => array('usuario' => $usuario->getLogin(),
+                                                 'clave' => $usuario->getClave()) );
+            $correoRecuperacion = $f->sendEmail($parametros, $this);
+        }**/
+        
+        $return = array('ok' => $ok, 'error' => $error);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
-
 
     public function loginAction($empresa_id, Request $request)
     {
@@ -361,6 +299,23 @@ class LoginController extends Controller
 											$session->set('empresa', $empresa);
 											$session->set('paginas', $paginas);
 
+									        //1) creo una marca aleatoria en el registro de este usuario
+									        //alimentamos el generador de aleatorios
+									        mt_srand (time());
+									        //generamos un número aleatorio
+									        $numero_aleatorio = mt_rand(1000000,999999999);
+									        //2) meto la marca aleatoria en la tabla de usuario
+									        //$ssql = "update usuario set cookie='$numero_aleatorio' where id_usuario=" . $usuario_encontrado->id_usuario;
+									        //mysql_query($ssql);
+									        //3) ahora meto una cookie en el ordenador del usuario con el identificador del usuario y la cookie aleatoria
+									        setcookie("id_usuario", $session->get('usuario')['id'] , time()+(60*60*24*365));
+
+									        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneById($session->get('usuario')['id']);
+
+									        setcookie("clave_usuario", $usuario->getClave());
+									        setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365));
+
+
 			                                return $this->redirectToRoute('_inicio');
 			                                
 			                            }
@@ -380,6 +335,112 @@ class LoginController extends Controller
 	    else {
     		return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Url de la empresa no existe')));
 	    }
+    }
+
+	public function pdfAction($programa_id)
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        }
+        
+        $f->setRequest($session->get('sesion_id'));
+
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($programa_id);
+
+		if($pagina)
+		{
+	        $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                        'pagina' => $pagina->getId()));
+
+	        $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                'pagina' => $pagina->getId(),
+																								'estatusPagina' => $yml['parameters']['estatus_pagina']['completada']) );
+
+			if($pagina_log)
+			{
+		        $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+		                                                                                               'entidadId' => $pagina->getId()));
+		        if($certificado)//si existe certificado imprimimos el documento
+		        {
+
+		        	$fecha = $f->fechaNatural($pagina_empresa->getFechaVencimiento()->format("Y-m-d"));
+					
+					$aleatorio = $f->generarClave();
+
+			        $contenido = $aleatorio.$session->get('usuario')['apellido'].$session->get('usuario')['nombre'].$pagina->getNombre();
+			        $size = 2;
+
+			        $nombre = $aleatorio.date('Y-m-d').'.png';
+
+			        \PHPQRCode\QRcode::png($contenido, "../qr/".$nombre, 'H', $size, 4);
+
+			        $ruta ='<img src="'.'http://'.$_SERVER['HTTP_HOST'].'/formacion2.0/qr/'.$nombre.'">';
+			        
+			        $file = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$certificado->getImagen();
+
+			        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
+			        {
+			            /*certificado numero 2*/
+			            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
+			            $certificado_pdf->writeHTML('<page  pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
+			            								<title>prueba</title>
+			                                            <div style="font-size:24px;">'.$certificado->getEncabezado().'</div>
+			                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
+			                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
+			                                            <div style="text-align:center; font-size:50px; margin-top:60px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
+			                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
+                                            			<div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+			                                        </page>');
+
+			            /*certificado numero 3
+			            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(48, 60, 0, 0));
+			            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
+			                                            <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
+			                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
+			                                            <div style="text-align:center; font-size:24px; margin-top:50px; ">'.$certificado->getDescripcion().'</div>
+			                                            <div style="text-align:center; font-size:30px; margin-top:50px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
+			                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$fecha.'</div>
+			                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+			                                        </page>');*/
+			            //Generamos el PDF
+			            $certificado_pdf->output('certificiado.pdf');
+			        }else
+			        {
+			            if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['constancia'] )
+			            {                 
+			                $constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 60, 15, 5));
+			                $constancia_pdf->writeHTML('<page title="prueba" orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
+			                                                <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
+			                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
+			                                                <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
+			                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">'.$pagina->getNombre().'</div>
+			                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getResumen().'</div>
+			                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$fecha.'</div>
+			                                                <div style="margin-top:50px; margin-left:500px; ">'.$ruta.'</div>
+			                                            </page>');
+			                $constancia_pdf->output('constancia.pdf');
+			            }
+			        }
+			    }else
+			    {
+			    	return $this->redirectToRoute('_inicio');
+			    }
+			}else
+			{
+				return $this->redirectToRoute('_inicio');
+			}
+		}else
+		{
+			return $this->redirectToRoute('_inicio');
+		}
     }
 
 }
