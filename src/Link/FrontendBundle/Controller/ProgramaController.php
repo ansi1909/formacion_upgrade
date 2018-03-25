@@ -28,6 +28,11 @@ class ProgramaController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
 
+
+        $pagina_obj = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $usuario_obj = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $status_pag_obj = $this->getDoctrine()->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['iniciada']);
+
         //Validar si el usuario tiene registro en certipaginalog para este progaram y de lo contarrio crearlo
         $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                              'pagina' => $programa_id));
@@ -35,10 +40,10 @@ class ProgramaController extends Controller
         if(!$pagina_log){
 
             $pagina_log = new CertiPaginaLog();
-            $pagina_log->setPagina($pagina);
-            $pagina_log->setUsuario($usuario);
+            $pagina_log->setPagina($pagina_obj);
+            $pagina_log->setUsuario($usuario_obj);
             $pagina_log->setFechaInicio(new \DateTime('now'));
-            $pagina_log->setEstatusPagina($estatus_pagina);
+            $pagina_log->setEstatusPagina($status_pag_obj);
             $pagina_log->setPorcentajeAvance(0);
             $em->persist($pagina_log);
             $em->flush();
@@ -82,7 +87,7 @@ class ProgramaController extends Controller
 
                             if(!$leccion_completada){
                                 if($next_pagina == 0){
-                                    $next_pagina = $sub['id'];
+                                    $next_pagina = $subpagina['id'];
                                 }
                             }
 
