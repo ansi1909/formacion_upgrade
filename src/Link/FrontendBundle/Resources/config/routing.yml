@@ -39,3 +39,7 @@ noticias:
 certificados:
     resource: "@LinkFrontendBundle/Resources/config/routing/certificados.yml"
     prefix: /certificados
+
+biblioteca:
+    resource: "@LinkFrontendBundle/Resources/config/routing/biblioteca.yml"
+    prefix: /biblioteca
