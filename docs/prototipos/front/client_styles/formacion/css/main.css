@@ -1937,6 +1937,7 @@ p.up {
   line-height: calc(2rem - 4px);
   font-weight: 400; }
 
+/* mapa de progreso */
 #percent {
   transform: translate(-51px, -79px); }
 
