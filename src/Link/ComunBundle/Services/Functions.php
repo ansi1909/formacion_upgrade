@@ -18,6 +18,8 @@ class Functions
 	private $templating;
 	private $translator;
 
+    var $meses=array("1"=>"Enero","2"=>"Febrero","3"=>"Marzo","4"=>"Abril","5"=>"Mayo","6"=>"Junio","7"=>"Julio","8"=>"Agosto","9"=>"Septiembre","10"=>"Octubre","11"=>"Noviembre","12"=>"Diciembre");
+
 	public function __construct(\Doctrine\ORM\EntityManager $em, ContainerInterface $container)
 	{
 
@@ -130,7 +132,7 @@ class Functions
 
 	}
 
-	// Retorna el URL hasta el directorio web/ de la aplicación
+	// Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.
 	public function getWebDirectory()
 	{
 		$request = Request::createFromGlobals();
@@ -375,12 +377,12 @@ class Functions
 		{
 			
 			$datetime1 = new \DateTime($fecha);
-			$datetime2 = new \DateTime("now");
+			$datetime2 = new \DateTime(date('Y-m-d H:i:s'));
 			$interval = $datetime1->diff($datetime2);
 
 			if ($fecha < $ayer)
 			{
-				$time_ago = $datetime1->format('Y-m-d H:i');
+				$time_ago = $datetime1->format('d/m/Y H:i');
 			}
 			elseif ($fecha >= $ayer.' 00:00:00' && $fecha < $ayer.' 23:59:59') 
 			{
@@ -392,7 +394,7 @@ class Functions
 					$time_ago = $datetime1->format('H:i');
 				}
 				else {
-					$time_ago = 'Hace '.$datetime1->format('i').' '.$this->translator->trans('minutos');
+					$time_ago = 'Hace '.$interval->format('%i').' '.$this->translator->trans('minutos');
 				}
 			}
 			
@@ -799,6 +801,7 @@ class Functions
 		$subdirectorios[] = 'recursos/notificaciones/';
 		$subdirectorios[] = 'recursos/participantes/';
 		$subdirectorios[] = 'recursos/empresas/';
+		$subdirectorios[] = 'recursos/qr/';
 
 		if ($empresa_id)
 		{
@@ -1066,7 +1069,7 @@ class Functions
 	}
 
 	// Retorna un arreglo con toda la información de la lecciones de una página, con su muro.
-	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $estatus_completada, $estatus_evaluacion)
+	public function contenidoLecciones($pagina_arr, $wizard, $usuario_id, $yml, $empresa_id)
 	{
 
 		$em = $this->em;
@@ -1090,14 +1093,14 @@ class Functions
 			                            AND pl.estatusPagina = :completada')
 			            ->setParameters(array('pagina_id' => $pagina_arr['prelacion'],
 			            					  'usuario_id' => $usuario_id,
-			                        		  'completada' => $estatus_completada));
+			                        		  'completada' => $yml['parameters']['estatus_pagina']['completada']));
 			$leccion_completada = $query->getSingleScalarResult();
 			$bloqueada = $leccion_completada ? 0 : 1;
 		}
 		$lecciones['bloqueada'] = $bloqueada;
 
 		// Muros recientes
-		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id);
+		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 		$lecciones['muros_recientes'] = $muros_recientes;
 
 		$sublecciones = array();
@@ -1128,7 +1131,7 @@ class Functions
 				                            AND pl.estatusPagina = :completada')
 				            ->setParameters(array('pagina_id' => $subpagina_arr['prelacion'],
 				            					  'usuario_id' => $usuario_id,
-				                        		  'completada' => $estatus_completada));
+				                        		  'completada' => $yml['parameters']['estatus_pagina']['completada']));
 				$leccion_completada = $query->getSingleScalarResult();
 				$bloqueada = $leccion_completada ? 0 : 1;
 			}
@@ -1141,11 +1144,11 @@ class Functions
 			                            AND pl.estatusPagina IN (:vista)')
 			            ->setParameters(array('pagina_id' => $subpagina_arr['id'],
 			            					  'usuario_id' => $usuario_id,
-			                        		  'vista' => array($estatus_completada, $estatus_evaluacion)));
+			                        		  'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación'])));
 			$vista = $query->getSingleScalarResult();
 			$subleccion['vista'] = $vista;
 
-			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id);
+			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 			$subleccion['muros_recientes'] = $muros_recientes;
 
 			$sublecciones[] = $subleccion;
@@ -1158,7 +1161,7 @@ class Functions
 	}
 
 	// Arreglo de comentarios en el muro de una página y sus respuestas
-	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit, $usuario_id)
+	public function muroPagina($pagina_id, $orderCriteria, $asc, $offset, $limit, $usuario_id, $empresa_id, $social)
 	{
 
 		$em = $this->em;
@@ -1166,19 +1169,45 @@ class Functions
         $qb->select('m')
            ->from('LinkComunBundle:CertiMuro', 'm')
            ->andWhere('m.pagina = :pagina_id')
+           ->andWhere('m.empresa = :empresa_id')
            ->andWhere('m.muro IS NULL')
            ->orderBy('m.'.$orderCriteria, $asc)
            ->setFirstResult($offset)
            ->setMaxResults($limit)
-           ->setParameter('pagina_id', $pagina_id);
+           ->setParameters(array('pagina_id' => $pagina_id,
+           						 'empresa_id' => $empresa_id));
         $query = $qb->getQuery();
         $muros_bd = $query->getResult();
         $muros = array();
 
+        // Total de comentarios en este muro
+        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+		                            WHERE m.pagina = :pagina_id 
+		                            AND m.empresa = :empresa_id')
+		            ->setParameters(array('pagina_id' => $pagina_id,
+		            					  'empresa_id' => $empresa_id));
+		$total_comentarios = $query->getSingleScalarResult();
+
         foreach ($muros_bd as $muro)
         {
-        	$submuros_bd = $em->getRepository('LinkComunBundle:CertiMuro')->findBy(array('muro' => $muro->getId()),
-        																		   array('id' => 'DESC'));
+
+        	$qb = $em->createQueryBuilder();
+	        $qb->select('m')
+	           ->from('LinkComunBundle:CertiMuro', 'm')
+	           ->andWhere('m.muro = :muro_id')
+	           ->orderBy('m.id', 'DESC')
+	           ->setFirstResult(0)
+	           ->setMaxResults(5)
+	           ->setParameter('muro_id', $muro->getId());
+	        $query = $qb->getQuery();
+	        $submuros_bd = $query->getResult();
+
+	        // Total de respuestas de este comentario
+	        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+			                            WHERE m.muro = :muro_id')
+			            ->setParameter('muro_id', $muro->getId());
+			$total_respuestas = $query->getSingleScalarResult();
+        	
         	$submuros = array();
         	foreach ($submuros_bd as $submuro)
         	{
@@ -1186,17 +1215,22 @@ class Functions
         							'mensaje' => $submuro->getMensaje(),
         							'usuario' => $submuro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $submuro->getUsuario()->getNombre().' '.$submuro->getUsuario()->getApellido(),
         							'foto' => $submuro->getUsuario()->getFoto(),
-        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')));
+        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')),
+        							'likes' => $this->likes($social['muro'], $submuro->getId(), $usuario_id));
         	}
         	$muros[] = array('id' => $muro->getId(),
     						 'mensaje' => $muro->getMensaje(),
     						 'usuario' => $muro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido(),
     						 'foto' => $muro->getUsuario()->getFoto(),
     						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
+    						 'total_respuestas' => $total_respuestas,
+    						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
     						 'submuros' => $submuros);
         }
 
-        return $muros;
+        $return = array('muros' => $muros,
+        				'total_comentarios' => $total_comentarios);
+        return $return;
 
 	}
 
@@ -1278,7 +1312,7 @@ class Functions
 	{
 
 		$em = $this->em;
-		$log_id = 0;
+		$log_id = '0_0'; // logid_puntos
 
 		$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $pagina_id,
                                                                                             'usuario' => $usuario_id,
@@ -1287,6 +1321,7 @@ class Functions
         if ($pagina_log)
         {
 
+        	$puntos_agregados = 0;
         	// Revisar antes si tiene sub-páginas iniciadas
         	$subpaginas_iniciadas = $this->subpaginasIniciadas($indexedPages, $pagina_id, $usuario_id, $yml['parameters']['estatus_pagina']['completada']);
         	if (!$subpaginas_iniciadas)
@@ -1306,7 +1341,8 @@ class Functions
 					$inicio = $inicio_arr[2].'-'.$inicio_arr[1].'-'.$inicio_arr[0];
 					if ($inicio <= $mitad_periodo)
 					{
-						$puntos = $pagina_log->getPuntos() + $yml['parameters']['puntos']['mitad_periodo'];
+						$puntos_agregados = $yml['parameters']['puntos']['mitad_periodo'];
+						$puntos = $pagina_log->getPuntos() + $puntos_agregados;
 						$pagina_log->setPuntos($puntos);
 					}
         		}
@@ -1316,12 +1352,13 @@ class Functions
 	            $pagina_log->setPorcentajeAvance($avance);
 	            $em->persist($pagina_log);
 	        	$em->flush();
-	        	$log_id = $pagina_log->getId();
 
 	        	// Cálculo del porcentaje de avance de toda la línea de ascendente
 	        	$this->calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml);
 
         	}
+
+        	$log_id = $pagina_log->getId().'_'.$puntos_agregados;
 
         }
 
@@ -1334,33 +1371,37 @@ class Functions
 
 		$em = $this->em;
 		$iniciada = 0;
+		$completadas = 0;
 
-		foreach ($indexedPages[$pagina_id]['subpaginas'] as $subpagina)
+		if (count($indexedPages[$pagina_id]['subpaginas']))
 		{
-			$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-			                            WHERE pl.pagina = :pagina_id 
-			                            AND pl.usuario = :usuario_id 
-			                            AND pl.estatusPagina != :completada')
-			            ->setParameters(array('pagina_id' => $subpagina['id'],
-			            					  'usuario_id' => $usuario_id,
-			                        		  'completada' => $estatus_completada));
-			$subpagina_iniciada = $query->getSingleScalarResult();
-			if ($subpagina_iniciada)
+			foreach ($indexedPages[$pagina_id]['subpaginas'] as $subpagina)
 			{
-				$iniciada = 1;
-				break;
-			}
-			else {
-				// Repetir el ciclo con las subpáginas
-				if (count($subpagina['subpaginas']))
+				$qb = $em->createQueryBuilder();
+		        $qb->select('pl')
+		           ->from('LinkComunBundle:CertiPaginaLog', 'pl')
+		           ->andWhere('pl.pagina = :pagina_id')
+		           ->andWhere('pl.usuario = :usuario_id')
+		           ->orderBy('pl.id', 'DESC')
+		           ->setParameters(array('pagina_id' => $subpagina['id'],
+	            					  	 'usuario_id' => $usuario_id));
+		        $query = $qb->getQuery();
+		        $subpagina_iniciada = $query->getResult();
+				if ($subpagina_iniciada)
 				{
-					$subpagina_iniciada = $this->subpaginasIniciadas($indexedPages, $subpagina['id'], $usuario_id, $estatus_completada);
-					if ($subpagina_iniciada)
+					if ($subpagina_iniciada[0]->getEstatusPagina()->getId() != $estatus_completada)
 					{
 						$iniciada = 1;
 						break;
 					}
+					else {
+						$completadas++;
+					}
 				}
+			}
+			if (!$iniciada && count($indexedPages[$pagina_id]['subpaginas']) != $completadas)
+			{
+				$iniciada = 1;
 			}
 		}
 
@@ -1384,7 +1425,7 @@ class Functions
 			{
 
 				$n = count($indexedPages[$pagina_padre_id]['subpaginas']);
-				$max_porcentaje = $indexedPages[$pagina_padre_id]['tiene_evaluacion'] ? (1 - $yml['ponderacion']['evaluacion']) : 1;
+				$max_porcentaje = $indexedPages[$pagina_padre_id]['tiene_evaluacion'] ? (1 - $yml['parameters']['ponderacion']['evaluacion']) : 1;
 				$avance_total = 0;
 				$avance_parcial = 0;
 
@@ -1405,16 +1446,19 @@ class Functions
 					$avance_prueba = 0;
 					$query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
 			                                    JOIN pl.prueba p 
-			                                    WHERE pl.usuario = :usuario_id AND p.pagina = :pagina_id 
+			                                    WHERE pl.usuario = :usuario_id 
+			                                    AND p.pagina = :pagina_id 
+			                                    AND pl.estado != :estado 
 			                                    ORDER BY pl.id DESC")
 			                    ->setParameters(array('usuario_id' => $usuario_id,
-			                    					  'pagina_id' => $pagina_padre_id));
+			                    					  'pagina_id' => $pagina_padre_id,
+			                    					  'estado' => $yml['parameters']['estado_prueba']['reprobado']));
 			        $pruebas_log = $query->getResult();
 			        if ($pruebas_log)
 			        {
 			        	$avance_prueba = $pruebas_log[0]->getPorcentajeAvance();
 			        }
-			        $avance_total += $avance_prueba*$yml['ponderacion']['evaluacion'];
+			        $avance_total += $avance_prueba*$yml['parameters']['ponderacion']['evaluacion'];
 				}
 
 				// Finalmente se almacena el avance calculado en la página padre
@@ -1437,5 +1481,69 @@ class Functions
 		}
 
 	}
+
+	public function likes($social_muro, $entidad_id, $usuario_id)
+	{
+
+		$em = $this->em;
+		$cantidad = 0;
+		$ilike = 0;
+
+		$likes = $em->getRepository('LinkComunBundle:AdminLike')->findBy(array('social' => $social_muro,
+                                                                               'entidadId' => $entidad_id));
+
+		foreach ($likes as $like)
+		{
+			$cantidad++;
+			if ($like->getUsuario()->getId() == $usuario_id)
+			{
+				$ilike = 1;
+			}
+		}
+
+		return array('cantidad' => $cantidad,
+					 'ilike' => $ilike);
+
+	}
+
+	//requiere formato 2001-12-11 hora, retorna 'dia de mes de año'
+    public function fechaNatural($fecha)
+    {
+        if($fecha!="")
+        {
+            $arreglo=explode(" ",$fecha);
+            $arreglo=$arreglo[0];
+            $arreglo=explode("-",$arreglo);
+            return $arreglo[2]." de ".$this->meses[(int)$arreglo[1]]." de ".$arreglo[0];
+        }else
+        {
+            return "";
+        }
+    }
+
+    // función para retornar todos los ids de las sugpaginas de una programa
+    public function hijas($subpagina)
+    {
+        $hijas = array();
+        foreach ($subpagina as $sub) {
+            $hijas[] = $sub['id'];
+            if($sub['subpaginas']){
+                foreach ($sub['subpaginas'] as $key) {
+                    $hijas[] = $key['id'];
+                    if($key['subpaginas']){
+                        foreach ($key['subpaginas'] as $keysub) {
+                            $hijas[] = $keysub['id'];
+                            if($keysub['subpaginas']){
+                               $subpagina = $keysub['subpaginas'];
+                               return $this->hijas($subpagina); 
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $hijas;
+    }
 
 }

@@ -25,14 +25,7 @@ class CalendarioDeEventosController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
 
-        if ($this->container->get('session')->isStarted())
-        {
-
-          $usuario_id = $session->get('usuario')['id'];
-
-        }else {
-            return $this->redirectToRoute('_login');
-        }
+        $usuario_id = $session->get('usuario')['id'];
 
         return $this->render('LinkFrontendBundle:CalendarioDeEventos:index.html.twig', array('usuario_id' => $usuario_id));
 

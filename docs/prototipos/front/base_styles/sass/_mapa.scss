@@ -1,19 +1,18 @@
 #percent {
-        transform: translateX(35%);
-    }
+	transform: translate(-51px,-79px);
+}
 
-#grey {
-        stroke-dasharray:1016 1018;
-        stroke:$gray-400;
-    }
+.goal {
+	fill: #cfe65c;
+	transition: 1s;
+}
 
 .progress-bar {
-        stroke:$green ;
-        stroke-dasharray:1016 1018;
-        /* stroke-dashoffset:1017; */
-        animation: ani-progress 3s ease 0.2s forwards;
-    }
+	stroke-dasharray:1016 1018;
+	/* stroke-dashoffset:1017; */
+	animation: ani-progress 3s linear 0.2s forwards;
+	}
 
 @keyframes ani-progress {
-        0% { stroke-dashoffset:1017; }
-    }
+	0% { stroke-dashoffset:1017; }
+}

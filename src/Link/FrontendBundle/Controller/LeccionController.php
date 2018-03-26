@@ -7,11 +7,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPaginaLog;
+use Link\ComunBundle\Entity\CertiMuro;
 use Symfony\Component\Yaml\Yaml;
 
 class LeccionController extends Controller
 {
-    public function indexAction($programa_id, $subpagina_id, Request $request)
+    public function indexAction($programa_id, $subpagina_id, $puntos, Request $request)
     {
 
     	$session = new Session();
@@ -129,7 +130,8 @@ class LeccionController extends Controller
             }
         }
 
-        $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación']);
+        $lecciones = $f->contenidoLecciones($indexedPages[$pagina_id], $wizard, $session->get('usuario')['id'], $yml, $session->get('empresa')['id']);
+        $lecciones['wizard'] = $wizard;
 
         // Se reinicia el reinicia el reloj de pagina_log
         $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
@@ -145,7 +147,8 @@ class LeccionController extends Controller
                                                                                  'titulo' => $titulo,
                                                                                  'subtitulo' => $subtitulo,
                                                                                  'wizard' => $wizard,
-                                                                                 'prueba_activa' => $prueba_activa));
+                                                                                 'prueba_activa' => $prueba_activa,
+                                                                                 'puntos' => $puntos));
 
     }
 
@@ -219,6 +222,223 @@ class LeccionController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
+    }
+
+    public function finLeccionesAction($programa_id, $subpagina_id, $puntos, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        /*if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        }
+        $f->setRequest($session->get('sesion_id'));*/
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Menú lateral dinámico
+        $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
+
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+
+        // También se anexa a la indexación el programa padre
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $pagina = $session->get('paginas')[$programa_id];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
+        $indexedPages[$pagina['id']] = $pagina;
+
+        // Se completa la lección
+        $log_id = $f->finishLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $yml);
+        
+        // Extraer los puntos generados
+        $log_id_arr = explode("_", $log_id);
+        $puntos += $log_id[1];
+
+        // Determinar siguiente lección a ver
+        $next_lesson = 0;
+        if ($indexedPages[$subpagina_id]['padre'])
+        {
+            $pagina_padre_id = $indexedPages[$subpagina_id]['padre'];
+            $keys = array_keys($indexedPages[$pagina_padre_id]['subpaginas']);
+            if (isset($keys[array_search($subpagina_id,$keys)+1]))
+            {
+                $next_lesson = $keys[array_search($subpagina_id,$keys)+1];
+            }
+        }
+
+        // Si tiene evaluación, verificar que ya no haya presentado y aprobado.
+        $boton_evaluacion = 0;
+        if ($indexedPages[$subpagina_id]['tiene_evaluacion'])
+        {
+            $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
+                                        JOIN pl.prueba p 
+                                        WHERE pl.usuario = :usuario_id 
+                                        AND p.pagina = :pagina_id 
+                                        ORDER BY pl.id DESC")
+                        ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                              'pagina_id' => $subpagina_id));
+            $pruebas_log = $query->getResult();
+            if ($pruebas_log)
+            {
+                switch ($pruebas_log[0]->getEstado())
+                {
+                    case $yml['parameters']['estado_prueba']['curso']:
+                        $boton_evaluacion = 1;
+                        break;
+                    case $yml['parameters']['estado_prueba']['aprobado']:
+                        $boton_evaluacion = 0;
+                        break;
+                    case $yml['parameters']['estado_prueba']['reprobado']:
+                        // Cantidad de intentos
+                        $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
+                                                    JOIN pl.prueba p 
+                                                    WHERE pl.usuario = :usuario_id 
+                                                    AND p.pagina = :pagina_id 
+                                                    ORDER BY pl.id DESC")
+                                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                          'pagina_id' => $subpagina_id));
+                        $intentos = $query->getSingleScalarResult();
+                        $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                    WHERE pe.empresa = :empresa_id 
+                                                    AND pe.pagina = :pagina_id")
+                                    ->setParameters(array('empresa_id' => $session->get('empresa')['id'],
+                                                          'pagina_id' => $subpagina_id));
+                        $pe = $query->getResult();
+                        $max_intentos = $pe[0]->getMaxIntentos();
+                        if ($intentos < $max_intentos)
+                        {
+                            $boton_evaluacion = 1;
+                        }
+                        break;
+                }
+            }
+            else {
+                // Se verifica si la página tiene creada una evaluación
+                $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p 
+                                            WHERE p.pagina = :pagina_id 
+                                            AND p.estatusContenido = :activo")
+                            ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                  'pagina_id' => $subpagina_id));
+                $evaluaciones = $query->getSingleScalarResult();
+                if ($evaluaciones)
+                {
+                    $boton_evaluacion = 1;
+                }
+            }
+        }
+
+        //return new Response('next_lesson: '.$next_lesson.', puntos: '.$puntos);
+        //return new Response(var_dump($indexedPages[$subpagina_id]));
+
+        return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
+                                                                                        'subpagina' => $indexedPages[$subpagina_id],
+                                                                                        'menu_str' => $menu_str,
+                                                                                        'next_lesson' => $next_lesson,
+                                                                                        'puntos' => $puntos,
+                                                                                        'boton_evaluacion' => $boton_evaluacion));
+
+    }
+
+    public function ajaxEnviarComentarioAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $pagina_id = $request->request->get('pagina_id');
+        $mensaje = $request->request->get('mensaje');
+        $muro_id = $request->request->get('muro_id');
+
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
+
+        $muro = new CertiMuro();
+        $muro->setMensaje($mensaje);
+        $muro->setPagina($pagina);
+        $muro->setUsuario($usuario);
+        if ($muro_id)
+        {
+            $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+            $muro->setMuro($muro_padre);
+        }
+        $muro->setEmpresa($empresa);
+        $muro->setFechaRegistro(new \DateTime('now'));
+        $em->persist($muro);
+        $em->flush();
+
+        // HTML para anexar al muro
+        $uploads = $yml['parameters']['folders']['uploads'];
+        $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+        $html = '<div class="comment">
+                    <div class="comm-header d-flex align-items-center mb-2">
+                        <img src="'.$img_user.'" alt="">
+                        <div class="wrap-info-user flex-column ml-2">
+                            <div class="name text-xs color-dark-grey">'.$this->get('translator')->trans('Yo').'</div>
+                            <div class="date text-xs color-grey">'.$this->get('translator')->trans('Ahora').'</div>
+                        </div>
+                    </div>
+                    <div class="comm-body">
+                        <p>'.$mensaje.'</p>
+                    </div>
+                    <div class="comm-footer d-flex justify-content-between align-items-center">
+                        <a href="" class="mr-0 text-sm color-light-grey like">
+                            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
+                        </a>
+                        <a href="#" class="links text-right text-xs reply_comment" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>
+                    </div>
+                    <div id="div-response-'.$muro->getId().'"></div>
+                    <div id="respuestas-'.$muro->getId().'"></div>
+                </div>';
+
+        $return = array('html' => $html,
+                        'muro_id' => $muro->getId());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxDivResponseAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $f = $this->get('funciones');
+        $muro_id = $request->query->get('muro_id');
+
+        $uploads = $yml['parameters']['folders']['uploads'];
+        $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+        
+        $html = '<div class="response d-flex align-items-center justify-content-between" id="response-'.$muro_id.'">
+                    <img src="'.$img_user.'" alt="">
+                    <form class="mt-3" method="POST">
+                        <div class="form-group">
+                            <textarea class="form-control" id="respuesta_'.$muro_id.'" name="respuesta_'.$muro_id.'" rows="5" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                        </div>
+                        <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
+                    </form>
+                </div>';
+
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }

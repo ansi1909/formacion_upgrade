@@ -14,6 +14,7 @@ Agregar opción: Agregar opción
 Agregar pregunta: Agregar pregunta
 Agregar sub-página: Agregar sub-página
 Agrupación de páginas: Agrupación de páginas
+Ahora: Ahora
 al: al
 Apellido: Apellido
 Apellido requerido: Apellido requerido
@@ -140,6 +141,7 @@ Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
 Editar asignación: Editar asignación
 Editar página: Editar página
+el: el
 Elegir empresa: Elegir empresa
 Eliminado: Eliminado
 Eliminar: Eliminar
@@ -219,6 +221,7 @@ Error al obtener la repuesta: Error al obtener la repuesta
 Error al obtener los thumbnails: Error al obtener los thumbnails
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
+Error la empresa no existe: Error la empresa no existe
 Errores: Errores
 Errores de validación: Errores de validación
 Escoja una plantilla: Escoja una plantilla
@@ -261,6 +264,8 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha 
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
+Has completado con éxito: Has completado con éxito
+Has ganado: Has ganado
 Historial de programaciones de: Historial de programaciones de
 Icono: Icono
 Icono de la empresa: Icono de la empresa
@@ -276,6 +281,7 @@ Ir al listado: Ir al listado
 Ir al listado de evaluaciones: Ir al listado de evaluaciones
 Ir al listado de opciones: Ir al listado de opciones
 Ir al listado de preguntas: Ir al listado de preguntas
+la: la
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: La cantidad de preguntas a mostrar debe ser mayor o igual a 1.
 La cantidad de preguntas a mostrar debe ser un valor entero.: La cantidad de preguntas a mostrar debe ser un valor entero.
@@ -295,7 +301,6 @@ La empresa a la que pertenece este usuario está inactiva: La empresa a la que p
 La empresa aún no tiene configurado ningún nivel: La empresa aún no tiene configurado ningún nivel
 La empresa está inactiva. Contacte al administrador del sistema.: La empresa está inactiva. Contacte al administrador del sistema.
 La empresa es requerida.: La empresa es requerida.
-Error la empresa no existe: Error la empresa no existe
 La Entidad es requerida.: La Entidad es requerida.
 La faq ha sido almacenada con éxito: La faq ha sido almacenada con éxito
 La fecha de fin es requerida.: La fecha de fin es requerida.
@@ -456,6 +461,7 @@ Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimien
 Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
+Sigue aprendiendo: Sigue aprendiendo
 Siguiente: Siguiente
 Sistema Formación: Sistema Formación
 Sólo archivo en PDF: Sólo archivo en PDF
@@ -486,6 +492,7 @@ Tipo Destino: Tipo Destino
 Tipo de Destinos: Tipo de Destinos
 Título: Título
 Título en la ventana del navegador: Título en la ventana del navegador
+Tomar evaluación: Tomar evaluación
 Tutoriales: Tutoriales
 Últimos 12: Últimos 12
 Url de la empresa no existe: Url de la empresa no existe
@@ -509,7 +516,7 @@ Variables de colores que se aplican a la plantilla: Variables de colores que se 
 Vencimiento: Vencimiento
 Ver historial: Ver historial
 Ver más comentarios: Ver más comentarios
-Ver más repuestas: Ver más repuestas
+Ver más respuestas: Ver más respuestas
 Ver páginas asignadas: Ver páginas asignadas
 Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones

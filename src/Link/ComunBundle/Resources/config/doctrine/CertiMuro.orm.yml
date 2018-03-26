@@ -11,6 +11,9 @@ Link\ComunBundle\Entity\CertiMuro:
         IDX_F736956B55B526F1:
             columns:
                 - muro_id
+        IDX_F736956B521E1991:
+            columns:
+                - empresa_id
     id:
         id:
             type: integer
@@ -60,6 +63,16 @@ Link\ComunBundle\Entity\CertiMuro:
             inversedBy: null
             joinColumns:
                 muro_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

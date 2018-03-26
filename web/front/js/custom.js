@@ -5,11 +5,15 @@ function closeNav() {
     if (document.getElementById("pills-tabContent")){
         document.getElementById("pills-tabContent").classList.toggle("hidden-nav-content");
     }
+    if (!$(".main-sidenav-close")[0] && $(".open-comments")[0]){
+        $("#comments").removeClass("open-comments");
+        $("#main").removeClass("ml-comments");
+    }
 }
 
 window.onload=function(){
-    var body = document.getElementsByTagName('body')[0],
-    sidebar = document.getElementById('mainSidenav');
+    //var body = document.getElementsByTagName('body')[0],
+    //sidebar = document.getElementById('mainSidenav');
 
     // sidebar.onmouseover = function() {
     //     body.style.overflow = 'hidden';
@@ -56,7 +60,9 @@ $("#arrowDown").click(function(){
 $("#iconComments").click(function(){
             $("#comments").toggleClass("open-comments");
             $("#main").toggleClass("ml-comments");
-
+            if (!$(".main-sidenav-close")[0]){
+                 closeNav();
+            }
         });
 
 

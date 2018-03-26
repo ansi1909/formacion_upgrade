@@ -213,6 +213,8 @@ class DefaultController extends Controller
                        
                     }
 
+                        $usuariosN = $usuariosT - ($usuariosCur + $usuariosF);
+
                     //return new Response (var_dump($usuariosCur));
                     
                     $paginas[] = array('pagina'=>$pagina->getPagina()->getNombre(),

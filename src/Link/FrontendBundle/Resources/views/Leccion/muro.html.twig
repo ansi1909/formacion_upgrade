@@ -11,23 +11,24 @@
         <p>{{ muro.mensaje }}</p>
     </div>
     <div class="comm-footer d-flex justify-content-between align-items-center">
-        <a href="#" class="mr-0 text-sm color-light-grey">
-            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+        <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ muro.id }}">
+            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-{{ muro.id }}">{{ muro.likes.cantidad }}</span>
         </a>
         <a href="#" class="links text-right text-xs reply_comment" data="{{ muro.id }}">{{ 'Responder'|trans }}</a>
     </div>
-    <div class="response d-flex align-items-center justify-content-between" style="display:none;">
-        {% set img_me = app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user-default.png') %}
-        <img src="{{ img_me }}" alt="">
-        <form class="mt-3" id="form-reply" method="POST">
-            <input type="hidden" id="muro_id" name="muro_id" value="{{ muro.id }}">
-            <div class="form-group">
-                <textarea class="form-control" id="respuesta" name="respuesta" rows="5" placeholder="{{ 'Escriba su respuesta'|trans }}"></textarea>
-            </div>
-            <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-reply">{{ 'Responder'|trans }}</button>
-        </form>
+    <div id="div-response-{{ muro.id }}">
+        {#<div class="response d-flex align-items-center justify-content-between" id="response-{{ muro.id }}">
+            {% set img_me = app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user-default.png') %}
+            <img src="{{ img_me }}" alt="">
+            <form class="mt-3" method="POST">
+                <div class="form-group">
+                    <textarea class="form-control" id="respuesta_{{ muro.id }}" name="respuesta_{{ muro.id }}" rows="5" placeholder="{{ 'Escriba su respuesta'|trans }}"></textarea>
+                </div>
+                <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="{{ muro.id }}">{{ 'Responder'|trans }}</button>
+            </form>
+        </div>#}
     </div>
-    <div id="respuestas">
+    <div id="respuestas-{{ muro.id }}">
         {% for submuro in muro.submuros %}
             <div class="comment replied">
                 <div class="comm-header d-flex align-items-center mb-2">
@@ -42,13 +43,17 @@
                     <p>{{ submuro.mensaje }}</p>
                 </div>
                 <div class="comm-footer d-flex justify-content-between align-items-center">
-                    <a href="#" class="mr-0 text-sm color-light-grey">
-                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                    <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ submuro.id }}">
+                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-{{ submuro.id }}">{{ submuro.likes.cantidad }}</span>
                     </a>
                 </div>
-                <a href="#" class="links text-center d-block">{{ 'Ver más repuestas'|trans }}</a>
             </div>
         {% endfor %}
+        {% if muro.total_respuestas > muro.submuros|length %}
+            <a href="#" class="links text-center d-block more_answers" data="{{ muro.id }}-">{{ 'Ver más respuestas'|trans }}</a>
+        {% endif %}
     </div>
 </div>
-<a href="#" class="links text-center d-block">{{ 'Ver más comentarios'|trans }}</a>
+{% if total_comentarios > total_muro %}
+    <a href="#" class="links text-center d-block">{{ 'Ver más comentarios'|trans }}</a>
+{% endif %}

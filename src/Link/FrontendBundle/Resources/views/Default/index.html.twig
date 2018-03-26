@@ -7,9 +7,11 @@
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
+{% set tab = 0 %}
+{% set contenttab = 0 %}
 <div id="message" class="for-message well-message container py-6 px-6 mb-4">
     <i id="equis" class="material-icons mr-2" >close</i>
-    <h1 class="mb-4">Bienvenido a Formación&nbsp;2.0</h1>
+    <h1 class="mb-4">Bienvenido a Formación 2.0</h1>
     {{ bienvenida|raw }}
     <img class="img-fluid img-message d-none d-lg-block" src="{{ asset('front/assets/img/well_hero.png') }}" alt="hero">
 </div>
@@ -46,11 +48,7 @@
                     <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
                     <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ ar.fecha_vencimiento }} días</span>
                 </div>
-                {% if ar.es_hija == 1 %}
                 <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                {% else %}
-                <a href="{{ path('_programa', { 'programa_id':  ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -71,7 +69,8 @@
             <div class="filter-group d-flex justify-content-around mb-3">
                 <ul class="tabs">
                     {% for g in grupos %}
-                    <li class="mt-3">
+                    {% set tab = tab + 1 %}
+                    <li class="{% if tab == 1 %} activo {% endif %} mt-3">
                         <span>{{ g.nombre }}</span>
                     </li>
                     {% endfor %}
@@ -82,7 +81,8 @@
     <div class="row">
         <ul class="tab__content">
         {% for g in grupos %}
-            <li>
+            {% set contenttab = contenttab + 1 %}
+            <li {% if contenttab == 1 %} class="activo" {% endif %}>
                 <div class="content__wrapper">
                     <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
                     {% for pd in programas_disponibles %}
@@ -93,12 +93,20 @@
                                     <span class="count text-xs ">Finaliza en {{ pd.fecha_vencimiento }} días</span>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title mb-3"> {{ pd.nombre }} </h5>
+                                    <h5 class="card-title mb-3"> </h5>
                                     <p class="card-text">{{ pd.descripcion | raw }}</p>
                                     {% if pd.continuar == 0 %}
-                                        <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3"> Iniciar </a>
+                                        {% if pd.tiene_subpaginas == 1 %}
+                                            <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3"> Iniciar </a>
+                                        {% else %}
+                                            <a href="{{ path('_lecciones', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3"> Iniciar </a>
+                                        {% endif %}
                                     {% elseif pd.continuar == 1 %}
-                                        <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">Continuar </a>
+                                        {% if pd.tiene_subpaginas == 1 %}
+                                            <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">Continuar </a>
+                                        {% else %}
+                                            <a href="{{ path('_lecciones', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">Continuar </a>
+                                        {% endif %}
                                     {% elseif  pd.continuar in [2, 3] %}
                                     <div class="badge-wrap">
                                         <i class="material-icons badge-aprobado ">check_circle</i>
@@ -113,15 +121,15 @@
                                         {% set class = 'disabled' %}
                                     {% endif %}
                                 <div class="card-footer  d-flex justify-content-around">
-                                    <a  href="#" class="flex-column align-items-center col-4 btn-edge btn-certificado">
+                                    <a href="{{ path('_generarCertificado', { 'programa_id': 1 }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
                                         <i class="material-icons d-block">aspect_ratio</i>
                                         <small class=" d-block"> Certificado </small>
                                     </a>
-                                    <a  href="#" class="flex-column align-items-center col-4 btn-edge btn-notas " >
+                                    <a href="#" class="flex-column align-items-center col-4 btn-edge btn-notas " >
                                         <i class="material-icons   d-block">content_copy</i>
                                         <small class=" d-block"> Notas </small>
                                     </a>
-                                    <a  href="#" class="flex-column align-items-center col-4 btn-edge btn-ver {{ class }}" >
+                                    <a href="#" class="flex-column align-items-center col-4 btn-edge btn-ver {{ class }}" >
                                         <i class="material-icons   d-block">visibility</i>
                                         <small class=" d-block"> Ver </small>
                                     </a>
@@ -140,5 +148,5 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/front/programas.js') }}"></script>
+    
 {% endblock %}

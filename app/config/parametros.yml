@@ -39,18 +39,26 @@ parameters:
         iniciada: 1
         en_evaluación: 2
         completada: 3
+    estado_prueba:
+        aprobado: 'APROBADO'
+        curso: 'EN CURSO'
+        reprobado: 'REPROBADO'
+    social:
+        muro: 1
+        espacio_colaborativo: 2
     layout:
         base: 1
     folders:
         ########## CONFIGURACIÓN AMBIENTE LOCAL ##########
         #uploads: 'http://localhost/uploads/'
         #dir_uploads: 'C:/wamp/www/uploads/'
-        #dir_uploads: 'C:/xampp/htdocs/uploads/'
         #dir_project: 'C:/wamp/www/formacion2.0/'
+        #dir_uploads: 'C:/xampp/htdocs/uploads/'
+        #dir_project: 'C:/xampp/htdocs/formacion2.0/'
         ########## CONFIGURACIÓN AMBIENTE DESARROLLO ##########
         uploads: 'http://develop.formacion2puntocero.com/uploads/'
-        dir_project: '/home/develo/public_html/formacion2.0/'
         dir_uploads: '/home/develo/public_html/uploads/'
+        dir_project: '/home/develo/public_html/formacion2.0/'
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
         remitente: 'tutorvirtualformacion@gmail.com'

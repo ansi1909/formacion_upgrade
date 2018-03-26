@@ -85,6 +85,7 @@ nivel_id integer,
 competencia boolean,
 codigo varchar(50),
 fecha_modificacion timestamp without time zone,
+cookies varchar(100),
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (nivel_id) REFERENCES admin_nivel (id),
@@ -320,6 +321,12 @@ id serial,
 nombre varchar(20),
  PRIMARY KEY (id));
 
+CREATE TABLE admin_tipo_biblioteca(
+-- Attributes --
+id serial,
+nombre varchar(20),
+ PRIMARY KEY (id));
+
 CREATE TABLE admin_noticia(
 -- Attributes --
 id serial,
@@ -335,10 +342,12 @@ titulo varchar(500),
 autor varchar(250),
 pdf varchar(250),
 imagen varchar(250),
+tipo_bilioteca_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (tipo_noticia_id) REFERENCES admin_tipo_noticia (id));
+ FOREIGN KEY (tipo_noticia_id) REFERENCES admin_tipo_noticia (id),
+ FOREIGN KEY (tipo_bilioteca_id) REFERENCES admin_tipo_biblioteca (id));
 
 CREATE TABLE certi_muro(
 -- Attributes --
@@ -347,11 +356,13 @@ mensaje varchar(350),
 pagina_id integer,
 usuario_id integer,
 muro_id integer,
+empresa_id integer,
 fecha_registro timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (muro_id) REFERENCES certi_muro (id));
+ FOREIGN KEY (muro_id) REFERENCES certi_muro (id),
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id));
 
 CREATE TABLE certi_foro(
 -- Attributes --

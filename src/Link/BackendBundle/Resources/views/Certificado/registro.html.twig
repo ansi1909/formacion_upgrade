@@ -207,12 +207,11 @@
                                     </div>
                                 </div>
                                 <br>
-                                <div class="row">
+                                <div class="row resumen_constancia">
                                     <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <label for="texto" class="col-2 col-form-label">{{ 'Título'|trans }}</label>
+                                        <label for="texto" class="col-8 col-form-label">{{ 'Titulo'|trans }}</label>
                                         <div class="col-14">
-                                            <input type="text" class="form-control form_sty1" name="titulo" id="titulo" value="{{ certificado.titulo }}">
-                                            <span class="fa fa-font"></span>
+                                            <textarea type="text" class="form-control form_sty1" name="titulo" id="titulo">{{ certificado.titulo }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -289,8 +288,12 @@
                     required: true,
                     minlength: 3
                 },
-                'titulo': {
-                    required: true,
+                'resumen': {
+                     required: {
+                        depends: function(element) {
+                            return $('#tipo_imagen_certificado_id').val() == 2;
+                        }
+                    },
                     minlength: 3
                 }
             },
@@ -319,9 +322,9 @@
                     required: "- {{ 'La descripcion es requerida.'|trans }}",
                     minlength: "- {{ 'La descripcion debe ser mínimo de 3 caracteres.'|trans }}"
                 },
-                'titulo': {
-                    required: "- {{ 'El título es requerido.'|trans }}",
-                    minlength: "- {{ 'El título debe ser mínimo de 3 caracteres.'|trans }}"
+                'resumen': {
+                    required: "- {{ 'El resumen es requerido.'|trans }}",
+                    minlength: "- {{ 'El resumen debe ser mínimo de 3 caracteres.'|trans }}"
                 }
             }
         });

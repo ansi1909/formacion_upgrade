@@ -6,6 +6,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="{{ asset('front/js/plugins/video.js/video-js.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('front/js/plugins/video.js/vsg-skin.css') }}" rel="stylesheet">
+        
         <title>
             {% block title %}
                 {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
@@ -63,6 +66,9 @@
                         <a class="d-flex mb-3 text-nowrap" href="{{ path('_programas') }}"> <i class="material-icons mr-2">dashboard</i> Programas </a>
                         <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
                         <a class="d-flex mb-3 text-nowrap" href="{{ path('_calendarioDeEventos') }}"> <i class="material-icons mr-2">event</i>  Calendario </a>
+                        <a class="d-flex mb-3 text-nowrap" href="{{ path('_noticias') }}"> <i class="material-icons mr-2">library_books</i>  Noticias & <br> Novedades </a>
+                        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs</a>
+                        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">style</i>  Preferencias de <br> usuario </a>
                     </div>
                 </nav>
             {% endblock %}
@@ -82,6 +88,8 @@
             <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
             <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('front/js/custom.js') }}"></script>
+            <script src="{{ asset('front/js/plugins/video.js/video.min.js') }}"></script>
+            
         {% endblock %}
     </body>
 </html>

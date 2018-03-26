@@ -30,6 +30,10 @@ SESSION = [
 						  		'foto' = 'Foto de la página',
 						  		'tiene_evaluacion' = true o false,
 						  		'acceso' => true o false,
+						  		'muro_activo' => true o false,
+						  		'prelacion' => Id de la página que la prela,
+						  		'inicio' => 'Fecha de inicio de la página',
+						  		'vencimiento' => 'Fecha de vencimiento de la página',
 						  		'subpaginas' = [
 						  						Misma estructura de una página
 						  					   ]

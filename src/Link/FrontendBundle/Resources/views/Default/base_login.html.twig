@@ -15,6 +15,8 @@
     </head>
     <body class="bg-white">
         <div class="container-fluid">
+            <input type="hidden" id="url_recuperar_correo" name="url_recuperar_correo" value="{{ path('_ajaxCorreo') }}">
+            <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa.id }}">
             <div class="row">
                 <div class="col-sm-5 d-none d-sm-none login-cover d-md-flex align-content-center align-items-center justify-content-center">
                     <div class="row  d-flex align-content-center  justify-content-center  ">
@@ -51,7 +53,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary mb-5" id="entrar">{{ 'Entrar'|trans }}</button>
                             </form>
-                        </div>
+                        </div>                       
                         <div class="row">
                             <div class="col-12 mb-3 text-center">
                                 <a href="#" class="links" data-toggle="modal" data-target="#modal1">{{ '¿Olvidaste tu contraseña?'|trans }}</a>
@@ -72,39 +74,41 @@
                         </a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-10 text-center offset-1 mt-4">
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-12 col-xs-12 col-lg-10 col-xl-10 text-center">
                         <h4 class="titulo">{{ '¿Olvidaste tu contraseña?'|trans }}</h4>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 mt-4">
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
                         <p class="txt-modal">{{ 'No hay problema, te enviaremos un correo con'|trans }}<br/>{{ 'instrucciones para reiniciarla. Ingresa tu correo.'|trans }}</p>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <form id="form_clave" name="form_clave" action="{{ path('_ajaxCorreo') }}" method="POST">
-                        <div class="col-12 mt-3">
-                            <div class="form-group text-center">
-                                <label class="mb-2 text-center" for="mail-rec">{{ 'Correo Electrónico'|trans }}</label>
-                                <input  type="email" class="form-control mb-3" id="mail-rec" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
+                <form id="form_clave" name="form_clave" >
+                    <div class="row mt-3 justify-content-center align-items-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                            <div class="form-group">
+                                <label class="mb-2" for="mail-rec">{{ 'Correo Electrónico'|trans }}</label>
+                                <input type="email" class="form-control" name="correo" id="correo" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
                             </div>
                         </div>
-                        <div class="col-4 mt-3">
+                    </div>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8">
                             <div class="form-group text-center">
-                                <button type="button" class="btn btn-primary btn_rc">{{ 'Reiniciar contraseña'|trans }}</button>
+                                <button type="button" id="recuperar_clave" class="btn btn-primary btn_rc mx-0">{{ 'Reiniciar contraseña'|trans }}</button>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="row mb-5">
-                    <div class="col-8 text-center">
+                    </div>
+                </form>
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
                         <a href="#" class="close link_ri" data-dismiss="modal">{{ 'Regresar al inicio'|trans }}</a>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-8 text-center">
-                        <p class="txt-modal">{{ 'Si necesitas ayuda escribenos a'|trans }}<br/><strong>{{ email_soporte }}</strong></p>
+                <div class="row align-items-end justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <p class="txt-modal txt-modal-footer">{{ 'Si necesitas ayuda escribenos a'|trans }}<br/><strong>{{ email_soporte }}</p>
                     </div>
                 </div>
             </div>
@@ -117,6 +121,39 @@
                 $('#entrar').hide();
                 $('.error').hide();
             });
+
+
+            $('#recuperar_clave').click(function()
+            {
+                recuperar();
+            });
+
+            function recuperar()
+            {
+                var url_recuperar_correo = $('#url_recuperar_correo').val();
+                var empresa_id = $('#empresa_id').val();
+                var correo = $('#correo').val();
+                
+                if(empresa_id!="" && correo!="")
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: url_recuperar_correo,
+                        dataType: "json",
+                        data: { correo: correo, empresa_id: empresa_id },
+                        success: function(data){
+                            submit();
+                            //$('.tipo_entidad').html(data.html);
+                        },
+                        error: function(){
+                            $('#alert-error').html($('#error_msg-edit').val());
+                            $('#div-alert').show();
+                        }
+                    });
+                }
+            }
+
+
         </script>
     </body>
 </html>

@@ -3751,7 +3751,6 @@ table tr td img {
     background: linear-gradient(to right, rgba(0, 132, 219, .7) 0%, rgba(0, 85, 141, .7) 100%);
     color: #fff;
     font-weight: bold;
-    border-left: 0.3rem solid #fff;
 }
 
 .dataTables_wrapper .dataTable tr:hover a, .dataTables_wrapper .dataTable tr:hover .dropdown a:hover{

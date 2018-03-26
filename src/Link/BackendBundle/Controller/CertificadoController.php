@@ -115,11 +115,8 @@ class CertificadoController extends Controller
             $entidad = $request->request->get('entidad');
             $imagen = trim($request->request->get('imagen'));
             $encabezado = trim($request->request->get('encabezado'));
-            $nombre = 'Nombre del Participante';
             $descripcion = trim($request->request->get('descripcion'));
             $titulo = trim($request->request->get('titulo'));
-            $fecha = 'Caracas, 12 de Febero de 2018';
-            $qr = 'código qr';
 
             $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $tipoCertificado = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->find($tipo_certificado_id);
@@ -131,11 +128,8 @@ class CertificadoController extends Controller
             $certificado->setTipoImagenCertificado($tipoImagenCertificado);
             $certificado->setImagen($imagen);
             $certificado->setEncabezado($encabezado);
-            $certificado->setNombre($nombre);
             $certificado->setDescripcion($descripcion);
             $certificado->setTitulo($titulo);
-            $certificado->setFecha($fecha);
-            $certificado->setQr($qr);
 
             $em->persist($certificado);
             $em->flush();
@@ -181,6 +175,7 @@ class CertificadoController extends Controller
         }
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
+        $fecha = $f->fechaNatural(date('Y-m-d'));
 
         $entidad='';
         if($certificado->getEntidadId() != 0)
@@ -200,6 +195,7 @@ class CertificadoController extends Controller
 
         return $this->render('LinkBackendBundle:Certificado:mostrar.html.twig', array('certificado' => $certificado,
                                                                                       'entidad' => $entidad,
+                                                                                      'fecha' => $fecha,
                                                                                       'usuario_empresa' => $usuario_empresa ));
 
     }
@@ -209,6 +205,7 @@ class CertificadoController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $certificado_id = $request->query->get('certificado_id');
         $tipo = $request->query->get('tipo_certificado_id');
         $empresa_id = $request->query->get('empresa_id');
         $error = array('existente' => '');
@@ -218,73 +215,155 @@ class CertificadoController extends Controller
        
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-        if($tipo == 1)
+        $certificado = false;
+
+        if($tipo==1)//validamos que no exista un tipo de certificado para la empresa
+            $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->findByTipoCertificado($tipo);
+
+        if($certificado)
         {
             $html .= '<div class="col-14">
-                        <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="0">
-                        <span class="fa fa-font"></span>
+                        <label>Ya existe un certificado para la empresa.</label>
                       </div>';
         }else
         {
-
-            if($tipo == 2)
+            if($tipo == 1)
             {
-                
-                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                           JOIN pe.pagina p
-                                           WHERE pe.empresa= :empresa AND p.pagina IS NULL AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
-                            ->setParameters(array('empresa' => $empresa->getId(),
-                                                  'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
-                                                  'activo' => true ));
-                $paginaEmpresa = $query->getResult();
-                if($paginaEmpresa)
-                {
-                    $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
-                    $html .= '<div class="col-14">
-                                <select class="form-control form_sty_select" name="entidad" id="entidad">'; 
-                    foreach ($paginaEmpresa as $pagina)
-                    {
-                        $nombre = ucwords(mb_strtolower( $pagina->getPagina()->getNombre(),"UTF-8" ));
-                        $html .= '<option value="'.$pagina->getPagina()->getId().'">'.$nombre.'</option>';
-                    }
-                    $html .= '  </select>
-                                <span class="fa fa-industry"></span>
-                              </div>';                    
-
-                }else
-                {
-                     $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
-                                <label for="texto" class="col-20 col-form-label">La Empresa no tiene Páginas registradas</label>
-                                <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
-                               </div>';
-                }
+                $html .= '<div class="col-14">
+                            <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="0">
+                            <span class="fa fa-font"></span>
+                          </div>';
             }else
             {
-                if($tipo == 3)
+
+                //consultamos los certificados que tiene registrado la empresa
+                $query = $em->createQuery('SELECT c FROM LinkComunBundle:CertiCertificado c
+                                           WHERE c.empresa= :empresa AND c.tipoCertificado = :tipoCertificado ')
+                            ->setParameters(array('empresa' => $empresa->getId(),
+                                                  'tipoCertificado' => $tipo ));
+                $certificados = $query->getResult();
+
+                $entidad_reg='';
+                if($certificado_id!='')
                 {
-                    $grupoPaginas = $em->getRepository('LinkComunBundle:CertiGrupo')->findByEmpresa($empresa->getId());
-                    if($grupoPaginas)
+                    $certificado_especifico = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
+                    $entidad_reg = $certificado_especifico->getEntidadId();
+                }
+
+                $entidad_ids = array();
+                foreach ($certificados as $certificado) {
+
+                    if($entidad_reg != $certificado->getEntidadId())
+                        $entidad_ids[] = $certificado->getEntidadId();
+                }
+
+                if($tipo == 2)
+                {
+                    
+                    $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                               JOIN pe.pagina p
+                                               WHERE pe.empresa= :empresa AND p.pagina IS NULL AND pe.pagina NOT IN (:entidad) AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
+                                ->setParameters(array('empresa' => $empresa->getId(),
+                                                      'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                      'entidad' => $entidad_ids,
+                                                      'activo' => true ));
+                    $paginaEmpresa = $query->getResult();                    
+
+                    if($paginaEmpresa)
                     {
                         $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
                         $html .= '<div class="col-14">
-                                    <select class="form-control form_sty_select" name="entidad" id="entidad">';                        
-                        foreach ($grupoPaginas as $pagina)
+                                    <select class="form-control form_sty_select" name="entidad" id="entidad">'; 
+                        foreach ($paginaEmpresa as $pagina)
                         {
-                            $nombre = ucwords(mb_strtolower( $pagina->getNombre(),"UTF-8" ));
-                            $html .= '<option value="'.$pagina->getId().'">'.$nombre.'</option>';
+                            $nombre = ucwords(mb_strtolower( $pagina->getPagina()->getNombre(),"UTF-8" ));
+                            $html .= '<option value="'.$pagina->getPagina()->getId().'">'.$nombre.'</option>';
                         }
                         $html .= '  </select>
-                                <span class="fa fa-industry"></span>
-                              </div>';
+                                    <span class="fa fa-industry"></span>
+                                  </div>';                    
+
                     }else
                     {
-                         $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
-                                    <label for="texto" class="col-20 col-form-label">La Empresa no tiene Grupo de Páginas registradas</label>
-                                    <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
-                                   </div>';
+                        $certificado_especifico=false;
+
+                        if($certificado_id!='')
+                            $certificado_especifico = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
+
+                        if($certificado_especifico)
+                        {
+
+                            $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                       JOIN pe.pagina p
+                                                       WHERE pe.empresa= :empresa AND p.pagina IS NULL AND pe.pagina = :entidad AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
+                                        ->setParameters(array('empresa' => $empresa->getId(),
+                                                              'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                              'entidad' => $certificado_especifico->getEntidadId(),
+                                                              'activo' => true ));
+                            $paginaEmpresa = $query->getResult();
+                            
+                            if($paginaEmpresa)
+                            {
+                                $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
+                                $html .= '<div class="col-14">
+                                            <select class="form-control form_sty_select" name="entidad" id="entidad">'; 
+                                foreach ($paginaEmpresa as $pagina)
+                                {
+                                    $nombre = ucwords(mb_strtolower( $pagina->getPagina()->getNombre(),"UTF-8" ));
+                                    $html .= '<option value="'.$pagina->getPagina()->getId().'">'.$nombre.'</option>';
+                                }
+                                $html .= '  </select>
+                                            <span class="fa fa-industry"></span>
+                                          </div>';                    
+                            }                            
+                        }else
+                        {
+                             $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
+                                        <label for="texto" class="col-20 col-form-label">La Empresa no tiene Páginas asignadas o ya fueron asignadas.</label>
+                                        <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
+                                       </div>';
+                        }
                     }
-                }
-            }  
+                }else
+                {
+                    if($tipo == 3)
+                    {
+
+                        if(count($entidad_ids) == 0)
+                        {
+                            $grupoPaginas = $em->getRepository('LinkComunBundle:CertiGrupo')->findByEmpresa($empresa->getId());  
+                        }else
+                        {
+                            $query = $em->createQuery('SELECT cg FROM LinkComunBundle:CertiGrupo cg 
+                                                       WHERE cg.empresa= :empresa AND cg.id NOT IN (:entidad)')
+                                        ->setParameters(array('empresa' => $empresa->getId(),
+                                                              'entidad' => $entidad_ids ));
+                            $grupoPaginas = $query->getResult();                            
+                        }
+
+                        if($grupoPaginas)
+                        {
+                            $html .= '<label for="texto" class="col-2 col-form-label">Entidad</label>';
+                            $html .= '<div class="col-14">
+                                        <select class="form-control form_sty_select" name="entidad" id="entidad">';                        
+                            foreach ($grupoPaginas as $pagina)
+                            {
+                                $nombre = ucwords(mb_strtolower( $pagina->getNombre(),"UTF-8" ));
+                                $html .= '<option value="'.$pagina->getId().'">'.$nombre.'</option>';
+                            }
+                            $html .= '  </select>
+                                    <span class="fa fa-industry"></span>
+                                  </div>';
+                        }else
+                        {
+                            $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
+                                        <label for="texto" class="col-20 col-form-label">La Empresa no tiene Grupo de Páginas registradas o ya fueron asignadas.</label>
+                                        <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
+                                       </div>';
+                        }
+                    }
+                }  
+            }
         }
 
         $return = array('ok' => $ok,'html' => $html);
@@ -312,44 +391,51 @@ class CertificadoController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
+     
+        $fecha = $f->fechaNatural(date('Y-m-d'));
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($id_certificado);
 
-        $file = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$certificado->getImagen();
+        $programa='';
+
+        if($certificado->getTipoCertificado()->getId()==1)//por empresas
+        {
+            $programa=$certificado->getEmpresa()->getNombre();
+        }else
+        {
+            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
+
+            $programa = $pagina->getNombre();
+        }
+
+        $ruta ='<img src="'.$yml['parameters']['folders']['dir_project'].'/web/img/codigo_qr.png">';
+
+        $file = $yml['parameters']['folders']['dir_uploads'].$certificado->getImagen();
+
         if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
         {
             //fehca del dia de hoy '.date('d/m/Y').' 
-            /*certificado numero 1*/
-            /*$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(45, 50, 0, 0));
-            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
-                                            <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
-                                            <div style="text-align:center; font-size:24px; margin-top:40px;">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; color: #FFFFFF; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
-                                            <div style=" font-size:14px; margin-top:40px;  margin-left:630px;">'.$certificado->getFecha().'</div>
-                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:20px; margin-left:770px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
-                                        </page>');*/
-            /*certificado numero 2*/
-            /*$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
+            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
             $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
                                             <div style="font-size:24px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
                                             <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:50px; margin-top:60px; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
-                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$certificado->getFecha().'</div>
-                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:840px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
-                                        </page>'); */
-
-            /*certificado numero 3*/
-            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(58, 60, 0, 0));
+                                            <div style="text-align:center; font-size:50px; margin-top:60px; text-transform:uppercase;">'.$programa.'</div>
+                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
+                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+                                        </page>');
+            /*certificado numero 3
+            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(48, 60, 0, 0));
             $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
                                             <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$certificado->getNombre().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
                                             <div style="text-align:center; font-size:24px; margin-top:50px; ">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:50px; margin-top:50px; text-transform:uppercase;">'.$certificado->getTitulo().'</div>
-                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$certificado->getFecha().'</div>
-                                            <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
-                                        </page>');
+                                            <div style="text-align:center; font-size:30px; margin-top:50px; text-transform:uppercase;">'.$programa.'</div>
+                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$fecha.'</div>
+                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+                                            
+                                        </page>');*/
+//<qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>                                        
             //Generamos el PDF
             $certificado_pdf->output('certificiado.pdf');
         }else
@@ -359,12 +445,12 @@ class CertificadoController extends Controller
                 $certificado_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 60, 15, 5));
                 $certificado_pdf->writeHTML('<page orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
                                                 <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
-                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$certificado->getNombre().'</div>
+                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
                                                 <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
-                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:50px;">'.$certificado->getTitulo().'</div>
-                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. Durante dos días estuvieron reunidos los presidentes de seccionales AVEC provenientes de todo el país. </div>
-                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$certificado->getFecha().'</div>
-                                                <qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:50px; margin-left:530px; width: 25mm; background-color: white; color: black; border:none"></qrcode>
+                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">'.$programa.'</div>
+                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getTitulo().'</div>
+                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$fecha.'</div>
+                                                <div style="margin-top:50px; margin-left:500px; ">'.$ruta.'</div>
                                             </page>');
                 $certificado_pdf->output('constancia.pdf');
             }
