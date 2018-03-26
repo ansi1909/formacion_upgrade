@@ -186,16 +186,28 @@
 
         {% if not wizard %}
             <div id="mas_recientes_comments-{{ lecciones.id }}">
+                {% set total_comentarios = lecciones.muros_recientes.total_comentarios %}
+                {% set total_muro = lecciones.muros_recientes.muros|length %}
                 {% for muro in lecciones.muros_recientes.muros %}
                     {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'total_comentarios': lecciones.muros_recientes.total_comentarios, 'total_muro': lecciones.muros_recientes.muros|length }) }}
                 {% endfor %}
+                {% if total_comentarios > total_muro %}
+                    <input type="hidden" id="more_comments-{{ lecciones.id }}" name="more_comments-{{ lecciones.id }}" value="0_5">
+                    <a href="#" class="links text-center d-block more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                {% endif %}
             </div>
         {% else %}
             {% for subpagina in lecciones.subpaginas %}
                 <div id="mas_recientes_comments-{{ subpagina.id }}" {{ loop.index==1 ? '' : 'style="display:none;"' }}>
+                    {% set total_comentarios = subpagina.muros_recientes.total_comentarios %}
+                    {% set total_muro = subpagina.muros_recientes.muros|length %}
                     {% for muro in subpagina.muros_recientes.muros %}
                         {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'total_comentarios': subpagina.muros_recientes.total_comentarios, 'total_muro': subpagina.muros_recientes.muros|length }) }}
                     {% endfor %}
+                    {% if total_comentarios > total_muro %}
+                        <input type="hidden" id="more_comments-{{ subpagina.id }}" name="more_comments-{{ subpagina.id }}" value="0_5-{{ total_comentarios }}-{{ total_muro }}">
+                        <a href="#" class="links text-center d-block more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         {% endif %}

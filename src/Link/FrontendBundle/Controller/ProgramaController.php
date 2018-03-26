@@ -37,7 +37,7 @@ class ProgramaController extends Controller
         $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                              'pagina' => $programa_id));
 
-        /*if(!$pagina_log){
+        if(!$pagina_log){
 
             $pagina_log = new CertiPaginaLog();
             $pagina_log->setPagina($pagina_obj);
@@ -47,7 +47,7 @@ class ProgramaController extends Controller
             $pagina_log->setPorcentajeAvance(0);
             $em->persist($pagina_log);
             $em->flush();
-        }*/
+        }
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $pagina_sesion = $session->get('paginas')[$programa_id];
@@ -229,24 +229,26 @@ class ProgramaController extends Controller
         if(count($actividadreciente_padre) >=  1){
             $reciente = 1;
             foreach ($actividadreciente_padre as $arp) {
-                
+                $ar = array();
                 $pagina_sesion = $session->get('paginas')[$arp->getPagina()->getId()];
                 $subpaginas_ids = $f->hijas($pagina_sesion['subpaginas']);
+                //return new Response(var_dump($subpaginas_ids));
                 $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                  'pagina' => $arp->getPagina()->getId()));
-                $query_actividad_hija = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar
-                                                          JOIN LinkComunBundle:CertiPagina p 
-                                                          WHERE ar.usuario = :usuario_id
-                                                          AND ar.estatusPagina != :completada
-                                                          AND p.id = ar.pagina
-                                                          AND p.id IN (:hijas)
-                                                          ORDER BY ar.id DESC')
-                                            ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                                                  'completada' => $yml['parameters']['estatus_pagina']['completada'],
-                                                                  'hijas' => $subpaginas_ids))
-                                    ->setMaxResults(1);
-                $ar = $query_actividad_hija->getResult();
 
+                if(count($subpaginas_ids)){
+
+                    $query_actividad_hija = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
+                                                              WHERE ar.usuario = :usuario_id
+                                                              AND ar.estatusPagina != :completada
+                                                              AND ar.pagina IN (:hijas)
+                                                              ORDER BY ar.id DESC')
+                                                ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                                      'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                                                      'hijas' => $subpaginas_ids))
+                                        ->setMaxResults(1);
+                    $ar = $query_actividad_hija->getResult();
+                }
                 if($ar){
                     if($ar[0]){
 
@@ -258,8 +260,8 @@ class ProgramaController extends Controller
                         $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
                         $porcentaje = round($arp->getPorcentajeAvance());
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
-                    }
 
+                    }
                 }else{
 
                     $id = 0;

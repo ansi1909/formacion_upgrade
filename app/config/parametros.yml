@@ -50,15 +50,15 @@ parameters:
         base: 1
     folders:
         ########## CONFIGURACIÓN AMBIENTE LOCAL ##########
-        #uploads: 'http://localhost/uploads/'
-        #dir_uploads: 'C:/wamp/www/uploads/'
-        #dir_project: 'C:/wamp/www/formacion2.0/'
+        uploads: 'http://localhost/uploads/'
+        dir_uploads: 'C:/wamp/www/uploads/'
+        dir_project: 'C:/wamp/www/formacion2.0/'
         #dir_uploads: 'C:/xampp/htdocs/uploads/'
         #dir_project: 'C:/xampp/htdocs/formacion2.0/'
         ########## CONFIGURACIÓN AMBIENTE DESARROLLO ##########
-        uploads: 'http://develop.formacion2puntocero.com/uploads/'
-        dir_uploads: '/home/develo/public_html/uploads/'
-        dir_project: '/home/develo/public_html/formacion2.0/'
+        #uploads: 'http://develop.formacion2puntocero.com/uploads/'
+        #dir_uploads: '/home/develo/public_html/uploads/'
+        #dir_project: '/home/develo/public_html/formacion2.0/'
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
         remitente: 'tutorvirtualformacion@gmail.com'
