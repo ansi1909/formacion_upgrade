@@ -1,0 +1,9 @@
+_biblioteca:
+    path:     /Biblioteca
+    defaults: { _controller: LinkFrontendBundle:Biblioteca:index }
+
+_bibliotecaDetalle:
+    path:     /bibliotecaDetalle/{biblioteca_id}
+    defaults: { _controller: LinkFrontendBundle:Biblioteca:detalle }
+
+

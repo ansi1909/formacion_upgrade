@@ -12,7 +12,7 @@
     </div>
     <div class="comm-footer d-flex justify-content-between align-items-center">
         <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ muro.id }}">
-            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-{{ muro.id }}">{{ muro.likes.cantidad }}</span>
+            <i id="i-{{ muro.id }}" class="material-icons mr-1 text-sm color-light-grey {{ muro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="like-{{ muro.id }}">{{ muro.likes.cantidad }}</span>
         </a>
         <a href="#" class="links text-right text-xs reply_comment" data="{{ muro.id }}">{{ 'Responder'|trans }}</a>
     </div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="comm-footer d-flex justify-content-between align-items-center">
                     <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ submuro.id }}">
-                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-{{ submuro.id }}">{{ submuro.likes.cantidad }}</span>
+                        <i id="i-{{ submuro.id }}" class="material-icons mr-1 text-sm color-light-grey {{ submuro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="like-{{ submuro.id }}">{{ submuro.likes.cantidad }}</span>
                     </a>
                 </div>
             </div>
