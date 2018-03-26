@@ -128,6 +128,7 @@ $(document).ready(function() {
 	// FUNCIONALIDADES DEL MURO
 	$('#button-comment').click(function(){
 		var comentario = $.trim($('#comentario').val());
+		$( this ).hide();
 		if (comentario != '')
 		{
 			$.ajax({
@@ -139,16 +140,25 @@ $(document).ready(function() {
 				success: function(data) {
 					$('#comentario').val('');
 					$('#mas_recientes_comments-'+$('#pagina_id_viendo').val()).prepend(data.html);
+					var puntos = $('#puntos_agregados').val();
+					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
+					$('#puntos_agregados').val(puntos);
+					$('#button-comment').show();
+					observeMuro();
+					observeLike();
 					//clearTimeout( timerId );
 				},
 				error: function(){
 					console.log('Error comentando el muro'); // Hay que implementar los mensajes de error para el frontend
+					$('#button-comment').show();
 				}
 			});
 		}
 	});
 
 	observeMuro();
+	observeReply();
+	observeLike();
 
 });
 
@@ -231,7 +241,8 @@ function observeMuro()
 				data: { muro_id: muro_id },
 				dataType: "json",
 				success: function(data) {
-					$('#div-response-'+muro_id).prepend(data.html);
+					$('#div-response-'+muro_id).html(data.html);
+					observeReply();
 					//clearTimeout( timerId );
 				},
 				error: function(){
@@ -241,4 +252,42 @@ function observeMuro()
 		}
 	});
 
+}
+
+function observeReply()
+{
+	$('.button-reply').click(function(){
+		var muro_id = $(this).attr('data');
+		$( this ).hide();
+		var respuesta = $.trim($('#respuesta_'+muro_id).val());
+		if (respuesta != '')
+		{
+			$.ajax({
+				type: "POST",
+				url: $('#form-comment').attr('action'),
+				async: true,
+				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: respuesta, muro_id: muro_id },
+				dataType: "json",
+				success: function(data) {
+					$('#respuesta_'+muro_id).val('');
+					$('#respuestas-'+muro_id).prepend(data.html);
+					$('#button-reply-'+muro_id).show();
+					var puntos = $('#puntos_agregados').val();
+					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
+					$('#puntos_agregados').val(puntos);
+					observeLike();
+					//clearTimeout( timerId );
+				},
+				error: function(){
+					console.log('Error respondiendo al comentario'); // Hay que implementar los mensajes de error para el frontend
+					$('#button-reply-'+muro_id).show();
+				}
+			});
+		}
+	});
+}
+
+function observeLike()
+{
+	// Funcionalidad de click para el like
 }

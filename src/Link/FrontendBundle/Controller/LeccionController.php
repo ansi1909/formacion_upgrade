@@ -366,12 +366,18 @@ class LeccionController extends Controller
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
+        $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $pagina_id,
+                                                                                            'usuario' => $session->get('usuario')['id']));
+
+        $puntos_agregados = $yml['parameters']['puntos']['escribir_muro'];
+
         $muro = new CertiMuro();
         $muro->setMensaje($mensaje);
         $muro->setPagina($pagina);
         $muro->setUsuario($usuario);
         if ($muro_id)
         {
+            $puntos_agregados = $yml['parameters']['puntos']['respuesta_muro'];
             $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
             $muro->setMuro($muro_padre);
         }
@@ -380,36 +386,77 @@ class LeccionController extends Controller
         $em->persist($muro);
         $em->flush();
 
+        $puntos = $pagina_log->getPuntos() + $puntos_agregados;
+        $pagina_log->setPuntos($puntos);
+        $em->persist($pagina_log);
+        $em->flush();
+
         // HTML para anexar al muro
         $uploads = $yml['parameters']['folders']['uploads'];
         $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
-        $html = '<div class="comment">
-                    <div class="comm-header d-flex align-items-center mb-2">
-                        <img src="'.$img_user.'" alt="">
-                        <div class="wrap-info-user flex-column ml-2">
-                            <div class="name text-xs color-dark-grey">'.$this->get('translator')->trans('Yo').'</div>
-                            <div class="date text-xs color-grey">'.$this->get('translator')->trans('Ahora').'</div>
-                        </div>
+        $html = $muro_id ? '<div class="comment replied">' : '<div class="comment">';
+        $html .= '<div class="comm-header d-flex align-items-center mb-2">
+                    <img src="'.$img_user.'" alt="">
+                    <div class="wrap-info-user flex-column ml-2">
+                        <div class="name text-xs color-dark-grey">'.$this->get('translator')->trans('Yo').'</div>
+                        <div class="date text-xs color-grey">'.$this->get('translator')->trans('Ahora').'</div>
                     </div>
-                    <div class="comm-body">
-                        <p>'.$mensaje.'</p>
-                    </div>
-                    <div class="comm-footer d-flex justify-content-between align-items-center">
-                        <a href="" class="mr-0 text-sm color-light-grey like">
-                            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
-                        </a>
-                        <a href="#" class="links text-right text-xs reply_comment" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>
-                    </div>
-                    <div id="div-response-'.$muro->getId().'"></div>
-                    <div id="respuestas-'.$muro->getId().'"></div>
-                </div>';
+                </div>
+                <div class="comm-body">
+                    <p>'.$mensaje.'</p>
+                </div>
+                <div class="comm-footer d-flex justify-content-between align-items-center">
+                    <a href="" class="mr-0 text-sm color-light-grey like" data="'.$muro->getId().'">
+                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
+                    </a>';
+        if (!$muro_id)
+        {
+            $html .= '<a href="#" class="links text-right text-xs reply_comment" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>';
+        }
+        $html .= '</div>';
+        if (!$muro_id)
+        {
+            $html .= '<div id="div-response-'.$muro->getId().'"></div>
+                      <div id="respuestas-'.$muro->getId().'"></div>';
+        }
+        $html .= '</div>';
 
         $return = array('html' => $html,
-                        'muro_id' => $muro->getId());
+                        'muro_id' => $muro->getId(),
+                        'puntos_agregados' => $puntos_agregados);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
+    }
+
+    public function ajaxDivResponseAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $f = $this->get('funciones');
+        $muro_id = $request->query->get('muro_id');
+
+        $uploads = $yml['parameters']['folders']['uploads'];
+        $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+        
+        $html = '<div class="response d-flex align-items-center justify-content-between" id="response-'.$muro_id.'">
+                    <img src="'.$img_user.'" alt="">
+                    <form class="mt-3" method="POST">
+                        <div class="form-group">
+                            <textarea class="form-control" id="respuesta_'.$muro_id.'" name="respuesta_'.$muro_id.'" rows="5" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                        </div>
+                        <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
+                    </form>
+                </div>';
+
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }
