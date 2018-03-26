@@ -1,23 +1,28 @@
 .rank-table{
-    display: block;
-    width: 32.5vw;
-    margin: 0 calc(1rem + 7px);
+    max-width: 28rem;
+    width: 28rem;
+    margin: auto;
+    padding: 0 1rem;
     thead{
         border-bottom: 1px solid $gray-400;
         th{
             color: $gray-600;
             @extend %font-table;
+            padding: calc(1rem - 8px);
+            text-align: center;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            vertical-align: middle;
             &:first-child{
-                padding-right: calc(2rem - 4px);
+                text-align: center;
+            }
+            &:nth-child(2){
             }
             &:nth-child(3){
-                padding: 0 calc(4rem - 15px);
             }
-            &:nth-child(5){
-                padding: 0 calc(1rem - 1px);
+            &:nth-child(4){
+                padding: calc(1rem - 8px) 0;
             }
             &:last-child{
-                padding-left: calc(1rem - 6px);
             }
         }
     }
@@ -26,39 +31,54 @@
             color: $blue;
             cursor: default;
             td{
-                padding: calc(1rem - 6px) 0;
+                padding: calc(1rem - 7px) 0;
                 &:first-child{
                     font-family: $primary-font;	
                     font-size: $h4-font-size;	
                     font-weight: $font-weight-normal-hard;
                     line-height: calc(2rem - 4px);
-                    text-align: left;
-                    position: relative;
-                    left: calc(1rem + 8px);
+                    text-align: center;
+                    vertical-align:middle;
                 }
                 &:nth-child(2){
                     .up{
-                        width: 2.5vw;
-                        height: 5vh;
+                        width: 2rem;
+                        height: auto;
                         position: relative;
                         left: 0rem;
                         border-radius: calc(3rem + 4px);
+                        text-align: center;
                     }
                 }
-                &:nth-child(3), &:nth-child(4), &:nth-child(5){
+                &:nth-child(3){
+                    @extend %font-table;
+                    text-align: left;
+                    padding-left: 2rem;
+                }
+                &:nth-child(4){
                     @extend %font-table;
                 }
                 &:last-child{
-                    .level{
-                        color: $green;
-                        font-size: calc(1rem - 4px);
-                        padding-left: calc(1rem - 4px);
+                    text-align: left;
+                    .img-coin{
+                        img{
+                            width: 1rem;
+                            height: auto;
+                            position: relative;
+                            top: -.1rem;
+                        }
+                        .text-coin{
+                            left: .1rem;
+                            font-weight: $font-weight-normal-hard;
+                        }
                     }
                 }
             }
             &:hover{
                 color: $white;
                 background: $blue-700;
+                font-weight: $font-weight-normal-hard;
+                text-shadow: 0px 1px 1px rgba(0, 0, 0, .1);
             }
         }
         .me-i{
@@ -67,15 +87,6 @@
             &:hover{
                 color: $black;
                 background: $green-700;
-            }
-            td{
-                &:last-child{
-                    .level{
-                        color: $blue !important;
-                        font-size: calc(1rem - 4px);
-                        padding-left: calc(1rem - 4px);
-                    }
-                }
             }
         }
     }
