@@ -412,4 +412,33 @@ class LeccionController extends Controller
 
     }
 
+    public function ajaxDivResponseAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $f = $this->get('funciones');
+        $muro_id = $request->query->get('muro_id');
+
+        $uploads = $yml['parameters']['folders']['uploads'];
+        $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+        
+        $html = '<div class="response d-flex align-items-center justify-content-between" id="response-'.$muro_id.'">
+                    <img src="'.$img_user.'" alt="">
+                    <form class="mt-3" method="POST">
+                        <div class="form-group">
+                            <textarea class="form-control" id="respuesta_'.$muro_id.'" name="respuesta_'.$muro_id.'" rows="5" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                        </div>
+                        <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
+                    </form>
+                </div>';
+
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
 }

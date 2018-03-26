@@ -231,7 +231,7 @@ function observeMuro()
 				data: { muro_id: muro_id },
 				dataType: "json",
 				success: function(data) {
-					$('#div-response-'+muro_id).prepend(data.html);
+					$('#div-response-'+muro_id).html(data.html);
 					//clearTimeout( timerId );
 				},
 				error: function(){
