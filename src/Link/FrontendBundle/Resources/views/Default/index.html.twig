@@ -7,8 +7,6 @@
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
-{% set tab = 0 %}
-{% set contenttab = 0 %}
 <div id="message" class="for-message well-message container py-6 px-6 mb-4">
     <i id="equis" class="material-icons mr-2" >close</i>
     <h1 class="mb-4">Bienvenido a Formación 2.0</h1>
@@ -69,8 +67,7 @@
             <div class="filter-group d-flex justify-content-around mb-3">
                 <ul class="tabs">
                     {% for g in grupos %}
-                    {% set tab = tab + 1 %}
-                    <li class="{% if tab == 1 %} activo {% endif %} mt-3">
+                    <li class="{% if loop.index == 1 %} activo {% endif %} mt-3">
                         <span>{{ g.nombre }}</span>
                     </li>
                     {% endfor %}
@@ -81,8 +78,7 @@
     <div class="row">
         <ul class="tab__content">
         {% for g in grupos %}
-            {% set contenttab = contenttab + 1 %}
-            <li {% if contenttab == 1 %} class="activo" {% endif %}>
+            <li {% if loop.index == 1 %} class="activo" {% endif %}>
                 <div class="content__wrapper">
                     <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
                     {% for pd in programas_disponibles %}
