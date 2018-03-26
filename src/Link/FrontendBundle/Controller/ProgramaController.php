@@ -37,7 +37,7 @@ class ProgramaController extends Controller
         $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                              'pagina' => $programa_id));
 
-        /*if(!$pagina_log){
+        if(!$pagina_log){
 
             $pagina_log = new CertiPaginaLog();
             $pagina_log->setPagina($pagina_obj);
@@ -47,7 +47,7 @@ class ProgramaController extends Controller
             $pagina_log->setPorcentajeAvance(0);
             $em->persist($pagina_log);
             $em->flush();
-        }*/
+        }
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $pagina_sesion = $session->get('paginas')[$programa_id];
