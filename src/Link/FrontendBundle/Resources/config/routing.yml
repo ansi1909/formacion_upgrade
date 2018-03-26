@@ -43,3 +43,9 @@ certificados:
 biblioteca:
     resource: "@LinkFrontendBundle/Resources/config/routing/biblioteca.yml"
     prefix: /biblioteca
+
+_ajaxLike:
+    path:     /ajaxLike
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxLike }
+    requirements:
+        _method: POST

@@ -1483,14 +1483,14 @@ class Functions
 
 	}
 
-	public function likes($social_muro, $entidad_id, $usuario_id)
+	public function likes($social_id, $entidad_id, $usuario_id)
 	{
 
 		$em = $this->em;
 		$cantidad = 0;
 		$ilike = 0;
 
-		$likes = $em->getRepository('LinkComunBundle:AdminLike')->findBy(array('social' => $social_muro,
+		$likes = $em->getRepository('LinkComunBundle:AdminLike')->findBy(array('social' => $social_id,
                                                                                'entidadId' => $entidad_id));
 
 		foreach ($likes as $like)
