@@ -1183,6 +1183,7 @@ class Functions
         // Total de comentarios en este muro
         $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
 		                            WHERE m.pagina = :pagina_id 
+		                            AND m.muro IS NULL 
 		                            AND m.empresa = :empresa_id')
 		            ->setParameters(array('pagina_id' => $pagina_id,
 		            					  'empresa_id' => $empresa_id));
