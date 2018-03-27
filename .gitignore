@@ -12,7 +12,6 @@
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /web/bundles/
-!/app/config/config.yml
 /app/config/config.yml
 /app/config/parameters.yml
 !/app/config/parametros.yml
