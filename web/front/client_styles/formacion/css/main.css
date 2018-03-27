@@ -2012,4 +2012,72 @@ p.up {
     .esp_col .btn-nw-tema:focus {
       outline: none; }
 
+.box-pag {
+  height: 3rem;
+  width: 22rem;
+  border: 2px solid #DAE1E6;
+  border-radius: calc(2rem - 4px);
+  background-color: transparent; }
+  .box-pag .pag {
+    margin: 0;
+    padding: 0;
+    list-style-type: none; }
+    .box-pag .pag .pag-item {
+      color: #5CAEE6;
+      font-family: "Roboto";
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: calc(1rem + 5px);
+      border: 2px solid #DAE1E6; }
+      .box-pag .pag .pag-item:first-child, .box-pag .pag .pag-item:last-child {
+        padding: calc(1rem - 3px) calc(1rem + 2px) calc(1rem - 4px) calc(1rem + 2px); }
+      .box-pag .pag .pag-item:nth-child(n) {
+        padding: calc(1rem - 3px) calc(1rem - 3px) calc(1rem - 4px) calc(1rem - 3px);
+        border: 2px solid #DAE1E6; }
+
+/* Page Navigation */
+#jquery-tab-pager-navi {
+  height: 3rem;
+  width: auto;
+  border: 2px solid #DAE1E6;
+  border-radius: calc(2rem - 4px);
+  background-color: transparent;
+  display: inline-flex;
+  margin: 0;
+  padding: 0; }
+  #jquery-tab-pager-navi li {
+    margin: 0;
+    padding: calc(1rem - 6px) 1rem;
+    position: relative;
+    left: 0;
+    list-style-type: none; }
+    #jquery-tab-pager-navi li:last-child {
+      border-radius: 0 calc(2rem - 4px) calc(2rem - 4px) 0;
+      border-left: 1px solid #DAE1E6; }
+    #jquery-tab-pager-navi li:first-child {
+      border-radius: calc(2rem - 4px) 0 0 calc(2rem - 4px);
+      border-right: 1px solid #DAE1E6; }
+    #jquery-tab-pager-navi li:nth-child(n) {
+      border: 1px solid #DAE1E6; }
+    #jquery-tab-pager-navi li a {
+      color: #5CAEE6;
+      font-family: "Roboto";
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: calc(1rem + 5px); }
+  #jquery-tab-pager-navi li.current {
+    background: #80CCFF;
+    color: #fff; }
+
+/*#jquery-tab-pager-navi li:last-child a {
+    margin-right: 0px;
+}
+
+#jquery-tab-pager-navi li a.current,
+#jquery-tab-pager-navi li a.disable,
+#jquery-tab-pager-navi li a:hover {
+    background: #ebebeb;
+    color: #000;
+}*/
+
 /*# sourceMappingURL=main.css.map */

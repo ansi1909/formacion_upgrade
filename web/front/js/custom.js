@@ -40,10 +40,10 @@ window.onload=function(){
 $(document).ready(function() {
   // do stuff when DOM is ready
 // $("#message").fadeIn("slow");
-    var clickedTab = $(".tabs > .activo");
+    /*var clickedTab = $(".tabs > .activo");
     var tabWrapper = $(".tab__content");
     var activeTab = tabWrapper.find(".activo");
-    var activeTabHeight = activeTab.outerHeight();
+    var activeTabHeight = activeTab.outerHeight();*/
     var clickedOpc = $(".opc");
     var clickedOpcImg = $(".opc_img");
 
@@ -68,7 +68,7 @@ $("#iconComments").click(function(){
 
 
 
-    // Muestra el tab al cargar la pagina load
+    /*// Muestra el tab al cargar la pagina load
     activeTab.show();
     // Establecer la altura del contenedor en la carga de la página
     tabWrapper.height(activeTabHeight);
@@ -99,7 +99,7 @@ $("#iconComments").click(function(){
                 activeTab.delay(50).fadeIn(250);
             });
         });
-    });
+    });*/
 
     clickedOpc.on('click',function(){
         clickedOpc.removeClass("opc_activa");
