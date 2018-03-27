@@ -65,7 +65,7 @@ document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182
 function contador(){
    let num = document.getElementById('num');
    let counter = 0;
-   let segundos= (30 / porcentaje) * 100;
+   let segundos= (40 / porcentaje) * 100;
    let id = setInterval(frame, segundos);
 
    function frame() {
