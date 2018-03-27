@@ -78,11 +78,11 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:  "smtp"
-    encryption: "ssl"
-    auth_mode:  "login"
-    host:       "acacias.venred.com"
-    port:       465
-    username:   "tutorvirtual@formacion2puntocero.com"
-    password:   "UKyhCzWcq29EDKJ7!!"
+    transport:  "%mailer_transport%"
+    encryption: "%mailer_encryption%"
+    auth_mode:  "%mailer_auth_mode%"
+    host:       "%mailer_host%"
+    port:       "%mailer_port%"
+    username:   "%mailer_user%"
+    password:   "%mailer_password%"
     #spool:     { type: memory }
