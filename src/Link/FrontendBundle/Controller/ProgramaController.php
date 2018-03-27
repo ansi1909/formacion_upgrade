@@ -49,6 +49,8 @@ class ProgramaController extends Controller
             $em->flush();
         }
 
+        $porcentaje_avance = round($pagina_log->getPorcentajeAvance());
+
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $pagina_sesion = $session->get('paginas')[$programa_id];
         /*echo $programa_id;
@@ -57,11 +59,12 @@ class ProgramaController extends Controller
         if (count($pagina_sesion['subpaginas'])) {
 
             $modulos = 1;
-            
+            $contador = 0;
             foreach ($pagina_sesion['subpaginas'] as $subpagina){
+                $contador = $contador + 1;
                 $lis_mods .= '<div class="card-hrz card-mod">';
                 $lis_mods .= '<div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">';
-                $lis_mods .= '<h1>'.$subpagina['id'].'</h1>';
+                $lis_mods .= '<h1>'.$contador.'</h1>';
                 $lis_mods .= '</div>';
                 $lis_mods .= '<div class="wraper d-flex flex-wrap flex-row justify-content-center">';
                 $lis_mods .= '<div class="card-hrz-body ">';
@@ -185,6 +188,7 @@ class ProgramaController extends Controller
 
         return $this->render('LinkFrontendBundle:Programa:index.html.twig', array('pagina' => $pagina,
                                                                                   'modulos' =>$modulos,
+                                                                                  'porcentaje_avance' =>$porcentaje_avance,
                                                                                   'lis_mods' =>$lis_mods));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));

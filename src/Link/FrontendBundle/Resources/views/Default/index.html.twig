@@ -89,7 +89,7 @@
                                     <span class="count text-xs ">Finaliza en {{ pd.fecha_vencimiento }} días</span>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title mb-3"> </h5>
+                                    <h5 class="card-title mb-3"> {{ pd.nombre }} </h5>
                                     <p class="card-text">{{ pd.descripcion | raw }}</p>
                                     {% if pd.continuar == 0 %}
                                         {% if pd.tiene_subpaginas == 1 %}
