@@ -25,7 +25,7 @@ class CertiPagina
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=100, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=500, nullable=true)
      */
     private $nombre;
 
