@@ -49,3 +49,11 @@ _ajaxLike:
     defaults: { _controller: LinkFrontendBundle:Default:ajaxLike }
     requirements:
         _method: POST
+
+faqs:
+    resource: "@LinkFrontendBundle/Resources/config/routing/faqs.yml"
+    prefix: /faqs
+
+usuario:
+    resource: "@LinkFrontendBundle/Resources/config/routing/usuario.yml"
+    prefix: /usuario

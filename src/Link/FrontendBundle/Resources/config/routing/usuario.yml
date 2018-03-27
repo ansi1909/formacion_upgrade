@@ -1,0 +1,4 @@
+_usuariop:
+    path:     /usuario
+    defaults: { _controller: LinkFrontendBundle:Usuario:index }
+

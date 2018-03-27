@@ -134,6 +134,16 @@ class BibliotecaController extends Controller
                                                   'noticia_id'=> 3,
                                                   'id'=> $biblioteca_id));
                 $anuncios = $query->getResult();
+            }elseif ($biblioteca->getTipoBiblioteca()->getId() == 3 || $biblioteca->getTipoBiblioteca()->getId() == 4) {
+                $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
+                                           WHERE n.tipoBiblioteca IN (:biblioteca)
+                                           AND n.tipoNoticia = :noticia_id
+                                           AND n.id != :id')
+                            ->setMaxResults(3)
+                            ->setParameters(array('biblioteca'=> array('3','4'),
+                                                  'noticia_id'=> 3,
+                                                  'id'=> $biblioteca_id));
+                $anuncios = $query->getResult();
             }
 
             

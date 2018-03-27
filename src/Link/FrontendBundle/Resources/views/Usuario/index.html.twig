@@ -1,0 +1,16 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+{% endblock %}
+
+{% block body %}
+
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('front/js/acordion.js') }}"></script> 
+{% endblock %}
