@@ -87,6 +87,7 @@
 
 {% block body %}
 
+    <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
     <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
     <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
     <input type="hidden" id="pagina_id_viendo" name="pagina_id_viendo" value="{{ wizard ? lecciones.subpaginas[0].id : lecciones.id }}">
@@ -96,6 +97,7 @@
     <input type="hidden" id="url_procesar" name="url_procesar" value="{{ path('_ajaxProcesarPagina') }}">
     <input type="hidden" id="url_iniciar" name="url_iniciar" value="{{ path('_ajaxIniciarPagina') }}">
     <input type="hidden" id="url_response" name="url_response" value="{{ path('_ajaxDivResponse') }}">
+    <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
     <input type="hidden" id="puntos_agregados" name="puntos_agregados" value="{{ puntos }}">
     {% if wizard and lecciones.subpaginas|length > 1 %}
         <input type="hidden" id="tab_activo" name="tab_activo" value="one-tab">
@@ -175,7 +177,7 @@
         <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
         <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
             <div class="form-group">
-                <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
+                <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="340" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
             </div>
             <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-comment">{{ 'Comentar'|trans }}</button>
         </form>

@@ -13,6 +13,7 @@ $(document).ready(function() {
 			$('#'+$('#tab_activo').val()).removeClass('circle-less-viendo');
 			$('#'+$('#tab_activo').val()).addClass('circle-less-vista'); // Lección anterior vista
 			finishLesson(programa_id, $('#pagina_id_viendo').val());
+			$('#mas_recientes_comments-'+$('#pagina_id_viendo').val()).hide();
 		}
 
 		$('#'+circle_nav.attr('id')).removeClass('circle-less-vista'); // Suprime el css vista al tab que se está presionando
@@ -35,6 +36,9 @@ $(document).ready(function() {
 				$('#m-'+new_pagina_id).addClass('active');
 			}
 		});
+
+		// Activar el muro
+		$('#mas_recientes_comments-'+new_pagina_id).show();
 
 		$('#pagina_id_viendo').val(new_pagina_id);
 		startLesson(programa_id, $('#pagina_id_viendo').val());
@@ -289,5 +293,29 @@ function observeReply()
 
 function observeLike()
 {
-	// Funcionalidad de click para el like
+	$('.like').click(function(){
+		var muro_id = $(this).attr('data');
+		$('#i-'+muro_id).removeClass('ic-lke-act');
+		$.ajax({
+			type: "POST",
+			url: $('#url_like').val(),
+			async: true,
+			data: { social_id: 1, entidad_id: muro_id, usuario_id: $('#usuario_id').val() },
+			dataType: "json",
+			success: function(data) {
+				if (data.ilike)
+				{
+					$('#i-'+muro_id).addClass('ic-lke-act');
+				}
+				$('#like-'+muro_id).html(data.cantidad);
+				var puntos = $('#puntos_agregados').val();
+				puntos = parseInt(puntos) + parseInt(data.puntos_like);
+				$('#puntos_agregados').val(puntos);
+				//clearTimeout( timerId );
+			},
+			error: function(){
+				console.log('Error en like'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
+	});
 }

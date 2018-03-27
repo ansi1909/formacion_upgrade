@@ -1,5 +1,5 @@
 // traemos el dato lo metemos en esta variable
-var datoAvance = 100;
+var datoAvance = $('#porcentaje_avance').val();
 var porcentaje = datoAvance;
    if (datoAvance > 94 && datoAvance<100){
            datoAvance= datoAvance - 5
@@ -7,7 +7,7 @@ var porcentaje = datoAvance;
 datoAvance= Math.round(datoAvance/10)
 datoAvance = (datoAvance * 100)
 datoAvance = 1000 - datoAvance
-var percent = 	document.getElementById("percent")
+var percent =   document.getElementById("percent")
 
 if (datoAvance > 899) {
 
@@ -28,32 +28,32 @@ if (datoAvance > 899) {
 document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422");
     document.getElementById("green").style.strokeDashoffset = datoAvance;
 
-}	else if (datoAvance > 499) {
+} else if (datoAvance > 499) {
 
    document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312");
     document.getElementById("green").style.strokeDashoffset = datoAvance;
 
-}	else if (datoAvance > 399) {
+} else if (datoAvance > 399) {
 
    document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312");
     document.getElementById("green").style.strokeDashoffset = datoAvance;
 
-}	else if (datoAvance > 299) {
+} else if (datoAvance > 299) {
 
        document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312,146.380371L794.882813");
         document.getElementById("green").style.strokeDashoffset = datoAvance;
 
-}	else if (datoAvance > 199) {
+} else if (datoAvance > 199) {
 
        document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312,146.380371L794.882813,146.380371L730.555176");
         document.getElementById("green").style.strokeDashoffset = datoAvance;
 
-}	else if (datoAvance > 99) {
+} else if (datoAvance > 99) {
 
            document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312,146.380371L794.882813,146.380371L730.555176,70L794.882812");
         document.getElementById("green").style.strokeDashoffset = datoAvance;
 
-}	else {
+} else {
 
    document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312,146.380371L794.882813,146.380371L730.555176,70L794.882812,70.7143555");
         document.getElementById("green").style.strokeDashoffset = datoAvance;
@@ -65,7 +65,7 @@ document.getElementById("green").setAttribute("d","M191.69043,70.7143555L244.182
 function contador(){
    let num = document.getElementById('num');
    let counter = 0;
-   let segundos= (30 / porcentaje) * 100;
+   let segundos= (40 / porcentaje) * 100;
    let id = setInterval(frame, segundos);
 
    function frame() {

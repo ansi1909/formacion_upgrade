@@ -38,7 +38,8 @@ class NoticiasController extends Controller
             $novedades = array();
 
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
-                                       WHERE n.empresa = :empresa_id')
+                                       WHERE n.empresa = :empresa_id
+                                       AND n.tipoBiblioteca IS NULL')
                         ->setParameter('empresa_id', $empresa_id);
             $noticias_db = $query->getResult();
 

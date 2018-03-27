@@ -1235,6 +1235,116 @@ class Functions
 
 	}
 
+	// Arreglo de comentarios en el muro de una página y sus respuestas
+	public function muroPaginaValorados($pagina_id, $offset, $limit, $usuario_id, $empresa_id, $social)
+	{
+
+		$em = $this->em;
+
+		// Búsqueda inicial de todos los 
+		$qb = $em->createQueryBuilder();
+        $qb->select('m')
+           ->from('LinkComunBundle:CertiMuro', 'm')
+           ->andWhere('m.pagina = :pagina_id')
+           ->andWhere('m.empresa = :empresa_id')
+           ->andWhere('m.muro IS NULL')
+           ->setParameters(array('pagina_id' => $pagina_id,
+           						 'empresa_id' => $empresa_id));
+        $query = $qb->getQuery();
+        $muros_bd = $query->getResult();
+        $muros = array();
+        $muros_likes = array();
+        $muros_ids = array();
+
+        foreach ($muros_bd as $muro)
+        {
+        	$likes = $this->likes($social['muro'], $muro->getId(), $usuario_id);
+        	$muros_likes[$muro->getId()] = $likes['cantidad'];
+        }
+        arsort($muros_likes); // Se ordena de mayor a menor por la cantidad de likes
+
+        // Se toman los ids desde $offset hasta $limit elemento
+        $i = 0; // iterador del foreach
+        $j = 0; // Incrementador para el limit
+        foreach ($muros_likes as $muro_id => $likes)
+        {
+        	if ($i >= $offset)
+        	{
+        		$muros_ids[] = $muro_id;
+        		$j++;
+        	}
+        	if ($j == $limit)
+        	{
+        		break;
+        	}
+        	$i++;
+        }
+
+        // Total de comentarios en este muro
+        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+		                            WHERE m.pagina = :pagina_id 
+		                            AND m.muro IS NULL 
+		                            AND m.empresa = :empresa_id')
+		            ->setParameters(array('pagina_id' => $pagina_id,
+		            					  'empresa_id' => $empresa_id));
+		$total_comentarios = $query->getSingleScalarResult();
+
+		if (count($muros_ids))
+		{
+
+			$query = $em->createQuery('SELECT m FROM LinkComunBundle:CertiMuro m 
+			                            WHERE m.id IN (:ids)')
+			            ->setParameter('ids', $muros_ids);
+			$muros_bd = $query->getResult();
+
+			foreach ($muros_bd as $muro)
+	        {
+
+	        	$qb = $em->createQueryBuilder();
+		        $qb->select('m')
+		           ->from('LinkComunBundle:CertiMuro', 'm')
+		           ->andWhere('m.muro = :muro_id')
+		           ->orderBy('m.id', 'DESC')
+		           ->setFirstResult(0)
+		           ->setMaxResults(5)
+		           ->setParameter('muro_id', $muro->getId());
+		        $query = $qb->getQuery();
+		        $submuros_bd = $query->getResult();
+
+		        // Total de respuestas de este comentario
+		        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+				                            WHERE m.muro = :muro_id')
+				            ->setParameter('muro_id', $muro->getId());
+				$total_respuestas = $query->getSingleScalarResult();
+	        	
+	        	$submuros = array();
+	        	foreach ($submuros_bd as $submuro)
+	        	{
+	        		$submuros[] = array('id' => $submuro->getId(),
+	        							'mensaje' => $submuro->getMensaje(),
+	        							'usuario' => $submuro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $submuro->getUsuario()->getNombre().' '.$submuro->getUsuario()->getApellido(),
+	        							'foto' => $submuro->getUsuario()->getFoto(),
+	        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')),
+	        							'likes' => $this->likes($social['muro'], $submuro->getId(), $usuario_id));
+	        	}
+	        	$muros[] = array('id' => $muro->getId(),
+	    						 'mensaje' => $muro->getMensaje(),
+	    						 'usuario' => $muro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido(),
+	    						 'foto' => $muro->getUsuario()->getFoto(),
+	    						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
+	    						 'total_respuestas' => $total_respuestas,
+	    						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
+	    						 'submuros' => $submuros);
+	        }
+
+		}
+
+        $return = array('muros' => $muros,
+        				'total_comentarios' => $total_comentarios);
+        return $return;
+
+	}
+
 	// Retorna 1 si la prueba está habilitada
 	public function pruebaActiva($pagina, $usuario_id, $estatus_completada)
 	{
@@ -1483,14 +1593,14 @@ class Functions
 
 	}
 
-	public function likes($social_muro, $entidad_id, $usuario_id)
+	public function likes($social_id, $entidad_id, $usuario_id)
 	{
 
 		$em = $this->em;
 		$cantidad = 0;
 		$ilike = 0;
 
-		$likes = $em->getRepository('LinkComunBundle:AdminLike')->findBy(array('social' => $social_muro,
+		$likes = $em->getRepository('LinkComunBundle:AdminLike')->findBy(array('social' => $social_id,
                                                                                'entidadId' => $entidad_id));
 
 		foreach ($likes as $like)

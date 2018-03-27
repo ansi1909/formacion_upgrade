@@ -47,3 +47,40 @@ a.active-line, .active-line {
 .less-disabled {
     pointer-events: none;
 }
+
+.error_except{
+    .titulo-error{
+        color: $blue;	
+        font-family: $primary-font;	
+        font-size: $h3-font-size;	
+        line-height: calc(3rem - 6px);
+        font-weight: $font-weight-normal;
+    }
+    .subtitulo-error{
+        color: $blue;	
+        font-family: $primary-font;	
+        font-size: $h5-font-size;	
+        line-height: calc(1rem + 8px);
+        font-weight: $font-weight-normal;
+    }
+    .lista-error{
+        margin-top: 1rem;
+        list-style: disc;
+        color: $gray-700;
+        .elem-txt-error{
+            .text-error{
+                color: $gray-700;	
+                font-family: $primary-font;	
+                font-size: $p-font-size;	
+                line-height: calc(1rem - 2px);
+                font-weight: $font-weight-light;
+                text-align: justify;
+            }
+        }
+    }
+    .img-error{
+        width: 18rem;
+        height: auto;
+        margin-top: 1rem;
+    }
+}

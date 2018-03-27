@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
+use Link\ComunBundle\Entity\AdminLike;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
@@ -556,6 +557,72 @@ class DefaultController extends Controller
         else {
             return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Url de la empresa no existe')));
         }
+    }
+
+    public function ajaxLikeAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $social_id = $request->request->get('social_id');
+        $entidad_id = $request->request->get('entidad_id');
+        $usuario_id = $request->request->get('usuario_id');
+
+        if ($social_id == $yml['parameters']['social']['muro']) 
+        {
+            $entity = 'CertiMuro';
+        }
+        else {
+            $entity = 'CertiForo';
+        }
+
+        $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:'.$entity)->find($entidad_id);
+        
+        $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $entidad->getPagina()->getid(),
+                                                                                            'usuario' => $entidad->getUsuario()->getId()));
+
+        $like = $em->getRepository('LinkComunBundle:AdminLike')->findOneBy(array('social' => $social_id,
+                                                                                 'entidadId' => $entidad_id,
+                                                                                 'usuario' => $usuario_id));
+
+        if (!$like)
+        {
+            // Se agrega y se suman los puntos
+            $social = $this->getDoctrine()->getRepository('LinkComunBundle:AdminSocial')->find($social_id);
+            $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+            $like = new AdminLike();
+            $like->setSocial($social);
+            $like->setEntidadId($entidad_id);
+            $like->setUsuario($usuario);
+            $em->persist($like);
+            $em->flush();
+            $puntos_like = $yml['parameters']['puntos']['like_recibido'];
+        }
+        else {
+            // Se elimina y se restan los puntos
+            $em->remove($like);
+            $em->flush();
+            $puntos_like = -$yml['parameters']['puntos']['like_recibido'];
+        }
+
+        $puntos = $pagina_log->getPuntos() + $puntos_like;
+        $pagina_log->setPuntos($puntos);
+        $em->persist($pagina_log);
+        $em->flush();
+
+        // Cantidad de likes de la entidad
+        $likes_arr = $f->likes($social_id, $entidad_id, $usuario_id);
+
+        $return = array('ilike' => $likes_arr['ilike'],
+                        'cantidad' => $likes_arr['cantidad'],
+                        'puntos_like' => $puntos_like);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
         
 

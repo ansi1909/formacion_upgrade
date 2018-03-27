@@ -377,9 +377,15 @@ class LeccionController extends Controller
         $muro->setUsuario($usuario);
         if ($muro_id)
         {
-            $puntos_agregados = $yml['parameters']['puntos']['respuesta_muro'];
+            $puntos_recibidos = $yml['parameters']['puntos']['respuesta_muro'];
             $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
             $muro->setMuro($muro_padre);
+            $pagina_log_padre = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $muro_padre->getPagina()->getId(),
+                                                                                                      'usuario' => $muro_padre->getUsuario()->getId()));
+            $puntos_padre = $pagina_log->getPuntos() + $puntos_recibidos;
+            $pagina_log_padre->setPuntos($puntos_padre);
+            $em->persist($pagina_log_padre);
+            $em->flush();
         }
         $muro->setEmpresa($empresa);
         $muro->setFechaRegistro(new \DateTime('now'));
@@ -406,8 +412,8 @@ class LeccionController extends Controller
                     <p>'.$mensaje.'</p>
                 </div>
                 <div class="comm-footer d-flex justify-content-between align-items-center">
-                    <a href="" class="mr-0 text-sm color-light-grey like" data="'.$muro->getId().'">
-                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
+                    <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$muro->getId().'">
+                        <i id="i-'.$muro->getId().'" class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
                     </a>';
         if (!$muro_id)
         {
@@ -446,7 +452,7 @@ class LeccionController extends Controller
                     <img src="'.$img_user.'" alt="">
                     <form class="mt-3" method="POST">
                         <div class="form-group">
-                            <textarea class="form-control" id="respuesta_'.$muro_id.'" name="respuesta_'.$muro_id.'" rows="5" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                            <textarea class="form-control" id="respuesta_'.$muro_id.'" name="respuesta_'.$muro_id.'" rows="5" maxlength="340" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
                         </div>
                         <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
                     </form>

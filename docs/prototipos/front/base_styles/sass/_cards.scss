@@ -175,14 +175,16 @@
 //Card Ranking
 .card-table{
     position: relative;
-    width: 35vw;
-    height: 120vh;
+    width: 30rem;
+    height: auto;
+    max-height: 45rem;
     display: flex;
     flex-direction: column;
     word-wrap: break-word;
     background-color: $white;
     border: none;
-    margin: 2rem 0;
+    padding-bottom: 1rem;
+    margin: 2rem auto;
     text-align: center;
     border-radius: 1rem;
     box-shadow: 0px 16px 32px -24px rgba(92,98,102,0.32), 0px 24px 43px -9px rgba(92,98,102,0.19);
