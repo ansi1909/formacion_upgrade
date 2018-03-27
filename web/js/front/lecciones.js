@@ -13,6 +13,7 @@ $(document).ready(function() {
 			$('#'+$('#tab_activo').val()).removeClass('circle-less-viendo');
 			$('#'+$('#tab_activo').val()).addClass('circle-less-vista'); // Lección anterior vista
 			finishLesson(programa_id, $('#pagina_id_viendo').val());
+			$('#mas_recientes_comments-'+$('#pagina_id_viendo').val()).hide();
 		}
 
 		$('#'+circle_nav.attr('id')).removeClass('circle-less-vista'); // Suprime el css vista al tab que se está presionando
@@ -35,6 +36,9 @@ $(document).ready(function() {
 				$('#m-'+new_pagina_id).addClass('active');
 			}
 		});
+
+		// Activar el muro
+		$('#mas_recientes_comments-'+new_pagina_id).show();
 
 		$('#pagina_id_viendo').val(new_pagina_id);
 		startLesson(programa_id, $('#pagina_id_viendo').val());
