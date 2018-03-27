@@ -15,7 +15,6 @@
 !/app/config/config.yml
 /app/config/config.yml
 !/app/config/parameters.yml
-/app/config/parameters.yml
 !/app/config/parametros.yml
 /app/config/parametros.yml
 !/docs/prototipos/front/styles/.sass-cache

@@ -361,6 +361,7 @@ class LeccionController extends Controller
         $pagina_id = $request->request->get('pagina_id');
         $mensaje = $request->request->get('mensaje');
         $muro_id = $request->request->get('muro_id');
+        $prefix = $request->request->get('prefix');
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
@@ -413,7 +414,7 @@ class LeccionController extends Controller
                 </div>
                 <div class="comm-footer d-flex justify-content-between align-items-center">
                     <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$muro->getId().'">
-                        <i id="i-'.$muro->getId().'" class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="like-'.$muro->getId().'">0</span>
+                        <i id="'.$prefix.'_i-'.$muro->getId().'" class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="'.$prefix.'_like-'.$muro->getId().'">0</span>
                     </a>';
         if (!$muro_id)
         {
@@ -422,8 +423,8 @@ class LeccionController extends Controller
         $html .= '</div>';
         if (!$muro_id)
         {
-            $html .= '<div id="div-response-'.$muro->getId().'"></div>
-                      <div id="respuestas-'.$muro->getId().'"></div>';
+            $html .= '<div id="'.$prefix.'_div-response-'.$muro->getId().'"></div>
+                      <div id="'.$prefix.'_respuestas-'.$muro->getId().'"></div>';
         }
         $html .= '</div>';
 
@@ -444,20 +445,108 @@ class LeccionController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $f = $this->get('funciones');
         $muro_id = $request->query->get('muro_id');
+        $prefix = $request->query->get('prefix');
 
         $uploads = $yml['parameters']['folders']['uploads'];
         $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
         
-        $html = '<div class="response d-flex align-items-center justify-content-between" id="response-'.$muro_id.'">
+        $html = '<div class="response d-flex align-items-center justify-content-between" id="'.$prefix.'_response-'.$muro_id.'">
                     <img src="'.$img_user.'" alt="">
                     <form class="mt-3" method="POST">
                         <div class="form-group">
-                            <textarea class="form-control" id="respuesta_'.$muro_id.'" name="respuesta_'.$muro_id.'" rows="5" maxlength="340" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                            <textarea class="form-control" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="340" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
                         </div>
-                        <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
+                        <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="'.$prefix.'_button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
                     </form>
                 </div>';
 
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxRefreshMuroAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $f = $this->get('funciones');
+        $pagina_id = $request->query->get('pagina_id');
+        $prefix = $request->query->get('prefix');
+        $html = '';
+
+        if ($prefix == 'recientes')
+        {
+            $muros = $f->muroPagina($pagina_id, 'id', 'DESC', 0, 5, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml['parameters']['social']);
+        }
+        else {
+            $muros = $f->muroPaginaValorados($pagina_id, 0, 5, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml['parameters']['social']);
+        }
+
+        $total_comentarios = $muros['total_comentarios'];
+        $total_muro = count($muros['muros']);
+
+        $uploads = $yml['parameters']['folders']['uploads'];
+
+        foreach ($muros['muros'] as $muro)
+        {
+            $img_user = $muro['foto'] ? $uploads.$muro['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+            $like_class = $muro['likes']['ilike'] ? 'ic-lke-act' : '';
+            $html .= '<div class="comment">
+                        <div class="comm-header d-flex align-items-center mb-2">
+                            <img src="'.$img_user.'" alt="">
+                            <div class="wrap-info-user flex-column ml-2">
+                                <div class="name text-xs color-dark-grey">'.$muro['usuario'].'</div>
+                                <div class="date text-xs color-grey">'.$muro['cuando'].'</div>
+                            </div>
+                        </div>
+                        <div class="comm-body">
+                            <p>'.$muro['mensaje'].'</p>
+                        </div>
+                        <div class="comm-footer d-flex justify-content-between align-items-center">
+                            <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$muro['id'].'">
+                                <i id="'.$prefix.'_i-'.$muro['id'].'" class="material-icons mr-1 text-sm color-light-grey '.$like_class.'">thumb_up</i> <span id="'.$prefix.'_like-'.$muro['id'].'">'.$muro['likes']['cantidad'].'</span>
+                            </a>
+                            <a href="#" class="links text-right text-xs reply_comment" data="'.$muro['id'].'">'.$this->get('translator')->trans('Responder').'</a>
+                        </div>
+                        <div id="'.$prefix.'_div-response-'.$muro['id'].'">
+                        </div>
+                        <div id="'.$prefix.'_respuestas-'.$muro['id'].'">';
+            foreach ($muro['submuros'] as $submuro)
+            {
+                $img_user = $submuro['foto'] ? $uploads.$submuro['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+                $like_class = $submuro['likes']['ilike'] ? 'ic-lke-act' : '';
+                $html .= '<div class="comment replied">
+                            <div class="comm-header d-flex align-items-center mb-2">
+                                <img src="'.$img_user.'" alt="">
+                                <div class="wrap-info-user flex-column ml-2">
+                                    <div class="name text-xs color-dark-grey">'.$submuro['usuario'].'</div>
+                                    <div class="date text-xs color-grey">'.$submuro['cuando'].'</div>
+                                </div>
+                            </div>
+                            <div class="comm-body">
+                                <p>'.$submuro['mensaje'].'</p>
+                            </div>
+                            <div class="comm-footer d-flex justify-content-between align-items-center">
+                                <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$submuro['id'].'">
+                                    <i id="'.$prefix.'_i-'.$submuro['id'].'" class="material-icons mr-1 text-sm color-light-grey '.$like_class.'">thumb_up</i> <span id="'.$prefix.'_like-'.$submuro['id'].'">'.$submuro['likes']['cantidad'].'</span>
+                                </a>
+                            </div>
+                        </div>';
+            }
+            if ($muro['total_respuestas'] > count($muro['submuros']))
+            {
+                $html .= '<input type="hidden" id="'.$prefix.'_more_answers-'.$muro['id'].'" name="'.$prefix.'_more_answers-'.$muro['id'].'" value="0_5">
+                          <a href="#" class="links text-center d-block more_answers" data="'.$muro['id'].'-">'.$this->get('translator')->trans('Ver más respuestas').'</a>';
+            }                   
+                            
+            $html .= '</div>
+                    </div>';
+        }
+        
         $return = array('html' => $html);
 
         $return = json_encode($return);

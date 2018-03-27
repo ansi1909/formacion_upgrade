@@ -98,7 +98,9 @@
     <input type="hidden" id="url_iniciar" name="url_iniciar" value="{{ path('_ajaxIniciarPagina') }}">
     <input type="hidden" id="url_response" name="url_response" value="{{ path('_ajaxDivResponse') }}">
     <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+    <input type="hidden" id="url_refresh" name="url_refresh" value="{{ path('_ajaxRefreshMuro') }}">
     <input type="hidden" id="puntos_agregados" name="puntos_agregados" value="{{ puntos }}">
+    <input type="hidden" id="prefix" name="prefix" value="recientes">
     {% if wizard and lecciones.subpaginas|length > 1 %}
         <input type="hidden" id="tab_activo" name="tab_activo" value="one-tab">
         {# NAVEGACION LECCION #}
@@ -182,33 +184,57 @@
             <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-comment">{{ 'Comentar'|trans }}</button>
         </form>
         <div class="tab mt-6 d-flex justify-content-around text-xs ">
-            <a href="#" class="active-line color-light-grey mt-3" id="mas_recientes">{{ 'Más recientes'|trans }}</a>
-            <a href="#" class="color-light-grey mt-3" id="mas_valorados">{{ 'Más valorados'|trans }} </a>
+            <a href="#" class="active-line color-light-grey mt-3 tab_rv" id="mas_recientes">{{ 'Más recientes'|trans }}</a>
+            <a href="#" class="color-light-grey mt-3 tab_rv" id="mas_valorados">{{ 'Más valorados'|trans }} </a>
         </div>
 
         {% if not wizard %}
+            <input type="hidden" id="dirty_{{ lecciones.id }}" name="dirty_{{ lecciones.id }}" value="0">
             <div id="mas_recientes_comments-{{ lecciones.id }}">
                 {% set total_comentarios = lecciones.muros_recientes.total_comentarios %}
                 {% set total_muro = lecciones.muros_recientes.muros|length %}
                 {% for muro in lecciones.muros_recientes.muros %}
-                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'total_comentarios': lecciones.muros_recientes.total_comentarios, 'total_muro': lecciones.muros_recientes.muros|length }) }}
+                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
                 {% endfor %}
                 {% if total_comentarios > total_muro %}
-                    <input type="hidden" id="more_comments-{{ lecciones.id }}" name="more_comments-{{ lecciones.id }}" value="0_5">
-                    <a href="#" class="links text-center d-block more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                    <input type="hidden" id="more_comments_recientes-{{ lecciones.id }}" name="more_comments_recientes-{{ lecciones.id }}" value="0_5">
+                    <a href="#" class="links text-center d-block more_comments_recientes" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                {% endif %}
+            </div>
+            <div id="mas_valorados_comments-{{ lecciones.id }}" style="display:none;">
+                {% set total_comentarios = lecciones.muros_valorados.total_comentarios %}
+                {% set total_muro = lecciones.muros_valorados.muros|length %}
+                {% for muro in lecciones.muros_valorados.muros %}
+                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
+                {% endfor %}
+                {% if total_comentarios > total_muro %}
+                    <input type="hidden" id="more_comments_valorados-{{ lecciones.id }}" name="more_comments_valorados-{{ lecciones.id }}" value="0_5">
+                    <a href="#" class="links text-center d-block more_comments_valorados" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
                 {% endif %}
             </div>
         {% else %}
             {% for subpagina in lecciones.subpaginas %}
+                <input type="hidden" id="dirty_{{ subpagina.id }}" name="dirty_{{ subpagina.id }}" value="0">
                 <div id="mas_recientes_comments-{{ subpagina.id }}" {{ loop.index==1 ? '' : 'style="display:none;"' }}>
                     {% set total_comentarios = subpagina.muros_recientes.total_comentarios %}
                     {% set total_muro = subpagina.muros_recientes.muros|length %}
                     {% for muro in subpagina.muros_recientes.muros %}
-                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'total_comentarios': subpagina.muros_recientes.total_comentarios, 'total_muro': subpagina.muros_recientes.muros|length }) }}
+                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
                     {% endfor %}
                     {% if total_comentarios > total_muro %}
-                        <input type="hidden" id="more_comments-{{ subpagina.id }}" name="more_comments-{{ subpagina.id }}" value="0_5-{{ total_comentarios }}-{{ total_muro }}">
-                        <a href="#" class="links text-center d-block more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                        <input type="hidden" id="more_comments_recientes-{{ subpagina.id }}" name="more_comments_recientes-{{ subpagina.id }}" value="0_5-{{ total_comentarios }}-{{ total_muro }}">
+                        <a href="#" class="links text-center d-block more_comments_recientes" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                    {% endif %}
+                </div>
+                <div id="mas_valorados_comments-{{ subpagina.id }}" style="display:none;">
+                    {% set total_comentarios = subpagina.muros_valorados.total_comentarios %}
+                    {% set total_muro = subpagina.muros_valorados.muros|length %}
+                    {% for muro in subpagina.muros_valorados.muros %}
+                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
+                    {% endfor %}
+                    {% if total_comentarios > total_muro %}
+                        <input type="hidden" id="more_comments_valorados-{{ subpagina.id }}" name="more_comments_valorados-{{ subpagina.id }}" value="0_5-{{ total_comentarios }}-{{ total_muro }}">
+                        <a href="#" class="links text-center d-block more_comments_valorados" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
                     {% endif %}
                 </div>
             {% endfor %}

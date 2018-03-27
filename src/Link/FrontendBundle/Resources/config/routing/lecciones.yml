@@ -29,3 +29,9 @@ _ajaxDivResponse:
     defaults: { _controller: LinkFrontendBundle:Leccion:ajaxDivResponse }
     requirements:
         _method: GET
+
+_ajaxRefreshMuro:
+    path:     /ajaxRefreshMuro
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxRefreshMuro }
+    requirements:
+        _method: GET

@@ -13,7 +13,11 @@ $(document).ready(function() {
 			$('#'+$('#tab_activo').val()).removeClass('circle-less-viendo');
 			$('#'+$('#tab_activo').val()).addClass('circle-less-vista'); // Lección anterior vista
 			finishLesson(programa_id, $('#pagina_id_viendo').val());
-			$('#mas_recientes_comments-'+$('#pagina_id_viendo').val()).hide();
+			$('#prefix').val('recientes');
+			$('#mas_valorados').removeClass('active-line');
+			$('#mas_recientes').addClass('active-line');
+			$('#mas_recientes_comments-'+$('#pagina_id_viendo').val()).hide(1000);
+			$('#mas_valorados_comments-'+$('#pagina_id_viendo').val()).hide(1000);
 		}
 
 		$('#'+circle_nav.attr('id')).removeClass('circle-less-vista'); // Suprime el css vista al tab que se está presionando
@@ -38,7 +42,8 @@ $(document).ready(function() {
 		});
 
 		// Activar el muro
-		$('#mas_recientes_comments-'+new_pagina_id).show();
+		$('#mas_valorados_comments-'+new_pagina_id).hide(1000);
+		$('#mas_recientes_comments-'+new_pagina_id).show(1000);
 
 		$('#pagina_id_viendo').val(new_pagina_id);
 		startLesson(programa_id, $('#pagina_id_viendo').val());
@@ -132,6 +137,7 @@ $(document).ready(function() {
 	// FUNCIONALIDADES DEL MURO
 	$('#button-comment').click(function(){
 		var comentario = $.trim($('#comentario').val());
+		var prefix = $('#prefix').val();
 		$( this ).hide();
 		if (comentario != '')
 		{
@@ -139,7 +145,7 @@ $(document).ready(function() {
 				type: "POST",
 				url: $('#form-comment').attr('action'),
 				async: true,
-				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: comentario, muro_id: 0 },
+				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: comentario, muro_id: 0, prefix: prefix },
 				dataType: "json",
 				success: function(data) {
 					$('#comentario').val('');
@@ -148,6 +154,7 @@ $(document).ready(function() {
 					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
 					$('#puntos_agregados').val(puntos);
 					$('#button-comment').show();
+					$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
 					observeMuro();
 					observeLike();
 					//clearTimeout( timerId );
@@ -157,6 +164,52 @@ $(document).ready(function() {
 					$('#button-comment').show();
 				}
 			});
+		}
+	});
+
+	$('.tab_rv').click(function(){
+		var prefix = $('#prefix').val();
+		var pagina_id = $('#pagina_id_viendo').val();
+		var link_tab = $(this);
+		var dirty = $('#dirty_'+pagina_id).val();
+		var link_tab_id = $(this).attr('id');
+		var link_tab_arr = link_tab_id.split('_');
+		var last_tab = $('#mas_'+prefix+'_comments-'+pagina_id);
+		var new_tab = $('#mas_'+link_tab_arr[1]+'_comments-'+pagina_id);
+		if (link_tab_arr[1] != $('#prefix').val())
+		{
+			$('#mas_'+prefix).removeClass('active-line');
+			$('#prefix').val(link_tab_arr[1]);
+			link_tab.addClass('active-line');
+			if (dirty == 1)
+			{
+				// Refrescar el tab
+				$.ajax({
+					type: "GET",
+					url: $('#url_refresh').val(),
+					async: false,
+					data: { pagina_id: pagina_id, prefix: $('#prefix').val() },
+					dataType: "json",
+					success: function(data) {
+						new_tab.html(data.html);
+						observeMuro();
+						observeReply();
+						observeLike();
+						last_tab.hide(1000);
+						new_tab.show(1000);
+						$('#dirty_'+pagina_id).val(0);
+						//clearTimeout( timerId );
+					},
+					error: function(){
+						console.log('Error refrescando el muro'); // Hay que implementar los mensajes de error para el frontend
+					}
+				});
+			}
+			else {
+				// Solo mostrar lo que ya está cargado en el tab
+				last_tab.hide(1000);
+				new_tab.show(1000);
+			}
 		}
 	});
 
@@ -233,19 +286,20 @@ function observeMuro()
 	$('.reply_comment').click(function(){
 		var muro_id = $(this).attr('data');
 		var response_container = $('#response-'+muro_id);
+		var prefix = $('#prefix').val();
 		if (response_container.length)
 		{
-			$('#respuesta_'+muro_id).focus();
+			$('#'+prefix+'_respuesta_'+muro_id).focus();
 		}
 		else {
 			$.ajax({
 				type: "GET",
 				url: $('#url_response').val(),
 				async: false,
-				data: { muro_id: muro_id },
+				data: { muro_id: muro_id, prefix: prefix },
 				dataType: "json",
 				success: function(data) {
-					$('#div-response-'+muro_id).html(data.html);
+					$('#'+prefix+'_div-response-'+muro_id).html(data.html);
 					observeReply();
 					//clearTimeout( timerId );
 				},
@@ -262,23 +316,25 @@ function observeReply()
 {
 	$('.button-reply').click(function(){
 		var muro_id = $(this).attr('data');
+		var prefix = $('#prefix').val();
 		$( this ).hide();
-		var respuesta = $.trim($('#respuesta_'+muro_id).val());
+		var respuesta = $.trim($('#'+prefix+'_respuesta_'+muro_id).val());
 		if (respuesta != '')
 		{
 			$.ajax({
 				type: "POST",
 				url: $('#form-comment').attr('action'),
 				async: true,
-				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: respuesta, muro_id: muro_id },
+				data: { pagina_id: $('#pagina_id_viendo').val(), mensaje: respuesta, muro_id: muro_id, prefix: prefix },
 				dataType: "json",
 				success: function(data) {
-					$('#respuesta_'+muro_id).val('');
-					$('#respuestas-'+muro_id).prepend(data.html);
-					$('#button-reply-'+muro_id).show();
+					$('#'+prefix+'_respuesta_'+muro_id).val('');
+					$('#'+prefix+'_respuestas-'+muro_id).prepend(data.html);
+					$('#'+prefix+'_button-reply-'+muro_id).show();
 					var puntos = $('#puntos_agregados').val();
 					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
 					$('#puntos_agregados').val(puntos);
+					$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
 					observeLike();
 					//clearTimeout( timerId );
 				},
@@ -295,7 +351,8 @@ function observeLike()
 {
 	$('.like').click(function(){
 		var muro_id = $(this).attr('data');
-		$('#i-'+muro_id).removeClass('ic-lke-act');
+		var prefix = $('#prefix').val();
+		$('#'+prefix+'_i-'+muro_id).removeClass('ic-lke-act');
 		$.ajax({
 			type: "POST",
 			url: $('#url_like').val(),
@@ -305,12 +362,13 @@ function observeLike()
 			success: function(data) {
 				if (data.ilike)
 				{
-					$('#i-'+muro_id).addClass('ic-lke-act');
+					$('#'+prefix+'_i-'+muro_id).addClass('ic-lke-act');
 				}
-				$('#like-'+muro_id).html(data.cantidad);
+				$('#'+prefix+'_like-'+muro_id).html(data.cantidad);
 				var puntos = $('#puntos_agregados').val();
 				puntos = parseInt(puntos) + parseInt(data.puntos_like);
 				$('#puntos_agregados').val(puntos);
+				$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
 				//clearTimeout( timerId );
 			},
 			error: function(){

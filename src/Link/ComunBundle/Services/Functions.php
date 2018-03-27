@@ -1101,7 +1101,9 @@ class Functions
 
 		// Muros recientes
 		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
+		$muros_valorados = $this->muroPaginaValorados($pagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 		$lecciones['muros_recientes'] = $muros_recientes;
+		$subleccion['muros_valorados'] = $muros_valorados;
 
 		$sublecciones = array();
 		$i = 0;
@@ -1149,7 +1151,9 @@ class Functions
 			$subleccion['vista'] = $vista;
 
 			$muros_recientes = $this->muroPagina($subpagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
+			$muros_valorados = $this->muroPaginaValorados($subpagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 			$subleccion['muros_recientes'] = $muros_recientes;
+			$subleccion['muros_valorados'] = $muros_valorados;
 
 			$sublecciones[] = $subleccion;
 
@@ -1254,7 +1258,6 @@ class Functions
         $muros_bd = $query->getResult();
         $muros = array();
         $muros_likes = array();
-        $muros_ids = array();
 
         foreach ($muros_bd as $muro)
         {
@@ -1270,37 +1273,8 @@ class Functions
         {
         	if ($i >= $offset)
         	{
-        		$muros_ids[] = $muro_id;
-        		$j++;
-        	}
-        	if ($j == $limit)
-        	{
-        		break;
-        	}
-        	$i++;
-        }
-
-        // Total de comentarios en este muro
-        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
-		                            WHERE m.pagina = :pagina_id 
-		                            AND m.muro IS NULL 
-		                            AND m.empresa = :empresa_id')
-		            ->setParameters(array('pagina_id' => $pagina_id,
-		            					  'empresa_id' => $empresa_id));
-		$total_comentarios = $query->getSingleScalarResult();
-
-		if (count($muros_ids))
-		{
-
-			$query = $em->createQuery('SELECT m FROM LinkComunBundle:CertiMuro m 
-			                            WHERE m.id IN (:ids)')
-			            ->setParameter('ids', $muros_ids);
-			$muros_bd = $query->getResult();
-
-			foreach ($muros_bd as $muro)
-	        {
-
-	        	$qb = $em->createQueryBuilder();
+        		$muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+        		$qb = $em->createQueryBuilder();
 		        $qb->select('m')
 		           ->from('LinkComunBundle:CertiMuro', 'm')
 		           ->andWhere('m.muro = :muro_id')
@@ -1335,11 +1309,25 @@ class Functions
 	    						 'total_respuestas' => $total_respuestas,
 	    						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
 	    						 'submuros' => $submuros);
-	        }
+        		$j++;
+        	}
+        	if ($j == $limit)
+        	{
+        		break;
+        	}
+        	$i++;
+        }
 
-		}
+        // Total de comentarios en este muro
+        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
+		                            WHERE m.pagina = :pagina_id 
+		                            AND m.muro IS NULL 
+		                            AND m.empresa = :empresa_id')
+		            ->setParameters(array('pagina_id' => $pagina_id,
+		            					  'empresa_id' => $empresa_id));
+		$total_comentarios = $query->getSingleScalarResult();
 
-        $return = array('muros' => $muros,
+		$return = array('muros' => $muros,
         				'total_comentarios' => $total_comentarios);
         return $return;
 

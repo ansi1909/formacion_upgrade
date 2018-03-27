@@ -12,13 +12,13 @@
     </div>
     <div class="comm-footer d-flex justify-content-between align-items-center">
         <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ muro.id }}">
-            <i id="i-{{ muro.id }}" class="material-icons mr-1 text-sm color-light-grey {{ muro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="like-{{ muro.id }}">{{ muro.likes.cantidad }}</span>
+            <i id="{{ prefix }}_i-{{ muro.id }}" class="material-icons mr-1 text-sm color-light-grey {{ muro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="{{ prefix }}_like-{{ muro.id }}">{{ muro.likes.cantidad }}</span>
         </a>
         <a href="#" class="links text-right text-xs reply_comment" data="{{ muro.id }}">{{ 'Responder'|trans }}</a>
     </div>
-    <div id="div-response-{{ muro.id }}">
+    <div id="{{ prefix }}_div-response-{{ muro.id }}">
     </div>
-    <div id="respuestas-{{ muro.id }}">
+    <div id="{{ prefix }}_respuestas-{{ muro.id }}">
         {% for submuro in muro.submuros %}
             <div class="comment replied">
                 <div class="comm-header d-flex align-items-center mb-2">
@@ -34,13 +34,13 @@
                 </div>
                 <div class="comm-footer d-flex justify-content-between align-items-center">
                     <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ submuro.id }}">
-                        <i id="i-{{ submuro.id }}" class="material-icons mr-1 text-sm color-light-grey {{ submuro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="like-{{ submuro.id }}">{{ submuro.likes.cantidad }}</span>
+                        <i id="{{ prefix }}_i-{{ submuro.id }}" class="material-icons mr-1 text-sm color-light-grey {{ submuro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="{{ prefix }}_like-{{ submuro.id }}">{{ submuro.likes.cantidad }}</span>
                     </a>
                 </div>
             </div>
         {% endfor %}
         {% if muro.total_respuestas > muro.submuros|length %}
-            <input type="hidden" id="more_answers-{{ muro.id }}" name="more_answers-{{ muro.id }}" value="0_5">
+            <input type="hidden" id="{{ prefix }}_more_answers-{{ muro.id }}" name="{{ prefix }}_more_answers-{{ muro.id }}" value="0_5">
             <a href="#" class="links text-center d-block more_answers" data="{{ muro.id }}-">{{ 'Ver más respuestas'|trans }}</a>
         {% endif %}
     </div>
