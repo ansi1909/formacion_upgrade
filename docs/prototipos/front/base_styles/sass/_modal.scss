@@ -84,12 +84,7 @@
         -webkit-border-radius: 0 1rem 1rem 0;
     }
     .titulo-form{
-        color: $gray-700;
-        font-family: $primary-font;
-        font-size: $font-size-base;
-        line-height: 1.1875rem;
-        font-weight: $font-weight-normal-hard;
-        text-align: left;
+        @extend %tituloForm;
     }
 }
 
@@ -98,12 +93,25 @@
     @extend %modal-sl;
     @extend %modal;
     .titulo-form{
-        color: $gray-700;
-        font-family: $primary-font;
-        font-size: $font-size-base;
-        line-height: 1.1875rem;
-        font-weight: $font-weight-normal-hard;
-        text-align: left;
+        @extend %tituloForm;
+    }
+}
+
+//Modal Editar perfil
+.modalEditP{
+    @extend %modal-m;
+    @extend %modal;
+    .titulo-form{
+            @extend %tituloForm;
+    }
+}
+
+//Modal Cambiar contraseña
+.modalChagePwd{
+    @extend %modal-m;
+    @extend %modal;
+    .titulo-form{
+        @extend %tituloForm;
     }
 }
 //Extend
@@ -167,4 +175,13 @@
         text-align: center;
         line-height: 2.375rem;
     }
+}
+
+%tituloForm{
+    color: $gray-700;
+    font-family: $primary-font;
+    font-size: $font-size-base;
+    line-height: 1.1875rem;
+    font-weight: $font-weight-normal-hard;
+    text-align: left;
 }

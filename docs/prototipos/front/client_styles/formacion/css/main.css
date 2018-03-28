@@ -74,7 +74,9 @@ a.active-line, .active-line {
 .error_except .img-error {
   width: 18rem;
   height: auto;
-  margin-top: 1rem; }
+  margin-top: calc(1rem - 8px); }
+.error_except .continuar {
+  border: 0px solid transparent !important; }
 
 /* FONTS */
 h1, h2, h3, h4, h5, h6,
@@ -257,6 +259,14 @@ input.form-control:focus {
 .bttn_fm {
   color: #797D80; }
 
+.btn-dl {
+  padding: .3rem 1.5rem .5rem 1.5rem;
+  text-align: center; }
+  .btn-dl .ic-dl {
+    position: relative;
+    top: .5rem;
+    left: 0; }
+
 .bttn_fm {
   font-family: "Roboto";
   font-size: 1.125rem;
@@ -308,6 +318,24 @@ a:hover {
   border-radius: 1rem;
   background-color: #F7FAFC;
   padding: calc(2rem + 3px) 0; }
+
+input[type=date]::-webkit-datetime-edit-month-field, input[type=date]::-webkit-datetime-edit-day-field, input[type=date]::-webkit-datetime-edit-year-field {
+  color: #797D80; }
+input[type=date]::-webkit-clear-button {
+  font-size: 18px;
+  height: 30px;
+  position: relative;
+  right: -3rem;
+  margin-right: 4px;
+  color: #5CAEE6; }
+input[type=date]::-webkit-inner-spin-button {
+  height: 30px;
+  position: relative;
+  right: -3rem; }
+input[type=date]::-webkit-calendar-picker-indicator {
+  font-size: calc(1rem + 2px);
+  position: relative;
+  right: -3rem; }
 
 .login-cover {
   background-image: url(../../../assets/img/login_cover.jpg);
@@ -374,21 +402,6 @@ a:focus {
   background-color: #AAAFB3;
   outline: 1px solid #565656;
   -webkit-border-radius: 0 1rem 1rem 0; }
-.modal-edit .titulo-form {
-  color: #797D80;
-  font-family: "Roboto";
-  font-size: 1rem;
-  line-height: 1.1875rem;
-  font-weight: 500;
-  text-align: left; }
-
-.modal-resp .titulo-form {
-  color: #797D80;
-  font-family: "Roboto";
-  font-size: 1rem;
-  line-height: 1.1875rem;
-  font-weight: 500;
-  text-align: left; }
 
 .modal-resp {
   height: 37rem;
@@ -402,35 +415,43 @@ a:focus {
   height: 36rem;
   width: 62rem; }
 
-.modal-recuperacion, .modal-calendario {
+.modal-recuperacion, .modal-calendario, .modalEditP, .modalChagePwd {
   height: 40rem;
   width: 33.5rem;
   height: 36rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp {
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd {
   margin: 8rem auto !important;
   border-radius: 1rem;
   background: #FAFAFA;
   margin: 2rem auto !important; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal {
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
     font-size: 1.5rem;
     text-align: center;
     line-height: 2.375rem; }
+
+.modal-edit .titulo-form, .modal-resp .titulo-form, .modalEditP .titulo-form, .modalChagePwd .titulo-form {
+  color: #797D80;
+  font-family: "Roboto";
+  font-size: 1rem;
+  line-height: 1.1875rem;
+  font-weight: 500;
+  text-align: left; }
 
 .avatar-img {
   width: 2.5vw;
@@ -1018,14 +1039,12 @@ p.up {
       text-align: center; }
 
 .card-datos {
-  width: 81vw;
-  height: auto;
   position: relative;
   top: calc(2rem - 6px);
-  left: 13rem;
+  left: 0;
   background: #F7FAFC;
-  border-radius: 1rem 1rem 0 0;
-  padding: calc(7rem - 6px) calc(2rem + 3px) calc(2rem + 3px) calc(2rem + 3px); }
+  border-radius: 1rem;
+  padding: calc(7rem - 6px) calc(2rem + 3px) calc(4rem - 4px) calc(2rem + 3px); }
   .card-datos .pic-img {
     height: calc(1rem * 10);
     width: calc(1rem * 10);
@@ -1072,15 +1091,6 @@ p.up {
         opacity: .5; }
     .card-datos .pic-img:hover .add-img {
       transform: translateY(-100%); }
-  .card-datos .puntos {
-    display: block;
-    position: relative;
-    right: calc(2rem + 8px);
-    top: calc(1rem - 4px);
-    color: #5CAEE6;
-    font-family: "Roboto";
-    font-size: calc(2rem - 8px);
-    line-height: calc(2rem - 4px); }
   .card-datos .name-titulo {
     font-family: "Roboto";
     font-size: 2.25rem;
@@ -1089,34 +1099,22 @@ p.up {
     position: relative;
     left: calc(-1 * calc(2rem + 4px));
     color: #797D80; }
-  .card-datos .ajustar {
-    position: relative;
-    left: -.5rem;
-    top: 0rem; }
-    .card-datos .ajustar .nivel {
-      color: #AAAFB3;
-      font-family: "Roboto";
-      font-size: 1.125rem;
-      line-height: calc(1rem + 5px);
-      text-align: center; }
-      .card-datos .ajustar .nivel .ic-nivel {
-        font-size: calc(1rem - 3px);
-        color: #80CCFF; }
-  .card-datos .aj_link {
-    position: relative;
-    left: 0rem;
-    top: calc(1rem - 8px); }
-
-.card-pwd {
-  width: 81vw;
-  height: auto;
-  position: relative;
-  top: calc(2rem - 6px);
-  left: 13rem;
-  background: #fff;
-  border-radius: 0 0 1rem 1rem;
-  padding: calc(7rem - 6px) calc(2rem + 3px) calc(calc(1rem * 9) - 3px) calc(2rem + 3px);
-  margin-bottom: calc(2rem + 3px); }
+  .card-datos .numExp {
+    display: block;
+    color: #5CAEE6;
+    font-family: "Roboto";
+    font-size: 2.25rem;
+    font-weight: 500;
+    line-height: calc(3rem - 6px);
+    text-shadow: 2px 2px 2px rgba(58, 58, 58, 0.2); }
+  .card-datos .tituloExp {
+    color: #5CAEE6;
+    font-family: "Roboto";
+    font-size: calc(2rem - 8px);
+    line-height: calc(2rem - 4px); }
+  .card-datos .imgExp {
+    height: auto;
+    width: 8rem; }
 
 .marcador {
   border: 1px solid #000; }
@@ -2075,10 +2073,6 @@ p.up {
       color: #797D80; }
 
 .rowDimension {
-  width: 65rem;
-  padding: 0 auto; }
-
-.rowDimension2 {
   width: 65rem;
   padding: 0 auto; }
 
