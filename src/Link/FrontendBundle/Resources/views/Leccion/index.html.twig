@@ -117,6 +117,7 @@
                         {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
                         <li class="nav-item">
                             <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data="{{ subpagina.id }}" data-tooltip="{{ subpagina.nombre }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
+                            <span class="tooltip-titulo">{{ subpagina.nombre }}</span>
                         </li>
                     {% endfor %}
                 </ul>
