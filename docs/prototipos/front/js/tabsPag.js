@@ -1,10 +1,19 @@
 $(document).ready(function() {
-    
     var clickedTab = $(".tabs > .activo");
-    var tabWrapper = $(".tab__content");
+    var tabWrapper = $(".contents");
     var activeTab = tabWrapper.find(".activo");
     var activeTabHeight = activeTab.outerHeight();
-    
+
+    $("#tab").tabpager({
+        items: 2,
+        contents: 'contents',
+        previous: '<span class="material-icons"></span>Anterior',
+        next: 'Siguiente<span class="material-icons"></span>',
+        start: 1,
+        position: 'bottom',
+        scroll: true
+    });
+
     // Muestra el tab al cargar la pagina load
     activeTab.show();
     // Establecer la altura del contenedor en la carga de la página
@@ -19,13 +28,13 @@ $(document).ready(function() {
         // animacion fade out cuando se activa el tab
         activeTab.fadeOut(250, function() {
             // Remueve la clase activo de todos los tabs
-            $(".tab__content > li").removeClass("activo");
+            $(".contents > div").removeClass("activo");
             // obtiene el indice del tab clickeado
             var clickedTabIndex = clickedTab.index();
             // agrega la class activo correspondiente al tab
-            $(".tab__content > li").eq(clickedTabIndex).addClass("activo");
+            $(".contents > div").eq(clickedTabIndex).addClass("activo");
             // Actualiza nuevo activo en el tab
-            activeTab = $(".tab__content > .activo");
+            activeTab = $(".contents > .activo");
             // Actualiza la variable
             activeTabHeight = activeTab.outerHeight();
             // Animar la altura del contenedor a la nueva altura del tab
@@ -37,5 +46,4 @@ $(document).ready(function() {
             });
         });
     });
-
 });
