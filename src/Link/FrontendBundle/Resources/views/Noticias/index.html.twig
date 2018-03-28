@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="filter-group d-flex justify-content-around mb-3">
-                    <ul class="tabs">
+                    <ul class="tabs" id="tab">
                         <li class="activo mt-3">
                             <span>Todos</span>
                         </li>
@@ -31,7 +31,7 @@
                             <span>Noticias</span>
                         </li>
                         <li class="mt-3">
-                            <span>novedades</span>
+                            <span>Novedades</span>
                         </li>
                     </ul>
                 </div>
@@ -39,65 +39,79 @@
         </div>
     </div>
     <div class="row">
-        <ul class="tab__content">
-            <li class="activo">
-                <div class="content__wrapper">
-                   <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
+        <div id="wrapper">
+            <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
+                <div class="contents">
+                    {% set division = todos|length / 4 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
                     {% for todo in todos %}
-                       <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                           <a href="{{ path('_noticiaDetalle', { 'noticia_id': todo.id}) }}">
-                               <div class="card-anuncio">
-                                   <div class="card_header">
-                                    {% set img = uploads~todo.imagen %}
-                                       <img class="card_img" src="{{img}}"" alt="Card image cap">
-                                   </div>
-                                   <div class="card_body">
-                                       <h5 class="titulo_anuncio">{{todo.titulo}}</h5>
-                                   </div>
-                                   <div class="card_footer">
-                                       <hr class="separador">
-                                       <div class="row mb-3">
-                                           <div class="col-5 offset-1
-                                                       col-lg-5 offset-lg-1 
-                                                       col-xl-5 offset-xl-1 
-                                                       col-md-5 offset-md-1 
-                                                       col-sm-5 offset-sm-1 
-                                                       col-xs-5 offset-xs-1 
-                                                       px-0">
-                                               <span class="fecha_anuncio">{{todo.fecha}}</span>
-                                           </div>
-                                           <div class="col-5 
-                                                       col-lg-5 
-                                                       col-xl-5 
-                                                       col-md-5 
-                                                       col-sm-5 
-                                                       col-xs-5 
-                                                       text-right 
-                                                       px-0">
-                                               <span class="tipo_anuncio{{todo.tid}}">{{todo.tipo}}</span>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </div>
-                           </a>
-                       </div>
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = row == filas ? 'rowDimensions' : ' ' %}
+                            <div class="row {{dimension}}">
+                        {% endif %}
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
+                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': todo.id}) }}">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        {% set img = uploads~todo.imagen %}
+                                        <img class="card_img" src="{{img}}" alt="Card image cap">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">{{todo.titulo}}</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="row mb-3">
+                                            <div class="col-5 offset-1
+                                                        col-lg-5 offset-lg-1 
+                                                        col-xl-5 offset-xl-1 
+                                                        col-md-5 offset-md-1 
+                                                        col-sm-5 offset-sm-1 
+                                                        col-xs-5 offset-xs-1 
+                                                        px-0">
+                                                <span class="fecha_anuncio">{{todo.fecha}}</span>
+                                            </div>
+                                            <div class="col-5 
+                                                        col-lg-5 
+                                                        col-xl-5 
+                                                        col-md-5 
+                                                        col-sm-5 
+                                                        col-xs-5 
+                                                        text-right 
+                                                        px-0">
+                                                <span class="tipo_anuncio{{todo.tid}}">{{todo.tipo}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% if loop.index is divisibleby(4) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row == filas ? 'rowDimension' : ' ' %}
+                                <div class="row {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     {% endfor %}
-                   </div>
                 </div>
-            </li>
-            <li>
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                        {% for noticia in noticias %}
+                <div class="contents">
+                    <div class="row">
                         <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': noticia.id}) }}">
+                            <a href="#">
                                 <div class="card-anuncio">
                                     <div class="card_header">
-                                        {% set img = uploads~noticia.imagen %}
-                                       <img class="card_img" src="{{img}}"" alt="Card image cap">
+                                        <img class="card_img" src="assets/img/noticias1.png" alt="Card image cap">
                                     </div>
                                     <div class="card_body">
-                                        <h5 class="titulo_anuncio">{{ noticia.titulo }}</h5>
+                                        <h5 class="titulo_anuncio">Noticias relevante para todos</h5>
                                     </div>
                                     <div class="card_footer">
                                         <hr class="separador">
@@ -109,7 +123,7 @@
                                                         col-sm-5 offset-sm-1 
                                                         col-xs-5 offset-xs-1 
                                                         px-0">
-                                                <span class="fecha_anuncio">{{noticia.fecha}}</span>
+                                                <span class="fecha_anuncio">02/02/2018</span>
                                             </div>
                                             <div class="col-5 
                                                         col-lg-5 
@@ -119,30 +133,21 @@
                                                         col-xs-5 
                                                         text-right 
                                                         px-0">
-                                                <span class="tipo_anuncio{{noticia.tid}}">{{noticia.tipo}}</span>
+                                                <span class="tipo_anuncio1">Noticia</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                        {% for novedad in novedades %}
                         <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': novedad.id}) }}">
+                            <a href="#">
                                 <div class="card-anuncio">
                                     <div class="card_header">
-                                        {% set img = uploads~novedad.imagen %}
-                                       <img class="card_img" src="{{img}}"" alt="Card image cap">
+                                        <img class="card_img" src="assets/img/noticias3.png" alt="Card image cap">
                                     </div>
                                     <div class="card_body">
-                                        <h5 class="titulo_anuncio">{{novedad.titulo}}</h5>
+                                        <h5 class="titulo_anuncio">Aprendiendo del liderazgo</h5>
                                     </div>
                                     <div class="card_footer">
                                         <hr class="separador">
@@ -154,7 +159,7 @@
                                                         col-sm-5 offset-sm-1 
                                                         col-xs-5 offset-xs-1 
                                                         px-0">
-                                                <span class="fecha_anuncio">{{novedad.fecha}}</span>
+                                                <span class="fecha_anuncio">02/02/2018</span>
                                             </div>
                                             <div class="col-5 
                                                         col-lg-5 
@@ -164,37 +169,239 @@
                                                         col-xs-5 
                                                         text-right 
                                                         px-0">
-                                                <span class="tipo_anuncio{{novedad.tid}}">{{novedad.tipo}}</span>
+                                                <span class="tipo_anuncio1">Noticia</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
-                        {% endfor %}
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
+                            <a href="#">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        <img class="card_img" src="assets/img/noticias1.png" alt="Card image cap">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">Resultados del programa de gerencia corporativa</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="row mb-3">
+                                            <div class="col-5 offset-1
+                                                        col-lg-5 offset-lg-1 
+                                                        col-xl-5 offset-xl-1 
+                                                        col-md-5 offset-md-1 
+                                                        col-sm-5 offset-sm-1 
+                                                        col-xs-5 offset-xs-1 
+                                                        px-0">
+                                                <span class="fecha_anuncio">02/02/2018</span>
+                                            </div>
+                                            <div class="col-5 
+                                                        col-lg-5 
+                                                        col-xl-5 
+                                                        col-md-5 
+                                                        col-sm-5 
+                                                        col-xs-5 
+                                                        text-right 
+                                                        px-0">
+                                                <span class="tipo_anuncio1">Noticia</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
+                            <a href="#">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        <img class="card_img" src="assets/img/noticias2.png" alt="Card image cap">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">Como tomar apuntes</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="row mb-3">
+                                            <div class="col-5 offset-1
+                                                        col-lg-5 offset-lg-1 
+                                                        col-xl-5 offset-xl-1 
+                                                        col-md-5 offset-md-1 
+                                                        col-sm-5 offset-sm-1 
+                                                        col-xs-5 offset-xs-1 
+                                                        px-0">
+                                                <span class="fecha_anuncio">02/02/2018</span>
+                                            </div>
+                                            <div class="col-5 
+                                                        col-lg-5 
+                                                        col-xl-5 
+                                                        col-md-5 
+                                                        col-sm-5 
+                                                        col-xs-5 
+                                                        text-right 
+                                                        px-0">
+                                                <span class="tipo_anuncio1">Noticia</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
+                            <a href="#">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        <img class="card_img" src="assets/img/noticias3.png" alt="Card image cap">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">Titulo noticia ejemplo número 1</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="row mb-3">
+                                            <div class="col-5 offset-1
+                                                        col-lg-5 offset-lg-1 
+                                                        col-xl-5 offset-xl-1 
+                                                        col-md-5 offset-md-1 
+                                                        col-sm-5 offset-sm-1 
+                                                        col-xs-5 offset-xs-1 
+                                                        px-0">
+                                                <span class="fecha_anuncio">02/02/2018</span>
+                                            </div>
+                                            <div class="col-5 
+                                                        col-lg-5 
+                                                        col-xl-5 
+                                                        col-md-5 
+                                                        col-sm-5 
+                                                        col-xs-5 
+                                                        text-right 
+                                                        px-0">
+                                                <span class="tipo_anuncio1">Noticia</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
+                            <a href="#">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        <img class="card_img" src="assets/img/noticias2.png" alt="Card image cap">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">Titulo noticia ejemplo número 2</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="row mb-3">
+                                            <div class="col-5 offset-1
+                                                        col-lg-5 offset-lg-1 
+                                                        col-xl-5 offset-xl-1 
+                                                        col-md-5 offset-md-1 
+                                                        col-sm-5 offset-sm-1 
+                                                        col-xs-5 offset-xs-1 
+                                                        px-0">
+                                                <span class="fecha_anuncio">02/02/2018</span>
+                                            </div>
+                                            <div class="col-5 
+                                                        col-lg-5 
+                                                        col-xl-5 
+                                                        col-md-5 
+                                                        col-sm-5 
+                                                        col-xs-5 
+                                                        text-right 
+                                                        px-0">
+                                                <span class="tipo_anuncio1">Noticia</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </li>
-        </ul>
-    </div>
-</div>
-<div class="row align-items-center justify-content-center">
-    <div class="col-auto 
-                col-lg-auto 
-                col-xl-auto 
-                col-md-auto 
-                col-sm-auto 
-                col-xs-auto 
-                px-0 pt-3">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-            </ul>
-        </nav>
+                <div class="contents">
+                    <div class="row rowDimension">
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6 pl-0">
+                            <a href="#">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        <img class="card_img" src="assets/img/anuncio1.png" alt="Card image cap">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">Recuerda enviar tus apuntes</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="row mb-3">
+                                            <div class="col-5 offset-1
+                                                        col-lg-5 offset-lg-1 
+                                                        col-xl-5 offset-xl-1 
+                                                        col-md-5 offset-md-1 
+                                                        col-sm-5 offset-sm-1 
+                                                        col-xs-5 offset-xs-1 
+                                                        px-0">
+                                                <span class="fecha_anuncio">02/02/2018</span>
+                                            </div>
+                                            <div class="col-5 
+                                                        col-lg-5 
+                                                        col-xl-5 
+                                                        col-md-5 
+                                                        col-sm-5 
+                                                        col-xs-5 
+                                                        text-right 
+                                                        px-0">
+                                                <span class="tipo_anuncio2">Novedades</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
+                            <a href="#">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        <img class="card_img" src="assets/img/anuncio1.png" alt="Card image cap">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">Recuerda enviar tus apuntes</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="row mb-3">
+                                            <div class="col-5 offset-1
+                                                        col-lg-5 offset-lg-1 
+                                                        col-xl-5 offset-xl-1 
+                                                        col-md-5 offset-md-1 
+                                                        col-sm-5 offset-sm-1 
+                                                        col-xs-5 offset-xs-1 
+                                                        px-0">
+                                                <span class="fecha_anuncio">02/02/2018</span>
+                                            </div>
+                                            <div class="col-5 
+                                                        col-lg-5 
+                                                        col-xl-5 
+                                                        col-md-5 
+                                                        col-sm-5 
+                                                        col-xs-5 
+                                                        text-right 
+                                                        px-0">
+                                                <span class="tipo_anuncio2">Novedades</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -202,5 +409,8 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    
+    <script src="{{ asset('front/js/jquery.tabpager.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/tabsPag.js') }}"></script> 
     <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
 {% endblock %}
