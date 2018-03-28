@@ -206,14 +206,12 @@
 
 //Card profile
 .card-datos{
-    width: 81vw;
-    height: auto;
     position: relative;
     top: calc(2rem - 6px);
-    left: 13rem;
+    left: 0;
     background: $gray-200;
-    border-radius: 1rem 1rem 0 0 ;
-    padding: calc(7rem - 6px) calc(2rem + 3px) calc(2rem + 3px) calc(2rem + 3px);
+    border-radius: 1rem;
+    padding: calc(7rem - 6px) calc(2rem + 3px) calc(4rem - 4px) calc(2rem + 3px);
     .pic-img{
         height: calc(1rem * 10);
         width: calc(1rem * 10);
@@ -267,15 +265,11 @@
             transform: translateY(-100%);
         }
     }
-    .puntos{
-        display: block;
-        position: relative;
-        right: calc(2rem + 8px);
-        top: calc(1rem - 4px);
-        color: $blue;	
-        font-family: $primary-font;	
-        font-size: calc(2rem - 8px);
-        line-height: calc(2rem - 4px);
+    .info_datos{
+        @extend %sty_user;
+    }
+    .datos_user{
+        @extend %sty_user;
     }
     .name-titulo{
         font-family: $primary-font;	
@@ -286,46 +280,27 @@
         left: calc(-1 * calc(2rem + 4px));
         color: $gray-700;
     }
-    .info_datos{
-        @extend %sty_user;
+    .numExp{
+        display: block;
+        color: $blue;
+        font-family: $primary-font;	
+        font-size: $h2-font-size;	
+        font-weight: $font-weight-normal-hard;	
+        line-height: calc(3rem - 6px);
+        text-shadow: 2px 2px 2px rgba(58, 58, 58, 0.2);
     }
-    .datos_user{
-        @extend %sty_user;
+    .tituloExp{
+        color: $blue;	
+        font-family: $primary-font;	
+        font-size: calc(2rem - 8px);
+        line-height: calc(2rem - 4px);
     }
-    .ajustar{
-        position: relative;
-        left: -.5rem;
-        top: 0rem;
-        .nivel{
-            color: $gray-600;	
-            font-family: $primary-font;	
-            font-size: $p-font-size;	
-            line-height: calc(1rem + 5px);	
-            text-align: center;
-            .ic-nivel{
-                font-size: calc(1rem - 3px);
-                color: $lightblue;
-            }
-        }
-    }
-    .aj_link{
-        position: relative;
-        left: 0rem;
-        top: calc(1rem - 8px);
+    .imgExp{
+        height: auto;
+        width: 8rem;
     }
 }
 
-.card-pwd{
-    width: 81vw;
-    height: auto;
-    position: relative;
-    top: calc(2rem - 6px);
-    left: 13rem;
-    background: $white;
-    border-radius: 0 0 1rem 1rem;
-    padding: calc(7rem - 6px) calc(2rem + 3px) calc(calc(1rem * 9) - 3px) calc(2rem + 3px);
-    margin-bottom: calc(2rem + 3px);
-}
 .marcador{
     border: 1px solid $black;
 }

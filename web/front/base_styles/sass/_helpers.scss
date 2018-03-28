@@ -81,6 +81,9 @@ a.active-line, .active-line {
     .img-error{
         width: 18rem;
         height: auto;
-        margin-top: 1rem;
+        margin-top: calc(1rem - 8px);
+    }
+    .continuar{
+        border: 0px solid transparent !important;
     }
 }
