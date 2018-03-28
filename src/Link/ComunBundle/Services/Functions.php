@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
 use Link\ComunBundle\Entity\CertiPaginaLog;
+use Link\ComunBundle\Entity\AdminAlarma;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class Functions
@@ -1691,6 +1692,25 @@ class Functions
                 </div>';
 
         return $html;
+
+	}
+
+	public function newAlarm($tipo_alarma_id, $descripcion, $usuario, $entidad_id)
+	{
+
+		$em = $this->em;
+
+		$tipo_alarma = $em->getRepository('LinkComunBundle:AdminTipoAlarma')->find($tipo_alarma_id);
+
+		$alarma = new AdminAlarma();
+		$alarma->setTipoAlarma($tipo_alarma);
+		$alarma->setDescripcion($descripcion);
+		$alarma->setUsuario($usuario);
+		$alarma->setEntidadId($entidad_id);
+		$alarma->setLeido(false);
+		$alarma->setFechaCreacion(new \DateTime('now'));
+		$em->persist($alarma);
+        $em->flush();
 
 	}
 

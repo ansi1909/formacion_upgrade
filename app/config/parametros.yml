@@ -46,6 +46,11 @@ parameters:
     social:
         muro: 1
         espacio_colaborativo: 2
+    tipo_alarma:
+        respuesta_muro: 1
+        espacio_colaborativo: 2
+        evento: 3
+        aporte_espacio: 4
     layout:
         base: 1
     folders:

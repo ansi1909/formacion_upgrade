@@ -378,6 +378,7 @@ class LeccionController extends Controller
         $muro->setUsuario($usuario);
         if ($muro_id)
         {
+
             $puntos_recibidos = $yml['parameters']['puntos']['respuesta_muro'];
             $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
             $muro->setMuro($muro_padre);
@@ -387,6 +388,11 @@ class LeccionController extends Controller
             $pagina_log_padre->setPuntos($puntos_padre);
             $em->persist($pagina_log_padre);
             $em->flush();
+
+            // Nueva alarma
+            $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu comentario en el muro de').' '.$pagina->getNombre().'.';
+            $f->newAlarm($yml['parameters']['tipo_alarma']['respuesta_muro'], $descripcion, $muro_padre->getUsuario(), $muro_padre->getId());
+
         }
         $muro->setEmpresa($empresa);
         $muro->setFechaRegistro(new \DateTime('now'));
