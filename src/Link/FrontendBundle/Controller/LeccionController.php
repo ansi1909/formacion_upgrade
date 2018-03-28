@@ -258,6 +258,8 @@ class LeccionController extends Controller
         $pagina['next_subpage'] = 0;
         $indexedPages[$pagina['id']] = $pagina;
 
+        //return new Response(var_dump($indexedPages));
+
         // Se completa la lección
         $log_id = $f->finishLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $yml);
         
@@ -267,6 +269,7 @@ class LeccionController extends Controller
 
         // Determinar siguiente lección a ver
         $next_lesson = 0;
+        $pagina_padre_id = 0;
         if ($indexedPages[$subpagina_id]['padre'])
         {
             $pagina_padre_id = $indexedPages[$subpagina_id]['padre'];
@@ -279,6 +282,7 @@ class LeccionController extends Controller
 
         // Si tiene evaluación, verificar que ya no haya presentado y aprobado.
         $boton_evaluacion = 0;
+        $pagina_evaluacion_id = 0;
         if ($indexedPages[$subpagina_id]['tiene_evaluacion'])
         {
             $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
@@ -336,6 +340,78 @@ class LeccionController extends Controller
                     $boton_evaluacion = 1;
                 }
             }
+            if ($boton_evaluacion)
+            {
+                $pagina_evaluacion_id = $subpagina_id;
+            }
+        }
+        else {
+            // Si no hay más lecciones, se chequea si existe evaluación para el padre
+            if (!$next_lesson && $pagina_padre_id)
+            {
+                if ($indexedPages[$pagina_padre_id]['tiene_evaluacion'])
+                {
+                    $query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
+                                                JOIN pl.prueba p 
+                                                WHERE pl.usuario = :usuario_id 
+                                                AND p.pagina = :pagina_id 
+                                                ORDER BY pl.id DESC")
+                                ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                      'pagina_id' => $pagina_padre_id));
+                    $pruebas_log = $query->getResult();
+                    if ($pruebas_log)
+                    {
+                        switch ($pruebas_log[0]->getEstado())
+                        {
+                            case $yml['parameters']['estado_prueba']['curso']:
+                                $boton_evaluacion = 1;
+                                break;
+                            case $yml['parameters']['estado_prueba']['aprobado']:
+                                $boton_evaluacion = 0;
+                                break;
+                            case $yml['parameters']['estado_prueba']['reprobado']:
+                                // Cantidad de intentos
+                                $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
+                                                            JOIN pl.prueba p 
+                                                            WHERE pl.usuario = :usuario_id 
+                                                            AND p.pagina = :pagina_id 
+                                                            ORDER BY pl.id DESC")
+                                            ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                                  'pagina_id' => $pagina_padre_id));
+                                $intentos = $query->getSingleScalarResult();
+                                $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                            WHERE pe.empresa = :empresa_id 
+                                                            AND pe.pagina = :pagina_id")
+                                            ->setParameters(array('empresa_id' => $session->get('empresa')['id'],
+                                                                  'pagina_id' => $pagina_padre_id));
+                                $pe = $query->getResult();
+                                $max_intentos = $pe[0]->getMaxIntentos();
+                                if ($intentos < $max_intentos)
+                                {
+                                    $boton_evaluacion = 1;
+                                }
+                                break;
+                        }
+                    }
+                    else {
+                        // Se verifica si la página tiene creada una evaluación
+                        $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p 
+                                                    WHERE p.pagina = :pagina_id 
+                                                    AND p.estatusContenido = :activo")
+                                    ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                          'pagina_id' => $pagina_padre_id));
+                        $evaluaciones = $query->getSingleScalarResult();
+                        if ($evaluaciones)
+                        {
+                            $boton_evaluacion = 1;
+                        }
+                    }
+                    if ($boton_evaluacion)
+                    {
+                        $pagina_evaluacion_id = $pagina_padre_id;
+                    }
+                }
+            }
         }
 
         //return new Response('next_lesson: '.$next_lesson.', puntos: '.$puntos);
@@ -346,7 +422,8 @@ class LeccionController extends Controller
                                                                                         'menu_str' => $menu_str,
                                                                                         'next_lesson' => $next_lesson,
                                                                                         'puntos' => $puntos,
-                                                                                        'boton_evaluacion' => $boton_evaluacion));
+                                                                                        'boton_evaluacion' => $boton_evaluacion,
+                                                                                        'pagina_evaluacion_id' => $pagina_evaluacion_id));
 
     }
 

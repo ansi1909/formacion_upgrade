@@ -57,6 +57,7 @@
                                 <td>{{ prueba.status }}</td>
                                 <td>{{ prueba.modificacion }}</td>
                                 <td class="center">
+                                    <a href="{{ path('_editEvaluacion', { 'prueba_id': prueba.id }) }}" title="{{ 'Editar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
                                     <a href="{{ path('_preguntas', { 'prueba_id': prueba.id }) }}" title="{{ 'Configurar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if prueba.delete_disabled == '' %}delete{% endif %} {{ prueba.delete_disabled }}" data="{{ prueba.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
