@@ -41,7 +41,7 @@
         {% endfor %}
         {% if muro.total_respuestas > muro.submuros|length %}
             <input type="hidden" id="{{ prefix }}_more_answers-{{ muro.id }}" name="{{ prefix }}_more_answers-{{ muro.id }}" value="0">
-            <a href="#" class="links text-center d-block more_answers" data="{{ muro.id }}-">{{ 'Ver más respuestas'|trans }}</a>
+            <a href="#" class="links text-center d-block more_answers" data="{{ muro.id }}">{{ 'Ver más respuestas'|trans }}</a>
         {% endif %}
     </div>
 </div>

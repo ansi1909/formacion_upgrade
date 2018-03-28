@@ -1209,7 +1209,7 @@ class Functions
     						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
     						 'total_respuestas' => $total_respuestas,
     						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
-    						 'submuros' => $this->subMuros($muro->getid(), 0, 5, $usuario_id, $social));
+    						 'submuros' => $this->subMuros($muro->getId(), 0, 5, $usuario_id, $social));
         }
 
         $return = array('muros' => $muros,
@@ -1268,7 +1268,7 @@ class Functions
 	    						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
 	    						 'total_respuestas' => $total_respuestas,
 	    						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
-	    						 'submuros' => $this->subMuros($muro->getid(), 0, 5, $usuario_id, $social));
+	    						 'submuros' => $this->subMuros($muro->getId(), 0, 5, $usuario_id, $social));
         		$j++;
         	}
         	if ($j == $limit)
@@ -1656,7 +1656,7 @@ class Functions
         if ($muro['total_respuestas'] > count($muro['submuros']))
         {
             $html .= '<input type="hidden" id="'.$prefix.'_more_answers-'.$muro['id'].'" name="'.$prefix.'_more_answers-'.$muro['id'].'" value="0">
-                      <a href="#" class="links text-center d-block more_answers" data="'.$muro['id'].'-">'.$this->translator->trans('Ver más respuestas').'</a>';
+                      <a href="#" class="links text-center d-block more_answers" data="'.$muro['id'].'">'.$this->translator->trans('Ver más respuestas').'</a>';
         }                   
                         
         $html .= '</div>

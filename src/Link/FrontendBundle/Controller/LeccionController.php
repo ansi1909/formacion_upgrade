@@ -542,7 +542,7 @@ class LeccionController extends Controller
             if ($total_respuestas > $next_offset)
             {
                 $html .= '<input type="hidden" id="'.$prefix.'_more_answers-'.$muro_id.'" name="'.$prefix.'_more_answers-'.$muro_id.'" value="'.$offset.'">
-                          <a href="#" class="links text-center d-block more_answers" data="'.$muro_id.'-">'.$this->get('translator')->trans('Ver más respuestas').'</a>';
+                          <a href="#" class="links text-center d-block more_answers" data="'.$muro_id.'">'.$this->get('translator')->trans('Ver más respuestas').'</a>';
             }
 
         }

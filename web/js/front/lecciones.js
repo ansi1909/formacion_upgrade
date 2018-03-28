@@ -149,7 +149,7 @@ $(document).ready(function() {
 				dataType: "json",
 				success: function(data) {
 					$('#comentario').val('');
-					$('#mas_recientes_comments-'+$('#pagina_id_viendo').val()).prepend(data.html);
+					$('#mas_'+prefix+'_comments-'+$('#pagina_id_viendo').val()).prepend(data.html);
 					var puntos = $('#puntos_agregados').val();
 					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
 					$('#puntos_agregados').val(puntos);
@@ -194,6 +194,8 @@ $(document).ready(function() {
 						new_tab.html(data.html);
 						observeMuro();
 						observeLike();
+						observeMore();
+						observeMoreResponses();
 						last_tab.hide(1000);
 						new_tab.show(1000);
 						$('#dirty_'+pagina_id).val(0);
@@ -212,37 +214,11 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.more_comments').click(function(){
-		var a = $(this);
-		var pagina_id = a.attr('id');
-		var prefix = $('#prefix').val();
-		var hidden = $('#more_comments_'+prefix+'-'+pagina_id);
-		var offset = hidden.val();
-		var div = $('#mas_'+prefix+'_comments-'+pagina_id);
-		$.ajax({
-			type: "GET",
-			url: $('#url_more').val(),
-			async: false,
-			data: { pagina_id: pagina_id, muro_id: 0, prefix: prefix, offset: offset },
-			dataType: "json",
-			success: function(data) {
-				// Se borran tanto el enlace como el campo hidden, y se vuelve a renovar en caso de que hayan más comentarios.
-				a.remove();
-				hidden.remove();
-				div.append(data.html);
-				observeMuro();
-				observeLike();
-				//clearTimeout( timerId );
-			},
-			error: function(){
-				console.log('Error refrescando el muro'); // Hay que implementar los mensajes de error para el frontend
-			}
-		});
-	});
-
 	observeMuro();
 	observeReply();
 	observeLike();
+	observeMore();
+	observeMoreResponses();
 
 });
 
@@ -310,6 +286,7 @@ function finishLesson(programa_id, pagina_id)
 function observeMuro()
 {
 
+	$('.reply_comment').unbind('click');
 	$('.reply_comment').click(function(){
 		var muro_id = $(this).attr('data');
 		var response_container = $('#response-'+muro_id);
@@ -341,6 +318,7 @@ function observeMuro()
 
 function observeReply()
 {
+	$('.button-reply').unbind('click');
 	$('.button-reply').click(function(){
 		var muro_id = $(this).attr('data');
 		var prefix = $('#prefix').val();
@@ -376,6 +354,7 @@ function observeReply()
 
 function observeLike()
 {
+	$('.like').unbind('click');
 	$('.like').click(function(){
 		var muro_id = $(this).attr('data');
 		var prefix = $('#prefix').val();
@@ -400,6 +379,73 @@ function observeLike()
 			},
 			error: function(){
 				console.log('Error en like'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
+	});
+}
+
+function observeMore()
+{
+	$('.more_comments').unbind('click');
+	$('.more_comments').click(function(){
+		var a = $(this);
+		var pagina_id = a.attr('data');
+		var prefix = $('#prefix').val();
+		var hidden = $('#more_comments_'+prefix+'-'+pagina_id);
+		var offset = hidden.val();
+		var div = $('#mas_'+prefix+'_comments-'+pagina_id);
+		a.hide();
+		$.ajax({
+			type: "GET",
+			url: $('#url_more').val(),
+			async: false,
+			data: { pagina_id: pagina_id, muro_id: 0, prefix: prefix, offset: offset },
+			dataType: "json",
+			success: function(data) {
+				// Se borran tanto el enlace como el campo hidden, y se vuelve a renovar en caso de que hayan más comentarios.
+				a.remove();
+				hidden.remove();
+				div.append(data.html);
+				observeMuro();
+				observeLike();
+				observeMore();
+				//clearTimeout( timerId );
+			},
+			error: function(){
+				console.log('Error obteniendo más comentarios'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
+	});
+}
+
+function observeMoreResponses()
+{
+	$('.more_answers').unbind('click');
+	$('.more_answers').click(function(){
+		var a = $(this);
+		var muro_id = a.attr('data');
+		var prefix = $('#prefix').val();
+		var hidden = $('#'+prefix+'_more_answers-'+muro_id);
+		var offset = hidden.val();
+		var div = $('#'+prefix+'_respuestas-'+muro_id);
+		a.hide();
+		$.ajax({
+			type: "GET",
+			url: $('#url_more').val(),
+			async: false,
+			data: { pagina_id: 0, muro_id: muro_id, prefix: prefix, offset: offset },
+			dataType: "json",
+			success: function(data) {
+				// Se borran tanto el enlace como el campo hidden, y se vuelve a renovar en caso de que hayan más comentarios.
+				a.remove();
+				hidden.remove();
+				div.append(data.html);
+				observeLike();
+				observeMoreResponses();
+				//clearTimeout( timerId );
+			},
+			error: function(){
+				console.log('Error obteniendo más respuestas'); // Hay que implementar los mensajes de error para el frontend
 			}
 		});
 	});
