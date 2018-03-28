@@ -193,7 +193,6 @@ $(document).ready(function() {
 					success: function(data) {
 						new_tab.html(data.html);
 						observeMuro();
-						observeReply();
 						observeLike();
 						last_tab.hide(1000);
 						new_tab.show(1000);
@@ -211,6 +210,34 @@ $(document).ready(function() {
 				new_tab.show(1000);
 			}
 		}
+	});
+
+	$('.more_comments').click(function(){
+		var a = $(this);
+		var pagina_id = a.attr('id');
+		var prefix = $('#prefix').val();
+		var hidden = $('#more_comments_'+prefix+'-'+pagina_id);
+		var offset = hidden.val();
+		var div = $('#mas_'+prefix+'_comments-'+pagina_id);
+		$.ajax({
+			type: "GET",
+			url: $('#url_more').val(),
+			async: false,
+			data: { pagina_id: pagina_id, muro_id: 0, prefix: prefix, offset: offset },
+			dataType: "json",
+			success: function(data) {
+				// Se borran tanto el enlace como el campo hidden, y se vuelve a renovar en caso de que hayan más comentarios.
+				a.remove();
+				hidden.remove();
+				div.append(data.html);
+				observeMuro();
+				observeLike();
+				//clearTimeout( timerId );
+			},
+			error: function(){
+				console.log('Error refrescando el muro'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
 	});
 
 	observeMuro();

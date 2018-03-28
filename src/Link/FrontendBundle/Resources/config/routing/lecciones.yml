@@ -35,3 +35,9 @@ _ajaxRefreshMuro:
     defaults: { _controller: LinkFrontendBundle:Leccion:ajaxRefreshMuro }
     requirements:
         _method: GET
+
+_ajaxMasMuro:
+    path:     /ajaxMasMuro
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxMasMuro }
+    requirements:
+        _method: GET

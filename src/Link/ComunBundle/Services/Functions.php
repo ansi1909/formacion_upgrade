@@ -1196,33 +1196,12 @@ class Functions
         foreach ($muros_bd as $muro)
         {
 
-        	$qb = $em->createQueryBuilder();
-	        $qb->select('m')
-	           ->from('LinkComunBundle:CertiMuro', 'm')
-	           ->andWhere('m.muro = :muro_id')
-	           ->orderBy('m.id', 'DESC')
-	           ->setFirstResult(0)
-	           ->setMaxResults(5)
-	           ->setParameter('muro_id', $muro->getId());
-	        $query = $qb->getQuery();
-	        $submuros_bd = $query->getResult();
-
 	        // Total de respuestas de este comentario
 	        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
 			                            WHERE m.muro = :muro_id')
 			            ->setParameter('muro_id', $muro->getId());
 			$total_respuestas = $query->getSingleScalarResult();
-        	
-        	$submuros = array();
-        	foreach ($submuros_bd as $submuro)
-        	{
-        		$submuros[] = array('id' => $submuro->getId(),
-        							'mensaje' => $submuro->getMensaje(),
-        							'usuario' => $submuro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $submuro->getUsuario()->getNombre().' '.$submuro->getUsuario()->getApellido(),
-        							'foto' => $submuro->getUsuario()->getFoto(),
-        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')),
-        							'likes' => $this->likes($social['muro'], $submuro->getId(), $usuario_id));
-        	}
+
         	$muros[] = array('id' => $muro->getId(),
     						 'mensaje' => $muro->getMensaje(),
     						 'usuario' => $muro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido(),
@@ -1230,7 +1209,7 @@ class Functions
     						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
     						 'total_respuestas' => $total_respuestas,
     						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
-    						 'submuros' => $submuros);
+    						 'submuros' => $this->subMuros($muro->getid(), 0, 5, $usuario_id, $social));
         }
 
         $return = array('muros' => $muros,
@@ -1273,34 +1252,15 @@ class Functions
         {
         	if ($i >= $offset)
         	{
-        		$muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
-        		$qb = $em->createQueryBuilder();
-		        $qb->select('m')
-		           ->from('LinkComunBundle:CertiMuro', 'm')
-		           ->andWhere('m.muro = :muro_id')
-		           ->orderBy('m.id', 'DESC')
-		           ->setFirstResult(0)
-		           ->setMaxResults(5)
-		           ->setParameter('muro_id', $muro->getId());
-		        $query = $qb->getQuery();
-		        $submuros_bd = $query->getResult();
 
-		        // Total de respuestas de este comentario
+        		$muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+        		
+        		// Total de respuestas de este comentario
 		        $query = $em->createQuery('SELECT COUNT(m.id) FROM LinkComunBundle:CertiMuro m 
 				                            WHERE m.muro = :muro_id')
 				            ->setParameter('muro_id', $muro->getId());
 				$total_respuestas = $query->getSingleScalarResult();
 	        	
-	        	$submuros = array();
-	        	foreach ($submuros_bd as $submuro)
-	        	{
-	        		$submuros[] = array('id' => $submuro->getId(),
-	        							'mensaje' => $submuro->getMensaje(),
-	        							'usuario' => $submuro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $submuro->getUsuario()->getNombre().' '.$submuro->getUsuario()->getApellido(),
-	        							'foto' => $submuro->getUsuario()->getFoto(),
-	        							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')),
-	        							'likes' => $this->likes($social['muro'], $submuro->getId(), $usuario_id));
-	        	}
 	        	$muros[] = array('id' => $muro->getId(),
 	    						 'mensaje' => $muro->getMensaje(),
 	    						 'usuario' => $muro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido(),
@@ -1308,7 +1268,7 @@ class Functions
 	    						 'cuando' => $this->sinceTime($muro->getFechaRegistro()->format('Y-m-d H:i:s')),
 	    						 'total_respuestas' => $total_respuestas,
 	    						 'likes' => $this->likes($social['muro'], $muro->getId(), $usuario_id),
-	    						 'submuros' => $submuros);
+	    						 'submuros' => $this->subMuros($muro->getid(), 0, 5, $usuario_id, $social));
         		$j++;
         	}
         	if ($j == $limit)
@@ -1330,6 +1290,36 @@ class Functions
 		$return = array('muros' => $muros,
         				'total_comentarios' => $total_comentarios);
         return $return;
+
+	}
+
+	public function subMuros($muro_id, $offset, $limit, $usuario_id, $social)
+	{
+
+		$em = $this->em;
+		$qb = $em->createQueryBuilder();
+        $qb->select('m')
+           ->from('LinkComunBundle:CertiMuro', 'm')
+           ->andWhere('m.muro = :muro_id')
+           ->orderBy('m.id', 'DESC')
+           ->setFirstResult($offset)
+           ->setMaxResults($limit)
+           ->setParameter('muro_id', $muro_id);
+        $query = $qb->getQuery();
+        $submuros_bd = $query->getResult();
+    	
+    	$submuros = array();
+    	foreach ($submuros_bd as $submuro)
+    	{
+    		$submuros[] = array('id' => $submuro->getId(),
+    							'mensaje' => $submuro->getMensaje(),
+    							'usuario' => $submuro->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $submuro->getUsuario()->getNombre().' '.$submuro->getUsuario()->getApellido(),
+    							'foto' => $submuro->getUsuario()->getFoto(),
+    							'cuando' => $this->sinceTime($submuro->getFechaRegistro()->format('Y-m-d H:i:s')),
+    							'likes' => $this->likes($social['muro'], $submuro->getId(), $usuario_id));
+    	}
+
+    	return $submuros;
 
 	}
 
@@ -1629,7 +1619,79 @@ class Functions
 				$hijas = $this->hijas($sub['subpaginas'], $hijas);
 			}
 		}
-	return $hijas;
+		return $hijas;
+	}
+
+	public function drawComment($muro, $yml, $prefix)
+	{
+
+		$uploads = $yml['parameters']['folders']['uploads'];
+		$img_user = $muro['foto'] ? $uploads.$muro['foto'] : $this->getWebDirectory().'/front/assets/img/user-default.png';
+        $like_class = $muro['likes']['ilike'] ? 'ic-lke-act' : '';
+        $html = '<div class="comment">
+                    <div class="comm-header d-flex align-items-center mb-2">
+                        <img src="'.$img_user.'" alt="">
+                        <div class="wrap-info-user flex-column ml-2">
+                            <div class="name text-xs color-dark-grey">'.$muro['usuario'].'</div>
+                            <div class="date text-xs color-grey">'.$muro['cuando'].'</div>
+                        </div>
+                    </div>
+                    <div class="comm-body">
+                        <p>'.$muro['mensaje'].'</p>
+                    </div>
+                    <div class="comm-footer d-flex justify-content-between align-items-center">
+                        <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$muro['id'].'">
+                            <i id="'.$prefix.'_i-'.$muro['id'].'" class="material-icons mr-1 text-sm color-light-grey '.$like_class.'">thumb_up</i> <span id="'.$prefix.'_like-'.$muro['id'].'">'.$muro['likes']['cantidad'].'</span>
+                        </a>
+                        <a href="#" class="links text-right text-xs reply_comment" data="'.$muro['id'].'">'.$this->translator->trans('Responder').'</a>
+                    </div>
+                    <div id="'.$prefix.'_div-response-'.$muro['id'].'">
+                    </div>
+                    <div id="'.$prefix.'_respuestas-'.$muro['id'].'">';
+        foreach ($muro['submuros'] as $submuro)
+        {
+        	$html .= $this->drawResponses($submuro, $yml, $prefix);
+        }
+
+        if ($muro['total_respuestas'] > count($muro['submuros']))
+        {
+            $html .= '<input type="hidden" id="'.$prefix.'_more_answers-'.$muro['id'].'" name="'.$prefix.'_more_answers-'.$muro['id'].'" value="0">
+                      <a href="#" class="links text-center d-block more_answers" data="'.$muro['id'].'-">'.$this->translator->trans('Ver más respuestas').'</a>';
+        }                   
+                        
+        $html .= '</div>
+                </div>';
+
+        return $html;
+
+	}
+
+	public function drawResponses($submuro, $yml, $prefix)
+	{
+
+		$uploads = $yml['parameters']['folders']['uploads'];
+		$img_user = $submuro['foto'] ? $uploads.$submuro['foto'] : $this->getWebDirectory().'/front/assets/img/user-default.png';
+        $like_class = $submuro['likes']['ilike'] ? 'ic-lke-act' : '';
+        $html = '<div class="comment replied">
+                    <div class="comm-header d-flex align-items-center mb-2">
+                        <img src="'.$img_user.'" alt="">
+                        <div class="wrap-info-user flex-column ml-2">
+                            <div class="name text-xs color-dark-grey">'.$submuro['usuario'].'</div>
+                            <div class="date text-xs color-grey">'.$submuro['cuando'].'</div>
+                        </div>
+                    </div>
+                    <div class="comm-body">
+                        <p>'.$submuro['mensaje'].'</p>
+                    </div>
+                    <div class="comm-footer d-flex justify-content-between align-items-center">
+                        <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$submuro['id'].'">
+                            <i id="'.$prefix.'_i-'.$submuro['id'].'" class="material-icons mr-1 text-sm color-light-grey '.$like_class.'">thumb_up</i> <span id="'.$prefix.'_like-'.$submuro['id'].'">'.$submuro['likes']['cantidad'].'</span>
+                        </a>
+                    </div>
+                </div>';
+
+        return $html;
+
 	}
 
 }
