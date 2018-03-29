@@ -5,3 +5,9 @@ _noticias:
 _noticiaDetalle:
     path:     /noticiasDetalle/{noticia_id}
     defaults: { _controller: LinkFrontendBundle:Noticias:detalle }
+
+_buscarNoticia:
+    path:     /noticias
+    defaults: { _controller: LinkFrontendBundle:Noticias:index }
+    requirements:
+        _method: POST

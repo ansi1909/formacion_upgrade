@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class NoticiasController extends Controller
 {
 
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -36,6 +36,61 @@ class NoticiasController extends Controller
             $todos = array();
             $noticias = array();
             $novedades = array();
+
+            if ($request->getMethod() == 'POST'){
+
+                $buscar = $request->request->get('buscar');
+
+                $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNoticia n
+                                           WHERE n.titulo LIKE :buscar
+                                           AND n.empresa = :empresa_id")
+                            ->setParameters(array('buscar'=> '%'.$buscar.'%',
+                                                  'empresa_id'=> $empresa_id));
+                $busquedas = $query->getResult();
+
+                foreach($busquedas as $busqueda)
+                {
+                    $fecha_i = strtotime($busqueda->getFechaPublicacion()->format('d-m-Y'));
+                    $fecha_f = strtotime($busqueda->getFechaVencimiento()->format('d-m-Y'));
+                    if ($now >= $fecha_i && $now < $fecha_f) 
+                   {
+                        $todos[] =array('id'=>$busqueda->getId(),
+                                           'titulo'=>$busqueda->getTitulo(),
+                                           'fecha'=>$busqueda->getFechaPublicacion()->format('d/m/Y'),
+                                           'tipo'=>$busqueda->getTipoNoticia()->getNombre(),
+                                           'imagen'=>$busqueda->getImagen(),
+                                           'tid'=>$busqueda->getTipoNoticia()->getId());
+
+                        if($busqueda->getTipoNoticia()->getId() == '1')
+                        {
+                            $noticias[] =array('id'=>$busqueda->getId(),
+                                           'titulo'=>$busqueda->getTitulo(),
+                                           'fecha'=>$busqueda->getFechaPublicacion()->format('d/m/Y'),
+                                           'tipo'=>$busqueda->getTipoNoticia()->getNombre(),
+                                           'imagen'=>$busqueda->getImagen(),
+                                           'tid'=>$busqueda->getTipoNoticia()->getId());
+
+                        }elseif ($busqueda->getTipoNoticia()->getId() == '2') 
+                        {
+                            $novedades[] =array('id'=>$busqueda->getId(),
+                                           'titulo'=>$busqueda->getTitulo(),
+                                           'fecha'=>$busqueda->getFechaPublicacion()->format('d/m/Y'),
+                                           'tipo'=>$busqueda->getTipoNoticia()->getNombre(),
+                                           'imagen'=>$busqueda->getImagen(),
+                                           'tid'=>$busqueda->getTipoNoticia()->getId());
+                        }
+                    }
+                }
+
+                return $this->render('LinkFrontendBundle:Noticias:index.html.twig', array('usuario_id' => $usuario_id,
+                                                                                  'todos' => $todos,
+                                                                                  'noticias' => $noticias,
+                                                                                  'novedades' => $novedades));
+
+                $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
+
+                return $response;
+            }
 
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.empresa = :empresa_id

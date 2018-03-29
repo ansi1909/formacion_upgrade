@@ -6,10 +6,167 @@
 {% endblock %}
 
 {% block body %}
+{% set nombre = app.session.get('usuario')['nombre'] %}
+{% set apellido = app.session.get('usuario')['apellido'] %}
+{% set img = uploads~app.session.get('usuario')['foto'] %}
+<section class="card-datos">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
+            <div class="pic-img">
+                <img src="{{img}}" class="img-user-pic" alt="">
+                <div class="add-img">
+                    <span class="material-icons ic-add-img">add_a_photo</span>
+                    <span class="title-img">Cambiar</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-5 col-lg-5 col-xl-5">
+            <h2 class="name-titulo text-center">{{nombre}} {{apellido}}</h2>
+            <div class="row justify-content-between">
+                <div class="col-6 text-right">
+                    <span class="info_datos">Nombre de usuario</span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user">{{usuario.login}}</span>
+                </div>
+            </div>
+            <div class="row justify-content-betwee5">
+                <div class="col-6 text-right">
+                    <span class="info_datos">Correo electrónico</span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user">{{usuario.correoPersonal}}</span>
+                </div>
+            </div>
+            <div class="row justify-content-betwee5">
+                <div class="col-6 text-right">
+                    <span class="info_datos">Correo adicional</span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user">{{usuario.correoCorporativo}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-right">
+                    <span class="info_datos">Fecha de nacimiento </span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user">{{usuario.fechaNacimiento|date("d/m/Y")}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center">
+            <img class="imgExp" src="{{asset('img/coinsPills.svg')}}" alt="">
+            <span class="numExp">5.0 K</span>
+            <h3 class="tituloExp">EXP</h3>
+        </div>
+    </div>
+    <div class="row align-items-center justify-content-around mt-12v">
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="#"><button type="button" class="btn btn-primary">Ver mis certificados</button></a>
+        </div>
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">Editar perfil</button></a>
+        </div>
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="#"><button type="button" class="btn btn-primary">Ver ranking</button></a>
+        </div>
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">Cambiar contraseña</button></a>
+        </div>
+    </div>
+</section>
 
+<!-- Modal Editar perfil-->
+<div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                    <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                </a>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center mt-4">
+            <div class="col-12">
+                <h4 class="pb-1 title-grey sub-line"> Editar Perfil </h4>
+            </div>
+        </div>
+        <form id="form" name="form" action="{{ path( '_editUsuario')}}"  method="POST">
+            <div class="row aling-item-center justify-content-center mt-3">
+                <div class="col-8">
+                    <div class="form-group text-left">
+                        <label for="nameUser">Nombre de usuario</label>
+                        <input  type="text" class="form-control mb-4" id="username" name="username" value="{{usuario.login}}">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="mailP">Correo electrónico</label>
+                        <input type="mail" class="form-control mb-1" id="mailP">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="mailAd">Correo electrónico adicional</label>
+                        <input  type="mail" class="form-control mb-4" id="mailAd">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="fechaN">Fecha de nacimiento</label>
+                        <input  type="date" class="form-control mb-4" id="fechaN">
+                    </div>
+                </div>
+            </div>
+            <div class="row aling-item-center justify-content-center">
+                <div class="col-6 text-center">
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
+<!-- Modal cambiar contraseña-->
+<div class="modal modalChagePwd" id="modalpwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container-fluid">
+        <div class="row justify-content-end mt-3">
+            <div class="col-auto">
+                <a class="btn_close_modal" data-dismiss="modal" aria-label="Close">
+                    <span class=" close material-icons ic-close-white" aria-hidden="true">close</span>
+                </a>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center mt-4">
+            <div class="col-12">
+                <h4 class="pb-1 title-grey sub-line "> Cambiar contraseña </h4>
+            </div>
+        </div>
+        <form action="">
+            <div class="row aling-item-center justify-content-center mt-5">
+                <div class="col-8">
+                    <div class="form-group text-left">
+                        <label for="pwd_act">Contraseña actual</label>
+                        <input  type="password" class="form-control mb-4" id="pwd_act">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="pwd_new">Nueva contraseña</label>
+                        <input type="password" class="form-control mb-1" id="pwd_new">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="pwd_conf_new">Confirmar nueva contraseña</label>
+                        <input type="password" class="form-control mb-1" id="pwd_conf_new">
+                    </div>
+                </div>
+            </div>
+            <div class="row aling-item-center justify-content-center mt-5">
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock %}
+
+
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('front/js/acordion.js') }}"></script> 
