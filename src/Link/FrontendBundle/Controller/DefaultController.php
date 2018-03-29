@@ -396,8 +396,9 @@ class DefaultController extends Controller
                     {
                         if($iniciarSesion['error']==true)
                         {
+
                             $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
-                                                                                                                     'error' => $error));
+                                                                                                                     'error' => $iniciarSesion['error']));
                             return $response;
                         }
                     }                    
