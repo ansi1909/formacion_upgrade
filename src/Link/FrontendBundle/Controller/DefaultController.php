@@ -360,14 +360,15 @@ class DefaultController extends Controller
                                  'css' => $css);
 
                 //validamos que exista una cookie
-                if($_COOKIE && isset($_COOKIE["id_usuario"]) )// && $_COOKIE["marca_aleatoria_usuario"])
+                if($_COOKIE && isset($_COOKIE["id_usuario"]))
                 {
-                
                     $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
                                                                                                    'empresa' => $empresa_bd->getId(),
                                                                                                    'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
+                    
                     if($usuario)
                     {
+                        $recordar_datos=1;
                         $login = $usuario->getLogin();
                         $clave = $usuario->getClave(); 
                         $verificacion=1;
@@ -379,6 +380,7 @@ class DefaultController extends Controller
                 {
                     if ($request->getMethod() == 'POST')
                     {
+                        $recordar_datos = $request->request->get('recordar_datos');
                         $login = $request->request->get('usuario');
                         $clave = $request->request->get('password');
                         $verificacion=1;
@@ -387,7 +389,7 @@ class DefaultController extends Controller
 
                 if($verificacion)
                 {
-                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => 1,'login' => $login,'clave' => $clave,'empresa' => $empresa,'yml' => $yml['parameters'] ));
+                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,'login' => $login,'clave' => $clave,'empresa' => $empresa,'yml' => $yml['parameters'] ));
 
                     if($iniciarSesion['exito']==true)
                     {
