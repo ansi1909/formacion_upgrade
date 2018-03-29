@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class UsuarioController extends Controller
 {
 
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
@@ -30,13 +30,28 @@ class UsuarioController extends Controller
         {
 
             $usuario_id = $session->get('usuario')['id'];
+
+            if ($request->getMethod() == 'POST')
+            {
+                $user = $request->request->get('username');
+                
+                $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+                
+                $usuario->setLogin($user);
+
+                $em->persist($usuario);
+                $em->flush();   
+
+            }
+
+            $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id); 
             
 
         }else {
             return $this->redirectToRoute('_login');
         }
 
-        return $this->render('LinkFrontendBundle:Usuario:index.html.twig', array('usuario_id' => $usuario_id));
+        return $this->render('LinkFrontendBundle:Usuario:index.html.twig', array('usuario' => $usuario));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

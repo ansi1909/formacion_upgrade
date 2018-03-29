@@ -25,6 +25,11 @@ Link\ComunBundle\Entity\CertiRespuesta:
             type: datetime
             nullable: true
             column: fecha_registro
+        nro:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         pregunta:
             targetEntity: CertiPregunta

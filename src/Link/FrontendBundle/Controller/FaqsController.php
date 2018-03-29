@@ -30,6 +30,7 @@ class FaqsController extends Controller
         {
 
             $usuario_id = $session->get('usuario')['id'];
+            $faqs = array();
 
             $query = $em->createQuery('SELECT tp FROM LinkComunBundle:AdminTipoPregunta tp');
                         

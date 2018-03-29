@@ -81,7 +81,7 @@
 
     <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
     <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': next_lesson }) }}">
-    <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': pagina_evaluacion_id }) }}">
+    <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': pagina_evaluacion_id, 'programa_id': programa.id }) }}">
     
     <section class="s1_fin-materia mt-3">
         <div class="row align-items-center justify-content-center">

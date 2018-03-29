@@ -1107,7 +1107,7 @@ class Functions
 		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 		$muros_valorados = $this->muroPaginaValorados($pagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 		$lecciones['muros_recientes'] = $muros_recientes;
-		$subleccion['muros_valorados'] = $muros_valorados;
+		$lecciones['muros_valorados'] = $muros_valorados;
 
 		$sublecciones = array();
 		$i = 0;
@@ -1874,8 +1874,8 @@ class Functions
                                     $em->persist($usuario);
                                     $em->flush();
                                     //se creo la variable de las cookie con el id del usuario de manera que cuando destruya la cookie sea la del usuario activo
-                                    setcookie("id_usuario_".$usuario->getId(), $usuario->getId(), time()+(60*60*24*365),'/');
-                                    setcookie("marca_aleatoria_usuario_".$usuario->getId(), $numero_aleatorio, time()+(60*60*24*365),'/');
+                                    setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
+                                    setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
                                 }
 
 								$exito=true;

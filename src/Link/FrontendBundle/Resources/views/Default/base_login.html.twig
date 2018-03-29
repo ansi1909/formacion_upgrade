@@ -48,8 +48,9 @@
                                     <span class="error error__style">{{ error }}</span>
                                 </div>
                                 <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start">
-                                  <input type="checkbox" id="check_recordar" class="mr-2">
-                                  <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contaseña'|trans }}</label>
+                                    <input type="checkbox" id="check_recordar" class="mr-2">
+                                    <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contaseña'|trans }}</label>
+                                    <input type="hidden" id="recordar_datos" name="recordar_datos" value="0">
                                 </div>
                                 <button type="submit" class="btn btn-primary mb-5" id="entrar">{{ 'Entrar'|trans }}</button>
                             </form>
@@ -139,14 +140,18 @@
                 }
             });
 
-            /*$('#entrar').click(function(){
-                $('#entrar').hide();
-                $('.error').hide();
-            });*/
+            $('#check_recordar').click(function()
+            {
+                if( $('#check_recordar:checked').val() == 'on')
+                    $('#recordar_datos').val(1);
+                else
+                    $('#recordar_datos').val(0);
+               
+            });
 
             $('#entrar').click(function()
             {
-               var valid = $('#form').valid();
+                var valid = $('#form').valid();
                 if(!valid)
                 {
                     notify($('#div-error').html());

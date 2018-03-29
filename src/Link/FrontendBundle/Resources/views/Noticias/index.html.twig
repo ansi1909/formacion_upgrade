@@ -16,8 +16,10 @@
     <div class="cont-noticias">
         <div class="row align-item-center justify-content-center mt-5">
             <div class="col-6 col-lg-6 col-xl-6 col-md-8 col-sm-8 col-xs-8">
-                <input type="search" class="form-control" placeholder="Ingrese lo que desea buscar">
-                <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
+                <form id="form" name="form" action="{{ path( '_buscarNoticia')}}"  method="POST">
+                    <input type="search" class="form-control" placeholder="Ingrese lo que desea buscar" id="buscar" name="buscar">
+                    <button type="submit" class="btn-search"><span class="material-icons ic-search">search</span></button>
+                </form>
             </div>
         </div>
         <div class="row">
@@ -48,7 +50,7 @@
                     {% for todo in todos %}
                         {% if loop.first %}
                             {% set row = row + 1 %}
-                            {% set dimension = row == filas ? 'rowDimensions' : ' ' %}
+                            {% set dimension = row == filas ? 'rowDimension' : ' ' %}
                             <div class="row {{dimension}}">
                         {% endif %}
                         <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
@@ -103,15 +105,24 @@
                     {% endfor %}
                 </div>
                 <div class="contents">
-                    <div class="row">
+                    {% set division = noticias|length / 4 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
+                    {% for noticia in noticias %}
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = row == filas ? 'rowDimension' : ' ' %}
+                            <div class="row {{dimension}}">
+                        {% endif %}
                         <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="#">
+                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': noticia.id}) }}">
                                 <div class="card-anuncio">
                                     <div class="card_header">
-                                        <img class="card_img" src="assets/img/noticias1.png" alt="Card image cap">
+                                        {% set img = uploads~noticia.imagen %}
+                                        <img class="card_img" src="{{img}}" alt="Card image cap">
                                     </div>
                                     <div class="card_body">
-                                        <h5 class="titulo_anuncio">Noticias relevante para todos</h5>
+                                        <h5 class="titulo_anuncio">{{noticia.titulo}}</h5>
                                     </div>
                                     <div class="card_footer">
                                         <hr class="separador">
@@ -123,7 +134,7 @@
                                                         col-sm-5 offset-sm-1 
                                                         col-xs-5 offset-xs-1 
                                                         px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
+                                                <span class="fecha_anuncio">{{noticia.fecha}}</span>
                                             </div>
                                             <div class="col-5 
                                                         col-lg-5 
@@ -133,243 +144,46 @@
                                                         col-xs-5 
                                                         text-right 
                                                         px-0">
-                                                <span class="tipo_anuncio1">Noticia</span>
+                                                <span class="tipo_anuncio{{noticia.tid}}">{{noticia.tipo}}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="#">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        <img class="card_img" src="assets/img/noticias3.png" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">Aprendiendo del liderazgo</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio1">Noticia</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                        {% if loop.index is divisibleby(4) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row == filas ? 'rowDimension' : ' ' %}
+                                <div class="row {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="#">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        <img class="card_img" src="assets/img/noticias1.png" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">Resultados del programa de gerencia corporativa</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio1">Noticia</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="#">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        <img class="card_img" src="assets/img/noticias2.png" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">Como tomar apuntes</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio1">Noticia</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="#">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        <img class="card_img" src="assets/img/noticias3.png" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">Titulo noticia ejemplo número 1</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio1">Noticia</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="#">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        <img class="card_img" src="assets/img/noticias2.png" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">Titulo noticia ejemplo número 2</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio1">Noticia</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div class="contents">
-                    <div class="row rowDimension">
-                        <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6 pl-0">
-                            <a href="#">
-                                <div class="card-anuncio">
-                                    <div class="card_header">
-                                        <img class="card_img" src="assets/img/anuncio1.png" alt="Card image cap">
-                                    </div>
-                                    <div class="card_body">
-                                        <h5 class="titulo_anuncio">Recuerda enviar tus apuntes</h5>
-                                    </div>
-                                    <div class="card_footer">
-                                        <hr class="separador">
-                                        <div class="row mb-3">
-                                            <div class="col-5 offset-1
-                                                        col-lg-5 offset-lg-1 
-                                                        col-xl-5 offset-xl-1 
-                                                        col-md-5 offset-md-1 
-                                                        col-sm-5 offset-sm-1 
-                                                        col-xs-5 offset-xs-1 
-                                                        px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
-                                            </div>
-                                            <div class="col-5 
-                                                        col-lg-5 
-                                                        col-xl-5 
-                                                        col-md-5 
-                                                        col-sm-5 
-                                                        col-xs-5 
-                                                        text-right 
-                                                        px-0">
-                                                <span class="tipo_anuncio2">Novedades</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                    {% set division = novedades|length / 4 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
+                    {% for novedad in novedades %}
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = row == filas ? 'rowDimension' : ' ' %}
+                            <div class="row {{dimension}}">
+                        {% endif %}
                         <div class="col-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-xs-6">
-                            <a href="#">
+                            <a href="{{ path('_noticiaDetalle', { 'noticia_id': novedad.id}) }}">
                                 <div class="card-anuncio">
                                     <div class="card_header">
-                                        <img class="card_img" src="assets/img/anuncio1.png" alt="Card image cap">
+                                        {% set img = uploads~novedad.imagen %}
+                                        <img class="card_img" src="{{img}}" alt="Card image cap">
                                     </div>
                                     <div class="card_body">
-                                        <h5 class="titulo_anuncio">Recuerda enviar tus apuntes</h5>
+                                        <h5 class="titulo_anuncio">{{novedad.titulo}}</h5>
                                     </div>
                                     <div class="card_footer">
                                         <hr class="separador">
@@ -381,7 +195,7 @@
                                                         col-sm-5 offset-sm-1 
                                                         col-xs-5 offset-xs-1 
                                                         px-0">
-                                                <span class="fecha_anuncio">02/02/2018</span>
+                                                <span class="fecha_anuncio">{{novedad.fecha}}</span>
                                             </div>
                                             <div class="col-5 
                                                         col-lg-5 
@@ -391,14 +205,26 @@
                                                         col-xs-5 
                                                         text-right 
                                                         px-0">
-                                                <span class="tipo_anuncio2">Novedades</span>
+                                                <span class="tipo_anuncio{{novedad.tid}}">{{novedad.tipo}}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
-                    </div>
+                        {% if loop.index is divisibleby(4) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row == filas ? 'rowDimension' : ' ' %}
+                                <div class="row {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
