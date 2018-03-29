@@ -40,8 +40,6 @@ window.onload=function(){
 $(document).ready(function() {
   // do stuff when DOM is ready
 // $("#message").fadeIn("slow");
-    var clickedOpc = $(".opc");
-    var clickedOpcImg = $(".opc_img");
 
 $("#equis").click(function(){
         $("#message").fadeOut("slow");
@@ -60,16 +58,5 @@ $("#iconComments").click(function(){
                  closeNav();
             }
         });
-
-
-    clickedOpc.on('click',function(){
-        clickedOpc.removeClass("opc_activa");
-        $(this).toggleClass("opc_activa").fadein(300).delay(1000);
-    });
-
-    clickedOpcImg.on('click',function(){
-        clickedOpcImg.removeClass("opc_activa-img");
-        $(this).toggleClass("opc_activa-img");
-    });
 
 });

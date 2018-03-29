@@ -1,0 +1,46 @@
+.cQR{
+    width: 100%;
+    height: auto;
+    margin-top: calc(1rem - 1px);
+    padding-bottom: 1rem;
+    .imgForm{
+        width: 25rem;
+        height: auto;
+    }
+    .text-cQR{
+        color: $gray-700;	
+        font-family: $primary-font;	
+        font-size: $h5-font-size;	
+        line-height: 1.5rem;
+        text-transform: uppercase;
+        font-weight: $font-weight-normal;
+    }
+    .nameP-cQR{
+        color: $blue;	
+        font-family: $primary-font;	
+        font-size: $h3-font-size;	
+        font-weight: $font-weight-bold;	
+        line-height: 1rem;
+        text-shadow: 2px 2px 2px rgba(56, 56, 56, .2);
+        text-transform: uppercase;
+    }
+    .progA-cQR{
+        color: $blue;	
+        font-family: $primary-font;	
+        font-size: $h2-font-size;	
+        font-weight: $font-weight-bold;	
+        line-height: 2.5rem;
+        text-shadow: 2px 2px 2px rgba(56, 56, 56, .2);
+        text-transform: uppercase;
+    }
+    
+    .link{
+        position: relative;
+        top: 1rem;
+        font-size: $h5-font-size;
+        color: $blue;
+        text-decoration: none;
+        font-weight: $font-weight-normal-hard;
+        text-align: center;
+    }
+}

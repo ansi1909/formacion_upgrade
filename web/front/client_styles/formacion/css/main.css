@@ -45,6 +45,9 @@ a.active-line, .active-line {
 .sub-line {
   border-bottom: 1px solid #DAE1E6; }
 
+.sub-line-firma {
+  border-bottom: 1px solid #383838; }
+
 .less-disabled {
   pointer-events: none; }
 
@@ -187,7 +190,8 @@ input.form-control:focus {
 
 .btn-continuar {
   color: #797D80;
-  background-color: #FFDC60; }
+  background-color: #FFDC60;
+  border: 0px; }
   .btn-continuar:hover {
     color: #797D80;
     background-color: #ffd43a;
@@ -336,6 +340,13 @@ input[type=date]::-webkit-calendar-picker-indicator {
   font-size: calc(1rem + 2px);
   position: relative;
   right: -3rem; }
+
+body.codigoQR {
+  background-color: #fff;
+  background-image: url(../../../assets/img/decorate_certificado.png);
+  background-repeat: no-repeat;
+  background-size: 30vw auto;
+  background-position: top right; }
 
 .login-cover {
   background-image: url(../../../assets/img/login_cover.jpg);
@@ -2086,5 +2097,44 @@ p.up {
     background: #ebebeb;
     color: #000;
 }*/
+.cQR {
+  width: 100%;
+  height: auto;
+  margin-top: calc(1rem - 1px);
+  padding-bottom: 1rem; }
+  .cQR .imgForm {
+    width: 25rem;
+    height: auto; }
+  .cQR .text-cQR {
+    color: #797D80;
+    font-family: "Roboto";
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 400; }
+  .cQR .nameP-cQR {
+    color: #5CAEE6;
+    font-family: "Roboto";
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1rem;
+    text-shadow: 2px 2px 2px rgba(56, 56, 56, 0.2);
+    text-transform: uppercase; }
+  .cQR .progA-cQR {
+    color: #5CAEE6;
+    font-family: "Roboto";
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 2.5rem;
+    text-shadow: 2px 2px 2px rgba(56, 56, 56, 0.2);
+    text-transform: uppercase; }
+  .cQR .link {
+    position: relative;
+    top: 1rem;
+    font-size: 1.125rem;
+    color: #5CAEE6;
+    text-decoration: none;
+    font-weight: 500;
+    text-align: center; }
 
 /*# sourceMappingURL=main.css.map */

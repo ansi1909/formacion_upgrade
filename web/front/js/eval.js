@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     clickedOpc.on('click',function(){
         clickedOpc.removeClass("opc_activa");
-        $(this).toggleClass("opc_activa").fadein(300).delay(1000);
+        $(this).toggleClass("opc_activa").fadeIn(600).delay(1000);
     });
 
     clickedOpcImg.on('click',function(){
