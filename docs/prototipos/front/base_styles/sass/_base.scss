@@ -89,3 +89,11 @@ input[type=date] {
         right: -3rem;
     }
 }
+
+body.codigoQR{
+    background-color: $white;
+    background-image: url(../../../assets/img/decorate_certificado.png);
+    background-repeat: no-repeat;
+    background-size: 30vw auto;
+    background-position: top right;
+}

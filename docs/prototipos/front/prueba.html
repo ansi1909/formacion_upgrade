@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+        <title>Dashboard</title>
+    </head>
+    <body>
+
+
+        <!-- HEADER -->
+        <header>
+            <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+                <a class="navbar-brand" href="#">
+                    <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+                </a>
+                <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+                    <i class="material-icons mr-3 color-light-grey">mail_outline</i>
+                    <div class=" d-flex flex-column ">
+                        <div class="dropdown show">
+                            <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-fluid mx-auto avatar-img" src="assets/img/user.svg" alt="usuario">
+                            </a>
+                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a href="#"> Salir </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid mt-6">
+            <!-- SIDE MENU  -->
+            <nav>
+                <div id="mainSidenav" class="main-sidenav ">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+                    <a class="d-flex mt-1 mb-3 text-nowrap active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+                    <a class="d-flex mb-1 text-nowrap" href="#"> <i class="material-icons mr-2">library_books</i>  Noticias & <br/>novedades </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs </a>
+                </div>
+            </nav>
+
+            <div id="main" class="">
+
+                
+            </div>
+        </div>
+
+
+        <!-- JAVASCRIPT -->
+        <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/custom.js"></script>
+    </body>
+</html>
