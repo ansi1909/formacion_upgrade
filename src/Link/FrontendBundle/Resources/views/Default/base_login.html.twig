@@ -37,7 +37,7 @@
                         <h3 class="title-grey mb-md-6 mb-sm-3">{{ 'Iniciar Sesión'|trans }}</h3>
                         <p class="mb-4">{{ 'Por favor, ingresa tu usuario y contraseña'|trans }}</p>
                         <div class="col-lg-5 col-12 col-sm-12 mx-auto">
-                            <form action="{{ path('_login', { 'empresa_id': empresa.id }) }}" method="POST">
+                            <form id="form_inicio" name="form_inicio" action="{{ path('_login', { 'empresa_id': empresa.id }) }}" method="POST">
                                 <div class="form-group text-left">
                                     <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
                                     <input type="text" class="form-control mb-4" id="usuario" name="usuario" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
@@ -117,12 +117,49 @@
 
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
         <script type="text/javascript">
-            $('#entrar').click(function(){
-                $('#entrar').hide();
-                $('.error').hide();
+
+            $("#form_inicio").validate({
+                rules: {
+                    'usuario': {
+                        required: true
+                    },
+                    'password': {
+                        required: true
+                    }
+                },
+                messages: {
+                    'usuario': {
+                        required: "- {{ 'El usuario es requerido.'|trans }}",
+                    },
+                    'password': {
+                        required: "- {{ 'La contraseña es requerida.'|trans }}",
+                    }
+                }
             });
 
+            /*$('#entrar').click(function(){
+                $('#entrar').hide();
+                $('.error').hide();
+            });*/
+
+            $('#entrar').click(function()
+            {
+               var valid = $('#form').valid();
+                if(!valid)
+                {
+                    notify($('#div-error').html());
+                }else
+                {
+                    $('#entrar').hide();
+                    $('.error').hide();
+                    $('#form_inicio').submit();
+                }
+            });
+
+            $('.error_ajax').hide();
+            $('.error_ajax').html('');
 
             $('#recuperar_clave').click(function()
             {
@@ -145,20 +182,23 @@
                         data: { correo: correo, empresa_id: empresa_id },
                         success: function(data){
                             console.log(data.error);
-                        //    $('#form_clave').submit();
-                            //$('.tipo_entidad').html(data.html);
                             if(data.ok==0)
                             {
-                                alert("se envio el correo"); 
+                                $('.error_ajax').show();
+                                $('.error_ajax').html(data.error);
+                                setTimeout(function(){
+                                    $('.modal-backdrop,#modal1').hide();
+                                }, 1000); // 1 segundos 
                             }else
                             {
-
-                                setTimeout(function(){
-                                    $('.error_ajax').show();
-                                    $('.error_ajax').html(data.error);
-                                }, 3000); // 3 segundos 
+                                $('.error_ajax').show();
+                                $('.error_ajax').html(data.error);
                                 $('#recuperar_clave').show();
                                 $('#correo').val('');
+                                setTimeout(function(){
+                                    $('.error_ajax').hide();
+                                    $('.error_ajax').html('');
+                                }, 3000); // 3 segundos 
 
                             }
 
@@ -169,8 +209,6 @@
                     });
                 }
             }
-
-
         </script>
     </body>
 </html>

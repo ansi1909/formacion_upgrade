@@ -22,10 +22,26 @@ class DefaultController extends Controller
         $f = $this->get('funciones');
 
         $empresa_id = $session->get('empresa')['id'];
+        
+        //se destruye la cookie
+        //session_destroy();
 
         $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
         if ($sesion)
         {
+
+            $usuario_id = $session->get('usuario')['id'];
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+            //unset($_COOKIE["id_usuario"]);
+
+            setcookie("id_usuario", $usuario->getId(), time()-(60*60*24*365));
+            setcookie("marca_aleatoria_usuario", '', time()-(60*60*24*365));
+
+
+            $usuario->setCookies(0);
+            $em->persist($usuario);
+            $em->flush();
+
             $sesion->setDisponible(false);
             $em->persist($sesion);
             $em->flush();
@@ -42,6 +58,7 @@ class DefaultController extends Controller
         $session->invalidate();
         $session->clear();
 
+//return new response($ruta, $parametros);
         return $this->redirectToRoute($ruta, $parametros);
 
     }
