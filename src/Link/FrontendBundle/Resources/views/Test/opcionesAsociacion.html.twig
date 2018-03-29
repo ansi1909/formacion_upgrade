@@ -1,0 +1,18 @@
+{% if tipo_elemento_pregunta == tipo_elemento.texto %}
+    {% for opcion in opciones %}
+        <div class="row mgn">
+            <div class="col-6">
+                <div class="opc_lado-a text-center opc_asoc" style="border-color:{{ opcion.borde_color }}" data="a_{{ opcion.pregunta_asociada_id }}">
+                    <span class="opc_ra">{{ opcion.enunciado }}</span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="opc_lado-b text-center" data="b_{{ opcion.opcion_asociada_id }}">
+                    <span class="opc_rb">{{ opcion.descripcion }}</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    {# Dibujar asociación con imágenes #}
+{% endif %}
