@@ -90,6 +90,7 @@
                             <div class="form-group">
                                 <label class="mb-2" for="mail-rec">{{ 'Correo Electrónico'|trans }}</label>
                                 <input type="email" class="form-control" name="correo" id="correo" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
+                                <span class="error_ajax error__style"></span>
                             </div>
                         </div>
                     </div>
@@ -125,6 +126,7 @@
 
             $('#recuperar_clave').click(function()
             {
+                $('#recuperar_clave').hide();
                 recuperar();
             });
 
@@ -142,12 +144,27 @@
                         dataType: "json",
                         data: { correo: correo, empresa_id: empresa_id },
                         success: function(data){
-                            submit();
+                            console.log(data.error);
+                        //    $('#form_clave').submit();
                             //$('.tipo_entidad').html(data.html);
+                            if(data.ok==0)
+                            {
+                                alert("se envio el correo"); 
+                            }else
+                            {
+
+                                setTimeout(function(){
+                                    $('.error_ajax').show();
+                                    $('.error_ajax').html(data.error);
+                                }, 3000); // 3 segundos 
+                                $('#recuperar_clave').show();
+                                $('#correo').val('');
+
+                            }
+
                         },
                         error: function(){
-                            $('#alert-error').html($('#error_msg-edit').val());
-                            $('#div-alert').show();
+                            $('.error_ajax').show();
                         }
                     });
                 }

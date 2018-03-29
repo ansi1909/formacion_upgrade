@@ -239,7 +239,9 @@ class DefaultController extends Controller
     public function ajaxCorreoAction(Request $request)
     {
         
-        $em = $this->getDoctrine()->getManager();              
+        $em = $this->getDoctrine()->getManager();
+        
+//echo $request->request->get('correo').'----'.$request->request->get('empresa_id');
         $correo = trim($request->request->get('correo'));
         $empresa_id = $request->request->get('empresa_id');
         $ok = 1;
@@ -271,8 +273,8 @@ class DefaultController extends Controller
                             $error = $this->get('translator')->trans('El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.');
                         }
                         else{
-
-                            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+                            $ok = 0;
+                           /* $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
 
                             // Envío de correo con los datos de acceso, usuario y clave
@@ -282,31 +284,19 @@ class DefaultController extends Controller
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave()) );
-                            $correoRecuperacion = $f->sendEmail($parametros, $this);
-                            return $this->redirectToRoute('_login');
+                           // return new response(var_dump($parametros));
+                            $correoRecuperacion = $f->sendEmail($parametros, $this);*/
+                           // return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }
                     }
                 }
             }
         }else
         {
+                       
             $error = $this->get('translator')->trans('Debe ingresar el correo electronico.');
         }
 
-      /*  if ($ok == 1)
-        {
-
-            // Envío de correo con el usuario y clave provisional
-            $f = $this->get('funciones');
-            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] => 'Formación 2.0'),
-                                'destinatario' => $correo,
-                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
-                                'datos' => array('usuario' => $usuario->getLogin(),
-                                                 'clave' => $usuario->getClave()) );
-            $correoRecuperacion = $f->sendEmail($parametros, $this);
-        }**/
-        
         $return = array('ok' => $ok, 'error' => $error);
 
         $return = json_encode($return);

@@ -126,7 +126,7 @@ class CertificadoController extends Controller
 		                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
 		                                                <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
 		                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">'.$pagina->getNombre().'</div>
-		                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getResumen().'</div>
+		                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getTitulo().'</div>
 		                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$fecha.'</div>
 		                                                <div style="margin-top:50px; margin-left:500px; ">'.$ruta.'</div>
 		                                            </page>');
@@ -136,10 +136,7 @@ class CertificadoController extends Controller
 		    }else
 		    {
             	return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, la empresa no ha registrado certificado para está página.')));
-		    }			
-		/*}else
-		{
-			return $this->redirectToRoute('_inicio');*/
+		    }
 		}
     }
 

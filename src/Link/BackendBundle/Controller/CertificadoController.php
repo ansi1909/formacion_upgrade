@@ -100,6 +100,7 @@ class CertificadoController extends Controller
         $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
      
         $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
+
         $tipo_imagen_certificados = $em->getRepository('LinkComunBundle:CertiTipoImagenCertificado')->findAll(array('nombre' => 'ASC'));
 
         if ($certificado_id)
@@ -178,17 +179,19 @@ class CertificadoController extends Controller
         $fecha = $f->fechaNatural(date('Y-m-d'));
 
         $entidad='';
-        if($certificado->getEntidadId() != 0)
+
+        if($certificado->getTipoCertificado()->getId() == 1)
+        {
+            $entidad=$certificado->getEmpresa()->getNombre();
+        }else
         {
             if($certificado->getTipoCertificado()->getId() == 2)
             {
                 $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
-
                 $entidad = $pagina->getNombre();
             }else
             {
                 $grupoPaginas= $em->getRepository('LinkComunBundle:CertiGrupo')->find($certificado->getEntidadId());
-
                 $entidad = $grupoPaginas->getNombre();
             }
         }
@@ -205,29 +208,40 @@ class CertificadoController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
         $certificado_id = $request->query->get('certificado_id');
-        $tipo = $request->query->get('tipo_certificado_id');
+        $tipo_certificado_id = $request->query->get('tipo_certificado_id');
         $empresa_id = $request->query->get('empresa_id');
-        $error = array('existente' => '');
-        $ok = 1;
-        $msg = '';
+        
+        $error = 0;
         $html = '';
        
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
+        $tipo_certificado = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->find($tipo_certificado_id);
+
         $certificado = false;
 
-        if($tipo==1)//validamos que no exista un tipo de certificado para la empresa
-            $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->findByTipoCertificado($tipo);
+        if($tipo_certificado->getId()==1)//validamos que no exista un tipo de certificado para la empresa
+            $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('tipoCertificado' => $tipo_certificado->getId(),
+                                                                                                   'empresa' => $empresa->getId()));            
 
         if($certificado)
         {
+            $tipo_imagen='';
+            if($certificado->getTipoImagenCertificado()->getId() == 1)
+                $tipo_imagen='Certificado';
+            else
+                $tipo_imagen='Constancia';
+
+            $error= 1;
+
             $html .= '<div class="col-14">
-                        <label>Ya existe un certificado para la empresa.</label>
+                        <label>La empresa ya tiene registrado un '.$tipo_imagen.'.</label>
                       </div>';
         }else
         {
-            if($tipo == 1)
+            if($tipo_certificado->getId() == 1)
             {
                 $html .= '<div class="col-14">
                             <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="0">
@@ -236,38 +250,48 @@ class CertificadoController extends Controller
             }else
             {
 
-                //consultamos los certificados que tiene registrado la empresa
-                $query = $em->createQuery('SELECT c FROM LinkComunBundle:CertiCertificado c
-                                           WHERE c.empresa= :empresa AND c.tipoCertificado = :tipoCertificado ')
-                            ->setParameters(array('empresa' => $empresa->getId(),
-                                                  'tipoCertificado' => $tipo ));
-                $certificados = $query->getResult();
+                $certificados = $em->getRepository('LinkComunBundle:CertiCertificado')->findBy(array('tipoCertificado' => $tipo_certificado->getId(),
+                                                                                                     'empresa' => $empresa->getId()));     
 
-                $entidad_reg='';
-                if($certificado_id!='')
+               $entidad_ids = array();
+                if($certificado_id!=0)
                 {
                     $certificado_especifico = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
-                    $entidad_reg = $certificado_especifico->getEntidadId();
+
+                    foreach ($certificados as $certificado) {
+                        if($certificado_especifico->getEntidadId() != $certificado->getEntidadId())
+                            $entidad_ids[] = $certificado->getEntidadId();
+                    }
+                }else
+                {
+                    foreach ($certificados as $certificado) {
+                            $entidad_ids[] = $certificado->getEntidadId();
+                    }
                 }
 
-                $entidad_ids = array();
-                foreach ($certificados as $certificado) {
-
-                    if($entidad_reg != $certificado->getEntidadId())
-                        $entidad_ids[] = $certificado->getEntidadId();
-                }
-
-                if($tipo == 2)
+                if($tipo_certificado->getId() == 2)
                 {
                     
-                    $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
-                                               JOIN pe.pagina p
-                                               WHERE pe.empresa= :empresa AND p.pagina IS NULL AND pe.pagina NOT IN (:entidad) AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
-                                ->setParameters(array('empresa' => $empresa->getId(),
-                                                      'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
-                                                      'entidad' => $entidad_ids,
-                                                      'activo' => true ));
-                    $paginaEmpresa = $query->getResult();                    
+                    if(count($entidad_ids) == 0)
+                    {
+                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                   JOIN pe.pagina p
+                                                   WHERE pe.empresa= :empresa AND p.pagina IS NULL AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
+                                    ->setParameters(array('empresa' => $empresa->getId(),
+                                                          'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                          'activo' => true ));
+                        $paginaEmpresa = $query->getResult();
+                    }else
+                    {
+                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                   JOIN pe.pagina p
+                                                   WHERE pe.empresa= :empresa AND p.pagina IS NULL AND pe.pagina NOT IN (:entidad) AND p.estatusContenido = :estatus_contenido_activo and pe.activo = :activo ORDER BY p.nombre ASC')
+                                    ->setParameters(array('empresa' => $empresa->getId(),
+                                                          'estatus_contenido_activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                                          'entidad' => $entidad_ids,
+                                                          'activo' => true ));
+                        $paginaEmpresa = $query->getResult();
+                    }
 
                     if($paginaEmpresa)
                     {
@@ -287,7 +311,7 @@ class CertificadoController extends Controller
                     {
                         $certificado_especifico=false;
 
-                        if($certificado_id!='')
+                        if($certificado_id!=0)
                             $certificado_especifico = $em->getRepository('LinkComunBundle:CertiCertificado')->find($certificado_id);
 
                         if($certificado_especifico)
@@ -318,7 +342,8 @@ class CertificadoController extends Controller
                             }                            
                         }else
                         {
-                             $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
+                            $error = 1;
+                            $html .= '<div class="col-sm-14 col-md-14 col-lg-14">
                                         <label for="texto" class="col-20 col-form-label">La Empresa no tiene Páginas asignadas o ya fueron asignadas.</label>
                                         <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
                                        </div>';
@@ -326,7 +351,7 @@ class CertificadoController extends Controller
                     }
                 }else
                 {
-                    if($tipo == 3)
+                    if($tipo_certificado->getId() == 3)
                     {
 
                         if(count($entidad_ids) == 0)
@@ -356,7 +381,8 @@ class CertificadoController extends Controller
                                   </div>';
                         }else
                         {
-                            $html .= '<div class="col-sm-8 col-md-8 col-lg-8">
+                            $error = 1;
+                            $html .= '<div class="col-sm-14 col-md-14 col-lg-14">
                                         <label for="texto" class="col-20 col-form-label">La Empresa no tiene Grupo de Páginas registradas o ya fueron asignadas.</label>
                                         <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
                                        </div>';
@@ -366,7 +392,7 @@ class CertificadoController extends Controller
             }
         }
 
-        $return = array('ok' => $ok,'html' => $html);
+        $return = array('error' => $error, 'html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -398,14 +424,20 @@ class CertificadoController extends Controller
 
         $programa='';
 
-        if($certificado->getTipoCertificado()->getId()==1)//por empresas
+        if($certificado->getTipoCertificado()->getId() == 1)
         {
             $programa=$certificado->getEmpresa()->getNombre();
         }else
         {
-            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
-
-            $programa = $pagina->getNombre();
+            if($certificado->getTipoCertificado()->getId() == 2)
+            {
+                $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
+                $programa = $pagina->getNombre();
+            }else
+            {
+                $grupoPaginas= $em->getRepository('LinkComunBundle:CertiGrupo')->find($certificado->getEntidadId());
+                $programa = $grupoPaginas->getNombre();
+            }
         }
 
         $ruta ='<img src="'.$yml['parameters']['folders']['dir_project'].'/web/img/codigo_qr.png">';

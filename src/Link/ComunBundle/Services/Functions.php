@@ -803,6 +803,7 @@ class Functions
 		$subdirectorios[] = 'recursos/participantes/';
 		$subdirectorios[] = 'recursos/empresas/';
 		$subdirectorios[] = 'recursos/qr/';
+		$subdirectorios[] = 'recursos/certificados/';
 
 		if ($empresa_id)
 		{
@@ -1104,7 +1105,7 @@ class Functions
 		$muros_recientes = $this->muroPagina($pagina_arr['id'], 'id', 'DESC', 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 		$muros_valorados = $this->muroPaginaValorados($pagina_arr['id'], 0, 5, $usuario_id, $empresa_id, $yml['parameters']['social']);
 		$lecciones['muros_recientes'] = $muros_recientes;
-		$lecciones['muros_valorados'] = $muros_valorados;
+		$subleccion['muros_valorados'] = $muros_valorados;
 
 		$sublecciones = array();
 		$i = 0;

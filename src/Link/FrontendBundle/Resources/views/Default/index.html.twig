@@ -117,7 +117,7 @@
                                         {% set class = 'disabled' %}
                                     {% endif %}
                                 <div class="card-footer  d-flex justify-content-around">
-                                    <a href="{{ path('_generarCertificado', { 'programa_id': 1 }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
+                                    <a href="{{ path('_generarCertificado', { 'programa_id': pd.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
                                         <i class="material-icons d-block">aspect_ratio</i>
                                         <small class=" d-block"> Certificado </small>
                                     </a>

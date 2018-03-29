@@ -2,7 +2,9 @@ $(document).ready(function() {
 
     var root_site = $('#root_site').val();
 
-    if($('#tipo_certificado_id').val()!=1 )
+//alert($('#tipo_certificado_id').val());
+
+    if($('#tipo_certificado_id').val()>1 )
         buscarEntidad($('#tipo_certificado_id').val());
 
     if($('#certificado_id').val()!='' && $('#tipo_imagen_certificado_id').val()==2)
@@ -47,6 +49,9 @@ function buscarEntidad(tipo_certificado_id)
     var empresa_id = $('#empresa_id').val();
     var certificado_id = $('#certificado_id').val();
     
+    if(certificado_id=='')
+        certificado_id=0;
+
     if(empresa_id!="" )//&& tipo_certificado_id!="")
     {
         $.ajax({
@@ -55,6 +60,13 @@ function buscarEntidad(tipo_certificado_id)
             dataType: "json",
             data: { tipo_certificado_id: tipo_certificado_id, empresa_id: empresa_id, certificado_id: certificado_id },
             success: function(data){
+
+            console.log(data);
+                if(data.error ==1)
+                {
+                    $('#tipo_imagen_certificado_id').val('');
+                    $('#tipo_certificado_id').val('');
+                }
 
                 $('.tipo_entidad').html(data.html);
             },
