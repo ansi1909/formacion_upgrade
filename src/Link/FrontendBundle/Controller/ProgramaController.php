@@ -68,13 +68,49 @@ class ProgramaController extends Controller
                 $lis_mods .= '</div>';
                 $lis_mods .= '<div class="wraper d-flex flex-wrap flex-row justify-content-center">';
                 $lis_mods .= '<div class="card-hrz-body ">';
+                $lis_mods .= '<h4 class="title-grey my-3 font-weight-normal ">'.$subpagina['nombre'].'</h4>';
+                $lis_mods .= '<div class="card-mod-less text-sm color-light-grey">';
+                $lis_mods .= '<ol>';
+
+                $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                            'pagina' => $subpagina['id']));
+                $next_pagina = 0;
+
+                if($datos_log && $datos_log->getPorcentajeAvance()){
+                    $boton = 'Continuar';
+                    $clase = 'btn-continuar';
+                    $porcentaje = round($datos_log->getPorcentajeAvance());
+                }else{
+                    $boton = 'Iniciar';
+                    $clase = 'btn-primary';
+                    $porcentaje = 0;
+                    $next_pagina = $subpagina['id'];
+                }
+
+                if($subpagina['prelacion']){
+                    $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+                                               WHERE pl.pagina = :pagina_id 
+                                               AND pl.usuario = :usuario_id 
+                                               AND pl.estatusPagina = :completada')
+                                ->setParameters(array('pagina_id' => $subpagina['prelacion'],
+                                                      'usuario_id' => $session->get('usuario')['id'],
+                                                      'completada' => $yml['parameters']['estatus_pagina']['completada']));
+                    $leccion_completada = $query->getSingleScalarResult();
+
+                    if($leccion_completada){
+                        $avanzar = 1;
+                    }else{
+                        $avanzar = 0;
+                    }
+                }else{
+                    $avanzar = 1;
+                }
 
                 if (count($subpagina['subpaginas']))
                 {
                     foreach ($subpagina['subpaginas'] as $sub_subpagina)
                     {
-                        $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                            'pagina' => $sub_subpagina['id']));
+
                         $next_pagina = 0;
                         if ($sub_subpagina['acceso'])
                         {
@@ -89,90 +125,50 @@ class ProgramaController extends Controller
                             $leccion_completada = $query->getSingleScalarResult();
 
                             if(!$leccion_completada){
+                                $visto = 'color-grey';
                                 if($next_pagina == 0){
                                     $next_pagina = $subpagina['id'];
                                 }
                             }
 
-                            $lis_mods .= '<h4 class="title-grey my-3 font-weight-normal ">'.$sub_subpagina['nombre'].'</h4>';
-                            if (count($sub_subpagina['subpaginas']))
+                            
+                            if ($sub_subpagina['acceso'])
                             {
-                                $lis_mods .= '<div class="card-mod-less text-sm color-light-grey">';
-                                $lis_mods .= '<ol>';
-                                // Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
-                                $acceso = 0;
-                                foreach ($sub_subpagina['subpaginas'] as $sub)
-                                {
-                                    $visto = '';
-                                    $next_pagina_id = 0;
-                                    // Se determina si el contenido estará bloqueado
-                                    $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
-                                                               WHERE pl.pagina = :pagina_id 
-                                                               AND pl.usuario = :usuario_id 
-                                                               AND pl.estatusPagina = :completada')
-                                                ->setParameters(array('pagina_id' => $sub['id'],
-                                                                      'usuario_id' => $session->get('usuario')['id'],
-                                                                      'completada' => $yml['parameters']['estatus_pagina']['completada']));
-                                    $leccion_completada = $query->getSingleScalarResult();
-
-                                    if(!$leccion_completada){
-                                        $visto = 'color-grey';
-                                        if($next_pagina == 0){
-                                            $next_pagina = $sub['id'];
-                                        }
-                                    }
-
-                                    if ($sub['acceso'])
-                                    {
-                                         $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub['nombre'].'</li>';
-                                    }
-                                }
-                                $lis_mods .= '</ol>';
-                                $lis_mods .= '</div>';
-                            }else{
-
-                                $next_pagina = $subpagina['id'];
-
-                            }
-
-                            if($datos_log && $datos_log->getPorcentajeAvance()){
-                                $boton = 'Continuar';
-                                $clase = 'btn-continuar';
-                                $porcentaje = round($datos_log->getPorcentajeAvance());
-                            }else{
-                                $boton = 'Iniciar';
-                                $clase = 'btn-primary';
-                                $porcentaje = 0;
-                            }
-                            $lis_mods .= '<div class="progress mt-4 mb-3">';
-                            $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
-                            $lis_mods .= '</div>';
-                            $lis_mods .= '</div>';
-                            if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
-
-                                $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">';
-                                $lis_mods .= '<div class="percent text-center mt-5">';
-                                $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
-                                $lis_mods .= '<span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>';
-                                $lis_mods .= '</div>';
-                                $lis_mods .= '<div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">';
-                                $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
-                                $lis_mods .= '<span class="text-badge"> Aprobado </span>';
-                                $lis_mods .= '</div>';
-                                $lis_mods .= '</div>';
-                                
-                            }else{
-
-                                $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">';
-                                $lis_mods .= '<div class="percent text-center mt-3">';
-                                $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.'% </h2>';
-                                $lis_mods .= '</div>';
-                                $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
-                                $lis_mods .= '</div>';
-
+                                 $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub_subpagina['nombre'].'</li>';
                             }
                             
                         }
+                    }
+                    $lis_mods .= '</ol>';
+                    $lis_mods .= '</div>';
+                    
+
+                    $lis_mods .= '<div class="progress mt-4 mb-3">';
+                    $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
+                    $lis_mods .= '</div>';
+                    $lis_mods .= '</div>';
+                    if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+
+                        $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">';
+                        $lis_mods .= '<div class="percent text-center mt-5">';
+                        $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
+                        $lis_mods .= '<span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>';
+                        $lis_mods .= '</div>';
+                        $lis_mods .= '<div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">';
+                        $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
+                        $lis_mods .= '<span class="text-badge"> Aprobado </span>';
+                        $lis_mods .= '</div>';
+                        $lis_mods .= '</div>';
+                        
+                    }else{
+
+                        $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">';
+                        $lis_mods .= '<div class="percent text-center mt-3">';
+                        $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.'% </h2>';
+                        $lis_mods .= '</div>';
+                        $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                        $lis_mods .= '</div>';
+
                     }
                 }
 
