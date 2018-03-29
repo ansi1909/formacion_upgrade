@@ -28,12 +28,12 @@ class DefaultController extends Controller
         if ($sesion)
         {
 
+            $usuario_id = $session->get('usuario')['id'];
+            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+
             // Borra la cookie que almacena la sesión del usuario logueado
             if(isset($_COOKIE['id_usuario_'.$usuario->getId()])) 
             { 
-
-                $usuario_id = $session->get('usuario')['id'];
-                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 
                 $usuario->setCookies(null);
                 $em->persist($usuario);
