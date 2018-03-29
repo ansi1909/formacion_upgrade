@@ -1873,9 +1873,9 @@ class Functions
                                     $usuario->setCookies($numero_aleatorio);
                                     $em->persist($usuario);
                                     $em->flush();
-
-                                    setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365));
-                                    setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365));
+                                    //se creo la variable de las cookie con el id del usuario de manera que cuando destruya la cookie sea la del usuario activo
+                                    setcookie("id_usuario_".$usuario->getId(), $usuario->getId(), time()+(60*60*24*365),'/');
+                                    setcookie("marca_aleatoria_usuario_".$usuario->getId(), $numero_aleatorio, time()+(60*60*24*365),'/');
                                 }
 
 								$exito=true;

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
 {
@@ -23,24 +24,24 @@ class DefaultController extends Controller
 
         $empresa_id = $session->get('empresa')['id'];
         
-        //se destruye la cookie
-        //session_destroy();
-
         $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
         if ($sesion)
         {
 
-            $usuario_id = $session->get('usuario')['id'];
-            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-            //unset($_COOKIE["id_usuario"]);
+            // Borra la cookie que almacena la sesión del usuario logueado
+            if(isset($_COOKIE['id_usuario_'.$usuario->getId()])) 
+            { 
 
-            setcookie("id_usuario", $usuario->getId(), time()-(60*60*24*365));
-            setcookie("marca_aleatoria_usuario", '', time()-(60*60*24*365));
+                $usuario_id = $session->get('usuario')['id'];
+                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 
+                $usuario->setCookies(null);
+                $em->persist($usuario);
+                $em->flush();
 
-            $usuario->setCookies(0);
-            $em->persist($usuario);
-            $em->flush();
+                setcookie('id_usuario_'.$usuario->getId(), '', time() - 42000, '/'); 
+                setcookie('marca_aleatoria_usuario_'.$usuario->getId(), '', time() - 42000, '/'); 
+            }
 
             $sesion->setDisponible(false);
             $em->persist($sesion);
@@ -57,8 +58,7 @@ class DefaultController extends Controller
         
         $session->invalidate();
         $session->clear();
-
-//return new response($ruta, $parametros);
+        
         return $this->redirectToRoute($ruta, $parametros);
 
     }

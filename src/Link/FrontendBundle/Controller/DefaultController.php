@@ -241,7 +241,6 @@ class DefaultController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         
-//echo $request->request->get('correo').'----'.$request->request->get('empresa_id');
         $correo = trim($request->request->get('correo'));
         $empresa_id = $request->request->get('empresa_id');
         $ok = 1;
@@ -408,7 +407,7 @@ class DefaultController extends Controller
                                                                                                              'error' => $error));
                     return $response;
                 }
-                
+
             }else
             {
                 return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('La empresa está inactiva. Contacte al administrador del sistema.')));
