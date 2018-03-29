@@ -166,7 +166,12 @@ class ProgramaController extends Controller
                         $lis_mods .= '<div class="percent text-center mt-3">';
                         $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.'% </h2>';
                         $lis_mods .= '</div>';
-                        $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                        if($avanzar == 1){
+                            $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                        }else{
+                            $lis_mods .= '<a href="#" class="btn btn-sm disabled '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                        }
+                        
                         $lis_mods .= '</div>';
 
                     }
