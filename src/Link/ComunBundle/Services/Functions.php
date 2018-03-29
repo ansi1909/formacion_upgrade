@@ -1729,22 +1729,22 @@ class Functions
                                                                                        'clave' => $datos['clave']));
         if (!$usuario)//validamos que el usuario exista
         {
-            $error = $this->get('translator')->trans('Usuario o clave incorrecta.');
+            $error = $this->translator->trans('Usuario o clave incorrecta.');
         }else 
         {            
             if (!$usuario->getActivo()) //validamos que el usuario este activo
             {
-                $error = $this->get('translator')->trans('Usuario inactivo. Contacte al administrador del sistema.');
+                $error = $this->translator->trans('Usuario inactivo. Contacte al administrador del sistema.');
             }else 
             {
                 if (!$usuario->getEmpresa())
                 {
-                    $error = $this->get('translator')->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
+                    $error = $this->translator->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
                 }else
                 {
                     if ($usuario->getEmpresa()->getId() != $datos['empresa']['id']) //validamos que el usuario pertenezca a la empresa
                     {
-                        $error = $this->get('translator')->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
+                        $error = $this->translator->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
                     }else 
                     {
                         $roles_front = array();
@@ -1777,7 +1777,7 @@ class Functions
 
                         if (!$roles_ok)
                         {
-                            $error = $this->get('translator')->trans('Los roles que tiene el usuario no son permitidos para ingresar al sistema.');
+                            $error = $this->translator->trans('Los roles que tiene el usuario no son permitidos para ingresar al sistema.');
                         }else 
                         {
                             // se consulta si la empresa tiene paginas activas
@@ -1799,7 +1799,7 @@ class Functions
                             
                             if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
                             {
-                                $error = $this->get('translator')->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
+                                $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
                             }else 
                             {
                             
