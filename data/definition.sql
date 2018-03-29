@@ -368,6 +368,7 @@ CREATE TABLE certi_foro(
 -- Attributes --
 id serial,
 mensaje varchar(350),
+empresa_id integer,
 pagina_id integer,
 usuario_id integer,
 foro_id integer,
@@ -375,6 +376,7 @@ fecha_registro timestamp without time zone,
 pdf varchar(250),
  PRIMARY KEY (id),
  FOREIGN KEY (pagina_id) REFERENCES certi_pagina (id),
+ FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
  FOREIGN KEY (foro_id) REFERENCES certi_foro (id));
 

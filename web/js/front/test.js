@@ -27,4 +27,46 @@ $(document).ready(function() {
 
 	});
 
+	$('.opc, .opc_img').unbind('click');
+
+	$('.opc, .opc_img').click(function(){
+		var div_opc = $(this);
+		var div_str = div_opc.attr('class');
+		var data = div_opc.attr('data');
+		var data_arr = data.split('_');
+		var tipo_elemento = data_arr[0];
+		var tipo_pregunta = data_arr[1];
+		var po_id = data_arr[2];
+		var css = tipo_elemento==1 ? 'opc_activa' : 'opc_activa-img';
+		var div_class = tipo_elemento==1 ? 'opc' : 'opc_img';
+		if (tipo_pregunta == 1)
+		{
+			$('.'+div_class).removeClass(css);
+			div_opc.addClass(css);
+		}
+		else {
+			// Si ya estaba activado, se desactiva; y viceversa
+			if (div_str.indexOf(css) == -1)
+			{
+				div_opc.addClass(css);
+			}
+			else {
+				div_opc.removeClass(css);
+			}
+		}
+	});
+
+	$('.opc_lado-a').draggable({ revert: true, helper: "clone" });
+
+	$( ".opc_lado-b" ).droppable({
+     	drop: function( event, ui ) {
+     		var target = $(this);
+      		console.log('me soltaste en: '+ target.attr('data'));
+      		console.log(ui.draggable.attr('style'));
+      		var style = ui.draggable.attr('style');
+      		target.attr("style", style);
+        	//$( this ).addClass( "opc_activa" );
+      	}
+    });
+
 });

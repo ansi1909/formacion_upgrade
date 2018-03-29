@@ -3,7 +3,7 @@
     {% for opcion in opciones %}
         <div class="row justify-content-center">
             <div class="col-8 offset-2 pdg">
-                <div class="opc" data="{{ tipo_pregunta }}_{{ opcion.po_id }}">
+                <div class="opc" data="{{ tipo_elemento_pregunta }}_{{ tipo_pregunta }}_{{ opcion.po_id }}">
                     <div class="text-center opc_letra">
                         <span class="opc_l">{{ literal[loop.index0] }}</span>
                     </div>
@@ -21,7 +21,7 @@
             <div class="row">
         {% endif %}
         <div class="col-4">
-            <div class="opc_img" data="{{ tipo_pregunta }}_{{ opcion.po_id }}">
+            <div class="opc_img" data="{{ tipo_elemento_pregunta }}_{{ tipo_pregunta }}_{{ opcion.po_id }}">
                 {% set img = uploads~opcion.imagen %}
                 <img class="opc_i-3" src="{{ img }}" alt="">
             </div>
