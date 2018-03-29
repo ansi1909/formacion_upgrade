@@ -295,9 +295,47 @@
         font-size: calc(2rem - 8px);
         line-height: calc(2rem - 4px);
     }
-    .imgExp{
-        height: auto;
-        width: 8rem;
+    .imgExp-coin{
+        position: relative;
+        .imgExp{
+            height: auto;
+            width: 8rem;
+        }
+        .starShiney1{
+            @extend %star;
+            top: 1rem;
+            left: 6.3rem;
+            animation: brillo 1s ease-in-out infinite;
+            animation-direction: alternate;
+            animation-fill-mode: both;
+        }
+        .starShiney2{
+            @extend %star;
+            top: 2.2rem;
+            left: 10rem;
+            animation: brillo 1s ease-in-out infinite;
+            animation-direction: alternate;
+            animation-fill-mode: both;
+            animation-delay: .3s;
+        }
+        .starShiney3{
+            @extend %star;
+            top: 4.8rem;
+            left: 7.5rem;
+            animation: brillo 1s ease-in-out infinite;
+            animation-direction: alternate;
+            animation-fill-mode: both;
+            animation-delay: .5s;
+        }
+        .starShiney4{
+            @extend %star; 
+            top: 4.7rem;
+            right: 6rem;
+            animation: brillo 1s ease-in-out infinite;
+            animation-direction: alternate;
+            animation-fill-mode: both;
+            animation-delay: .7s;
+        }
     }
 }
 
@@ -701,6 +739,7 @@
         display: none;
     }
 }
+
 //Extend
 
 %sty_user{
@@ -794,4 +833,12 @@
     font-size: $p-font-size;
     position: relative;
     top: .15rem;
+}
+
+%star{
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    z-index: 2;
+    background: url(../../../assets/img/star.svg);
 }

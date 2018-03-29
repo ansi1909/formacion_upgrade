@@ -61,6 +61,13 @@
                 &:last-child{
                     text-align: left;
                     .img-coin{
+                        position: relative;
+                        .starShiney{
+                            @extend %star;
+                            top: .1rem;
+                            left: 0rem;
+                            opacity: 0;
+                        }
                         img{
                             width: 1rem;
                             height: auto;
@@ -87,6 +94,13 @@
             &:hover{
                 color: $black;
                 background: $green-700;
+                .img-coin{
+                    .starShiney{
+                        animation: brillo 1s ease-in-out infinite;
+                        animation-direction: alternate;
+                        animation-fill-mode: both;
+                    }
+                }
             }
         }
     }
@@ -99,4 +113,12 @@
     font-size: $font-size-sm;	
     line-height: 1rem;
     font-weight: $font-weight-normal;
+}
+
+%star{
+    width: .5rem;
+    height: .5rem;
+    position: absolute;
+    z-index: 2;
+    background: url(../../../assets/img/star.svg);
 }

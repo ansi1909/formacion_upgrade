@@ -343,11 +343,22 @@ input[type=date]::-webkit-calendar-picker-indicator {
 
 body.codigoQR {
   background-color: #fff;
-  background-image: url(../../../assets/img/decorate_certificado.png);
+  background-image: url(../../../assets/img/decorate_qr.svg);
   background-repeat: no-repeat;
   background-size: 30vw auto;
   background-position: top right; }
 
+@keyframes brillo {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1) rotate(0deg); }
+  25% {
+    opacity: .75; }
+  50% {
+    opacity: 1;
+    transform: scale(1.5); }
+  75% {
+    opacity: .75; } }
 .login-cover {
   background-image: url(../../../assets/img/login_cover.jpg);
   background-repeat: no-repeat;
@@ -1123,9 +1134,38 @@ p.up {
     font-family: "Roboto";
     font-size: calc(2rem - 8px);
     line-height: calc(2rem - 4px); }
-  .card-datos .imgExp {
-    height: auto;
-    width: 8rem; }
+  .card-datos .imgExp-coin {
+    position: relative; }
+    .card-datos .imgExp-coin .imgExp {
+      height: auto;
+      width: 8rem; }
+    .card-datos .imgExp-coin .starShiney1 {
+      top: 1rem;
+      left: 6.3rem;
+      animation: brillo 1s ease-in-out infinite;
+      animation-direction: alternate;
+      animation-fill-mode: both; }
+    .card-datos .imgExp-coin .starShiney2 {
+      top: 2.2rem;
+      left: 10rem;
+      animation: brillo 1s ease-in-out infinite;
+      animation-direction: alternate;
+      animation-fill-mode: both;
+      animation-delay: .3s; }
+    .card-datos .imgExp-coin .starShiney3 {
+      top: 4.8rem;
+      left: 7.5rem;
+      animation: brillo 1s ease-in-out infinite;
+      animation-direction: alternate;
+      animation-fill-mode: both;
+      animation-delay: .5s; }
+    .card-datos .imgExp-coin .starShiney4 {
+      top: 4.7rem;
+      right: 6rem;
+      animation: brillo 1s ease-in-out infinite;
+      animation-direction: alternate;
+      animation-fill-mode: both;
+      animation-delay: .7s; }
 
 .marcador {
   border: 1px solid #000; }
@@ -1487,6 +1527,13 @@ p.up {
   position: relative;
   top: .15rem; }
 
+.card-datos .imgExp-coin .starShiney1, .card-datos .imgExp-coin .starShiney2, .card-datos .imgExp-coin .starShiney3, .card-datos .imgExp-coin .starShiney4, .rank-table tbody tr td:last-child .img-coin .starShiney {
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  z-index: 2;
+  background: url(../../../assets/img/star.svg); }
+
 .rank-table {
   max-width: 28rem;
   width: 28rem;
@@ -1528,14 +1575,20 @@ p.up {
         padding-left: 2rem; }
       .rank-table tbody tr td:last-child {
         text-align: left; }
-        .rank-table tbody tr td:last-child .img-coin img {
-          width: 1rem;
-          height: auto;
-          position: relative;
-          top: -.1rem; }
-        .rank-table tbody tr td:last-child .img-coin .text-coin {
-          left: .1rem;
-          font-weight: 500; }
+        .rank-table tbody tr td:last-child .img-coin {
+          position: relative; }
+          .rank-table tbody tr td:last-child .img-coin .starShiney {
+            top: .1rem;
+            left: 0rem;
+            opacity: 0; }
+          .rank-table tbody tr td:last-child .img-coin img {
+            width: 1rem;
+            height: auto;
+            position: relative;
+            top: -.1rem; }
+          .rank-table tbody tr td:last-child .img-coin .text-coin {
+            left: .1rem;
+            font-weight: 500; }
     .rank-table tbody tr:hover {
       color: #fff;
       background: rgba(92, 174, 230, 0.7);
@@ -1547,12 +1600,23 @@ p.up {
     .rank-table tbody .me-i:hover {
       color: #000;
       background: rgba(207, 230, 92, 0.7); }
+      .rank-table tbody .me-i:hover .img-coin .starShiney {
+        animation: brillo 1s ease-in-out infinite;
+        animation-direction: alternate;
+        animation-fill-mode: both; }
 
 .rank-table thead th, .rank-table tbody tr td:nth-child(3), .rank-table tbody tr td:nth-child(4) {
   font-family: "Roboto";
   font-size: 0.87rem;
   line-height: 1rem;
   font-weight: 400; }
+
+.card-datos .imgExp-coin .starShiney1, .card-datos .imgExp-coin .starShiney2, .card-datos .imgExp-coin .starShiney3, .card-datos .imgExp-coin .starShiney4, .rank-table tbody tr td:last-child .img-coin .starShiney {
+  width: .5rem;
+  height: .5rem;
+  position: absolute;
+  z-index: 2;
+  background: url(../../../assets/img/star.svg); }
 
 .num_preg {
   color: #797D80;
