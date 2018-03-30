@@ -157,30 +157,76 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-//tengo que asumir que el id es de la pagina padre
-	   // $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($programa_id);
+		//return new response(var_dump($session->get('paginas')[$programa_id]));
 
-	    $certiPrueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('paginaId'=>$programa_id,
-    																				 'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']));
+ 		// se consulta si la pagina es padres
+		$query = $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p
+                                   WHERE p.id = :pagina')
+                    ->setParameters(array('pagina' => $programa_id));
+        $pagina = $query->getResult();
 
-//`certi_prueba` JOIN `certi_prueba_log` WHERE prueba.pagina_id = _subpaginaid_ AND prueba_log.estado = 'APROBADO'
+ 		// Estructura de páginas
+        $paginas = array();
+        foreach ($pagina as $pag)
+        {
+            $query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
+                                       WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
+                        ->setParameters(array('activo' => $datos['yml']['estatus_contenido']['activo'],
+                                              'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
+            $tiene_evaluacion = $query->getSingleScalarResult();
 
- 
-return new response(var_dump($certiPrueba));
+            $subPaginas = $this->prueba($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
 
-	    $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPrueba cp
-                                   JOIN cp.pruebaLog pl
-                                   WHERE cp.pagina = :pagina 
-                                   and pl.estado = :estado
-                                   ORDER BY p.orden')
-                    ->setParameters(array('pagina' => $programa_id,
-                                          'estado' => $yml['parameters']['estado_prueba']['aprobado'] ));
-        $paginas_bd = $query->getResult();
+            $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
+                                                                                'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
+                                                                                'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
+                                                                                'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
+                                                                                'tiene_evaluacion' => $tiene_evaluacion ? true : false,
+                                                                                'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
+                                                                                'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
+                                                                                'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
+                                                                                'inicio' => $pagina->getPaginaEmpresa()->getFechaInicio()->format('d/m/Y'),
+                                                                                'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
+                                                                                'subpaginas' => $subPaginas);
+        }
 
-        //$menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
+//return new response(var_dump($paginas_bd));
+
+        if($paginas_bd)
+        {
+        	$programa_aprobado = $f->notasPrograma($session->get('paginas')[$programa_id], $session->get('usuario')['id'], $yml['parameters']['estado_prueba']['aprobado']);
+        }else
+        {
+			/*$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa['id']);
+			if(!$pagina->getPagina())
+			{*/
+				$query = $em->createQuery('SELECT pl.nota FROM LinkComunBundle:CertiPruebaLog pl
+		                                   JOIN pl.prueba p
+		                                   WHERE p.pagina = :pagina 
+		                                   and pl.estado = :estado
+		                                   and pl.usuario = :usuario')
+		                    ->setParameters(array('usuario' => $session->get('usuario')['id'],
+		                						  'pagina' => $programa_id,
+		                                          'estado' => $yml['parameters']['estado_prueba']['aprobado']));
+		        $nota_programa = $query->getSingleScalarResult();
+
+				$query = $em->createQuery('SELECT count(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
+		                                   JOIN pl.prueba p
+		                                   WHERE p.pagina = :pagina 
+		                                   and pl.usuario = :usuario')
+		                    ->setParameters(array('usuario' => $session->get('usuario')['id'],
+		                						  'pagina' => $programa_id));
+		        $cantidad_intentos = $query->getSingleScalarResult();
+
+		        $programa_aprobado[]=array('nota' => $nota_programa,
+                                   'cantidad_intentos' => $cantidad_intentos);
+	        //}
+        }
+
+return new response(var_dump($programa_aprobado));
 
 
-		if($pagina)
+		if($programa_aprobado)
 		{
 			
         	//cambiamos la fecha al formato aaaa-mm-dd
@@ -241,39 +287,43 @@ return new response(var_dump($certiPrueba));
 	                        <br>
 							<div style='text-aling:justify;'>
 	                            <h3>Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a:</h3>
-	                        </div>
-	                        <table border='1' align='left'>
-					            <tr>
-					               <td>Módulo</td>
-					               <td>Repitencia</td>
-					               <td>Puntaje</td>
-					            </tr>
- 								<tr>
-					               <td>Liderazgo y Cambio</td>
-					               <td>5</td>
-					               <td>75</td>
-					            </tr>
- 								<tr>
-					               <td>Que es Liderazgo</td>
-					               <td>5</td>
-					               <td>15</td>
-					            </tr>
- 								<tr>
-					               <td>Liderazgo Personal</td>
-					               <td>5</td>
-					               <td>100</td>
-					            </tr>
- 								<tr>
-					               <td>Liderazgo para la conducción de personas</td>
-					               <td>5</td>
-					               <td>88</td>
-					            </tr>
-				           </table>
-				           <div>
-	                            <span>Puntaje definitivo del programa:</span>
-	                            <span>84.5</span>
-	                        </div>
-				        </div>
+	                        </div>";
+							if(count($session->get('paginas')[$programa_id]['subpaginas']))
+							{
+		                    $html .= "<table border='1' align='left'>
+							            <tr>
+							               <td>Módulo</td>
+							               <td>Indice de Repitencias</td>
+							               <td>Puntaje</td>
+							            </tr>";
+								foreach ($rograma_aprobado as $programa)
+						        {
+					        $html .= "  <tr>
+							               <td>".$programa['nombre']."</td>
+							               <td>".$programa['cantidad_intentos']."</td>
+							               <td>".$programa['nota']."</td>
+							            </tr>";
+
+								}
+					        $html .= "  <tr>
+							               <td colspan='2'>Puntaje definitivo del programa:</td>
+							               <td>".$puntaje."</td>
+							            </tr>
+	  			        			  </table>";
+							}else
+							{
+							$html .= "<table border='1' align='left'>
+						            <tr>
+						               <td>Puntaje definitivo del programa:</td>
+						               <td>".$programa_aprobado[0]['nota']."</td>
+						            </tr>
+						            <tr>
+						               <td>Indice de Repitencias:</td>
+						               <td>".$programa_aprobado[0]['cantidad_intentos']."</td>
+						            </tr>
+					              </table>";
+							}
+				        $html .= "</div>
 					</body>
 					</html>";
 

@@ -1890,5 +1890,60 @@ class Functions
     }
 
 
+// Retorna un arreglo multidimensional de las subpaginas asignadas a una empresa dada pagina_id, empresa_id
+	public function notasPrograma($programa, $usuario_id, $estatus_aprobado)
+	{
+
+		$em = $this->em;
+		$subpaginas = array();
+
+		foreach ($subpages as $subpage)
+		{
+
+			$query = $em->createQuery('SELECT pl.nota FROM LinkComunBundle:CertiPruebaLog pl
+		                                   JOIN pl.prueba p
+		                                   WHERE p.pagina = :pagina 
+		                                   and pl.estado = :estado
+		                                   and pl.usuario = :usuario')
+		                    ->setParameters(array('usuario' => $usuario_id,
+		                						  'pagina' => $programa['id'],
+		                                          'estado' => $estatus_aprobado));
+		        $nota_programa = $query->getSingleScalarResult();
+
+				$query = $em->createQuery('SELECT count(pl.id) FROM LinkComunBundle:CertiPruebaLog pl
+		                                   JOIN pl.prueba p
+		                                   WHERE p.pagina = :pagina 
+		                                   and pl.usuario = :usuario')
+		                    ->setParameters(array('usuario' => $usuario_id,
+		                						  'pagina' => $programa['id']));
+		        $cantidad_intentos = $query->getSingleScalarResult();
+
+		        $programas[]=array('nota' => $nota_programa,
+                                   'cantidad_intentos' => $cantidad_intentos);
+
+			$query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
+                                       WHERE p.estatusContenido = :activo AND p.pagina = :pagina_id')
+                        ->setParameters(array('activo' => $estatus_contenido,
+                        					  'pagina_id' => $subpage->getPagina()->getId()));
+            $tiene_evaluacion = $query->getSingleScalarResult();
+
+            $subpaginas[$subpage->getPagina()->getId()] = array('id' => $subpage->getPagina()->getId(),
+                                    							'nombre' => $subpage->getPagina()->getNombre(),
+                                    							'categoria' => $subpage->getPagina()->getCategoria()->getNombre(),
+                                    							'foto' => $subpage->getPagina()->getFoto(),
+                                    							'tiene_evaluacion' => $tiene_evaluacion ? true : false,
+                                    							'acceso' => $subpage->getAcceso(),
+                                    							'muro_activo' => $subpage->getMuroActivo(),
+                                    							'prelacion' => $subpage->getPrelacion() ? $subpage->getPrelacion()->getId() : 0,
+                                    							'inicio' => $subpage->getFechaInicio()->format('d/m/Y'),
+                                    							'vencimiento' => $subpage->getFechaVencimiento()->format('d/m/Y'),
+                                    							'subpaginas' => $this->subPaginasNivel($subpage->getPagina()->getId(), $estatus_contenido, $empresa_id));
+		
+		}
+
+		return $subpaginas;
+		
+	}
+
 
 }
