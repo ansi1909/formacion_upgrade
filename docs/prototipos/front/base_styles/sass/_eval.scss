@@ -128,6 +128,46 @@
     }
 }
 
+.elec-resp-asig{
+    .opc_img-asig {
+        width: 16rem;
+        height: 13rem;
+        @extend %op_img;
+        border-radius: calc(1rem - 8px) calc(1rem - 8px) 0 0;
+        .opc_i-3{
+            @extend %op_i;
+            width: 15.65rem;
+            height: 12.8rem;
+        }
+        .opc_i-4{
+            @extend %op_i;
+            width: 18.1vw;
+            height: 37.9vh;
+        }
+    }
+    .resp-opc {
+        width: 16rem;
+        height: auto;
+        @extend %op_img;
+        border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
+        padding: calc(1rem - 8px);
+        .resp-opc_i-3{
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: $p-font-size;
+            line-height: calc(1rem + 4px);
+        }
+    }
+    &:hover{
+        .opc_img-asig{
+            border: .1875rem solid $lightblue;
+        }
+        .resp-opc{
+            border: .1875rem solid $lightblue;
+        }
+    }
+}
+
 .opc_activa-img{
     border: .1875rem solid $green !important;
 }
@@ -135,6 +175,10 @@
 //Estilos para preguntas de asignacion
 .mgn{
     margin: .5rem 0; 
+}
+
+.mgn_img-asig{
+    margin: .5rem 0 .5rem 5rem; 
 }
 
 .opc_lado-a{

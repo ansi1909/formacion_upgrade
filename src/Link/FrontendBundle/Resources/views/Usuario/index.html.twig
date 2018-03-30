@@ -8,7 +8,11 @@
 {% block body %}
 {% set nombre = app.session.get('usuario')['nombre'] %}
 {% set apellido = app.session.get('usuario')['apellido'] %}
+{% set usuario_id = app.session.get('usuario')['id'] %}
 {% set img = uploads~app.session.get('usuario')['foto'] %}
+<input type="hidden" id="url_ajaxClave" name="url_ajaxClave" value="{{ path('_ajaxClave') }}">
+<input type="hidden" id="usuario_id" name="usuario_id" value="{{usuario_id}}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_usuariop') }}">
 <section class="card-datos">
     <div class="row align-items-center justify-content-center">
         <div class="col-xs-3 col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
@@ -56,7 +60,17 @@
             </div>
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center">
-            <img class="imgExp" src="{{asset('img/coinsPills.svg')}}" alt="">
+            <div class="imgExp-coin">
+                <img class="imgExp" src="{{asset('img/coinsPills.svg')}}" alt="">
+                <div class="starShiney1">
+                </div>
+                <div class="starShiney2">
+                </div>
+                <div class="starShiney3">
+                </div>
+                <div class="starShiney4">
+                </div>
+            </div>
             <span class="numExp">5.0 K</span>
             <h3 class="tituloExp">EXP</h3>
         </div>
@@ -72,7 +86,7 @@
             <a href="#"><button type="button" class="btn btn-primary">Ver ranking</button></a>
         </div>
         <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">Cambiar contraseña</button></a>
+            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary" id="clave">Cambiar contraseña</button></a>
         </div>
     </div>
 </section>
@@ -101,15 +115,15 @@
                     </div>
                     <div class="form-group text-left">
                         <label for="mailP">Correo electrónico</label>
-                        <input type="mail" class="form-control mb-1" id="mailP">
+                        <input type="mail" class="form-control mb-1" id="mailp" name="mailp" value="{{ usuario.correoPersonal }}">
                     </div>
                     <div class="form-group text-left">
                         <label for="mailAd">Correo electrónico adicional</label>
-                        <input  type="mail" class="form-control mb-4" id="mailAd">
+                        <input  type="mail" class="form-control mb-4" id="mailad" name="mailad" value="{{ usuario.correoCorporativo }}">
                     </div>
                     <div class="form-group text-left">
-                        <label for="fechaN">Fecha de nacimiento</label>
-                        <input  type="date" class="form-control mb-4" id="fechaN">
+                        <label for="fechan">Fecha de nacimiento</label>
+                        <input  type="date" class="form-control mb-4" id="fechan" name="fechan" value="{{fecha}}">
                     </div>
                 </div>
             </div>
@@ -123,6 +137,7 @@
 </div>
 
 <!-- Modal cambiar contraseña-->
+
 <div class="modal modalChagePwd" id="modalpwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="container-fluid">
         <div class="row justify-content-end mt-3">
@@ -142,21 +157,25 @@
                 <div class="col-8">
                     <div class="form-group text-left">
                         <label for="pwd_act">Contraseña actual</label>
-                        <input  type="password" class="form-control mb-4" id="pwd_act">
+                        <input  type="text" class="form-control mb-4" id="pwd_act" value="{{usuario.clave}}" disabled>
                     </div>
                     <div class="form-group text-left">
                         <label for="pwd_new">Nueva contraseña</label>
-                        <input type="password" class="form-control mb-1" id="pwd_new">
+                        <input type="password" class="form-control mb-1" id="p_new" name="p_new" required="">
                     </div>
                     <div class="form-group text-left">
                         <label for="pwd_conf_new">Confirmar nueva contraseña</label>
-                        <input type="password" class="form-control mb-1" id="pwd_conf_new">
+                        <input type="password" class="form-control mb-1" id="p_conf" name="p_conf" required="">
+                    </div>
+                    <div class="form-group text-left">
+                    	<label id="mensaje" style="display:none;"></label>
                     </div>
                 </div>
             </div>
             <div class="row aling-item-center justify-content-center mt-5">
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                    <button type="button" class="btn btn-primary" id="cambio">Cambiar contraseña</button>
+                    <button type="button" class="btn btn-primary" id="aceptar" style="display:none;">Aceptar</button>
                 </div>
             </div>
         </form>
@@ -170,4 +189,5 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('front/js/acordion.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('js/front/usuario.js') }}"></script> 
 {% endblock %}

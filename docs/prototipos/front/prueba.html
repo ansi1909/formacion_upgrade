@@ -20,15 +20,29 @@
                     <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
                 </a>
                 <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-                    <i class="material-icons mr-3 color-light-grey">mail_outline</i>
+                    <a href="#">
+                        <div class="notifi">
+                            <i class="material-icons mr-3 color-light-grey">notifications</i>
+                            <div class="sonar"></div>
+                        </div>
+                    </a>
                     <div class=" d-flex flex-column ">
-                        <div class="dropdown show">
-                            <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="wrapperDdMenu">
+                            <a href="#" class="perfil no-decorate" id="config">
                                 <img class="img-fluid mx-auto avatar-img" src="assets/img/user.svg" alt="usuario">
                             </a>
-                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a href="#"> Salir </a>
-                            </div>
+                            <ul class="dropDownMenu">
+                                <a href="">
+                                    <li class="opcList">
+                                        <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                    </li>
+                                </a>
+                                <a href="">
+                                    <li class="opcList">
+                                        <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                    </li>
+                                </a>
+                            </ul>
                         </div>
                     </div>
                 </div>

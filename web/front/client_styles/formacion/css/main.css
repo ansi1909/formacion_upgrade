@@ -445,6 +445,16 @@ a:focus {
   outline: 1px solid #565656;
   -webkit-border-radius: 0 1rem 1rem 0; }
 
+.modalChagePwd::-webkit-scrollbar {
+  width: 1rem; }
+.modalChagePwd::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 0 1rem 1rem 0; }
+.modalChagePwd::-webkit-scrollbar-thumb {
+  background-color: #AAAFB3;
+  outline: 1px solid #565656;
+  -webkit-border-radius: 0 1rem 1rem 0; }
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
@@ -530,6 +540,36 @@ a:focus {
 
 nav.navbar {
   box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56); }
+
+.dropDownMenu {
+  position: absolute;
+  width: 14rem;
+  height: auto;
+  right: .3rem;
+  top: 4.175rem;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background: #00253D;
+  box-shadow: 2px 2px 10px rgba(56, 56, 56, 0.1);
+  border-radius: 0 0 1rem 1rem; }
+  .dropDownMenu .opcList {
+    color: #DAE1E6;
+    position: relative;
+    width: 14rem;
+    top: 0;
+    left: 0;
+    padding: 1rem; }
+    .dropDownMenu .opcList:first-child {
+      border-bottom: 1px solid #F7FAFC; }
+    .dropDownMenu .opcList span {
+      font-size: 0.87rem;
+      font-family: "Roboto";
+      font-weight: 400; }
+      .dropDownMenu .opcList span .icMenu {
+        font-size: calc(1rem + 4px);
+        float: right;
+        margin-top: .4rem; }
 
 .main-sidenav {
   height: 100%;
@@ -1765,11 +1805,39 @@ p.up {
 .elec-resp:hover .resp-opc {
   border: 0.1875rem solid #80CCFF; }
 
+.elec-resp-asig .opc_img-asig {
+  width: 16rem;
+  height: 13rem;
+  border-radius: calc(1rem - 8px) calc(1rem - 8px) 0 0; }
+  .elec-resp-asig .opc_img-asig .opc_i-3 {
+    width: 15.65rem;
+    height: 12.8rem; }
+  .elec-resp-asig .opc_img-asig .opc_i-4 {
+    width: 18.1vw;
+    height: 37.9vh; }
+.elec-resp-asig .resp-opc {
+  width: 16rem;
+  height: auto;
+  border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
+  padding: calc(1rem - 8px); }
+  .elec-resp-asig .resp-opc .resp-opc_i-3 {
+    color: #797D80;
+    font-family: "Roboto";
+    font-size: 1.125rem;
+    line-height: calc(1rem + 4px); }
+.elec-resp-asig:hover .opc_img-asig {
+  border: 0.1875rem solid #80CCFF; }
+.elec-resp-asig:hover .resp-opc {
+  border: 0.1875rem solid #80CCFF; }
+
 .opc_activa-img {
   border: 0.1875rem solid #CFE65C !important; }
 
 .mgn {
   margin: .5rem 0; }
+
+.mgn_img-asig {
+  margin: .5rem 0 .5rem 5rem; }
 
 .opc_lado-a {
   width: 18.75rem;
@@ -1912,13 +1980,13 @@ p.up {
   font-size: 2.25rem;
   line-height: calc($h2-font-size + 6px); }
 
-.elec-resp .opc_img, .elec-resp .resp-opc {
+.elec-resp .opc_img, .elec-resp .resp-opc, .elec-resp-asig .opc_img-asig, .elec-resp-asig .resp-opc {
   border: 0.1875rem solid #DAE1E6;
   cursor: pointer;
   position: relative;
   z-index: 1; }
 
-.elec-resp .opc_img .opc_i-3, .elec-resp .opc_img .opc_i-4 {
+.elec-resp .opc_img .opc_i-3, .elec-resp .opc_img .opc_i-4, .elec-resp-asig .opc_img-asig .opc_i-3, .elec-resp-asig .opc_img-asig .opc_i-4 {
   border-radius: calc(1rem - 10px); }
 
 .mostrar-resul .calif, .mostrar-resul .logro {
