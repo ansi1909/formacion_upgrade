@@ -1721,6 +1721,25 @@ p.up {
   position: relative;
   left: 15rem; }
 
+.opc_img_lado-a {
+  width: 10rem;
+  height: 9rem;
+  border-radius: 1rem;
+  position: relative;
+  left: 0;
+  top: .3rem;
+  margin-right: 5rem;
+  border: 0.125rem solid #DAE1E6; }
+  .opc_img_lado-a .img_opc_ra {
+    width: 9.778rem;
+    height: 8.74rem;
+    position: relative;
+    left: 0;
+    top: 0rem;
+    border-radius: calc(1rem - 2px); }
+  .opc_img_lado-a:hover {
+    border: 0.125rem solid #CFE65C !important; }
+
 .opc_lado-b {
   width: 18.75rem;
   height: 3.75rem; }
