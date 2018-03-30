@@ -149,6 +149,28 @@
     }
 }
 
+.opc_img_lado-a{
+    width: 10rem;
+    height: 9rem;
+    border-radius: 1rem;
+    position: relative;
+    left: 0;
+    top: .3rem;
+    margin-right: 5rem;
+    border: .125rem solid $gray-400;
+    .img_opc_ra{
+        width: 9.778rem;
+        height: 8.74rem;
+        position: relative;
+        left: 0;
+        top: 0rem;
+        border-radius: calc(1rem - 2px);
+    }
+    &:hover{
+        border: .125rem solid $green !important;
+    }
+}
+
 .opc_lado-b{
     width: 18.75rem;
     height: 3.75rem;
