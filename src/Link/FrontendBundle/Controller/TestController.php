@@ -72,7 +72,7 @@ class TestController extends Controller
                                     AND p.pregunta IS NULL")
                     ->setParameters(array('prueba_id' => $prueba->getId(),
                                           'activo' => $yml['parameters']['estatus_contenido']['activo'],
-                                          'tipo' => $yml['parameters']['tipo_pregunta']['asociacion']));
+                                          'tipo' => $yml['parameters']['tipo_pregunta']['simple']));
         $preguntas = $query->getResult();
 
         $preguntas_ids = array();

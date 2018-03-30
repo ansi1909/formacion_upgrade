@@ -18,15 +18,18 @@
     {# Dibujar las opciones de imágenes #}
     {% for opcion in opciones %}
         {% if loop.first %}
-            <div class="row">
+            <div class="row justify-content-between">
         {% endif %}
-        <div class="col-4">
+        <div class="col-auto elec-resp px-0">
             <div class="opc_img" data="{{ tipo_elemento_pregunta }}_{{ tipo_pregunta }}_{{ opcion.po_id }}">
                 {% set img = uploads~opcion.imagen %}
                 <img class="opc_i-3" src="{{ img }}" alt="">
             </div>
+            <div class="resp-opc text-center">
+                <span class="resp-opc_i-3">{{ opcion.descripcion }}</span>
+            </div>
         </div>
-        {% if loop.index is divisibleby(3) %}
+        {% if loop.index is divisibleby(4) %}
             </div>
             {% if not loop.last %}
                 <div class="row">

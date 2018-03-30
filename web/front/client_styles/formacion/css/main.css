@@ -1630,13 +1630,14 @@ p.up {
 .progress-bar_eval {
   background: #CFE65C; }
 
-.enun_eval {
-  color: #9B9B9B;
-  font-family: "Open Sans";
-  line-height: 1.5rem;
-  font-size: 1.125rem;
-  text-align: justify;
-  margin-top: .25rem; }
+.enun {
+  display: flex;
+  flex-direction: row; }
+  .enun .img-enun_eval {
+    height: 8rem;
+    width: auto;
+    margin: 0 1rem;
+    border-radius: 1rem; }
 
 .pdg {
   padding-left: 4.575rem; }
@@ -1683,15 +1684,30 @@ p.up {
   .opc_activa .opc_letra {
     background: #CFE65C; }
 
-.opc_img {
-  width: calc($tam-width + .3125rem);
-  height: calc($tam-height+ .5rem); }
-  .opc_img .opc_i-3 {
-    width: 25vw;
-    height: 37.9vh; }
-  .opc_img .opc_i-4 {
+.elec-resp .opc_img {
+  width: 16rem;
+  height: 13rem;
+  border-radius: calc(1rem - 8px) calc(1rem - 8px) 0 0; }
+  .elec-resp .opc_img .opc_i-3 {
+    width: 15.65rem;
+    height: 12.8rem; }
+  .elec-resp .opc_img .opc_i-4 {
     width: 18.1vw;
     height: 37.9vh; }
+.elec-resp .resp-opc {
+  width: 16rem;
+  height: auto;
+  border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
+  padding: calc(1rem - 8px); }
+  .elec-resp .resp-opc .resp-opc_i-3 {
+    color: #797D80;
+    font-family: "Roboto";
+    font-size: 1.125rem;
+    line-height: calc(1rem + 4px); }
+.elec-resp:hover .opc_img {
+  border: 0.1875rem solid #80CCFF; }
+.elec-resp:hover .resp-opc {
+  border: 0.1875rem solid #80CCFF; }
 
 .opc_activa-img {
   border: 0.1875rem solid #CFE65C !important; }
@@ -1779,6 +1795,14 @@ p.up {
           .mostrar-resul .resp-eval li .preg-reprob .preg_num-reprob .preg_n {
             color: #fff !important; }
 
+.enun .enun_eval, .enun_eval {
+  color: #9B9B9B;
+  font-family: "Open Sans";
+  line-height: 1.5rem;
+  font-size: 1.125rem;
+  text-align: justify;
+  margin-top: .25rem; }
+
 .opc, .mostrar-resul .resp-eval li .preg-aprob, .mostrar-resul .resp-eval li .preg-reprob {
   background: #fff;
   border-radius: calc(1rem - 8px);
@@ -1813,16 +1837,13 @@ p.up {
   font-size: 2.25rem;
   line-height: calc($h2-font-size + 6px); }
 
-.opc_img {
+.elec-resp .opc_img, .elec-resp .resp-opc {
   border: 0.1875rem solid #DAE1E6;
-  border-radius: calc(1rem - 8px);
   cursor: pointer;
   position: relative;
   z-index: 1; }
-  .opc_img:hover {
-    border: 0.1875rem solid #80CCFF; }
 
-.opc_img .opc_i-3, .opc_img .opc_i-4 {
+.elec-resp .opc_img .opc_i-3, .elec-resp .opc_img .opc_i-4 {
   border-radius: calc(1rem - 10px); }
 
 .mostrar-resul .calif, .mostrar-resul .logro {

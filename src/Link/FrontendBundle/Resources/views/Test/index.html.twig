@@ -62,9 +62,15 @@
             {% for pregunta in preguntas %}
 
                 <div id="pregunta-{{ loop.index }}" {{ loop.index==1 ? '' : 'style="display:none;"' }}>
-
-                    <div class="row">
-                        <div class="col-8 offset-2">
+                    {% set img = pregunta.imagen ? uploads~pregunta.imagen : '' %}
+                    {% if img != '' %}
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-8 enun">
+                                <img class="img-enun_eval" src="{{ img }}" alt="">
+                    {% else %}
+                        <div class="row">
+                            <div class="col-8 offset-2">
+                    {% endif %}
                             <p class="enun_eval">
                                 {{ pregunta.enunciado }}
                             </p>
