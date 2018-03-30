@@ -2,17 +2,45 @@
     {% for opcion in opciones %}
         <div class="row mgn">
             <div class="col-6">
-                <div class="opc_lado-a text-center opc_asoc" style="border-color:{{ opcion.borde_color }}" data="a_{{ opcion.pregunta_asociada_id }}">
+                <div class="opc_lado-a text-center opc_lado-a__{{ pregunta_id }}" style="border-color:{{ opcion.borde_color }}" data="a__{{ pregunta_id }}_{{ opcion.pregunta_asociada_id }}" telement="{{ tipo_elemento_pregunta }}">
+                    <input type="hidden" id="{{ pregunta_id }}_{{ opcion.pregunta_asociada_id }}" name="pregunta_id{{ pregunta_id }}[]" value="{{ opcion.pregunta_asociada_id }}_0">
                     <span class="opc_ra">{{ opcion.enunciado }}</span>
                 </div>
             </div>
             <div class="col-6">
-                <div class="opc_lado-b text-center" data="b_{{ opcion.opcion_asociada_id }}">
+                <div class="opc_lado-b text-center opc_lado-b__{{ pregunta_id }}" style="" data="b__{{ opcion.opcion_asociada_id }}">
                     <span class="opc_rb">{{ opcion.descripcion }}</span>
                 </div>
             </div>
         </div>
     {% endfor %}
 {% else %}
-    {# Dibujar asociación con imágenes #}
+    {# Asociación con imágenes #}
+    {% for opcion in opciones %}
+        <div class="row mgn_img-asig justify-content-center">
+            <div class="col-4 px-0">
+                <div class="elec-resp-asig elec-resp-asig-a opc_lado-a__{{ pregunta_id }}" style="border-color:{{ opcion.borde_color }}" data="a__{{ pregunta_id }}_{{ opcion.pregunta_asociada_id }}" telement="{{ tipo_elemento_pregunta }}">
+                    <input type="hidden" id="{{ pregunta_id }}_{{ opcion.pregunta_asociada_id }}" name="pregunta_id{{ pregunta_id }}[]" value="{{ opcion.pregunta_asociada_id }}_0">
+                    <div class="opc_img-asig" style="border-color:{{ opcion.borde_color }}">
+                        {% set img = uploads~opcion.pregunta_asociada_imagen %}
+                        <img class="opc_i-3" src="{{ img }}" alt="">
+                    </div>
+                    <div class="resp-opc text-center" style="border-color:{{ opcion.borde_color }}">
+                        <span class="resp-opc_i-3">{{ opcion.enunciado }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 px-0">
+                <div class="elec-resp-asig elec-resp-asig-b opc_lado-b__{{ pregunta_id }}" style="" data="b__{{ opcion.opcion_asociada_id }}">
+                    <div class="opc_img-asig" style="">
+                        {% set img = uploads~opcion.opcion_asociada_imagen %}
+                        <img class="opc_i-3" src="{{ img }}" alt="">
+                    </div>
+                    <div class="resp-opc text-center" style="">
+                        <span class="resp-opc_i-3">{{ opcion.descripcion }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endif %}

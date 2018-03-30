@@ -61,7 +61,7 @@
             
             {% for pregunta in preguntas %}
 
-                <div id="pregunta-{{ loop.index }}" {{ loop.index==1 ? '' : 'style="display:none;"' }}>
+                <div id="pregunta-{{ loop.index }}" {{ loop.index==1 ? '' : 'style="display:none;"' }} data="{{ pregunta.id }}">
                     {% set img = pregunta.imagen ? uploads~pregunta.imagen : '' %}
                     {% if img != '' %}
                         <div class="row justify-content-center align-items-center">
@@ -79,10 +79,11 @@
 
                     {% if pregunta.tipo_pregunta != tipo_pregunta.asociacion %}
                         {# Opciones simples o múltiples #}
-                        {{ include('LinkFrontendBundle:Test:opciones.html.twig', { 'opciones': pregunta.opciones, 'tipo_pregunta': pregunta.tipo_pregunta, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento }) }}
+                        <input type="hidden" id="pregunta_id{{ pregunta.id }}" name="pregunta_id{{ pregunta.id }}" value="">
+                        {{ include('LinkFrontendBundle:Test:opciones.html.twig', { 'opciones': pregunta.opciones, 'tipo_pregunta': pregunta.tipo_pregunta, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
                     {% else %}
                         {# Opciones de asociación #}
-                        {{ include('LinkFrontendBundle:Test:opcionesAsociacion.html.twig', { 'opciones': pregunta.opciones, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento }) }}
+                        {{ include('LinkFrontendBundle:Test:opcionesAsociacion.html.twig', { 'opciones': pregunta.opciones, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
                     {% endif %}
 
                 </div>
