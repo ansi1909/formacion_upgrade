@@ -88,7 +88,7 @@
 
 
 //Estilo para seleccion simple imagenes
-.elec-resp{
+.elec-resp, .elec-resp-asig{
     .opc_img {
     width: 16rem;
     height: 13rem;
@@ -135,6 +135,10 @@
 //Estilos para preguntas de asignacion
 .mgn{
     margin: .5rem 0; 
+}
+
+.mgn_img-asig{
+    margin: .5rem 0 .5rem 5rem; 
 }
 
 .opc_lado-a{
