@@ -151,7 +151,7 @@
 
             $('#entrar').click(function()
             {
-                var valid = $('#form').valid();
+                var valid = $('#form_inicio').valid();
                 if(!valid)
                 {
                     notify($('#div-error').html());
@@ -209,7 +209,8 @@
 
                         },
                         error: function(){
-                            $('.error_ajax').show();
+                            $('#alert-error').html($('#error_msg-edit').val());
+                            $('#div-alert').show();
                         }
                     });
                 }

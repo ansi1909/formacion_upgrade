@@ -157,7 +157,28 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-	    $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($programa_id);
+//tengo que asumir que el id es de la pagina padre
+	   // $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($programa_id);
+
+	    $certiPrueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('paginaId'=>$programa_id,
+    																				 'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']));
+
+//`certi_prueba` JOIN `certi_prueba_log` WHERE prueba.pagina_id = _subpaginaid_ AND prueba_log.estado = 'APROBADO'
+
+ 
+return new response(var_dump($certiPrueba));
+
+	    $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPrueba cp
+                                   JOIN cp.pruebaLog pl
+                                   WHERE cp.pagina = :pagina 
+                                   and pl.estado = :estado
+                                   ORDER BY p.orden')
+                    ->setParameters(array('pagina' => $programa_id,
+                                          'estado' => $yml['parameters']['estado_prueba']['aprobado'] ));
+        $paginas_bd = $query->getResult();
+
+        //$menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
+
 
 		if($pagina)
 		{
