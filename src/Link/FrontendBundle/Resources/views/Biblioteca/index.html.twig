@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="filter-group d-flex justify-content-around mb-3">
-                    <ul class="tabs">
+                    <ul class="tabs" id="tab">
                         <li class="activo mt-3">
                             <span>Todos</span>
                         </li>
@@ -45,14 +45,24 @@
         </div>
     </div>
     <div class="row">
-        <ul class="tab__content">
-            <li class="activo">
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                      {% for todo in todos %}
-                      {% if todo.tid == '1' %}
+        <div id="wrapper">
+            <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
+                <div class="contents">
+                    {% set division = todos|length / 3 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
+                    {% set recurso = 0%}
+                    {% for todo in todos %}
+                        {% set recurso = recurso + 1 %}
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set recurso = recurso == 3 ? 0 : recurso %}
+                                <div class="row rowDimension {{dimension}} ">
+                        {% endif %}
+                        {% if todo.tid == '1' %}
                         <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                            <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': todo.id}) }}">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
                                         <span class="material-icons ic-recurso">video_library</span>
@@ -71,28 +81,28 @@
                             </a>
                         </div>
                         {% elseif todo.tid == '2' %}
-                          <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                              <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': todo.id}) }}">
-                                  <div class="card_biblio">
-                                      <div class="card_biblio-left">
-                                          <span class="material-icons ic-recurso">mic</span>
-                                      </div>
-                                      <div class="card_biblio-right">
-                                          <div class="row">
-                                              <div class="col-12 col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12">
-                                                  <h5 class="titulo_recurso">{{todo.titulo}}</h5>
-                                              </div>
-                                              <div class="col-12 col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 text-right pos-recurso">
-                                                  <span class="tipo_recurso">Podcast</span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </a>
-                          </div>
+                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
+                                <div class="card_biblio">
+                                    <div class="card_biblio-left">
+                                        <span class="material-icons ic-recurso">mic</span>
+                                    </div>
+                                    <div class="card_biblio-right">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12">
+                                                <h5 class="titulo_recurso">{{todo.titulo}}</h5>
+                                            </div>
+                                            <div class="col-12 col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 text-right pos-recurso">
+                                                <span class="tipo_recurso">Podcast</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                         {% elseif todo.tid == '3' %}
-                          <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                            <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': todo.id}) }}">
+                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
                                         <span class="material-icons ic-recurso">note</span>
@@ -109,10 +119,10 @@
                                     </div>
                                 </div>
                             </a>
-                          </div>
+                        </div>
                         {% elseif todo.tid == '4' %}
-                          <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                            <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': todo.id}) }}">
+                        <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': todo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
                                         <span class="material-icons ic-recurso">book</span>
@@ -129,18 +139,37 @@
                                     </div>
                                 </div>
                             </a>
-                          </div>
+                        </div>
                         {% endif %}
-                        {% endfor %}
-                    </div>
+                    {% if loop.index is divisibleby(3) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
+                                <div class="row rowDimension {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            </li>
-            <li>
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                      {% for video in videos %}
+                <div class="contents">
+                    {% set division = videos|length / 3 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
+                    {% set recurso = 0%}
+                    {% for video in videos %}
+                        {% set recurso = recurso + 1 %}
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set recurso = recurso == 3 ? 0 : recurso %}
+                                <div class="row rowDimension {{dimension}} ">
+                        {% endif %}
                         <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                            <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': video.id}) }}">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': video.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
                                         <span class="material-icons ic-recurso">video_library</span>
@@ -158,16 +187,35 @@
                                 </div>
                             </a>
                         </div>
-                        {% endfor %}
-                    </div>
+                    {% if loop.index is divisibleby(3) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
+                                <div class="row rowDimension {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            </li>
-            <li>
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                      {% for podcast in podcasts %}
+                <div class="contents">
+                    {% set division = podcasts|length / 3 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
+                    {% set recurso = 0%}
+                    {% for podcast in podcasts %}
+                        {% set recurso = recurso + 1 %}
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set recurso = recurso == 3 ? 0 : recurso %}
+                                <div class="row rowDimension">
+                        {% endif %}
                         <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                            <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': podcast.id}) }}">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': podcast.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
                                         <span class="material-icons ic-recurso">mic</span>
@@ -185,16 +233,35 @@
                                 </div>
                             </a>
                         </div>
-                        {% endfor %}
-                    </div>
+                    {% if loop.index is divisibleby(3) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
+                                <div class="row rowDimension {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            </li>
-            <li>
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                      {% for libro in libros %}
+                <div class="contents">
+                    {% set division = libros|length / 3 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
+                    {% set recurso = 0%}
+                    {% for libro in libros %}
+                        {% set recurso = recurso + 1 %}
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set recurso = recurso == 3 ? 0 : recurso %}
+                                <div class="row rowDimension">
+                        {% endif %}
                         <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                            <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': libro.id}) }}">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': libro.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
                                         <span class="material-icons ic-recurso">book</span>
@@ -212,16 +279,35 @@
                                 </div>
                             </a>
                         </div>
-                        {% endfor %}
-                    </div>
+                    {% if loop.index is divisibleby(3) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
+                                <div class="row rowDimension {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            </li>
-            <li>
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                      {% for articulo in articulos %}
+                <div class="contents">
+                    {% set division = articulos|length / 3 %}
+                    {% set filas = division|round(0,'ceil') %}
+                    {% set row = 0 %}
+                    {% set recurso = 0%}
+                    {% for articulo in articulos %}
+                        {% set recurso = recurso + 1 %}
+                        {% if loop.first %}
+                            {% set row = row + 1 %}
+                            {% set dimension = recurso == 3 ? 'justify-content-between' : ' ' %}
+                            {% set recurso = recurso == 3 ? 0 : recurso %}
+                                <div class="row rowDimension">
+                        {% endif %}
                         <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
-                            <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': articulo.id}) }}">
+                            <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': articulo.id}) }}">
                                 <div class="card_biblio">
                                     <div class="card_biblio-left">
                                         <span class="material-icons ic-recurso">note</span>
@@ -239,29 +325,21 @@
                                 </div>
                             </a>
                         </div>
-                        {% endfor %}
-                    </div>
+                    {% if loop.index is divisibleby(3) %}
+                            </div>
+                            {% if not loop.last %}
+                                {% set row = row + 1 %}
+                                {% set dimension = row != filas ? 'justify-content-between' : ' ' %}
+                                <div class="row rowDimension {{dimension}}">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            </li>
-        </ul>
-    </div>
-    <div class="row align-items-center justify-content-center">
-        <div class="col-auto 
-                    col-lg-auto 
-                    col-xl-auto 
-                    col-md-auto 
-                    col-sm-auto 
-                    col-xs-auto 
-                    px-0 pt-3">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                </ul>
-            </nav>
+            </div>
         </div>
     </div>
 </div>
@@ -270,5 +348,6 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('front/js/tabs.js') }}"></script> 
+    <script src="{{ asset('front/js/jquery.tabpager.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/tabsPagBiblio.js') }}"></script> 
 {% endblock %}

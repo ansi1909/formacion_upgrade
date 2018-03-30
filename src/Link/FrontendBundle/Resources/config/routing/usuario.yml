@@ -7,3 +7,9 @@ _editUsuario:
     defaults: { _controller: LinkFrontendBundle:Usuario:index }
     requirements:
         _method: POST
+
+_ajaxClave:
+    path:     /ajaxClave
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxVerificar }
+    requirements:
+        method: POST
