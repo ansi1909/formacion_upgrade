@@ -30,5 +30,10 @@
                 margin-top: .4rem;
             }
         }
+        &:hover{
+            background: $white;
+            color: $bluedarkest;
+            border-left: 1px solid $bluedarkest;
+        }
     }
 }

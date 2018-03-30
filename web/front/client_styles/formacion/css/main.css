@@ -570,6 +570,10 @@ nav.navbar {
         font-size: calc(1rem + 4px);
         float: right;
         margin-top: .4rem; }
+    .dropDownMenu .opcList:hover {
+      background: #fff;
+      color: #00253D;
+      border-left: 1px solid #00253D; }
 
 .main-sidenav {
   height: 100%;
