@@ -425,6 +425,26 @@ a:focus {
   outline: 1px solid #565656;
   -webkit-border-radius: 0 1rem 1rem 0; }
 
+.modal-resp::-webkit-scrollbar {
+  width: 1rem; }
+.modal-resp::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 0 1rem 1rem 0; }
+.modal-resp::-webkit-scrollbar-thumb {
+  background-color: #AAAFB3;
+  outline: 1px solid #565656;
+  -webkit-border-radius: 0 1rem 1rem 0; }
+
+.modalEditP::-webkit-scrollbar {
+  width: 1rem; }
+.modalEditP::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 0 1rem 1rem 0; }
+.modalEditP::-webkit-scrollbar-thumb {
+  background-color: #AAAFB3;
+  outline: 1px solid #565656;
+  -webkit-border-radius: 0 1rem 1rem 0; }
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
@@ -1605,6 +1625,42 @@ p.up {
         animation-direction: alternate;
         animation-fill-mode: both; }
 
+.table-notas {
+  max-width: 67rem;
+  width: 67rem;
+  margin: auto;
+  padding: 0 1rem; }
+  .table-notas thead {
+    border-bottom: 1px solid #DAE1E6; }
+    .table-notas thead th {
+      color: #212529;
+      font-family: "Roboto";
+      font-size: 1.125rem;
+      line-height: 1rem;
+      font-weight: 400;
+      padding: calc(1rem - 8px);
+      text-align: center;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+      vertical-align: middle; }
+      .table-notas thead th:first-child {
+        text-align: left; }
+  .table-notas tbody tr {
+    color: #5CAEE6;
+    cursor: default; }
+    .table-notas tbody tr td {
+      padding: calc(1rem - 10px) calc(1rem - 8px); }
+      .table-notas tbody tr td:first-child {
+        font-family: "Roboto";
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: calc(1rem - 2px);
+        text-align: left;
+        vertical-align: middle; }
+      .table-notas tbody tr td:nth-child(2), .table-notas tbody tr td:last-child {
+        text-align: center; }
+    .table-notas tbody tr:nth-child(2n) {
+      background: #DAE1E6; }
+
 .rank-table thead th, .rank-table tbody tr td:nth-child(3), .rank-table tbody tr td:nth-child(4) {
   font-family: "Roboto";
   font-size: 0.87rem;
@@ -2240,5 +2296,35 @@ p.up {
     text-decoration: none;
     font-weight: 500;
     text-align: center; }
+
+.constancia {
+  padding: 2rem 0; }
+  .constancia .imgConst {
+    width: 25rem;
+    height: auto; }
+  .constancia .tituloConst {
+    color: #5CAEE6;
+    font-size: 2.25rem;
+    font-weight: 400;
+    line-height: 2rem; }
+  .constancia .datosParticipante {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 1rem;
+    background: #FAFAFA; }
+  .constancia .textConst {
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 2rem;
+    padding: 1rem; }
+  .constancia .tituloPart {
+    padding: 1rem; }
+
+.constancia .datosParticipante .tituloPart, .constancia .tituloPart {
+  color: #5C6266;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 2rem; }
 
 /*# sourceMappingURL=main.css.map */

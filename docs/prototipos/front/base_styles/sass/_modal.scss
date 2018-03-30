@@ -92,6 +92,18 @@
 .modal-resp{
     @extend %modal-sl;
     @extend %modal;
+    &::-webkit-scrollbar {
+        width: 1rem;
+    }
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        -webkit-border-radius: 0 1rem 1rem 0;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-600;
+        outline: 1px solid $gray-850;
+        -webkit-border-radius: 0 1rem 1rem 0;
+    }
     .titulo-form{
         @extend %tituloForm;
     }
@@ -101,6 +113,18 @@
 .modalEditP{
     @extend %modal-m;
     @extend %modal;
+    &::-webkit-scrollbar {
+        width: 1rem;
+    }
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        -webkit-border-radius: 0 1rem 1rem 0;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-600;
+        outline: 1px solid $gray-850;
+        -webkit-border-radius: 0 1rem 1rem 0;
+    }
     .titulo-form{
             @extend %tituloForm;
     }
