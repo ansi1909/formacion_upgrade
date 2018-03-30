@@ -1,3 +1,9 @@
 _test:
     path:     /test/{pagina_id}/{programa_id}
     defaults: { _controller: LinkFrontendBundle:Test:index }
+
+_ajaxTestResponse:
+    path:     /ajaxTestResponse
+    defaults: { _controller: LinkFrontendBundle:Test:ajaxTestResponse }
+    requirements:
+        _method: POST

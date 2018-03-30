@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPruebaLog;
+use Link\ComunBundle\Entity\CertiRespuesta;
 use Symfony\Component\Yaml\Yaml;
 
 class TestController extends Controller
@@ -53,6 +54,7 @@ class TestController extends Controller
         $prueba_log->setCorrectas(0);
         $prueba_log->setErradas(0);
         $prueba_log->setNota(0);
+        $prueba_log->setPreguntasErradas(null);
         $em->persist($prueba_log);
         $em->flush();
 
@@ -68,7 +70,7 @@ class TestController extends Controller
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
                                     WHERE p.prueba = :prueba_id 
                                     AND p.estatusContenido = :activo 
-                                    AND p.tipoPregunta = :tipo 
+                                    AND p.tipoPregunta != :tipo 
                                     AND p.pregunta IS NULL")
                     ->setParameters(array('prueba_id' => $prueba->getId(),
                                           'activo' => $yml['parameters']['estatus_contenido']['activo'],
@@ -174,6 +176,101 @@ class TestController extends Controller
                                                                               'programa_id' => $programa_id,
                                                                               'tipo_pregunta' => $yml['parameters']['tipo_pregunta'],
                                                                               'tipo_elemento' => $yml['parameters']['tipo_elemento']));
+
+    }
+
+    public function ajaxTestResponseAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $prueba_log_id = $request->request->get('prueba_log_id');
+        $pregunta_id = $request->request->get('pregunta_id');
+        $nro = $request->request->get('nro');
+        $porcentaje = $request->request->get('porcentaje');
+        $p_opciones_str = trim($request->request->get('pregunta_id'.$pregunta_id)); // Vienen separados por coma
+
+        $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
+        $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
+
+        $correcta = 1;
+
+        if ($pregunta->getTipoPregunta()->getId() != $yml['parameters']['tipo_pregunta']['asociacion'])
+        {
+
+            // Simples o múltiples
+            if ($p_opciones_str != '')
+            {
+                $p_opciones_arr = explode(",", $p_opciones_str);
+            }
+            else {
+                $p_opciones_arr = array();
+            }
+
+            if (!count($p_opciones_arr))
+            {
+                // No contestó. Se cuenta como errada.
+                $correcta = 0;
+                $respuesta = new CertiRespuesta();
+                $respuesta->setNro($nro);
+                $respuesta->setPregunta($pregunta);
+                $respuesta->setPruebaLog($prueba_log);
+                $respuesta->setFechaRegistro(new \DateTime('now'));
+                $em->persist($respuesta);
+                $em->flush();
+            }
+            else {
+                foreach ($p_opciones_arr as $po_id)
+                {
+                    $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($po_id);
+                    if (!$pregunta_opcion->getCorrecta())
+                    {
+                        $correcta = 0;
+                    }
+                    $respuesta = new CertiRespuesta();
+                    $respuesta->setNro($nro);
+                    $respuesta->setPregunta($pregunta);
+                    $respuesta->setPruebaLog($prueba_log);
+                    $respuesta->setFechaRegistro(new \DateTime('now'));
+                    $respuesta->setOpcion($pregunta_opcion->getOpcion());
+                    $em->persist($respuesta);
+                    $em->flush();
+                }
+            }
+
+        }
+        else {
+            // Lógica de almacenamiento para las respuestas de asociación
+        }
+
+        $correctas = $prueba_log->getCorrectas() + $correcta;
+        $errada = !$correcta ? 1 : 0;
+        if ($errada){
+            $erradas_str = $prueba_log->getPreguntasErradas();
+            if ($erradas_str)
+            {
+                $erradas_arr = explode(",", $erradas_str);
+            }
+            else {
+                $erradas_arr = array();
+            }
+            $erradas_arr[] = $nro;
+            $erradas_str = implode(",", $erradas_arr);
+            $prueba_log->setPreguntasErradas($erradas_str);
+        }
+        $erradas = $prueba_log->getErradas() + $errada;
+        $prueba_log->setPorcentajeAvance($porcentaje);
+        $prueba_log->setCorrectas($correctas);
+        $prueba_log->setErradas($erradas);
+        $em->persist($prueba_log);
+        $em->flush();
+
+        $return = array('ok' => 1);
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 

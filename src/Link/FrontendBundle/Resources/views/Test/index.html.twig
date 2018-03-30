@@ -25,6 +25,8 @@
         <input type="hidden" id="nro" name="nro" value="1">
         <input type="hidden" id="pregunta_id" name="pregunta_id" value="{{ preguntas[0]['id'] }}">
         <input type="hidden" id="total" name="total" value="{{ preguntas|length }}">
+        <input type="hidden" id="prueba_log_id" name="prueba_log_id" value="{{ prueba_log.id }}">
+        <input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxTestResponse') }}">
 
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
@@ -77,14 +79,16 @@
                         </div>
                     </div>
 
-                    {% if pregunta.tipo_pregunta != tipo_pregunta.asociacion %}
-                        {# Opciones simples o múltiples #}
+                    <form id="form-pregunta{{ pregunta.id }}" method="POST">
                         <input type="hidden" id="pregunta_id{{ pregunta.id }}" name="pregunta_id{{ pregunta.id }}" value="">
-                        {{ include('LinkFrontendBundle:Test:opciones.html.twig', { 'opciones': pregunta.opciones, 'tipo_pregunta': pregunta.tipo_pregunta, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
-                    {% else %}
-                        {# Opciones de asociación #}
-                        {{ include('LinkFrontendBundle:Test:opcionesAsociacion.html.twig', { 'opciones': pregunta.opciones, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
-                    {% endif %}
+                        {% if pregunta.tipo_pregunta != tipo_pregunta.asociacion %}
+                            {# Opciones simples o múltiples #}
+                            {{ include('LinkFrontendBundle:Test:opciones.html.twig', { 'opciones': pregunta.opciones, 'tipo_pregunta': pregunta.tipo_pregunta, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
+                        {% else %}
+                            {# Opciones de asociación #}
+                            {{ include('LinkFrontendBundle:Test:opcionesAsociacion.html.twig', { 'opciones': pregunta.opciones, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
+                        {% endif %}
+                    </form>
 
                 </div>
 

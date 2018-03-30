@@ -72,6 +72,13 @@ class CertiPruebaLog
     private $estado;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="preguntas_erradas", type="string", length=100, nullable=true)
+     */
+    private $preguntasErradas;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPrueba
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPrueba")
@@ -269,6 +276,30 @@ class CertiPruebaLog
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set preguntasErradas
+     *
+     * @param string $preguntasErradas
+     *
+     * @return CertiPruebaLog
+     */
+    public function setPreguntasErradas($preguntasErradas)
+    {
+        $this->preguntasErradas = $preguntasErradas;
+    
+        return $this;
+    }
+
+    /**
+     * Get preguntasErradas
+     *
+     * @return string
+     */
+    public function getPreguntasErradas()
+    {
+        return $this->preguntasErradas;
     }
 
     /**

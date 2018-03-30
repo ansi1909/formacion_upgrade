@@ -311,6 +311,7 @@ correctas integer,
 erradas integer,
 nota numeric(5,2),
 estado varchar(15),
+preguntas_erradas varchar(100),
  PRIMARY KEY (id),
  FOREIGN KEY (prueba_id) REFERENCES certi_prueba (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));

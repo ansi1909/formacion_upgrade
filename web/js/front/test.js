@@ -1,30 +1,49 @@
 $(document).ready(function() {
 
 	var total = $('#total').val();
+	var prueba_log_id = $('#prueba_log_id').val();
 
 	$('.btn_sp').click(function(){
 
 		var next = $(this);
 		next.hide();
 		var nro = $('#nro').val();
+		var pregunta_id = $('#pregunta_id').val();
 
 		// Escondemos la corriente pregunta
 		$('#pregunta-'+nro).hide(1000);
 
 		// Porcentaje de avance
 		var porcentaje = parseInt(((nro/total)*100), 10);
-		$("#progreso").attr("style", 'width: '+porcentaje+'%');
 
-		if (nro < total)
-		{
-			nro = parseInt(nro)+parseInt(1);
-			$('#nro').val(nro);
-			var nro_pregunta = nro < 10 ? '0'+nro : nro;
-			$('#nro_pregunta').html(nro_pregunta);
-			$('#pregunta-'+nro).show(1000); // Se muestra la siguiente pregunta
-			$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Nueva pregunta_id
-			next.show();
-		}
+		// Almacenamos las respuestas
+		$.ajax({
+			type: "POST",
+			url: $('#url_respuesta').val(),
+			async: true,
+			data: $('#form-pregunta'+pregunta_id).serialize()+'&prueba_log_id='+prueba_log_id+'&pregunta_id='+pregunta_id+'&nro='+nro+'&porcentaje='+porcentaje,
+			dataType: "json",
+			success: function(data) {
+				$("#progreso").attr("style", 'width: '+porcentaje+'%');
+				if (nro < total)
+				{
+					nro = parseInt(nro)+parseInt(1);
+					$('#nro').val(nro);
+					var nro_pregunta = nro < 10 ? '0'+nro : nro;
+					$('#nro_pregunta').html(nro_pregunta);
+					$('#pregunta-'+nro).show(1000); // Se muestra la siguiente pregunta
+					$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Nueva pregunta_id
+					next.show();
+				}
+				else {
+					// Redirección a la página de resultados
+				}
+				//clearTimeout( timerId );
+			},
+			error: function(){
+				console.log('Error procesando las respuestas a la pregunta '+pregunta_id); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
 
 	});
 
