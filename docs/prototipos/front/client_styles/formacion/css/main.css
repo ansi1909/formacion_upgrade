@@ -541,6 +541,36 @@ a:focus {
 nav.navbar {
   box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56); }
 
+.dropDownMenu {
+  position: absolute;
+  width: 14rem;
+  height: auto;
+  right: .3rem;
+  top: 4.175rem;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background: #00253D;
+  box-shadow: 2px 2px 10px rgba(56, 56, 56, 0.1);
+  border-radius: 0 0 1rem 1rem; }
+  .dropDownMenu .opcList {
+    color: #DAE1E6;
+    position: relative;
+    width: 14rem;
+    top: 0;
+    left: 0;
+    padding: 1rem; }
+    .dropDownMenu .opcList:first-child {
+      border-bottom: 1px solid #F7FAFC; }
+    .dropDownMenu .opcList span {
+      font-size: 0.87rem;
+      font-family: "Roboto";
+      font-weight: 400; }
+      .dropDownMenu .opcList span .icMenu {
+        font-size: calc(1rem + 4px);
+        float: right;
+        margin-top: .4rem; }
+
 .main-sidenav {
   height: 100%;
   width: 200px;
