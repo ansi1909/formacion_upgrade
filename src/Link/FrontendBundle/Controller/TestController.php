@@ -70,7 +70,7 @@ class TestController extends Controller
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
                                     WHERE p.prueba = :prueba_id 
                                     AND p.estatusContenido = :activo 
-                                    AND p.tipoPregunta != :tipo 
+                                    AND p.tipoPregunta = :tipo 
                                     AND p.pregunta IS NULL")
                     ->setParameters(array('prueba_id' => $prueba->getId(),
                                           'activo' => $yml['parameters']['estatus_contenido']['activo'],
@@ -191,7 +191,7 @@ class TestController extends Controller
         $pregunta_id = $request->request->get('pregunta_id');
         $nro = $request->request->get('nro');
         $porcentaje = $request->request->get('porcentaje');
-        $p_opciones_str = trim($request->request->get('pregunta_id'.$pregunta_id)); // Vienen separados por coma
+        $p_opciones = $request->request->get('pregunta_id'.$pregunta_id);
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
         $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
@@ -202,9 +202,10 @@ class TestController extends Controller
         {
 
             // Simples o múltiples
-            if ($p_opciones_str != '')
+            $p_opciones = trim($p_opciones); // Viene separado por comas
+            if ($p_opciones != '')
             {
-                $p_opciones_arr = explode(",", $p_opciones_str);
+                $p_opciones_arr = explode(",", $p_opciones);
             }
             else {
                 $p_opciones_arr = array();
@@ -243,7 +244,47 @@ class TestController extends Controller
 
         }
         else {
-            // Lógica de almacenamiento para las respuestas de asociación
+
+            // Respuestas de asociación
+            $correctas_arr = array(); // Forma pregunta_id => opcion_id
+            $respuestas_arr = array(); // Forma pregunta_id => opcion_id_seleccionada
+
+            foreach ($p_opciones as $p_opcion)
+            {
+
+                $po_arr = explode("_", $p_opcion);
+                $respuestas_arr[$po_arr[0]] = $po_arr[1];
+                if ($po_arr[1] != 0)
+                {
+                    $opcion = $em->getRepository('LinkComunBundle:CertiOpcion')->find($po_arr[1]);
+                }
+                else {
+                    $opcion = null;
+                }
+
+                $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findOneByPregunta($po_arr[0]);
+                $correctas_arr[$po_arr[0]] = $pregunta_opcion->getOpcion()->getId();
+
+                $respuesta = new CertiRespuesta();
+                $respuesta->setNro($nro);
+                $respuesta->setPregunta($pregunta_opcion->getPregunta());
+                $respuesta->setPruebaLog($prueba_log);
+                $respuesta->setFechaRegistro(new \DateTime('now'));
+                $respuesta->setOpcion($opcion);
+                $em->persist($respuesta);
+                $em->flush();
+
+            }
+
+            foreach ($correctas_arr as $p_id => $o_id)
+            {
+                if ($respuestas_arr[$p_id] != $o_id)
+                {
+                    $correcta = 0;
+                    break;
+                }
+            }
+
         }
 
         $correctas = $prueba_log->getCorrectas() + $correcta;
