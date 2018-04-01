@@ -292,7 +292,7 @@ body {
 #main {
   transition: all .6s;
   padding: 16px;
-  margin-left: 200px;
+  margin-left: 170px;
   max-width: 90%; }
   @media (max-width: 767.98px) {
     #main {
@@ -545,8 +545,15 @@ a:focus {
     line-height: 1.1875rem;
     text-align: center; }
 
+.navbar .logo {
+  width: 250px; }
+
 nav.navbar {
-  box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56); }
+  box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56);
+  height: 70px; }
+
+.navbar-brand img {
+  max-width: 90%; }
 
 .icDown {
   position: relative;
@@ -796,7 +803,7 @@ nav.navbar {
   width: 200px;
   position: fixed;
   z-index: 1031;
-  top: 67px;
+  top: 70px;
   left: 0;
   background-color: #00253D;
   overflow: auto;
@@ -820,7 +827,7 @@ nav.navbar {
     padding-left: 8px; }
 
 #main.ml-10 {
-  margin-left: 6%; }
+  margin-left: 9%; }
 
 #main.ml-comments {
   margin-left: -8%; }
@@ -868,7 +875,7 @@ a.active {
   color: #CFE65C; }
 
 .nav-lesson {
-  top: 80px;
+  top: 71px;
   width: 240px;
   font-family: "Roboto";
   padding-bottom: 136px; }
@@ -980,7 +987,6 @@ p.up {
 
 .wraper-nav-less {
   position: relative;
-  margin-left: 5%;
   overflow: hidden;
   height: 165px; }
   .wraper-nav-less:hover .btn-lessons {
@@ -1269,12 +1275,23 @@ p.up {
   transition: .5s; }
 
 .card-current {
-  max-width: 692px;
-  max-height: 140px; }
+  width: 700px;
+  height: 160px; }
+  @media (max-width: 991.98px) {
+    .card-current {
+      width: 500px; } }
+  @media (max-width: 767.98px) {
+    .card-current {
+      max-width: 400px;
+      height: 110px; } }
   .card-current .card-hrz-img {
-    width: 160px; }
+    width: 170px; }
+    @media (max-width: 767.98px) {
+      .card-current .card-hrz-img {
+        width: 120px; } }
 
 .card-hrz-body {
+  width: 100%;
   padding: 1rem; }
   .card-hrz-body h5 {
     font-weight: 400; }
@@ -2265,7 +2282,7 @@ p.up {
   height: 100vh;
   width: 400px;
   position: fixed;
-  top: 79px;
+  top: 71px;
   right: -400px;
   padding: 64px 24px 128px 24px;
   transition: .8s ease;
