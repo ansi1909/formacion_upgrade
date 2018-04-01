@@ -82,7 +82,6 @@
     display: none;
     @include media-breakpoint-down(xl){
         right: 6rem;
-        top: 4.175rem;
     }
     &::-webkit-scrollbar {
         width: .3rem;
@@ -169,7 +168,7 @@
     }
 }
 
-.markNotify, .markApps{
+.markNotify{
     position: absolute;
     width: 1rem;
     height: 1rem;
@@ -222,5 +221,70 @@
 }
 
 .dropDownApps{
+    position: absolute;
+    width: 16rem;
+    height: auto;
+    right: 9.5rem;
+    top: 4.175rem;
+    margin: 0;
+    padding: 0 .5rem;
+    list-style-type: none;
+    background: $gray-100;
+    border-left: 1px solid $gray-300;
+    border-bottom: 1px solid $gray-300;
+    border-right: 1px solid $gray-300;
+    border-top: 0px;
+    box-shadow: 3px 3px 10px rgba(56, 56, 56, .5);
+    border-radius: 0 0 .5rem .5rem;
+    z-index: 1;
     display: none;
+    @include media-breakpoint-down(xl){
+        right: 8.6rem;
+    }
+    .opcApps{
+        width:5rem;
+        height: 5rem;
+        padding: .5rem;
+        margin: 0;
+        .imgApps{
+            width: 2.5rem;
+            height:  2.5rem;
+            display: block;
+            margin: 0 auto;
+        }
+        .tituloApps{
+            white-space: pre-wrap;
+            font-size: calc(1rem - 3px);
+            font-weight: $font-weight-normal-hard;
+            text-align: center;
+            font-family: $primary-font;
+            line-height: .8rem;
+            margin-top: .2rem;
+            color: $gray-900;
+        }
+        &:hover{
+            background: linear-gradient(to right, $lightblue 0%, $blue 100%);
+            .tituloApps{
+                color: $white;
+                text-shadow: 2px 2px 10px rgba(58, 58, 58, .3);
+            }
+        }
+    }
+}
+
+.markApps{
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    top: 3.65rem;
+    right: 10.2rem;
+    background: transparent;
+    transform: rotate(45deg);
+    border-top: 1px solid $gray-400;
+    border-left: 1px solid $gray-400;
+    z-index: 2;
+    display: none;
+    @include media-breakpoint-down(xl){
+        right: 9.4rem;
+    }
 }

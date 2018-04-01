@@ -9,6 +9,10 @@
     transition: all .2s ease;
     border: 3px solid $gray-400;
     border-radius: 1rem;
+    @include media-breakpoint-down(xl){
+        width: 15rem;
+        height: 15rem;
+    }
     &:hover{
         span{
             bottom: 0px;
@@ -34,6 +38,11 @@
         border-radius: 0 0 .7rem .7rem; 
         text-transform: uppercase;
         transition: all .2s ease;
+        @include media-breakpoint-down(xl){
+            width: 14.6rem;
+            height: 3rem;
+            padding: .5rem 0;
+        }
     }
     .reloj{
         border-radius: calc(4rem - 4px);
