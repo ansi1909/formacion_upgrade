@@ -24,19 +24,27 @@ $(document).ready(function() {
 			data: $('#form-pregunta'+pregunta_id).serialize()+'&prueba_log_id='+prueba_log_id+'&pregunta_id='+pregunta_id+'&nro='+nro+'&porcentaje='+porcentaje,
 			dataType: "json",
 			success: function(data) {
-				$("#progreso").attr("style", 'width: '+porcentaje+'%');
-				if (nro < total)
+				if (data.ok == 1)
 				{
-					nro = parseInt(nro)+parseInt(1);
-					$('#nro').val(nro);
-					var nro_pregunta = nro < 10 ? '0'+nro : nro;
-					$('#nro_pregunta').html(nro_pregunta);
-					$('#pregunta-'+nro).show(1000); // Se muestra la siguiente pregunta
-					$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Nueva pregunta_id
-					next.show();
+					$("#progreso").attr("style", 'width: '+porcentaje+'%');
+					if (nro < total)
+					{
+						nro = parseInt(nro)+parseInt(1);
+						$('#nro').val(nro);
+						var nro_pregunta = nro < 10 ? '0'+nro : nro;
+						$('#nro_pregunta').html(nro_pregunta);
+						$('#pregunta-'+nro).show(1000); // Se muestra la siguiente pregunta
+						$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Nueva pregunta_id
+						next.show();
+					}
+					else {
+						// Redirección a la página de fin de la prueba
+						window.location.replace($('#url_fin').val());
+					}
 				}
 				else {
-					// Redirección a la página de resultados
+					// Redirección a la página de fin de la prueba
+					window.location.replace($('#url_fin').val());
 				}
 				//clearTimeout( timerId );
 			},

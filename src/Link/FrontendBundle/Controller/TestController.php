@@ -34,6 +34,13 @@ class TestController extends Controller
             return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('No existe evaluación para esta página').'.'));
         }*/
 
+        $status_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['en_evaluacion']);
+        $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                            'pagina' => $pagina_id));
+        $pagina_log->setEstatusPagina($status_pagina);
+        $em->persist($pagina_log);
+        $em->flush();
+
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba' => $prueba->getId(),
                                                                                             'usuario' => $session->get('usuario')['id'],
                                                                                             'estado' => $yml['parameters']['estado_prueba']['curso']),
@@ -41,12 +48,24 @@ class TestController extends Controller
         
         if (!$prueba_log)
         {
-            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-            $prueba_log = new CertiPruebaLog();
-            $prueba_log->setPrueba($prueba);
-            $prueba_log->setUsuario($usuario);
-            $prueba_log->setFechaInicio(new \DateTime('now'));
-            $prueba_log->setEstado($yml['parameters']['estado_prueba']['curso']);
+
+            // Es posible que ya haya aprobado esta evaluación
+            $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba' => $prueba->getId(),
+                                                                                                'usuario' => $session->get('usuario')['id'],
+                                                                                                'estado' => $yml['parameters']['estado_prueba']['aprobado']),
+                                                                                          array('id' => 'DESC'));
+            if ($prueba_log)
+            {
+                return $this->redirectToRoute('_resultadosTest', array('prueba_log_id' => $prueba_log->getId()));
+            }
+            else {
+                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+                $prueba_log = new CertiPruebaLog();
+                $prueba_log->setPrueba($prueba);
+                $prueba_log->setUsuario($usuario);
+                $prueba_log->setFechaInicio(new \DateTime('now'));
+                $prueba_log->setEstado($yml['parameters']['estado_prueba']['curso']);
+            }
         }
 
         // Reseteo de valores
@@ -70,11 +89,9 @@ class TestController extends Controller
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
                                     WHERE p.prueba = :prueba_id 
                                     AND p.estatusContenido = :activo 
-                                    AND p.tipoPregunta = :tipo 
                                     AND p.pregunta IS NULL")
                     ->setParameters(array('prueba_id' => $prueba->getId(),
-                                          'activo' => $yml['parameters']['estatus_contenido']['activo'],
-                                          'tipo' => $yml['parameters']['tipo_pregunta']['asociacion']));
+                                          'activo' => $yml['parameters']['estatus_contenido']['activo']));
         $preguntas = $query->getResult();
 
         $preguntas_ids = array();
@@ -184,8 +201,8 @@ class TestController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $ok = 1;
 
         $prueba_log_id = $request->request->get('prueba_log_id');
         $pregunta_id = $request->request->get('pregunta_id');
@@ -196,122 +213,290 @@ class TestController extends Controller
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
         $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
 
-        $correcta = 1;
-
-        if ($pregunta->getTipoPregunta()->getId() != $yml['parameters']['tipo_pregunta']['asociacion'])
+        // Si es la pregunta nro=1, se verifica que no existan respuestas para esta prueba (CASO BACK)
+        if ($nro == 1)
         {
 
-            // Simples o múltiples
-            $p_opciones = trim($p_opciones); // Viene separado por comas
-            if ($p_opciones != '')
+            $respuestas = $em->getRepository('LinkComunBundle:CertiRespuesta')->findByPruebaLog($prueba_log->getId());
+            if (count($respuestas))
             {
-                $p_opciones_arr = explode(",", $p_opciones);
-            }
-            else {
-                $p_opciones_arr = array();
+                // Excepción. Prueba ya presentada.
+                $ok = 0;
             }
 
-            if (!count($p_opciones_arr))
+        }
+
+        if ($ok)
+        {
+
+            $correcta = 1;
+
+            if ($pregunta->getTipoPregunta()->getId() != $yml['parameters']['tipo_pregunta']['asociacion'])
             {
-                // No contestó. Se cuenta como errada.
-                $correcta = 0;
-                $respuesta = new CertiRespuesta();
-                $respuesta->setNro($nro);
-                $respuesta->setPregunta($pregunta);
-                $respuesta->setPruebaLog($prueba_log);
-                $respuesta->setFechaRegistro(new \DateTime('now'));
-                $em->persist($respuesta);
-                $em->flush();
-            }
-            else {
-                foreach ($p_opciones_arr as $po_id)
+
+                // Simples o múltiples
+                $p_opciones = trim($p_opciones); // Viene separado por comas
+                if ($p_opciones != '')
                 {
-                    $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($po_id);
-                    if (!$pregunta_opcion->getCorrecta())
-                    {
-                        $correcta = 0;
-                    }
+                    $p_opciones_arr = explode(",", $p_opciones);
+                }
+                else {
+                    $p_opciones_arr = array();
+                }
+
+                if (!count($p_opciones_arr))
+                {
+                    // No contestó. Se cuenta como errada.
+                    $correcta = 0;
                     $respuesta = new CertiRespuesta();
                     $respuesta->setNro($nro);
                     $respuesta->setPregunta($pregunta);
                     $respuesta->setPruebaLog($prueba_log);
                     $respuesta->setFechaRegistro(new \DateTime('now'));
-                    $respuesta->setOpcion($pregunta_opcion->getOpcion());
                     $em->persist($respuesta);
                     $em->flush();
                 }
+                else {
+                    foreach ($p_opciones_arr as $po_id)
+                    {
+                        $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($po_id);
+                        if (!$pregunta_opcion->getCorrecta())
+                        {
+                            $correcta = 0;
+                        }
+                        $respuesta = new CertiRespuesta();
+                        $respuesta->setNro($nro);
+                        $respuesta->setPregunta($pregunta);
+                        $respuesta->setPruebaLog($prueba_log);
+                        $respuesta->setFechaRegistro(new \DateTime('now'));
+                        $respuesta->setOpcion($pregunta_opcion->getOpcion());
+                        $em->persist($respuesta);
+                        $em->flush();
+                    }
+                }
+
+            }
+            else {
+
+                // Respuestas de asociación
+                $correctas_arr = array(); // Forma pregunta_id => opcion_id
+                $respuestas_arr = array(); // Forma pregunta_id => opcion_id_seleccionada
+
+                foreach ($p_opciones as $p_opcion)
+                {
+
+                    $po_arr = explode("_", $p_opcion);
+                    $respuestas_arr[$po_arr[0]] = $po_arr[1];
+                    if ($po_arr[1] != 0)
+                    {
+                        $opcion = $em->getRepository('LinkComunBundle:CertiOpcion')->find($po_arr[1]);
+                    }
+                    else {
+                        $opcion = null;
+                    }
+
+                    $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findOneByPregunta($po_arr[0]);
+                    $correctas_arr[$po_arr[0]] = $pregunta_opcion->getOpcion()->getId();
+
+                    $respuesta = new CertiRespuesta();
+                    $respuesta->setNro($nro);
+                    $respuesta->setPregunta($pregunta_opcion->getPregunta());
+                    $respuesta->setPruebaLog($prueba_log);
+                    $respuesta->setFechaRegistro(new \DateTime('now'));
+                    $respuesta->setOpcion($opcion);
+                    $em->persist($respuesta);
+                    $em->flush();
+
+                }
+
+                foreach ($correctas_arr as $p_id => $o_id)
+                {
+                    if ($respuestas_arr[$p_id] != $o_id)
+                    {
+                        $correcta = 0;
+                        break;
+                    }
+                }
+
             }
 
+            $correctas = $prueba_log->getCorrectas() + $correcta;
+            $errada = !$correcta ? 1 : 0;
+            if ($errada){
+                $erradas_str = $prueba_log->getPreguntasErradas();
+                if ($erradas_str)
+                {
+                    $erradas_arr = explode(",", $erradas_str);
+                }
+                else {
+                    $erradas_arr = array();
+                }
+                $erradas_arr[] = $nro;
+                $erradas_str = implode(",", $erradas_arr);
+                $prueba_log->setPreguntasErradas($erradas_str);
+            }
+            $erradas = $prueba_log->getErradas() + $errada;
+            $prueba_log->setPorcentajeAvance($porcentaje);
+            $prueba_log->setCorrectas($correctas);
+            $prueba_log->setErradas($erradas);
+            $em->persist($prueba_log);
+            $em->flush();
+
+        }
+
+        
+
+        $return = array('ok' => $ok);
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function finAction($prueba_log_id, $cantidad_preguntas, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        /*if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        }
+        $f->setRequest($session->get('sesion_id'));*/
+
+        $em = $this->getDoctrine()->getManager();
+
+        $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
+
+        /*if (!$prueba)
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('No existe evaluación para esta página').'.'));
+        }*/
+
+        // Cantidad de intentos
+        $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
+                                    WHERE pl.usuario = :usuario_id 
+                                    AND pl.prueba = :prueba_id")
+                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                          'prueba_id' => $prueba_log->getPrueba()->getId()));
+        $intentos = $query->getSingleScalarResult();
+
+        $puntos = 0;
+        
+        if (!$prueba_log->getPreguntasErradas() || $prueba_log->getPreguntasErradas() == '')
+        {
+            // Pasó con el 100%. No hace falta cálculos.
+            $nota = 100;
+            $estado = $yml['parameters']['estado_prueba']['aprobado'];
+            $puntos = $yml['parameters']['puntos']['aprobar_perfecto'];
+            if ($intentos > 1)
+            {
+                $puntos = $puntos/$intentos;
+                $puntos = round($puntos, 0, PHP_ROUND_HALF_UP);
+            }
         }
         else {
 
-            // Respuestas de asociación
-            $correctas_arr = array(); // Forma pregunta_id => opcion_id
-            $respuestas_arr = array(); // Forma pregunta_id => opcion_id_seleccionada
+            $erradas = explode(",", $prueba_log->getPreguntasErradas());
 
-            foreach ($p_opciones as $p_opcion)
+            // Se determina el total de puntaje que suman todas las preguntas
+            $total_valor = 0;
+            $nota = 0;
+            $preguntas = array();
+            for ($i=1; $i<=$cantidad_preguntas; $i++)
             {
-
-                $po_arr = explode("_", $p_opcion);
-                $respuestas_arr[$po_arr[0]] = $po_arr[1];
-                if ($po_arr[1] != 0)
+                $respuesta = $em->getRepository('LinkComunBundle:CertiRespuesta')->findOneBy(array('pruebaLog' => $prueba_log_id,
+                                                                                                   'nro' => $i));
+                if ($respuesta->getPregunta()->getPregunta())
                 {
-                    $opcion = $em->getRepository('LinkComunBundle:CertiOpcion')->find($po_arr[1]);
+                    // Es una respuesta de asociación
+                    $pregunta_id = $respuesta->getPregunta()->getPregunta()->getId();
+                    $valor = $respuesta->getPregunta()->getPregunta()->getValor();
                 }
                 else {
-                    $opcion = null;
+                    // Respuesta de selección simple o múltiple
+                    $pregunta_id = $respuesta->getPregunta()->getId();
+                    $valor = $respuesta->getPregunta()->getValor();
                 }
-
-                $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findOneByPregunta($po_arr[0]);
-                $correctas_arr[$po_arr[0]] = $pregunta_opcion->getOpcion()->getId();
-
-                $respuesta = new CertiRespuesta();
-                $respuesta->setNro($nro);
-                $respuesta->setPregunta($pregunta_opcion->getPregunta());
-                $respuesta->setPruebaLog($prueba_log);
-                $respuesta->setFechaRegistro(new \DateTime('now'));
-                $respuesta->setOpcion($opcion);
-                $em->persist($respuesta);
-                $em->flush();
-
+                $preguntas[$i] = array('id' => $pregunta_id,
+                                       'valor' => $valor);
+                $total_valor += $valor;
             }
 
-            foreach ($correctas_arr as $p_id => $o_id)
+            foreach ($preguntas as $nro => $pregunta)
             {
-                if ($respuestas_arr[$p_id] != $o_id)
+                if (!in_array($nro, $erradas))
                 {
-                    $correcta = 0;
-                    break;
+                    $porcentaje = ($pregunta['valor']*100)/$total_valor;
+                    $nota += $porcentaje;
+                    $preguntas[$nro]['porcentaje'] = $porcentaje; // QUITAR
                 }
             }
+            $nota = round($nota, 2, PHP_ROUND_HALF_UP);
 
-        }
+            $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                        'pagina' => $prueba_log->getPrueba()->getPagina()->getId()));
 
-        $correctas = $prueba_log->getCorrectas() + $correcta;
-        $errada = !$correcta ? 1 : 0;
-        if ($errada){
-            $erradas_str = $prueba_log->getPreguntasErradas();
-            if ($erradas_str)
+            if ($nota < $pagina_empresa->getPuntajeAprueba())
             {
-                $erradas_arr = explode(",", $erradas_str);
+                $estado = $yml['parameters']['estado_prueba']['reprobado'];
             }
             else {
-                $erradas_arr = array();
+                $estado = $yml['parameters']['estado_prueba']['aprobado'];
+                if ($intentos == 1)
+                {
+                    $puntos = $yml['parameters']['puntos']['aprobar_primer_intento'];
+                }
             }
-            $erradas_arr[] = $nro;
-            $erradas_str = implode(",", $erradas_arr);
-            $prueba_log->setPreguntasErradas($erradas_str);
+
         }
-        $erradas = $prueba_log->getErradas() + $errada;
-        $prueba_log->setPorcentajeAvance($porcentaje);
-        $prueba_log->setCorrectas($correctas);
-        $prueba_log->setErradas($erradas);
+
+        $return = array('nota' => $nota,
+                        'puntos' => $puntos,
+                        'estado' => $estado,
+                        'total_valor' => $total_valor,
+                        'preguntas' => $preguntas);
+        return new Response(var_dump($return));
+
+        // Finalizar prueba_log
+        $prueba_log->setFechaFin(new \DateTime('now'));
+        $prueba_log->setNota($nota);
+        $prueba_log->setEstado($estado);
         $em->persist($prueba_log);
         $em->flush();
 
-        $return = array('ok' => 1);
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        if ($estado == $yml['parameters']['estado_prueba']['aprobado'])
+        {
+
+            $pagina_id = $prueba_log->getPrueba()->getPagina()->getId();
+            // Estatus de la página Completada
+            $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                'pagina' => $pagina_id));
+            $status_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['completada']);
+            $pagina_log->setFechaFin(new \DateTime('now'));
+            $pagina_log->setPorcentajeAvance(100);
+            $pagina_log->setEstatusPagina($status_pagina);
+
+            // Si la completó en menos de la mitad del período se gana unos puntos adicionales
+            $mitad_periodo = $f->mitadPeriodo($session->get('paginas')[$pagina_id]['inicio'], $session->get('paginas')[$pagina_id]['vencimiento']);
+            $inicio_arr = explode("/", $session->get('paginas')[$pagina_id]['inicio']);
+            $inicio = $inicio_arr[2].'-'.$inicio_arr[1].'-'.$inicio_arr[0];
+            if ($inicio <= $mitad_periodo)
+            {
+                $puntos_agregados = $yml['parameters']['puntos']['mitad_periodo'];
+                $puntos = $puntos + $puntos_agregados;
+            }
+
+            $puntos_pagina = $pagina_log->getPuntos() + $puntos;
+            $pagina_log->setPuntos($puntos_pagina);
+            $em->persist($pagina_log);
+            $em->flush();
+
+        }
+
+        // Hacia la página de resultados
+        return $this->redirectToRoute('_resultadosTest', array('prueba_log_id' => $prueba_log_id, 'puntos' => $puntos));
 
     }
 
