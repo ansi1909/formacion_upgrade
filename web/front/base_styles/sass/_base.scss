@@ -115,3 +115,14 @@ body.codigoQR{
         opacity: .75; 
     }
 } 
+
+@keyframes sonar {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+} 

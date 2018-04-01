@@ -40,7 +40,59 @@ window.onload=function(){
 $(document).ready(function() {
   // do stuff when DOM is ready
 // $("#message").fadeIn("slow");
+    var x = 0, y = 0; 
+$("#config").on('click',function(){
+    if(x == 0){
+        if(y == 1){
+            $(".dropDownNotify").slideUp(50, function(){
+                $(".markNotify").fadeOut(100);
+            });
+            y = 0;
+        }
+        $(".dropDownMenu").slideDown(500, function(){
+            $(".mark").fadeIn(100).delay(25);
+            $(".opcList").show();
+        }).delay(100);
+        x = 1;
+    }else{
+        $(".dropDownMenu").slideUp(500, function(){
+            $(".mark").fadeOut(600).delay(50);
+        });
+        x = 0;
+    }
+});
 
+$("#notify").on('click',function(){
+    if(y == 0){
+        if(x == 1){
+            $(".dropDownMenu").slideUp(50);
+            x = 0;
+        }
+        $(".dropDownNotify").slideDown(500, function(){
+            $(".markNotify").fadeIn(100).delay(25);
+            $(".opcListNotify").show();
+        });
+        y = 1;
+    }else {
+        $(".dropDownNotify").slideUp(500, function(){
+            $(".markNotify").fadeOut(600);
+        });
+        y = 0;
+    }
+});
+
+$("#main, #mainSidenav").on('click', function(){
+   if(x == 1){
+       $(".dropDownMenu").slideUp(500);
+       x = 0;
+   }else if(y == 1){
+       $(".dropDownNotify").slideUp(500, function(){
+           $(".markNotify").fadeOut(300).delay(50);
+       });
+       y = 0;
+   }
+});   
+    
 $("#equis").click(function(){
         $("#message").fadeOut("slow");
     });
