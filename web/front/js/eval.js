@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var clickedOpc = $(".opc");
-    var clickedOpcImg = $(".opc_img");
+    var clickedOpcImg = $(".elec-resp");
 
     clickedOpc.on('click',function(){
         clickedOpc.removeClass("opc_activa");
@@ -8,8 +8,10 @@ $(document).ready(function() {
     });
 
     clickedOpcImg.on('click',function(){
-        clickedOpcImg.removeClass("opc_activa-img");
-        $(this).toggleClass("opc_activa-img");
+        clickedOpcImg.find('.opc_img').removeClass("opc_activa-img");
+        clickedOpcImg.find('.resp-opc').removeClass("opc_activa-img");
+        $(this).find('.opc_img').toggleClass("opc_activa-img");
+        $(this).find('.resp-opc').toggleClass("opc_activa-img");
     });
 
 });

@@ -57,6 +57,13 @@ Link\ComunBundle\Entity\CertiPruebaLog:
             length: 15
             options:
                 fixed: false
+        preguntasErradas:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: preguntas_erradas
     manyToOne:
         prueba:
             targetEntity: CertiPrueba

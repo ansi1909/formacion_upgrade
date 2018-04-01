@@ -12,13 +12,22 @@
     background: $green;
 }
 
+.enun{
+    display: flex;
+    flex-direction: row;
+    .enun_eval{
+        @extend %enunc;
+    }
+    .img-enun_eval{
+        height: 8rem;
+        width: auto;
+        margin: 0 1rem;
+        border-radius: 1rem;
+    }
+}
+
 .enun_eval{
-    color: $gray-650;
-    font-family: $secondary-font;
-    line-height: $h4-font-size;
-    font-size: $p-font-size;
-    text-align: justify;
-    margin-top: .25rem;
+        @extend %enunc;
 }
 
 //Estilo para seleccion simple
@@ -79,19 +88,83 @@
 
 
 //Estilo para seleccion simple imagenes
-.opc_img{
-    width: calc($tam-width + .3125rem);
-    height: calc($tam-height+ .5rem);
+.elec-resp{
+    .opc_img {
+    width: 16rem;
+    height: 13rem;
     @extend %op_img;
-    .opc_i-3{
-        @extend %op_i;
-        width: 25vw;
-        height: 37.9vh;
+    border-radius: calc(1rem - 8px) calc(1rem - 8px) 0 0;
+        .opc_i-3{
+            @extend %op_i;
+            width: 15.65rem;
+            height: 12.8rem;
+        }
+        .opc_i-4{
+            @extend %op_i;
+            width: 18.1vw;
+            height: 37.9vh;
+        }
     }
-    .opc_i-4{
-        @extend %op_i;
-        width: 18.1vw;
-        height: 37.9vh;
+    .resp-opc {
+        width: 16rem;
+        height: auto;
+        @extend %op_img;
+        border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
+        padding: calc(1rem - 8px);
+        .resp-opc_i-3{
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: $p-font-size;
+            line-height: calc(1rem + 4px);
+        }
+    }
+    &:hover{
+        .opc_img{
+            border: .1875rem solid $lightblue;
+        }
+        .resp-opc{
+            border: .1875rem solid $lightblue;
+        }
+    }
+}
+
+.elec-resp-asig{
+    .opc_img-asig {
+        width: 16rem;
+        height: 13rem;
+        @extend %op_img;
+        border-radius: calc(1rem - 8px) calc(1rem - 8px) 0 0;
+        .opc_i-3{
+            @extend %op_i;
+            width: 15.65rem;
+            height: 12.8rem;
+        }
+        .opc_i-4{
+            @extend %op_i;
+            width: 18.1vw;
+            height: 37.9vh;
+        }
+    }
+    .resp-opc {
+        width: 16rem;
+        height: auto;
+        @extend %op_img;
+        border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
+        padding: calc(1rem - 8px);
+        .resp-opc_i-3{
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: $p-font-size;
+            line-height: calc(1rem + 4px);
+        }
+    }
+    &:hover{
+        .opc_img-asig{
+            border: .1875rem solid $lightblue;
+        }
+        .resp-opc{
+            border: .1875rem solid $lightblue;
+        }
     }
 }
 
@@ -104,6 +177,10 @@
     margin: .5rem 0; 
 }
 
+.mgn_img-asig{
+    margin: .5rem 0 .5rem 5rem; 
+}
+
 .opc_lado-a{
     width: 18.75rem;
     height: 3.75rem;
@@ -113,6 +190,28 @@
     @extend %opc_sac;
     .opc_ra{
         @extend %op_asig;
+    }
+}
+
+.opc_img_lado-a{
+    width: 10rem;
+    height: 9rem;
+    border-radius: 1rem;
+    position: relative;
+    left: 0;
+    top: .3rem;
+    margin-right: 5rem;
+    border: .125rem solid $gray-400;
+    .img_opc_ra{
+        width: 9.778rem;
+        height: 8.74rem;
+        position: relative;
+        left: 0;
+        top: 0rem;
+        border-radius: calc(1rem - 2px);
+    }
+    &:hover{
+        border: .125rem solid $green !important;
     }
 }
 
@@ -234,6 +333,14 @@
     }
 }
 //Extends
+%enunc{
+    color: $gray-650;
+        font-family: $secondary-font;
+        line-height: $h4-font-size;
+        font-size: $p-font-size;
+        text-align: justify;
+        margin-top: .25rem;
+}
 
 %opc_sp{
     background: $white;
@@ -278,13 +385,9 @@
 
 %op_img{
     border: .1875rem solid $gray-400;
-    border-radius: calc(1rem - 8px);
     cursor: pointer;
     position: relative;
     z-index: 1;
-    &:hover{
-        border: .1875rem solid $lightblue;
-    }
 }
 
 %op_i{

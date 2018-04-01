@@ -1,0 +1,43 @@
+{% if tipo_elemento_pregunta == tipo_elemento.texto %}
+    {% set literal = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'] %}
+    {% for opcion in opciones %}
+        <div class="row justify-content-center">
+            <div class="col-8 offset-2 pdg">
+                <div class="opc opc__{{ pregunta_id }}" data="{{ tipo_elemento_pregunta }}_{{ tipo_pregunta }}_{{ opcion.po_id }}">
+                    <div class="text-center opc_letra">
+                        <span class="opc_l">{{ literal[loop.index0] }}</span>
+                    </div>
+                    <div class="opc_resp">
+                        <span class="opc_r">{{ opcion.descripcion }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    {# Dibujar las opciones de imágenes #}
+    {% for opcion in opciones %}
+        {% if loop.first %}
+            <div class="row justify-content-between">
+        {% endif %}
+        <div class="col-auto elec-resp px-0">
+            <div class="opc_img opc__{{ pregunta_id }}" data="{{ tipo_elemento_pregunta }}_{{ tipo_pregunta }}_{{ opcion.po_id }}">
+                {% set img = uploads~opcion.imagen %}
+                <img class="opc_i-3" src="{{ img }}" alt="">
+            </div>
+            <div class="resp-opc text-center" id="resp-opc__{{ opcion.po_id }}">
+                <span class="resp-opc_i-3">{{ opcion.descripcion }}</span>
+            </div>
+        </div>
+        {% if loop.index is divisibleby(4) %}
+            </div>
+            {% if not loop.last %}
+                <div class="row">
+            {% endif %}
+        {% else %}
+            {% if loop.last %}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}

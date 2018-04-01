@@ -27,10 +27,11 @@
                        class="video-js vjs-fluid"
                        controls
                        preload="auto"
-                       poster="assets/img/OBDL960.jpg"
-                       data-setup='{"playbackRates": [1, 1.5, 2], "fluid": true, "controlBar": { "muteToggle": false }}'>
                        {% set img = uploads~biblioteca.imagen %}
-                    <source src="{{img}}" type="video/mp4"></source>
+                       poster="{{img}}"
+                       data-setup='{"playbackRates": [1, 1.5, 2], "fluid": true, "controlBar": { "muteToggle": false }}'>
+                       {% set video = uploads~biblioteca.pdf %}
+                    <source src="{{video}}" type="video/mp4"></source>
                 <p class="vjs-no-js">
                     To view this video please enable JavaScript, and consider upgrading to a
                     web browser that / Parar ver este video porfavor habilite JavaScript, y 
@@ -51,7 +52,8 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="col-6 text-center">
-                <button type="button" class="btn btn-primary">Descargar</button>
+                {% set descarga = uploads~biblioteca.pdf %}
+               <a href="{{descarga}}" target="_blank"><button type="button" class="btn btn-primary">Descargar</button></a>
             </div>
         </div>
         <div class="row mt-3 align-items-center justify-content-end">
@@ -109,7 +111,7 @@
         <div class="row mt-3 align-items-center justify-content-center">
             <div class="col-8 text-center">
                 <div class="audio-player">
-                    <img src="assets/img/Podcast.jpg" style="width: 100%" alt="">
+                    <img src="{{asset('img/Podcast.jpg')}}" style="width: 100%" alt="">
                     <audio id="audio-player" src="https://www.recursos2puntocero.com/recursos/video/FON_ASTI_RELACIONESCLI.mp3" type="audio/mp3" controls="controls"></audio>
                 </div>
             </div>
@@ -123,7 +125,8 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="col-6 text-center">
-                <button type="button" class="btn btn-primary">Descargar</button>
+                 {% set img = uploads~biblioteca.imagen %}
+               <a href="{{img}}" target="_blank"><button type="button" class="btn btn-primary">Descargar</button></a>
             </div>
         </div>
         <div class="row mt-3 align-items-center justify-content-end">
@@ -193,7 +196,8 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="col-6 text-center">
-                <button type="button" class="btn btn-primary">Descargar</button>
+                {% set pdf = uploads~biblioteca.pdf %}
+                <a href="{{pdf}}" target="_blank" ><button type="button" class="btn btn-primary">Descargar</button></a>
             </div>
         </div>
         <div class="row mt-3 align-items-center justify-content-end">

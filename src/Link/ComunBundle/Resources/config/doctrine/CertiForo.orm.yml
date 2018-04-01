@@ -11,6 +11,9 @@ Link\ComunBundle\Entity\CertiForo:
         IDX_318634CCF5FF53F6:
             columns:
                 - foro_id
+        IDX_318634CC521E1991:
+            columns:
+                - empresa_id
     id:
         id:
             type: integer
@@ -66,6 +69,16 @@ Link\ComunBundle\Entity\CertiForo:
             inversedBy: null
             joinColumns:
                 foro_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

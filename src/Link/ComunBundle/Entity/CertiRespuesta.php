@@ -30,6 +30,13 @@ class CertiRespuesta
     private $fechaRegistro;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="nro", type="integer", nullable=true)
+     */
+    private $nro;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPregunta
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPregunta")
@@ -93,6 +100,30 @@ class CertiRespuesta
     public function getFechaRegistro()
     {
         return $this->fechaRegistro;
+    }
+
+    /**
+     * Set nro
+     *
+     * @param integer $nro
+     *
+     * @return CertiRespuesta
+     */
+    public function setNro($nro)
+    {
+        $this->nro = $nro;
+    
+        return $this;
+    }
+
+    /**
+     * Get nro
+     *
+     * @return integer
+     */
+    public function getNro()
+    {
+        return $this->nro;
     }
 
     /**

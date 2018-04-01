@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <title>
+            {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
+                {{ app.session.get('empresa').titulo }}
+            {% else %}
+                {{ 'Sistema Formación'|trans }} 2.0
+            {% endif %}
+        </title>
+        {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
+        <link rel="icon" type="image/x-icon" href="{{ img }}" />
+        <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
+        {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
+        <link rel="stylesheet" href="{{ css }}">
+    </head>
+    
+    <body>
+        
+        <input type="hidden" id="nro" name="nro" value="1">
+        <input type="hidden" id="pregunta_id" name="pregunta_id" value="{{ preguntas[0]['id'] }}">
+        <input type="hidden" id="total" name="total" value="{{ preguntas|length }}">
+        <input type="hidden" id="prueba_log_id" name="prueba_log_id" value="{{ prueba_log.id }}">
+        <input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxTestResponse') }}">
+        <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length }) }}">
+
+        <header>
+            <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
+                <div class="navbar-brand d-flex justify-content-center align-items-center">
+                    <a href="{{ path('_programa', { 'programa_id': programa_id }) }}">
+                        <i class="material-icons mr-3 color-light-grey rotate-180 exit_eval">exit_to_app</i>
+                    </a>
+                    <span class="txt_eval_header">{{ 'Salir de la evaluación'|trans }}</span>
+                </div>
+                <div class="navbar-brand justify-content-center align-items-center " href="#">
+                    <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
+                    <h5 class="sub_titulo_eval pl-5">{{ prueba_log.prueba.pagina.nombre }}</h5>
+                </div>
+                <a class="navbar-brand" href="#">
+                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+                    <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+                </a>
+            </nav>
+        </header>
+
+        <div class="container mt-22v">
+
+            <div class="row">
+                <div class="col-2">
+                    {% set total = preguntas|length < 10 ? '0'~preguntas|length : preguntas|length %}
+                    <span class="num_preg"><span id="nro_pregunta">01</span> / {{ total }}</span>
+                </div>
+                <div class="col-10">
+                    <div class="progress mt-3">
+                        <div class="progress-bar progress-bar_eval" role="progressbar" id="progreso" style="width: 0%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            
+            {% for pregunta in preguntas %}
+
+                <div id="pregunta-{{ loop.index }}" {{ loop.index==1 ? '' : 'style="display:none;"' }} data="{{ pregunta.id }}">
+                    {% set img = pregunta.imagen ? uploads~pregunta.imagen : '' %}
+                    {% if img != '' %}
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-8 enun">
+                                <img class="img-enun_eval" src="{{ img }}" alt="">
+                    {% else %}
+                        <div class="row">
+                            <div class="col-8 offset-2">
+                    {% endif %}
+                            <p class="enun_eval">
+                                {{ pregunta.enunciado }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <form id="form-pregunta{{ pregunta.id }}" method="POST">
+                        {% if pregunta.tipo_pregunta != tipo_pregunta.asociacion %}
+                            {# Opciones simples o múltiples #}
+                            <input type="hidden" id="pregunta_id{{ pregunta.id }}" name="pregunta_id{{ pregunta.id }}" value="">
+                            {{ include('LinkFrontendBundle:Test:opciones.html.twig', { 'opciones': pregunta.opciones, 'tipo_pregunta': pregunta.tipo_pregunta, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
+                        {% else %}
+                            {# Opciones de asociación #}
+                            {{ include('LinkFrontendBundle:Test:opcionesAsociacion.html.twig', { 'opciones': pregunta.opciones, 'tipo_elemento': tipo_elemento, 'tipo_elemento_pregunta': pregunta.tipo_elemento, 'pregunta_id': pregunta.id }) }}
+                        {% endif %}
+                    </form>
+
+                </div>
+
+            {% endfor %}
+            
+            <div class="row align-items-center">
+                <div class="col-12 text-right">
+                    <a href="#" class="btn_sp">
+                        <span>{{ 'Siguiente'|trans }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('front/js/custom.js') }}"></script>
+        <script src="{{ asset('front/js/eval.js') }}"></script>
+        <script src="{{ asset('jq/jquery-ui.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/front/test.js') }}"></script>
+
+    </body>
+</html>

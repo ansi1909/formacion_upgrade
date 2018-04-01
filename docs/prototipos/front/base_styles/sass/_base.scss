@@ -92,8 +92,37 @@ input[type=date] {
 
 body.codigoQR{
     background-color: $white;
-    background-image: url(../../../assets/img/decorate_certificado.png);
+    background-image: url(../../../assets/img/decorate_qr.svg);
     background-repeat: no-repeat;
     background-size: 30vw auto;
     background-position: top right;
+}
+
+//animation
+@keyframes brillo {
+    0%, 100%{
+        opacity: 0;
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        opacity: .75;
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+    75% {
+        opacity: .75;
+    }
+}
+
+@keyframes sonar {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
 }

@@ -188,6 +188,7 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must ha
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
+El puntaje con que se aprueba es requerido.: The score with it is approved is required.
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
 El Tipo de Certificado es requerido.: The Type of Certificate is required.
@@ -201,6 +202,9 @@ El título debe ser mínimo de 3 caracteres.: The title must be at least 3 chara
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
 El valor de la pregunta es requerido.: Question weighing is required.
+El valor del puntaje con que se aprueba debe ser mayor o igual a 10.: The score with it is approved must be greater or equal than 10.
+El valor del puntaje con que se aprueba debe ser un valor numérico.: The score with it is approved must be a numeric value.
+El valor del puntaje con que se aprueba no debe sobrepasar a 100.: The score value with it is approved must not exceed to 100.
 El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
 Email de contacto: Contact Email
 Empresa: Company
@@ -229,6 +233,7 @@ Escoja una plantilla: Choose a template
 Escriba su comentario: Post a comment
 Escriba su respuesta: Response to this comment
 Espacio colaborativo: Collaborative space
+Esta evaluación no tiene preguntas configuradas: This test has not setted questions
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
 Esta plantilla no posee thumbnails en la base de datos: This template does not have thumbnails into database
@@ -292,6 +297,9 @@ La cantidad de preguntas debe ser mayor o igual a 1.: The number of questions mu
 La cantidad de preguntas debe ser un valor entero.: The number of questions must be a integer value.
 La cantidad de preguntas es requerida.: The number of questions is required.
 La cantidad de sub-páginas es requerida.: The number of sub-pages is required.
+La cantidad máxima de intentos debe ser mayor o igual a 1.: The max number of attempts must be greater or equal than 1.
+La cantidad máxima de intentos debe ser un valor entero.: The max number of attempts must be an integer value.
+La cantidad máxima de intentos es requerida.: The max number of attempts is required.
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.
@@ -308,6 +316,7 @@ La fecha de fin es requerida.: The end date is required.
 La fecha de inicio es requerida.: The start date is required.
 La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: Registration date cell must be of text type in format DD/MM/YYYY
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: Registration date must be in format DD/MM/YYYY and a valid date
+La fecha de vencimiento es requerida.: Expiration date is required.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
@@ -448,6 +457,7 @@ Roles: Roles
 Roles asignados: Assigned roles
 Roles a seleccionar: Selectable roles
 Salir: Log out
+Salir de la evaluación: Leave the evaluation
 Seleccionado: Selected
 Seleccione el/los usuarios: Select the user
 Seleccione el nivel: Select the level

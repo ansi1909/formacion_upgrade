@@ -1,0 +1,41 @@
+.constancia{
+    padding: 2rem 0;
+    .imgConst{
+        width: 25rem;
+        height: auto;
+    }
+    .tituloConst{
+        color: $blue;
+        font-size: $h2-font-size;
+        font-weight: $font-weight-normal;
+        line-height: 2rem;
+    }
+    .datosParticipante{
+        padding: 1rem;
+        margin-top: 1rem;
+        border-radius: 1rem;
+        background: $gray-100;
+        .tituloPart{
+            @extend %title;
+        }
+    }
+    .textConst{
+        color: $gray-900;
+        font-size: $h4-font-size;
+        font-weight: $font-weight-normal;
+        line-height: 2rem;
+        padding: 1rem;
+    }
+    .tituloPart{
+        padding: 1rem;
+        @extend %title;
+    }
+}
+
+//Extend
+%title{
+    color: $gray-800;
+    font-size: $h5-font-size;
+    font-weight: $font-weight-normal;
+    line-height: 2rem;
+}

@@ -363,7 +363,8 @@
                         }
                     },
                     number: true,
-                    min: 10
+                    min: 10,
+                    max: 100
                 },
                 'maxIntentos': {
                     required: {
@@ -385,7 +386,8 @@
                 'puntajeAprueba': {
                     required: "- {{ 'El puntaje con que se aprueba es requerido.'|trans }}",
                     number: "- {{ 'El valor del puntaje con que se aprueba debe ser un valor numérico.'|trans }}",
-                    min: "- {{ 'El valor del puntaje con que se aprueba debe ser mayor o igual a 10.'|trans }}"
+                    min: "- {{ 'El valor del puntaje con que se aprueba debe ser mayor o igual a 10.'|trans }}",
+                    min: "- {{ 'El valor del puntaje con que se aprueba no debe sobrepasar a 100.'|trans }}"
                 },
                 'maxIntentos': {
                     required: "- {{ 'La cantidad máxima de intentos es requerida.'|trans }}",
