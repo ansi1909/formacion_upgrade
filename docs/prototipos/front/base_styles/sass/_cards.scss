@@ -106,19 +106,34 @@
 
 
 .card-current {
-    max-width: 692px;
-    max-height: 140px;
+    width: 700px;
+    height: 160px;
 
+    @include media-breakpoint-down(md) {
+        width: 500px;
+
+    }
+
+    @include media-breakpoint-down(sm) {
+        max-width: 400px;
+        height: 110px;
+    }
+
+    
 
     .card-hrz-img {
         // position: absolute;
         // top: 0;
-        width: 160px;
+        width: 170px;
 
+        @include media-breakpoint-down(sm) {
+            width: 120px;
+        }
     }
 
 }
 .card-hrz-body {
+    width: 100%;
     padding: 1rem;
 
     h5 {
@@ -193,14 +208,14 @@
         padding: 3rem 0 1rem 0;
         width: 35vw;
         .title_header{
-            color: $gray-700;	
-            font-family: $primary-font;	
-            font-size: calc(2rem - 8px);	
-            font-weight: $font-weight-normal-hard;	
-            line-height: calc(2rem - 4px);	
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: calc(2rem - 8px);
+            font-weight: $font-weight-normal-hard;
+            line-height: calc(2rem - 4px);
             text-align: center;
         }
-        
+
     }
 }
 
@@ -230,7 +245,7 @@
             top: 0;
             padding: 0;
             cursor: pointer;
-            
+
         }
         .add-img{
             width: calc(1rem * 10);
@@ -272,9 +287,9 @@
         @extend %sty_user;
     }
     .name-titulo{
-        font-family: $primary-font;	
-        font-size: $h2-font-size;	
-        font-weight: $font-weight-normal-hard;	
+        font-family: $primary-font;
+        font-size: $h2-font-size;
+        font-weight: $font-weight-normal-hard;
         line-height: calc(3rem - 6px);
         position: relative;
         left: calc(-1 * calc(2rem + 4px));
@@ -283,15 +298,15 @@
     .numExp{
         display: block;
         color: $blue;
-        font-family: $primary-font;	
-        font-size: $h2-font-size;	
-        font-weight: $font-weight-normal-hard;	
+        font-family: $primary-font;
+        font-size: $h2-font-size;
+        font-weight: $font-weight-normal-hard;
         line-height: calc(3rem - 6px);
         text-shadow: 2px 2px 2px rgba(58, 58, 58, 0.2);
     }
     .tituloExp{
-        color: $blue;	
-        font-family: $primary-font;	
+        color: $blue;
+        font-family: $primary-font;
         font-size: calc(2rem - 8px);
         line-height: calc(2rem - 4px);
     }
@@ -334,10 +349,10 @@
         padding: 0 calc(1rem - 2px);
         .titulo_anuncio{
             padding-top: calc(1rem + 3px);
-            color: $gray-800;	
-            font-family: $primary-font;	
-            font-size: $h5-font-size;	
-            font-weight: $font-weight-normal-hard;	
+            color: $gray-800;
+            font-family: $primary-font;
+            font-size: $h5-font-size;
+            font-weight: $font-weight-normal-hard;
             line-height: calc(1rem + 5px);
         }
     }
@@ -354,21 +369,21 @@
             margin-bottom: calc(1rem - 8px);
         }
         .fecha_anuncio{
-            color: $gray-600;	
-            font-family: $primary-font;	
-            font-size: $font-size-xs;	
+            color: $gray-600;
+            font-family: $primary-font;
+            font-size: $font-size-xs;
             line-height: calc(1rem - 2px);
         }
         .tipo_anuncio1{
-            color: $gray-800;	
+            color: $gray-800;
             @extend %tip_anun;
         }
         .tipo_anuncio2{
-            color: $orange;	
+            color: $orange;
             @extend %tip_anun;
         }
     }
-    
+
 }
 
 //Card detalle noticia
@@ -387,18 +402,18 @@
         border-radius: 1rem 0 0 0;
         .titulo-detalle{
             color: $gray-700;
-            font-family: $primary-font;	
-            font-size: $h2-font-size;	
-            line-height: calc(3rem - 6px);	
+            font-family: $primary-font;
+            font-size: $h2-font-size;
+            line-height: calc(3rem - 6px);
             text-align: center;
             font-weight: $font-weight-normal-hard;
             position: relative;
             margin-top: calc(11rem + 7px);
         }
         .fecha-detalle{
-            color: $gray-600;	
-            font-family: $primary-font;	
-            font-size: $font-size-sm;	
+            color: $gray-600;
+            font-family: $primary-font;
+            font-size: $font-size-sm;
             line-height: 1rem;
             padding-left: .8rem;
             position: relative;
@@ -419,17 +434,17 @@
         margin: calc(4rem - 1px) 0 5rem 0;
         padding: 0 7rem;
         .text-detalle{
-            color: $gray-700;	
-            font-family: $primary-font;	
-            font-size: $p-font-size;	
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: $p-font-size;
             line-height: calc(2rem - 4px);
         }
         .lnk-volver{
             position: relative;
             top: calc(2rem + 3px);
-            color: $blue;	
-            font-family: $primary-font;	
-            font-size: $font-size-sm;	
+            color: $blue;
+            font-family: $primary-font;
+            font-size: $font-size-sm;
             line-height: 1rem;
             padding: 1rem 1rem;
             border-radius: 25rem;
@@ -456,10 +471,10 @@
     display: flex;
     flex-direction: row;
     word-wrap: break-word;
-    height: 6.5rem;	
-    width: 17.56rem;	
-    border-radius: 1rem;	
-    background-color: $white;	
+    height: 6.5rem;
+    width: 17.56rem;
+    border-radius: 1rem;
+    background-color: $white;
     box-shadow: 4px 4px 10px 0px rgba(92,98,102,0.32);
     cursor: pointer;
     margin-bottom: calc(1rem + 2px);
@@ -481,10 +496,10 @@
         width: 12.76rem;
         padding: 1rem calc(1rem - 2px);
         .titulo_recurso{
-            color: $gray-700;	
-            font-family: $primary-font;	
-            font-size: $p-font-size;	
-            font-weight: $font-weight-normal-hard;	
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: $p-font-size;
+            font-weight: $font-weight-normal-hard;
             line-height: calc(1rem + 3px);
         }
         .pos-recurso{
@@ -492,9 +507,9 @@
             bottom: .4rem;
             left: 0;
             .tipo_recurso{
-                color: $gray-600;	
-                font-family: $primary-font;	
-                font-size: $font-size-xs;	
+                color: $gray-600;
+                font-family: $primary-font;
+                font-size: $font-size-xs;
                 line-height: calc(1rem - 2px);
                 transition: all .25s ease-in;
             }
@@ -522,9 +537,9 @@
         height: 8rem;
         width: 62.25rem;
         .titulo_f-table{
-            color: $blue;	
-            font-family: $primary-font;	
-            font-size: calc($h5-font-size + 2px);	
+            color: $blue;
+            font-family: $primary-font;
+            font-size: calc($h5-font-size + 2px);
             line-height: calc(1rem + 8px);
         }
         .status_f-table{
@@ -539,9 +554,9 @@
             }
         }
         .txt-description{
-            color: $gray-600;	
-            font-family: $primary-font;	
-            font-size: $font-size-sm;	
+            color: $gray-600;
+            font-family: $primary-font;
+            font-size: $font-size-sm;
             line-height: 1rem;
         }
         .foo-esp_col{
@@ -551,11 +566,11 @@
                 @extend %name_table-card
             }
             .coment_f-table{
-                @extend %texto-ct;		
+                @extend %texto-ct;
                 line-height: calc(1rem - 5px);
             }
             .resp_ft{
-                @extend %texto-ct;	
+                @extend %texto-ct;
                 line-height: 1rem;
                 .ic-msg{
                     font-size: 1rem;
@@ -577,9 +592,9 @@
 .table-card-det{
     @extend %table-card;
     .titulo-det{
-        color: $gray-700;	
-        font-family: $primary-font;	
-        font-size: $h2-font-size;	
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: $h2-font-size;
         line-height: calc(3rem - 6px);
         font-weight: $font-weight-normal-hard;
         margin-top: calc(1rem - 6px);
@@ -607,7 +622,7 @@
             width: 62.25rem;
         }
         .cont-det{
-            padding: 0 calc(7rem - 4px) 0 calc(2rem + 6px); 
+            padding: 0 calc(7rem - 4px) 0 calc(2rem + 6px);
             .img-ec-det{
                 height: calc(3rem - 6px);
                 width: calc(3rem - 6px);
@@ -637,9 +652,9 @@
             .txt-desc-det{
                 margin: 1rem 0 calc(2rem - 8px) 0;
                 padding-left: calc(2rem - 4px);
-                color: $gray-700;	
-                font-family: $primary-font;	
-                font-size: $font-size-sm;	
+                color: $gray-700;
+                font-family: $primary-font;
+                font-size: $font-size-sm;
                 line-height: calc(1rem - 2px);
                 font-weight: $font-weight-normal;
             }
@@ -704,17 +719,17 @@
 //Extend
 
 %sty_user{
-    color: $gray-600;	
-    font-family: $primary-font;	
-    font-size: $font-size-base;	
+    color: $gray-600;
+    font-family: $primary-font;
+    font-size: $font-size-base;
     line-height: calc(1rem + 3px);
     font-weight: $font-weight-normal;
 }
 
 %tip_anun{
-    font-family: $primary-font;	
-    font-size: $font-size-xs;	
-    font-weight: $font-weight-normal-hard;	
+    font-family: $primary-font;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-normal-hard;
     line-height: calc(1rem - 2px);
 }
 
@@ -725,7 +740,7 @@
     height: 31.85rem;
 }
 %texto-ct{
-    color: $gray-700;	
+    color: $gray-700;
     font-family: $primary-font;
     font-size: $font-size-xs;
 }
@@ -746,7 +761,7 @@
 }
 
 %status-ft{
-    border-radius: 1rem;	
+    border-radius: 1rem;
     background-color: $blue;
     float: right;
     width: 4.5rem;
@@ -754,9 +769,9 @@
     position: relative;
     top: 0.1rem;
     .status_ft{
-        color: $white;	
-        font-family: $primary-font;	
-        font-size: $font-size-xs;	
+        color: $white;
+        font-family: $primary-font;
+        font-size: $font-size-xs;
         line-height: calc(1rem - 5px);
         font-weight: $font-weight-normal;
         text-align: center;
@@ -767,9 +782,9 @@
 }
 
 %name_table-card{
-    color: $gray-800;	
-    font-family: $primary-font;	
-    font-size: $font-size-xs;	
+    color: $gray-800;
+    font-family: $primary-font;
+    font-size: $font-size-xs;
     line-height: calc(1rem - 2px);
     font-weight: bold;
 }
@@ -782,10 +797,10 @@
     opacity: .7;
 }
 
-%row_bttm{	
-    font-family: $primary-font;	
-    font-size: $font-size-xs;	
-    line-height: calc(1rem - 2px);	
+%row_bttm{
+    font-family: $primary-font;
+    font-size: $font-size-xs;
+    line-height: calc(1rem - 2px);
     text-align: center;
     font-weight: $font-weight-normal-hard;
 }

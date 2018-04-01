@@ -18,7 +18,7 @@ body {
 #main {
     transition: all .6s;
     padding: 16px;
-    margin-left: 200px;
+    margin-left: 170px;
     max-width: 90%;
     @include media-breakpoint-down(sm) {
 
@@ -65,7 +65,7 @@ a:hover {
 }
 
 input[type=date] {
-    
+
     &::-webkit-datetime-edit-month-field, &::-webkit-datetime-edit-day-field, &::-webkit-datetime-edit-year-field {
         color: $gray-700;
     }
