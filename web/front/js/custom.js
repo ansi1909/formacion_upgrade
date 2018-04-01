@@ -40,7 +40,7 @@ window.onload=function(){
 $(document).ready(function() {
   // do stuff when DOM is ready
 // $("#message").fadeIn("slow");
-    var x = 0, y = 0; 
+    var x = 0, y = 0, z = 0; 
 $("#config").on('click',function(){
     if(x == 0){
         if(y == 1){
@@ -48,6 +48,11 @@ $("#config").on('click',function(){
                 $(".markNotify").fadeOut(100);
             });
             y = 0;
+        }else if(z == 1){
+            $(".dropDownApps").slideUp(50, function(){
+                $(".markApps").fadeOut(100);
+            });
+            z = 0;
         }
         $(".dropDownMenu").slideDown(500, function(){
             $(".mark").fadeIn(100).delay(25);
@@ -67,6 +72,11 @@ $("#notify").on('click',function(){
         if(x == 1){
             $(".dropDownMenu").slideUp(50);
             x = 0;
+        }else if(z == 1){
+            $(".dropDownApps").slideUp(50, function(){
+                $(".markApps").fadeOut(100);
+            });
+            z = 0;
         }
         $(".dropDownNotify").slideDown(500, function(){
             $(".markNotify").fadeIn(100).delay(25);
@@ -81,6 +91,30 @@ $("#notify").on('click',function(){
     }
 });
 
+$("#apps").on('click',function(){
+    if(z == 0){
+        if(x == 1){
+            $(".dropDownMenu").slideUp(50);
+            x = 0;
+        }else if(y == 1){
+            $(".dropDownNotify").slideUp(50, function(){
+                $(".markNotify").fadeOut(100);
+            });
+            y = 0;
+        }
+        $(".dropDownApps").slideDown(500, function(){
+            $(".markApps").fadeIn(100).delay(25);
+            $(".opcApps").show();
+        });
+        z = 1;
+    }else {
+        $(".dropDownApps").slideUp(500, function(){
+            $(".markApps").fadeOut(600);
+        });
+        z = 0;
+    }
+});
+    
 $("#main, #mainSidenav").on('click', function(){
    if(x == 1){
        $(".dropDownMenu").slideUp(500);
@@ -90,6 +124,11 @@ $("#main, #mainSidenav").on('click', function(){
            $(".markNotify").fadeOut(300).delay(50);
        });
        y = 0;
+   }else if(z == 1){
+       $(".dropDownApps").slideUp(500, function(){
+           $(".markApps").fadeOut(300).delay(50);
+       });
+       z = 0;
    }
 });   
     
