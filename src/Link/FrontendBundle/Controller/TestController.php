@@ -342,9 +342,7 @@ class TestController extends Controller
             $em->persist($prueba_log);
             $em->flush();
 
-        }
-
-        
+        }   
 
         $return = array('ok' => $ok);
         $return = json_encode($return);
@@ -352,7 +350,7 @@ class TestController extends Controller
 
     }
 
-    public function finAction($prueba_log_id, $cantidad_preguntas, Request $request)
+    public function finAction($programa_id, $prueba_log_id, $cantidad_preguntas, Request $request)
     {
 
         $session = new Session();
@@ -368,11 +366,6 @@ class TestController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
-
-        /*if (!$prueba)
-        {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('No existe evaluación para esta página').'.'));
-        }*/
 
         // Cantidad de intentos
         $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
@@ -430,7 +423,6 @@ class TestController extends Controller
                 {
                     $porcentaje = ($pregunta['valor']*100)/$total_valor;
                     $nota += $porcentaje;
-                    $preguntas[$nro]['porcentaje'] = $porcentaje; // QUITAR
                 }
             }
             $nota = round($nota, 2, PHP_ROUND_HALF_UP);
@@ -451,13 +443,6 @@ class TestController extends Controller
             }
 
         }
-
-        $return = array('nota' => $nota,
-                        'puntos' => $puntos,
-                        'estado' => $estado,
-                        'total_valor' => $total_valor,
-                        'preguntas' => $preguntas);
-        return new Response(var_dump($return));
 
         // Finalizar prueba_log
         $prueba_log->setFechaFin(new \DateTime('now'));
@@ -496,7 +481,94 @@ class TestController extends Controller
         }
 
         // Hacia la página de resultados
-        return $this->redirectToRoute('_resultadosTest', array('prueba_log_id' => $prueba_log_id, 'puntos' => $puntos));
+        return $this->redirectToRoute('_resultadosTest', array('programa_id' => $programa_id, 'prueba_log_id' => $prueba_log_id, 'puntos' => $puntos));
+
+    }
+
+    public function resultadosAction($programa_id, $prueba_log_id, $puntos, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        /*if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        }
+        $f->setRequest($session->get('sesion_id'));*/
+
+        $em = $this->getDoctrine()->getManager();
+        $try_button = 0;
+
+        $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
+
+        if (trim($prueba_log->getPreguntasErradas()))
+        {
+            $erradas = explode(",", $prueba_log->getPreguntasErradas());
+        }
+        else {
+            $erradas = array();
+        }
+
+        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r 
+                                    WHERE r.pruebaLog = :prueba_log_id ORDER BY r.nro ASC")
+                    ->setParameter('prueba_log_id', $prueba_log_id);
+        $nros = $query->getResult();
+
+        $preguntas = array();
+        foreach ($nros as $nro)
+        {
+
+            $respuesta = $em->getRepository('LinkComunBundle:CertiRespuesta')->findOneBy(array('pruebaLog' => $prueba_log_id,
+                                                                                               'nro' => $nro['nro']));
+
+            if ($respuesta->getPregunta()->getPregunta())
+            {
+                // Es una respuesta de asociación
+                $pregunta = $respuesta->getPregunta()->getPregunta();
+            }
+            else {
+                // Respuesta de selección simple o múltiple
+                $pregunta = $respuesta->getPregunta();
+            }
+
+            $errada = in_array($nro['nro'], $erradas) ? 1 : 0;
+
+            $preguntas[$nro['nro']] = array('id' => $pregunta->getId(),
+                                     'enunciado' => $pregunta->getEnunciado(),
+                                     'errada' => $errada);
+
+        }
+
+        if ($prueba_log->getEstado() == $yml['parameters']['estado_prueba']['reprobado'])
+        {
+            // Cantidad de intentos
+            $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
+                                        WHERE pl.usuario = :usuario_id 
+                                        AND pl.prueba = :prueba_id")
+                        ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                              'prueba_id' => $prueba_log->getPrueba()->getId()));
+            $intentos = $query->getSingleScalarResult();
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        WHERE pe.empresa = :empresa_id 
+                                        AND pe.pagina = :pagina_id")
+                        ->setParameters(array('empresa_id' => $session->get('empresa')['id'],
+                                              'pagina_id' => $prueba_log->getPrueba()->getPagina()->getId()));
+            $pe = $query->getResult();
+            $max_intentos = $pe[0]->getMaxIntentos();
+            if ($intentos < $max_intentos)
+            {
+                $try_button = 1;
+            }
+        }
+
+        return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
+                                                                                   'preguntas' => $preguntas,
+                                                                                   'programa_id' => $programa_id,
+                                                                                   'try_button' => $try_button,
+                                                                                   'estados' => $yml['parameters']['estado_prueba'],
+                                                                                   'puntos' => $puntos));
 
     }
 

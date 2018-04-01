@@ -27,7 +27,8 @@
         <input type="hidden" id="total" name="total" value="{{ preguntas|length }}">
         <input type="hidden" id="prueba_log_id" name="prueba_log_id" value="{{ prueba_log.id }}">
         <input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxTestResponse') }}">
-        <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length }) }}">
+        <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length }) }}">
+        <input type="hidden" id="url_resultados" name="url_resultados" value="{{ path('_resultadosTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id }) }}">
 
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">

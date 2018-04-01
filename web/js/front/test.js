@@ -43,8 +43,8 @@ $(document).ready(function() {
 					}
 				}
 				else {
-					// Redirección a la página de fin de la prueba
-					window.location.replace($('#url_fin').val());
+					// Redirección a la página de resultados
+					window.location.replace($('#url_resultados').val());
 				}
 				//clearTimeout( timerId );
 			},

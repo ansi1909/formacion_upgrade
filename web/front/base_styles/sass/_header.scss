@@ -40,7 +40,15 @@
     }
 }
 
+.navbar .logo {
+    width: 250px;
+}
+
 nav.navbar{
     box-shadow: 0 2px 8px 0 rgba(170,175,179,0.56);
-    
+    height: 70px;
+}
+
+.navbar-brand img{
+	max-width: 90%;
 }

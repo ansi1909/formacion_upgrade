@@ -19,13 +19,15 @@
 
 {% block header %}
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
-        <a class="navbar-brand d-none d-md-block" href="#">
-            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
-        </a>
+        <div class="logo d-none d-md-block">
+            <a class="navbar-brand" href="{{ path('_inicio') }}">
+                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+                <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+            </a>
+        </div>
         <div class="wraper-title-lesson d-flex flex-column align-items-center">
-            <h3 class="mt-2 mb-1 color-grey" >{{ titulo }}</h3>
-            <h5 class="mt-0 color-grey" >{{ subtitulo }}</h5>
+            <h4 class="mt-2 mb-1 color-grey" >{{ titulo }}</h4>
+            <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             <div class="d-flex flex-column">
@@ -35,7 +37,7 @@
                         <img class="img-fluid mx-auto" src="{{ img }}" width="80%" alt="usuario">
                     </a>
                     <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
+                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}">{{ 'Salir'|trans }}</a>
                     </div>
                 </div>
             </div>
