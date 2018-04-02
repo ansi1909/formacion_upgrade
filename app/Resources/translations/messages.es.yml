@@ -242,6 +242,7 @@ Estatus de las sub-paginas: Estatus de las sub-paginas
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
+Estos son los resultados que has obtenido: Estos son los resultados que has obtenido
 Estructura: Estructura
 Evaluación: Evaluación
 Evaluación activa: Evaluación activa
@@ -257,6 +258,7 @@ Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
 Fecha de Publicación: Publication date
 Fecha de Vencimiento: Due date
 Fecha Difusión: Fecha Difusión
+FELICIDADES: FELICIDADES
 Fila: Fila
 filtrado de un total de: filtrado de un total de
 Filtrar usuarios: Filtrar usuarios
@@ -270,6 +272,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha 
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
+Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
 Has completado con éxito: Has completado con éxito
 Has ganado: Has ganado
 Historial de programaciones de: Historial de programaciones de
@@ -375,6 +378,7 @@ No existe evaluación para esta página: No existe evaluación para esta página
 No existen páginas: No existen páginas
 No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
+No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
@@ -385,6 +389,7 @@ No se pudo editar este registro.: No se pudo editar este registro.
 No se pudo filtrar el listado.: No se pudo filtrar el listado.
 No se pudo guardar el evento. Inténtalo de nuevo.: No se pudo guardar el evento. Inténtalo de nuevo.
 No se pudo habilitar/inhabilitar el acceso a esta página.: No se pudo habilitar/inhabilitar el acceso a esta página.
+No te rindas: No te rindas
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
 Nombre para esta página: Nombre para esta página
@@ -451,6 +456,7 @@ Responder: Responder
 respondió a tu comentario en el muro de: respondió a tu comentario en el muro de
 Respuesta: Respuesta
 Resultado del archivo procesado: Resultado del archivo procesado
+Resultados: Resultados
 Resumen: Resumen
 Rol: Rol
 Roles: Roles
@@ -475,6 +481,7 @@ Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
 Sigue aprendiendo: Sigue aprendiendo
+Sigue intentándolo: Sigue intentándolo
 Siguiente: Siguiente
 Sistema Formación: Sistema Formación
 Sólo archivo en PDF: Sólo archivo en PDF
@@ -506,6 +513,7 @@ Tipo de Destinos: Tipo de Destinos
 Título: Título
 Título en la ventana del navegador: Título en la ventana del navegador
 Tomar evaluación: Tomar evaluación
+Tu calificación: Tu calificación
 Tutoriales: Tutoriales
 Últimos 12: Últimos 12
 Url de la empresa no existe: Url de la empresa no existe

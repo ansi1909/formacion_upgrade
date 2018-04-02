@@ -1150,7 +1150,7 @@ class Functions
 			                            AND pl.estatusPagina IN (:vista)')
 			            ->setParameters(array('pagina_id' => $subpagina_arr['id'],
 			            					  'usuario_id' => $usuario_id,
-			                        		  'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluación'])));
+			                        		  'vista' => array($yml['parameters']['estatus_pagina']['completada'], $yml['parameters']['estatus_pagina']['en_evaluacion'])));
 			$vista = $query->getSingleScalarResult();
 			$subleccion['vista'] = $vista;
 
@@ -1422,7 +1422,7 @@ class Functions
         		// Se completa o se coloca en evaluación la lección
         		if ($indexedPages[$pagina_id]['tiene_evaluacion'])
         		{
-        			$estatus = $yml['parameters']['estatus_pagina']['en_evaluación'];
+        			$estatus = $yml['parameters']['estatus_pagina']['en_evaluacion'];
         			$avance = (1 - $yml['parameters']['ponderacion']['evaluacion'])*100;
         		}
         		else {
@@ -1447,7 +1447,7 @@ class Functions
 	        	$em->flush();
 
 	        	// Cálculo del porcentaje de avance de toda la línea de ascendente
-	        	$this->calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml);
+	        	$this->calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml, $puntos_agregados);
 
         	}
 
@@ -1502,7 +1502,7 @@ class Functions
 
 	}
 
-	public function calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml)
+	public function calculoAvance($indexedPages, $pagina_id, $usuario_id, $yml, $puntos = 0)
 	{
 
 		$em = $this->em;
@@ -1521,6 +1521,7 @@ class Functions
 				$max_porcentaje = $indexedPages[$pagina_padre_id]['tiene_evaluacion'] ? (1 - $yml['parameters']['ponderacion']['evaluacion']) : 1;
 				$avance_total = 0;
 				$avance_parcial = 0;
+				$subpaginas_completadas = 1;
 
 				foreach ($indexedPages[$pagina_padre_id]['subpaginas'] as $subpagina)
 				{
@@ -1529,6 +1530,13 @@ class Functions
 					if ($subpagina_log)
 					{
 						$avance_parcial += $subpagina_log->getPorcentajeAvance();
+						if ($subpagina_log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada'])
+						{
+							$subpaginas_completadas = 0;
+						}
+					}
+					else {
+						$subpaginas_completadas = 0;
 					}
 				}
 
@@ -1563,13 +1571,24 @@ class Functions
 					$pagina_padre_log->setEstatusPagina($estatus_pagina);
 					$pagina_padre_log->setFechaFin(new \DateTime('now'));
 				}
+				else {
+					if ($subpaginas_completadas && $indexedPages[$pagina_padre_id]['tiene_evaluacion'])
+					{
+						$estatus_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['en_evaluacion']);
+						$pagina_padre_log->setEstatusPagina($estatus_pagina);
+					}
+				}
+
+				// Puntos agregados
+				$puntos_agregados = $pagina_padre_log->getPuntos() + $puntos;
+				$pagina_padre_log->setPuntos($puntos_agregados);
 	            $em->persist($pagina_padre_log);
 	        	$em->flush();
 
 			}
 
 			// Calcular el avance del abuelo
-			$this->calculoAvance($indexedPages, $pagina_padre_id, $usuario_id, $yml);
+			$this->calculoAvance($indexedPages, $pagina_padre_id, $usuario_id, $yml, $puntos);
 
 		}
 

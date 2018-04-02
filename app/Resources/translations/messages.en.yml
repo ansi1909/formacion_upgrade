@@ -242,6 +242,7 @@ Estatus de las sub-paginas: Sub-pages status
 este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
+Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
@@ -257,6 +258,7 @@ Fecha de nacimiento es requerida.: Birthday is required.
 Fecha de Publicación: Fecha de Publicación
 Fecha de Vencimiento: Fecha de Vencimiento
 Fecha Difusión: Dissemination Date
+FELICIDADES: CONGRATULATIONS
 Fila: Row
 filtrado de un total de: filtered of a total of
 Filtrar usuarios: Filter users
@@ -270,6 +272,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
+Has aprobado con éxito la evaluación: You have approved successfully the test
 Has completado con éxito: You have completed successfully
 Has ganado: You win
 Historial de programaciones de: Programation history of
@@ -375,6 +378,7 @@ No existe evaluación para esta página: There is not test for this page
 No existen páginas: There are no pages
 No hay problema, te enviaremos un correo con: No problem, we send you an email with
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
+No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se permiten espacios en blanco.: Blank spaces are not allowed.
@@ -385,6 +389,7 @@ No se pudo editar este registro.: It could not edit this item.
 No se pudo filtrar el listado.: It could not filter the list.
 No se pudo guardar el evento. Inténtalo de nuevo.: The event could not be saved. Try again.
 No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/deny the access to this page.
+No te rindas: Do not give up
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nombre para esta página: Name for this page
@@ -451,6 +456,7 @@ Responder: Answer
 respondió a tu comentario en el muro de: answered to your comment on wall
 Respuesta: Answer
 Resultado del archivo procesado: Result of the processed file
+Resultados: Results
 Resumen: Summary
 Rol: Role
 Roles: Roles
@@ -475,6 +481,7 @@ Si necesitas ayuda escribenos a: If you need help email us to
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Sigue aprendiendo: Keep learning
+Sigue intentándolo: Keep trying
 Siguiente: Next
 Sistema Formación: System Training
 Sólo archivo en PDF: Only PDF file
@@ -506,6 +513,7 @@ Tipo de Destinos: Desnity Types
 Título: Title
 Título en la ventana del navegador: Title of browser window
 Tomar evaluación: Take test
+Tu calificación: Your score
 Tutoriales: Tutorials
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found

@@ -9,9 +9,9 @@ _ajaxTestResponse:
         _method: POST
 
 _finTest:
-    path:     /fin/{prueba_log_id}/{cantidad_preguntas}
+    path:     /fin/{programa_id}/{prueba_log_id}/{cantidad_preguntas}
     defaults: { _controller: LinkFrontendBundle:Test:fin }
 
 _resultadosTest:
-    path:     /resultados/{prueba_log_id}/{puntos}
+    path:     /resultados/{programa_id}/{prueba_log_id}/{puntos}
     defaults: { _controller: LinkFrontendBundle:Test:resultados, puntos: 0 }
