@@ -45,6 +45,10 @@ Link\ComunBundle\Entity\AdminPreferencia:
             length: 250
             options:
                 fixed: false
+        logoLogin:
+            type: boolean
+            nullable: true
+            column: logo_login
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

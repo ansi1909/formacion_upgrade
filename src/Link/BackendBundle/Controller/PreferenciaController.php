@@ -97,7 +97,7 @@ class PreferenciaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        $atributos = array(); // Atrinutos editables en el template
+        $atributos = array(); // Atributos editables en el template
         $variables = array(); // Solo tendrán los nombres de las variables editables
         $content = array(); // Contenido del archivo _variables_color.scss
 
@@ -196,6 +196,7 @@ class PreferenciaController extends Controller
             $title = $request->request->get('title');
             $logo = trim($request->request->get('logo'));
             $favicon = trim($request->request->get('favicon'));
+            $logo_login = $request->request->get('logo_login');
 
             $layout = $em->getRepository('LinkComunBundle:AdminLayout')->find($layout_id[0]);
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
@@ -206,6 +207,7 @@ class PreferenciaController extends Controller
             $preferencia->setLogo($logo != '' ? $logo : null);
             $preferencia->setFavicon($favicon != '' ? $favicon : null);
             $preferencia->setUsuario($usuario);
+            $preferencia->setLogoLogin(isset($logo_login) ? $logo_login ? true : false : false);
             $em->persist($preferencia);
             $em->flush();
 
