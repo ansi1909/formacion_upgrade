@@ -19,32 +19,40 @@
 
 {% block header %}
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
-        <div class="logo d-none d-md-block">
-            <a class="navbar-brand" href="{{ path('_inicio') }}">
-                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
-            </a>
-        </div>
+        <a class="navbar-brand" href="{{ path('_inicio') }}">
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+        </a>
         <div class="wraper-title-lesson d-flex flex-column align-items-center">
             <h4 class="mt-2 mb-1 color-grey" >{{ titulo }}</h4>
             <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
-            <div class="d-flex flex-column">
-                <div class="dropdown show">
-                    <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/avatar_user.png') : asset('front/assets/img/avatar_user.png') %}
-                        <img class="img-fluid mx-auto" src="{{ img }}" width="80%" alt="usuario">
-                    </a>
-                    <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}">{{ 'Salir'|trans }}</a>
-                    </div>
-                </div>
-            </div>
             {% set display = lecciones.muro_activo ? '' : 'display:none;' %}
             <a id="iconComments" href="javascript:void(0)" style="{{ display }}">
                 <i class="material-icons mx-3 color-light-grey">comment</i>
             </a>
+            <div class=" d-flex flex-column ">
+                <div class="wrapperDdMenu">
+                    <a href="#" class="perfil no-decorate" id="config">
+                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+                        <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                    </a>
+                    <ul class="dropDownMenu">
+                        <li class="mark"></li>
+                        <a href="{{ path('_usuariop') }}">
+                            <li class="opcList">
+                                <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                            </li>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#modalCs">
+                            <li class="opcList markOpc">
+                                <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
         </div>
     </nav>
 {% endblock %}
