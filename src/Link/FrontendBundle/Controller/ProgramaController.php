@@ -132,10 +132,7 @@ class ProgramaController extends Controller
                             }
 
                             
-                            if ($sub_subpagina['acceso'])
-                            {
-                                 $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub_subpagina['nombre'].'</li>';
-                            }
+                            $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub_subpagina['nombre'].'</li>';
                             
                         }
                     }
