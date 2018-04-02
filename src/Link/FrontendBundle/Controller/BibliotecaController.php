@@ -39,7 +39,8 @@ class BibliotecaController extends Controller
 
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.empresa = :empresa_id
-                                       AND n.tipoNoticia = :tipo')
+                                       AND n.tipoNoticia = :tipo
+                                       AND n.pdf IS NOT NULL')
                         ->setParameters(array('empresa_id' => $empresa_id,
                                               'tipo' => '3'));
             $noticias_db = $query->getResult();
@@ -117,7 +118,8 @@ class BibliotecaController extends Controller
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca = :biblioteca
                                            AND n.tipoNoticia = :noticia_id
-                                           AND n.id != :id')
+                                           AND n.id != :id
+                                           AND n.pdf IS NOT NULL')
                             ->setMaxResults(3)
                             ->setParameters(array('biblioteca'=> 1,
                                                   'noticia_id'=> 3,
@@ -128,7 +130,8 @@ class BibliotecaController extends Controller
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca = :biblioteca
                                            AND n.tipoNoticia = :noticia_id
-                                           AND n.id != :id')
+                                           AND n.id != :id
+                                           AND n.pdf IS NOT NULL')
                             ->setMaxResults(3)
                             ->setParameters(array('biblioteca'=> 2,
                                                   'noticia_id'=> 3,
@@ -138,7 +141,8 @@ class BibliotecaController extends Controller
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca IN (:biblioteca)
                                            AND n.tipoNoticia = :noticia_id
-                                           AND n.id != :id')
+                                           AND n.id != :id
+                                           AND n.pdf IS NOT NULL')
                             ->setMaxResults(3)
                             ->setParameters(array('biblioteca'=> array('3','4'),
                                                   'noticia_id'=> 3,
