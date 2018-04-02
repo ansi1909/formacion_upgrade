@@ -161,6 +161,9 @@
     .cancelarCs{
         @extend %btn-cc;
     }
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
 }
 
 //Soporte virtual

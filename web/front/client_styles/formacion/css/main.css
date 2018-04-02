@@ -366,6 +366,19 @@ body.codigoQR {
   100% {
     transform: scale(2);
     opacity: 0; } }
+@-webkit-keyframes bounce {
+  0% {
+    transform: scale3d(0.1, 0.1, 1);
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.9); }
+  55% {
+    transform: scale3d(1.08, 1.08, 1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0); }
+  75% {
+    transform: scale3d(0.95, 0.95, 1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.9); }
+  100% {
+    transform: scale3d(1, 1, 1);
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.9); } }
 .login-cover {
   background-image: url(../../../assets/img/login_cover.jpg);
   background-repeat: no-repeat;
@@ -442,21 +455,25 @@ a:focus {
 .modalChagePwd::-webkit-scrollbar-thumb {
   background-color: #DAE1E6; }
 
-.modalCerrarSesion .textModalCs {
-  font-size: calc(1rem + 9px);
-  font-family: "Roboto";
-  line-height: 1rem;
-  color: #DAE1E6; }
-.modalCerrarSesion .btn-Cs {
-  text-transform: uppercase;
-  font-family: "Roboto";
-  font-weight: 700;
-  border: 0px !important;
-  padding: .7rem 2rem;
-  border-radius: 50rem;
-  background: linear-gradient(to left, #5CAEE6 0%, #3D93CC 100%); }
-  .modalCerrarSesion .btn-Cs:hover {
-    background: linear-gradient(to right, #5CAEE6 0%, #3D93CC 100%); }
+.modalCerrarSesion {
+  -webkit-animation: bounce .5s ease-in 1 forwards;
+  /*-moz-animation-name: bounce;*/
+  animation: bounce .5s ease-in 1 forwards; }
+  .modalCerrarSesion .textModalCs {
+    font-size: calc(1rem + 9px);
+    font-family: "Roboto";
+    line-height: 1rem;
+    color: #DAE1E6; }
+  .modalCerrarSesion .btn-Cs {
+    text-transform: uppercase;
+    font-family: "Roboto";
+    font-weight: 700;
+    border: 0px !important;
+    padding: .7rem 2rem;
+    border-radius: 50rem;
+    background: linear-gradient(to left, #5CAEE6 0%, #3D93CC 100%); }
+    .modalCerrarSesion .btn-Cs:hover {
+      background: linear-gradient(to right, #5CAEE6 0%, #3D93CC 100%); }
 
 .modalSopVirtual .txtModalVs {
   color: #797D80;
