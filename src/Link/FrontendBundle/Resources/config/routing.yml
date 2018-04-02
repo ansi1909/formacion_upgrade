@@ -57,3 +57,7 @@ faqs:
 usuario:
     resource: "@LinkFrontendBundle/Resources/config/routing/usuario.yml"
     prefix: /usuario
+
+ranking:
+    resource: "@LinkFrontendBundle/Resources/config/routing/ranking.yml"
+    prefix: /ranking
