@@ -790,8 +790,7 @@ class UsuarioController extends Controller
 
             $empresa_id = $request->request->get('empresa_id');
             $file = $request->request->get('file');
-            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+            $fileWithPath = $this->container->getParameter('folders')['dir_uploads'].$file;
             
             if(!file_exists($fileWithPath)) 
             {
@@ -1089,8 +1088,7 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $file = str_replace(",", "/", $archivo);
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+        $fileWithPath = $this->container->getParameter('folders')['dir_uploads'].$file;
         $transaccion = $f->generarClave();
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -1278,7 +1276,7 @@ class UsuarioController extends Controller
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
-        $csv = $yml['parameters']['folders']['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
+        $csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
         $writer->save($csv);
 
         if (file_exists($csv))

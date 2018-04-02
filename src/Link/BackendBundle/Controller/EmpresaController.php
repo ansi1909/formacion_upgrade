@@ -111,8 +111,7 @@ class EmpresaController extends Controller
             $em->flush();
 
             // Se crea el directorio para los activos de la empresa
-            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            $f->subDirEmpresa($empresa->getId(), $yml['parameters']['folders']);
+            $f->subDirEmpresa($empresa->getId(), $this->container->getParameter('folders'));
 
             return $this->redirectToRoute('_showEmpresa', array('empresa_id' => $empresa->getId()));
 

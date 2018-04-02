@@ -83,13 +83,13 @@ class CertificadoController extends Controller
 
 		        $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
 
- 				$directorio = $yml['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
+ 				$directorio = $this->container->getParameter('folders')['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
 
 		        \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
 
 		        $ruta ='<img src="'.$directorio.'">';
 
-		        $file = $yml['parameters']['folders']['dir_uploads'].$certificado->getImagen();
+		        $file = $this->container->getParameter('folders')['dir_uploads'].$certificado->getImagen();
 
 		        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
 		        {
@@ -240,9 +240,9 @@ return new response(var_dump($programa_aprobado));
 			
 			*/
 	        if($session->get('empresa')['logo']!='')
-            	$file =  $yml['parameters']['folders']['dir_project'].$session->get('empresa')['logo'];
+            	$file =  $this->container->getParameter('folders')['dir_project'].$session->get('empresa')['logo'];
             else
-            	$file =  $yml['parameters']['folders']['dir_project'].'web/img/logo_formacion.png'; 
+            	$file =  $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png'; 
 
             $constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 10, 15, 5));
 

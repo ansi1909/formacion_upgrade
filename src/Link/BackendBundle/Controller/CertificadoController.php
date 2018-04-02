@@ -440,9 +440,9 @@ class CertificadoController extends Controller
             }
         }
 
-        $ruta ='<img src="'.$yml['parameters']['folders']['dir_project'].'/web/img/codigo_qr.png">';
+        $ruta ='<img src="'.$this->container->getParameter('folders')['dir_project'].'/web/img/codigo_qr.png">';
 
-        $file = $yml['parameters']['folders']['dir_uploads'].$certificado->getImagen();
+        $file = $uploads = $this->container->getParameter('folders')['dir_uploads'].$certificado->getImagen();
 
         if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
         {

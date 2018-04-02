@@ -231,8 +231,7 @@ class NivelController extends Controller
         {
 
             $file = $request->request->get('file');
-            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            $fileWithPath = $yml['parameters']['folders']['dir_uploads'].$file;
+            $fileWithPath = $this->container->getParameter('folders')['dir_uploads'].$file;
             
             if(!file_exists($fileWithPath)) 
             {

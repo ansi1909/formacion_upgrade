@@ -482,7 +482,7 @@ class LeccionController extends Controller
         $em->flush();
 
         // HTML para anexar al muro
-        $uploads = $yml['parameters']['folders']['uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
         $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
         $html = $muro_id ? '<div class="comment replied">' : '<div class="comment">';
         $html .= '<div class="comm-header d-flex align-items-center mb-2">
@@ -525,12 +525,11 @@ class LeccionController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $f = $this->get('funciones');
         $muro_id = $request->query->get('muro_id');
         $prefix = $request->query->get('prefix');
 
-        $uploads = $yml['parameters']['folders']['uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
         $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
         
         $html = '<div class="response d-flex align-items-center justify-content-between" id="'.$prefix.'_response-'.$muro_id.'">
@@ -574,7 +573,7 @@ class LeccionController extends Controller
 
         foreach ($muros['muros'] as $muro)
         {
-            $html .= $f->drawComment($muro, $yml, $prefix);
+            $html .= $f->drawComment($muro, $prefix);
         }
 
         if ($total_comentarios > $total_muro)
@@ -619,7 +618,7 @@ class LeccionController extends Controller
 
             foreach ($submuros as $submuro)
             {
-                $html .= $f->drawResponses($submuro, $yml, $prefix);
+                $html .= $f->drawResponses($submuro, $prefix);
             }
 
             if ($total_respuestas > $next_offset)
@@ -644,7 +643,7 @@ class LeccionController extends Controller
 
             foreach ($muros['muros'] as $muro)
             {
-                $html .= $f->drawComment($muro, $yml, $prefix);
+                $html .= $f->drawComment($muro, $prefix);
             }
 
             if ($total_comentarios > $next_offset)

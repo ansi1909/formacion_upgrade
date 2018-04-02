@@ -450,8 +450,7 @@ class EvaluacionController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $pregunta_opcion_id = $request->query->get('pregunta_opcion_id');
-        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $uploads = $values['parameters']['folders']['uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
         
         $pregunta_opcion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($pregunta_opcion_id);
 
@@ -509,7 +508,7 @@ class EvaluacionController extends Controller
         $f = $this->get('funciones');
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $tipo_elemento_imagen = $values['parameters']['tipo_elemento']['imagen'];
-        $uploads = $values['parameters']['folders']['uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
         $pregunta_simple = $values['parameters']['tipo_pregunta']['simple'];
         
         $pregunta_opcion_id = $request->request->get('pregunta_opcion_id');

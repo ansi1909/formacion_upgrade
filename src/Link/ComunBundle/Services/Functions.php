@@ -1645,10 +1645,10 @@ class Functions
 		return $hijas;
 	}
 
-	public function drawComment($muro, $yml, $prefix)
+	public function drawComment($muro, $prefix)
 	{
 
-		$uploads = $yml['parameters']['folders']['uploads'];
+		$uploads = $this->container->getParameter('folders')['uploads'];
 		$img_user = $muro['foto'] ? $uploads.$muro['foto'] : $this->getWebDirectory().'/front/assets/img/user-default.png';
         $like_class = $muro['likes']['ilike'] ? 'ic-lke-act' : '';
         $html = '<div class="comment">
@@ -1673,7 +1673,7 @@ class Functions
                     <div id="'.$prefix.'_respuestas-'.$muro['id'].'">';
         foreach ($muro['submuros'] as $submuro)
         {
-        	$html .= $this->drawResponses($submuro, $yml, $prefix);
+        	$html .= $this->drawResponses($submuro, $prefix);
         }
 
         if ($muro['total_respuestas'] > count($muro['submuros']))
@@ -1689,10 +1689,10 @@ class Functions
 
 	}
 
-	public function drawResponses($submuro, $yml, $prefix)
+	public function drawResponses($submuro, $prefix)
 	{
 
-		$uploads = $yml['parameters']['folders']['uploads'];
+		$uploads = $this->container->getParameter('folders')['uploads'];
 		$img_user = $submuro['foto'] ? $uploads.$submuro['foto'] : $this->getWebDirectory().'/front/assets/img/user-default.png';
         $like_class = $submuro['likes']['ilike'] ? 'ic-lke-act' : '';
         $html = '<div class="comment replied">

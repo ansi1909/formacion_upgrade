@@ -141,10 +141,10 @@ class PreferenciaController extends Controller
 
         // Atributos por defecto
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        $archivo = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/_variables_color.scss';
+        $archivo = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/_variables_color.scss';
         if (!file_exists($archivo))
         {
-            $archivo = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/formacion/sass/_variables_color.scss';
+            $archivo = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/formacion/sass/_variables_color.scss';
         }
         $fp = fopen($archivo, 'r');
         while (!feof($fp))
@@ -243,7 +243,7 @@ class PreferenciaController extends Controller
                 }
             }
 
-            $new_file = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/_variables_color.scss';
+            $new_file = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/_variables_color.scss';
             $fp = fopen($new_file, "w+");
             foreach ($content as $c){
                 fwrite($fp, $c);
@@ -252,11 +252,11 @@ class PreferenciaController extends Controller
 
             // Aquí se correría el comando que genera el nuevo main.css de la empresa
             $command = $yml['parameters']['comandos']['sass'];
-            $source = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/main.scss';
-            $dest = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
+            $source = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/main.scss';
+            $dest = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
             shell_exec($command.' '.$source.':'.$dest);
             $css = 'front/client_styles/'.$empresa_id.'/css/main.css';
-            $path_css = $yml['parameters']['folders']['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
+            $path_css = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
             if (!file_exists($path_css))
             {
                 $css = 'front/client_styles/formacion/css/main.css';

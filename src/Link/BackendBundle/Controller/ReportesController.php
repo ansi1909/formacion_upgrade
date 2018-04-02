@@ -93,7 +93,7 @@ class ReportesController extends Controller
             $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
             //$writer->setUseBOM(true);
             //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            //$writer->save($yml['parameters']['folders']['dir_uploads'].'recursos/participantes/data.csv');
+            //$writer->save($this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/data.csv');
             
             // Envia la respuesta del controlador
             $response = $this->get('phpexcel')->createStreamedResponse($writer);
