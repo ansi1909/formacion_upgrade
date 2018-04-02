@@ -168,6 +168,7 @@ El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 c
 El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
 El enunciado es requerido.: Statement is required.
 El evento ha sido guardado con éxito: The event has been saved successfully
+El logo de la empresa se mostrará en la página de login: Will this logo be shown in login page
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El grupo ha sido almacenada con éxito: The group has been stored successfully
@@ -241,6 +242,7 @@ Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
 este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
+Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
@@ -248,7 +250,7 @@ Evaluación: Test
 Evaluación activa: Enabled test
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
-Experimenta la pontencialidad de la capacitación digital: Experience the potential of digital training
+Experimenta la pontencialidad de la capacitación online: Experience the potential of online training
 Fecha: Date
 Fecha Creación: Creation Date
 Fecha fin: End date
@@ -381,6 +383,7 @@ No hay Programas disponibles para la empresa. Contacte al administrador del sist
 No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
+No se mostrará en la página de login: It will not be shown in login page
 No se permiten espacios en blanco.: Blank spaces are not allowed.
 No se permiten filas en blanco: Blank rows are not allowed
 No se pudo activar/desactivar este registro.: It could not enable/disable this item.

@@ -17,4 +17,16 @@ Link\ComunBundle\Entity\AdminTipoAlarma:
             length: 100
             options:
                 fixed: false
+        icono:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        css:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
     lifecycleCallbacks: {  }

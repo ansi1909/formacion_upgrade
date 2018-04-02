@@ -51,6 +51,13 @@ class AdminPreferencia
     private $favicon;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="logo_login", type="boolean", nullable=true)
+     */
+    private $logoLogin;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -186,6 +193,30 @@ class AdminPreferencia
     public function getFavicon()
     {
         return $this->favicon;
+    }
+
+    /**
+     * Set logoLogin
+     *
+     * @param boolean $logoLogin
+     *
+     * @return AdminPreferencia
+     */
+    public function setLogoLogin($logoLogin)
+    {
+        $this->logoLogin = $logoLogin;
+    
+        return $this;
+    }
+
+    /**
+     * Get logoLogin
+     *
+     * @return boolean
+     */
+    public function getLogoLogin()
+    {
+        return $this->logoLogin;
     }
 
     /**

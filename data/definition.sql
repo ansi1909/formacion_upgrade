@@ -592,6 +592,8 @@ CREATE TABLE admin_tipo_alarma(
 -- Attributes --
 id serial,
 nombre varchar(100),
+icono varchar(250),
+css varchar(100),
  PRIMARY KEY (id));
 
 CREATE TABLE admin_alarma(

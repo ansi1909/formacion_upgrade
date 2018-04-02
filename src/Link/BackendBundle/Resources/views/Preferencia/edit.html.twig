@@ -244,6 +244,21 @@
                             </div>
                             <br><br>
                             <div class="row">
+                                <div class="col-sm-16 col-lg-16 col-md-16">
+                                    <label for="logoLogin" class="col-sm-6 col-md-6 col-lg-6 col-form-label">¿{{ 'El logo de la empresa se mostrará en la página de login' }}?</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <div class="can-toggle demo-rebrand-2 small">
+                                            {% set chk = preferencia.logoLogin ? 'checked="checked"' : '' %}
+                                            <input id="logo_login" name="logo_login" type="checkbox" {{ chk }} value="1">
+                                            <label for="logo_login">
+                                                <div class="can-toggle__switch" data-checked="{{ 'Sí'|trans }}" data-unchecked="No"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <label for="favicon" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;{{ 'Icono'|trans }}</label>
                                     {% set img = preferencia.favicon ? uploads~preferencia.favicon : asset('img/icono.png') %}

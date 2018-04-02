@@ -168,6 +168,7 @@ El Encabezado debe ser mínimo de 3 caracteres.: El Encabezado debe ser mínimo 
 El enunciado debe ser mínimo de 3 caracteres.: El enunciado debe ser mínimo de 3 caracteres.
 El enunciado es requerido.: El enunciado es requerido.
 El evento ha sido guardado con éxito: El evento ha sido guardado con éxito
+El logo de la empresa se mostrará en la página de login: El logo de la empresa se mostrará en la página de login
 El título es requerido.: El título es requerido.
 El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
 El grupo ha sido almacenada con éxito: El grupo ha sido almacenada con éxito
@@ -241,6 +242,7 @@ Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
+Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Estos son los resultados que has obtenido: Estos son los resultados que has obtenido
 Estructura: Estructura
@@ -248,7 +250,7 @@ Evaluación: Evaluación
 Evaluación activa: Evaluación activa
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
-Experimenta la pontencialidad de la capacitación digital: Experimenta la pontencialidad de la capacitación digital
+Experimenta la pontencialidad de la capacitación online: Experimenta la pontencialidad de la capacitación online
 Fecha: Fecha
 Fecha Creación: Fecha Creación
 Fecha fin: Fecha fin 
@@ -381,6 +383,7 @@ No hay Programas disponibles para la empresa. Contacte al administrador del sist
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
+No se mostrará en la página de login: No se mostrará en la página de login
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
 No se permiten filas en blanco: No se permiten filas en blanco
 No se pudo activar/desactivar este registro.: No se pudo activar/desactivar este registro.

@@ -29,6 +29,20 @@ class AdminTipoAlarma
      */
     private $nombre;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="icono", type="string", length=250, nullable=true)
+     */
+    private $icono;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="css", type="string", length=100, nullable=true)
+     */
+    private $css;
+
 
 
     /**
@@ -63,5 +77,53 @@ class AdminTipoAlarma
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set icono
+     *
+     * @param string $icono
+     *
+     * @return AdminTipoAlarma
+     */
+    public function setIcono($icono)
+    {
+        $this->icono = $icono;
+    
+        return $this;
+    }
+
+    /**
+     * Get icono
+     *
+     * @return string
+     */
+    public function getIcono()
+    {
+        return $this->icono;
+    }
+
+    /**
+     * Set css
+     *
+     * @param string $css
+     *
+     * @return AdminTipoAlarma
+     */
+    public function setCss($css)
+    {
+        $this->css = $css;
+    
+        return $this;
+    }
+
+    /**
+     * Get css
+     *
+     * @return string
+     */
+    public function getCss()
+    {
+        return $this->css;
     }
 }
