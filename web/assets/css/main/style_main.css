@@ -1,7 +1,11 @@
 /*Etiquetas*/
 
 /*Clases*/
-
+    /*login*/
+        .fndLogin{
+            width: 62.5vw; 
+            height: 100vh;
+        }
     /*Header*/
         .sidebar-left img{
             width: 200px;
@@ -588,7 +592,7 @@
         
         .bttn__login{
             position: absolute; 
-            top: 15.8rem; 
+            top: 15.2rem; 
             left: .82rem; 
             width: 93.4%; 
             padding: 10px 0px; 
