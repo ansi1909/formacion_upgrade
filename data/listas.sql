@@ -92,7 +92,8 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_categoria', 'i
 INSERT INTO certi_categoria (id, nombre) VALUES (1, 'Programa');
 INSERT INTO certi_categoria (id, nombre) VALUES (2, 'Módulo');
 INSERT INTO certi_categoria (id, nombre) VALUES (3, 'Materia');
-INSERT INTO certi_categoria (id, nombre) VALUES (4, 'Recurso');
+INSERT INTO certi_categoria (id, nombre) VALUES (4, 'Leccion');
+INSERT INTO certi_categoria (id, nombre) VALUES (5, 'Curso');
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idcerti_estatus_contenido_seq;; Type: SEQUENCE SET; Schema: public;
