@@ -2,6 +2,21 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+        thead.sty__title {
+            background: #ef5956 !important;
+        }
+    </style>
     
 {% endblock %}
 
@@ -10,18 +25,22 @@
 {% set apellido = app.session.get('usuario')['apellido'] %}
 {% set usuario_id = app.session.get('usuario')['id'] %}
 {% set img = uploads~app.session.get('usuario')['foto'] %}
+{% set uri = app.request.getbasepath %}
 <input type="hidden" id="url_ajaxClave" name="url_ajaxClave" value="{{ path('_ajaxClave') }}">
 <input type="hidden" id="usuario_id" name="usuario_id" value="{{usuario_id}}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_usuariop') }}">
+
 <section class="card-datos">
     <div class="row align-items-center justify-content-center">
         <div class="col-xs-3 col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
             <div class="pic-img">
                 <img src="{{img}}" class="img-user-pic" alt="">
-                <div class="add-img">
-                    <span class="material-icons ic-add-img">add_a_photo</span>
-                    <span class="title-img">Cambiar</span>
-                </div>
+                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios/{{ usuario_id }}" >
+                    <div class="add-img">
+                        <span class="material-icons ic-add-img">add_a_photo</span>
+                        <span class="title-img">Cambiar</span>
+                    </div>
+                </a>
             </div>
         </div>
         <div class="col-xs-5 col-sm-5 col-md-5 col-5 col-lg-5 col-xl-5">
@@ -190,4 +209,5 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('front/js/acordion.js') }}"></script> 
     <script type="text/javascript" src="{{ asset('js/front/usuario.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
 {% endblock %}
