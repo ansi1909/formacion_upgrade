@@ -1421,6 +1421,15 @@ INSERT INTO certi_pagina VALUES (62, 'Etapas del proceso creativo', 59, 4, '<p>h
 <hr />
 <img src="https://www.formacion2puntocero.com/produccion/admini/ckfinder/userfiles/images/Podcast.jpg" style="width: 100%" alt="">
                                     <audio id="audio-player" src="https://www.recursos2puntocero.com/recursos/video/G_CEI_ProcesoC.mp3" type="audio/mp3" controls="controls"></audio>', NULL, NULL, '2018-03-29 17:52:34', '2018-03-29 17:52:34', 2, 1, 3, NULL);
+INSERT INTO certi_pagina VALUES (83, 'Creatividad', NULL, 5, '<p>Dise&ntilde;a propuestas competitivas y &ldquo;fuera de la caja&rdquo;, con este curso en l&iacute;nea aprender&aacute;s a conceptualizar estrategias innovadoras.</p>', '<p><img alt="" src="https://www.formacion2puntocero.com/admin/web/ckfinder/userfiles/images/AG_C_Bienvenida.jpg" style="width:820px" /></p>
+
+<p>El hombre se diferencia de los animales por su infinita capacidad para crear, la evoluci&oacute;n hist&oacute;rica del hombre lo demuestra fehacientemente.</p>
+
+<p>El hombre ha evolucionado usando la creatividad para superar los obst&aacute;culos que le impone el ambiente y, en esa carrera de creatividad e innovaci&oacute;n, ha venido superando obst&aacute;culos que nos hacen hoy ver un futuro cambiante y con altos niveles de bienestar y progreso.</p>
+
+<p>En este curso se abordan los conceptos de creatividad, entendiendo la creatividad como una competencia que se puede aprender y desarrollar, para lo cual se disponen de herramientas y t&eacute;cnicas que permiten acelerar el proceso creativo y ampliar los resultados.</p>
+
+<h3>&iexcl;Bienvenido a este curso, y te deseamos el mayor de los &eacute;xitos!</h3>', 'recursos/paginas/creatividad.jpg', NULL, '2018-03-29 18:41:43', '2018-03-30 17:22:22', 2, 1, 7, NULL);
 INSERT INTO certi_pagina VALUES (63, 'La creatividad', 83, 2, '<p>descripci&oacute;n</p>', '<p><img alt="" src="https://www.formacion2puntocero.com/produccion/admini/ckfinder/userfiles/images/CREATIVIDAD.jpg" style="width:820px" /></p>
 
 <blockquote>
@@ -1805,15 +1814,7 @@ INSERT INTO certi_pagina VALUES (82, 'Etapas del proceso creativo', 79, 4, '<p>h
 <hr />
 <img src="https://www.formacion2puntocero.com/produccion/admini/ckfinder/userfiles/images/Podcast.jpg" style="width: 100%" alt="">
                                     <audio id="audio-player" src="https://www.recursos2puntocero.com/recursos/video/G_CEI_ProcesoC.mp3" type="audio/mp3" controls="controls"></audio>', NULL, NULL, '2018-03-29 18:08:05', '2018-03-29 18:08:05', 2, 1, 3, NULL);
-INSERT INTO certi_pagina VALUES (83, 'Creatividad', NULL, 5, '<p>Dise&ntilde;a propuestas competitivas y &ldquo;fuera de la caja&rdquo;, con este curso en l&iacute;nea aprender&aacute;s a conceptualizar estrategias innovadoras.</p>', '<p><img alt="" src="https://www.formacion2puntocero.com/admin/web/ckfinder/userfiles/images/AG_C_Bienvenida.jpg" style="width:820px" /></p>
 
-<p>El hombre se diferencia de los animales por su infinita capacidad para crear, la evoluci&oacute;n hist&oacute;rica del hombre lo demuestra fehacientemente.</p>
-
-<p>El hombre ha evolucionado usando la creatividad para superar los obst&aacute;culos que le impone el ambiente y, en esa carrera de creatividad e innovaci&oacute;n, ha venido superando obst&aacute;culos que nos hacen hoy ver un futuro cambiante y con altos niveles de bienestar y progreso.</p>
-
-<p>En este curso se abordan los conceptos de creatividad, entendiendo la creatividad como una competencia que se puede aprender y desarrollar, para lo cual se disponen de herramientas y t&eacute;cnicas que permiten acelerar el proceso creativo y ampliar los resultados.</p>
-
-<h3>&iexcl;Bienvenido a este curso, y te deseamos el mayor de los &eacute;xitos!</h3>', 'recursos/paginas/creatividad.jpg', NULL, '2018-03-29 18:41:43', '2018-03-30 17:22:22', 2, 1, 7, NULL);
 
 ---------------------------------------------------------------------------------------------------------
 -- Name: certi_pagina_empresa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: develo
