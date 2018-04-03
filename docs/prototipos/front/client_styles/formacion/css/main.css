@@ -387,6 +387,10 @@ body.codigoQR {
   width: 100%;
   min-height: 100vh; }
 
+.sloganLogin {
+  color: #3D93CC;
+  font-weight: 400; }
+
 a.links:focus {
   outline: none !important; }
 

@@ -10,6 +10,11 @@
 
 }
 
+.sloganLogin{
+    color: $bluedark;
+    font-weight: $font-weight-normal;
+}
+
 a.links{
     &:focus{
         outline: none !important;

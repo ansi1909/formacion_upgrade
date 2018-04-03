@@ -5726,6 +5726,7 @@ body.rtl-read .input-group-addon:not(:first-child) {
 
 .jstree-icon.fa {
   background: none;
+  padding-right: .5rem
 }
 
 .jstree-default .jstree-wholerow-clicked {
