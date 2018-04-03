@@ -17,13 +17,16 @@
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
                 <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-                    <i class="material-icons mr-3 color-light-grey rotate-180 exit_eval">exit_to_app</i>
-                    <span class="txt_eval_header">Salir de la evaluación</span>
+                    <a href="#" data-toggle="modal" data-target="#modalCe">
+                        <i class="material-icons mr-3 color-light-grey rotate-180 exit_eval">exit_to_app</i>
+                        <span class="txt_eval_header">Salir de la evaluación</span>
+                    </a>
                 </div>
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
                     <h2 class="titulo_eval pl-5">Evaluación</h2>
                     <h5 class="sub_titulo_eval pl-5">Nombre del módulo</h5>
                 </div>
+                .countdown
                 <a class="navbar-brand" href="#">
                     <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
                 </a>
@@ -109,7 +112,38 @@
                 </div>
             </div>
         </div>
-
+        <!-- Modal Cerrar evaluacion-->
+        <div class="modal modalCEval" id="modalCe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">¿Estás Segur@ que desea salir de la evaluación?</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
+                        <p class="txtModalVs">¡Estimado participante! Si usted decide salir sin antes terminar de realizar la evaluación perdera todas las respuetas que haya contestado hasta los momentos.</p>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#"><button type="button" class="btn btn-danger btn-Cs">Salir de evaluación</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" class="cancelarCs" data-dismiss="modal">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- JAVASCRIPT -->
         <script src="js/jquery-3.3.1.min.js" ></script>

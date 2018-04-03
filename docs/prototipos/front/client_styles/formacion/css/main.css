@@ -502,6 +502,28 @@ a:focus {
 .modalSopVirtual::-webkit-scrollbar-thumb {
   background-color: #DAE1E6; }
 
+.modalCEval {
+  -webkit-animation: bounce .5s ease-in 1 forwards;
+  /*-moz-animation-name: bounce;*/
+  animation: bounce .5s ease-in 1 forwards; }
+  .modalCEval .textModalCs {
+    font-size: calc(1rem + 9px);
+    font-family: "Roboto";
+    line-height: 1rem;
+    color: #DAE1E6; }
+  .modalCEval .btn-Cs {
+    text-transform: uppercase;
+    font-family: "Roboto";
+    font-weight: 700;
+    border: 0px !important;
+    padding: .7rem 2rem;
+    border-radius: 50rem;
+    color: #797D80;
+    background: linear-gradient(to left, #FFDC60 0%, #FFDC60 100%); }
+    .modalCEval .btn-Cs:hover {
+      background: linear-gradient(to right, #FFDC60 0%, #FFDC60 100%);
+      color: #565656; }
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
@@ -515,12 +537,24 @@ a:focus {
   width: 62rem; }
 
 .modalCerrarSesion {
-  height: 36.5rem;
-  width: 36.5rem;
+  height: 32.5rem;
+  min-height: 32.5rem;
+  max-height: 36.5rem;
+  width: 32.5rem;
+  min-width: 32.5rem;
   max-width: 36.5rem;
-  min-width: 30rem;
-  width: 30rem;
-  height: 30rem; }
+  min-width: 26rem;
+  width: 26rem;
+  max-width: 30rem;
+  height: 20rem;
+  max-height: 30rem;
+  min-height: 20rem; }
+
+.modalCEval {
+  height: 33.5rem;
+  width: 33.5rem;
+  height: 26.5rem;
+  width: 30.5rem; }
 
 .modal-recuperacion, .modal-calendario, .modalEditP, .modalChagePwd, .modalSopVirtual {
   height: 40rem;
@@ -528,23 +562,23 @@ a:focus {
   height: 36rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual {
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval {
   margin: 8rem auto !important;
   border-radius: 1rem;
   background: #FAFAFA;
   margin: 2rem auto !important; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal {
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
@@ -560,12 +594,12 @@ a:focus {
   font-weight: 500;
   text-align: left; }
 
-.modalCerrarSesion .cancelarCs {
+.modalCerrarSesion .cancelarCs, .modalCEval .cancelarCs {
   text-transform: uppercase;
   font-family: "Roboto";
   font-weight: 700;
   color: #adb5bd; }
-  .modalCerrarSesion .cancelarCs:hover {
+  .modalCerrarSesion .cancelarCs:hover, .modalCEval .cancelarCs:hover {
     color: #565656; }
 
 .avatar-img {
@@ -580,7 +614,7 @@ a:focus {
   .eval_header .exit_eval {
     cursor: pointer;
     position: relative;
-    top: -.1rem; }
+    top: .4rem; }
   .eval_header .txt_eval_header {
     color: #AAAFB3;
     font-family: "Roboto";
