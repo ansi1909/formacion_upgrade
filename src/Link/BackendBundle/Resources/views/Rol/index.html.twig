@@ -32,7 +32,7 @@
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{eo}}">
                                 <td>{{ rol.nombre }}</td>
-                                <td>{{ rol.descripcion|length > 130 ? rol.descripcion|slice(0,130) ~ '...' : rol.descripcion }}</td>
+                                <td>{{ rol.descripcion }}</td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ rol.id }}"><span class="fa fa-pencil"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if rol.delete_disabled == '' %}delete{% endif %} {{ rol.delete_disabled }}" data="{{rol.id}}"><span class="fa fa-trash"></span></a>

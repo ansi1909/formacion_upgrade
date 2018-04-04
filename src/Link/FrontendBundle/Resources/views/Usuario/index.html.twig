@@ -21,26 +21,28 @@
 {% endblock %}
 
 {% block body %}
+{% set empresa_id = app.session.get('empresa')['id'] %}
 {% set nombre = app.session.get('usuario')['nombre'] %}
 {% set apellido = app.session.get('usuario')['apellido'] %}
 {% set usuario_id = app.session.get('usuario')['id'] %}
 {% set img = uploads~app.session.get('usuario')['foto'] %}
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="url_ajaxClave" name="url_ajaxClave" value="{{ path('_ajaxClave') }}">
+<input type="hidden" id="url_ajaxImg" name="url_ajaxImg" value="{{ path('_ajaxImg') }}">
 <input type="hidden" id="usuario_id" name="usuario_id" value="{{usuario_id}}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_usuariop') }}">
-
+<input type="hidden" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
 <section class="card-datos">
     <div class="row align-items-center justify-content-center">
         <div class="col-xs-3 col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
             <div class="pic-img">
-                <img src="{{img}}" class="img-user-pic" alt="">
-                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios/{{ usuario_id }}" >
-                    <div class="add-img">
-                        <span class="material-icons ic-add-img">add_a_photo</span>
-                        <span class="title-img">Cambiar</span>
-                    </div>
-                </a>
+                <div id="figure"><img src="{{img}}" class="img-user-pic" alt="" id="callback"></div>
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios/{{ empresa_id }}" class="iframe-btn" >
+                        <div class="add-img">
+                            <span class="material-icons ic-add-img">add_a_photo</span>
+                            <span class="title-img">Cambiar</span>
+                        </div>
+                    </a>
             </div>
         </div>
         <div class="col-xs-5 col-sm-5 col-md-5 col-5 col-lg-5 col-xl-5">

@@ -10,6 +10,8 @@ use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Link\ComunBundle\Entity\AdminUsuario;
+use Link\ComunBundle\Entity\AdminRolUsuario;
 
 class UsuarioController extends Controller
 {
@@ -19,6 +21,7 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
+
 
         if (!$session->get('iniFront'))
         {
@@ -30,7 +33,7 @@ class UsuarioController extends Controller
         {
 
             $usuario_id = $session->get('usuario')['id'];
-
+            
             if ($request->getMethod() == 'POST')
             {
                 $user = $request->request->get('username');
@@ -97,6 +100,24 @@ class UsuarioController extends Controller
 
         $return = array('html' => $html);
         $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function ajaxImagenAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $imagen = $request->request->get('new_image');
+        $usuario_id = $request->request->get('usuario_id');
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+
+        $usuario->setFoto($imagen);
+        $em->persist($usuario);
+        $em->flush();
+
+        $return = json_encode($usuario_id);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 }

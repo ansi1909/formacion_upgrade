@@ -1,5 +1,79 @@
 {% extends '::base.html.twig' %}
 
+{% block header %}
+    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <a class="navbar-brand" href="#">
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+        </a>
+        <div class="wraper-title-lesson d-flex flex-column align-items-center">
+            <h4 class="mt-2 mb-1 color-grey" >{{ pagina.nombre }}</h4>
+            
+        </div>
+        <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            
+            <a id="iconComments" href="javascript:void(0)" style="">
+                <i class="material-icons mx-3 color-light-grey">comment</i>
+            </a>
+            <div class=" d-flex flex-column ">
+                <div class="wrapperDdMenu">
+                    <a href="#" class="perfil no-decorate" id="config">
+                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+                        <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                    </a>
+                    <ul class="dropDownMenu">
+                        <li class="mark"></li>
+                        <a href="#">
+                            <li class="opcList">
+                                <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                            </li>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="">
+                            <li class="opcList markOpc">
+                                <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sidemenu %}
+    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
+        <a class="d-flex mt-1 mb-3 text-nowrap" href="#"> <i class="material-icons mr-2 rotate-180">exit_to_app</i>{{ 'Volver al programa'|trans }}</a>
+
+        <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
+                     <i class="material-icons">view_list</i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
+                    <i class="material-icons">widgets</i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content menu-lesson" id="pills-tabContent" >
+            <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
+                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Índice'|trans }}</h5>
+                <ol id="menu_indice">
+                    
+                </ol>
+            </div>
+            <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <h5 class="text-center my-3 color-light-grey font-normal "> Recursos </h5>
+                <a href="">Espacio colaborativo</a>
+                <a href="">Reportar problema</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block body %}
 	
         <!-- CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL SK-EDITOR -->

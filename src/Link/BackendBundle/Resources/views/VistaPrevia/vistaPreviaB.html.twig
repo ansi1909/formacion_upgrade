@@ -3,6 +3,171 @@
 {% block logout %}
     <a href="" class="btn btn-link icon-header bttn1">{{ 'Salir'|trans }}</a>
 {% endblock %}
+{% block header %}
+<nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+    <a class="navbar-brand" href="{{ path('_inicio') }}">
+        {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+        <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+    </a>
+    <div class="navbar-brand d-flex justify-content-center align-items-center">
+        <div class="d-flex flex-column">
+            <div class="wrapperDdApps">
+                <a href="#" id="apps">
+                    <div class="appFun">
+                        <i class="material-icons mr-3 color-light-grey">apps</i>
+                    </div>
+                </a>
+                <span class="markApps"></span>
+                <div class="dropDownApps">
+                    <div class="row align-items-center justify-content-between px-0 py-0 mx-0 my-1">
+                        <div class="col-4 px-0 py-0">
+                            <a href="">
+                                <div class="opcApps text-center">
+                                    <img class="imgApps" src="{{asset('front/assets/img/tutorial.svg')}}" alt="">
+                                    <p class="tituloApps">Tutoriales</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4 px-0 py-0">
+                            <a href="#">
+                                <div class="opcApps text-center">
+                                    <img class="imgApps" src="{{asset('front/assets/img/faq.svg')}}" alt="">
+                                    <p class="tituloApps">FAQS</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4 px-0 py-0">
+                            <a href="" data-toggle="modal" data-target="#modalSv">
+                                <div class="opcApps text-center">
+                                    <img class="imgApps" src="{{asset('front/assets/img/soporteVirtual.svg')}}" alt="">
+                                    <p class="tituloApps">Soporte Virtual</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row align-items-center px-0 py-0 mx-0 mb-1">
+                        <div class="col-4 px-0 py-0">
+                            <a href="#">
+                                <div class="opcApps text-center">
+                                    <img class="imgApps" src="{{asset('front/assets/img/calendario.svg')}}" alt="">
+                                    <p class="tituloApps">Calendario</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column">
+            <div class="wrapperDdNotify">
+                <a href="#" id="notify">
+                    <div class="notify">
+                        <i class="material-icons mr-3 color-light-grey">notifications</i>
+                        <div class="sonar"></div>
+                    </div>
+                </a>
+                <span class="markNotify"></span>
+                <ul class="dropDownNotify">
+                    <a href="">
+                        <li class="opcListNotify">
+                            <div class="anunNotify">
+                                <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
+                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="">
+                        <li class="opcListNotify">
+                            <div class="anunNotify">
+                                <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
+                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="">
+                        <li class="opcListNotify">
+                            <div class="anunNotify">
+                                <span class="stickerNotify mailSticker"><i class="material-icons icNotify">mail</i></span>
+                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="">
+                        <li class="opcListNotify">
+                            <div class="anunNotify">
+                                <span class="stickerNotify ecSticker"><i class="material-icons icNotify">speaker_notes</i></span>
+                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="">
+                        <li class="opcListNotify">
+                            <div class="anunNotify">
+                                <span class="stickerNotify muroSticker"><i class="material-icons icNotify">insert_comment</i></span>
+                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="">
+                        <li class="opcListNotify">
+                            <div class="anunNotify">
+                                <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
+                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="">
+                        <li class="opcListNotify opcLastNotify">
+                            <div class="anunNotify">
+                                <span class="stickerNotify rcSticker"><i class="material-icons icNotify">question_answer</i></span>
+                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                            </div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class=" d-flex flex-column ">
+            <div class="wrapperDdMenu">
+                <a href="#" class="perfil no-decorate" id="config">
+                    {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+                    <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                </a>
+                <ul class="dropDownMenu">
+                    <li class="mark"></li>
+                    <a href="#">
+                        <li class="opcList">
+                            <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                        </li>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#modalCs">
+                        <li class="opcList markOpc">
+                            <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block sidemenu %}
+<nav>
+    <div id="mainSidenav" class="main-sidenav ">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
+        <a class="d-flex mt-1 mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
+        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+        <a class="d-flex mb-3 text-nowrap" href=""> <i class="material-icons mr-2">library_books</i>  Noticias & <br> Novedades </a>
+        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs</a>
+        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">star</i>  Ranking</a>
+
+    </div>
+</nav>
+{% endblock %}
 
 {% block body %}
 
@@ -61,7 +226,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <!-- FILTERS -->

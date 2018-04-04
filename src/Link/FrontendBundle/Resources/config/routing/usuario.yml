@@ -13,3 +13,9 @@ _ajaxClave:
     defaults: { _controller: LinkFrontendBundle:Usuario:ajaxVerificar }
     requirements:
         method: POST
+
+_ajaxImg:
+    path:     /ajaxImg
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxImagen }
+    requirements:
+        method: POST
