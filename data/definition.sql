@@ -271,12 +271,13 @@ CREATE TABLE certi_respuesta(
 id serial,
 pregunta_id integer,
 opcion_id integer,
-usuario_id integer,
+prueba_log_id integer,
 fecha_registro timestamp without time zone,
+nro integer,
  PRIMARY KEY (id),
  FOREIGN KEY (pregunta_id) REFERENCES certi_pregunta (id),
  FOREIGN KEY (opcion_id) REFERENCES certi_opcion (id),
- FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+ FOREIGN KEY (prueba_log_id) REFERENCES certi_prueba_log (id));
 
 CREATE TABLE certi_estatus_pagina(
 -- Attributes --
