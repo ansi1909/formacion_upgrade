@@ -31,56 +31,67 @@
 }
 
 //Estilo para seleccion simple
-.pdg{
-    padding-left: 4.575rem; 
-}
 
 .opc{
-    width: 26.5rem;
-    height: 3rem;
-    @extend %opc_sp;
-    border: .125rem solid $gray-400;
-    transition: all .25s ease;
-    &:hover{
-        border: .125rem solid $lightblue;
-    }
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: 33rem;
+    margin: .5rem 0;
+    cursor: pointer;
     .opc_letra{
-        height: 2.9rem;
-        width: 3.30rem;
+        height: auto;
+        min-height: 3rem;
+        width: 5rem;
         background: $lightblue;
         border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
-        padding: 0;
         position: relative;
-        top: -.075rem;
-        left: -.05rem;
-        display: inline-block;
+        top: 0;
+        left: 0;
+        margin: 0 auto;
+        padding: 1rem;
         .opc_l{
-            line-height: calc($h2-font-size + 4px);
+            line-height: $h4-font-size;
             font-size: $h3-font-size;
             font-family: $primary-font;
-            color: $gray-700;
+            color: $gray-800;
             text-align: center;
             position: relative;
-            top: -.2rem;
+            display: block;
+            margin: auto;
         }
     }
     .opc_resp{
-        display: inline-block;
         position: relative;
-        margin: calc(1rem - 2px) 0;
-        top: -.4rem;
+        top: 0;
+        width: 28rem;
+        min-height: 3rem;
+        padding: .75rem .75rem .25rem .75rem;
+        border-top: .125rem solid $gray-400;
+        border-bottom: .125rem solid $gray-400;
+        border-right: .125rem solid $gray-400;
+        border-radius: 0 calc(1rem - 10px) calc(1rem - 10px) 0;
         .opc_r{
-            color: $gray-600;
-            padding-left: calc(1rem + 1.85px);
+            color: $gray-800;
             font-family: $primary-font;
-            font-size: $h5-font-size;
-            line-height: calc($h4-font-size - 3px);
+            font-size: $p-font-size;
+            line-height: $h4-font-size;
+            font-weight: $font-weight-light;
+        }
+    }
+    &:hover{
+        .opc_resp{
+            border-top: .125rem solid $lightblue;
+            border-bottom: .125rem solid $lightblue;
+            border-right: .125rem solid $lightblue;
         }
     }
 }
 
 .opc_activa{
-    border: .125rem solid $green !important;
+    .opc_resp{
+        border: .125rem solid $green !important;
+    }
     .opc_letra{
         background: $green;
     }
@@ -295,29 +306,29 @@
     }
     .resp-eval{
         position: relative;
-        left: 13vw;
+        left: 12vw;
+        margin-left: auto;
+        margin-right: auto;
         margin-bottom: calc(4rem + 4px);
         li{
             list-style-type: none;
             position: relative;
+            margin: .5rem auto;
             .preg-aprob{
                 @extend %pregunta;
-                border: .125rem solid;
-                border-color: $green;
-                @extend %opc_sp;
                 .preg_num-aprob{
                     @extend %num-preg;
                     background: $green;
                 }
                 .preg_enun{
                     @extend %enun-preg;
+                    border-bottom: .125rem solid $green;
+                    border-right: .125rem solid $green;
+                    border-top: .125rem solid $green;
                 }
             }
             .preg-reprob{
                 @extend %pregunta;
-                border: .125rem solid;
-                border-color: $red;
-                @extend %opc_sp;
                 .preg_num-reprob{
                     @extend %num-preg;
                     background: $red;
@@ -327,6 +338,9 @@
                 }
                 .preg_enun{
                     @extend %enun-preg;
+                    border-bottom: .125rem solid $red;
+                    border-right: .125rem solid $red;
+                    border-top: .125rem solid $red;
                 }
             }
         }
@@ -334,7 +348,7 @@
 }
 //Extends
 %enunc{
-    color: $gray-650;
+    color: $gray-800;
     font-family: $secondary-font;
     line-height: $h4-font-size;
     font-size: $p-font-size;
@@ -404,8 +418,11 @@
 }
 
 %pregunta{
-    width: 52vw;
-    height: 8vh;
+    width: 44rem;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    cursor: pointer;
 }
 
 %number{
@@ -419,14 +436,14 @@
 }
 
 %num-preg{
-    height: 7.5vh;
-    width: 4vw;
+    width: 6rem;
+    height: auto;
     border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
-    padding: 0;
     position: relative;
     top: 0;
-    left: -.2rem;
-    display: inline-block;
+    left: 0;
+    margin: 0 auto;
+    padding: .5rem;
     .preg_n{
         line-height: calc($h2-font-size + 4px);
         font-size: $h3-font-size;
@@ -434,20 +451,28 @@
         color: $gray-700;
         text-align: center;
         position: relative;
-        top: 0; 
+        display: block;
+        left: 0;
+        top: 0;
+        margin: auto;
     }
 }
 
 %enun-preg{
-    display: inline-block;
-    position: relative;
-    margin: calc(1rem - 2px) 0;
-    top: -.25rem;
+    width: 38rem;
+    height: auto;
+    text-align: justify;
+    padding: .75rem .75rem .5rem .75rem;
+    border-radius: 0 calc(1rem - 8px) calc(1rem - 8px) 0;
     .preg_e{
-        color: $gray-600;
-        padding-left: calc(1rem + 1.85px);
+        color: $gray-800;
         font-family: $primary-font;
         font-size: $h5-font-size;
         line-height: calc($h4-font-size - 3px);
+        position: relative;
+        display: block;
+        left: 0;
+        top: 0;
+        margin: auto;
     }
 }

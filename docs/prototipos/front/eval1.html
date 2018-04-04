@@ -8,6 +8,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
         <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+        <link rel="stylesheet" href="js/plugins/flipClock.js/css/flipclock.css">
         <title>Seleccion simple</title>
     </head>
     <body>
@@ -26,14 +27,16 @@
                     <h2 class="titulo_eval pl-5">Evaluación</h2>
                     <h5 class="sub_titulo_eval pl-5">Nombre del módulo</h5>
                 </div>
-                .countdown
+                <div class="countDown">
+                    <div class="clock"></div>
+                </div>
                 <a class="navbar-brand" href="#">
                     <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
                 </a>
             </nav>
         </header>
 
-        <div class="container mt-22v">
+        <div class="container mt-22v mb-5">
             <div class="row">
                 <div class="col-2">
                     <span class="num_preg">02 / 20</span>
@@ -52,13 +55,16 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-8 offset-2 pdg">
+                <div class="col-6">
                     <div class="opc">
                         <div class="text-center opc_letra">
                             <span class="opc_l">a</span>
                         </div>
                         <div class="opc_resp">
-                            <span class="opc_r">Opción a</span>
+                            <p class="opc_r text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+                                                          Aenean commodo ligula eget dolor. Aenean massa. Cum sociis 
+                                                          natoque penatibus et magnis dis parturient montes, nascetur 
+                                                          </p>
                         </div>
                     </div>
                 </div>
@@ -99,14 +105,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row align-items-center">
+            <div class="row my-4 align-items-center">
                 <div class="col-6 text-center">
-                    <a href="#" class="btn_sp">
+                    <a href="#" class="btn_sp2">
                         <span>Saltar pregunta</span>
                     </a>
                 </div>
                 <div class="col-6 text-center">
-                    <a href="#" class="btn_sp">
+                    <a href="#" class="btn_sp1">
                         <span>Siguiente pregunta</span>
                     </a>
                 </div>
@@ -148,7 +154,10 @@
         <!-- JAVASCRIPT -->
         <script src="js/jquery-3.3.1.min.js" ></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/flipClock.js/js/flipclock.js"></script>
+        <script src="js/plugins/flipClock.js/js/es-es.js"></script>
         <script src="js/custom.js"></script>
         <script src="js/eval.js"></script>
+        <script src="js/countDown.js"></script>
     </body>
 </html>

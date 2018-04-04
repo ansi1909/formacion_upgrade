@@ -66,17 +66,31 @@
     }
 }
 
-.btn_sp{
+.btn_sp1{
     padding: calc(1.25rem - 8px) calc(1.5rem - 5.84px);
-    background: transparent !important;
+    background: linear-gradient(to left, $blue 0%, $blue 100%) !important;
     border-radius: 2rem;
     position: relative;
     top: calc(1rem + 8px);
     transition: all .25s ease-in-out;
+    color: $white;
     &:hover{
-        width: 12vw;
-        background-color: $blue !important;
+        background: linear-gradient(to right, $blue 0%, $bluedark 100%) !important;
         color: $white;
+    }
+}
+
+.btn_sp2{
+    padding: calc(1.25rem - 8px) calc(1.5rem - 5.84px);
+    background-color: $yellow !important;
+    border-radius: 2rem;
+    position: relative;
+    top: calc(1rem + 8px);
+    transition: all .25s ease-in-out;
+    color: $gray-700;
+    &:hover{
+        background-color: $yellow !important;
+        color: $gray-800;
     }
 }
 
