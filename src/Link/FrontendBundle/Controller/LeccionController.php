@@ -280,7 +280,7 @@ class LeccionController extends Controller
                 $next_lesson = $keys[array_search($subpagina_id,$keys)+1];
 
                 // Se verifica si esta lección es prelada
-                $pagina_empresa_next = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOne(array('empresa' => $session->get('empresa')['id'],
+                $pagina_empresa_next = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                 'pagina' => $next_lesson));
                 if ($pagina_empresa_next->getPrelacion())
                 {
