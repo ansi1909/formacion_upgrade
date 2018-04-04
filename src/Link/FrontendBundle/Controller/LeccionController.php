@@ -276,7 +276,29 @@ class LeccionController extends Controller
             $keys = array_keys($indexedPages[$pagina_padre_id]['subpaginas']);
             if (isset($keys[array_search($subpagina_id,$keys)+1]))
             {
+
                 $next_lesson = $keys[array_search($subpagina_id,$keys)+1];
+
+                // Se verifica si esta lección es prelada
+                $pagina_empresa_next = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOne(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                                'pagina' => $next_lesson));
+                if ($pagina_empresa_next->getPrelacion())
+                {
+                    // Se determina si el contenido estará bloqueado
+                    $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+                                                WHERE pl.pagina = :pagina_id 
+                                                AND pl.usuario = :usuario_id 
+                                                AND pl.estatusPagina = :completada')
+                                ->setParameters(array('pagina_id' => $pagina_empresa_next->getPrelacion(),
+                                                      'usuario_id' => $session->get('usuario')['id'],
+                                                      'completada' => $yml['parameters']['estatus_pagina']['completada']));
+                    $leccion_completada = $query->getSingleScalarResult();
+                    if (!$leccion_completada)
+                    {
+                        $next_lesson = 0;
+                    }
+                }
+
             }
         }
 
