@@ -116,7 +116,7 @@ class LoginController extends Controller
 
     		if ($preferencia)
     		{
-    			$logo = $preferencia->getLogo();
+    			$logo = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
     			$favicon = $preferencia->getFavicon();
 				$layout = explode(".", $preferencia->getLayout()->getTwig());
     			$layout = $layout[0]."_";

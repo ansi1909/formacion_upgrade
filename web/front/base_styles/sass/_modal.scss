@@ -202,6 +202,37 @@
     }
 }
 
+//Modal cerrar evaluacion
+.modalCEval{
+    @extend %modal-sm;
+    @extend %modal;
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
+    .textModalCs{
+        font-size: calc(1rem + 9px);
+        font-family: $primary-font;
+        line-height: 1rem;
+        color: $gray-400;
+    }
+    .btn-Cs{
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 2rem;
+        border-radius: 50rem;
+        color: $gray-700;
+        background: linear-gradient(to left, $yellow 0%, $yellow 100%);
+        &:hover{
+            background: linear-gradient(to right, $yellow 0%, $yellow 100%);
+            color: $gray-850;
+        }
+    }
+    .cancelarCs{
+        @extend %btn-cc;
+    }
+}
 //Extend
 
 %modal-sl{
@@ -223,14 +254,29 @@
 }
 
 %modal-s{
-    height: 36.5rem;
-    width: 36.5rem;
+    height: 32.5rem;
+    min-height: 32.5rem;
+    max-height: 36.5rem;
+    width: 32.5rem;
+    min-width: 32.5rem;
     max-width: 36.5rem;
     @include media-breakpoint-down(xl){
-        min-width: 30rem;
-        width: 30rem;
-        height: 30rem;
+        min-width: 26rem;
+        width: 26rem;
+        max-width: 30rem;
+        height: 20rem;
+        max-height: 30rem;
+        min-height: 20rem;
     }   
+}
+
+%modal-sm{
+    height: 33.5rem;
+    width: 33.5rem;
+    @include media-breakpoint-down(xl){
+        height: 26.5rem;
+        width: 30.5rem;
+    }
 }
 
 %modal-m{
