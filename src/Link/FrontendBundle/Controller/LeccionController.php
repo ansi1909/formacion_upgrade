@@ -330,8 +330,7 @@ class LeccionController extends Controller
                         $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
                                                     JOIN pl.prueba p 
                                                     WHERE pl.usuario = :usuario_id 
-                                                    AND p.pagina = :pagina_id 
-                                                    ORDER BY pl.id DESC")
+                                                    AND p.pagina = :pagina_id")
                                     ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
                                                           'pagina_id' => $subpagina_id));
                         $intentos = $query->getSingleScalarResult();
@@ -396,8 +395,7 @@ class LeccionController extends Controller
                                 $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
                                                             JOIN pl.prueba p 
                                                             WHERE pl.usuario = :usuario_id 
-                                                            AND p.pagina = :pagina_id 
-                                                            ORDER BY pl.id DESC")
+                                                            AND p.pagina = :pagina_id")
                                             ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
                                                                   'pagina_id' => $pagina_padre_id));
                                 $intentos = $query->getSingleScalarResult();
