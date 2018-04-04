@@ -2,13 +2,13 @@
     {% set literal = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'] %}
     {% for opcion in opciones %}
         <div class="row justify-content-center">
-            <div class="col-8 offset-2 pdg">
+            <div class="col-6">
                 <div class="opc opc__{{ pregunta_id }}" data="{{ tipo_elemento_pregunta }}_{{ tipo_pregunta }}_{{ opcion.po_id }}">
                     <div class="text-center opc_letra">
                         <span class="opc_l">{{ literal[loop.index0] }}</span>
                     </div>
                     <div class="opc_resp">
-                        <span class="opc_r">{{ opcion.descripcion }}</span>
+                        <p class="opc_r text-justify">{{ opcion.descripcion }}</p>
                     </div>
                 </div>
             </div>
