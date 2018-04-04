@@ -6,8 +6,12 @@
     {
         var scrollChild = child.get(0).scrollWidth;
         var scrollParent = parent.get(0).scrollWidth;
+
         if ( scrollChild < scrollParent ) {
             child.css("justify-content", "center");
+        } else {
+            $('#btnLessLeft').css('opacity', '1');
+            $('#btnLessRight').css('opacity', '1');
         }
     }
 //FIN CENTRAR NAVEGACION
