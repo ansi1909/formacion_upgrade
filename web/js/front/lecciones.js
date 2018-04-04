@@ -56,6 +56,7 @@ $(document).ready(function() {
 	}
 
 	$('.next_lesson').click(function(){
+		$(window).scrollTop(0);
 		var button = $(this);
 		button.hide();
 		var str = button.attr('data');

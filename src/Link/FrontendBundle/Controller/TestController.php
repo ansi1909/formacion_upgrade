@@ -363,6 +363,22 @@ class TestController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));*/
 
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+
+        // También se anexa a la indexación el programa
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $pagina = $session->get('paginas')[$programa_id];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
+        $indexedPages[$pagina['id']] = $pagina;
+
         $em = $this->getDoctrine()->getManager();
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
@@ -464,8 +480,8 @@ class TestController extends Controller
             $pagina_log->setEstatusPagina($status_pagina);
 
             // Si la completó en menos de la mitad del período se gana unos puntos adicionales
-            $mitad_periodo = $f->mitadPeriodo($session->get('paginas')[$pagina_id]['inicio'], $session->get('paginas')[$pagina_id]['vencimiento']);
-            $inicio_arr = explode("/", $session->get('paginas')[$pagina_id]['inicio']);
+            $mitad_periodo = $f->mitadPeriodo($indexedPages[$pagina_id]['inicio'], $indexedPages[$pagina_id]['vencimiento']);
+            $inicio_arr = explode("/", $indexedPages[$pagina_id]['inicio']);
             $inicio = $inicio_arr[2].'-'.$inicio_arr[1].'-'.$inicio_arr[0];
             if ($inicio <= $mitad_periodo)
             {
