@@ -129,6 +129,8 @@ class ProgramaController extends Controller
                                 if($next_pagina == 0){
                                     $next_pagina = $subpagina['id'];
                                 }
+                            }else{
+                                $visto = '';
                             }
 
                             
