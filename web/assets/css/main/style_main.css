@@ -941,8 +941,27 @@
     }
     /**.emp_dash{
         display: none;
-    }**7
-
+    }**/
+    .photo_img{
+        max-width: 35rem;
+        height: auto;
+        overflow: hidden;
+        border: 0;
+        -webkit-border-radius: 1rem;
+        -moz-border-radius: 1rem;
+        -ms-border-radius: 1rem;
+        border-radius: 1rem;
+        -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        margin: 1rem 1rem 0 3rem;
+    }
+    .photo_img > img{
+        position: relative;
+        top: 0;
+        right: 0;
+    }
 /*Fin de acciones*/
 
 /*Identificadores*/
