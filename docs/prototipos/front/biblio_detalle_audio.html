@@ -68,8 +68,8 @@
                         <div class="row mt-3 align-items-center justify-content-center">
                             <div class="col-8 text-center">
                                 <div class="audio-player">
-                                    <img src="assets/img/Podcast.jpg" style="width: 100%" alt="">
-                                    <audio id="audio-player" src="https://www.recursos2puntocero.com/recursos/video/FON_ASTI_RELACIONESCLI.mp3" type="audio/mp3" controls="controls"></audio>
+                                    <img src="assets/img/Podcast.jpg" alt="">
+                                    <audio class="audioP" src="https://www.recursos2puntocero.com/recursos/video/FON_ASTI_RELACIONESCLI.mp3" type="audio/mp3" controls="controls"></audio>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
         <script>
             document.oncontextmenu = function(){return false;}
             $(document).ready(function() {
-                $('#audio-player').mediaelementplayer({
+                $('.audioP').mediaelementplayer({
                     alwaysShowControls: true,
                     features: ['playpause','volume','progress','current','duration'],
                     audioVolume: 'vertical',

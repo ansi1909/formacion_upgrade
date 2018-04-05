@@ -360,6 +360,9 @@ body.codigoQR {
   background-size: 30vw auto;
   background-position: top right; }
 
+.audio-player img {
+  width: 100%; }
+
 @keyframes brillo {
   0%, 100% {
     opacity: 0;
@@ -2117,7 +2120,10 @@ p.up {
       font-family: "Roboto";
       color: #5C6266;
       text-align: center;
-      position: relative;
+      position: absolute;
+      transform: translateY(-50%);
+      left: 40%;
+      top: 50%;
       display: block;
       margin: auto; }
   .opc .opc_resp {
@@ -2160,12 +2166,15 @@ p.up {
   width: 16rem;
   height: auto;
   border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
-  padding: calc(1rem - 8px); }
+  padding: .75rem .75rem .25rem .75rem;
+  position: relative; }
   .elec-resp .resp-opc .resp-opc_i-3 {
     color: #797D80;
     font-family: "Roboto";
     font-size: 1.125rem;
-    line-height: calc(1rem + 4px); }
+    line-height: calc(1rem + 4px);
+    text-align: center;
+    font-weight: 400; }
 .elec-resp:hover .opc_img {
   border: 0.1875rem solid #80CCFF; }
 .elec-resp:hover .resp-opc {
@@ -2190,7 +2199,9 @@ p.up {
     color: #797D80;
     font-family: "Roboto";
     font-size: 1.125rem;
-    line-height: calc(1rem + 4px); }
+    line-height: calc(1rem + 4px);
+    font-weight: 400;
+    text-align: center; }
 .elec-resp-asig:hover .opc_img-asig {
   border: 0.1875rem solid #80CCFF; }
 .elec-resp-asig:hover .resp-opc {
@@ -2200,14 +2211,17 @@ p.up {
   border: 0.1875rem solid #CFE65C !important; }
 
 .mgn {
-  margin: .5rem 0; }
+  height: auto;
+  margin-bottom: 6rem; }
 
 .mgn_img-asig {
   margin: .5rem 0 .5rem 5rem; }
 
 .opc_lado-a {
-  width: 18.75rem;
-  height: 3.75rem;
+  width: 18rem;
+  height: auto;
+  margin: auto;
+  padding: 1rem .75rem .25rem .75rem;
   position: relative;
   left: 15rem; }
 
@@ -2215,26 +2229,29 @@ p.up {
   width: 10rem;
   height: 9rem;
   border-radius: 1rem;
-  position: relative;
-  left: 0;
-  top: .3rem;
-  margin-right: 5rem;
+  position: absolute;
+  transform: translateY(-50%);
+  left: 22.5%;
+  top: 50%;
+  display: block;
+  margin: auto;
   border: 0.125rem solid #DAE1E6; }
   .opc_img_lado-a .img_opc_ra {
     width: 9.778rem;
     height: 8.74rem;
     position: relative;
     left: 0;
-    top: 0rem;
+    top: 0;
     border-radius: calc(1rem - 2px); }
   .opc_img_lado-a:hover {
     border: 0.125rem solid #CFE65C !important; }
 
 .opc_lado-b {
-  width: 18.75rem;
-  height: 3.75rem; }
-  .opc_lado-b .opc_rb {
-    margin-left: -1rem; }
+  width: 18rem;
+  height: auto;
+  margin: auto;
+  padding: 1rem .75rem .25rem .75rem;
+  position: relative; }
   .opc_lado-b:hover .opc_rb {
     color: #fff; }
 
@@ -2254,7 +2271,7 @@ p.up {
   transform: scaleX(-1) rotate(5deg); }
 
 .txt-resul {
-  font-family: "Open Sans";
+  font-family: "Roboto";
   font-size: 1.5rem;
   line-height: calc(2rem + 1px);
   margin: calc(2rem - 1px) 0 calc(4rem + 4px) 0; }
@@ -2286,7 +2303,7 @@ p.up {
     line-height: calc(2rem - 8px); }
   .mostrar-resul .resp-eval {
     position: relative;
-    left: 12vw;
+    left: 16%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: calc(4rem + 4px); }
@@ -2315,7 +2332,8 @@ p.up {
   line-height: 1.5rem;
   font-size: 1.125rem;
   text-align: justify;
-  margin-top: .25rem; }
+  margin-top: .25rem;
+  font-weight: 400; }
 
 .opc_lado-a, .opc_lado-b {
   border-radius: calc(1rem - 8px);
@@ -2338,11 +2356,12 @@ p.up {
     background: #80CCFF; }
 
 .opc_lado-a .opc_ra, .opc_lado-b .opc_rb {
-  color: #AAAFB3;
-  padding-left: calc(1rem + 1.85px);
+  color: #797D80;
   font-family: "Roboto";
-  font-size: 2.25rem;
-  line-height: calc($h2-font-size + 6px); }
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  text-align: center;
+  font-weight: 400; }
 
 .elec-resp .opc_img, .elec-resp .resp-opc, .elec-resp-asig .opc_img-asig, .elec-resp-asig .resp-opc {
   border: 0.1875rem solid #DAE1E6;
@@ -2392,10 +2411,11 @@ p.up {
     font-family: "Roboto";
     color: #797D80;
     text-align: center;
-    position: relative;
+    position: absolute;
+    transform: translateY(-50%);
+    left: 40%;
+    top: 50%;
     display: block;
-    left: 0;
-    top: 0;
     margin: auto; }
 
 .mostrar-resul .resp-eval li .preg-aprob .preg_enun, .mostrar-resul .resp-eval li .preg-reprob .preg_enun {
