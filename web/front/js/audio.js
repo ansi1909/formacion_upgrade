@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.audioPlay').mediaelementplayer({
+    $('.audioP').mediaelementplayer({
         alwaysShowControls: true,
         features: ['playpause','volume','progress','current','duration'],
         audioVolume: 'vertical',

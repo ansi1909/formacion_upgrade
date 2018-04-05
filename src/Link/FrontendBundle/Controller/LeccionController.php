@@ -265,7 +265,7 @@ class LeccionController extends Controller
         
         // Extraer los puntos generados
         $log_id_arr = explode("_", $log_id);
-        $puntos += $log_id[1];
+        $puntos += intval($log_id_arr[1]);
 
         // Determinar siguiente lección a ver
         $next_lesson = 0;

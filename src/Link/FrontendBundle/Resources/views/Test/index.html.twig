@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
         {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
         <link rel="stylesheet" href="{{ css }}">
+        <link rel="stylesheet" href="{{ asset('front/js/plugins/flipClock.js/css/flipclock.css') }}">
     </head>
     
     <body>
@@ -107,9 +108,12 @@
 
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('front/js/plugins/flipClock.js/js/flipclock.js') }}"></script>
+        <script src="{{ asset('front/js/plugins/flipClock.js/js/es-es.js') }}"></script>
         <script src="{{ asset('front/js/custom.js') }}"></script>
         <script src="{{ asset('front/js/eval.js') }}"></script>
         <script src="{{ asset('jq/jquery-ui.js') }}"></script>
+        <script src="{{ asset('front/js/countDown.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/front/test.js') }}"></script>
 
     </body>
