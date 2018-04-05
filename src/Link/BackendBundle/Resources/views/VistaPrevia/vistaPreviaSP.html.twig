@@ -81,6 +81,12 @@
             <h2 class="color-dark-grey"> Cambios personales que requiren actitud</h2>
             <img src="assets/img/img_art.png" alt="" class="img-fluid my-5 rounded">
             <p>{{pagina.contenido|raw}}</p>
+            {% if pagina.pdf != '' %}
+                {% set pdf = uploads~pagina.pdf %}
+                <p>
+                    <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
+                </p>
+            {% endif %}
 
             
         </div>

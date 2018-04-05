@@ -266,18 +266,6 @@ opciones varchar(50),
  PRIMARY KEY (id),
  FOREIGN KEY (pregunta_id) REFERENCES certi_pregunta (id));
 
-CREATE TABLE certi_respuesta(
--- Attributes --
-id serial,
-pregunta_id integer,
-opcion_id integer,
-prueba_log_id integer,
-fecha_registro timestamp without time zone,
-nro integer,
- PRIMARY KEY (id),
- FOREIGN KEY (pregunta_id) REFERENCES certi_pregunta (id),
- FOREIGN KEY (opcion_id) REFERENCES certi_opcion (id),
- FOREIGN KEY (prueba_log_id) REFERENCES certi_prueba_log (id));
 
 CREATE TABLE certi_estatus_pagina(
 -- Attributes --
@@ -316,6 +304,19 @@ preguntas_erradas varchar(100),
  PRIMARY KEY (id),
  FOREIGN KEY (prueba_id) REFERENCES certi_prueba (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE certi_respuesta(
+-- Attributes --
+id serial,
+pregunta_id integer,
+opcion_id integer,
+prueba_log_id integer,
+fecha_registro timestamp without time zone,
+nro integer,
+ PRIMARY KEY (id),
+ FOREIGN KEY (pregunta_id) REFERENCES certi_pregunta (id),
+ FOREIGN KEY (opcion_id) REFERENCES certi_opcion (id),
+ FOREIGN KEY (prueba_log_id) REFERENCES certi_prueba_log (id));
 
 CREATE TABLE admin_tipo_noticia(
 -- Attributes --

@@ -92,7 +92,7 @@
                 <div class="starShiney4">
                 </div>
             </div>
-            <span class="numExp">5.0 K</span>
+            <span class="numExp">{{puntos}}</span>
             <h3 class="tituloExp">EXP</h3>
         </div>
     </div>
@@ -104,7 +104,7 @@
             <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">Editar perfil</button></a>
         </div>
         <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#"><button type="button" class="btn btn-primary">Ver ranking</button></a>
+            <a href="{{ path('_ranking') }}"><button type="button" class="btn btn-primary">Ver ranking</button></a>
         </div>
         <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
             <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary" id="clave">Cambiar contraseña</button></a>

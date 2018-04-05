@@ -60,13 +60,25 @@ class UsuarioController extends Controller
 
             $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id); 
             
+            $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
+                                       WHERE pl.usuario = :usuario_id')
+                        ->setParameter('usuario_id', $usuario_id);
+            $paginalogs = $query->getResult();
+            $puntos = 0;
+
+            foreach( $paginalogs as $paginalog )
+            {
+                $puntos = $puntos + $paginalog->getPuntos();
+            }
+            
 
         }else {
             return $this->redirectToRoute('_login');
         }
 
         return $this->render('LinkFrontendBundle:Usuario:index.html.twig', array('usuario' => $usuario,
-                                                                                 'fecha' => $usuario->getFechaNacimiento()->format('Y-m-d')));
+                                                                                 'fecha' => $usuario->getFechaNacimiento()->format('Y-m-d'),
+                                                                                 'puntos' => $puntos));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 
