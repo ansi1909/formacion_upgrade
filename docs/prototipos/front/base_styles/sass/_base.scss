@@ -27,6 +27,10 @@ body {
     }
 }
 
+.bckgd{
+    background: url(../../../assets/img/decorate_qr.svg) no-repeat top right;
+}
+
 body.lesson-body, body.detalle-noticias{
     background-color: $white;
 }
