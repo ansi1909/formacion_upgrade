@@ -105,13 +105,12 @@ class ProgramaController extends Controller
                 }else{
                     $avanzar = 1;
                 }
-
+                
                 if (count($subpagina['subpaginas']))
                 {
                     foreach ($subpagina['subpaginas'] as $sub_subpagina)
                     {
 
-                        $next_pagina = 0;
                         if ($sub_subpagina['acceso'])
                         {
 
@@ -127,7 +126,7 @@ class ProgramaController extends Controller
                             if(!$leccion_completada){
                                 $visto = 'color-grey';
                                 if($next_pagina == 0){
-                                    $next_pagina = $subpagina['id'];
+                                    $next_pagina = $sub_subpagina['id'];
                                 }
                             }else{
                                 $visto = '';
