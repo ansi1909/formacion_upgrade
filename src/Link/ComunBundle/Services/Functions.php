@@ -1653,7 +1653,7 @@ class Functions
         $like_class = $muro['likes']['ilike'] ? 'ic-lke-act' : '';
         $html = '<div class="comment">
                     <div class="comm-header d-flex align-items-center mb-2">
-                        <img src="'.$img_user.'" alt="">
+                        <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
                         <div class="wrap-info-user flex-column ml-2">
                             <div class="name text-xs color-dark-grey">'.$muro['usuario'].'</div>
                             <div class="date text-xs color-grey">'.$muro['cuando'].'</div>
@@ -1697,7 +1697,7 @@ class Functions
         $like_class = $submuro['likes']['ilike'] ? 'ic-lke-act' : '';
         $html = '<div class="comment replied">
                     <div class="comm-header d-flex align-items-center mb-2">
-                        <img src="'.$img_user.'" alt="">
+                        <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
                         <div class="wrap-info-user flex-column ml-2">
                             <div class="name text-xs color-dark-grey">'.$submuro['usuario'].'</div>
                             <div class="date text-xs color-grey">'.$submuro['cuando'].'</div>
