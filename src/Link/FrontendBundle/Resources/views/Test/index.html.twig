@@ -24,6 +24,7 @@
     <body>
         
         <input type="hidden" id="nro" name="nro" value="1">
+        <input type="hidden" id="duracion" name="duracion" value="{{ duracion }}">
         <input type="hidden" id="pregunta_id" name="pregunta_id" value="{{ preguntas[0]['id'] }}">
         <input type="hidden" id="total" name="total" value="{{ preguntas|length }}">
         <input type="hidden" id="prueba_log_id" name="prueba_log_id" value="{{ prueba_log.id }}">
@@ -42,6 +43,9 @@
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
                     <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
                     <h5 class="sub_titulo_eval pl-5">{{ prueba_log.prueba.pagina.nombre }}</h5>
+                </div>
+                <div class="countDown">
+                    <div class="clock"></div>
                 </div>
                 <a class="navbar-brand" href="#">
                     {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
@@ -108,11 +112,11 @@
 
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('jq/jquery-ui.js') }}"></script>
         <script src="{{ asset('front/js/plugins/flipClock.js/js/flipclock.js') }}"></script>
         <script src="{{ asset('front/js/plugins/flipClock.js/js/es-es.js') }}"></script>
         <script src="{{ asset('front/js/custom.js') }}"></script>
         <script src="{{ asset('front/js/eval.js') }}"></script>
-        <script src="{{ asset('jq/jquery-ui.js') }}"></script>
         <script src="{{ asset('front/js/countDown.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/front/test.js') }}"></script>
 

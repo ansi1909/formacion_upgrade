@@ -29,6 +29,11 @@ class TestController extends Controller
 
         $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina_id);
 
+        // Duración en segundos
+        $duracion = intval($prueba->getDuracion()->format('G'))*3600;
+        $duracion += intval($prueba->getDuracion()->format('i'))*60;
+        $duracion += intval($prueba->getDuracion()->format('s'));
+
         /*if (!$prueba)
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('No existe evaluación para esta página').'.'));
@@ -192,7 +197,8 @@ class TestController extends Controller
                                                                               'preguntas' => $preguntas,
                                                                               'programa_id' => $programa_id,
                                                                               'tipo_pregunta' => $yml['parameters']['tipo_pregunta'],
-                                                                              'tipo_elemento' => $yml['parameters']['tipo_elemento']));
+                                                                              'tipo_elemento' => $yml['parameters']['tipo_elemento'],
+                                                                              'duracion' => $duracion));
 
     }
 
