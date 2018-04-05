@@ -203,7 +203,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (12, 'Niveles por empresa', '_empresasNiveles', 'fa-list-ol', TRUE, 9, 3);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (13, 'Agrupación de páginas', '_grupo', 'fa-cubes', TRUE, 9, 4);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (14, 'Participantes', '_participantes', 'fa-users', TRUE, 9, 5);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (15, 'Monitoreo del muro', '_filtroMuro', 'fa-indent', TRUE, 9, 4);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (15, 'Monitoreo del muro', '_filtroMuro', 'fa-indent', TRUE, 9, 11);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (16, 'Administrar ayuda', NULL, 'fa-info-circle', TRUE, NULL, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (17, 'Noticias y novedades', '_bibliotecas', 'fa-bell', TRUE, 9, 6);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (18, 'Reportes y consultas', NULL, NULL, TRUE, NULL, 6);
@@ -223,7 +223,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (32, 'Páginas por niveles', '_paginasNiveles', 'fa-list-alt', TRUE, 9, 9);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (33, 'Preferencias de plantillas', '_preferencias', 'fa-desktop', TRUE, 9, 10);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (34, 'Participantes no iniciados en programas','_participantesNoIniciados','fa-th-list', TRUE, 18, 5);
-INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (35, 'Monitoreo del espacio colaborativo', '_filtroForo', 'fa-th-list', TRUE, 9, 11);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (35, 'Monitoreo del espacio colaborativo', '_filtroForo', 'fa-th-list', TRUE, 9, 12);
 
 
 ------------------------------------------------------------------------------------------------------------------------

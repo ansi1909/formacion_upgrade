@@ -112,3 +112,11 @@ vista:
 reportes:
     resource: "@LinkBackendBundle/Resources/config/routing/reportes.yml"
     prefix: /reportes
+
+muro:
+    resource: "@LinkBackendBundle/Resources/config/routing/muro.yml"
+    prefix: /muro
+
+foro:
+    resource: "@LinkBackendBundle/Resources/config/routing/foro.yml"
+    prefix: /foro

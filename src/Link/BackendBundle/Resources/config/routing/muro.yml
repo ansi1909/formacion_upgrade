@@ -1,0 +1,3 @@
+_filtroMuro:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Muro:index }
