@@ -506,7 +506,7 @@ class LeccionController extends Controller
         $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
         $html = $muro_id ? '<div class="comment replied">' : '<div class="comment">';
         $html .= '<div class="comm-header d-flex align-items-center mb-2">
-                    <img src="'.$img_user.'" alt="">
+                    <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
                     <div class="wrap-info-user flex-column ml-2">
                         <div class="name text-xs color-dark-grey">'.$this->get('translator')->trans('Yo').'</div>
                         <div class="date text-xs color-grey">'.$this->get('translator')->trans('Ahora').'</div>
@@ -553,7 +553,7 @@ class LeccionController extends Controller
         $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
         
         $html = '<div class="response d-flex align-items-center justify-content-between" id="'.$prefix.'_response-'.$muro_id.'">
-                    <img src="'.$img_user.'" alt="">
+                    <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
                     <form class="mt-3" method="POST">
                         <div class="form-group">
                             <textarea class="form-control" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="340" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>

@@ -43,6 +43,11 @@ parameters:
         aprobado: 'APROBADO'
         curso: 'EN CURSO'
         reprobado: 'REPROBADO'
+    tipo_alarma:
+        respuesta_muro: 1
+        espacio_colaborativo: 2
+        evento: 3
+        aporte_espacio_colaborativo: 4
     social:
         muro: 1
         espacio_colaborativo: 2
