@@ -471,7 +471,8 @@ class DefaultController extends Controller
                                             }
                                             
                                         }
-
+                                        
+                                        
                                         $menu[] = array('id' => $permiso->getAplicacion()->getId(),
                                                         'url' => $permiso->getAplicacion()->getUrl(),
                                                         'nombre' => $permiso->getAplicacion()->getNombre(),
@@ -490,6 +491,7 @@ class DefaultController extends Controller
                                 {
                                     $s->setDisponible(false);
                                 }
+
 
                                 // Se crea la sesión en BD
                                 $admin_sesion = new AdminSesion();

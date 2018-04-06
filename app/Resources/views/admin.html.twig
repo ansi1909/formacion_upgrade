@@ -132,21 +132,29 @@
             {% block menu %}
                 <ul class="nav flex-column in" id="side-menu">
                     <li class="title-nav">MENU</li>
+                    {% set ultimo = 0 %}
+                    {% set ultimosub = 0 %}
                     {% for menu in app.session.get('menu') %}
+                    {% if ultimo != menu.id %}
                         <li class="nav-item">
                             <a href="{{ menu.url_existente ? path(menu.url, { 'app_id': menu.id }) : '#'~loop.index }}" class="{% if menu.submenu|length > 0 %}menudropdown {% endif %}nav-link">
                                 {% if menu.submenu|length > 0 %}
-                                    <span class="fa {{ menu.icono }}"></span> {{ menu.nombre }} <i class="fa fa-chevron-circle-down"></i>
+                                        <span class="fa {{ menu.icono }}"></span> {{ menu.nombre }} <i class="fa fa-chevron-circle-down"></i> 
                                 {% else %}
                                     <i class="fa {{ menu.icono }}"></i> {{ menu.nombre }}
                                 {% endif %}
                             </a>
+                            {% set ultimo = menu.id %}
+                    {% endif %}
                             {% if menu.submenu|length > 0 %}
                                 <ul class="nav flex-column nav-second-level">
                                     {% for submenu in menu.submenu %}
+                                    {% if ultimosub != submenu.id %}
                                         <li class="nav-item">
                                             <a href="{{ submenu.url_existente ? path(submenu.url, { 'app_id': submenu.id }) : '#'~loop.index }}" class="nav-link"><i class="fa {{ submenu.icono }}"></i> {{ submenu.nombre }}</a>
                                         </li>
+                                        {% set ultimosub = submenu.id %}
+                                    {% endif %}     
                                     {% endfor %}
                                 </ul>
                             {% endif %}
