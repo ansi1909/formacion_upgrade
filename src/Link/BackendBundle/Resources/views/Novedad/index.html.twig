@@ -64,6 +64,8 @@
 
                             {% if aplicacion.id==17 %}
                                 <th class="hd__title">{{ 'Tipo de Noticia'|trans }}</th>
+                            {% else %}
+                                <th class="hd__title">{{ 'Tipo de Biblioteca'|trans }}</th>                                
                             {% endif %}
                             <th class="hd__title">{{ 'Título'|trans }}</th>
                             <th class="hd__title">{{ 'Fecha Creación'|trans }}</th>
@@ -79,7 +81,10 @@
 
                                 {% if aplicacion.id==17 %}
                                     <td>{{ noticia.tipoNoticia }}</td>
+                                {% else %}
+                                    <td>{{ noticia.tipoBiblioteca }}</td>
                                 {% endif %}
+
                                 <td>{{ noticia.titulo }}</td>
                                 <td>{{ noticia.fechaRegistro|date("d/m/Y") }}</td>
                                 <td class="center">

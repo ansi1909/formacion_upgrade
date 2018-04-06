@@ -1,5 +1,39 @@
 {% extends '::admin.html.twig'%}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .input-group {
+            margin-top: 35px;
+        }
+        .photo_img{
+            width: 35rem;
+            height: auto;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 1rem 1rem 0 3rem;
+        }
+        .pdf{
+            width: 35rem;
+            height: auto;
+            overflow: hidden;
+            margin: 1rem 1rem 0 3rem;
+        }         
+    </style>
+{% endblock %}
+
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroNovedad', { 'noticia_id': noticia.id }) }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') }) }}">
@@ -152,24 +186,27 @@
                                 <div class="col-sm-2">
                                     <h5>{{ 'Imagen'|trans }}</h5>
                                 </div>
-                                {% if noticia.imagen %}
-                                    <div class="col-sm-6">
-                                        {% set img = uploads~noticia.imagen %}
-                                        <figure class="social-profile-pic" id="figure"><img style="width: 100% !important;" src="{{ img }} " alt="{{ 'Imagen'|trans }}" width="100%"></figure>
-                                    </div>
-                                {% endif %}    
-                                <div class="col-sm-2">
-                                    <h5>{{ 'Pdf'|trans }}</h5>
+                                <div class="col-sm-6">
+                                    {% set img = noticia.imagen  ? uploads~noticia.imagen  : asset('img/picture.png') %}
+                                    <div class="photo_img" id="figure"><img src="{{ img }}" alt="{{ 'Imagen'|trans }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
                                 </div>
-                                {% if noticia.pdf %}
-                                    <div class="col-sm-6">
-                                        {% set pdf = uploads~noticia.pdf %}
+                            </div>
+                            <br>
+                            {% if noticia.pdf %}
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h5>{{ 'Recurso'|trans }}</h5>
+                                </div>
+                                <div class="col-sm-6">
+                                    {% set pdf = uploads~noticia.pdf %}
+                                    <div class="pdf" >
                                         <p class="fa fa-file-pdf-o">
                                             <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
                                         </p>
                                     </div>
-                                {% endif %}
+                                </div>
                             </div>
+                            {% endif %}
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">
                                     <button type="button" class="bttn__nxt nextBtn" id="list"><span class="text__nxt">{{ 'Ir al listado'|trans }}</span><span class="fa fa-chevron-right"></span></button>

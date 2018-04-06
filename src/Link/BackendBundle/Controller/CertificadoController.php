@@ -414,7 +414,8 @@ class CertificadoController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
 
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
      
@@ -440,11 +441,11 @@ class CertificadoController extends Controller
             }
         }
 
-        $ruta ='<img src="'.$this->container->getParameter('folders')['dir_project'].'/web/img/codigo_qr.png">';
+        $ruta ='<img src="'.$uploads['parameters']['folders']['dir_project'].'/web/img/codigo_qr.png">';
 
-        $file = $uploads = $this->container->getParameter('folders')['dir_uploads'].$certificado->getImagen();
+        $file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
 
-        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
+        if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
         {
             //fehca del dia de hoy '.date('d/m/Y').' 
             $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
@@ -464,17 +465,16 @@ class CertificadoController extends Controller
                                             <div style="text-align:center; font-size:24px; margin-top:50px; ">'.$certificado->getDescripcion().'</div>
                                             <div style="text-align:center; font-size:30px; margin-top:50px; text-transform:uppercase;">'.$programa.'</div>
                                             <div style="text-align:center; font-size:18px; margin-top:10px;">'.$fecha.'</div>
-                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
-                                            
+                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>                                            
                                         </page>');*/
-//<qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>                                        
+            //<qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>                                        
             //Generamos el PDF
             $certificado_pdf->output('certificiado.pdf');
         }else
         {
-            if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['constancia'] )
-            {                 
-                $certificado_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 60, 15, 5));
+            if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['constancia'] )
+            {
+                $certificado_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 60, 10, 5));
                 $certificado_pdf->writeHTML('<page orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
                                                 <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
                                                 <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
@@ -486,42 +486,6 @@ class CertificadoController extends Controller
                                             </page>');
                 $certificado_pdf->output('constancia.pdf');
             }
-        }
-    }
-
-    public function generarVistaPdfAction($id_certificado)
-    {
-        $session = new Session();
-        $f = $this->get('funciones');
-        if (!$session->get('ini'))
-        {
-            return $this->redirectToRoute('_loginAdmin');
-        }
-        else {
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) )
-            {
-                return $this->redirectToRoute('_authException');
-            }
-        }
-        $f->setRequest($session->get('sesion_id'));
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-
-        $em = $this->getDoctrine()->getManager();
-       
-        //contultamos el nombre de la aplicacion para reutilizarla en la vista
-        $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($id_certificado);
- 
-        $file = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$certificado->getImagen();
-
-        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] ) 
-        {
-            return $this->render('LinkBackendBundle:Certificado:certificado.html.twig', array('certificado' => $certificado,
-                                                                                              'file' => $file));
-        }else
-        {
-            if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['constancia'] ) 
-                return $this->render('LinkBackendBundle:Certificado:constancia.html.twig', array('certificado' => $certificado,
-                                                                                                 'file' => $file));
         }
     }
 

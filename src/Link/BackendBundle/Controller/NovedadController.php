@@ -96,9 +96,15 @@ class NovedadController extends Controller
             {
                 foreach ($noticias as $noticia)
                 {
+                    if($aplicacion->getId()==26 )
+                        $tipoBiblioteca = $noticia->getTipoBiblioteca()->getNombre() ;
+                    else
+                        $tipoBiblioteca = Null;
+
                     $noticiadb[]= array('id'=>$noticia->getId(),
                                         'empresa'=>$noticia->getEmpresa()->getNombre(),
                                         'tipoNoticia'=>$noticia->getTipoNoticia()->getNombre(),
+                                        'tipoBiblioteca'=> $tipoBiblioteca,
                                         'titulo'=>$noticia->getTitulo(),
                                         'fechaRegistro'=>$noticia->getFechaRegistro(),
                                         'delete_disabled'=>$f->linkEliminar($noticia->getId(),'AdminNoticia'));
@@ -137,6 +143,10 @@ class NovedadController extends Controller
         $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $query = $em->createQuery('SELECT tb FROM LinkComunBundle:AdminTipoBiblioteca tb
+                                   ORDER BY tb.nombre ASC');
+        $tipoBibliotecas = $query->getResult();
 
         $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
                                    WHERE e.activo = :activo ORDER BY e.nombre ASC')
@@ -178,10 +188,13 @@ class NovedadController extends Controller
             $pdf = trim($request->request->get('pdf'));
             $imagen = trim($request->request->get('imagen'));
             $contenido = trim($request->request->get('contenido'));
+            $tipo_biblioteca_id = $request->request->get('tipo_biblioteca_id');
+            $tipoBiblioteca = $em->getRepository('LinkComunBundle:AdminTipoBiblioteca')->find($tipo_biblioteca_id);
 
             $biblioteca->setUsuario($usuario);
             $biblioteca->setEmpresa($empresa);
             $biblioteca->setTipoNoticia($tipoNoticia);
+            $biblioteca->setTipoBiblioteca($tipoBiblioteca);
             $biblioteca->setTitulo($titulo);
             $biblioteca->setPdf($pdf);
             $biblioteca->setImagen($imagen);
@@ -194,6 +207,7 @@ class NovedadController extends Controller
         }
 
         return $this->render('LinkBackendBundle:Novedad:registroBiblioteca.html.twig', array('empresas' => $empresas,
+                                                                                             'tipoBibliotecas' => $tipoBibliotecas,
                                                                                              'biblioteca' => $biblioteca,
                                                                                              'usuario_empresa' => $usuario_empresa ));
 

@@ -194,43 +194,9 @@ class DefaultController extends Controller
                                                                                  'actividad_reciente' => $actividad_reciente,
                                                                                  'programas_disponibles' => $programas_disponibles));
 
-        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
-
         return $response;        
     }
 
-    
-    public function ajaxBuscarClaveAction(Request $request)
-    {
-              
-        $em = $this->getDoctrine()->getManager();              
-
-        $usuario = 'danny';//trim($request->query->get('usuario'));
-        //return new response(var_dump($_COOKIE));
-
-        $ok = 1;
-        $error = '';
-        $clave = '';
-        
-        if($_COOKIE && $usuario!="" && $usuario == $_COOKIE["nombre_usuario"])
-        {
-            $ok = 0;   
-            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findBy(array('login' => $_COOKIE["nombre_usuario"],
-                                                                                        'cookies' => $_COOKIE["marca_aleatoria_usuario"]));
-            
-            $clave = $usuario-getClave();
-        }else
-        {
-            $error = $this->get('translator')->trans('Debe ingresar el usuario.');
-        }
-        
-        $return = array('ok' => $ok, 'clave' => $clave, 'error' => $error);
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-        
-    }
-    
     public function authExceptionEmpresaAction($mensaje)
     {
         return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje));

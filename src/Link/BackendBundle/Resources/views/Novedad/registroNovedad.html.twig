@@ -14,6 +14,21 @@
         .input-group {
             margin-top: 35px;
         }
+        .photo_img{
+            width: 35rem;
+            height: auto;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 1rem 1rem 0 3rem;
+        }        
     </style>
 {% endblock %}
 
@@ -220,69 +235,63 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-sm-6 col-lg-6 col-md-6">
+                                    <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                         <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Imagen'|trans }}</label>
-                                        <div class="col-sm-20 col-md-20 col-lg-20">
-                                            <input type="text" class="form-control form_sty1" name="imagen" id="imagen" value="{{ noticia.imagen }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión jpg o png.'|trans }}">
-                                            <span class="fa fa-file-picture-o"></span>
-                                        </div>
+                                        {% set img = noticia.imagen  ? uploads~noticia.imagen  : asset('img/picture.png') %}
+                                        <div class="photo_img" id="figure"><img src="{{ img }}" alt="{{ 'Imagen'|trans }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
                                     </div>
-                                    <div class="col-sm-2 col-md-2 col-lg-2">
+                                    <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                         <div class="input-group">
+                                            <input type="hidden" name="imagen" id="imagen" value="{{ noticia.imagen }}" readonly="readonly">
                                             <span class="input-group-addon">
                                             {% if usuario_empresa %}
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias/{{ usuario_empresa }}"  class="btn iframe-btn" type="button">
                                             {% else %}
-                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias"  class="btn iframe-btn" type="button">
-                                            {% endif %}
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
+                                            {% endif %}                                            
                                                     <button type="button" class="btn_addImg">
-                                                        <span class="fa fa-file-picture-o"></span>
+                                                        <span class="fa fa-photo"></span>
                                                     </button>
                                                 </a>
                                             </span>
                                             <span class="input-group-addon">
-                                                <button id="btn_clear_img" class="btn_clearImg" type="button">
+                                                <button id="btn_clear" class="btn_clearImg" type="button">
                                                     <span class="fa fa-times"></span>
                                                 </button>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-lg-6 col-md-6">
-                                        <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Pdf'|trans }}</label>
-                                        <div class="col-sm-20 col-md-20 col-lg-20">
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-8 col-lg-8 col-md-8">
+                                        <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
                                             <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
                                             <span class="fa fa-file-pdf-o"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2 col-lg-2 col-md-2">
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                             {% if usuario_empresa %}
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button">
                                             {% else %}
                                                 <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
-                                            {% endif %}
+                                            {% endif %}                                            
                                                     <button type="button" class="btn_addImg">
                                                         <span class="fa fa-file-pdf-o"></span>
                                                     </button>
                                                 </a>
                                             </span>
                                             <span class="input-group-addon">
-                                                <button id="btn_clear_pdf" class="btn_clearImg" type="button">
+                                                <button id="btn_clear2" class="btn_clearImg2" type="button">
                                                     <span class="fa fa-times"></span>
                                                 </button>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <br><br><br><br>
-                                <div class="row">
-                                    <div class="col-sm-6 col-md-6 col-lg-6">
-                                        {% set img = noticia.imagen  ? uploads~noticia.imagen  : asset('img/picture.png') %}
-                                        <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" ></figure>
-                                    </div> 
-                                </div>
-                                <br>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
                                         <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>

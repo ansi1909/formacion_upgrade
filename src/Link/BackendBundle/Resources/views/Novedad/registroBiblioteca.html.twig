@@ -117,7 +117,25 @@
                                             <span class="fa fa-font"></span>
                                         </div>
                                     </div>
+                                {% if not usuario_empresa %}                                    
                                 </div>
+                                <div class="row">
+                                {% endif %}
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Tipo de Biblioteca'|trans }}</label>
+                                        <div class="col-14">
+                                            <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id">
+                                                <option value=""></option>
+                                                {% for tipoBiblioteca in tipoBibliotecas %}
+                                                    {% set selected = biblioteca.id ? biblioteca.tipoBiblioteca.id == tipoBiblioteca.id ? 'selected="selected"' : '' : '' %}
+                                                    <option value="{{ tipoBiblioteca.id }}" {{ selected }} >{{ tipoBiblioteca.nombre|trim }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span class="fa fa-industry"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <br>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
@@ -189,7 +207,7 @@
                                 <br><br>
                                 <div class="row">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
-                                        <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Pdf'|trans }}</label>
+                                        <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
                                             <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
                                             <span class="fa fa-file-pdf-o"></span>
