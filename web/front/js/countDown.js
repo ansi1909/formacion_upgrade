@@ -10,7 +10,8 @@ $(document).ready(function() {
         countdown: true,
         callbacks: {
             stop: function() {
-                console.log('Se terminó');
+                // Redirección a la página de fin de la prueba
+                window.location.replace($('#url_fin').val());
             }
         }
     });
