@@ -107,6 +107,32 @@ body.codigoQR{
         width: 100%;
     }
 }
+
+.footer{
+    position: relative;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    border-top: 1px solid $gray-400;
+    padding: calc(1rem - 6px) 0;
+    margin-top: calc(6rem + 4px);
+    .imgForm{
+        width: calc(6rem + 5px);
+        height: auto;
+        filter: grayscale(100%);
+        opacity: .5;
+    }
+    .ayudaForm{
+        list-style-type: none;
+        margin-top: 40px;
+    }
+    .cpyR{
+        color: $gray-600;	
+        font-family: $primary-font;	
+        font-size: $font-size-xs;	
+        line-height: calc(1rem - 2px);
+    }
+}
 //animation
 @keyframes brillo {
     0%, 100%{

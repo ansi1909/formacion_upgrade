@@ -366,6 +366,28 @@ body.codigoQR {
 .audio-player img {
   width: 100%; }
 
+.footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  border-top: 1px solid #DAE1E6;
+  padding: calc(1rem - 6px) 0;
+  margin-top: calc(6rem + 4px); }
+  .footer .imgForm {
+    width: calc(6rem + 5px);
+    height: auto;
+    filter: grayscale(100%);
+    opacity: .5; }
+  .footer .ayudaForm {
+    list-style-type: none;
+    margin-top: 40px; }
+  .footer .cpyR {
+    color: #AAAFB3;
+    font-family: "Roboto";
+    font-size: 0.75rem;
+    line-height: calc(1rem - 2px); }
+
 @keyframes brillo {
   0%, 100% {
     opacity: 0;
