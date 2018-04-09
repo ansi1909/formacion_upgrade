@@ -13,5 +13,5 @@ _finTest:
     defaults: { _controller: LinkFrontendBundle:Test:fin }
 
 _resultadosTest:
-    path:     /resultados/{programa_id}/{prueba_log_id}/{puntos}/{cantidad_preguntas}/{preguntas_str}
+    path:     /resultados/{programa_id}/{prueba_log_id}/{puntos}
     defaults: { _controller: LinkFrontendBundle:Test:resultados, puntos: 0 }

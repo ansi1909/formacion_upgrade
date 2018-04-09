@@ -61,7 +61,7 @@ class TestController extends Controller
                                                                                           array('id' => 'DESC'));
             if ($prueba_log)
             {
-                return $this->redirectToRoute('_resultadosTest', array('prueba_log_id' => $prueba_log->getId()));
+                return $this->redirectToRoute('_resultadosTest', array('programa_id' => $programa_id, 'prueba_log_id' => $prueba_log->getId(), 'puntos' => 0));
             }
             else {
                 $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
@@ -119,8 +119,8 @@ class TestController extends Controller
         $bordes[] = '#20c997';
 
         $preguntas = array();
-        //for ($i=0; $i<$prueba->getCantidadMostrar(); $i++)
-        for ($i=0; $i<count($preguntas_ids); $i++)
+        //for ($i=0; $i<count($preguntas_ids); $i++)
+        for ($i=0; $i<$prueba->getCantidadMostrar(); $i++)
         {
 
             $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($preguntas_ids[$i]);
@@ -404,6 +404,60 @@ class TestController extends Controller
         $puntos = 0;
         $preguntas_ids = explode(",", $preguntas_str);
 
+        // Verificar si todas las preguntas fueron contestadas
+        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r 
+                                    WHERE r.pruebaLog = :prueba_log_id ORDER BY r.nro ASC")
+                    ->setParameter('prueba_log_id', $prueba_log_id);
+        $nros = $query->getResult();
+
+        $nros_arr = array();
+        foreach ($nros as $nro)
+        {
+            $nros_arr[] = $nro['nro'];
+        }
+
+        if (count($nros) < $cantidad_preguntas)
+        {
+
+            $erradas = 0;
+            $erradas_str = $prueba_log->getPreguntasErradas();
+            if ($erradas_str)
+            {
+                $erradas_arr = explode(",", $erradas_str);
+            }
+            else {
+                $erradas_arr = array();
+            }
+
+            for ($i=1; $i<=count($preguntas_ids); $i++)
+            {
+                if (!in_array($i, $nros_arr))
+                {
+                    // No contestó esta pregunta
+                    if (isset($preguntas_ids[$i-1]))
+                    {
+                        $erradas++;
+                        $erradas_arr[] = $i;
+                        $pregunta = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPregunta')->find($preguntas_ids[$i-1]);
+                        $respuesta = new CertiRespuesta();
+                        $respuesta->setNro($i);
+                        $respuesta->setPregunta($pregunta);
+                        $respuesta->setPruebaLog($prueba_log);
+                        $respuesta->setFechaRegistro(new \DateTime('now'));
+                        $em->persist($respuesta);
+                        $em->flush();
+                    }
+                }
+            }
+            if ($erradas)
+            {
+                $erradas_str = implode(",", $erradas_arr);
+                $total_erradas = $prueba_log->getErradas() + $erradas;
+                $prueba_log->setErradas($total_erradas);
+                $prueba_log->setPreguntasErradas($erradas_str);
+            }
+        }
+
         $contestadas = $prueba_log->getErradas() + $prueba_log->getCorrectas();
         
         if ((!$prueba_log->getPreguntasErradas() || $prueba_log->getPreguntasErradas() == '') && ($contestadas == $cantidad_preguntas))
@@ -420,13 +474,7 @@ class TestController extends Controller
         }
         else {
 
-            if ($prueba_log->getPreguntasErradas())
-            {
-                $erradas = explode(",", $prueba_log->getPreguntasErradas());
-            }
-            else {
-                $erradas = array();
-            }
+            $erradas = explode(",", $prueba_log->getPreguntasErradas());
 
             // Se determina el total de puntaje que suman todas las preguntas
             $total_valor = 0;
@@ -436,26 +484,16 @@ class TestController extends Controller
             {
                 $respuesta = $em->getRepository('LinkComunBundle:CertiRespuesta')->findOneBy(array('pruebaLog' => $prueba_log_id,
                                                                                                    'nro' => $i));
-                if ($respuesta)
+                if ($respuesta->getPregunta()->getPregunta())
                 {
-                    if ($respuesta->getPregunta()->getPregunta())
-                    {
-                        // Es una respuesta de asociación
-                        $pregunta_id = $respuesta->getPregunta()->getPregunta()->getId();
-                        $valor = $respuesta->getPregunta()->getPregunta()->getValor();
-                    }
-                    else {
-                        // Respuesta de selección simple o múltiple
-                        $pregunta_id = $respuesta->getPregunta()->getId();
-                        $valor = $respuesta->getPregunta()->getValor();
-                    }
+                    // Es una respuesta de asociación
+                    $pregunta_id = $respuesta->getPregunta()->getPregunta()->getId();
+                    $valor = $respuesta->getPregunta()->getPregunta()->getValor();
                 }
                 else {
-                    // Pregunta sin contestar
-                    $erradas[] = $i;
-                    $pregunta_id = $preguntas_ids[$i-1];
-                    $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
-                    $valor = $pregunta->getValor();
+                    // Respuesta de selección simple o múltiple
+                    $pregunta_id = $respuesta->getPregunta()->getId();
+                    $valor = $respuesta->getPregunta()->getValor();
                 }
                 $preguntas[$i] = array('id' => $pregunta_id,
                                        'valor' => $valor);
@@ -489,12 +527,9 @@ class TestController extends Controller
 
         }
 
-        $erradas_str = implode(",", $erradas);
-
         // Finalizar prueba_log
-        $prueba_log->setPreguntasErradas($erradas_str);
-        $prueba_log->setErradas(count($erradas));
         $prueba_log->setFechaFin(new \DateTime('now'));
+        $prueba_log->setPorcentajeAvance(100);
         $prueba_log->setNota($nota);
         $prueba_log->setEstado($estado);
         $em->persist($prueba_log);
@@ -530,11 +565,11 @@ class TestController extends Controller
         }
 
         // Hacia la página de resultados
-        return $this->redirectToRoute('_resultadosTest', array('programa_id' => $programa_id, 'prueba_log_id' => $prueba_log_id, 'puntos' => $puntos, 'cantidad_preguntas' => $cantidad_preguntas, 'preguntas_str' => $preguntas_str));
+        return $this->redirectToRoute('_resultadosTest', array('programa_id' => $programa_id, 'prueba_log_id' => $prueba_log_id, 'puntos' => $puntos));
 
     }
 
-    public function resultadosAction($programa_id, $prueba_log_id, $puntos, $cantidad_preguntas, $preguntas_str, Request $request)
+    public function resultadosAction($programa_id, $prueba_log_id, $puntos, Request $request)
     {
 
         $session = new Session();
@@ -549,7 +584,6 @@ class TestController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $try_button = 0;
-        $preguntas_ids = explode(",", $preguntas_str);
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
 
@@ -561,36 +595,33 @@ class TestController extends Controller
             $erradas = array();
         }
 
+        $query = $em->createQuery("SELECT DISTINCT(r.nro) AS nro FROM LinkComunBundle:CertiRespuesta r 
+                                    WHERE r.pruebaLog = :prueba_log_id ORDER BY r.nro ASC")
+                    ->setParameter('prueba_log_id', $prueba_log_id);
+        $nros = $query->getResult();
+
         $preguntas = array();
-        for ($i=1; $i<=$cantidad_preguntas; $i++)
+        foreach ($nros as $nro)
         {
 
             $respuesta = $em->getRepository('LinkComunBundle:CertiRespuesta')->findOneBy(array('pruebaLog' => $prueba_log_id,
-                                                                                               'nro' => $i));
+                                                                                               'nro' => $nro['nro']));
 
-            if ($respuesta)
+            if ($respuesta->getPregunta()->getPregunta())
             {
-                if ($respuesta->getPregunta()->getPregunta())
-                {
-                    // Es una respuesta de asociación
-                    $pregunta = $respuesta->getPregunta()->getPregunta();
-                }
-                else {
-                    // Respuesta de selección simple o múltiple
-                    $pregunta = $respuesta->getPregunta();
-                }
+                // Es una respuesta de asociación
+                $pregunta = $respuesta->getPregunta()->getPregunta();
             }
             else {
-                // Pregunta sin contestar
-                $pregunta_id = $preguntas_ids[$i-1];
-                $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
+                // Respuesta de selección simple o múltiple
+                $pregunta = $respuesta->getPregunta();
             }
 
-            $errada = in_array($i, $erradas) ? 1 : 0;
+            $errada = in_array($nro['nro'], $erradas) ? 1 : 0;
 
-            $preguntas[$i] = array('id' => $pregunta->getId(),
-                                   'enunciado' => $pregunta->getEnunciado(),
-                                   'errada' => $errada);
+            $preguntas[$nro['nro']] = array('id' => $pregunta->getId(),
+                                            'enunciado' => $pregunta->getEnunciado(),
+                                            'errada' => $errada);
 
         }
 

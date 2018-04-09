@@ -31,7 +31,7 @@
         <input type="hidden" id="pregunta_str" name="pregunta_str" value="{{ preguntas_str }}">
         <input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxTestResponse') }}">
         <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length, 'preguntas_str': preguntas_str }) }}">
-        <input type="hidden" id="url_resultados" name="url_resultados" value="{{ path('_resultadosTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length, 'preguntas_str': preguntas_str }) }}">
+        <input type="hidden" id="url_resultados" name="url_resultados" value="{{ path('_resultadosTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id }) }}">
 
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
@@ -104,7 +104,7 @@
             
             <div class="row align-items-center">
                 <div class="col-12 text-right">
-                    <a href="#" class="btn_sp">
+                    <a href="#" class="btn_sp1 btn_sp">
                         <span>{{ 'Siguiente'|trans }}</span>
                     </a>
                 </div>

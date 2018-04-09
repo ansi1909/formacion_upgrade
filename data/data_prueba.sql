@@ -1996,10 +1996,10 @@ SELECT pg_catalog.setval('certi_prueba_id_seq', 6, true);
 --
 -- Data for Name: certi_prueba; Type: TABLE DATA; Schema: public; Owner: develo
 --
-INSERT INTO certi_prueba VALUES (1, 'Pensamiento estratégico | Corto y largo plazo', 20, 5, 4, '15:00:00', 1, 2, '2018-03-30 13:05:35', '2018-03-30 13:05:35');
-INSERT INTO certi_prueba VALUES (3, 'Pensamiento estratégico | Del pensamiento a la ejecución', 26, 5, 4, '15:00:00', 1, 2, '2018-03-30 14:03:43', '2018-03-30 14:03:43');
-INSERT INTO certi_prueba VALUES (4, 'Pensamiento Estratégico | Pensamiento estratégico para competir', 31, 5, 4, '15:00:00', 1, 2, '2018-03-30 14:09:49', '2018-03-30 14:09:49');
-INSERT INTO certi_prueba VALUES (5, 'Pensamiento estratégico | Importancia', 14, 5, 4, '15:00:00', 1, 2, '2018-03-30 14:24:47', '2018-03-30 14:24:47');
+INSERT INTO certi_prueba VALUES (1, 'Pensamiento estratégico | Corto y largo plazo', 20, 5, 4, '00:15:00', 1, 2, '2018-03-30 13:05:35', '2018-03-30 13:05:35');
+INSERT INTO certi_prueba VALUES (3, 'Pensamiento estratégico | Del pensamiento a la ejecución', 26, 5, 4, '00:15:00', 1, 2, '2018-03-30 14:03:43', '2018-03-30 14:03:43');
+INSERT INTO certi_prueba VALUES (4, 'Pensamiento Estratégico | Pensamiento estratégico para competir', 31, 5, 4, '00:15:00', 1, 2, '2018-03-30 14:09:49', '2018-03-30 14:09:49');
+INSERT INTO certi_prueba VALUES (5, 'Pensamiento estratégico | Importancia', 14, 5, 4, '00:15:00', 1, 2, '2018-03-30 14:24:47', '2018-03-30 14:24:47');
 INSERT INTO certi_prueba VALUES (6, 'Pensamiento estratégico | Módulo I: Pensamiento Estratégico', 13, 10, 8, '00:30:00', 1, 2, '2018-03-30 14:32:52', '2018-03-30 14:32:52');
 
 --------------------------------------------------------------------------------------------
