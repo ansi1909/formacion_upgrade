@@ -1665,7 +1665,7 @@ p.up {
 
 .card_noticia-detalle {
   width: 68rem;
-  height: 63.7rem;
+  height: auto;
   margin: 0;
   padding: 0;
   border-radius: 1rem 1rem 0 0; }
