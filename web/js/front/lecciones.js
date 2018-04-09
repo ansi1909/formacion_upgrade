@@ -42,8 +42,18 @@ $(document).ready(function() {
 		});
 
 		// Activar el muro
-		$('#mas_valorados_comments-'+new_pagina_id).hide(1000);
-		$('#mas_recientes_comments-'+new_pagina_id).show(1000);
+		var muroActivo = $('#muroActivo'+new_pagina_id).val();
+		if (muroActivo == 1)
+		{
+			$('#iconComments').show();
+			$('#mas_valorados_comments-'+new_pagina_id).hide(1000);
+			$('#mas_recientes_comments-'+new_pagina_id).show(1000);
+		}
+		else {
+			$("#comments").removeClass("open-comments");
+			$("#main").removeClass("ml-comments");
+			$('#iconComments').hide();
+		}
 
 		$('#pagina_id_viendo').val(new_pagina_id);
 		startLesson(programa_id, $('#pagina_id_viendo').val());
