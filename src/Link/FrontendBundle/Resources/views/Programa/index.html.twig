@@ -75,6 +75,11 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#proG').addClass("active");
+        });
+    </script>
     <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
-    <script type="text/javascript" src="{{ asset('js/front/mapa.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('js/front/mapa.js') }}"></script>
 {% endblock %}

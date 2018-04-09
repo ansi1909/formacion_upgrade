@@ -69,4 +69,9 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#ranK').addClass("active");
+        });
+    </script>
 {% endblock %}

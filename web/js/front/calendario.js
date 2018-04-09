@@ -35,4 +35,5 @@ $(document).ready(function() {
         events: url_eventos,
         timeFormat: 'hh:mm a'
     });
+    $('#calEve').addClass("active");
 });

@@ -103,5 +103,10 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#notiNove').addClass("active");
+        });
+    </script>
     <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
 {% endblock %}

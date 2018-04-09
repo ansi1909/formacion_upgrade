@@ -39,5 +39,10 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#faQs').addClass("active");
+        });
+    </script>
     <script type="text/javascript" src="{{ asset('front/js/acordion.js') }}"></script> 
 {% endblock %}

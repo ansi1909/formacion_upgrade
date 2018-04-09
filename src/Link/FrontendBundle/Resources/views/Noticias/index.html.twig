@@ -235,7 +235,11 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    
+    <script>
+        $(document).ready(function(){
+            $('#notiNove').addClass("active");
+        });
+    </script>
     <script src="{{ asset('front/js/jquery.tabpager.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/tabsPag.js') }}"></script> 
     <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
