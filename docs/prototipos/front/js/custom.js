@@ -40,7 +40,8 @@ window.onload=function(){
 $(document).ready(function() {
   // do stuff when DOM is ready
 // $("#message").fadeIn("slow");
-    var x = 0, y = 0, z = 0; 
+    var x = 0, y = 0, z = 0;
+    var module = $('.modulo');
     $("#config").on('click',function(){
         if(x == 0){
             if(y == 1){
@@ -148,5 +149,13 @@ $(document).ready(function() {
         if (!$(".main-sidenav-close")[0]){
              closeNav();
         }
+    });
+    module.each(function(i, el){
+        $(this).on('click',function(){
+            module.each(function(){
+                $(this).removeClass("active");
+            });
+            $(this).addClass("active");
+        });
     });
 });
