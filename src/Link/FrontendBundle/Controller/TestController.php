@@ -223,136 +223,171 @@ class TestController extends Controller
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
         $pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($pregunta_id);
 
-        // Si es la pregunta nro=1, se verifica que no existan respuestas para esta prueba (CASO BACK)
-        if ($nro == 1)
+        $correcta = 1;
+
+        if ($pregunta->getTipoPregunta()->getId() != $yml['parameters']['tipo_pregunta']['asociacion'])
         {
 
-            $respuestas = $em->getRepository('LinkComunBundle:CertiRespuesta')->findByPruebaLog($prueba_log->getId());
-            if (count($respuestas))
+            // Simples o múltiples
+            $p_opciones = trim($p_opciones); // Viene separado por comas
+            if ($p_opciones != '')
             {
-                // Excepción. Prueba ya presentada.
-                $ok = 0;
+                $p_opciones_arr = explode(",", $p_opciones);
+            }
+            else {
+                $p_opciones_arr = array();
             }
 
-        }
-
-        if ($ok)
-        {
-
-            $correcta = 1;
-
-            if ($pregunta->getTipoPregunta()->getId() != $yml['parameters']['tipo_pregunta']['asociacion'])
+            if (!count($p_opciones_arr))
             {
-
-                // Simples o múltiples
-                $p_opciones = trim($p_opciones); // Viene separado por comas
-                if ($p_opciones != '')
+                // No contestó. Se cuenta como errada.
+                $correcta = 0;
+                $respuesta = $em->getRepository('LinkComunBundle:CertiRespuesta')->findOneBy(array('pruebaLog' => $prueba_log_id,
+                                                                                                   'nro' => $nro,
+                                                                                                   'pregunta' => $pregunta_id));
+                if (!$respuesta)
                 {
-                    $p_opciones_arr = explode(",", $p_opciones);
-                }
-                else {
-                    $p_opciones_arr = array();
-                }
-
-                if (!count($p_opciones_arr))
-                {
-                    // No contestó. Se cuenta como errada.
-                    $correcta = 0;
                     $respuesta = new CertiRespuesta();
                     $respuesta->setNro($nro);
                     $respuesta->setPregunta($pregunta);
                     $respuesta->setPruebaLog($prueba_log);
                     $respuesta->setFechaRegistro(new \DateTime('now'));
-                    $em->persist($respuesta);
-                    $em->flush();
                 }
-                else {
-                    foreach ($p_opciones_arr as $po_id)
-                    {
-                        $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($po_id);
-                        if (!$pregunta_opcion->getCorrecta())
-                        {
-                            $correcta = 0;
-                        }
-                        $respuesta = new CertiRespuesta();
-                        $respuesta->setNro($nro);
-                        $respuesta->setPregunta($pregunta);
-                        $respuesta->setPruebaLog($prueba_log);
-                        $respuesta->setFechaRegistro(new \DateTime('now'));
-                        $respuesta->setOpcion($pregunta_opcion->getOpcion());
-                        $em->persist($respuesta);
-                        $em->flush();
-                    }
-                }
-
+                $respuesta->setOpcion(null);
+                $em->persist($respuesta);
+                $em->flush();
             }
             else {
 
-                // Respuestas de asociación
-                $correctas_arr = array(); // Forma pregunta_id => opcion_id
-                $respuestas_arr = array(); // Forma pregunta_id => opcion_id_seleccionada
-
-                foreach ($p_opciones as $p_opcion)
+                $respuestas = $em->getRepository('LinkComunBundle:CertiRespuesta')->findBy(array('pruebaLog' => $prueba_log_id,
+                                                                                                 'nro' => $nro,
+                                                                                                 'pregunta' => $pregunta_id));
+                // Borramos primero las respuestas de esta pregunta
+                foreach ($respuestas as $respuesta)
                 {
-
-                    $po_arr = explode("_", $p_opcion);
-                    $respuestas_arr[$po_arr[0]] = $po_arr[1];
-                    if ($po_arr[1] != 0)
-                    {
-                        $opcion = $em->getRepository('LinkComunBundle:CertiOpcion')->find($po_arr[1]);
-                    }
-                    else {
-                        $opcion = null;
-                    }
-
-                    $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findOneByPregunta($po_arr[0]);
-                    $correctas_arr[$po_arr[0]] = $pregunta_opcion->getOpcion()->getId();
-
-                    $respuesta = new CertiRespuesta();
-                    $respuesta->setNro($nro);
-                    $respuesta->setPregunta($pregunta_opcion->getPregunta());
-                    $respuesta->setPruebaLog($prueba_log);
-                    $respuesta->setFechaRegistro(new \DateTime('now'));
-                    $respuesta->setOpcion($opcion);
-                    $em->persist($respuesta);
+                    $em->remove($respuesta);
                     $em->flush();
-
                 }
 
-                foreach ($correctas_arr as $p_id => $o_id)
+                // Se guardan las nuevas respuestas
+                foreach ($p_opciones_arr as $po_id)
                 {
-                    if ($respuestas_arr[$p_id] != $o_id)
+                    $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->find($po_id);
+                    if (!$pregunta_opcion->getCorrecta())
                     {
                         $correcta = 0;
-                        break;
                     }
+                    $respuesta = new CertiRespuesta();
+                    $respuesta->setNro($nro);
+                    $respuesta->setPregunta($pregunta);
+                    $respuesta->setPruebaLog($prueba_log);
+                    $respuesta->setFechaRegistro(new \DateTime('now'));
+                    $respuesta->setOpcion($pregunta_opcion->getOpcion());
+                    $em->persist($respuesta);
+                    $em->flush();
                 }
-
             }
 
-            $correctas = $prueba_log->getCorrectas() + $correcta;
-            $errada = !$correcta ? 1 : 0;
-            if ($errada){
-                $erradas_str = $prueba_log->getPreguntasErradas();
-                if ($erradas_str)
+        }
+        else {
+
+            $respuestas = $em->getRepository('LinkComunBundle:CertiRespuesta')->findBy(array('pruebaLog' => $prueba_log_id,
+                                                                                             'nro' => $nro));
+            // Borramos primero las respuestas de esta pregunta
+            foreach ($respuestas as $respuesta)
+            {
+                $em->remove($respuesta);
+                $em->flush();
+            }
+
+            // Respuestas de asociación
+            $correctas_arr = array(); // Forma pregunta_id => opcion_id
+            $respuestas_arr = array(); // Forma pregunta_id => opcion_id_seleccionada
+
+            foreach ($p_opciones as $p_opcion)
+            {
+
+                $po_arr = explode("_", $p_opcion);
+                $respuestas_arr[$po_arr[0]] = $po_arr[1];
+                if ($po_arr[1] != 0)
                 {
-                    $erradas_arr = explode(",", $erradas_str);
+                    $opcion = $em->getRepository('LinkComunBundle:CertiOpcion')->find($po_arr[1]);
                 }
                 else {
-                    $erradas_arr = array();
+                    $opcion = null;
                 }
-                $erradas_arr[] = $nro;
-                $erradas_str = implode(",", $erradas_arr);
-                $prueba_log->setPreguntasErradas($erradas_str);
-            }
-            $erradas = $prueba_log->getErradas() + $errada;
-            $prueba_log->setPorcentajeAvance($porcentaje);
-            $prueba_log->setCorrectas($correctas);
-            $prueba_log->setErradas($erradas);
-            $em->persist($prueba_log);
-            $em->flush();
 
-        }   
+                $pregunta_opcion = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findOneByPregunta($po_arr[0]);
+                $correctas_arr[$po_arr[0]] = $pregunta_opcion->getOpcion()->getId();
+
+                $respuesta = new CertiRespuesta();
+                $respuesta->setNro($nro);
+                $respuesta->setPregunta($pregunta_opcion->getPregunta());
+                $respuesta->setPruebaLog($prueba_log);
+                $respuesta->setFechaRegistro(new \DateTime('now'));
+                $respuesta->setOpcion($opcion);
+                $em->persist($respuesta);
+                $em->flush();
+
+            }
+
+            foreach ($correctas_arr as $p_id => $o_id)
+            {
+                if ($respuestas_arr[$p_id] != $o_id)
+                {
+                    $correcta = 0;
+                    break;
+                }
+            }
+
+        }
+
+        $errada = !$correcta ? 1 : 0;
+        $erradas_str = $prueba_log->getPreguntasErradas();
+        $new_erradas = array();
+
+        if ($erradas_str)
+        {
+            $erradas_arr = explode(",", $erradas_str);
+        }
+        else {
+            $erradas_arr = array();
+        }
+
+        if ($errada){
+            if (count($erradas_arr))
+            {
+                if (!in_array($nro, $erradas_arr))
+                {
+                    $erradas_arr[] = $nro;
+                }
+            }
+            else {
+                $erradas_arr[] = $nro;
+            }
+            $new_erradas = $erradas_arr;
+        }
+        else {
+            foreach ($erradas_arr as $e)
+            {
+                if ($e != $nro)
+                {
+                    $new_erradas[] = $e;
+                }
+            }
+        }
+
+        if (count($new_erradas))
+        {
+            $erradas_str = implode(",", $new_erradas);
+            $prueba_log->setPreguntasErradas($erradas_str);
+        }
+
+        $erradas = count($new_erradas);
+        $prueba_log->setPorcentajeAvance($porcentaje);
+        $prueba_log->setErradas($erradas);
+        $em->persist($prueba_log);
+        $em->flush();
 
         $return = array('ok' => $ok);
         $return = json_encode($return);
@@ -458,6 +493,8 @@ class TestController extends Controller
             }
         }
 
+        $correctas = $cantidad_preguntas - $prueba_log->getErradas();
+        $prueba_log->setCorrectas($correctas);
         $contestadas = $prueba_log->getErradas() + $prueba_log->getCorrectas();
         
         if ((!$prueba_log->getPreguntasErradas() || $prueba_log->getPreguntasErradas() == '') && ($contestadas == $cantidad_preguntas))

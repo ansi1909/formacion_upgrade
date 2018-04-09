@@ -101,14 +101,20 @@
                 </div>
 
             {% endfor %}
-            
-            <div class="row align-items-center">
-                <div class="col-12 text-right">
-                    <a href="#" class="btn_sp1 btn_sp">
+
+            <div class="row my-5 align-items-center">
+                <div class="col-6 text-center">
+                    <a href="#" class="btn_sp2 btn_sp" id="before" style="display:none;">
+                        <span>{{ 'Anterior pregunta'|trans }}</span>
+                    </a>
+                </div>
+                <div class="col-6 text-center">
+                    <a href="#" class="btn_sp1 btn_sp" id="next">
                         <span>{{ 'Siguiente'|trans }}</span>
                     </a>
                 </div>
             </div>
+
         </div>
 
         <a id="triggerModal" data-toggle="modal" data-target="#modalCe"></a>

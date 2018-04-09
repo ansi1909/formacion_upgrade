@@ -6,15 +6,24 @@ $(document).ready(function() {
 	$('.btn_sp').click(function(){
 
 		var next = $(this);
-		next.hide();
+		var next_id = next.attr('id');
+		$('.btn_sp').hide();
 		var nro = $('#nro').val();
 		var pregunta_id = $('#pregunta_id').val();
 
 		// Escondemos la corriente pregunta
 		$('#pregunta-'+nro).hide(1000);
 
+		if (next_id == 'before')
+		{
+			var nro_p = parseInt(nro)-parseInt(2);
+		}
+		else {
+			var nro_p = nro;
+		}
+
 		// Porcentaje de avance
-		var porcentaje = parseInt(((nro/total)*100), 10);
+		var porcentaje = parseInt(((nro_p/total)*100), 10);
 
 		// Almacenamos las respuestas
 		$.ajax({
@@ -26,20 +35,41 @@ $(document).ready(function() {
 			success: function(data) {
 				if (data.ok == 1)
 				{
-					$("#progreso").attr("style", 'width: '+porcentaje+'%');
-					if (nro < total)
+					if (next_id == 'before')
 					{
-						nro = parseInt(nro)+parseInt(1);
+						$("#progreso").attr("style", 'width: '+porcentaje+'%');
+						nro = parseInt(nro)-parseInt(1);
 						$('#nro').val(nro);
 						var nro_pregunta = nro < 10 ? '0'+nro : nro;
 						$('#nro_pregunta').html(nro_pregunta);
 						$('#pregunta-'+nro).show(1000); // Se muestra la siguiente pregunta
-						$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Nueva pregunta_id
-						next.show();
+						$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Anterior pregunta_id
+						$('#next').show();
+						if (nro > 1)
+						{
+							$('#before').show();
+						}
 					}
 					else {
-						// Redirección a la página de fin de la prueba
-						window.location.replace($('#url_fin').val());
+						$("#progreso").attr("style", 'width: '+porcentaje+'%');
+						if (nro < total)
+						{
+							nro = parseInt(nro)+parseInt(1);
+							$('#nro').val(nro);
+							var nro_pregunta = nro < 10 ? '0'+nro : nro;
+							$('#nro_pregunta').html(nro_pregunta);
+							$('#pregunta-'+nro).show(1000); // Se muestra la siguiente pregunta
+							$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Nueva pregunta_id
+							$('#next').show();
+							if (nro > 1)
+							{
+								$('#before').show();
+							}
+						}
+						else {
+							// Redirección a la página de fin de la prueba
+							window.location.replace($('#url_fin').val());
+						}
 					}
 				}
 				else {

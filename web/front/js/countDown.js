@@ -17,6 +17,7 @@ $(document).ready(function() {
             	$( "#triggerModal" ).trigger( "click" );
             	setTimeout(function() {
                     window.location.replace($('#url_fin').val());
+                    //console.log('Redireccionamiento');
                 }, 6000);
             }
         }
