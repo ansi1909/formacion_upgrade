@@ -1,8 +1,7 @@
 $(document).ready(function() {
     var clock;
     var timing = $('#duracion').val();
-    //timing = 25;
-    //var timing = 60 * 30;
+    //timing = 10;
     // Instantiate a counter
     clock = new FlipClock($('.clock'), timing, {
         clockFace: 'MinuteCounter',
@@ -10,10 +9,15 @@ $(document).ready(function() {
         countdown: true,
         callbacks: {
             stop: function() {
-            	$('.btn_sp').hide();
-                // Redirección a la página de fin de la prueba
-                //console.log('Expiró el tiempo');
-                window.location.replace($('#url_fin').val());
+            	$('.toHide').hide();
+            	$('#msgTitulo1').hide();
+            	$('#msgTitulo2').show();
+            	$('#msgModal1').hide();
+            	$('#msgModal2').show();
+            	$( "#triggerModal" ).trigger( "click" );
+            	setTimeout(function() {
+                    window.location.replace($('#url_fin').val());
+                }, 6000);
             }
         }
     });

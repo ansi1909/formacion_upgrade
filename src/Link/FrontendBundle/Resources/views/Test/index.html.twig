@@ -36,7 +36,7 @@
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
-                    <a href="{{ path('_programa', { 'programa_id': programa_id }) }}">
+                    <a href="#" data-toggle="modal" data-target="#modalCe">
                         <i class="material-icons mr-3 color-light-grey rotate-180 exit_eval">exit_to_app</i>
                     </a>
                     <span class="txt_eval_header">{{ 'Salir de la evaluación'|trans }}</span>
@@ -55,7 +55,7 @@
             </nav>
         </header>
 
-        <div class="container mt-22v">
+        <div class="container mt-22v mb-5">
 
             <div class="row">
                 <div class="col-2">
@@ -107,6 +107,42 @@
                     <a href="#" class="btn_sp1 btn_sp">
                         <span>{{ 'Siguiente'|trans }}</span>
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <a id="triggerModal" data-toggle="modal" data-target="#modalCe"></a>
+
+        <div class="modal modalCEval" id="modalCe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center toHide">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo" id="msgTitulo1">{{ '¿Estás Segur@ que desea salir de la evaluación?'|trans }}</h4>
+                        <h4 class="titulo" id="msgTitulo2" style="display:none;">{{ 'Tiempo expirado'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
+                        <p class="txtModalVs" id="msgModal1">{{ 'Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos'|trans }}.</p>
+                        <p class="txtModalVs" id="msgModal2" style="display:none;">{{ 'Estimado participante, ha expirado el tiempo de duración de la evaluación. Se calcularán los resultados de acuerdo a las respuestas dadas hasta los momentos.'|trans }}.</p>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center toHide">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="{{ path('_programa', { 'programa_id': programa_id }) }}"><button type="button" class="btn btn-danger btn-Cs">{{ 'Salir de la evaluación'|trans }}</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center toHide">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" class="cancelarCs" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
+                    </div>
                 </div>
             </div>
         </div>
