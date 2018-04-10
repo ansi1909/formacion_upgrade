@@ -110,6 +110,12 @@ class Functions
             case 'AdminNotificacionProgramada':
                 $entidades = array('AdminNotificacionProgramada' => 'grupo');
                 break;
+            case 'CertiMuro':
+                $entidades = array('CertiMuro' => 'muro');
+                break;
+            case 'CertiForo':
+                $entidades = array('CertiForo' => 'foro');
+                break;
             default:
     			$entidades = array();
     			break;

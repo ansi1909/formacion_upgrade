@@ -73,6 +73,7 @@ class RankingController extends Controller
                     $class = 'me-i';
                     $topten = 1;
                     $meorder = '';
+                    $shiney = '<div class="starShiney"></div>';
                 }elseif($plog->getUsuario()->getId() == $session->get('usuario')['id'] and $orden > 10){
                     $class = '';
                     $meorder = '<tr>';
@@ -82,16 +83,19 @@ class RankingController extends Controller
                     $meorder .= '<td>'.round($plog->getPorcentajeAvance()).'</td>';
                     $meorder .= '<td>';
                     $meorder .= '<div class="img-coin">';
+                    $meorder .= '<div class="starShiney"></div>';
                     $meorder .= '<img src="'.$baseUrl.'/assets/img/coins.svg" alt="">';
                     $meorder .= '<span class="text-coin">'.$plog->getPuntos().'K</span>';
                     $meorder .= '</div>';
                     $meorder .= '</td>';
                     $meorder .= '</tr>';
                     $topten = 0;
+                    $shiney = '';
                 }else{
                     $class = '';
                     $topten = 0;
                     $meorder = '';
+                    $shiney = '';
                 }
                 $usuarios[]= array('orden'=>$orden,
                                    'nombre'=>$plog->getUsuario()->getNombre(),
@@ -101,6 +105,7 @@ class RankingController extends Controller
                                    'experiencia'=>$plog->getPuntos(),
                                    'class'=>$class,
                                    'meorder'=>$meorder,
+                                   'shiney'=>$shiney,
                                    'topten'=>$topten);
                 
             }

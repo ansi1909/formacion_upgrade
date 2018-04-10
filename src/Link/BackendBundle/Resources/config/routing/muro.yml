@@ -20,8 +20,8 @@ _ajaxRespuestasComentariosMuro:
     requirements:
         _method: GET
 
-_ajaxCrearRespuestaMuro:
-    path:     /ajaxCrearRespuestaMuro
-    defaults: { _controller: LinkBackendBundle:Muro:ajaxCrearRespuestaMuro }
+_ajaxUpdateRespuestaMuro:
+    path:     /ajaxUpdateRespuestaMuro
+    defaults: { _controller: LinkBackendBundle:Muro:ajaxUpdateRespuestaMuro }
     requirements:
         _method: POST

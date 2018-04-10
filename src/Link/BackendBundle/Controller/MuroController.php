@@ -82,10 +82,11 @@ class MuroController extends Controller
         {
             $comentarios[]= array('id'=>$coment->getId(),
                                   'mensaje'=>$coment->getMensaje(),
+                                  'usuarioId'=>$coment->getUsuario()->getId(),
                                   'nombreUsuario'=>$coment->getUsuario()->getNombre(),
                                   'apellidoUsuario'=>$coment->getUsuario()->getApellido(),
                                   'fecharegistro'=>$coment->getFechaRegistro()->format("d/m/Y"),
-                                  'delete_disabled'=>$f->linkEliminar($coment->getId(),'AdminNotificacion'));
+                                  'delete_disabled'=>$f->linkEliminar($coment->getId(),'CertiMuro'));
 
         }
 
@@ -134,6 +135,7 @@ class MuroController extends Controller
         $f = $this->get('funciones');
         $empresa_id = $request->query->get('empresa_id');
         $pagina_id = $request->query->get('pagina_id');
+        $usuario_id = $request->query->get('usuario_id');
         $html = '';
 
         if($pagina_id == 0){
@@ -180,13 +182,16 @@ class MuroController extends Controller
             $delete = $delete_disabled=='' ? 'delete' : '';
             
             $html .= '<tr>
-                        <td>'.$coment->getMensaje().'</td>
+                        <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
                         <td>'.$coment->getUsuario()->getNombre().' '.$coment->getUsuario()->getApellido().'</td>
                         <td>'.$coment->getFechaRegistro()->format("d/m/Y").'</td>
-                        <td class="center">
-                            <a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>
+                        <td class="center">';
+                          if($coment->getUsuario()->getId() == $usuario_id){
+                             $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
+                          }
+                           $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>
                             <a href="#" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>
-                            <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm'.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
+                            <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
         }
@@ -206,6 +211,7 @@ class MuroController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $muro_id = $request->query->get('muro_id');
+        $usuario_id = $request->query->get('usuario_id');
         $html = '';
 
         $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
@@ -215,6 +221,7 @@ class MuroController extends Controller
         
         $comentarios = $query2->getResult();
 
+        
         $html .= '<table class="table" id="dtSub">
                         <thead class="sty__title">
                             <tr>
@@ -232,18 +239,23 @@ class MuroController extends Controller
             $delete = $delete_disabled=='' ? 'delete' : '';
             
             $html .= '<tr>
-                        <td>'.$coment->getMensaje().'</td>
+                        <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
                         <td>'.$coment->getUsuario()->getNombre().' '.$coment->getUsuario()->getApellido().'</td>
                         <td>'.$coment->getFechaRegistro()->format("d/m/Y").'</td>
-                        <td class="center">
-                            <a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>
-                            <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm'.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
+                        <td class="center">';
+                          if($coment->getUsuario()->getId() == $usuario_id){
+                             $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
+                          }
+                           $html .= '<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
         }
         $html .= '</tbody>
                 </table>
                 <input type="hidden" id="comentario_padre_muro_id" name="comentario_padre_muro_id" value="'.$muro_id.'">';
+        $html .= '<div class="col text-right ">
+                    <button type="button" class="bttn__nr add" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">Responder</span></button>
+                  </div>';
 
         $return = array('html' => $html);
 
@@ -252,22 +264,29 @@ class MuroController extends Controller
         
     }
 
-    public function ajaxCrearRespuestaMuroAction(Request $request)
+    public function ajaxUpdateRespuestaMuroAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
 
+        $comentario_id = $request->request->get('comentario_id');
         $muro_id = $request->request->get('muro_id');
         $respuesta = $request->request->get('respuesta');
 
-        $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $fecha_actual = date('Y/m/d H:m:s');
 
-        $new_respuesta = new CertiMuro();
+        if($comentario_id != ''){
+            $new_respuesta = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($comentario_id);
+            $muro_padre = $new_respuesta->getMuro();
+        }else{
+            $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+            $new_respuesta = new CertiMuro();
+        }
+        
         $new_respuesta->setMensaje($respuesta);
         $new_respuesta->setFechaRegistro(new \DateTime($fecha_actual));
         $new_respuesta->setPagina($muro_padre->getPagina());

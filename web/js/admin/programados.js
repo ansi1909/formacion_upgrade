@@ -30,6 +30,11 @@ $(document).ready(function() {
 		saveProgramacion();
 	});
 
+	$('.delete').click(function(){
+		var notificacion_id = $(this).attr('data');
+		sweetAlertDelete(notificacion_id, 'AdminNotificacionProgramada');
+	});
+
 	observe();
 	segundaTabla();
 });
@@ -173,6 +178,11 @@ function editProgramacion(){
 		});
 
 	});
+
+	$('.delete').click(function(){
+		var notificacion_id = $(this).attr('data');
+		sweetAlertDelete(notificacion_id, 'AdminNotificacionProgramada');
+	});
 }
 
 function saveProgramacion()
@@ -314,5 +324,10 @@ function afterPaginate(){
 			}
 		});
 		
+	});
+
+	$('.delete').click(function(){
+		var notificacion_id = $(this).attr('data');
+		sweetAlertDelete(notificacion_id, 'AdminNotificacionProgramada');
 	});
 }

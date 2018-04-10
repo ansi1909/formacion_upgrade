@@ -1,3 +1,27 @@
 _filtroForo:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Foro:index }
+
+_ajaxPaginasForo:
+    path:     /ajaxPaginasForo
+    defaults: { _controller: LinkBackendBundle:Foro:ajaxPaginasForo }
+    requirements:
+        method: GET
+
+_ajaxComentariosForo:
+    path:     /ajaxComentariosForo
+    defaults: { _controller: LinkBackendBundle:Foro:ajaxComentariosForo }
+    requirements:
+        _method: GET
+
+_ajaxRespuestasComentariosForo:
+    path:     /ajaxRespuestasComentariosForo
+    defaults: { _controller: LinkBackendBundle:Foro:ajaxRespuestasComentariosForo }
+    requirements:
+        _method: GET
+
+_ajaxUpdateRespuestaForo:
+    path:     /ajaxUpdateRespuestaForo
+    defaults: { _controller: LinkBackendBundle:Foro:ajaxUpdateRespuestaForo }
+    requirements:
+        _method: POST

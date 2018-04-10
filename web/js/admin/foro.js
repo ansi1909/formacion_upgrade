@@ -16,8 +16,8 @@ $(document).ready(function() {
 	});
 
 	$('#guardar').click(function(){
-		var muro_id = $('#comentario_padre_muro_id').val();
-		$('#muro_id').val(muro_id);
+		var foro_id = $('#comentario_padre_foro_id').val();
+		$('#foro_id').val(foro_id);
 		$('#guardar').hide();
 		$('#cancelar').hide();
 		saveComentario();
@@ -25,8 +25,8 @@ $(document).ready(function() {
 
 	$('#form').submit(function(e)
 	{
-		var muro_id = $('#comentario_padre_muro_id').val();
-		$('#muro_id').val(muro_id);
+		var foro_id = $('#comentario_padre_foro_id').val();
+		$('#foro_id').val(foro_id);
 		$('#guardar').hide();
 		$('#cancelar').hide();
 		e.preventDefault();
@@ -35,7 +35,7 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var comentario_id = $(this).attr('data');
-		sweetAlertDelete(comentario_id, 'CertiMuro');
+		sweetAlertDelete(comentario_id, 'CertiForo');
 	});
 
 	observe();
@@ -46,7 +46,7 @@ $(document).ready(function() {
 function getPaginas(empresa_id){
 	$.ajax({
 		type: "GET",
-		url: $('#url_paginas_muro').val(),
+		url: $('#url_paginas_foro').val(),
 		async: true,
 		data: { empresa_id: empresa_id },
 		dataType: "json",
@@ -63,7 +63,7 @@ function getPaginas(empresa_id){
 function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 	$.ajax({
 		type: "GET",
-		url: $('#url_comentarios_muro').val(),
+		url: $('#url_comentarios_foro').val(),
 		async: true,
 		data: { pagina_id: pagina_id, empresa_id: empresa_id, usuario_id: usuario_id },
 		dataType: "json",
@@ -120,8 +120,8 @@ function observe(){
 function editComentario(){
 
 	$('.add').click(function(){
-        var muro_id = $(this).attr('data');
-        $('#muro_id').val(muro_id);
+        var foro_id = $(this).attr('data');
+        $('#foro_id').val(foro_id);
         $('#respuesta').val('');
         $('#comentario_id').val('');
 
@@ -137,7 +137,7 @@ function editComentario(){
 
 	$('.delete').click(function(){
 		var comentario_id = $(this).attr('data');
-		sweetAlertDelete(comentario_id, 'CertiMuro');
+		sweetAlertDelete(comentario_id, 'CertiForo');
 	});
 }
 
@@ -223,7 +223,7 @@ function segundaTabla()
             var rowData = table2.row( diff[i].node ).data();
             // Id del registro está en la segunda columna
         	id = rowData[1];
-            reordenar(id, 'CertiMuro', diff[i].newData);
+            reordenar(id, 'CertiForo', diff[i].newData);
         } 
     });
 
@@ -231,20 +231,19 @@ function segundaTabla()
 
 function afterPaginate(){
 
-
 	editComentario();
 
     $('.see').click(function(){
-        var muro_id = $(this).attr('data');
+        var foro_id = $(this).attr('data');
         var usuario_id = $('#usuario_id').val();
         $('#div-active-alert').hide();
         $('#tbody_history_programation').hide();
         $('#loading').show();
         $.ajax({
             type: "GET",
-            url: $('#url_respuestas_comentarios_muro').val(),
+            url: $('#url_respuestas_comentarios_foro').val(),
             async: true,
-            data: { muro_id: muro_id, usuario_id: usuario_id },
+            data: { foro_id: foro_id, usuario_id: usuario_id },
             dataType: "json",
             success: function(data) {
                 $('#tbody_history_programation').html(data.html);
@@ -261,6 +260,4 @@ function afterPaginate(){
         });
         
     });
-
-    editComentario();
 }
