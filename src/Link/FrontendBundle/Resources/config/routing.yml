@@ -7,7 +7,7 @@ _login:
     defaults: { _controller: LinkFrontendBundle:Default:login }
 
 _authExceptionEmpresa:
-    path:     /authExceptionEmpresa/{mensaje}
+    path:     /authExceptionEmpresa/{tipo}
     defaults: { _controller: LinkFrontendBundle:Default:authExceptionEmpresa }
 
 _ajaxCorreo:

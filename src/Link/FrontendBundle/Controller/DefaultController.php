@@ -197,9 +197,33 @@ class DefaultController extends Controller
         return $response;        
     }
 
-    public function authExceptionEmpresaAction($mensaje)
+    public function authExceptionEmpresaAction($tipo)
     {
-        return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje));
+
+        $preferencia = array('logo' => ($_COOKIE && isset($_COOKIE["logo"])) ? $_COOKIE["logo"] : '',
+                             'favicon' => ($_COOKIE && isset($_COOKIE["favicon"])) ? $_COOKIE["favicon"] : '',
+                             'plantilla' => ($_COOKIE && isset($_COOKIE["plantilla"])) ? $_COOKIE["plantilla"] : 'base.html.twig',
+                             'css' => ($_COOKIE && isset($_COOKIE["css"])) ? $_COOKIE["css"] : '');
+        
+        switch ($tipo) {
+            case 'sesion':
+                $mensaje = array('principal' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.'),
+                                 'indicaciones' => array($this->get('translator')->trans('El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión'),
+                                                         $this->get('translator')->trans('Puede ingresar de nuevo desde la pantalla de login'),
+                                                         $this->get('translator')->trans('Al loggearse se restablecerán los datos para una nueva sesión')));
+                $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
+                $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje,
+                                                                                         'preferencia' => $preferencia,
+                                                                                         'continuar' => $continuar));
+
     }
 
     public function ajaxCorreoAction(Request $request)
@@ -287,7 +311,7 @@ class DefaultController extends Controller
 
         if ($empresa_bd)
         {
-            if ($empresa_bd->getActivo()==true)
+            if ($empresa_bd->getActivo())
             {
                 //se consulta la preferencia de la empresa
                 $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
@@ -315,6 +339,13 @@ class DefaultController extends Controller
                     $plantilla = 'base.html.twig';
                 }
 
+                // Usar las cookies para las preferencias de la empresa y personalizar la pantalla de excepción
+                setcookie("empresa_id", $empresa_id, time()+(60*60*24*365),'/');
+                setcookie("logo", $logo, time()+(60*60*24*365),'/');
+                setcookie("favicon", $favicon, time()+(60*60*24*365),'/');
+                setcookie("plantilla", $plantilla, time()+(60*60*24*365),'/');
+                setcookie("css", $css, time()+(60*60*24*365),'/');
+
                 $empresa = array('id' => $empresa_id,
                                  'nombre' => $empresa_bd->getNombre(),
                                  'chat' => $chat,
@@ -338,12 +369,12 @@ class DefaultController extends Controller
                         $login = $usuario->getLogin();
                         $clave = $usuario->getClave(); 
                         $verificacion=1;
-                    }else
-                    {
+                    }
+                    else {
                         $error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
                     }
-                }else
-                {
+                }
+                else {
                     if ($request->getMethod() == 'POST')
                     {
                         $recordar_datos = $request->request->get('recordar_datos');
@@ -360,8 +391,8 @@ class DefaultController extends Controller
                     if($iniciarSesion['exito']==true)
                     {
                         return $this->redirectToRoute('_inicio');
-                    }else
-                    {
+                    }
+                    else {
                         if($iniciarSesion['error']==true)
                         {
 
@@ -370,19 +401,19 @@ class DefaultController extends Controller
                             return $response;
                         }
                     }                    
-                }else
-                {
+                }
+                else {
                     $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
                                                                                                              'error' => $error));
                     return $response;
                 }
 
-            }else
-            {
+            }
+            else {
                 return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('La empresa está inactiva. Contacte al administrador del sistema.')));
             }
-        }else 
-        {
+        }
+        else {
             return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Url de la empresa no existe')));
         }
     }

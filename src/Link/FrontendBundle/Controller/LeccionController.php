@@ -19,11 +19,11 @@ class LeccionController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        /*if (!$session->get('iniFront'))
+        if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
-        $f->setRequest($session->get('sesion_id'));*/
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
 
