@@ -32,13 +32,16 @@
 {% endblock %}
 
 {% block body %}
+<input type="hidden" id="url_tipo" name="url_tipo" value="{{ path('_ajaxTipo')}}">
+
 
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 {% if usuario_empresa %}
     <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="/{{ usuario_empresa }}" />
+    <input type="hidden" id="si" name="si" value="{{ usuario_empresa }}">
 {% else %}    
-    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="" />    
+    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="" />
 {% endif %}
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <br><br>
@@ -122,7 +125,7 @@
                                 <div class="row">
                                 {% endif %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <label for="texto" class="col-6 col-form-label">{{ 'Tipo de Biblioteca'|trans }}</label>
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Tipo de recurso'|trans }}</label>
                                         <div class="col-14">
                                             <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id">
                                                 <option value=""></option>
@@ -205,7 +208,65 @@
                                     </div>
                                 </div>
                                 <br><br>
-                                <div class="row">
+                                <div class="row" id="recurso1" style="display: none;">
+                                    <div class="col-sm-8 col-lg-8 col-md-8">
+                                        <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="text" class="form-control form_sty1" name="video" id="video" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión mp4 o webm.'|trans }}">
+                                            <span class="fa fa-file-pdf-o"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                       <div class="input-group">
+                                           <span class="input-group-addon">
+                                                {% if usuario_empresa %}
+                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=3&field_id=video&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button"></div>
+                                                {% else %}
+                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=3&field_id=video&rootFolder=recursos/noticias" class="btn iframe-btn" type="button"></div>
+                                                {% endif %}
+                                                        <button type="button" class="btn_addImg">
+                                                            <span class="fa fa-file-pdf-o"></span>
+                                                        </button>
+                                                    </a>
+                                           </span>
+                                           <span class="input-group-addon">
+                                               <button id="btn_clear_pdf" class="btn_clearImg2" type="button">
+                                                   <span class="fa fa-times"></span>
+                                               </button>
+                                           </span>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="recurso2" style="display: none;">
+                                    <div class="col-sm-8 col-lg-8 col-md-8">
+                                        <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="text" class="form-control form_sty1" name="audio" id="audio" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión mp3.'|trans }}">
+                                            <span class="fa fa-file-pdf-o"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                       <div class="input-group">
+                                           <span class="input-group-addon">
+                                                {% if usuario_empresa %}
+                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=audio&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button"></div>
+                                                {% else %}
+                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=audio&rootFolder=recursos/noticias" class="btn iframe-btn" type="button"></div>
+                                                {% endif %}
+                                                        <button type="button" class="btn_addImg">
+                                                            <span class="fa fa-file-pdf-o"></span>
+                                                        </button>
+                                                    </a>
+                                           </span>
+                                           <span class="input-group-addon">
+                                               <button id="btn_clear_pdf" class="btn_clearImg2" type="button">
+                                                   <span class="fa fa-times"></span>
+                                               </button>
+                                           </span>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="recurso3" style="display: none;">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
@@ -217,9 +278,9 @@
                                        <div class="input-group">
                                            <span class="input-group-addon">
                                                 {% if usuario_empresa %}
-                                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button">
+                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button"></div>
                                                 {% else %}
-                                                    <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias" class="btn iframe-btn" type="button">
+                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/noticias" class="btn iframe-btn" type="button"></div>
                                                 {% endif %}
                                                         <button type="button" class="btn_addImg">
                                                             <span class="fa fa-file-pdf-o"></span>
@@ -309,9 +370,6 @@
                     required: true,
                     minlength: 3
                 },
-                'pdf': {
-                    extension: "pdf"
-                },
                 'imagen': {
                     extension: "jpg|png"
                 }                
@@ -323,9 +381,6 @@
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",
                     minlength: "- {{ 'El título debe ser mínimo de 3 caracteres.'|trans }}"
-                },
-                'pdf': {
-                    extension: "- {{ 'Sólo archivos con extensión .pdf'|trans }}"
                 },
                 'imagen': {
                     extension: "- {{ 'Sólo archivos con extensión .jpg o .png'|trans }}"

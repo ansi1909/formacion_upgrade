@@ -17,3 +17,9 @@ _registroNovedad:
 _showNovedad:
     path:     /mostrarNoticiaNovedad/{noticia_id}
     defaults: { _controller: LinkBackendBundle:Novedad:mostrarNoticiaNovedad }
+
+_ajaxTipo:
+    path:     /tipo
+    defaults: { _controller: LinkBackendBundle:Novedad:ajaxTipo}
+    requirements:
+        method: GET

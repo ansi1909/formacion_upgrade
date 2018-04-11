@@ -11,6 +11,20 @@ $(document).ready(function() {
 		'autoSize'	: false
     });
 
+    $('#tipo_biblioteca_id').change(function(){
+        var tipo = $(this).val();
+        $('#recurso1').hide();
+        $('#recurso2').hide();
+        $('#recurso3').hide();
+        if (tipo == 1) {
+        	$('#recurso1').show();
+        }else if (tipo == 2 ) {
+        	$('#recurso2').show();
+        }else if ( tipo == 3 || tipo == 4) {
+        	$('#recurso3').show();
+        }
+    });
+
 	CKEDITOR.replace( 'contenido', {
 		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
 		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
@@ -50,3 +64,4 @@ function responsive_filemanager_callback(field_id)
 		$('#figure').html('<img src="'+url+'" width="100%">');
 	
 }
+
