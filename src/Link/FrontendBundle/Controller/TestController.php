@@ -213,6 +213,7 @@ class TestController extends Controller
         $em = $this->getDoctrine()->getManager();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $ok = 1;
+        $psc = 0; // Pregunta sin contestar
 
         $prueba_log_id = $request->request->get('prueba_log_id');
         $pregunta_id = $request->request->get('pregunta_id');
@@ -242,6 +243,7 @@ class TestController extends Controller
             {
                 // No contestó. Se cuenta como errada.
                 $correcta = 0;
+                $psc = $nro;
                 $respuesta = $em->getRepository('LinkComunBundle:CertiRespuesta')->findOneBy(array('pruebaLog' => $prueba_log_id,
                                                                                                    'nro' => $nro,
                                                                                                    'pregunta' => $pregunta_id));
@@ -303,6 +305,7 @@ class TestController extends Controller
             // Respuestas de asociación
             $correctas_arr = array(); // Forma pregunta_id => opcion_id
             $respuestas_arr = array(); // Forma pregunta_id => opcion_id_seleccionada
+            $contesto = 0;
 
             foreach ($p_opciones as $p_opcion)
             {
@@ -312,6 +315,7 @@ class TestController extends Controller
                 if ($po_arr[1] != 0)
                 {
                     $opcion = $em->getRepository('LinkComunBundle:CertiOpcion')->find($po_arr[1]);
+                    $contesto = 1;
                 }
                 else {
                     $opcion = null;
@@ -329,6 +333,11 @@ class TestController extends Controller
                 $em->persist($respuesta);
                 $em->flush();
 
+            }
+
+            if (!$contesto)
+            {
+                $psc = $nro;
             }
 
             foreach ($correctas_arr as $p_id => $o_id)
@@ -389,7 +398,8 @@ class TestController extends Controller
         $em->persist($prueba_log);
         $em->flush();
 
-        $return = array('ok' => $ok);
+        $return = array('ok' => $ok,
+                        'psc' => $psc);
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 

@@ -35,6 +35,36 @@ $(document).ready(function() {
 			success: function(data) {
 				if (data.ok == 1)
 				{
+					var preguntas_sin_contestar = $('#preguntas_sin_contestar').val();
+					if (data.psc != 0)
+					{
+						// Pregunta sin contestar
+						if (preguntas_sin_contestar != '')
+						{
+							psc_arr = preguntas_sin_contestar.split(',');
+							if (jQuery.inArray(data.psc, psc_arr) == -1)
+							{
+								psc_arr.push(nro);
+								preguntas_sin_contestar = psc_arr.join(',');
+							}
+						}
+						else {
+							preguntas_sin_contestar = nro;
+						}
+					}
+					else {
+						// Se excluye de las preguntas sin contestar
+						if (preguntas_sin_contestar != '')
+						{
+							psc_arr = preguntas_sin_contestar.split(',');
+							if (jQuery.inArray(nro, psc_arr) != -1)
+							{
+								psc_arr.splice( $.inArray(nro,psc_arr), 1 );
+								preguntas_sin_contestar = psc_arr.join(',');
+							}
+						}
+					}
+					$('#preguntas_sin_contestar').val(preguntas_sin_contestar);
 					if (next_id == 'before')
 					{
 						$("#progreso").attr("style", 'width: '+porcentaje+'%');
@@ -68,7 +98,13 @@ $(document).ready(function() {
 						}
 						else {
 							// Redirección a la página de fin de la prueba
-							window.location.replace($('#url_fin').val());
+							if (preguntas_sin_contestar == '')
+							{
+								window.location.replace($('#url_fin').val());
+							}
+							else {
+								console.log('ADVERTENCIA: Preguntas sin contestar');
+							}
 						}
 					}
 				}
