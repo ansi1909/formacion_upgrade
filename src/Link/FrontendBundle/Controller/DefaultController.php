@@ -240,7 +240,18 @@ class DefaultController extends Controller
                 $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
                 break;
 
-                Url de la empresa no existe
+            case 'prueba':
+                $mensaje = array('principal' => $this->get('translator')->trans('No existe evaluación para esta página'),
+                                 'indicaciones' => array($this->get('translator')->trans('Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
+                $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
+                break;
+
+            case 'pregunta':
+                $mensaje = array('principal' => $this->get('translator')->trans('Esta evaluación no tiene preguntas configuradas'),
+                                 'indicaciones' => array($this->get('translator')->trans('Contacte al Administrador del Sistema para mayor información')));
+                $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
+                break;
+
         }
 
         return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje,
