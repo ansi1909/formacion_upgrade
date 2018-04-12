@@ -19,11 +19,11 @@ class TestController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        /*if (!$session->get('iniFront'))
+        if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
-        $f->setRequest($session->get('sesion_id'));*/
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
 
@@ -34,10 +34,10 @@ class TestController extends Controller
         $duracion += intval($prueba->getDuracion()->format('i'))*60;
         $duracion += intval($prueba->getDuracion()->format('s'));
 
-        /*if (!$prueba)
+        if (!$prueba)
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('No existe evaluación para esta página').'.'));
-        }*/
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'prueba'));
+        }
 
         $status_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['en_evaluacion']);
         $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
@@ -191,10 +191,10 @@ class TestController extends Controller
         //return new Response(var_dump($preguntas));
         $preguntas_str = implode(",", $preguntas_arr);
 
-        /*if (!count($preguntas))
+        if (!count($preguntas))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Esta evaluación no tiene preguntas configuradas').'.'));
-        }*/
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'pregunta'));
+        }
 
         return $this->render('LinkFrontendBundle:Test:index.html.twig', array('prueba_log' => $prueba_log,
                                                                               'preguntas' => $preguntas,
@@ -402,11 +402,11 @@ class TestController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        /*if (!$session->get('iniFront'))
+        if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
-        $f->setRequest($session->get('sesion_id'));*/
+        $f->setRequest($session->get('sesion_id'));
 
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
@@ -613,11 +613,11 @@ class TestController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        /*if (!$session->get('iniFront'))
+        if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
-        $f->setRequest($session->get('sesion_id'));*/
+        $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
         $try_button = 0;

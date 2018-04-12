@@ -19,7 +19,7 @@ class CertificadoController extends Controller
         
         if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        	return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         
         $f->setRequest($session->get('sesion_id'));
@@ -42,8 +42,8 @@ class CertificadoController extends Controller
         	if($certificado_pagina)
         	{
         		$certificado = $certificado_pagina;
-        	}else
-        	{
+        	}
+        	else {
         		//consultamos el certificado por grupo de paginas
 		        $certificado_grupos = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $session->get('empresa')['id'],
 		        																							  'tipoCertificado' => 3,
@@ -117,8 +117,8 @@ class CertificadoController extends Controller
 		                                        </page>');*/
 		            //Generamos el PDF
 		            $certificado_pdf->output('certificiado.pdf');
-		        }else
-		        {
+		        }
+		        else {
 		            if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['constancia'] )
 		            {                 
                 		$constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 60, 10, 5));
@@ -134,9 +134,9 @@ class CertificadoController extends Controller
 		                $constancia_pdf->output('constancia.pdf');
 		            }
 		        }
-		    }else
-		    {
-            	return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, la empresa no ha registrado certificado para está página.')));
+		    }
+		    else {
+		    	return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'certificado'));
 		    }
 		}
     }
@@ -148,7 +148,7 @@ class CertificadoController extends Controller
         
         if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+        	return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         
         $f->setRequest($session->get('sesion_id'));
@@ -398,9 +398,10 @@ class CertificadoController extends Controller
 			$constancia_pdf->WriteHTML($html);
             $constancia_pdf->output('notas.pdf');
 		    
-		}else
-	    {
-        	return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, no hya notas disponibles para está página.')));
+		}
+		else {
+			//return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        	//return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, no hya notas disponibles para está página.')));
 	    }
     }
 }

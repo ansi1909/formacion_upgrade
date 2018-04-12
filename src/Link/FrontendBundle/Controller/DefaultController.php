@@ -23,7 +23,7 @@ class DefaultController extends Controller
 
         if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         $f->setRequest($session->get('sesion_id'));
 
@@ -215,9 +215,32 @@ class DefaultController extends Controller
                 $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
                 break;
             
-            default:
-                # code...
+            case 'certificado':
+                $mensaje = array('principal' => $this->get('translator')->trans('Certificado inexistente para este contenido'),
+                                 'indicaciones' => array($this->get('translator')->trans('La empresa debe cargar el modelo de certificado y asociarlo a esta página'),
+                                                         $this->get('translator')->trans('En el módulo administrativo de Certificados y Constancias se puede agregar certificados'),
+                                                         $this->get('translator')->trans('También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
+                $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
                 break;
+
+            case 'empresa':
+                $mensaje = array('principal' => $this->get('translator')->trans('La empresa está inactiva'),
+                                 'indicaciones' => array($this->get('translator')->trans('Es probable que se haya vencido el acceso para ingresar al sistema'),
+                                                         $this->get('translator')->trans('Contacte al Administrador del Sistema para mayor información')));
+                $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
+                $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
+                break;
+
+            case 'url':
+                $mensaje = array('principal' => $this->get('translator')->trans('Url de la empresa no existe'),
+                                 'indicaciones' => array($this->get('translator')->trans('El Url proporcionado no es correcto'),
+                                                         $this->get('translator')->trans('Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa'),
+                                                         $this->get('translator')->trans('Contacte al Administrador del Sistema para mayor información')));
+                $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
+                $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
+                break;
+
+                Url de la empresa no existe
         }
 
         return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje,
@@ -410,11 +433,11 @@ class DefaultController extends Controller
 
             }
             else {
-                return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('La empresa está inactiva. Contacte al administrador del sistema.')));
+                return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'empresa'));
             }
         }
         else {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Url de la empresa no existe')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'url'));
         }
     }
 

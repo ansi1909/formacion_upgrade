@@ -16,6 +16,7 @@ Agregar sub-página: Add sub-page
 Agrupación de páginas: Grouping pages
 Ahora: Now
 al: to
+Al loggearse se restablecerán los datos para una nueva sesión: Then the data session will be setted
 Anterior pregunta: Before question
 Apellido: Last Name
 Apellido requerido: Last name required
@@ -65,6 +66,7 @@ Carga masiva de particpantes de la empresa: Bulk load of participants of company
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
+Certificado inexistente para este contenido: No certificate for this content
 Código del empleado repetido: Employee code repeated
 Columna: Column
 Comentar: Comment
@@ -86,6 +88,7 @@ Configurar evaluación: Configure test
 Configurar página: Configure page
 Confirmar: Confirm
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contact to System Administrator to add thumbnails to this template
+Contacte al Administrador del Sistema para mayor información: Contact to System Administrator for further information
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
@@ -193,6 +196,7 @@ El país no existe en la base de datos: Country does not exist in database
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
+El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: Inactive time has reached the maximum time of connection
 El Tipo de Certificado es requerido.: The Type of Certificate is required.
 El tipo de elemento es requerido.: Element type is required.
 El Tipo de Imagen es requerido.: The type of image is required
@@ -208,6 +212,7 @@ El valor del puntaje con que se aprueba debe ser mayor o igual a 10.: The score 
 El valor del puntaje con que se aprueba debe ser un valor numérico.: The score with it is approved must be a numeric value.
 El valor del puntaje con que se aprueba no debe sobrepasar a 100.: The score value with it is approved must not exceed to 100.
 El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
+El Url proporcionado no es correcto: Url given is incorrect
 Email de contacto: Contact Email
 Empresa: Company
 Empresa con estatus inactivo: Company with inactive status
@@ -215,6 +220,7 @@ Empresas: Companies
 Empresas activas: Active companies
 Empresas inactivas: Inactive companies
 Empresas registradas: Registered companies
+En el módulo administrativo de Certificados y Constancias se puede agregar certificados: In Admin interface, in module Certificados y Constancias, you can add certificates
 Encabezado: Header
 Enlace de la encuesta: Poll link
 Enunciado: Statement
@@ -231,6 +237,7 @@ Error en el servidor: Error on server
 Error la empresa no existe: Error the company does not exist
 Errores: Errors
 Errores de validación: Validation errors
+Es probable que se haya vencido el acceso para ingresar al sistema: It is possible the access to enter to the system is expired
 Escoja una plantilla: Choose a template
 Escriba su comentario: Post a comment
 Escriba su respuesta: Response to this comment
@@ -290,6 +297,7 @@ Imagen: Image
 Imagen lado: Image side
 Índice: Index
 Ingresa tu usuario: Enter your username
+Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
 Iniciar Sesión: Log in
 Inicio: Begin
 instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
@@ -319,7 +327,8 @@ La descripción es requerida.: Description is required.
 La descripcion debe ser mínimo de 3 caracteres.: La descripcion debe ser mínimo de 3 caracteres.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
-La empresa está inactiva. Contacte al administrador del sistema.: The company is inactive. Contact the system administrator.
+La empresa debe cargar el modelo de certificado y asociarlo a esta página: Company must upload the certficate model and associate it to this page
+La empresa está inactiva: The company is inactive
 La empresa es requerida.: Company is required.
 La Entidad es requerida.: The Entity is required.
 La faq ha sido almacenada con éxito: The faq has been stored successfully
@@ -451,6 +460,8 @@ Programas: Programs
 Prog. asociados: Associated Prog.
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
+Puede ingresar de nuevo desde la pantalla de login: You can try loging in again
+Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0: You can request create a test for this page through the Content Administrator of Formación 2.0 team
 Puntaje con que se aprueba: Score with which it is approved
 QR: QR
 Recordarme: Remember me
@@ -506,6 +517,7 @@ Subir Archivo de participantes: Upload participants file
 Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
+También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0: You can also request the upload of this certificate through the Content Manager of Formación 2.0 team
 Teléfono de contacto: Contact Number
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails

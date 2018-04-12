@@ -21,7 +21,7 @@ class CalendarioDeEventosController extends Controller
 
         if (!$session->get('iniFront'))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         $f->setRequest($session->get('sesion_id'));
 
