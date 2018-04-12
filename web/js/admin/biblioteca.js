@@ -18,10 +18,13 @@ $(document).ready(function() {
         $('#recurso3').hide();
         if (tipo == 1) {
         	$('#recurso1').show();
+        	$('#ver').hide();
         }else if (tipo == 2 ) {
         	$('#recurso2').show();
+        	$('#ver').hide();
         }else if ( tipo == 3 || tipo == 4) {
         	$('#recurso3').show();
+        	$('#ver').show();
         }
     });
 
