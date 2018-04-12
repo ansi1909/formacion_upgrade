@@ -50,9 +50,8 @@ $(document).ready(function() {
                 });
                 y = 0;
             }else if(z == 1){
-                $(".dropDownApps").slideUp(50, function(){
-                    $(".markApps").fadeOut(100);
-                });
+                $(".dropDownApps").slideUp(50);
+                $(".markApps").fadeOut(40);
                 z = 0;
             }
             $(".dropDownMenu").slideDown(500, function(){
@@ -74,9 +73,8 @@ $(document).ready(function() {
                 $(".dropDownMenu").slideUp(50);
                 x = 0;
             }else if(z == 1){
-                $(".dropDownApps").slideUp(50, function(){
-                    $(".markApps").fadeOut(100);
-                });
+                $(".dropDownApps").slideUp(50);
+                $(".markApps").fadeOut(40);
                 z = 0;
             }
             $(".dropDownNotify").slideDown(500, function(){
@@ -109,9 +107,8 @@ $(document).ready(function() {
             });
             z = 1;
         }else {
-            $(".dropDownApps").slideUp(500, function(){
-                $(".markApps").fadeOut(600);
-            });
+            $(".dropDownApps").slideUp(500);
+            $(".markApps").fadeOut(550);
             z = 0;
         }
     });
@@ -126,9 +123,8 @@ $(document).ready(function() {
            });
            y = 0;
        }else if(z == 1){
-           $(".dropDownApps").slideUp(500, function(){
-               $(".markApps").fadeOut(300).delay(50);
-           });
+           $(".dropDownApps").slideUp(500);
+           $(".markApps").fadeOut(550);
            z = 0;
        }
     });   

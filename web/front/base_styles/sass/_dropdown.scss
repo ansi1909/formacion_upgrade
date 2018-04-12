@@ -8,7 +8,7 @@
     width: 14rem;
     height: auto;
     right: .1rem;
-    top: 4.175rem;
+    top: 4.35rem;
     margin: 0;
     padding: 0;
     list-style-type: none;
@@ -65,7 +65,7 @@
     height: auto;
     max-height: 20rem;
     right: 7rem;
-    top: 4.175rem;
+    top: 4.35rem;
     margin: 0;
     padding: 0;
     list-style-type: none;
@@ -172,7 +172,7 @@
     position: absolute;
     width: 1rem;
     height: 1rem;
-    top: 3.65rem;
+    top: 3.9rem;
     right: 7.8rem;
     background: transparent;
     transform: rotate(45deg);
@@ -225,14 +225,14 @@
     width: 16rem;
     height: auto;
     right: 9.5rem;
-    top: 4.175rem;
+    top: 4.35rem;
     margin: 0;
     padding: 0 .5rem;
     list-style-type: none;
-    background: $gray-100;
-    border-left: 1px solid $gray-300;
-    border-bottom: 1px solid $gray-300;
-    border-right: 1px solid $gray-300;
+    background: $bluedarkest;
+    border-left: 1px solid $bluedarkest;
+    border-bottom: 1px solid $bluedarkest;
+    border-right: 1px solid $bluedarkest;
     border-top: 0px;
     box-shadow: 3px 3px 10px rgba(56, 56, 56, .5);
     border-radius: 0 0 .5rem .5rem;
@@ -252,6 +252,10 @@
             display: block;
             margin: 0 auto;
         }
+        .changeApp{
+            fill: #818181;
+        }
+        
         .tituloApps{
             white-space: pre-wrap;
             font-size: calc(1rem - 3px);
@@ -260,14 +264,17 @@
             font-family: $primary-font;
             line-height: .8rem;
             margin-top: .2rem;
-            color: $gray-900;
+            color: #818181;
         }
         &:hover{
-            background: linear-gradient(to right, $lightblue 0%, $blue 100%);
+            //background: linear-gradient(to right, $lightblue 0%, $blue 100%);
             border-radius: 1rem;
             .tituloApps{
-                color: $white;
+                color: $green;
                 text-shadow: 2px 2px 10px rgba(58, 58, 58, .3);
+            }
+            .changeApp{
+                fill: $green;
             }
         }
     }
@@ -295,12 +302,12 @@
     position: absolute;
     width: 1rem;
     height: 1rem;
-    top: 3.65rem;
+    top: 3.9rem;
     right: 10.2rem;
-    background: transparent;
+    background: transparent !important;
     transform: rotate(45deg);
-    border-top: 1px solid $gray-400;
-    border-left: 1px solid $gray-400;
+    border-top: 10px solid $bluedarkest;
+    border-left: 10px solid $bluedarkest;
     z-index: 2;
     display: none;
     @include media-breakpoint-down(xl){
