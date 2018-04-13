@@ -18,7 +18,8 @@
         <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
         {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
         <link rel="stylesheet" href="{{ css }}">
-        <link rel="stylesheet" href="{{ asset('front/js/plugins/flipClock.js/css/flipclock.css') }}">
+        <!--<link rel="stylesheet" href="{{ asset('front/js/plugins/flipClock.js/css/flipclock.css') }}">-->
+        <link rel="stylesheet" type="text/css" href="{{ asset('front/js/plugins/SlickCircularCountDown.js/css/jquery.classycountdown.css') }}"/>
     </head>
     
     <body>
@@ -46,9 +47,12 @@
                     <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
                     <h5 class="sub_titulo_eval pl-5">{{ prueba_log.prueba.pagina.nombre }}</h5>
                 </div>
-                <div class="countDown">
-                    <div class="clock"></div>
+                <div class="countDownHMS" id="divCountD">
+                    <div class="countDownC classCountD"></div>
                 </div>
+                <!--<div class="countDown">
+                    <div class="clock"></div>
+                </div>-->
                 <a class="navbar-brand" href="#">
                     {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
                     <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
@@ -157,11 +161,15 @@
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('jq/jquery-ui.js') }}"></script>
-        <script src="{{ asset('front/js/plugins/flipClock.js/js/flipclock.js') }}"></script>
-        <script src="{{ asset('front/js/plugins/flipClock.js/js/es-es.js') }}"></script>
+        <!--<script src="{{ asset('front/js/plugins/flipClock.js/js/flipclock.js') }}"></script>
+        <script src="{{ asset('front/js/plugins/flipClock.js/js/es-es.js') }}"></script>-->
+        <script src="{{ asset('front/js/plugins/SlickCircularCountDown.js/js/jquery.knob.js') }}"></script>
+        <script src="{{ asset('front/js/plugins/SlickCircularCountDown.js/js/jquery.throttle.js') }}"></script>
+        <script src="{{ asset('front/js/plugins/SlickCircularCountDown.js/js/jquery.classycountdown.js') }}"></script>
         <script src="{{ asset('front/js/custom.js') }}"></script>
         <script src="{{ asset('front/js/eval.js') }}"></script>
-        <script src="{{ asset('front/js/countDown.js') }}"></script>
+        <!--<script src="{{ asset('front/js/countDown.js') }}"></script>-->
+        <script src="{{ asset('front/js/countDownCircular.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/front/test.js') }}"></script>
 
     </body>

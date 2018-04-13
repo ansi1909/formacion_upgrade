@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    var duracion = $('#duracion').val();
     $('.classCountD').ClassyCountdown({
         labelsOptions: {
             lang: {
@@ -8,7 +9,7 @@ $(document).ready(function() {
             },
             style: 'font-size: .6rem;'
         },
-        end: $.now() + 7200,
+        end: $.now() + parseInt(duracion),
         labels: true,
         style: {
             element: "",
@@ -43,6 +44,26 @@ $(document).ready(function() {
             }
 
         },
+        onEndCallback: function() {
+            $('.toHide').hide();
+            $('#msgTitulo1').hide();
+            $('#msgTitulo2').show();
+            $('#msgModal1').hide();
+            $('#msgModal2').show();
+            $( "#triggerModal" ).trigger( "click" );
+            setTimeout(function() {
+                window.location.replace($('#url_fin').val());
+                //console.log('Redireccionamiento');
+            }, 6000);
+        }
     });
+    
     $('.ClassyCountdown-days').hide();
+
+    if (duracion > 3600)
+    {
+        div = $('#divCountD');
+        $('.ClassyCountdown-hours').hide();
+    }
+
 });
