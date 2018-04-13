@@ -280,11 +280,11 @@
     }
 }
 
-.countDown{
+.countDownMS{
     position: absolute;
-    width: 13.63rem;
+    width: 10rem;
     height: 4rem;
-    right: 16rem;
+    right: 3.9rem;
     top: 4.4rem;
     margin: 0;
     padding: .5rem;
@@ -294,8 +294,42 @@
     border-bottom: 1px solid $gray-300;
     border-right: 1px solid $gray-300;
     border-top: 0px;
-    box-shadow: 3px 3px 10px rgba(56, 56, 56, .5);
+    box-shadow: 1px 3px 5px rgba(56, 56, 56, .3);
     border-radius: 0 0 .5rem .5rem;
+    .countDownC { 
+        margin:0 auto; 
+        width: 18rem; 
+        display: block; 
+        position: relative; 
+        top: -.8rem; 
+        left: 0;
+    }
+}
+
+.countDownHMS{
+    position: absolute;
+    width: 14.5rem;
+    height: 4rem;
+    right: 1.9rem;
+    top: 4.4rem;
+    margin: 0;
+    padding: .5rem;
+    list-style-type: none;
+    background: $gray-100;
+    border-left: 1px solid $gray-300;
+    border-bottom: 1px solid $gray-300;
+    border-right: 1px solid $gray-300;
+    border-top: 0px;
+    box-shadow: 1px 3px 5px rgba(56, 56, 56, .3);
+    border-radius: 0 0 .5rem .5rem;
+    .countDownC { 
+        margin:0 auto; 
+        width: 18rem; 
+        display: block; 
+        position: relative; 
+        top: -.8rem; 
+        left: 0;
+    }
 }
 
 .markApps{

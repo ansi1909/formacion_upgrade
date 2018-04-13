@@ -8,7 +8,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
         <link rel="stylesheet" href="client_styles/formacion/css/main.css">
-        <link rel="stylesheet" href="js/plugins/flipClock.js/css/flipclock.css">
+        <link rel="stylesheet" type="text/css" href="js/plugins/SlickCircularCountDown.js/css/jquery.classycountdown.css"/>
         <title>Seleccion simple</title>
     </head>
     <body>
@@ -27,8 +27,8 @@
                     <h2 class="titulo_eval pl-5">Evaluación</h2>
                     <h5 class="sub_titulo_eval pl-5">Nombre del módulo</h5>
                 </div>
-                <div class="countDown">
-                    <div class="clock"></div>
+                <div class="countDownHMS">
+                    <div class="countDownC classCountD"></div>
                 </div>
                 <a class="navbar-brand" href="#">
                     <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
@@ -154,10 +154,12 @@
         <!-- JAVASCRIPT -->
         <script src="js/jquery-3.3.1.min.js" ></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/plugins/flipClock.js/js/flipclock.js"></script>
-        <script src="js/plugins/flipClock.js/js/es-es.js"></script>
+        <script src="js/plugins/SlickCircularCountDown.js/js/jquery.knob.js"></script>
+        <script src="js/plugins/SlickCircularCountDown.js/js/jquery.throttle.js"></script>
+        <script src="js/plugins/SlickCircularCountDown.js/js/jquery.classycountdown.js"></script>
         <script src="js/custom.js"></script>
         <script src="js/eval.js"></script>
         <script src="js/countDown.js"></script>
+        <script src="js/countDownCircular.js"></script>
     </body>
 </html>

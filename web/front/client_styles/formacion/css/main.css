@@ -918,11 +918,11 @@ nav.navbar {
       .dropDownApps .opcApps:hover .changeApp {
         fill: #CFE65C; }
 
-.countDown {
+.countDownMS {
   position: absolute;
-  width: 13.63rem;
+  width: 10rem;
   height: 4rem;
-  right: 16rem;
+  right: 3.9rem;
   top: 4.4rem;
   margin: 0;
   padding: .5rem;
@@ -932,8 +932,39 @@ nav.navbar {
   border-bottom: 1px solid #F0F4F7;
   border-right: 1px solid #F0F4F7;
   border-top: 0px;
-  box-shadow: 3px 3px 10px rgba(56, 56, 56, 0.5);
+  box-shadow: 1px 3px 5px rgba(56, 56, 56, 0.3);
   border-radius: 0 0 .5rem .5rem; }
+  .countDownMS .countDownC {
+    margin: 0 auto;
+    width: 18rem;
+    display: block;
+    position: relative;
+    top: -.8rem;
+    left: 0; }
+
+.countDownHMS {
+  position: absolute;
+  width: 14.5rem;
+  height: 4rem;
+  right: 1.9rem;
+  top: 4.4rem;
+  margin: 0;
+  padding: .5rem;
+  list-style-type: none;
+  background: #FAFAFA;
+  border-left: 1px solid #F0F4F7;
+  border-bottom: 1px solid #F0F4F7;
+  border-right: 1px solid #F0F4F7;
+  border-top: 0px;
+  box-shadow: 1px 3px 5px rgba(56, 56, 56, 0.3);
+  border-radius: 0 0 .5rem .5rem; }
+  .countDownHMS .countDownC {
+    margin: 0 auto;
+    width: 18rem;
+    display: block;
+    position: relative;
+    top: -.8rem;
+    left: 0; }
 
 .markApps {
   position: absolute;
