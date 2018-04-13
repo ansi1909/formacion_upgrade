@@ -127,16 +127,16 @@
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Publicación'|trans }}</label>
                                         <div class="col-14">
-                                            
-                                            <input type="text" class="form-control form_sty1" name="fecha_publicacion" id="fecha_publicacion" value="" placeholder="DD/MM/YYYY">
+                                            {% set fecha_publicacion = biblioteca.fechaPublicacion ? biblioteca.fechaPublicacion|date('d/m/Y') : '' %}
+                                            <input type="text" class="form-control form_sty1" name="fecha_publicacion" id="fecha_publicacion" value="{{fecha_publicacion}}" placeholder="DD/MM/YYYY">
                                             <span class="fa fa-calendar"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-md-8 col-lg-8">                                            
                                         <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Vencimiento'|trans }}</label>
                                         <div class="col-14">
-                                            
-                                            <input type="text" class="form-control form_sty1" name="fecha_vencimiento" id="fecha_vencimiento" value="" placeholder="DD/MM/YYYY">
+                                            {% set fecha_vencimiento = biblioteca.fechaVencimiento ? biblioteca.fechaVencimiento|date('d/m/Y') : '' %}
+                                            <input type="text" class="form-control form_sty1" name="fecha_vencimiento" id="fecha_vencimiento" value="{{fecha_vencimiento}}" placeholder="DD/MM/YYYY">
                                             <span class="fa fa-calendar"></span>
                                         </div>
                                     </div>
@@ -146,7 +146,8 @@
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-6 col-form-label">{{ 'Tipo de recurso'|trans }}</label>
                                         <div class="col-14">
-                                            <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id">
+                                            {% set disabled = biblioteca.tipobiblioteca ? 'disabled' : "" %}
+                                            <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id"{{disabled}}>
                                                 <option value=""></option>
                                                 {% for tipoBiblioteca in tipoBibliotecas %}
                                                     {% set selected = biblioteca.id ? biblioteca.tipoBiblioteca.id == tipoBiblioteca.id ? 'selected="selected"' : '' : '' %}
@@ -163,6 +164,16 @@
                                             <span class="fa fa-industry"></span>
                                         </div>
                                     </div>
+                                    {% set tipo = biblioteca.tipobiblioteca ? biblioteca.tipobiblioteca.id : 0 %}
+                                    {% if tipo == 3 or tipo == 4 %}
+                                        <div class="col-sm-8 col-md-8 col-lg-8" id="ver">
+                                            <label for="texto" class="col-6 col-form-label">{{ 'Autor'|trans }}</label>
+                                            <div class="col-14">
+                                                <input type="text" class="form-control form_sty1" name="autor" id="autor" value="{{biblioteca.autor}}">
+                                                <span class="fa fa-user"></span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
 
                                 <br>
@@ -234,11 +245,13 @@
                                     </div>
                                 </div>
                                 <br><br>
-                                <div class="row" id="recurso1" style="display: none;">
+                                {% set display = biblioteca.id ? biblioteca.tipobiblioteca.id == 1 ? '': 'none' : 'none' %}
+                                {% set recurso = biblioteca.id ? biblioteca.tipobiblioteca.id == 1 ? biblioteca.pdf : '' : '' %}
+                                <div class="row" id="recurso1" style="display: {{display}}">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="video" id="video" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión mp4 o webm.'|trans }}">
+                                            <input type="text" class="form-control form_sty1" name="video" id="video" value="{{ recurso }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión mp4 o webm.'|trans }}">
                                             <span class="fa fa-file-video-o"></span>
                                         </div>
                                     </div>
@@ -263,11 +276,13 @@
                                        </div>
                                     </div>
                                 </div>
-                                <div class="row" id="recurso2" style="display: none;">
+                                {% set display2 = biblioteca.id ? biblioteca.tipobiblioteca.id == 2 ? '': 'none' : 'none' %}
+                                {% set recurso2 = biblioteca.id ? biblioteca.tipobiblioteca.id == 2 ? biblioteca.pdf : '' : '' %}
+                                <div class="row" id="recurso2" style="display: {{display2}}">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="audio" id="audio" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión mp3.'|trans }}">
+                                            <input type="text" class="form-control form_sty1" name="audio" id="audio" value="{{ recurso2 }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión mp3.'|trans }}">
                                             <span class="fa fa-file-audio-o"></span>
                                         </div>
                                     </div>
@@ -292,11 +307,13 @@
                                        </div>
                                     </div>
                                 </div>
-                                <div class="row" id="recurso3" style="display: none;">
+                                {% set display3 = biblioteca.id ? biblioteca.tipobiblioteca.id == 3 or biblioteca.tipobiblioteca.id == 4 ? '': 'none' : 'none' %}
+                                {% set recurso3 = biblioteca.id ? biblioteca.tipobiblioteca.id == 3 or biblioteca.tipobiblioteca.id == 4 ? biblioteca.pdf: '' : '' %}
+                                <div class="row" id="recurso3" style="display: {{display3}}">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ biblioteca.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
+                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ recurso3 }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
                                             <span class="fa fa-file-pdf-o"></span>
                                         </div>
                                     </div>
@@ -320,7 +337,7 @@
                                            </span>
                                        </div>
                                     </div>
-                                </div>                              
+                                </div>                        
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
                                         <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>

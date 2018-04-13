@@ -28,6 +28,24 @@ $(document).ready(function() {
         }
     });
 
+    $('#fecha_publicacion').datepicker({
+	    startView: 1,
+	    autoclose: true,
+	    format: 'dd/mm/yyyy',
+	    language: 'es',
+	    startDate: '-1d',
+	    clearBtn: true
+	});
+
+    $('#fecha_vencimiento').datepicker({
+	    startView: 1,
+	    autoclose: true,
+	    format: 'dd/mm/yyyy',
+	    language: 'es',
+	    clearBtn: true,
+		startDate: '-1d'
+	});
+
 	CKEDITOR.replace( 'contenido', {
 		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
 		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
@@ -57,10 +75,12 @@ $(document).ready(function() {
 
 function responsive_filemanager_callback(field_id)
 {
+
 	// Ruta en el campo de texto
 	var url=jQuery('#'+field_id).val();
 	var arr = url.split('uploads/');
 	var new_image = arr[arr.length-1];
+	console.log('field_id: '+field_id+'. new_image: '+new_image);
 	$('#'+field_id).val(new_image);
 
 	if(field_id=="imagen")

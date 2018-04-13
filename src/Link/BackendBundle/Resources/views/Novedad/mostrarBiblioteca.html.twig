@@ -99,11 +99,33 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Fecha publicación'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ biblioteca.fechapublicacion|date('d-m-Y') }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Fecha vencimiento'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ biblioteca.fechavencimiento|date('d-m-Y') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
                                     <h5>{{ 'Tipo de Biblioteca'|trans }}</h5>
                                     <div class="col-14">
                                         <p>{{ biblioteca.tipoBiblioteca.nombre }}</p>
                                     </div>
                                 </div>
+                                {% if biblioteca.tipobiblioteca.id == 3 or biblioteca.tipobiblioteca.id == 4 %}
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <h5>{{ 'Autor'|trans }}</h5>
+                                    <div class="col-14">
+                                        <p>{{ biblioteca.autor }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>                            
                             <br>
                             <div class="wizard-footer">

@@ -185,18 +185,41 @@ class NovedadController extends Controller
             $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($tipo_noticia_id);
 
             $titulo = trim($request->request->get('titulo'));
+            $autor = trim($request->request->get('autor'));
             $pdf = trim($request->request->get('pdf'));
+            $video = trim($request->request->get('video'));
+            $audio = trim($request->request->get('audio'));
             $imagen = trim($request->request->get('imagen'));
             $contenido = trim($request->request->get('contenido'));
+            $fecha_vencimiento = trim($request->request->get('fecha_vencimiento'));
+            $fv = explode("/", $fecha_vencimiento);
+            $vencimiento = $fv[2].'-'.$fv[1].'-'.$fv[0];
+            
+            $fecha_publicacion = trim($request->request->get('fecha_publicacion'));
+            $fp = explode("/", $fecha_publicacion);
+            $publicacion = $fp[2].'-'.$fp[1].'-'.$fp[0];
             $tipo_biblioteca_id = $request->request->get('tipo_biblioteca_id');
+            
             $tipoBiblioteca = $em->getRepository('LinkComunBundle:AdminTipoBiblioteca')->find($tipo_biblioteca_id);
 
             $biblioteca->setUsuario($usuario);
             $biblioteca->setEmpresa($empresa);
             $biblioteca->setTipoNoticia($tipoNoticia);
             $biblioteca->setTipoBiblioteca($tipoBiblioteca);
+            if ($tipoBiblioteca == '3' || $tipoBiblioteca == '4') {
+                $biblioteca->setAutor($autor);
+            }
             $biblioteca->setTitulo($titulo);
-            $biblioteca->setPdf($pdf);
+            $biblioteca->setFechaVencimiento(new \DateTime($vencimiento));
+            $biblioteca->setFechaPublicacion(new \DateTime($publicacion));
+            if ($video) {
+                $recurso = $video;
+            }else if ($audio) {
+                $recurso = $audio;
+            }else{
+                $recurso = $pdf;
+            }
+            $biblioteca->setPdf($recurso);
             $biblioteca->setImagen($imagen);
             $biblioteca->setContenido($contenido);
             $em->persist($biblioteca);
