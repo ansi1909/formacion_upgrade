@@ -7,7 +7,8 @@
 }
 
 .eval_header{
-    height: 18vh;
+    height: 6rem !important; 
+    padding: 1rem !important; 
     .exit_eval {
         cursor: pointer;
         position: relative;
@@ -24,9 +25,11 @@
 
     .titulo_eval {
         font-family: $primary-font;
-        font-size: $h2-font-size;
+        font-size: $h4-font-size;
         text-align: center;
-        line-height: 2.625rem;
+        white-space: pre-wrap;
+        max-width: 55rem;
+        line-height: 1rem;
         font-weight: $font-weight-normal-hard;
         color: $gray-800;
     }
@@ -35,7 +38,9 @@
         color: $gray-600;
         font-family: $primary-font;
         font-size: $font-size-base;
-        line-height: 1.1875rem;
+        line-height: 1rem;
+        padding-top: 1rem;
+        max-width: 55rem;
         text-align: center;
     }
 }

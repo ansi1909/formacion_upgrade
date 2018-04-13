@@ -36,7 +36,7 @@
     display: flex;
     flex-direction: row;
     height: auto;
-    width: 33rem;
+    width: 45rem;
     margin: .5rem 0;
     cursor: pointer;
     .opc_letra{
@@ -53,7 +53,7 @@
         .opc_l{
             line-height: $h4-font-size;
             font-size: $h3-font-size;
-            font-family: $primary-font;
+            font-family: $lessons-font;
             color: $gray-800;
             text-align: center;
             position: absolute;
@@ -67,7 +67,7 @@
     .opc_resp{
         position: relative;
         top: 0;
-        width: 28rem;
+        width: 40rem;
         min-height: 3rem;
         padding: .75rem .75rem .25rem .75rem;
         border-top: .125rem solid $gray-400;
@@ -76,9 +76,9 @@
         border-radius: 0 calc(1rem - 10px) calc(1rem - 10px) 0;
         .opc_r{
             color: $gray-800;
-            font-family: $primary-font;
+            font-family: $lessons-font;
             font-size: $p-font-size;
-            line-height: $h4-font-size;
+            line-height: 2rem;
             font-weight: $font-weight-light;
         }
     }
@@ -469,10 +469,13 @@
         text-align: center;
         position: absolute;
         transform: translateY(-50%);
-        left: 40%;
-        top: 50%;
+        left: 35%;
+        top: 55%;
         display: block;
         margin: auto;
+        .check{
+            font-size: $h3-font-size;
+        }
     }
 }
 
