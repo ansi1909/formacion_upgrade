@@ -60,9 +60,11 @@ $(document).ready(function() {
     
     $('.ClassyCountdown-days').hide();
 
-    if (duracion > 3600)
+    if (duracion < 3600)
     {
         div = $('#divCountD');
+        div.removeClass('countDownHMS');
+        div.addClass('countDownMS');
         $('.ClassyCountdown-hours').hide();
     }
 
