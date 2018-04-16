@@ -364,19 +364,19 @@
 
 //Evaluaciones por responder
 .mostrarMsj{
-    width: 23rem;
-    height: 6.5rem;
+    width: 24rem;
+    height: auto;
     position: sticky;
     bottom: 0;
     margin: 0 auto;
     background: rgba(223, 88, 76, .8);
     border-radius: 1rem 1rem 0 0;
-    padding: 1rem 2rem;
+    padding: 1rem 2rem .5rem 2rem;
     border-top: 1px solid $red;
     border-left: 1px solid $red;
     border-right: 1px solid $red;
     z-index: 1;
-    display: none;
+    //display: none;
     .closeError{
         position: absolute;
         color: $white;
