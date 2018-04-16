@@ -154,4 +154,6 @@ $(document).ready(function() {
             $(this).addClass("active");
         });
     });
+
+    document.oncontextmenu = function(){return false;}
 });
