@@ -440,7 +440,7 @@
             overflow-x: none;
         }
 
-        .bttn__nxt, .bttn__end, .bttn__save, .bttn__cancel, .bttn__vp{
+        .bttn__nxt, .bttn__end, .bttn__save, .bttn__cancel, .bttn__vp, .bttn__addp{
             width: 3em;
             height: 3em;
             border-radius: 50px;
@@ -462,7 +462,8 @@
 
         .bttn__nr .text__nr, .bttn__nxt .text__nxt, .bttn__end .text__end, .bttn__bck .text__bck,
         .bttn__save .text__save, .bttn__cancel .text__cancel, .bttn__nre .text__nre, .bttn__preg .text__preg, 
-        .bttn__bck2 .text__bck2, .bttn__bck3 .text__bck3, .bttn__pl1 .text__pl1, .bttn__vp .text__vp{
+        .bttn__bck2 .text__bck2, .bttn__bck3 .text__bck3, .bttn__pl1 .text__pl1, .bttn__vp .text__vp, 
+        .bttn__addp .text__addp{
             opacity: 0;
             display: none;
         }
@@ -470,7 +471,7 @@
         .bttn__nxt span.fa, .bttn__end span.fa, 
         .bttn__edit span.fa, .bttn__elim span.fa, 
         .bttn__save span.fa, .bttn__cancel span.fa, 
-        .bttn__vp span.fa{
+        .bttn__vp span.fa, .bttn__addp span.fa{
             font-size: 18px;
             transition: margin .5s ease;
         }
@@ -493,6 +494,11 @@
             width: 8em;
             background: #d5ff00;
         }
+        
+        .bttn__addp:hover{
+            width: 12.25rem;
+            background: #d5ff00;
+        }
 
         .bttn__vp:hover{
             width: 8.8rem;
@@ -504,7 +510,7 @@
         }
 
         .bttn__end:hover span.fa, .bttn__save:hover span.fa, 
-        .bttn__cancel:hover span.fa{
+        .bttn__cancel:hover span.fa, .bttn__addp:hover span.fa{
             margin: 3px 5px 0 10px;
         }
 
@@ -524,7 +530,7 @@
         .bttn__end:hover .text__end, 
         .bttn__save:hover .text__save, 
         .bttn__cancel:hover .text__cancel, 
-        .bttn__vp:hover .text__vp {
+        .bttn__vp:hover .text__vp, .bttn__addp:hover .text__addp{
             opacity: 1;
             display: inline-block;
             position: relative;

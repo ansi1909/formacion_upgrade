@@ -53,12 +53,23 @@
         border-radius: 24px;
         background-color: $white;
         padding: 0 8px;
-        color: $gray-700;
+        font-weight: $font-weight-easy-medium;
+        color: $gray-900;
     }
 }
 
 .card-img-overlay {
     height: 50%;
+    .alertTimeGood{
+        background: $green;
+    }
+    .alertTimeWarning{
+        background: $yellow;
+    }
+    .alertTimeDanger{
+        background: $red;
+        color: $gray-100;
+    }
 }
 
 .card-footer {

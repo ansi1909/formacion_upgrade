@@ -1422,10 +1422,18 @@ p.up {
     border-radius: 24px;
     background-color: #fff;
     padding: 0 8px;
-    color: #797D80; }
+    font-weight: 600;
+    color: #212529; }
 
 .card-img-overlay {
   height: 50%; }
+  .card-img-overlay .alertTimeGood {
+    background: #CFE65C; }
+  .card-img-overlay .alertTimeWarning {
+    background: #FFDC60; }
+  .card-img-overlay .alertTimeDanger {
+    background: #df584c;
+    color: #FAFAFA; }
 
 .card-footer {
   position: relative;
