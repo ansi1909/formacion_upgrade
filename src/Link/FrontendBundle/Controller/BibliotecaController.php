@@ -36,6 +36,8 @@ class BibliotecaController extends Controller
             $podcast = array();
             $articulos = array();
             $libros = array();
+            $hoy = new \DateTime();
+            $now = strtotime($hoy->format('d-m-Y'));
 
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.empresa = :empresa_id
@@ -47,35 +49,40 @@ class BibliotecaController extends Controller
 
             foreach($noticias_db as $noticia)
             {
-                $todos[] =array('id'=>$noticia->getId(),
-                                'titulo'=>$noticia->getTitulo(),
-                                'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                'tid'=>$noticia->getTipoBiblioteca()->getId());
+                $fecha_i = strtotime($noticia->getFechaPublicacion()->format('d-m-Y'));
+                $fecha_f = strtotime($noticia->getFechaVencimiento()->format('d-m-Y'));
+                if ($now >= $fecha_i && $now < $fecha_f) 
+               {
+                    $todos[] =array('id'=>$noticia->getId(),
+                                    'titulo'=>$noticia->getTitulo(),
+                                    'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                    'tid'=>$noticia->getTipoBiblioteca()->getId());
 
-                if ($noticia->getTipoBiblioteca()->getId() == '1') 
-                {
-                    $videos[] =array('id'=>$noticia->getId(),
-                                     'titulo'=>$noticia->getTitulo(),
-                                     'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                     'tid'=>$noticia->getTipoBiblioteca()->getId());
-                }
-                else if ($noticia->getTipoBiblioteca()->getId() == '2') {
-                    $podcast[] =array('id'=>$noticia->getId(),
-                                      'titulo'=>$noticia->getTitulo(),
-                                      'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                      'tid'=>$noticia->getTipoBiblioteca()->getId());
-                }
-                else if ($noticia->getTipoBiblioteca()->getId() == '3') {
-                    $articulos[] =array('id'=>$noticia->getId(),
-                                        'titulo'=>$noticia->getTitulo(),
-                                        'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                        'tid'=>$noticia->getTipoBiblioteca()->getId());
-                }
-                else{   
-                    $libros[] =array('id'=>$noticia->getId(),
-                                     'titulo'=>$noticia->getTitulo(),
-                                     'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                     'tid'=>$noticia->getTipoBiblioteca()->getId());
+                    if ($noticia->getTipoBiblioteca()->getId() == '1') 
+                    {
+                        $videos[] =array('id'=>$noticia->getId(),
+                                         'titulo'=>$noticia->getTitulo(),
+                                         'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                         'tid'=>$noticia->getTipoBiblioteca()->getId());
+                    }
+                    else if ($noticia->getTipoBiblioteca()->getId() == '2') {
+                        $podcast[] =array('id'=>$noticia->getId(),
+                                          'titulo'=>$noticia->getTitulo(),
+                                          'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                          'tid'=>$noticia->getTipoBiblioteca()->getId());
+                    }
+                    else if ($noticia->getTipoBiblioteca()->getId() == '3') {
+                        $articulos[] =array('id'=>$noticia->getId(),
+                                            'titulo'=>$noticia->getTitulo(),
+                                            'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                            'tid'=>$noticia->getTipoBiblioteca()->getId());
+                    }
+                    else{   
+                        $libros[] =array('id'=>$noticia->getId(),
+                                         'titulo'=>$noticia->getTitulo(),
+                                         'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                         'tid'=>$noticia->getTipoBiblioteca()->getId());
+                    }
                 }
             }
 
@@ -113,6 +120,11 @@ class BibliotecaController extends Controller
 
             $biblioteca = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($biblioteca_id);
             $anuncios=array();
+            $hoy = new \DateTime();
+            $now = strtotime($hoy->format('d-m-Y'));
+            $videos = array();
+            $audios = array();
+            $pdfs = array();
 
             if ($biblioteca->getTipoBiblioteca()->getId() == 1) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
@@ -126,6 +138,18 @@ class BibliotecaController extends Controller
                                                   'id'=> $biblioteca_id));
                 $anuncios = $query->getResult();
 
+                foreach($anuncios as $anuncio){
+                    $fecha_i = strtotime($anuncio->getFechaPublicacion()->format('d-m-Y'));
+                    $fecha_f = strtotime($anuncio->getFechaVencimiento()->format('d-m-Y'));
+                    if ($now >= $fecha_i && $now < $fecha_f) 
+                    {
+                        $videos[] =array('id'=>$anuncio->getId(),
+                                         'titulo'=>$anuncio->getTitulo(),
+                                         'tipo'=>$anuncio->getTipoBiblioteca()->getNombre(),
+                                         'tid'=>$anuncio->getTipoBiblioteca()->getId());
+                    }
+                }
+
             }elseif ($biblioteca->getTipoBiblioteca()->getId() == 2) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca = :biblioteca
@@ -137,6 +161,18 @@ class BibliotecaController extends Controller
                                                   'noticia_id'=> 3,
                                                   'id'=> $biblioteca_id));
                 $anuncios = $query->getResult();
+
+                foreach($anuncios as $anuncio){
+                    $fecha_i = strtotime($anuncio->getFechaPublicacion()->format('d-m-Y'));
+                    $fecha_f = strtotime($anuncio->getFechaVencimiento()->format('d-m-Y'));
+                    if ($now >= $fecha_i && $now < $fecha_f) 
+                    {
+                        $audios[] =array('id'=>$anuncio->getId(),
+                                         'titulo'=>$anuncio->getTitulo(),
+                                         'tipo'=>$anuncio->getTipoBiblioteca()->getNombre(),
+                                         'tid'=>$anuncio->getTipoBiblioteca()->getId());
+                    }
+                }
             }elseif ($biblioteca->getTipoBiblioteca()->getId() == 3 || $biblioteca->getTipoBiblioteca()->getId() == 4) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca IN (:biblioteca)
@@ -148,10 +184,19 @@ class BibliotecaController extends Controller
                                                   'noticia_id'=> 3,
                                                   'id'=> $biblioteca_id));
                 $anuncios = $query->getResult();
+
+                foreach($anuncios as $anuncio){
+                    $fecha_i = strtotime($anuncio->getFechaPublicacion()->format('d-m-Y'));
+                    $fecha_f = strtotime($anuncio->getFechaVencimiento()->format('d-m-Y'));
+                    if ($now >= $fecha_i && $now < $fecha_f) 
+                    {
+                        $pdfs[] =array('id'=>$anuncio->getId(),
+                                         'titulo'=>$anuncio->getTitulo(),
+                                         'tipo'=>$anuncio->getTipoBiblioteca()->getNombre(),
+                                         'tid'=>$anuncio->getTipoBiblioteca()->getId());
+                    }
+                }
             }
-
-            
-
         }else {
             return $this->redirectToRoute('_login');
         }
@@ -159,7 +204,9 @@ class BibliotecaController extends Controller
         //return new Response (var_dump($anuncios));
 
         return $this->render('LinkFrontendBundle:Biblioteca:detalle.html.twig', array('biblioteca' => $biblioteca,
-                                                                                      'anuncios' => $anuncios));
+                                                                                      'videos' => $videos,
+                                                                                      'audios' => $audios,
+                                                                                      'pdfs' => $pdfs));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

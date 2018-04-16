@@ -482,7 +482,7 @@
 
         .bttn__end span.fa, .bttn__edit span.fa,
         .bttn__elim span.fa, .bttn__save span.fa, 
-        .bttn__cancel span.fa{
+        .bttn__cancel span.fa, .bttn__addp span.fa{
             margin: 3px 8px 0px 4px;
         }
 

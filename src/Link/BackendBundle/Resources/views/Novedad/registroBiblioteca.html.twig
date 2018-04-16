@@ -147,7 +147,12 @@
                                         <label for="texto" class="col-6 col-form-label">{{ 'Tipo de recurso'|trans }}</label>
                                         <div class="col-14">
                                             {% set disabled = biblioteca.tipobiblioteca ? 'disabled' : "" %}
-                                            <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id"{{disabled}}>
+                                            {% if disabled %}
+                                                <input type="hidden" name="tipo_biblioteca_id" value="{{ biblioteca.tipoBiblioteca.id }}">
+                                                <select class="form-control form_sty_select" name="tipo_biblioteca" id="tipo_biblioteca"{{disabled}}>
+                                            {% else %}
+                                                <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id"{{disabled}}>
+                                            {% endif %}
                                                 <option value=""></option>
                                                 {% for tipoBiblioteca in tipoBibliotecas %}
                                                     {% set selected = biblioteca.id ? biblioteca.tipoBiblioteca.id == tipoBiblioteca.id ? 'selected="selected"' : '' : '' %}

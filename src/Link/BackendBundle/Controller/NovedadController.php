@@ -206,7 +206,7 @@ class NovedadController extends Controller
             $biblioteca->setEmpresa($empresa);
             $biblioteca->setTipoNoticia($tipoNoticia);
             $biblioteca->setTipoBiblioteca($tipoBiblioteca);
-            if ($tipoBiblioteca == '3' || $tipoBiblioteca == '4') {
+            if ($tipoBiblioteca->getId() == '3' || $tipoBiblioteca->getId() == '4') {
                 $biblioteca->setAutor($autor);
             }
             $biblioteca->setTitulo($titulo);
