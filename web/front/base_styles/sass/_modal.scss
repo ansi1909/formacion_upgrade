@@ -233,6 +233,39 @@
         @extend %btn-cc;
     }
 }
+
+.modalEEval{
+    @extend %modal-sm;
+    @extend %modal;
+    .textModalEv{
+        font-size: calc(1rem + 9px);
+        font-family: $primary-font;
+        line-height: 1rem;
+        color: $gray-400;
+        font-weight: $font-weight-normal;
+    }
+    .btn-Fe{
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 1.5rem;
+        border-radius: 50rem;
+        color: $gray-200;
+    }
+    .btn-contEval{
+        color: $gray-850;
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 1.5rem;
+        border-radius: 50rem;
+        &:hover{
+            color: $gray-200;
+        }
+    }
+}
 //Extend
 
 %modal-sl{

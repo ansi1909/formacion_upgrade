@@ -112,7 +112,7 @@
                     </a>
                 </div>
                 <div class="col-6 text-center">
-                    <a href="#" class="btn_sp1">
+                    <a href="#" data-toggle="modal" data-target="#modalEe" class="btn_sp1">
                         <span>Siguiente pregunta</span>
                     </a>
                 </div>
@@ -151,15 +151,34 @@
             </div>
         </div>
         <!-- Falta contestar preguntas -->
-        <div class="mostrarMsj">
-            <div class="row justify-content-end mx-0">
-                <div class="col-auto text-center px-0 py-0">
-                    <a href="" class="closeError"><span class="material-icons icError">clear</span></a>
+        <div class="modal modalEEval" id="modalEe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-4 justify-content-center">
-                <div class="col-12 text-justify">
-                    <p class="textError"><strong>Advertencia:</strong> Aún no ha respondido las preguntas 3, 5 y 6. Si presiona <strong>FINALIZAR EVALUACIÓN</strong> se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione <strong>CONTINUAR EN LA EVALUACIÓN</strong></p>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo"><strong>Advertencia</strong></h4>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
+                        <p class="txtModalEv">Aún no ha respondido las preguntas 3, 5 y 6. Si presiona <strong>FINALIZAR EVALUACIÓN</strong> se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione <strong>CONTINUAR EN LA EVALUACIÓN</strong></p>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#"><button type="button" class="btn btn-primary btn-Fe">Finalizar Evaluación</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" data-dismiss="modal"><button type="button" class="btn btn-warning btn-contEval">Continuar evaluación</button></a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -564,6 +564,31 @@ a:focus {
       background: linear-gradient(to right, #FFDC60 0%, #FFDC60 100%);
       color: #565656; }
 
+.modalEEval .textModalEv {
+  font-size: calc(1rem + 9px);
+  font-family: "Roboto";
+  line-height: 1rem;
+  color: #DAE1E6;
+  font-weight: 400; }
+.modalEEval .btn-Fe {
+  text-transform: uppercase;
+  font-family: "Roboto";
+  font-weight: 700;
+  border: 0px !important;
+  padding: .7rem 1.5rem;
+  border-radius: 50rem;
+  color: #F7FAFC; }
+.modalEEval .btn-contEval {
+  color: #565656;
+  text-transform: uppercase;
+  font-family: "Roboto";
+  font-weight: 700;
+  border: 0px !important;
+  padding: .7rem 1.5rem;
+  border-radius: 50rem; }
+  .modalEEval .btn-contEval:hover {
+    color: #F7FAFC; }
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
@@ -590,7 +615,7 @@ a:focus {
   max-height: 30rem;
   min-height: 20rem; }
 
-.modalCEval {
+.modalCEval, .modalEEval {
   height: 33.5rem;
   width: 33.5rem;
   height: 28.5rem;
@@ -602,23 +627,23 @@ a:focus {
   height: 36rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval {
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval {
   margin: 8rem auto !important;
   border-radius: 1rem;
   background: #FAFAFA;
   margin: 2rem auto !important; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal {
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
@@ -2399,36 +2424,6 @@ p.up {
         border-bottom: 0.125rem solid #df584c;
         border-right: 0.125rem solid #df584c;
         border-top: 0.125rem solid #df584c; }
-
-.mostrarMsj {
-  width: 24rem;
-  height: auto;
-  position: sticky;
-  bottom: 0;
-  margin: 0 auto;
-  background: rgba(223, 88, 76, 0.8);
-  border-radius: 1rem 1rem 0 0;
-  padding: 1rem 2rem .5rem 2rem;
-  border-top: 1px solid #df584c;
-  border-left: 1px solid #df584c;
-  border-right: 1px solid #df584c;
-  z-index: 1; }
-  .mostrarMsj .closeError {
-    position: absolute;
-    color: #fff;
-    top: -.5rem;
-    left: .1rem;
-    cursor: pointer;
-    padding: 0;
-    margin: 0; }
-    .mostrarMsj .closeError .icError {
-      font-size: calc(1rem + 4px); }
-  .mostrarMsj .textError {
-    color: #fff;
-    font-family: "Open Sans";
-    font-size: 0.87rem;
-    font-weight: 500;
-    cursor: default; }
 
 .enun .enun_eval, .enun_eval {
   color: #5C6266;
