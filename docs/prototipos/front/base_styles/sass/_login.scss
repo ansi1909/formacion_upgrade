@@ -22,7 +22,7 @@ a.links{
 }
 
 a{
-    &:focus{
+    &:focus, &:active, &:target, &:checked{
         outline: none !important;
     }
 }

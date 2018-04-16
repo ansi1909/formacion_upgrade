@@ -154,6 +154,14 @@ $(document).ready(function() {
             $(this).addClass("active");
         });
     });
+    
+    $(".bttnDownl").mouseenter(function(){
+        $(".tooltipN").slideToggle(300);
+    });
 
+    $(".bttnDownl").mouseleave(function(){
+        $(".tooltipN").slideToggle(300);
+    });
+    
     document.oncontextmenu = function(){return false;}
 });

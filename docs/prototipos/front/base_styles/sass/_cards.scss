@@ -54,7 +54,7 @@
         background-color: $white;
         padding: 0 8px;
         font-weight: $font-weight-easy-medium;
-        color: $gray-900;
+        color: $gray-700;
     }
 }
 
@@ -112,7 +112,27 @@
     margin: 32px;
     box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19);
     transition: .5s;
-
+    .alertTimeGood{
+        background: $green;
+        border-radius: 50rem;
+        padding: 0 calc(1rem - 8px);
+        color: $gray-700;
+        font-weight: $font-weight-medium;
+    }
+    .alertTimeWarning{
+        background: $yellow;
+        border-radius: 50rem;
+        padding: 0 calc(1rem - 8px);
+        color: $gray-700;
+        font-weight: $font-weight-medium;
+    }
+    .alertTimeDanger{
+        background: $red;
+        color: $gray-100;
+        border-radius: 50rem;
+        padding: 0 calc(1rem - 8px);
+        font-weight: $font-weight-medium;
+    }
 }
 
 
