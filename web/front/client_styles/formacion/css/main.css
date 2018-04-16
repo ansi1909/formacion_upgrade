@@ -2392,6 +2392,37 @@ p.up {
         border-right: 0.125rem solid #df584c;
         border-top: 0.125rem solid #df584c; }
 
+.mostrarMsj {
+  width: 23rem;
+  height: 6.5rem;
+  position: sticky;
+  bottom: 0;
+  margin: 0 auto;
+  background: rgba(223, 88, 76, 0.8);
+  border-radius: 1rem 1rem 0 0;
+  padding: 1rem 2rem;
+  border-top: 1px solid #df584c;
+  border-left: 1px solid #df584c;
+  border-right: 1px solid #df584c;
+  z-index: 1;
+  display: none; }
+  .mostrarMsj .closeError {
+    position: absolute;
+    color: #fff;
+    top: -.5rem;
+    left: .1rem;
+    cursor: pointer;
+    padding: 0;
+    margin: 0; }
+    .mostrarMsj .closeError .icError {
+      font-size: calc(1rem + 4px); }
+  .mostrarMsj .textError {
+    color: #fff;
+    font-family: "Open Sans";
+    font-size: 0.87rem;
+    font-weight: 500;
+    cursor: default; }
+
 .enun .enun_eval, .enun_eval {
   color: #5C6266;
   font-family: "Open Sans";
