@@ -930,7 +930,7 @@ nav.navbar {
   right: 3rem;
   top: 6rem;
   margin: 0;
-  padding: .5rem;
+  padding: .3rem;
   list-style-type: none;
   background: #FAFAFA;
   border-left: 1px solid #F0F4F7;
@@ -942,11 +942,11 @@ nav.navbar {
   top: 6rem; }
   .countDownMS .countDownC {
     margin: 0 auto;
-    width: 18rem;
+    width: 17rem;
     display: block;
     position: relative;
-    top: -.8rem;
-    left: 0; }
+    top: -.5rem;
+    left: .4rem; }
 
 .countDownHMS {
   position: absolute;
@@ -967,11 +967,11 @@ nav.navbar {
   top: 6rem; }
   .countDownHMS .countDownC {
     margin: 0 auto;
-    width: 18rem;
+    width: 17rem;
     display: block;
     position: relative;
-    top: -.8rem;
-    left: 0; }
+    top: -.7rem;
+    left: .5rem; }
 
 .markApps {
   position: absolute;
