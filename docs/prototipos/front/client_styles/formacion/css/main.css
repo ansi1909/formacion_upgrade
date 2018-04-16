@@ -1198,6 +1198,19 @@ p.up {
   font-weight: 200;
   text-align: left;
   margin: 1.6rem auto; }
+.lesson-container ul, .lesson-container ol {
+  display: inline-block;
+  text-align: left;
+  color: grey;
+  line-height: 2rem;
+  width: 75%; }
+  .lesson-container ul li, .lesson-container ol li {
+    margin-bottom: 1rem; }
+.lesson-container h4 {
+  margin: 1.5rem 0;
+  font-size: 1.3rem; }
+  .lesson-container h4 a {
+    color: #FFDC60; }
 
 .wraper-nav-less {
   position: relative;
