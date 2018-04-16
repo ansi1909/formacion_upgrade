@@ -100,11 +100,11 @@ $(document).ready(function() {
 			}
 			else {
 				// Se finaliza esta última lección y se redirige a la pantalla de final
-				var ok = finishLesson(programa_id, subpagina_id);
-				if (ok > 0)
-				{
+				finishLesson(programa_id, subpagina_id);
+				setTimeout(function() {
+					// Esperar a que responda el servidor
 					window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
-				}
+			    }, 12000);
 			}
 		}
 		else {
@@ -130,10 +130,9 @@ $(document).ready(function() {
 		var pagina_id = arr[1];
 		var subpag_id = arr[2];
 
-		var ok = finishLesson(prog_id, pagina_id);
-
-		if (ok > 0)
-		{
+		finishLesson(prog_id, pagina_id);
+		setTimeout(function() {
+			// Esperar a que responda el servidor
 			if (subpag_id > 0)
 			{
 				window.location.replace($('#url_next').val()+'/'+subpag_id+'/'+$('#puntos_agregados').val());
@@ -141,7 +140,7 @@ $(document).ready(function() {
 			else {
 				window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
 			}
-		}
+	    }, 12000);
 
 	});
 
@@ -269,11 +268,10 @@ function startLesson(programa_id, pagina_id)
 
 function finishLesson(programa_id, pagina_id)
 {
-	var ok = 0;
 	$.ajax({
 		type: "POST",
 		url: $('#url_procesar').val(),
-		async: false,
+		async: true,
 		data: { programa_id: programa_id, pagina_id: pagina_id },
 		dataType: "json",
 		success: function(data) {
@@ -284,14 +282,12 @@ function finishLesson(programa_id, pagina_id)
 			var puntos = $('#puntos_agregados').val();
 			puntos = parseInt(puntos) + parseInt(log_puntos[1]);
 			$('#puntos_agregados').val(puntos);
-			ok = 1;
 			//clearTimeout( timerId );
 		},
 		error: function(){
 			console.log('Error procesando la lección'); // Hay que implementar los mensajes de error para el frontend
 		}
 	});
-	return ok;
 }
 
 function observeMuro()

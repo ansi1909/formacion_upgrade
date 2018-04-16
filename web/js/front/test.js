@@ -103,7 +103,8 @@ $(document).ready(function() {
 								window.location.replace($('#url_fin').val());
 							}
 							else {
-								console.log('ADVERTENCIA: Preguntas sin contestar');
+								$('#psc').html(preguntas_sin_contestar);
+								$( "#triggerModal2" ).trigger( "click" );
 							}
 						}
 					}
@@ -234,5 +235,33 @@ $(document).ready(function() {
         	
       	}
     });
+
+	$('.btn-Fe').click(function(){
+		$(this).hide();
+		$('.btn-contEval').hide();
+		window.location.replace($('#url_fin').val());
+	});
+
+	$('.btn-contEval').click(function(){
+		var preguntas_sin_contestar = $('#preguntas_sin_contestar').val();
+		psc_arr = preguntas_sin_contestar.split(',');
+		if (psc_arr.length > 0)
+		{
+			nro = psc_arr[0];
+			$('#nro').val(nro);
+			var nro_p = parseInt(nro)-parseInt(1);
+			var porcentaje = parseInt(((nro_p/total)*100), 10);
+			$("#progreso").attr("style", 'width: '+porcentaje+'%');
+			var nro_pregunta = nro < 10 ? '0'+nro : nro;
+			$('#nro_pregunta').html(nro_pregunta);
+			$('#pregunta-'+nro).show(1000); // Se muestra la siguiente pregunta
+			$('#pregunta_id').val($('#pregunta-'+nro).attr('data')); // Nueva pregunta_id
+			$('#next').show();
+			if (parseInt(nro) > 1)
+			{
+				$('#before').show();
+			}
+		}
+	});
 
 });

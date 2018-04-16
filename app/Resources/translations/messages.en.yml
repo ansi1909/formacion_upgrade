@@ -9,6 +9,7 @@ Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activo: Active
+Advertencia: Warning
 Agregar: Add
 Agregar opción: Add option
 Agregar pregunta: Add question
@@ -37,6 +38,7 @@ Asignar: Assign
 Asignar páginas: Assign page
 Asunto: Subject
 Autor: Author
+Aún no ha respondido las preguntas: You have not already answered the questions
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aviso de cierre de sesión: Notice of session closure
@@ -92,6 +94,7 @@ Contacte al Administrador del Sistema para mayor información: Contact to System
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
+Continuar en la Evaluación: Continue in the Evaluation
 Contraseña: Password
 Copia: Copy
 Correcta: Correct
@@ -278,6 +281,7 @@ Filtrar comentarios del foro: Filter forum comments
 Filtrar comentarios del muro: Filter wall comments
 Filtrar usuarios: Filter users
 Finalizar: Finish
+Finalizar Evaluación: Finish Test
 Formato de correo inválido: invalid email format
 Formato sugerido se especifica en: Suggested format, see
 Foto de la página: Page picture
@@ -486,6 +490,7 @@ Roles asignados: Assigned roles
 Roles a seleccionar: Selectable roles
 Salir: Log out
 Salir de la evaluación: Leave the evaluation
+se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione: results will be calculated leaving these questions unanswered. If you want to complete your answers press
 Seleccionado: Selected
 Seleccione el/los usuarios: Select the user
 Seleccione el nivel: Select the level
@@ -500,6 +505,7 @@ Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta pá
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
 Si necesitas ayuda escribenos a: If you need help email us to
+Si presiona: If press
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Sigue aprendiendo: Keep learning

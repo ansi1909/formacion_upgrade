@@ -20,6 +20,11 @@
         <link rel="stylesheet" href="{{ css }}">
         <!--<link rel="stylesheet" href="{{ asset('front/js/plugins/flipClock.js/css/flipclock.css') }}">-->
         <link rel="stylesheet" type="text/css" href="{{ asset('front/js/plugins/SlickCircularCountDown.js/css/jquery.classycountdown.css') }}"/>
+        <style type="text/css">
+            #psc {
+                font-weight: bold;
+            }
+        </style>
     </head>
     
     <body>
@@ -123,6 +128,7 @@
         </div>
 
         <a id="triggerModal" data-toggle="modal" data-target="#modalCe"></a>
+        <a id="triggerModal2" data-toggle="modal" data-target="#modalEe"></a>
 
         <div class="modal modalCEval" id="modalCe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="container-fluid">
@@ -153,6 +159,38 @@
                 <div class="row mt-3 align-items-end justify-content-center toHide">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
                         <a href="#" class="cancelarCs" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modalEEval" id="modalEe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo"><strong>{{ 'Advertencia'|trans }}</strong></h4>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
+                        <p class="txtModalEv">{{ 'Aún no ha respondido las preguntas'|trans }} <span id="psc"></span>. {{ 'Si presiona'|trans }} <strong>{{ 'Finalizar Evaluación'|trans }}</strong> {{ 'se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione'|trans }} <strong>{{ 'Continuar en la Evaluación'|trans }}</strong>.</p>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#"><button type="button" class="btn btn-primary btn-Fe">{{ 'Finalizar Evaluación'|trans }}</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" data-dismiss="modal"><button type="button" class="btn btn-warning btn-contEval">{{ 'Continuar en la Evaluación'|trans }}</button></a>
                     </div>
                 </div>
             </div>
