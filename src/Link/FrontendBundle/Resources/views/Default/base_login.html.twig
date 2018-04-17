@@ -179,6 +179,14 @@
                 recuperar();
             });
 
+            $('.close').click(function()
+            {
+                $('#correo').val('');
+                $('.error_ajax').html('');
+                $('.error_ajax').hide();
+                $('#recuperar_clave').show();
+            });
+
             function recuperar()
             {
                 var url_recuperar_correo = $('#url_recuperar_correo').val();
@@ -198,8 +206,13 @@
                             {
                                 $('.error_ajax').show();
                                 $('.error_ajax').html(data.error);
+
                                 setTimeout(function(){
                                     $('.modal-backdrop,#modal1').hide();
+                                    $('.error_ajax').hide();
+                                    $('.error_ajax').html('');                                    
+                                    $('#correo').val('');
+                                    $('#recuperar_clave').show();
                                 }, 1000); // 1 segundos 
                             }else
                             {
@@ -220,6 +233,8 @@
                             $('#div-alert').show();
                         }
                     });
+                }else{
+                    $('#correo').val('');
                 }
             }
         </script>
