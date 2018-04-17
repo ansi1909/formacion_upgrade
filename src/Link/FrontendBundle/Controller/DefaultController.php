@@ -316,7 +316,7 @@ class DefaultController extends Controller
                                                                  'clave' => $usuario->getClave()) );
                            // return new response(var_dump($parametros));
                             $correoRecuperacion = $f->sendEmail($parametros, $this);
-                           // return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
+                            return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }
                     }
                 }

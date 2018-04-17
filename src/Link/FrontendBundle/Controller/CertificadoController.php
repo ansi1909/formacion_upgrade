@@ -97,10 +97,10 @@ class CertificadoController extends Controller
 		            /*certificado numero 2*/
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
 		            $certificado_pdf->writeHTML('<page title="prueba" pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
-		                                            <div style="font-size:24px;">'.$certificado->getEncabezado().'</div>
+		                                            <div style="font-size:20px;">'.$certificado->getEncabezado().'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
 		                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
-		                                            <div style="text-align:center; font-size:50px; margin-top:60px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
+		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
 		                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
                                         			<div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
 		                                        </page>');
