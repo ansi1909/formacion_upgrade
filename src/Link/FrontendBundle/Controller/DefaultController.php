@@ -274,6 +274,11 @@ class DefaultController extends Controller
         {
             $usuario = $em ->getRepository('LinkComunBundle:AdminUsuario')->findOneByCorreoCorporativo($correo);
 
+            if(!$usuario)
+            {
+                $usuario = $em ->getRepository('LinkComunBundle:AdminUsuario')->findOneByCorreoPersonal($correo);
+            }
+
             if (!$usuario)//validamos que el correo exista
             {
                 $error = $this->get('translator')->trans('El correo no existe en la base de datos.');
@@ -299,7 +304,7 @@ class DefaultController extends Controller
                             $ok = 0;
                             $error = $this->get('translator')->trans('El correo se esta enviando.');
 
-                           /* $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+                            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
 
                             // Envío de correo con los datos de acceso, usuario y clave
@@ -310,7 +315,7 @@ class DefaultController extends Controller
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave()) );
                            // return new response(var_dump($parametros));
-                            $correoRecuperacion = $f->sendEmail($parametros, $this);*/
+                            $correoRecuperacion = $f->sendEmail($parametros, $this);
                            // return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }
                     }

@@ -34,6 +34,9 @@
                 </td>
                 <td class="center">
                     <a href="{{ path('_pagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Configurar página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
+                    {% if pagina.subpaginas.tiene > 0 %}
+                        <a href="{{ path('_moverPagina', { 'pagina_id': pagina.id }) }}" title="{{ 'Mover página'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-arrows-h"></span></a>
+                    {% endif %}                    
                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if pagina.delete_disabled == '' %}delete{% endif %} {{ pagina.delete_disabled }}" data="{{ pagina.id }}"><span class="fa fa-trash"></span></a>
                     <a href="#" title="{{ 'Duplicar página y sub-páginas'|trans }}" class="btn btn-link btn-sm duplicate" data-toggle="modal" data-target="#formModal" data="{{ pagina.id }}"><span class="fa fa-copy"></span></a>
                 </td>

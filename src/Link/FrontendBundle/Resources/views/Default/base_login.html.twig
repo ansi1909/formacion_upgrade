@@ -12,6 +12,13 @@
         <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
         {% set css = empresa.css is not null and empresa.css != '' ? asset(empresa.css) : asset('front/client_styles/formacion/css/main.css') %}
         <link rel="stylesheet" href="{{ css }}">
+        <style>
+            .error__style{
+                color: #fd5c63; 
+                margin: 5px 10px 0px 0px; 
+                text-align: left;
+            }
+        </style>
     </head>
     <body class="bg-white">
         <div class="container-fluid">

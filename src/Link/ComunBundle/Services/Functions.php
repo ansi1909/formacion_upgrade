@@ -595,7 +595,7 @@ class Functions
 	}
 
 	// Retorna un arreglo multidimensional de las subpaginas dada pagina_id
-	public function subPaginas($pagina_id, $paginas_asociadas = array(), $json = 0)
+	public function subPaginas($pagina_id, $paginas_asociadas = array(), $json = 0, $movimiento = array())
 	{
 
 		$em = $this->em;
@@ -611,16 +611,27 @@ class Functions
 			$tiene++;
 			if (!$json)
 			{
-				$check = in_array($subpage->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
-				$return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getId().'" p_str="'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().$check;
-				$subPaginas = $this->subPaginas($subpage->getId(), $paginas_asociadas);
-				if ($subPaginas['tiene'] > 0)
+				$incluir = 1;
+				if($movimiento)
 				{
-					$return .= '<ul>';
-					$return .= $subPaginas['return'];
-					$return .= '</ul>';
+					if($movimiento['pagina_id'] == $subpage->getId())
+					{
+						$incluir = 0;
+					}
 				}
-				$return .= '</li>';
+				if($incluir)
+				{				
+					$check = in_array($subpage->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
+					$return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getId().'" p_str="'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().'">'.$subpage->getCategoria()->getNombre().': '.$subpage->getNombre().$check;
+					$subPaginas = $this->subPaginas($subpage->getId(), $paginas_asociadas);
+					if ($subPaginas['tiene'] > 0)
+					{
+						$return .= '<ul>';
+						$return .= $subPaginas['return'];
+						$return .= '</ul>';
+					}
+					$return .= '</li>';
+				}
 			}
 			else {
 				// Forma json para tree
@@ -1964,4 +1975,204 @@ class Functions
 		return $subpaginas;
 	}
 
+public function iniciarSesionAdmin($datos)
+    {
+
+        $exito=false;
+        $error='';
+
+		$em = $this->em;
+
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
+                                                                                       'clave' => $datos['clave']));
+
+		if (!$usuario)
+        {
+        	$error = $this->translator->trans('Usuario o clave incorrecta.');
+        }
+        else {
+            
+            if (!$usuario->getActivo())
+            {
+                $error = $this->translator->trans('Usuario inactivo. Contacte al administrador del sistema.');
+            }
+            else {
+
+                // Se verifica si el usuario pertenece a una empresa activa
+                $empresa_activa = 1;
+                if ($usuario->getEmpresa())
+                {
+                    if (!$usuario->getEmpresa()->getActivo())
+                    {
+                        $empresa_activa = 0;
+                    }
+                }
+
+                if (!$empresa_activa)
+                {
+                    $error = $this->translator->trans('La empresa a la que pertenece este usuario está inactiva.');
+                }
+                else {
+
+                    $roles_bk = array();
+                    $roles_usuario = array();
+                    $roles_bk[] = $datos['yml']['rol']['administrador'];
+                    $roles_bk[] = $datos['yml']['rol']['empresa'];
+                    $roles_bk[] = $datos['yml']['rol']['tutor'];
+                    $roles_ok = 0;
+                    $administrador = false;
+                    
+                    $query = $em->createQuery('SELECT ru FROM LinkComunBundle:AdminRolUsuario ru WHERE ru.usuario = :usuario_id')
+                                ->setParameter('usuario_id', $usuario->getId());
+                    $roles_usuario_db = $query->getResult();
+                    
+                    foreach ($roles_usuario_db as $rol_usuario)
+                    {
+                        
+                        // Verifico si el rol está dentro de los roles de backend
+                        if (in_array($rol_usuario->getRol()->getId(), $roles_bk))
+                        {
+                            $roles_ok = 1;
+                        }
+
+                        if ($rol_usuario->getRol()->getId() == $datos['yml']['rol']['administrador'])
+                        {
+                            $administrador = true;
+                        }
+                        
+                        $roles_usuario[] = $rol_usuario->getRol()->getId();
+                        
+                    }
+                    
+                    if (!$roles_ok)
+                    {
+                        $error = $this->translator->trans('Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.');
+                    }
+                    else {
+                        
+                        $query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                    			   WHERE p.rol IN (:roles) AND a.activo = :activo AND a.aplicacion IS NULL')
+                            		->setParameters(array('roles' => $roles_usuario,
+                                                  'activo' => true));
+                        
+                        if (!$query->getSingleScalarResult())
+                        {
+                            $error = $this->translator->trans('Usted no tiene aplicaciones asignadas para su rol.');
+                        }
+                        else {
+
+                            // Se setea la sesion y se prepara el menu
+                            $datosUsuario = array('id' => $usuario->getId(),
+                                                  'nombre' => $usuario->getNombre(),
+                                                  'apellido' => $usuario->getApellido(),
+                                                  'correo' => $usuario->getCorreoPersonal(),
+                                                  'foto' => $usuario->getFoto(),
+                                                  'roles' => $roles_usuario);
+
+                            // Opciones del menu
+                            $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                                        WHERE p.rol IN (:rol_id) 
+                                                        AND a.activo = :activo 
+                                                        AND a.aplicacion IS NULL
+                                                        ORDER BY a.orden ASC")
+                                        ->setParameters(array('rol_id' => $roles_usuario,
+                                                              'activo' => true));
+                            $permisos = $query->getResult();
+
+                            $permisos_id = array();
+                            $menu = array();
+                            
+                            foreach ($permisos as $permiso)
+                            {
+
+                                if (!in_array($permiso->getId(), $permisos_id))
+                                {
+
+                                    $permisos_id[] = $permiso->getId();
+
+                                    $submenu = array();
+
+                                    $query = $em->createQuery("SELECT p FROM LinkComunBundle:AdminPermiso p JOIN p.aplicacion a 
+                                                                WHERE p.rol IN (:rol_id) 
+                                                                AND a.activo = :activo 
+                                                                AND a.aplicacion = :app_id
+                                                                ORDER BY a.orden ASC")
+                                                ->setParameters(array('rol_id' => $roles_usuario,
+                                                                      'activo' => true,
+                                                                      'app_id' => $permiso->getAplicacion()->getId()));
+                                    $subpermisos = $query->getResult();
+
+                                    foreach ($subpermisos as $subpermiso)
+                                    {
+
+                                        if (!in_array($subpermiso->getId(), $permisos_id))
+                                        {
+
+                                            $permisos_id[] = $subpermiso->getId();
+
+                                            $submenu[] = array('id' => $subpermiso->getAplicacion()->getId(),
+                                                               'url' => $subpermiso->getAplicacion()->getUrl(),
+                                                               'nombre' => $subpermiso->getAplicacion()->getNombre(),
+                                                               'icono' => $subpermiso->getAplicacion()->getIcono(),
+                                                               'url_existente' => $subpermiso->getAplicacion()->getUrl() ? 1 : 0);
+                                        }                                        
+                                    }
+                                                                        
+                                    $menu[] = array('id' => $permiso->getAplicacion()->getId(),
+                                                    'url' => $permiso->getAplicacion()->getUrl(),
+                                                    'nombre' => $permiso->getAplicacion()->getNombre(),
+                                                    'icono' => $permiso->getAplicacion()->getIcono(),
+                                                    'url_existente' => $permiso->getAplicacion()->getUrl() ? 1 : 0,
+                                                    'submenu' => $submenu);
+                                }
+                            }
+
+                            // Cierre de sesiones activas
+                            $sesiones = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
+                                                                                                                         'disponible' => true));
+                            foreach ($sesiones as $s)
+                            {
+                                $s->setDisponible(false);
+                            }
+
+                            // Se crea la sesión en BD
+                            $admin_sesion = new AdminSesion();
+                            $admin_sesion->setFechaIngreso(new \DateTime('now'));
+                            $admin_sesion->setUsuario($usuario);
+                            $admin_sesion->setDisponible(true);
+                            $em->persist($admin_sesion);
+                            $em->flush();
+
+ 							$session = new session();
+                            $session->set('ini', true);
+                            $session->set('sesion_id', $admin_sesion->getId());
+                            $session->set('code', $this->getLocaleCode());
+                            $session->set('administrador', $administrador);
+                            $session->set('usuario', $datosUsuario);
+                            $session->set('menu', $menu);
+
+                            if($datos['recordar_datos']==1)
+                            {
+                                //alimentamos el generador de aleatorios
+                                mt_srand (time());
+                                //generamos un número aleatorio para la cookie
+                                $numero_aleatorio = mt_rand(1000000,999999999);
+                                //se guarda la cookie en la tabla admin_usuario
+                                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneById($session->get('usuario')['id']);
+                                //hay que validar si el usuario hace la marca de recordar
+                                $usuario->setCookies($numero_aleatorio);
+                                $em->persist($usuario);
+                                $em->flush();
+                                //se creo la variable de las cookie con el id del usuario de manera que cuando destruya la cookie sea la del usuario activo
+                                setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
+                                setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
+                            }
+							$exito=true;
+                        }
+                    }
+                }
+            }
+        }
+       	return array("error"=>$error,"exito"=>$exito);
+    }
 }

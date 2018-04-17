@@ -1003,4 +1003,80 @@ class PaginaController extends Controller
 
     }
 
+    public function moverAction($pagina_id, Request $request)
+    {
+        $session = new Session();
+        $f = $this->get('funciones');
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+        $pagina_str = '';
+        
+        if ($pagina_id) 
+        {
+            $pagina_seleccionada = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        }
+
+        if ($request->getMethod() == 'POST')
+        {
+            $pagina_mover_id = $request->request->get('pagina_mover_id');
+            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_mover_id);
+
+            $pagina_id = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            $pagina->setPagina($pagina_id);
+            $em->persist($pagina);
+            $em->flush();
+
+            return $this->redirectToRoute('_paginas', array('app_id' => $session->get('app_id')));
+        }
+
+        // Páginas y sub-páginas
+        $paginas = array();
+        $tiene = 0;
+        $str = '';
+
+        // Todas las sub-páginas activas
+        $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                    WHERE p.pagina = :pagina_id 
+                                    ORDER BY p.orden ASC")
+                    ->setParameters(array('pagina_id' => $pagina_id));
+        $pages = $query->getResult();
+
+        $movimiento = array('pagina_id' => $pagina_id);
+        $paginas_asociadas = array();
+        foreach ($pages as $page)
+        {
+            $tiene++;
+            $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getId().'" p_str="'.$page->getCategoria()->getNombre().': '.$page->getNombre().'">'.$page->getCategoria()->getNombre().': '.$page->getNombre();
+            $subPaginas = $f->subPaginas($page->getId(), $paginas_asociadas, 0, $movimiento);
+            if ($subPaginas['tiene'] > 0)
+            {
+                $str .= '<ul>';
+                $str .= $subPaginas['return'];
+                $str .= '</ul>';
+            }
+            $str .= '</li>';
+        }
+
+        $paginas = array('tiene' => $tiene,
+                         'str' => $str);
+
+        return $this->render('LinkBackendBundle:Pagina:mover.html.twig', array('pagina' => $pagina_seleccionada,
+                                                                               'paginas' => $paginas,
+                                                                               'pagina_id' => $pagina_id,
+                                                                               'pagina_str' => $pagina_str));
+
+    }    
+
 }

@@ -70,4 +70,6 @@ _showAsignacion:
     path:     /showAsignacion/{empresa_id}/{pagina_id}
     defaults: { _controller: LinkBackendBundle:Pagina:showAsignacion, pagina_id: 0 }
 
-
+_moverPagina:
+    path:     /mover/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:mover }
