@@ -375,7 +375,7 @@ class CertificadoController extends Controller
 								}			                       
             $html .= "          </div>
 				                <div class='row'>
-			                        <span class='tituloPart'>Puntaje definitivo del programa: <span>".$puntaje."</span></span>
+			                        <span class='tituloPart'>Puntaje definitivo del programa: <span>".$puntaje/(count($session->get('paginas')[$programa_id]['subpaginas'])+1)."</span></span>
 				                </div>
 				                <div class='row' style='margin-top:".$margin."px;'>
 									<table text-align='center' width='600' border=0' height='50'>
