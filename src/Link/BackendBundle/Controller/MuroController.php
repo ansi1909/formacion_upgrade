@@ -109,7 +109,6 @@ class MuroController extends Controller
                                        WHERE e.activo = 'true'
                                        AND e.muroActivo = 'true'
                                        AND e.pagina = p.id
-                                       AND p.pagina IS NULL
                                        AND e.empresa = :empresa_id
                                        ORDER BY p.nombre ASC")
                     ->setParameters(array('empresa_id' => $empresa_id));
