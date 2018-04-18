@@ -27,10 +27,6 @@ class LeccionController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-        //return new Response(var_dump($menu_str));
-
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
         //return new Response(var_dump($indexedPages));
@@ -56,6 +52,10 @@ class LeccionController extends Controller
         $indexedPages[$pagina['id']] = $pagina;
 
         //return new Response(var_dump($indexedPages));
+
+        // Menú lateral dinámico
+        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
+        //return new Response(var_dump($menu_str));
         
         $wizard = 0; // 1 Indica que llevan los círculos de navegación
         $titulo = '';
@@ -239,9 +239,6 @@ class LeccionController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
 
@@ -259,6 +256,9 @@ class LeccionController extends Controller
         $indexedPages[$pagina['id']] = $pagina;
 
         //return new Response(var_dump($indexedPages));
+
+        // Menú lateral dinámico
+        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
 
         // Se completa la lección
         $log_id = $f->finishLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $yml);

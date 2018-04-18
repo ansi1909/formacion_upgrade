@@ -948,7 +948,7 @@ class Functions
 	}
 
 	// Retorna un arreglo multidimensional con la estructura del menú lateral para la vista de las lecciones
-	public function menuLecciones($programa, $subpagina_id, $href, $usuario_id, $estatus_completada, $dimension = 1, $to_activate = 1)
+	public function menuLecciones($indexedPages, $programa, $subpagina_id, $href, $usuario_id, $estatus_completada, $dimension = 1, $to_activate = 1)
 	{
 
 		$em = $this->em;
@@ -1002,6 +1002,25 @@ class Functions
 						$leccion_completada = $query->getSingleScalarResult();
 						$bloqueada = $leccion_completada ? '' : 'less-disabled';
 					}
+					else {
+						// Puede que el padre tenga prelación
+						if ($indexedPages[$subpagina['id']]['padre'])
+						{
+							$padre = $indexedPages[$indexedPages[$subpagina['id']]['padre']];
+							if ($padre['prelacion'])
+							{
+								$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+								                            WHERE pl.pagina = :pagina_id 
+								                            AND pl.usuario = :usuario_id 
+								                            AND pl.estatusPagina = :completada')
+								            ->setParameters(array('pagina_id' => $padre['prelacion'],
+								            					  'usuario_id' => $usuario_id,
+								                        		  'completada' => $estatus_completada));
+								$leccion_completada = $query->getSingleScalarResult();
+								$bloqueada = $leccion_completada ? '' : 'less-disabled';
+							}
+						}
+					}
 					$menu_str .= '<li>
 									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
@@ -1019,7 +1038,7 @@ class Functions
 						if ($acceso)
 						{
 							$menu_str .= '<ul class="ul-items">';
-							$menu_str .= $this->menuLecciones($subpagina, $subpagina_id, $href, $usuario_id, $estatus_completada, 2, $to_activate);
+							$menu_str .= $this->menuLecciones($indexedPages, $subpagina, $subpagina_id, $href, $usuario_id, $estatus_completada, 2, $to_activate);
 							$menu_str .= '</ul>';
 						}
 					}

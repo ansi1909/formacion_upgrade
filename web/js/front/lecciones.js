@@ -104,7 +104,7 @@ $(document).ready(function() {
 				setTimeout(function() {
 					// Esperar a que responda el servidor
 					window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
-			    }, 12000);
+			    }, 7000);
 			}
 		}
 		else {
@@ -140,7 +140,7 @@ $(document).ready(function() {
 			else {
 				window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
 			}
-	    }, 12000);
+	    }, 7000);
 
 	});
 
