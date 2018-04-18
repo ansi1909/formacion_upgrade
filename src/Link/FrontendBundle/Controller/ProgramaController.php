@@ -435,6 +435,15 @@ class ProgramaController extends Controller
                 // si registros - iniciar
                 $continuar = 0;
             }
+
+            $porcentaje_finalizacion = $f->timeAgoPorcentaje($datos_certi_pagina->getFechaInicio()->format("Y/m/d"), $datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+            if($porcentaje_finalizacion >= 70){
+               $class_finaliza = 'alertTimeGood';
+            }elseif($porcentaje_finalizacion >= 31 and $porcentaje_finalizacion <= 69){
+                $class_finaliza = 'alertTimeWarning';
+            }elseif ($porcentaje_finalizacion <= 30) {
+                $class_finaliza = 'alertTimeDanger';
+            }
            
             $programas_disponibles[]= array('id'=>$pg->getPagina()->getId(),
                                             'nombre'=>$pg->getPagina()->getNombre(),
@@ -442,6 +451,7 @@ class ProgramaController extends Controller
                                             'imagen'=>$pg->getPagina()->getFoto(),
                                             'descripcion'=>$pg->getPagina()->getDescripcion(),
                                             'fecha_vencimiento'=>$f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
+                                            'class_finaliza'=>$class_finaliza,
                                             'tiene_subpaginas'=>$tiene_subpaginas,
                                             'continuar'=>$continuar);
             

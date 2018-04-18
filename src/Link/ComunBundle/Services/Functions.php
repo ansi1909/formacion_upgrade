@@ -2175,4 +2175,25 @@ public function iniciarSesionAdmin($datos)
         }
        	return array("error"=>$error,"exito"=>$exito);
     }
+
+    // Calcula la diferencia de tiempo entre fecha y hoy
+	// Retorna la cantidad de días
+	public function timeAgoPorcentaje($fecha_ini, $fecha_venc)
+	{
+
+		$fin = new \DateTime($fecha_venc);
+		$inicio = new \DateTime($fecha_ini);
+		$hoy = new \DateTime("now");
+		$interval_complete = $fin->diff($inicio);
+		$interval_available = $fin->diff($hoy);
+		$complete_days = $interval_complete->format('%a');
+		$available_days = $interval_available->format('%a');
+
+		$complete_days = (int) $complete_days;
+		$available_days = (int) $available_days;
+
+		$porcentaje = ($available_days * 100) / $complete_days;
+
+		return $porcentaje;
+	}
 }

@@ -43,7 +43,7 @@
             <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
                 <div class="percent text-center mt-3">
                     <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
-                    <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ ar.fecha_vencimiento }} días</span>
+                    <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">Finaliza en {{ ar.fecha_vencimiento }} días</span>
                 </div>
                 <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
             </div>
@@ -85,7 +85,7 @@
                             <div class="card">
                                 <img class="card-img-top" src="{{ uploads ~ pd.imagen }}" alt="Card image cap">
                                 <div class="card-img-overlay">
-                                    <span class="count text-xs ">Finaliza en {{ pd.fecha_vencimiento }} días</span>
+                                    <span class="count text-xs {{ pd.class_finaliza }}">Finaliza en {{ pd.fecha_vencimiento }} días</span>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title mb-3"> {{ pd.nombre }} </h5>
