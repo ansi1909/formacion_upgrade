@@ -74,5 +74,4 @@ function responsive_filemanager_callback(field_id){
 	{
 		$('#figure').html('<img src="'+url+'" width="100%">');
 	}
-	
 }
