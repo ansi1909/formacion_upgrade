@@ -68,6 +68,8 @@ Carga masiva de particpantes de la empresa: Carga masiva de particpantes de la e
 Categoría: Categoría
 Categoría de las sub-paginas: Categoría de las sub-paginas
 Categorías: Categorías
+Cerrar: Cerrar
+Cerrar sesión: Cerrar sesión
 Certificado inexistente para este contenido: Certificado inexistente para este contenido
 Código del empleado repetido: Código del empleado repetido
 Columna: Columna
@@ -230,6 +232,7 @@ Enunciado: Enunciado
 Enunciado (Lado A): Enunciado (Lado A)
 Entidad: Entidad
 Entrar: Entrar
+Enviar: Enviar
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener el historial.: Error al obtener el historial.
 Error al obtener las páginas asignadas.: Error al obtener las páginas asignadas.
@@ -242,13 +245,16 @@ Errores: Errores
 Errores de validación: Errores de validación
 Es probable que se haya vencido el acceso para ingresar al sistema: Es probable que se haya vencido el acceso para ingresar al sistema
 Escoja una plantilla: Escoja una plantilla
+Escriba su asunto: Escriba su asunto
 Escriba su comentario: Escriba su comentario
+Escriba su mensaje: Escriba su mensaje
 Escriba su respuesta: Escriba su respuesta
 Espacio colaborativo: Espacio colaborativo
 Esta evaluación no tiene preguntas configuradas: Esta evaluación no tiene preguntas configuradas
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
 Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee thumbnails en la base de datos
+¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
@@ -256,6 +262,7 @@ este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
+¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.
 Estimado participante, ha expirado el tiempo de duración de la evaluación. Se calcularán los resultados de acuerdo a las respuestas dadas hasta los momentos.: Estimado participante, ha expirado el tiempo de duración de la evaluación. Se calcularán los resultados de acuerdo a las respuestas dadas hasta los momentos.
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos
 Estos son los resultados que has obtenido: Estos son los resultados que has obtenido
@@ -348,6 +355,7 @@ La notificación ha sido almacenada con éxito: La notificación ha sido almacen
 La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
+La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
 Lecciones: Lecciones
 Línea: Línea
@@ -377,6 +385,7 @@ Los roles que tiene el usuario no son permitidos para ingresar al sistema.: Los 
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Lugar: Lugar
+Mantener abierta la sesión: Mantener abierta la sesión
 Más recientes: Más recientes
 Más valorados: Más valorados
 Material complementario: Material complementario
@@ -453,6 +462,7 @@ Plantilla: Plantilla
 Por favor, ingresa tu usuario y contraseña: Por favor, ingresa tu usuario y contraseña
 Preferencias de la empresa: Preferencias de la empresa
 Preferencia de plantillas de las empresas: Preferencia de plantillas de las empresas
+Preferencias de usuario: Preferencias de usuario
 Pregunta: Pregunta
 Preguntas: Preguntas
 Prelación: Prelación
@@ -517,6 +527,7 @@ Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xl
 Sólo archivos con extensión .jpg o .png: Sólo archivos con extensión .jpg o .png: 
 Sólo archivos con extensión .pdf: Sólo archivos con extensión .pdf
 Solo es necesaria una columna que tendrá los nombres de los niveles: Solo es necesaria una columna que tendrá los nombres de los niveles
+Soporte virtual: Soporte virtual
 Su registro ha sido eliminado: Su registro ha sido eliminado
 Subir Archivo de Niveles: Subir Archivo de Niveles
 Subir Archivo de participantes: Subir Archivo de participantes

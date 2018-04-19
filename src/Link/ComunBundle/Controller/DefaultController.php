@@ -22,35 +22,39 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
-        $empresa_id = $session->get('empresa')['id'];
-        
-        $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
-        if ($sesion)
+        $empresa_id = isset($session->get('empresa')['id']) ? $session->get('empresa')['id'] : 0;
+
+        if ($session->get('sesion_id'))
         {
 
-            $usuario_id = $session->get('usuario')['id'];
-            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
-
-            // Borra la cookie que almacena la sesión del usuario logueado
-            if(isset($_COOKIE['id_usuario'])) 
+            $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
+            if ($sesion)
             {
-                $usuario->setCookies(null);
-                $em->persist($usuario);
-                $em->flush();
 
-                setcookie('id_usuario', '', time() - 42000, '/'); 
-                setcookie('marca_aleatoria_usuario', '', time() - 42000, '/'); 
+                $usuario_id = $session->get('usuario')['id'];
+                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+
+                // Borra la cookie que almacena la sesión del usuario logueado
+                if(isset($_COOKIE['id_usuario'])) 
+                {
+                    $usuario->setCookies(null);
+                    $em->persist($usuario);
+                    $em->flush();
+
+                    setcookie('id_usuario', '', time() - 42000, '/'); 
+                    setcookie('marca_aleatoria_usuario', '', time() - 42000, '/'); 
+                }
+
+                $sesion->setDisponible(false);
+                $em->persist($sesion);
+                $em->flush();
+                $f->setRequest($session->get('sesion_id'));
             }
 
-            $sesion->setDisponible(false);
-            $em->persist($sesion);
-            $em->flush();
-            $f->setRequest($session->get('sesion_id'));
         }
-
+        
         $parametros = array();
-
-        if ($empresa_id)
+        if ($ruta == '_login')
         {
             $parametros = array('empresa_id' => $empresa_id);
         }

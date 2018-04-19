@@ -68,6 +68,8 @@ Carga masiva de particpantes de la empresa: Bulk load of participants of company
 Categoría: Category
 Categoría de las sub-paginas: Sub-pages category
 Categorías: Categories
+Cerrar: Close
+Cerrar sesión: Log out
 Certificado inexistente para este contenido: No certificate for this content
 Código del empleado repetido: Employee code repeated
 Columna: Column
@@ -230,6 +232,7 @@ Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
 Entidad: Entity
 Entrar: Get in
+Enviar: Send
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
@@ -242,13 +245,16 @@ Errores: Errors
 Errores de validación: Validation errors
 Es probable que se haya vencido el acceso para ingresar al sistema: It is possible the access to enter to the system is expired
 Escoja una plantilla: Choose a template
+Escriba su asunto: Write your subject
 Escriba su comentario: Post a comment
+Escriba su mensaje: Write your message
 Escriba su respuesta: Response to this comment
 Espacio colaborativo: Collaborative space
 Esta evaluación no tiene preguntas configuradas: This test has not setted questions
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
 Esta plantilla no posee thumbnails en la base de datos: This template does not have thumbnails into database
+¿Estás segur@ de que deseas cerrar la sesión?: Are you sure of loging out?
 ¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
 Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
@@ -256,6 +262,7 @@ este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
 Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
+¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: Dear participant! Post your comments or doubts about any subject related to certification programs.
 Estimado participante, ha expirado el tiempo de duración de la evaluación. Se calcularán los resultados de acuerdo a las respuestas dadas hasta los momentos.: Dear participant, duration time of this test has expired. The results will be calculated with the answers you have given.
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Dear participant, if you decide leave the page before finish the evaluation, you will lose all answers
 Estos son los resultados que has obtenido: This are the results you got
@@ -348,6 +355,7 @@ La notificación ha sido almacenada con éxito: Notification has been saved succ
 La notificación ha sido programada con éxito: Programation has been saved successfully
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
+La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lecciones: Lessons
 Línea: Line
@@ -377,6 +385,7 @@ Los roles que tiene el usuario no son permitidos para ingresar al sistema.: The 
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: The roles that the user has are not allowed to enter the application. 
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: The roles you have assigned are not authorized to access to this module
 Lugar: Place
+Mantener abierta la sesión: Keep this session opened
 Más recientes: Most recent
 Más valorados: Most valued
 Material complementario: Complementary content
@@ -453,6 +462,7 @@ Plantilla: Template
 Por favor, ingresa tu usuario y contraseña: Please, enter your username and password
 Preferencias de la empresa: Preferences of company
 Preferencia de plantillas de las empresas: Layout preferences of the companies
+Preferencias de usuario: User preferences
 Pregunta: Question
 Preguntas: Questions
 Prelación: Prelation
@@ -517,6 +527,7 @@ Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Sólo archivos con extensión .jpg o .png: Only files with extension .jpg or .png
 Sólo archivos con extensión .pdf: Only files with .pdf extension
 Solo es necesaria una columna que tendrá los nombres de los niveles: Only it is necessary one column for levels name
+Soporte virtual: Virtual support
 Su registro ha sido eliminado: The item has been deleted
 Subir Archivo de Niveles: Upload Levels File
 Subir Archivo de participantes: Upload participants file

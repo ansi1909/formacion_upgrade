@@ -42,27 +42,7 @@
     </section>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var str = 'Yuca';
-            var arr = str.split(',');
-            console.log(arr);
-            arr.push('papa');
-            console.log(arr);
-            str = arr.join(',');
-            console.log(str);
-
-            var y = [8];
-            console.log(y);
-            var removeItem = 8;
-            if ($.inArray(removeItem,y) != -1)
-            {
-                y.splice( $.inArray(removeItem,y) ,1 );
-            }
-            console.log(y);
-            var y_str = y.join(',');
-            console.log('cadena: '+y_str);
-        });
-    </script>
+    <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('front/js/custom.js') }}"></script>
 {% endblock %}

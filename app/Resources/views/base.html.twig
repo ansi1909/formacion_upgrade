@@ -233,12 +233,12 @@
                                 <li class="mark"></li>
                                 <a href="{{ path('_usuariop') }}">
                                     <li class="opcList">
-                                        <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                        <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
                                     </li>
                                 </a>
                                 <a href="#" data-toggle="modal" data-target="#modalCs">
                                     <li class="opcList markOpc">
-                                        <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                        <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
                                     </li>
                                 </a>
                             </ul>
@@ -248,6 +248,8 @@
             </nav>
             {% endblock %}
         </header>
+
+        <a data-toggle="modal" data-target="#modalCs2" id="automaticLogout"></a>
 
         <div class="container-fluid mt-6">
             
@@ -311,17 +313,17 @@
             <div class="container-fluid">
                 <div class="row mt-6 justify-content-center align-items-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <h4 class="titulo">¿Está segur@ de que desea cerrar la sesión?</h4>
+                        <h4 class="titulo">{{ '¿Estás segur@ de que deseas cerrar la sesión?'|trans }}</h4>
                     </div>
                 </div>
                 <div class="row mt-3 align-items-center justify-content-center">
                     <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
-                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}"><button type="button" class="btn btn-primary btn-Cs">Cerrar Sesión</button></a>
+                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}"><button type="button" class="btn btn-primary btn-Cs">{{ 'Cerrar Sesión'|trans }}</button></a>
                     </div>
                 </div>
                 <div class="row mt-3 align-items-end justify-content-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <a href="#" class="cancelarCs" data-dismiss="modal">Cancelar</a>
+                        <a href="#" class="cancelarCs" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
                     </div>
                 </div>
             </div>
@@ -339,40 +341,66 @@
                 </div>
                 <div class="row mt-3 justify-content-center align-items-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <h4 class="titulo">Soporte virtual</h4>
+                        <h4 class="titulo">{{ 'Soporte virtual'|trans }}</h4>
                     </div>
                 </div>
                 <div class="row mt-2 justify-content-center align-items-center">
                     <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
-                        <p class="txtModalVs">¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.</p>
+                        <p class="txtModalVs">{{ '¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.'|trans }}</p>
                     </div>
                 </div>
                 <form action="">
                     <div class="row mt-3 justify-content-center align-items-center">
                         <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
                             <div class="form-group">
-                                <label class="mb-1" for="asuntoV">Asunto</label>
-                                <input  type="text" class="form-control" id="asuntoV" aria-describedby="asuntoSupportVitual" placeholder="Escriba su asunto">
+                                <label class="mb-1" for="asuntoV">{{ 'Asunto'|trans }}</label>
+                                <input  type="text" class="form-control" id="asuntoV" aria-describedby="asuntoSupportVitual" placeholder="{{ 'Escriba su asunto'|trans }}">
                             </div>
                         </div>
                     </div>
                     <div class="row mt-1 justify-content-center">
                         <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
                             <div class="form-group">
-                                <label class="mb-1" for="msjSv">Mensaje</label>
-                                <textarea class="form-control textAsv" rows="4" id="msjSv" aria-describedby="messageSupportVirtual" placeholder="Escriba su mensaje"></textarea>
+                                <label class="mb-1" for="msjSv">{{ 'Mensaje'|trans }}</label>
+                                <textarea class="form-control textAsv" rows="4" id="msjSv" aria-describedby="messageSupportVirtual" placeholder="{{ 'Escriba su mensaje'|trans }}"></textarea>
                             </div>
                         </div>
                     </div>
                 </form>
                 <div class="row mt-2 align-items-center justify-content-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <a href="#"><button type="submit" class="btn btn-primary btnEnv">Enviar</button></a>
+                        <a href="#"><button type="submit" class="btn btn-primary btnEnv">{{ 'Enviar'|trans }}</button></a>
                     </div>
                 </div>
                 <div class="row mt-3 align-items-end justify-content-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <a href="#" class="cerrarSv" data-dismiss="modal">Cerrar</a>
+                        <a href="#" class="cerrarSv" data-dismiss="modal">{{ 'Cerrar'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cierre Automático de Sesion-->
+        <div class="modal modalCerrarSesion" id="modalCs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">{{ 'La sesión se cerrará automáticamente en'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <input type="hidden" id="remaining" name="remaining" value="{{ remaining_time }}">
+                        <input type="hidden" id="remaining_time" name="remaining_time" value="{{ remaining_time }}">
+                        <input type="hidden" id="timer" name="timer" value="">
+                        <input type="hidden" id="sesion_time" name="sesion_time" value="{{ sesion_front_time }}">
+                        <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_login' }) }}">
+                        <h3><span id="seconds">{{ remaining_time }}</span> segundos</h3>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <button type="button" class="btn btn-primary btn-Cs" id="keepSession" data-dismiss="modal">{{ 'Mantener abierta la sesión'|trans }}</button>
                     </div>
                 </div>
             </div>
@@ -385,6 +413,7 @@
             <script src="{{ asset('front/js/plugins/video.js/video.min.js') }}"></script>
             <script src="{{ asset('front/js/plugins/mediaelement-4.2.8/build/mediaelement-and-player.min.js') }}"></script>
             <script src="{{ asset('front/js/audio.js') }}"></script>
+            <script src="{{ asset('js/front/expireSession.js') }}"></script>
         {% endblock %}
     </body>
 </html>
