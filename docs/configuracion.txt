@@ -32,7 +32,7 @@
 
 7. Versión mínima de PHP que debe estar instalada: 5.6.25
 
-8. Base de datos con Postgres 9.4
+8. Base de datos con Postgres 9.4. Usuario de postgres con clave 123456.
 
 9. Activar las siguientes extensiones PHP php.ini, tanto en el del apache como el del php:
 	- php_curl
