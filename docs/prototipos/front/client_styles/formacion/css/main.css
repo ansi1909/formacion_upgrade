@@ -767,8 +767,8 @@ nav.navbar {
 
 .dropDownNotify {
   position: absolute;
-  max-width: 19rem;
-  width: 19rem;
+  max-width: 27rem;
+  width: 27rem;
   height: auto;
   max-height: 20rem;
   right: 7rem;
@@ -796,9 +796,9 @@ nav.navbar {
     border: 0px; }
   .dropDownNotify .opcListNotify {
     position: relative;
-    width: 19rem;
-    max-height: 10rem;
-    border-bottom: 1px solid #F0F4F7;
+    width: 27rem;
+    max-height: 12rem;
+    border-bottom: 1px solid #F7FAFC;
     top: 0;
     left: 0;
     padding: 1rem;
@@ -823,36 +823,67 @@ nav.navbar {
           font-size: calc(1rem + 4px); }
       .dropDownNotify .opcListNotify .anunNotify .textNotify {
         padding: 0;
-        width: 14rem;
+        max-width: 23rem;
         height: auto;
         white-space: pre-wrap;
         color: #797D80;
-        font-size: 1rem;
+        font-size: 0.87rem;
         text-align: justify;
         text-justify: auto;
         line-height: 1.2rem;
         margin: 0;
         font-weight: 500; }
       .dropDownNotify .opcListNotify .anunNotify .anunSticker {
-        background: #df584c; }
+        background: #ef6e62; }
       .dropDownNotify .opcListNotify .anunNotify .notiSticker {
-        background: #CFE65C; }
-      .dropDownNotify .opcListNotify .anunNotify .mailSticker {
-        background: #FFDC60; }
-      .dropDownNotify .opcListNotify .anunNotify .ecSticker {
-        background: #3D93CC; }
+        background: #dbea8f; }
       .dropDownNotify .opcListNotify .anunNotify .muroSticker {
-        background: #a6ba47; }
+        background: #FFDC60; }
+      .dropDownNotify .opcListNotify .anunNotify .ecpSticker {
+        background: #80CCFF; }
+      .dropDownNotify .opcListNotify .anunNotify .ectSticker {
+        background: #CFE65C; }
       .dropDownNotify .opcListNotify .anunNotify .calenSticker {
-        background: #b39837; }
-      .dropDownNotify .opcListNotify .anunNotify .rcSticker {
-        background: #FFAF61; }
+        background: #ee63b1; }
+      .dropDownNotify .opcListNotify .anunNotify .biblioSticker {
+        background: #ffc68e; }
     .dropDownNotify .opcListNotify:hover {
       background: linear-gradient(to right, #80CCFF 0%, #5CAEE6 100%); }
       .dropDownNotify .opcListNotify:hover .textNotify {
         color: #fff; }
+  .dropDownNotify .stickerNotify {
+    height: 2rem;
+    width: 2rem;
+    margin: 0 1rem 0 0;
+    padding: .1rem;
+    border-radius: 50rem;
+    box-shadow: 1px 1px 5px rgba(58, 58, 58, 0.5); }
+    .dropDownNotify .stickerNotify .icNotify {
+      margin: 0 auto;
+      padding: .25rem;
+      position: relative;
+      left: .1rem;
+      top: .1rem;
+      color: #212529;
+      font-size: calc(1rem + 4px); }
+  .dropDownNotify .textNotify {
+    padding: 0;
+    max-width: 22rem;
+    height: auto;
+    white-space: pre-wrap;
+    color: #797D80;
+    font-size: 0.87rem;
+    text-align: justify;
+    text-justify: auto;
+    line-height: 1.2rem;
+    margin: 0;
+    font-weight: 500; }
+  .dropDownNotify .anunSticker {
+    background: #ef6e62; }
   .dropDownNotify .opcLastNotify {
     border-bottom: 0px; }
+  .dropDownNotify .notiSinLeer {
+    background: #F0F4F7; }
 
 .markNotify {
   position: absolute;
@@ -925,15 +956,15 @@ nav.navbar {
     padding: .5rem;
     margin: 0; }
     .dropDownApps .opcApps .imgApps {
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2rem;
+      height: 2rem;
       display: block;
       margin: 0 auto; }
     .dropDownApps .opcApps .changeApp {
       fill: #818181; }
     .dropDownApps .opcApps .tituloApps {
       white-space: pre-wrap;
-      font-size: calc(1rem - 3px);
+      font-size: calc(1rem - 4px);
       font-weight: 500;
       text-align: center;
       font-family: "Roboto";
