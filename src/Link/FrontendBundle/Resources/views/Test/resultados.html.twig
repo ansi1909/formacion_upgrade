@@ -133,9 +133,38 @@
 
         </div>
 
+        <a data-toggle="modal" data-target="#modalCs2" id="automaticLogout"></a>
+
+        <!-- Modal Cierre Automático de Sesion-->
+        <div class="modal modalCerrarSesion" id="modalCs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">{{ 'La sesión se cerrará automáticamente en'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <input type="hidden" id="remaining" name="remaining" value="{{ remaining_time }}">
+                        <input type="hidden" id="remaining_time" name="remaining_time" value="{{ remaining_time }}">
+                        <input type="hidden" id="timer" name="timer" value="">
+                        <input type="hidden" id="sesion_time" name="sesion_time" value="{{ sesion_front_time }}">
+                        <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_login' }) }}">
+                        <h3><span id="seconds">{{ remaining_time }}</span> segundos</h3>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <button type="button" class="btn btn-primary btn-Cs" id="keepSession" data-dismiss="modal">{{ 'Mantener abierta la sesión'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('front/js/custom.js') }}"></script>
+        <script src="{{ asset('js/front/expireSession.js') }}"></script>
         <script type="text/javascript">
             $("#programa").click(function(){
                 $(this).hide();

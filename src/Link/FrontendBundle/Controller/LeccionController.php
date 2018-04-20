@@ -281,7 +281,7 @@ class LeccionController extends Controller
 
                 // Se verifica si esta lección es prelada
                 $pagina_empresa_next = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                                'pagina' => $next_lesson));
+                                                                                                                                  'pagina' => $next_lesson));
                 if ($pagina_empresa_next->getPrelacion())
                 {
                     // Se determina si el contenido estará bloqueado
@@ -296,6 +296,28 @@ class LeccionController extends Controller
                     if (!$leccion_completada)
                     {
                         $next_lesson = 0;
+                    }
+                }
+
+            }
+            else {
+
+                // Buscar la próxima página hermana que no haya sido completada
+                foreach ($indexedPages[$pagina_padre_id]['subpaginas'] as $subpagina)
+                {
+                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                         'pagina' => $subpagina['id']));
+                    if (!$pagina_log)
+                    {
+                        $next_lesson = $subpagina['id'];
+                        break;
+                    }
+                    else {
+                        if ($pagina_log->getEstatusPagina()->getId() != $yml['parameters']['estatus_pagina']['completada'])
+                        {
+                            $next_lesson = $subpagina['id'];
+                            break;
+                        }
                     }
                 }
 
