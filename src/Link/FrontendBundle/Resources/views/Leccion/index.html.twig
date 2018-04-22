@@ -85,9 +85,11 @@
                 </ol>
             </div>
             <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <h5 class="text-center my-3 color-light-grey font-normal "> Recursos </h5>
-                <a href="">Espacio colaborativo</a>
-                <a href="">Reportar problema</a>
+                <h5 class="text-center my-3 color-light-grey font-normal ">{{ 'Recursos'|trans }}</h5>
+                {% if espacio_colaborativo %}
+                    <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id }) }}">{{ 'Espacio colaborativo'|trans }}</a>
+                {% endif %}
+                <a href="">{{ 'Reportar problema'|trans }}</a>
             </div>
         </div>
     </div>

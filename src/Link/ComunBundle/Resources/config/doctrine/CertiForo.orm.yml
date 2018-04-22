@@ -5,15 +5,15 @@ Link\ComunBundle\Entity\CertiForo:
         foro_ndx1:
             columns:
                 - pagina_id
+        IDX_318634CC521E1991:
+            columns:
+                - empresa_id
         IDX_318634CCDB38439E:
             columns:
                 - usuario_id
         IDX_318634CCF5FF53F6:
             columns:
                 - foro_id
-        IDX_318634CC521E1991:
-            columns:
-                - empresa_id
     id:
         id:
             type: integer
@@ -40,6 +40,14 @@ Link\ComunBundle\Entity\CertiForo:
             length: 250
             options:
                 fixed: false
+        fechaPublicacion:
+            type: date
+            nullable: true
+            column: fecha_publicacion
+        fechaVencimiento:
+            type: date
+            nullable: true
+            column: fecha_vencimiento
     manyToOne:
         pagina:
             targetEntity: CertiPagina
@@ -49,6 +57,16 @@ Link\ComunBundle\Entity\CertiForo:
             inversedBy: null
             joinColumns:
                 pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
                     referencedColumnName: id
             orphanRemoval: false
         usuario:
@@ -69,16 +87,6 @@ Link\ComunBundle\Entity\CertiForo:
             inversedBy: null
             joinColumns:
                 foro_id:
-                    referencedColumnName: id
-            orphanRemoval: false
-        empresa:
-            targetEntity: AdminEmpresa
-            cascade: {  }
-            fetch: LAZY
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                empresa_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

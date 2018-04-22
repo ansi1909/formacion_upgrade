@@ -50,6 +50,7 @@ class LeccionController extends Controller
         $pagina['pdf'] = $programa->getPdf();
         $pagina['next_subpage'] = 0;
         $indexedPages[$pagina['id']] = $pagina;
+        $espacio_colaborativo = $indexedPages[$programa_id]['espacio_colaborativo'];
 
         //return new Response(var_dump($indexedPages));
 
@@ -148,6 +149,7 @@ class LeccionController extends Controller
                                                                                  'subtitulo' => $subtitulo,
                                                                                  'wizard' => $wizard,
                                                                                  'prueba_activa' => $prueba_activa,
+                                                                                 'espacio_colaborativo' => $espacio_colaborativo,
                                                                                  'puntos' => $puntos));
 
     }

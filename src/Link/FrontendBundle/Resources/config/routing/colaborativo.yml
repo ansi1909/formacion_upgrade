@@ -1,0 +1,3 @@
+_espacioColaborativo:
+    path:     /listado/{programa_id}
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:index }

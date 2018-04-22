@@ -61,3 +61,7 @@ usuario:
 ranking:
     resource: "@LinkFrontendBundle/Resources/config/routing/ranking.yml"
     prefix: /ranking
+
+colaborativo:
+    resource: "@LinkFrontendBundle/Resources/config/routing/colaborativo.yml"
+    prefix: /espacioColaborativo

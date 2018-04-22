@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CertiForo
  *
- * @ORM\Table(name="certi_foro", indexes={@ORM\Index(name="foro_ndx1", columns={"pagina_id"}), @ORM\Index(name="IDX_318634CCDB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_318634CCF5FF53F6", columns={"foro_id"}), @ORM\Index(name="IDX_318634CC521E1991", columns={"empresa_id"})})
+ * @ORM\Table(name="certi_foro", indexes={@ORM\Index(name="foro_ndx1", columns={"pagina_id"}), @ORM\Index(name="IDX_318634CC521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_318634CCDB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_318634CCF5FF53F6", columns={"foro_id"})})
  * @ORM\Entity
  */
 class CertiForo
@@ -44,6 +44,20 @@ class CertiForo
     private $pdf;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_publicacion", type="date", nullable=true)
+     */
+    private $fechaPublicacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_vencimiento", type="date", nullable=true)
+     */
+    private $fechaVencimiento;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPagina
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPagina")
@@ -52,6 +66,16 @@ class CertiForo
      * })
      */
     private $pagina;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminEmpresa
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="empresa_id", referencedColumnName="id")
+     * })
+     */
+    private $empresa;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
@@ -72,16 +96,6 @@ class CertiForo
      * })
      */
     private $foro;
-
-    /**
-     * @var \Link\ComunBundle\Entity\AdminEmpresa
-     *
-     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="empresa_id", referencedColumnName="id")
-     * })
-     */
-    private $empresa;
 
 
 
@@ -168,6 +182,54 @@ class CertiForo
     }
 
     /**
+     * Set fechaPublicacion
+     *
+     * @param \DateTime $fechaPublicacion
+     *
+     * @return CertiForo
+     */
+    public function setFechaPublicacion($fechaPublicacion)
+    {
+        $this->fechaPublicacion = $fechaPublicacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaPublicacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaPublicacion()
+    {
+        return $this->fechaPublicacion;
+    }
+
+    /**
+     * Set fechaVencimiento
+     *
+     * @param \DateTime $fechaVencimiento
+     *
+     * @return CertiForo
+     */
+    public function setFechaVencimiento($fechaVencimiento)
+    {
+        $this->fechaVencimiento = $fechaVencimiento;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaVencimiento
+     *
+     * @return \DateTime
+     */
+    public function getFechaVencimiento()
+    {
+        return $this->fechaVencimiento;
+    }
+
+    /**
      * Set pagina
      *
      * @param \Link\ComunBundle\Entity\CertiPagina $pagina
@@ -189,6 +251,30 @@ class CertiForo
     public function getPagina()
     {
         return $this->pagina;
+    }
+
+    /**
+     * Set empresa
+     *
+     * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
+     *
+     * @return CertiForo
+     */
+    public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
+    {
+        $this->empresa = $empresa;
+    
+        return $this;
+    }
+
+    /**
+     * Get empresa
+     *
+     * @return \Link\ComunBundle\Entity\AdminEmpresa
+     */
+    public function getEmpresa()
+    {
+        return $this->empresa;
     }
 
     /**
@@ -237,29 +323,5 @@ class CertiForo
     public function getForo()
     {
         return $this->foro;
-    }
-
-    /**
-     * Set empresa
-     *
-     * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
-     *
-     * @return CertiForo
-     */
-    public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
-    {
-        $this->empresa = $empresa;
-    
-        return $this;
-    }
-
-    /**
-     * Get empresa
-     *
-     * @return \Link\ComunBundle\Entity\AdminEmpresa
-     */
-    public function getEmpresa()
-    {
-        return $this->empresa;
     }
 }
