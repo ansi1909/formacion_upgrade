@@ -25,6 +25,7 @@ $(document).ready(function() {
 		circle_nav.removeClass('less-disabled'); // Remueve el css de disables al tab que se está presionando
 		$('#tab_activo').val(circle_nav.attr('id'));
 		$('.nav-less-container').scrollTo($('.circle-less-viendo'));
+		$(window).scrollTop(0); // Scroll al tope de la pantalla
 
 		var new_pagina_id = circle_nav.attr('data');
 
@@ -66,9 +67,9 @@ $(document).ready(function() {
 	}
 
 	$('.next_lesson').click(function(){
-		$(window).scrollTop(0);
 		var button = $(this);
 		button.hide();
+		$('#wait').show();
 		var str = button.attr('data');
 		var arr = str.split('-');
 		var programa_id = arr[0];
@@ -95,6 +96,7 @@ $(document).ready(function() {
 			if (faltante == 1)
 			{
 				// Nos vamos al primer tab faltante
+				$('#wait').hide();
 				$('.btn-primary').show();
 				nextPage(pagina_faltante);
 			}
@@ -104,7 +106,7 @@ $(document).ready(function() {
 				setTimeout(function() {
 					// Esperar a que responda el servidor
 					window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
-			    }, 7000);
+			    }, 3000);
 			}
 		}
 		else {
@@ -114,6 +116,7 @@ $(document).ready(function() {
 			var id_str = $('.tab-'+step).attr('id');
 			if (id_str != 'one-tab')
 			{
+				$('#wait').hide();
 				$('.btn-primary').show();
 				id_arr = id_str.split('-');
 				nextPage(id_arr[1]);
@@ -124,6 +127,7 @@ $(document).ready(function() {
 	$('#next_subpage').click(function(){
 		
 		$('#next_subpage').hide();
+		$('#wait').show();
 		var str = $(this).attr('data');
 		var arr = str.split('-');
 		var prog_id = arr[0];
@@ -140,7 +144,7 @@ $(document).ready(function() {
 			else {
 				window.location.replace($('#url_fin').val()+'/'+$('#puntos_agregados').val());
 			}
-	    }, 7000);
+	    }, 3000);
 
 	});
 
