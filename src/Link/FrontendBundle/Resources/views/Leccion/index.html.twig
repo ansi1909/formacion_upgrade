@@ -44,12 +44,12 @@
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
                             <li class="opcList markOpc">
-                                <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
                             </li>
                         </a>
                     </ul>
@@ -87,7 +87,7 @@
             <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <h5 class="text-center my-3 color-light-grey font-normal ">{{ 'Recursos'|trans }}</h5>
                 {% if espacio_colaborativo %}
-                    <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id }) }}">{{ 'Espacio colaborativo'|trans }}</a>
+                    <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}">{{ 'Espacio colaborativo'|trans }}</a>
                 {% endif %}
                 <a href="">{{ 'Reportar problema'|trans }}</a>
             </div>

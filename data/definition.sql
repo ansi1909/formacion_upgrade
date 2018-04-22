@@ -385,6 +385,18 @@ fecha_vencimiento date,
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
  FOREIGN KEY (foro_id) REFERENCES certi_foro (id));
 
+CREATE TABLE certi_foro_archivo(
+-- Attributes --
+id serial,
+descripcion text,
+foro_id integer,
+usuario_id integer,
+fecha_registro timestamp without time zone,
+archivo varchar(250),
+ PRIMARY KEY (id),
+ FOREIGN KEY (foro_id) REFERENCES certi_foro (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
 CREATE TABLE admin_tipo_notificacion(
 -- Attributes --
 id serial,

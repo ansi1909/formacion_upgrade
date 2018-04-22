@@ -1,0 +1,58 @@
+Link\ComunBundle\Entity\CertiForoArchivo:
+    type: entity
+    table: certi_foro_archivo
+    indexes:
+        IDX_64ECE035F5FF53F6:
+            columns:
+                - foro_id
+        IDX_64ECE035DB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        descripcion:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        fechaRegistro:
+            type: datetime
+            nullable: true
+            column: fecha_registro
+        archivo:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+    manyToOne:
+        foro:
+            targetEntity: CertiForo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                foro_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

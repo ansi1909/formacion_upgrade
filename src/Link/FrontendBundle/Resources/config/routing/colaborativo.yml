@@ -1,3 +1,15 @@
 _espacioColaborativo:
-    path:     /listado/{programa_id}
-    defaults: { _controller: LinkFrontendBundle:Colaborativo:index }
+    path:     /listado/{programa_id}/{subpagina_id}
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:index, subpagina_id: 0 }
+
+_ajaxSaveForo:
+    path:     /ajaxSaveForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForo }
+    requirements:
+        _method: POST
+
+_ajaxEditForo:
+    path:     /ajaxEditForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxEditForo }
+    requirements:
+        _method: GET
