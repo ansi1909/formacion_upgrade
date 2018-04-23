@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <style>
         .menu{
             width: 60%;
@@ -9,6 +10,9 @@
         }
         body {
             margin-bottom: 300px;
+        }
+        label.error, label.mensaje-error {
+            color: #f00c0c;
         }
     </style>
 {% endblock %}
@@ -97,7 +101,6 @@
 
     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
     <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
-    <input type="hidden" id="url_save" name="url_save" value="{{ path('_ajaxSaveForo') }}">
     <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditForo') }}">
     
     <section class="esp_col">
@@ -188,7 +191,7 @@
                         <h4 class="titulo">{{ 'Crear nuevo tema'|trans }}</h4>
                     </div>
                 </div>
-                <form action="">
+                <form id="form" action="_ajaxSaveForo" method="POST">
                     <div class="row pl-3 align-items-center justify-content-center">
                         <div class="col-12">
                             <div class="form-group text-left">
@@ -198,10 +201,25 @@
                         </div>
                     </div>
                     <div class="row pl-3 align-items-center justify-content-center">
+                        <div class="col-6">
+                            <div class="form-group text-left">
+                                <label class="mb-2 titulo-form" for="fechaPublicacion"> {{ 'Fecha de Publicación'|trans }}: </label>
+                                <input  type="text" class="form-control mb-4 datepicker" id="fechaPublicacion" name="fechaPublicacion" value="">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group text-left">
+                                <label class="mb-2 titulo-form" for="fechaVencimiento"> {{ 'Fecha de Vencimiento'|trans }}: </label>
+                                <input  type="text" class="form-control mb-4 datepicker" id="fechaVencimiento" name="fechaVencimiento" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 align-items-center justify-content-center">
                         <div class="form-group">
                             <div class="col-12">
-                                <label class="mb-2 titulo-form" for="cont_tema"> {{ 'Contenido'|trans }}: </label>
-                                <textarea class="ckeditor" rows="3" id="cont_tema" name="cont_tema" cols="30"></textarea>
+                                <label class="mb-2 titulo-form" for="mensaje"> {{ 'Contenido'|trans }}: </label>
+                                <textarea class="ckeditor" rows="3" id="mensaje" name="mensaje" cols="30"></textarea>
+                                <label id="mensaje-error" class="mensaje-error" for="mensaje" style="display:none;">{{ 'El contenido es requerido.'|trans }}</label>
                             </div>
                         </div>
                     </div>
@@ -221,5 +239,62 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/espacio_colaborativo.js') }}"></script>
+    <script type="text/javascript">
+
+        $('.form-control, #mensaje').focus(function(){
+            $('label.error').hide();
+        });
+
+        $('#publicar').click(function(){
+            var valid = $("#form").valid();
+            if (valid) 
+            {
+                // Validaciones adicionales
+                var editor_data = CKEDITOR.instances.mensaje.getData();
+                var contenido = editor_data.replace(/<[^>]+>/g, '');
+                
+                if (contenido == ""){
+                    console.log('Otro error');
+                    $('#mensaje-error').show();
+                }
+                else {
+                    console.log('ta listo');
+                    //$('#form').submit();
+                }
+            }
+        });
+
+        $("#form").validate({
+            rules: {
+                'tema': {
+                    required: true,
+                    minlength: 10
+                },
+                'fechaPublicacion': {
+                    required: true
+                },
+                'fechaVencimiento': {
+                    required: true
+                }
+            },
+            messages: {
+                'tema': {
+                    required: "{{ 'El título es requerido.'|trans }}",
+                    minlength: "{{ 'El título debe contener al menos 10 caracteres'|trans }}"
+                },
+                'fechaPublicacion': {
+                    required: "{{ 'Debe seleccionar una fecha de publicación.'|trans }}"
+                },
+                'fechaVencimiento': {
+                    required: "{{ 'Debe seleccionar una fecha de vencimiento.'|trans }}"
+                }
+            }
+        });
+
+    </script>
 {% endblock %}

@@ -215,6 +215,7 @@ El Tipo de Imagen es requerido.: The type of image is required
 El tipo de noticia es requerido.: The type of news is required.
 El tipo de notificación es requerida.: The notification type is required.
 El tipo de pregunta es requerido.: Question type is required.
+El título debe contener al menos 10 caracteres: Title must have at least 10 characters
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
