@@ -266,6 +266,88 @@
         }
     }
 }
+
+//Modal Notificacion de muro
+.modalMuroNotify{
+    @extend %modal-l;
+    @extend %modal;
+    .textAsv{
+        padding: .5rem;
+        border-radius: calc(1rem - 8px);
+    }
+    &::-webkit-scrollbar {
+        width: .7rem;
+    }
+    &::-webkit-scrollbar-track {
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+    }
+    .msjMuro{
+        background: $white;
+        width: 50rem;
+        max-height: 9rem;
+        padding: 1rem 2rem .5rem 2rem;
+        border-radius: calc(1rem - 8px);
+        overflow-y: auto;
+        margin-bottom: calc(1rem - 8px);
+        &::-webkit-scrollbar {
+            width: .3rem;
+        }
+        &::-webkit-scrollbar-track {
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $gray-400;
+        }
+        .textMuroNoti{
+            font-family: $lessons-font;
+            font-size: $font-size-sm;
+            line-height: calc(1rem + 4px);
+        }
+    }
+    .msjMuroResp{
+        background: $gray-400;
+        width: 50rem;
+        max-height: 18rem;
+        padding: 0;
+        border-radius: calc(1rem - 8px);
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: .3rem;
+        }
+        &::-webkit-scrollbar-track {
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $gray-600;
+        }
+        .comment{
+            list-style-type: none;
+            border-bottom: 1px solid $gray-100;
+            padding: 1rem 2rem .5rem 2rem;
+            .textMuroNoti{
+                font-family: $lessons-font;
+                font-size: $font-size-sm;
+                line-height: calc(1rem + 4px);
+            }
+        }
+        .muroComment{
+            padding: .4rem;
+            .moreMuroNotify{
+                font-size: $font-size-sm;
+                font-weight: $font-weight-normal;
+                color: $gray-700;
+                .icMore{
+                    position: relative;
+                    right: .25rem;
+                    top: .3rem;
+                }
+                &:hover{
+                    color: $blue;
+                }
+            }
+        }
+    }
+}
 //Extend
 
 %modal-sl{
