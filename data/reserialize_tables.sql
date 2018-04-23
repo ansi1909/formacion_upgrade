@@ -23,6 +23,7 @@ ALTER TABLE certi_certificado ALTER COLUMN id SET DEFAULT nextval('certi_certifi
 ALTER TABLE certi_estatus_contenido ALTER COLUMN id SET DEFAULT nextval('certi_estatus_contenido_id_seq');
 ALTER TABLE certi_estatus_pagina ALTER COLUMN id SET DEFAULT nextval('certi_estatus_pagina_id_seq');
 ALTER TABLE certi_foro ALTER COLUMN id SET DEFAULT nextval('certi_foro_id_seq');
+ALTER TABLE certi_foro_archivo ALTER COLUMN id SET DEFAULT nextval('certi_foro_archivo_id_seq');
 ALTER TABLE certi_grupo ALTER COLUMN id SET DEFAULT nextval('certi_grupo_id_seq');
 ALTER TABLE certi_grupo_pagina ALTER COLUMN id SET DEFAULT nextval('certi_grupo_pagina_id_seq');
 ALTER TABLE certi_muro ALTER COLUMN id SET DEFAULT nextval('certi_muro_id_seq');

@@ -25,7 +25,7 @@ class CertiForo
     /**
      * @var string
      *
-     * @ORM\Column(name="mensaje", type="string", length=350, nullable=true)
+     * @ORM\Column(name="mensaje", type="text", nullable=true)
      */
     private $mensaje;
 
@@ -56,6 +56,13 @@ class CertiForo
      * @ORM\Column(name="fecha_vencimiento", type="date", nullable=true)
      */
     private $fechaVencimiento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tema", type="string", length=350, nullable=true)
+     */
+    private $tema;
 
     /**
      * @var \Link\ComunBundle\Entity\CertiPagina
@@ -227,6 +234,30 @@ class CertiForo
     public function getFechaVencimiento()
     {
         return $this->fechaVencimiento;
+    }
+
+    /**
+     * Set tema
+     *
+     * @param string $tema
+     *
+     * @return CertiForo
+     */
+    public function setTema($tema)
+    {
+        $this->tema = $tema;
+    
+        return $this;
+    }
+
+    /**
+     * Get tema
+     *
+     * @return string
+     */
+    public function getTema()
+    {
+        return $this->tema;
     }
 
     /**

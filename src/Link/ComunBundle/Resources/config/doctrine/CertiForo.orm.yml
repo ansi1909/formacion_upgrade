@@ -25,9 +25,9 @@ Link\ComunBundle\Entity\CertiForo:
                 strategy: SEQUENCE
     fields:
         mensaje:
-            type: string
+            type: text
             nullable: true
-            length: 350
+            length: null
             options:
                 fixed: false
         fechaRegistro:
@@ -48,6 +48,12 @@ Link\ComunBundle\Entity\CertiForo:
             type: date
             nullable: true
             column: fecha_vencimiento
+        tema:
+            type: string
+            nullable: true
+            length: 350
+            options:
+                fixed: false
     manyToOne:
         pagina:
             targetEntity: CertiPagina

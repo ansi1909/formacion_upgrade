@@ -370,7 +370,8 @@ fecha_registro timestamp without time zone,
 CREATE TABLE certi_foro(
 -- Attributes --
 id serial,
-mensaje varchar(350),
+tema varchar(350),
+mensaje text,
 empresa_id integer,
 pagina_id integer,
 usuario_id integer,
