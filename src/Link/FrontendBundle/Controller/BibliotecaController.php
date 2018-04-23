@@ -20,10 +20,6 @@ class BibliotecaController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('iniFront'))
-        {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-        }
         $f->setRequest($session->get('sesion_id'));
 
         if ($this->container->get('session')->isStarted())
@@ -38,13 +34,14 @@ class BibliotecaController extends Controller
             $libros = array();
             $hoy = new \DateTime();
             $now = strtotime($hoy->format('d-m-Y'));
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.empresa = :empresa_id
                                        AND n.tipoNoticia = :tipo
                                        AND n.pdf IS NOT NULL')
                         ->setParameters(array('empresa_id' => $empresa_id,
-                                              'tipo' => '3'));
+                                              'tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual']));
             $noticias_db = $query->getResult();
 
             foreach($noticias_db as $noticia)
@@ -58,20 +55,20 @@ class BibliotecaController extends Controller
                                     'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
                                     'tid'=>$noticia->getTipoBiblioteca()->getId());
 
-                    if ($noticia->getTipoBiblioteca()->getId() == '1') 
+                    if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['video']) 
                     {
                         $videos[] =array('id'=>$noticia->getId(),
                                          'titulo'=>$noticia->getTitulo(),
                                          'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
                                          'tid'=>$noticia->getTipoBiblioteca()->getId());
                     }
-                    else if ($noticia->getTipoBiblioteca()->getId() == '2') {
+                    else if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['podcast']) {
                         $podcast[] =array('id'=>$noticia->getId(),
                                           'titulo'=>$noticia->getTitulo(),
                                           'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
                                           'tid'=>$noticia->getTipoBiblioteca()->getId());
                     }
-                    else if ($noticia->getTipoBiblioteca()->getId() == '3') {
+                    else if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['articulo']) {
                         $articulos[] =array('id'=>$noticia->getId(),
                                             'titulo'=>$noticia->getTitulo(),
                                             'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
@@ -97,10 +94,6 @@ class BibliotecaController extends Controller
                                                                                     'articulos' => $articulos,
                                                                                     'libros' => $libros));
 
-        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
-
-        return $response;
-
     }
 
     public function detalleAction($biblioteca_id)
@@ -109,10 +102,7 @@ class BibliotecaController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('iniFront'))
-        {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-        }
+       
         $f->setRequest($session->get('sesion_id'));
 
         if ($this->container->get('session')->isStarted())
@@ -125,16 +115,17 @@ class BibliotecaController extends Controller
             $videos = array();
             $audios = array();
             $pdfs = array();
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-            if ($biblioteca->getTipoBiblioteca()->getId() == 1) {
+            if ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['video']) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca = :biblioteca
                                            AND n.tipoNoticia = :noticia_id
                                            AND n.id != :id
                                            AND n.pdf IS NOT NULL')
                             ->setMaxResults(3)
-                            ->setParameters(array('biblioteca'=> 1,
-                                                  'noticia_id'=> 3,
+                            ->setParameters(array('biblioteca'=> $yml['parameters']['tipo_biblioteca']['video'],
+                                                  'noticia_id'=> $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
                                                   'id'=> $biblioteca_id));
                 $anuncios = $query->getResult();
 
@@ -150,15 +141,15 @@ class BibliotecaController extends Controller
                     }
                 }
 
-            }elseif ($biblioteca->getTipoBiblioteca()->getId() == 2) {
+            }elseif ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['podcast']) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca = :biblioteca
                                            AND n.tipoNoticia = :noticia_id
                                            AND n.id != :id
                                            AND n.pdf IS NOT NULL')
                             ->setMaxResults(3)
-                            ->setParameters(array('biblioteca'=> 2,
-                                                  'noticia_id'=> 3,
+                            ->setParameters(array('biblioteca'=> $yml['parameters']['tipo_biblioteca']['podcast'],
+                                                  'noticia_id'=> $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
                                                   'id'=> $biblioteca_id));
                 $anuncios = $query->getResult();
 
@@ -173,15 +164,15 @@ class BibliotecaController extends Controller
                                          'tid'=>$anuncio->getTipoBiblioteca()->getId());
                     }
                 }
-            }elseif ($biblioteca->getTipoBiblioteca()->getId() == 3 || $biblioteca->getTipoBiblioteca()->getId() == 4) {
+            }elseif ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['articulo'] || $biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['libro']) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoBiblioteca IN (:biblioteca)
                                            AND n.tipoNoticia = :noticia_id
                                            AND n.id != :id
                                            AND n.pdf IS NOT NULL')
                             ->setMaxResults(3)
-                            ->setParameters(array('biblioteca'=> array('3','4'),
-                                                  'noticia_id'=> 3,
+                            ->setParameters(array('biblioteca'=> array($yml['parameters']['tipo_biblioteca']['articulo'],$yml['parameters']['tipo_biblioteca']['libro']),
+                                                  'noticia_id'=> $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
                                                   'id'=> $biblioteca_id));
                 $anuncios = $query->getResult();
 
@@ -207,10 +198,6 @@ class BibliotecaController extends Controller
                                                                                       'videos' => $videos,
                                                                                       'audios' => $audios,
                                                                                       'pdfs' => $pdfs));
-
-        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
-
-        return $response;
     }
 
 }

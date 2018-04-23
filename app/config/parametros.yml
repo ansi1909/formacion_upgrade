@@ -16,6 +16,11 @@ parameters:
         noticia: 1
         novedad: 2
         biblioteca_virtual: 3
+    tipo_biblioteca:
+        video: 1
+        podcast: 2
+        articulo: 3
+        libro: 4
     tipo_certificado:
         empresa: 1
         pagina: 2

@@ -22,11 +22,11 @@
     </div>
 {% if not usuario_empresa %}
    <div class="col text-right">
-       <button type="button" id="new" class="bttn__nr new ocultar" data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+       <button type="button" id="new" class="bttn__nr new ocultar" data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
    </div>
 {% else %}
     <div class="col text-right">
-       <button type="button" id="new" class="bttn__nr new " data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo Registro' | trans}}</span></button>
+       <button type="button" id="new" class="bttn__nr new " data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
    </div>
 {% endif %}
 </div>
@@ -64,7 +64,7 @@
     <div class=" col-sm-9 col-md-9 col-lg-9 col-xl-9 col-9" {% if not usuario_empresa %} style="display:none;" {% endif %}  id="div-grupos">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title" >{{ 'Listado de grupos ' |trans}} <span id="nombre-p"></span></h5>
+                <h5 class="card-title" >{{ 'Listado de grupos' |trans}} <span id="nombre-p"></span></h5>
             </div>
             {% if not usuario_empresa %}
             <div class="card-block" id="lpe">   
@@ -103,7 +103,7 @@
     <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7" style="display:none; " id="div-paginas">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Asignar pagina al grupo '|trans }} <span id="grupoTitle"></span></h5>
+                <h5 class="card-title">{{ 'Asignar página al grupo'|trans }} <span id="grupoTitle"></span></h5>
             </div>
             <div class="card-block" id="paginas">
                 

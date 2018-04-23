@@ -4,13 +4,16 @@ Acción: Action
 Acciones: Actions
 Aceptar: Accept
 Activar: Enable
+Activar chat: Activate chat
 Activar evaluación: Enable test
 Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
+Activar webinar: Activate webinar
 Activo: Active
 Advertencia: Warning
 Agregar: Add
+Agregar categoría: Add category
 Agregar opción: Add option
 Agregar pregunta: Add question
 Agregar sub-página: Add sub-page
@@ -36,6 +39,8 @@ Asignación habilitada: Enabled assignment
 Asignada: Assigned
 Asignar: Assign
 Asignar páginas: Assign page
+Asignar página al grupo: Assign page to group
+Asignar página al nivel: Assign page to level 
 Asunto: Subject
 Autor: Author
 Aún no ha respondido las preguntas: You have not already answered the questions
@@ -315,6 +320,7 @@ Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su emp
 Iniciar Sesión: Log in
 Inicio: Begin
 instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
+Interacción: Interaction
 Ir a detalles de la página: Go to page details
 Ir al listado: Go to list
 Ir al listado de evaluaciones: Go to tests list
@@ -371,6 +377,7 @@ Listado de empresas activas: List of active companies
 Listado de empresas inactivas: List of inactive companies
 Listado de evaluaciones: List of tests
 Listado de grupos: List of groups
+Listado de niveles: List of levels
 Listado de notificaciones: List of notifications
 Listado de participantes: List of participants
 Listado de preguntas: List of questions
@@ -380,6 +387,7 @@ Listado de Roles: List of Roles
 Listado de Tipos de Destinos: List of Types of Destinies
 Listado de Tipos de Notificaciones: List of Types of Notifications
 Listado de tutoriales: List of tutorials
+Listado de usuarios: List of users
 Lo sentimos. Sesión expirada.: We are sorry. Session is expired.
 Login repetido: Login repeated
 Login requerido: Login required
@@ -433,6 +441,7 @@ Nombres deben ser solo alfabéticos: Names must be alphabetical
 Nueva evaluación: New test
 Nueva página: New page
 Nueva pregunta: New question
+Nuevo nivel: New level
 Nuevo nivel de la empresa: New level of company
 Nuevo registro: New item
 Nuevos registros almacenados: New records added
@@ -449,6 +458,7 @@ Página padre: Father page
 Páginas: Pages
 Páginas asignadas a: Assigned pages to
 Páginas principales: Main pages
+Páginas por niveles: Pages by levels
 Panel de acceso: Login
 Paso: Step
 País: Country
@@ -492,6 +502,11 @@ Registros nuevos: New items
 Regresar al inicio: Back to login
 Reiniciar contraseña: Restore password
 Reportar problema: Report issue
+Reporte de participantes aprobados por programas: Report of participants approved by programs
+Reporte de participantes cursando por programas: Report of participants studying through programs
+Reporte de participantes no iniciados en programas: Report of participants not initiated in programs
+Reporte de participantes registrados por programas: Report of participants registered by programs
+Reporte de participantes por empresa: Participant report by company
 Responder: Answer
 respondió a tu comentario en el muro de: answered to your comment on wall
 Respuesta: Answer
@@ -546,6 +561,7 @@ Thumbnails inexistentes: No thumbnails
 Tiempo de duración de la evaluación: Duration of the test
 Tiene muro: Has wall
 Tipo Certificado: Type Certificate
+Tipo de Biblioteca: Type of Library
 Tipo de Certificado: Type of Certificate
 Tipo de elemento: Element type
 Tipo de Imagen: Type of Image
@@ -588,7 +604,7 @@ Ver páginas asignadas: View assigned pages
 Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails
-Vista Previa: Preview
+Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
 Volver al programa: Back to program page
 Yo: Me

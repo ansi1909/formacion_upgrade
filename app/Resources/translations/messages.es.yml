@@ -4,13 +4,16 @@ Acción: Acción
 Acciones: Acciones
 Aceptar: Aceptar
 Activar: Activar
+Activar chat: Activar chat
 Activar evaluación: Activar evaluación
 Activar muro: Activar muro
 Activar para ordenar la columna de manera ascendente: Activar para ordenar la columna de manera ascendente
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
+Activar webinar: Activar webinar
 Activo: Activo
 Advertencia: Advertencia
 Agregar: Agregar
+Agregar categoría: Agregar categoría
 Agregar opción: Agregar opción
 Agregar pregunta: Agregar pregunta
 Agregar sub-página: Agregar sub-página
@@ -36,6 +39,8 @@ Asignación habilitada: Asignación habilitada
 Asignada: Asignada
 Asignar: Asignar
 Asignar páginas: Asignar páginas
+Asignar página al grupo: Asignar página al grupo
+Asignar página al nivel: Asignar página al nivel
 Asunto: Asunto
 Autor: Autor
 Aún no ha respondido las preguntas: Aún no ha respondido las preguntas
@@ -315,6 +320,7 @@ Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su emp
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
 instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
+Interacción: Interacción
 Ir a detalles de la página: Ir a detalles de la página
 Ir al listado: Ir al listado
 Ir al listado de evaluaciones: Ir al listado de evaluaciones
@@ -371,6 +377,7 @@ Listado de empresas activas: Listado de empresas activas
 Listado de empresas inactivas: Listado de empresas inactivas
 Listado de evaluaciones: Listado de evaluaciones
 Listado de grupos: Listado de grupos
+Listado de niveles: Listado de niveles
 Listado de notificaciones: Listado de notificaciones
 Listado de participantes: Listado de participantes
 Listado de preguntas: Listado de preguntas
@@ -380,6 +387,7 @@ Listado de Roles: Listado de Roles
 Listado de Tipos de Destinos: Listado de Tipos de Destinos
 Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Listado de tutoriales: Listado de tutoriales
+Listado de usuarios: Listado de usuarios
 Lo sentimos. Sesión expirada.: Lo sentimos. Sesión expirada.
 Login repetido: Login repetido
 Login requerido: Login requerido
@@ -433,6 +441,7 @@ Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Nueva evaluación: Nueva evaluación
 Nueva página: Nueva página
 Nueva pregunta: Nueva pregunta
+Nuevo nivel: Nuevo nivel
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo registro: Nuevo registro
 Nuevos registros almacenados: Nuevos registros almacenados
@@ -449,6 +458,7 @@ Página padre: Página padre
 Páginas: Páginas
 Páginas asignadas a: Páginas asignadas a
 Páginas principales: Páginas principales
+Páginas por niveles: Páginas por niveles
 Panel de acceso: Panel de acceso
 Paso: Paso
 País: País
@@ -492,6 +502,11 @@ Registros nuevos: Registros nuevos
 Regresar al inicio: Regresar al inicio
 Reiniciar contraseña: Reiniciar contraseña
 Reportar problema: Reportar problema
+Reporte de participantes aprobados por programas: Reporte de participantes aprobados por programas
+Reporte de participantes cursando por programas: Reporte de participantes cursando por programas
+Reporte de participantes no iniciados en programas: Reporte de participantes no iniciados en programas
+Reporte de participantes registrados por programas: Reporte de participantes registrados por programas
+Reporte de participantes por empresa: Reporte de participantes por empresa
 Responder: Responder
 respondió a tu comentario en el muro de: respondió a tu comentario en el muro de
 Respuesta: Respuesta
@@ -546,6 +561,7 @@ Thumbnails inexistentes: Thumbnails inexistentes
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Tiene muro: Tiene muro
 Tipo Certificado: Tipo Certificado
+Tipo de Biblioteca: Tipo de Biblioteca
 Tipo de Certificado: Tipo de Certificado
 Tipo de elemento: Tipo de elemento
 Tipo de Imagen: Tipo de Imagen
@@ -588,7 +604,7 @@ Ver páginas asignadas: Ver páginas asignadas
 Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails
-Vista Previa: Vista Previa
+Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver al programa: Volver al programa
 Yo: Yo
