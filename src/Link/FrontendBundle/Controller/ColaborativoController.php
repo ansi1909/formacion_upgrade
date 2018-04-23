@@ -32,7 +32,7 @@ class ColaborativoController extends Controller
                                     AND f.foro IS NULL
                                     ORDER BY f.fechaPublicacion DESC")
                     ->setParameters(array('programa_id' => $programa_id,
-                                          'usuario_id' => $session->get('empresa')['id']));
+                                          'empresa_id' => $session->get('empresa')['id']));
         $foros_bd = $query->getResult();
 
         $foros = array();

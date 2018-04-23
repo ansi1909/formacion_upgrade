@@ -223,6 +223,7 @@ El valor de la pregunta es requerido.: El valor de la pregunta es requerido.
 El valor del puntaje con que se aprueba debe ser mayor o igual a 10.: El valor del puntaje con que se aprueba debe ser mayor o igual a 10.
 El valor del puntaje con que se aprueba debe ser un valor numérico.: El valor del puntaje con que se aprueba debe ser un valor numérico.
 El valor del puntaje con que se aprueba no debe sobrepasar a 100.: El valor del puntaje con que se aprueba no debe sobrepasar a 100.
+El tutor virtual aún no ha creado un tema de discusión: El tutor virtual aún no ha creado un tema de discusión
 El tutorial ha sido almacenada con éxito: El tutorial ha sido almacenada con éxito
 El Url proporcionado no es correcto: El Url proporcionado no es correcto
 Email de contacto: Email de Contacto
@@ -485,6 +486,7 @@ Procesar: Procesar
 Programa: Programa
 Programas: Programas
 Prog. asociados: Prog. asociados
+Publicar: Publicar
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
 Puede ingresar de nuevo desde la pantalla de login: Puede ingresar de nuevo desde la pantalla de login
