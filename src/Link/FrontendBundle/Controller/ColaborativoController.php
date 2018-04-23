@@ -39,10 +39,12 @@ class ColaborativoController extends Controller
 
         foreach ($foros_bd as $foro)
         {
+            $listar = 0;
             if ($foro->getFechaPublicacion()->format('Y-m-d') >= date('Y-m-d') || $foro->getFechaVencimiento()->format('Y-m-d') <= date('Y-m-d'))
             {
                 if ($session->get('usuario')['tutor'])
                 {
+                    $listar = 1;
                     if ($foro->getFechaPublicacion()->format('Y-m-d') >= date('Y-m-d'))
                     {
                         $name_ft = $this->get('translator')->trans('Aún sin publicar');
@@ -54,7 +56,40 @@ class ColaborativoController extends Controller
                         $coment_f = $this->get('translator')->trans('Fecha de Vencimiento');
                         $coment_f_span = $foro->getFechaVencimiento()->format('d/m/Y');
                     }
+                    $resp_ft = 0;
                 }
+            }
+            else {
+                $listar = 1;
+                // Último comentario realizado sobre este tema
+                $foro_hijo = $em->getRepository('LinkComunBundle:CertiForo')->findOneBy(array('foro' => $foro->getId()),
+                                                                                        array('fechaRegistro' => 'DESC'));
+                if (!$foro_hijo)
+                {
+                    $name_ft = $foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido();
+                    $coment_f = $this->get('translator')->trans('Fecha de Publicación');
+                    $coment_f_span = $foro->getFechaPublicacion()->format('d/m/Y');
+                    $resp_ft = 0;
+                }
+                else {
+                    $query = $em->createQuery('SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f 
+                                                WHERE f.foro = :foro_id')
+                                ->setParameter('foro_id', $foro->getId());
+                    $total_comentarios = $query->getSingleScalarResult();
+                    $name_ft = $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
+                    $coment_f = $this->get('translator')->trans('Hizo un comentario');
+                    $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion());
+                    $resp_ft = $total_comentarios;
+                }
+            }
+            if ($listar)
+            {
+                $foros[] = array('id' => $foro->getId(),
+                                 'tema' => $foro->getTema(),
+                                 'name_ft' => $name_ft,
+                                 'coment_f' => $coment_f,
+                                 'coment_f_span' => $coment_f_span,
+                                 'resp_ft' => $resp_ft);
             }
         }
 

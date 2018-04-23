@@ -113,8 +113,8 @@
             </div>
         </div>
         <div class="row">
-            <ul class="table-card">
-                <a href="#">
+            <ul class="table-card" id="ul-foros">
+                {% for foro in foros %}
                     <li class="f-table">
                         <div class="row justify-content-between">
                             <div class="col-6">
@@ -145,7 +145,7 @@
                             </div>
                         </div>
                     </li>
-                </a>
+                {% endfor %}
                 <a href="#">
                     <li class="f-table">
                         <div class="row justify-content-between">
