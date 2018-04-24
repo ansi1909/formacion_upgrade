@@ -19,16 +19,11 @@ class NoticiasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
-
-        if (!$session->get('iniFront'))
-        {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-        }
         $f->setRequest($session->get('sesion_id'));
 
         if ($this->container->get('session')->isStarted())
         {
-
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
             $usuario_id = $session->get('usuario')['id'];
             $empresa_id = $session->get('empresa')['id'];
             $hoy = new \DateTime();
@@ -61,7 +56,7 @@ class NoticiasController extends Controller
                                            'imagen'=>$busqueda->getImagen(),
                                            'tid'=>$busqueda->getTipoNoticia()->getId());
 
-                        if($busqueda->getTipoNoticia()->getId() == '1')
+                        if($busqueda->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia'])
                         {
                             $noticias[] =array('id'=>$busqueda->getId(),
                                            'titulo'=>$busqueda->getTitulo(),
@@ -70,7 +65,7 @@ class NoticiasController extends Controller
                                            'imagen'=>$busqueda->getImagen(),
                                            'tid'=>$busqueda->getTipoNoticia()->getId());
 
-                        }elseif ($busqueda->getTipoNoticia()->getId() == '2') 
+                        }elseif ($busqueda->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['novedad']) 
                         {
                             $novedades[] =array('id'=>$busqueda->getId(),
                                            'titulo'=>$busqueda->getTitulo(),
@@ -86,10 +81,6 @@ class NoticiasController extends Controller
                                                                                   'todos' => $todos,
                                                                                   'noticias' => $noticias,
                                                                                   'novedades' => $novedades));
-
-                $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
-
-                return $response;
             }
 
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
@@ -111,7 +102,7 @@ class NoticiasController extends Controller
                                        'imagen'=>$noticia->getImagen(),
                                        'tid'=>$noticia->getTipoNoticia()->getId());
 
-                    if($noticia->getTipoNoticia()->getId() == '1')
+                    if($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia'])
                     {
                         $noticias[] =array('id'=>$noticia->getId(),
                                        'titulo'=>$noticia->getTitulo(),
@@ -120,7 +111,7 @@ class NoticiasController extends Controller
                                        'imagen'=>$noticia->getImagen(),
                                        'tid'=>$noticia->getTipoNoticia()->getId());
 
-                    }elseif ($noticia->getTipoNoticia()->getId() == '2') 
+                    }elseif ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['novedad']) 
                     {
                         $novedades[] =array('id'=>$noticia->getId(),
                                        'titulo'=>$noticia->getTitulo(),
@@ -141,10 +132,6 @@ class NoticiasController extends Controller
                                                                                   'noticias' => $noticias,
                                                                                   'novedades' => $novedades));
 
-        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
-
-        return $response;
-
     }
 
     public function detalleAction($noticia_id)
@@ -152,11 +139,8 @@ class NoticiasController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if (!$session->get('iniFront'))
-        {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-        }
         $f->setRequest($session->get('sesion_id'));
 
         if ($this->container->get('session')->isStarted())
@@ -165,20 +149,20 @@ class NoticiasController extends Controller
             $noticia = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
             $noticias=array();
 
-            if ($noticia->getTipoNoticia()->getId() == 1) {
+            if ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia']) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoNoticia = :noticia
                                            AND n.id != :noticia_id')
                             ->setMaxResults(3)
-                            ->setParameters(array('noticia'=> 1,
+                            ->setParameters(array('noticia'=> $yml['parameters']['tipo_noticias']['noticia'],
                                                   'noticia_id'=> $noticia_id));
                 $noticias = $query->getResult();
-            }elseif ($noticia->getTipoNoticia()->getId() == 2) {
+            }elseif ($noticia->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['novedad']) {
                 $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                            WHERE n.tipoNoticia = :noticia
                                            AND n.id != :noticia_id')
                             ->setMaxResults(3)
-                            ->setParameters(array('noticia'=> 2,
+                            ->setParameters(array('noticia'=> $yml['parameters']['tipo_noticias']['novedad'],
                                                   'noticia_id'=> $noticia_id));
                 $noticias = $query->getResult();
             }
@@ -192,9 +176,6 @@ class NoticiasController extends Controller
         return $this->render('LinkFrontendBundle:Noticias:detalle.html.twig', array('noticia' => $noticia,
                                                                                     'noticias'=> $noticias));
 
-        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
-
-        return $response;
     }
 
 }

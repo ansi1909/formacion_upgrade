@@ -589,13 +589,68 @@ a:focus, a:active, a:target, a:checked {
   .modalEEval .btn-contEval:hover {
     color: #F7FAFC; }
 
+.modalMuroNotify .textAsv {
+  padding: .5rem;
+  border-radius: calc(1rem - 8px); }
+.modalMuroNotify::-webkit-scrollbar {
+  width: .7rem; }
+.modalMuroNotify::-webkit-scrollbar-thumb {
+  background-color: #DAE1E6; }
+.modalMuroNotify .msjMuro {
+  background: #fff;
+  width: 50rem;
+  max-height: 9rem;
+  padding: 1rem 2rem .5rem 2rem;
+  border-radius: calc(1rem - 8px);
+  overflow-y: auto;
+  margin-bottom: calc(1rem - 8px); }
+  .modalMuroNotify .msjMuro::-webkit-scrollbar {
+    width: .3rem; }
+  .modalMuroNotify .msjMuro::-webkit-scrollbar-thumb {
+    background-color: #DAE1E6; }
+  .modalMuroNotify .msjMuro .textMuroNoti {
+    font-family: "Open Sans";
+    font-size: 0.87rem;
+    line-height: calc(1rem + 4px); }
+.modalMuroNotify .msjMuroResp {
+  background: #DAE1E6;
+  width: 50rem;
+  max-height: 18rem;
+  padding: 0;
+  border-radius: calc(1rem - 8px);
+  overflow-y: auto; }
+  .modalMuroNotify .msjMuroResp::-webkit-scrollbar {
+    width: .3rem; }
+  .modalMuroNotify .msjMuroResp::-webkit-scrollbar-thumb {
+    background-color: #AAAFB3; }
+  .modalMuroNotify .msjMuroResp .comment {
+    list-style-type: none;
+    border-bottom: 1px solid #FAFAFA;
+    padding: 1rem 2rem .5rem 2rem; }
+    .modalMuroNotify .msjMuroResp .comment .textMuroNoti {
+      font-family: "Open Sans";
+      font-size: 0.87rem;
+      line-height: calc(1rem + 4px); }
+  .modalMuroNotify .msjMuroResp .muroComment {
+    padding: .4rem; }
+    .modalMuroNotify .msjMuroResp .muroComment .moreMuroNotify {
+      font-size: 0.87rem;
+      font-weight: 400;
+      color: #797D80; }
+      .modalMuroNotify .msjMuroResp .muroComment .moreMuroNotify .icMore {
+        position: relative;
+        right: .25rem;
+        top: .3rem; }
+      .modalMuroNotify .msjMuroResp .muroComment .moreMuroNotify:hover {
+        color: #5CAEE6; }
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
   height: 33rem;
   width: 62rem; }
 
-.modal-edit {
+.modal-edit, .modalMuroNotify {
   height: 46rem;
   width: 65rem;
   height: 36rem;
@@ -627,23 +682,23 @@ a:focus, a:active, a:target, a:checked {
   height: 36rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval {
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify {
   margin: 8rem auto !important;
   border-radius: 1rem;
   background: #FAFAFA;
   margin: 2rem auto !important; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal {
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white, .modalMuroNotify .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo, .modalMuroNotify .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
@@ -794,102 +849,86 @@ nav.navbar {
     background-color: #DAE1E6;
     border-radius: 1rem;
     border: 0px; }
-  .dropDownNotify .opcListNotify {
+  .dropDownNotify .AnunListNotify {
     position: relative;
     width: 27rem;
     max-height: 12rem;
-    border-bottom: 1px solid #F7FAFC;
+    border-bottom: 1px solid #F0F4F7;
     top: 0;
     left: 0;
-    padding: 1rem;
-    z-index: 3; }
-    .dropDownNotify .opcListNotify .anunNotify {
+    padding: 1rem; }
+    .dropDownNotify .AnunListNotify .anunNotify {
       position: relative;
       display: flex;
       flex-direction: row;
       margin: 0;
       padding: 0; }
-      .dropDownNotify .opcListNotify .anunNotify .stickerNotify {
-        height: 2rem;
-        width: 2rem;
+      .dropDownNotify .AnunListNotify .anunNotify .stickerNotify {
+        height: 2.5rem;
+        width: 2.5rem;
         margin: 0 1rem 0 0;
-        padding: 0;
+        padding: .1rem;
         border-radius: 50rem;
         box-shadow: 1px 1px 5px rgba(58, 58, 58, 0.5); }
-        .dropDownNotify .opcListNotify .anunNotify .stickerNotify .icNotify {
-          margin: 0;
-          padding: .4rem;
+        .dropDownNotify .AnunListNotify .anunNotify .stickerNotify .icNotify {
+          margin: 0 auto;
+          padding: .5rem;
+          position: relative;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 0;
           color: #212529;
-          font-size: calc(1rem + 4px); }
-      .dropDownNotify .opcListNotify .anunNotify .textNotify {
+          font-size: calc(1rem + 8px); }
+      .dropDownNotify .AnunListNotify .anunNotify .textNotify {
         padding: 0;
-        max-width: 23rem;
+        max-width: 24rem;
         height: auto;
         white-space: pre-wrap;
         color: #797D80;
         font-size: 0.87rem;
         text-align: justify;
         text-justify: auto;
-        line-height: 1.2rem;
+        line-height: 1rem;
         margin: 0;
         font-weight: 500; }
-      .dropDownNotify .opcListNotify .anunNotify .anunSticker {
+      .dropDownNotify .AnunListNotify .anunNotify .anunSticker {
         background: #ef6e62; }
-      .dropDownNotify .opcListNotify .anunNotify .notiSticker {
+      .dropDownNotify .AnunListNotify .anunNotify .notiSticker {
         background: #dbea8f; }
-      .dropDownNotify .opcListNotify .anunNotify .muroSticker {
+      .dropDownNotify .AnunListNotify .anunNotify .muroSticker {
         background: #FFDC60; }
-      .dropDownNotify .opcListNotify .anunNotify .ecpSticker {
+      .dropDownNotify .AnunListNotify .anunNotify .ecpSticker {
         background: #80CCFF; }
-      .dropDownNotify .opcListNotify .anunNotify .ectSticker {
+      .dropDownNotify .AnunListNotify .anunNotify .ectSticker {
         background: #CFE65C; }
-      .dropDownNotify .opcListNotify .anunNotify .calenSticker {
+      .dropDownNotify .AnunListNotify .anunNotify .calenSticker {
         background: #ee63b1; }
-      .dropDownNotify .opcListNotify .anunNotify .biblioSticker {
+      .dropDownNotify .AnunListNotify .anunNotify .biblioSticker {
         background: #ffc68e; }
-    .dropDownNotify .opcListNotify:hover {
+    .dropDownNotify .AnunListNotify:hover {
       background: linear-gradient(to right, #80CCFF 0%, #5CAEE6 100%); }
-      .dropDownNotify .opcListNotify:hover .textNotify {
+      .dropDownNotify .AnunListNotify:hover .textNotify {
         color: #fff; }
-  .dropDownNotify .stickerNotify {
-    height: 2rem;
-    width: 2rem;
-    margin: 0 1rem 0 0;
-    padding: .1rem;
-    border-radius: 50rem;
-    box-shadow: 1px 1px 5px rgba(58, 58, 58, 0.5); }
-    .dropDownNotify .stickerNotify .icNotify {
-      margin: 0 auto;
-      padding: .25rem;
-      position: relative;
-      left: .1rem;
-      top: .1rem;
-      color: #212529;
-      font-size: calc(1rem + 4px); }
-  .dropDownNotify .textNotify {
-    padding: 0;
-    max-width: 22rem;
-    height: auto;
-    white-space: pre-wrap;
-    color: #797D80;
-    font-size: 0.87rem;
-    text-align: justify;
-    text-justify: auto;
-    line-height: 1.2rem;
-    margin: 0;
-    font-weight: 500; }
-  .dropDownNotify .anunSticker {
-    background: #ef6e62; }
-  .dropDownNotify .opcLastNotify {
-    border-bottom: 0px; }
   .dropDownNotify .notiSinLeer {
-    background: #F0F4F7; }
+    background: #e5eaf2; }
+  .dropDownNotify .listMoreNotify {
+    padding: .5rem; }
+    .dropDownNotify .listMoreNotify .moreNotify {
+      font-size: 1.125rem;
+      font-weight: 400;
+      color: #797D80; }
+      .dropDownNotify .listMoreNotify .moreNotify .icMore {
+        position: relative;
+        right: .25rem;
+        top: .3rem; }
+      .dropDownNotify .listMoreNotify .moreNotify:hover {
+        color: #5CAEE6; }
 
 .markNotify {
   position: absolute;
   width: 1rem;
   height: 1rem;
-  top: 3.9rem;
+  top: 3.8rem;
   right: 7.8rem;
   background: transparent;
   transform: rotate(45deg);
@@ -3075,13 +3114,13 @@ p.up {
     .contenedor .radar::after {
       content: "";
       position: absolute;
-      top: calc(1rem - 14px);
-      right: calc(1rem - 14px);
+      top: calc(1rem - 13px);
+      right: calc(1rem - 13px);
       border-bottom: 3px solid #fff;
       border-left: 3px solid #fff;
-      border-radius: 0 0 0 calc(3rem + 2px);
-      width: calc(3rem - 8px);
-      height: calc(3rem - 8px);
+      border-radius: 0 0 0 calc(2rem + 2px);
+      width: calc(2rem - 8px);
+      height: calc(2rem - 8px);
       background-color: rgba(255, 255, 255, 0.1);
       -webkit-transform-origin: 100% 0%;
       transform-origin: 100% 0%;
@@ -3090,12 +3129,13 @@ p.up {
     .contenedor .radar::before {
       content: "";
       position: absolute;
-      top: calc(-1 * calc(2rem + 6px));
+      top: calc(-1 * calc(1rem + 6px));
+      right: calc(-1 * calc(1rem + 6px));
       border-top: 3px solid #fff;
       border-right: 3px solid #fff;
-      border-radius: 0 calc(3rem + 2px) 0px 0;
-      width: calc(3rem - 8px);
-      height: calc(3rem - 8px);
+      border-radius: 0 calc(2rem + 2px) 0px 0;
+      width: calc(2rem - 8px);
+      height: calc(2rem - 8px);
       background-color: rgba(255, 255, 255, 0.1);
       -webkit-transform-origin: 0% 100%;
       transform-origin: 0% 100%;
