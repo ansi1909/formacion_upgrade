@@ -107,7 +107,7 @@
         <div class="row align-items-center justify-content-between">
             <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
                 {% if app.session.get('usuario').tutor %}
-                    <button class="btn btn-primary btn-nw-tema" data-toggle="modal" data-target="#modalnew" data="0">{{ 'Crear nuevo tema'|trans }}</button>
+                    <button class="btn btn-primary btn-nw-tema newTopic" data-toggle="modal" data-target="#modalnew" data="0">{{ 'Crear nuevo tema'|trans }}</button>
                 {% else %}
                     &nbsp;
                 {% endif %}
@@ -120,14 +120,14 @@
         <div class="row">
             <ul class="table-card" id="ul-foros">
                 {% for foro in foros %}
-                    <li class="f-table">
+                    <li class="f-table" id="liForo-{{ foro.id }}">
                         <div class="row justify-content-between">
                             <div class="col-6">
                                 <a href="{{ path('_detalleColaborativo', { 'foro_id': foro.id, 'subpagina_id': subpagina_id }) }}"><h5 class="titulo_f-table">{{ foro.tema }}</h5></a>
                             </div>
                             <div class="col-2">
-                                <div class="status_f-table {% if app.session.get('usuario').tutor %}activar-destacado{% endif %}">
-                                    <a href="#" data-toggle="modal" data-target="#modalnew" data="{{ foro.id }}"><span class="status_ft">{{ 'Editar'|trans }}</span></a>
+                                <div class="status_f-table {% if app.session.get('usuario').tutor and app.session.get('usuario').id == foro.usuario_id %}activar-destacado{% endif %}">
+                                    <a class="newTopic" data-toggle="modal" data-target="#modalnew" data="{{ foro.id }}"><span class="status_ft">{{ 'Editar'|trans }}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +191,11 @@
                         <h4 class="titulo">{{ 'Crear nuevo tema'|trans }}</h4>
                     </div>
                 </div>
-                <form id="form" action="_ajaxSaveForo" method="POST">
+                <form id="form" action="{{ path('_ajaxSaveForo') }}" method="POST">
+                    <input type="hidden" id="foro_id" name="foro_id" value="0">
+                    <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
+                    <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
+                    <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
                     <div class="row pl-3 align-items-center justify-content-center">
                         <div class="col-12">
                             <div class="form-group text-left">
@@ -246,7 +250,7 @@
     <script type="text/javascript" src="{{ asset('js/front/espacio_colaborativo.js') }}"></script>
     <script type="text/javascript">
 
-        $('.form-control, #mensaje').focus(function(){
+        $('.form-control').focus(function(){
             $('label.error').hide();
         });
 
@@ -259,12 +263,11 @@
                 var contenido = editor_data.replace(/<[^>]+>/g, '');
                 
                 if (contenido == ""){
-                    console.log('Otro error');
                     $('#mensaje-error').show();
                 }
                 else {
-                    console.log('ta listo');
-                    //$('#form').submit();
+                    $('#mensaje_content').val(editor_data);
+                    saveForo();
                 }
             }
         });
