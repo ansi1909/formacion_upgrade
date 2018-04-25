@@ -603,7 +603,7 @@
     @extend %table-card;
     .f-table, .f-table-lt{
         padding: calc(1rem - 4px) 2rem calc(1rem - 4px) 2rem;
-        height: 8rem;
+        max-height: 10rem;
         width: 62.25rem;
         .titulo_f-table{
             color: $blue;
