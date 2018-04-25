@@ -32,18 +32,25 @@
                 </a>
                 <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
                     <div class=" d-flex flex-column  ">
-                        <div class="dropdown show">
-                            <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="img-fluid mx-auto" src="assets/img/avatar_user.png"  width="80%" alt="usuario">
+                        <div class="wrapperDdMenu">
+                            <a href="#" class="perfil no-decorate" id="config">
+                                <img class="img-fluid mx-auto avatar-img" src="assets/img/user.svg" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
                             </a>
-                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a href="#"> Salir </a>
-                            </div>
+                            <ul class="dropDownMenu">
+                                <li class="mark"></li>
+                                <a href="">
+                                    <li class="opcList">
+                                        <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                    </li>
+                                </a>
+                                <a href="" data-toggle="modal" data-target="#modalCs">
+                                    <li class="opcList markOpc">
+                                        <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                    </li>
+                                </a>
+                            </ul>
                         </div>
                     </div>
-                    <a id="iconComments" href="#">
-                        <i class="material-icons mx-3 color-light-grey">comment</i>
-                    </a>
                 </div>
             </nav>
         </header>
@@ -55,25 +62,32 @@
 
 
                 <!-- <a href="javascript:void(0)" class="openbtn" onclick="openNav()"><i class="arrow right"></i></a> -->
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
-                <a class="d-flex mt-1 mb-3 text-nowrap " href="#"> <i class="material-icons mr-2 rotate-180">exit_to_app</i> Volver al programa </a>
+                <div class="row justify-content-around">
+                    <a href="#"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="Ir al inicio">home</i></a>
+                    <a href="javascript:void(0)" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2" data-toggle="tooltip" data-placement="left" title="Cerrar sidebar"></i></a>
+                </div>
 
                 <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="material-icons rotate-180" data-toggle="tooltip" data-placement="bottom" title="Volver al programa">exit_to_app</i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active " id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
-                            <i class="material-icons">view_list</i>
+                            <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Contenido del programa">view_list</i>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
-                            <i class="material-icons">widgets</i>
+                            <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Recursos del programa">widgets</i>
                         </a>
                     </li>
                 </ul>
 
                 <div class="tab-content menu-lesson" id="pills-tabContent" >
                     <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <h5 class="text-center mb-3 mt-1 color-light-grey font-normal "> Indice </h5>
+                        <h5 class="text-center mb-3 mt-4 color-light-grey font-normal "> Indice </h5>
                         <ol>
                             <li><a href="">Relación entre cambio y liderazgo</a></li>
                             <ul class="ul-items">
@@ -137,7 +151,7 @@
                             <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <ul class="table-card">
                             <a href="#">
                                 <li class="f-table">
@@ -159,13 +173,19 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-end foo-esp_col">
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="name_ft">Patricio Calamardo</span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
                                         </div>
                                     </div>
@@ -191,13 +211,19 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-end foo-esp_col">
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="name_ft">Patricio Calamardo</span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
                                         </div>
                                     </div>
@@ -223,13 +249,19 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-end foo-esp_col">
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="name_ft">Patricio Calamardo</span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
                                         </div>
                                     </div>
@@ -255,13 +287,19 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-end foo-esp_col">
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="name_ft">Patricio Calamardo</span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
                                         </div>
                                     </div>
@@ -287,13 +325,171 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-end foo-esp_col">
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="name_ft">Patricio Calamardo</span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="f-table">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <h5 class="titulo_f-table">Tema abierto sobre el liderazgo</h5>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="status_f-table">
+                                                <span class="status_ft">Destacado</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <p class="txt-description">
+                                                Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-end foo-esp_col">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Patricio Calamardo</span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="f-table">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <h5 class="titulo_f-table">Tema abierto sobre el liderazgo</h5>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="status_f-table">
+                                                <span class="status_ft">Destacado</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <p class="txt-description">
+                                                Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-end foo-esp_col">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Patricio Calamardo</span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="f-table">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <h5 class="titulo_f-table">Tema abierto sobre el liderazgo</h5>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="status_f-table activar-destacado">
+                                                <span class="status_ft">Destacado</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <p class="txt-description">
+                                                Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-end foo-esp_col">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Patricio Calamardo</span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="f-table">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <h5 class="titulo_f-table">Tema abierto sobre el liderazgo</h5>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="status_f-table">
+                                                <span class="status_ft">Destacado</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <p class="txt-description">
+                                                Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-end foo-esp_col">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Patricio Calamardo</span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
                                         </div>
                                     </div>
@@ -319,38 +515,101 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-end foo-esp_col">
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="name_ft">Patricio Calamardo</span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="f-table">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <h5 class="titulo_f-table">Tema abierto sobre el liderazgo</h5>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="status_f-table">
+                                                <span class="status_ft">Destacado</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <p class="txt-description">
+                                                Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-end foo-esp_col">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Patricio Calamardo</span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="f-table-lt">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <h5 class="titulo_f-table">Tema abierto sobre el liderazgo</h5>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="status_f-table">
+                                                <span class="status_ft">Destacado</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <p class="txt-description">
+                                                Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-end foo-esp_col">
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Patricio Calamardo</span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de inicio: <span class="coment_f-table">20/05/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="name_ft">Fecha de culminación: <span class="coment_f-table">15/12/2018</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                            <span class="coment_f-table">Hizo un comentario: <span>Hace 3 min</span></span>
+                                        </div>
+                                        <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                             <span class="resp_ft"><i class="material-icons ic-msg">message</i> 20</span>
                                         </div>
                                     </div>
                                 </li>
                             </a>
                         </ul>
-                    </div>
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-auto 
-                                    col-lg-auto 
-                                    col-xl-auto 
-                                    col-md-auto 
-                                    col-sm-auto 
-                                    col-xs-auto 
-                                    px-0 pt-3">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
                 </section>
                 <section>
@@ -374,6 +633,20 @@
                                         <div class="form-group text-left">
                                             <label class="mb-2 titulo-form" for="tema"> Titulo del tema: </label>
                                             <input  type="text" class="form-control mb-4" id="tema" name="tema">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pl-3 align-items-center justify-content-center">
+                                    <div class="col-6">
+                                        <div class="form-group text-left">
+                                            <label class="mb-2 titulo-form" for="tema"> Fecha de inicio: </label>
+                                            <input  type="date" class="form-control mb-4" id="tema" name="tema">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group text-left">
+                                            <label class="mb-2 titulo-form" for="tema"> Fecha de culminación: </label>
+                                            <input  type="date" class="form-control mb-4" id="tema" name="tema">
                                         </div>
                                     </div>
                                 </div>
@@ -482,10 +755,13 @@
         </div>
             <!-- JAVASCRIPT -->
         <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/custom.js"></script>
+        <script src="js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.js"></script>
         <script type="text/javascript" src="../../../web/assets/vendor/ckeditor/ckeditor.js"></script>
         <script type="text/javascript" src="../../../web/assets/vendor/ckeditor/config.js"></script>
         <script type="text/javascript" src="js/ckedit.js"></script>
+        <script src="js/paginador.js"></script>
     </body>
 </html>

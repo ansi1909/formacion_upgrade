@@ -276,7 +276,7 @@
             {% block sidemenu %}
                 <nav>
                     <div id="mainSidenav" class="main-sidenav ">
-                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
+                        <a href="javascript:void(0)" class="justify-content-end text-right" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
                         <a class="d-flex mt-1 mb-3 text-nowrap modulo" id="dashBoard" href="{{ path('_inicio') }}"> <i class="material-icons mr-2">home</i> Inicio </a>
                         <a class="d-flex mb-3 text-nowrap modulo" id="misProg" href="{{ path('_misProgramas') }}"> <i class="material-icons mr-2">bookmark</i> Mi avance </a>
                         <a class="d-flex mb-3 text-nowrap modulo" id="proG" href="{{ path('_programas') }}"> <i class="material-icons mr-2">dashboard</i> Plan de estudio </a>
@@ -426,6 +426,7 @@
 
         {% block javascripts %}
             <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+            <script src="{{ asset('front/js/popper.min.js')}}"></script>
             <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('front/js/custom.js') }}"></script>
             <script src="{{ asset('front/js/plugins/video.js/video.min.js') }}"></script>

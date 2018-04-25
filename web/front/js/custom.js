@@ -164,4 +164,8 @@ $(document).ready(function() {
     });
     
     document.oncontextmenu = function(){return false;}
+    
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 });

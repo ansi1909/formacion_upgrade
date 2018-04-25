@@ -68,6 +68,12 @@ a:hover {
     padding: calc(2rem + 3px) 0;
 }
 
+input{
+    &:hover{
+        border: 2px solid $lightblue;
+    }
+}
+
 input[type=date] {
 
     &::-webkit-datetime-edit-month-field, &::-webkit-datetime-edit-day-field, &::-webkit-datetime-edit-year-field {
@@ -91,6 +97,9 @@ input[type=date] {
         font-size: calc(1rem + 2px);
         position: relative;
         right: -3rem;
+    }
+    &:hover{
+        border: 2px solid $lightblue;
     }
 }
 
