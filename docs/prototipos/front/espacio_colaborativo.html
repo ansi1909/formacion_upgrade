@@ -8,7 +8,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
         <link rel="stylesheet" href="client_styles/formacion/css/main.css">
-        <link rel="stylesheet" href="js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.css">
         <title>Espacio colaborativo</title>
 
         <style>
@@ -32,9 +31,6 @@
                     <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
                 </a>
                 <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-                    <a id="iconComments" href="#">
-                        <i class="material-icons mx-3 color-light-grey">comment</i>
-                    </a>
                     <div class=" d-flex flex-column  ">
                         <div class="wrapperDdMenu">
                             <a href="#" class="perfil no-decorate" id="config">
@@ -766,16 +762,6 @@
         <script type="text/javascript" src="../../../web/assets/vendor/ckeditor/ckeditor.js"></script>
         <script type="text/javascript" src="../../../web/assets/vendor/ckeditor/config.js"></script>
         <script type="text/javascript" src="js/ckedit.js"></script>
-        <script>
-            $(document).ready(function() {
-                $(".table-card").paginate({
-                    perPage: 10,
-                    autoScroll: true,
-                    paginatePosition: ['bottom'],
-                    useHashLocation: true,
-                    onPageClick: function() {}
-                });
-            });
-        </script>
+        <script src="js/paginador.js"></script>
     </body>
 </html>
