@@ -543,5 +543,45 @@ class DefaultController extends Controller
 
     }
         
+    public function ajaxNotiAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
+                                   WHERE a.usuario = :usuario_id')
+                    ->setParameter('usuario_id', $usuario->getId());
+        $notificaciones = $query->getResult();
+        $html = "";
+        $sonar=0;
+        foreach ($notificaciones as $notificacion)
+        {
+            if ($notificacion->getLeido() == true) {
+                $html='<a href="#">
+                            <li class="AnunListNotify ">
+                               <div class="anunNotify">
+                                   <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
+                                   <p class="textNotify text-justify">hoaidoaihsdoias1</p>
+                               </div>
+                            </li>
+                        </a>';
+            }
+            elseif ($notificacion->getLeido() == false) {
+                $sonar= 1;
+                $html='<a href="#">
+                            <li class="AnunListNotify notiSinLeer ">
+                               <div class="anunNotify ">
+                                   <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
+                                   <p class="textNotify text-justify">hoaidoaihsdoias2</p>
+                               </div>
+                            </li>
+                        </a>';
+            }
+        }
+        $return = json_encode($html);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
 
 }
