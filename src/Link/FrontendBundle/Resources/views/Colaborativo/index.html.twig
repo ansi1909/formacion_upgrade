@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
     <style>
         .menu{
             width: 60%;
@@ -99,96 +100,19 @@
 
 {% block body %}
 
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ app.session.get('empresa').id }}" />
     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
     <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
     <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditForo') }}">
-    
-    <section class="esp_col">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
-                {% if app.session.get('usuario').tutor %}
-                    <button class="btn btn-primary btn-nw-tema newTopic" data-toggle="modal" data-target="#modalnew" data="0">{{ 'Crear nuevo tema'|trans }}</button>
-                {% else %}
-                    &nbsp;
-                {% endif %}
-            </div>
-            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4">
-                <input type="search" class="form-control" placeholder="Ingrese lo que desea buscar">
-                <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
-            </div>
-        </div>
+    <input type="hidden" id="titulo_new" name="titulo_new" value="{{ 'Crear nuevo tema'|trans }}">
+    <input type="hidden" id="titulo_edit" name="titulo_edit" value="{{ 'Editar tema'|trans }}">
+
+    <section class="esp_col" id="section-form" style="display:none;">
         <div class="row">
-            <ul class="table-card" id="ul-foros">
-                {% for foro in foros %}
-                    <li class="f-table" id="liForo-{{ foro.id }}">
-                        <div class="row justify-content-between">
-                            <div class="col-6">
-                                <a href="{{ path('_detalleColaborativo', { 'foro_id': foro.id, 'subpagina_id': subpagina_id }) }}"><h5 class="titulo_f-table">{{ foro.tema }}</h5></a>
-                            </div>
-                            <div class="col-2">
-                                <div class="status_f-table {% if app.session.get('usuario').tutor and app.session.get('usuario').id == foro.usuario_id %}activar-destacado{% endif %}">
-                                    <a class="newTopic" data-toggle="modal" data-target="#modalnew" data="{{ foro.id }}"><span class="status_ft">{{ 'Editar'|trans }}</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-end foo-esp_col">
-                            <div class="col-auto">
-                                <span class="name_ft">{{ foro.name_ft }}</span>
-                            </div>
-                            <div class="col-auto">
-                                <span class="coment_f-table">{{ foro.coment_f }}: <span>{{ foro.coment_f_span }}</span></span>
-                            </div>
-                            {% if foro.resp_ft %}
-                                <div class="col-auto">
-                                    <span class="resp_ft"><i class="material-icons ic-msg">message</i> {{ foro.resp_ft }}</span>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </li>
-                {% else %}
-                    <li id="none_foros" class="f-table">
-                        <div class="row justify-content-between">
-                            <div class="col-8">
-                                <h5 class="titulo_f-table">{{ 'El tutor virtual aún no ha creado un tema de discusión'|trans }}</h5>
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <!--<div class="row align-items-center justify-content-center">
-            <div class="col-auto 
-                        col-lg-auto 
-                        col-xl-auto 
-                        col-md-auto 
-                        col-sm-auto 
-                        col-xs-auto 
-                        px-0 pt-3">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>-->
-    </section>
-    <section>
-        <div class="modal modal-edit" id="modalnew" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-end">
-                    <div class="col-auto">
-                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
-                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
-                        </a>
-                    </div>
-                </div>
+            <div class="col-10">
                 <div class="row mt-3 mb-2 align-items-center justify-content-center">
                     <div class="col-auto text-center">
-                        <h4 class="titulo">{{ 'Crear nuevo tema'|trans }}</h4>
+                        <h4 class="titulo" id="titulo"></h4>
                     </div>
                 </div>
                 <form id="form" action="{{ path('_ajaxSaveForo') }}" method="POST">
@@ -222,7 +146,7 @@
                         <div class="form-group">
                             <div class="col-12">
                                 <label class="mb-2 titulo-form" for="mensaje"> {{ 'Contenido'|trans }}: </label>
-                                <textarea class="ckeditor" rows="3" id="mensaje" name="mensaje" cols="30"></textarea>
+                                <textarea rows="3" id="mensaje" name="mensaje" cols="30"></textarea>
                                 <label id="mensaje-error" class="mensaje-error" for="mensaje" style="display:none;">{{ 'El contenido es requerido.'|trans }}</label>
                             </div>
                         </div>
@@ -236,17 +160,83 @@
             </div>
         </div>
     </section>
+    
+    <section class="esp_col" id="section-list">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
+                {% if app.session.get('usuario').tutor %}
+                    <button class="btn btn-primary btn-nw-tema newTopic" data="0">{{ 'Crear nuevo tema'|trans }}</button>
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </div>
+            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4">
+                <input type="search" class="form-control" placeholder="Ingrese lo que desea buscar">
+                <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="table-card" id="ul-foros">
+                {% for foro in foros %}
+                    <li class="f-table" id="liForo-{{ foro.id }}">
+                        <div class="row justify-content-between">
+                            <div class="col-6">
+                                <a href="{{ path('_detalleColaborativo', { 'foro_id': foro.id, 'subpagina_id': subpagina_id }) }}"><h5 class="titulo_f-table">{{ foro.tema }}</h5></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="status_f-table {% if app.session.get('usuario').tutor and app.session.get('usuario').id == foro.usuario_id %}activar-destacado{% endif %}">
+                                    <a class="newTopic" data="{{ foro.id }}"><span class="status_ft">{{ 'Editar'|trans }}</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-end foo-esp_col">
+                            <div class="col-auto">
+                                <span class="name_ft">{{ foro.name_ft }}</span>
+                            </div>
+                            <div class="col-auto">
+                                <span class="coment_f-table">{{ foro.coment_f }}: <span>{{ foro.coment_f_span }}</span></span>
+                            </div>
+                            {% if foro.resp_ft %}
+                                <div class="col-auto">
+                                    <span class="resp_ft"><i class="material-icons ic-msg">message</i> {{ foro.resp_ft }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% else %}
+                    <li id="none_foros" class="f-table">
+                        <div class="row justify-content-between">
+                            <div class="col-8">
+                                <h5 class="titulo_f-table">{{ 'El tutor virtual aún no ha creado un tema de discusión'|trans }}</h5>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <section class="esp_col" id="wait" style="display:none;">
+        <div class="row justify-content-center">
+            <div class="col-auto px-0 py-0">
+                <div class="contenedor">
+                    <div class="radar"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/espacio_colaborativo.js') }}"></script>
     <script type="text/javascript">
 

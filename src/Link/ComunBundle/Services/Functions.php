@@ -823,6 +823,7 @@ class Functions
 		$subdirectorios[] = 'recursos/empresas/';
 		$subdirectorios[] = 'recursos/qr/';
 		$subdirectorios[] = 'recursos/certificados/';
+		$subdirectorios[] = 'recursos/espacio/';
 
 		if ($empresa_id)
 		{

@@ -28,6 +28,9 @@
         {% endblock %}
     </head>
     <body class="{% block clbody %}{% endblock %}">
+
+        {% set uri = app.request.getbasepath %}
+        <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
         
         {# HEADER #}
         <header>

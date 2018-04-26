@@ -1,5 +1,22 @@
 $(document).ready(function() {
 
+	var root_site = $('#root_site').val();
+	var empresa_id = $('#empresa_id').val();
+
+    CKEDITOR.replace( 'mensaje', {
+		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/espacio/'+empresa_id,
+		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/espacio/'+empresa_id,
+		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/espacio/'+empresa_id
+	} );
+
+	$('.iframe-btn').fancybox({	
+		'width'		: 900,
+		'height'	: 900,
+		'type'		: 'iframe',
+        'autoScale' : false,
+		'autoSize'	: false
+    });
+
 	$('#fechaPublicacion').datepicker({
 	    startView: 1,
 	    autoclose: true,
@@ -36,8 +53,11 @@ function observeTopic()
 		var foro_id = $(this).attr('data');
 		$('#foro_id').val(foro_id);
 		$('#mensaje_content').val('');
-		if (foro_id != 0)
+		$('#section-list').hide(1000);
+		$('#wait').show(1000);
+		if (foro_id != '0')
 		{
+			console.log('Por alguna razon: '+foro_id);
 			$.ajax({
 		        type: "GET",
 		        url: $('#url_edit').val(),
@@ -55,6 +75,8 @@ function observeTopic()
 		            endDate.setDate(endDate.getDate() + 1);
 		            $('#fechaVencimiento').datepicker('setStartDate', startDate);
 			    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
+			    	$('#section-form').show(1000);
+					$('#wait').hide(1000);
 		            //clearTimeout( timerId );
 		        },
 		        error: function(){
@@ -66,6 +88,8 @@ function observeTopic()
 		else {
 			$('.form-control').val('');
 			CKEDITOR.instances.mensaje.setData('');
+			$('#section-form').show(1000);
+			$('#wait').hide(1000);
 		}
 	});
 
@@ -95,16 +119,17 @@ function saveForo()
             else {
             	$( "#ul-foros" ).prepend(data.html);
             }
-            observeTopic();
             $('#publicar').show();
-            $('.btn_close_modal').trigger( "click" );
             $('#fechaPublicacion').datepicker('setEndDate', null);
             $('#fechaVencimiento').datepicker('setEndDate', null);
+            $('#section-form').hide(1000);
+            $('#section-list').show(1000);
+            observeTopic();
             //clearTimeout( timerId );
         },
         error: function(){
             console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
-            $('#button-comment').show();
+            $('#publicar').show();
         }
     });
 }
