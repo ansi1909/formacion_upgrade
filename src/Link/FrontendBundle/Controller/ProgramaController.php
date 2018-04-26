@@ -70,7 +70,6 @@ class ProgramaController extends Controller
                 $lis_mods .= '<div class="card-hrz-body ">';
                 $lis_mods .= '<h4 class="title-grey my-3 font-weight-normal ">'.$subpagina['nombre'].'</h4>';
                 $lis_mods .= '<div class="card-mod-less text-sm color-light-grey">';
-                $lis_mods .= '<ol>';
 
                 $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                             'pagina' => $subpagina['id']));
@@ -108,6 +107,7 @@ class ProgramaController extends Controller
                 
                 if (count($subpagina['subpaginas']))
                 {
+                    $lis_mods .= '<ol>';
                     foreach ($subpagina['subpaginas'] as $sub_subpagina)
                     {
 
@@ -140,39 +140,42 @@ class ProgramaController extends Controller
                     $lis_mods .= '</ol>';
                     $lis_mods .= '</div>';
                     
+                }else{
+                    
+                    $lis_mods .= '</div>';
+                }
 
-                    $lis_mods .= '<div class="progress mt-4 mb-3">';
-                    $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
+                $lis_mods .= '<div class="progress mt-4 mb-3">';
+                $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
+                $lis_mods .= '</div>';
+                $lis_mods .= '</div>';
+                if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+
+                    $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">';
+                    $lis_mods .= '<div class="percent text-center mt-5">';
+                    $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
+                    $lis_mods .= '<span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>';
+                    $lis_mods .= '</div>';
+                    $lis_mods .= '<div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">';
+                    $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
+                    $lis_mods .= '<span class="text-badge"> Aprobado </span>';
                     $lis_mods .= '</div>';
                     $lis_mods .= '</div>';
-                    if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+                    
+                }else{
 
-                        $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">';
-                        $lis_mods .= '<div class="percent text-center mt-5">';
-                        $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
-                        $lis_mods .= '<span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>';
-                        $lis_mods .= '</div>';
-                        $lis_mods .= '<div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">';
-                        $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
-                        $lis_mods .= '<span class="text-badge"> Aprobado </span>';
-                        $lis_mods .= '</div>';
-                        $lis_mods .= '</div>';
-                        
+                    $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">';
+                    $lis_mods .= '<div class="percent text-center mt-3">';
+                    $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.'% </h2>';
+                    $lis_mods .= '</div>';
+                    if($avanzar == 1){
+                        $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
                     }else{
-
-                        $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">';
-                        $lis_mods .= '<div class="percent text-center mt-3">';
-                        $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.'% </h2>';
-                        $lis_mods .= '</div>';
-                        if($avanzar == 1){
-                            $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => $next_pagina)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
-                        }else{
-                            $lis_mods .= '<a href="#" class="btn btn-sm disabled '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
-                        }
-                        
-                        $lis_mods .= '</div>';
-
+                        $lis_mods .= '<a href="#" class="btn btn-sm disabled '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
                     }
+                    
+                    $lis_mods .= '</div>';
+
                 }
 
                 $lis_mods .= '</div>';
