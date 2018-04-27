@@ -204,7 +204,7 @@ class ColaborativoController extends Controller
                     </div>
                     <div class="col-2">
                         <div class="status_f-table '.$class_tutor.'">
-                            <a href="#" class="newTopic" data-toggle="modal" data-target="#modalnew" data="'.$foro->getId().'"><span class="status_ft">'.$this->get('translator')->trans('Editar').'</span></a>
+                            <a href="#" class="newTopic" data="'.$foro->getId().'" id="aForo-'.$foro->getId().'"><span class="status_ft">'.$this->get('translator')->trans('Editar').'</span></a>
                         </div>
                     </div>
                 </div>
@@ -228,7 +228,8 @@ class ColaborativoController extends Controller
             $html .= '</li>';
         }
 
-        $return = array('html' => $html);
+        $return = array('html' => $html,
+                        'foro_id' => $foro->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

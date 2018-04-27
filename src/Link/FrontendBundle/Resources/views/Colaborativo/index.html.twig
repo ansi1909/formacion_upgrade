@@ -152,6 +152,9 @@
                         </div>
                     </div>
                     <div class="row mb-3 align-items-center justify-content-end">
+                        <div class="col-auto text-left">
+                            <button id="cancelar" type="button" class="btn btn-warning">{{ 'Cancelar'|trans }}</button>
+                        </div>
                         <div class="col-auto text-right">
                             <button id="publicar" type="button" class="btn btn-primary">{{ 'Publicar'|trans }}</button>
                         </div>
@@ -185,7 +188,7 @@
                             </div>
                             <div class="col-2">
                                 <div class="status_f-table {% if app.session.get('usuario').tutor and app.session.get('usuario').id == foro.usuario_id %}activar-destacado{% endif %}">
-                                    <a class="newTopic" data="{{ foro.id }}"><span class="status_ft">{{ 'Editar'|trans }}</span></a>
+                                    <a class="newTopic" data="{{ foro.id }}" id="aForo-{{ foro.id }}"><span class="status_ft">{{ 'Editar'|trans }}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -237,6 +240,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script src="{{ asset('front/js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/espacio_colaborativo.js') }}"></script>
     <script type="text/javascript">
 

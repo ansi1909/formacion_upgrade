@@ -43,13 +43,31 @@ $(document).ready(function() {
     	$('#fechaPublicacion').datepicker('setEndDate', endDate);
 	});
 
-	observeTopic();
+	$('#cancelar').click(function(){
+		$('#section-form').hide(1000);
+        $('#section-list').show(1000);
+        $('html, body').animate({
+		    scrollTop: 0
+		},2000);
+	});
+
+	$('.newTopic').each(function(){
+		observeTopic($(this));
+	});
+
+	$(".table-card").paginate({
+        perPage: 10,
+        autoScroll: true,
+        paginatePosition: ['bottom'],
+        useHashLocation: true,
+        onPageClick: function() {}
+    });
 
 });
 
-function observeTopic()
+function observeTopic(newTopic)
 {
-	$('.newTopic').click(function(){
+	newTopic.click(function(){
 		var foro_id = $(this).attr('data');
 		$('#foro_id').val(foro_id);
 		$('#mensaje_content').val('');
@@ -57,7 +75,6 @@ function observeTopic()
 		$('#wait').show(1000);
 		if (foro_id != '0')
 		{
-			console.log('Por alguna razon: '+foro_id);
 			$.ajax({
 		        type: "GET",
 		        url: $('#url_edit').val(),
@@ -77,6 +94,9 @@ function observeTopic()
 			    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
 			    	$('#section-form').show(1000);
 					$('#wait').hide(1000);
+					$('html, body').animate({
+					    scrollTop: ($('#section-form').offset().top-100)
+					},2000);
 		            //clearTimeout( timerId );
 		        },
 		        error: function(){
@@ -99,6 +119,8 @@ function saveForo()
 {
 	$('label.mensaje-error').hide();
     $('#publicar').hide();
+    $('#cancelar').hide();
+    $('#wait').show(1000);
     var foro_id = $('#foro_id').val();
     $.ajax({
         type: "POST",
@@ -120,16 +142,23 @@ function saveForo()
             	$( "#ul-foros" ).prepend(data.html);
             }
             $('#publicar').show();
+            $('#cancelar').show();
             $('#fechaPublicacion').datepicker('setEndDate', null);
             $('#fechaVencimiento').datepicker('setEndDate', null);
             $('#section-form').hide(1000);
             $('#section-list').show(1000);
-            observeTopic();
+            $('#wait').hide(1000);
+            $('html, body').animate({
+			    scrollTop: 0
+			},2000);
+            observeTopic($('#aForo-'+data.foro_id));
             //clearTimeout( timerId );
         },
         error: function(){
             console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
             $('#publicar').show();
+            $('#cancelar').show();
+            $('#wait').hide(1000);
         }
     });
 }
