@@ -260,4 +260,35 @@ class ColaborativoController extends Controller
         
     }
 
+    public function ajaxSearchForoAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        
+        $term = $request->query->get('term');
+        $foros = array();
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('f')
+           ->from('LinkComunBundle:CertiForo', 'f')
+           ->where('f.foro IS NULL')
+           ->andWhere('LOWER(f.tema) LIKE :term')
+           ->setParameter('term', '%'.$term.'%');
+
+        $query = $qb->getQuery();
+        $foros_bd = $query->getResult();
+
+        foreach ($foros_bd as $foro)
+        {
+            $foros[] = array('id' => $foro->getId(),
+                             'label' => $foro->getTema(),
+                             'value' => $foro->getTema());
+        }
+
+        $return = json_encode($foros);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
 }

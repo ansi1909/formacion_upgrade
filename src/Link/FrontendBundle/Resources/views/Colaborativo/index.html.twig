@@ -4,6 +4,7 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
         .menu{
             width: 60%;
@@ -14,6 +15,9 @@
         }
         label.error, label.mensaje-error {
             color: #f00c0c;
+        }
+        .ui-autocomplete-loading {
+            background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
         }
     </style>
 {% endblock %}
@@ -104,6 +108,8 @@
     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
     <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
     <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditForo') }}">
+    <input type="hidden" id="url_search" name="url_search" value="{{ path('_ajaxSearchForo') }}">
+    <input type="hidden" id="url_detalle" name="url_detalle" value="{{ path('_detalleColaborativo') }}">
     <input type="hidden" id="titulo_new" name="titulo_new" value="{{ 'Crear nuevo tema'|trans }}">
     <input type="hidden" id="titulo_edit" name="titulo_edit" value="{{ 'Editar tema'|trans }}">
 
@@ -176,7 +182,7 @@
                 {% endif %}
             </div>
             <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4">
-                <input type="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}">
+                <input type="search" id="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}">
                 <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
             </div>
         </div>
@@ -243,6 +249,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>

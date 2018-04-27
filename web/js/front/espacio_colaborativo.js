@@ -2,12 +2,27 @@ $(document).ready(function() {
 
 	var root_site = $('#root_site').val();
 	var empresa_id = $('#empresa_id').val();
+	var subpagina_id = $('#subpagina_id').val();
 
-    CKEDITOR.replace( 'mensaje', {
-		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/espacio/'+empresa_id,
-		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/espacio/'+empresa_id,
-		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/espacio/'+empresa_id
-	} );
+	CKEDITOR.replace( 'mensaje',
+	{
+		toolbar : 'MyToolbar'
+	});
+
+    /*CKEDITOR.replace( 'mensaje', {
+    	toolbar :
+		[
+			{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+			{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+			{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+			{ name: 'styles', groups: [ 'styles' ] },
+			'/',
+			{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+			{ name: 'colors', groups: [ 'colors' ] },
+			{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+			{ name: 'tools', items : [ 'Maximize','-','About' ] }
+		]
+	} );*/
 
 	$('.iframe-btn').fancybox({	
 		'width'		: 900,
@@ -65,6 +80,15 @@ $(document).ready(function() {
 			    scrollTop: 0
 			},2000);
         }
+    });
+
+    $( "#search" ).autocomplete({
+    	source: $('#url_search').val(),
+      	minLength: 3,
+      	select: function( event, ui ) {
+        	//console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
+        	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
+      	}
     });
 
 });
