@@ -56,11 +56,15 @@ $(document).ready(function() {
 	});
 
 	$(".table-card").paginate({
-        perPage: 10,
-        autoScroll: true,
+        perPage: 5,
+        autoScroll: false,
         paginatePosition: ['bottom'],
         useHashLocation: true,
-        onPageClick: function() {}
+        onPageClick: function() {
+        	$('html, body').animate({
+			    scrollTop: 0
+			},2000);
+        }
     });
 
 });
@@ -141,18 +145,7 @@ function saveForo()
             else {
             	$( "#ul-foros" ).prepend(data.html);
             }
-            $('#publicar').show();
-            $('#cancelar').show();
-            $('#fechaPublicacion').datepicker('setEndDate', null);
-            $('#fechaVencimiento').datepicker('setEndDate', null);
-            $('#section-form').hide(1000);
-            $('#section-list').show(1000);
-            $('#wait').hide(1000);
-            $('html, body').animate({
-			    scrollTop: 0
-			},2000);
-            observeTopic($('#aForo-'+data.foro_id));
-            //clearTimeout( timerId );
+            location.reload();
         },
         error: function(){
             console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend

@@ -48,14 +48,12 @@ class ColaborativoController extends Controller
                     if ($foro->getFechaPublicacion()->format('Y-m-d') > date('Y-m-d'))
                     {
                         $name_ft = $this->get('translator')->trans('Aún sin publicar');
-                        $coment_f = $this->get('translator')->trans('Fecha de Publicación');
-                        $coment_f_span = $foro->getFechaPublicacion()->format('d/m/Y');
                     }
                     else {
                         $name_ft = $this->get('translator')->trans('Vencido');
-                        $coment_f = $this->get('translator')->trans('Fecha de Vencimiento');
-                        $coment_f_span = $foro->getFechaVencimiento()->format('d/m/Y');
                     }
+                    $coment_f = 0;
+                    $coment_f_span = '';
                     $resp_ft = 0;
                 }
             }
@@ -67,8 +65,8 @@ class ColaborativoController extends Controller
                 if (!$foro_hijo)
                 {
                     $name_ft = $foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido();
-                    $coment_f = $this->get('translator')->trans('Fecha de Publicación');
-                    $coment_f_span = $foro->getFechaPublicacion()->format('d/m/Y');
+                    $coment_f = 0;
+                    $coment_f_span = '';
                     $resp_ft = 0;
                 }
                 else {
@@ -77,19 +75,23 @@ class ColaborativoController extends Controller
                                 ->setParameter('foro_id', $foro->getId());
                     $total_comentarios = $query->getSingleScalarResult();
                     $name_ft = $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
-                    $coment_f = $this->get('translator')->trans('Hizo un comentario');
+                    $coment_f = 1;
                     $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion());
                     $resp_ft = $total_comentarios;
                 }
             }
             if ($listar)
             {
+                $publicacion = $foro->getFechaPublicacion()->format('d/m/Y');
+                $vencimiento = $foro->getFechaVencimiento()->format('d/m/Y');
                 $foros[] = array('id' => $foro->getId(),
                                  'tema' => $foro->getTema(),
                                  'name_ft' => $name_ft,
                                  'coment_f' => $coment_f,
                                  'coment_f_span' => $coment_f_span,
                                  'resp_ft' => $resp_ft,
+                                 'publicacion' => $publicacion,
+                                 'vencimiento' => $vencimiento,
                                  'usuario_id' => $foro->getUsuario()->getId());
             }
         }
