@@ -76,7 +76,7 @@ class ColaborativoController extends Controller
                     $total_comentarios = $query->getSingleScalarResult();
                     $name_ft = $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
                     $coment_f = 1;
-                    $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion());
+                    $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s'));
                     $resp_ft = $total_comentarios;
                 }
             }
@@ -235,7 +235,7 @@ class ColaborativoController extends Controller
             $total_comentarios = $query->getSingleScalarResult();
             $name_ft = $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
             $coment_f = $this->get('translator')->trans('Hizo un comentario');
-            $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion());
+            $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s'));
             $resp_ft = $total_comentarios;
         }
 
@@ -334,6 +334,87 @@ class ColaborativoController extends Controller
         $return = json_encode($foros);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function detalleAction($foro_id, $subpagina_id, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        if (!$session->get('iniFront'))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
+        $likes = $f->likes($yml['parameters']['social']['espacio_colaborativo'], $foro->getId(), $session->get('usuario')['id']);
+        $timeAgo = $f->sinceTime($foro->getFechaPublicacion()->format('Y-m-d H:i:s'));
+
+        $foros = $em->getRepository('LinkComunBundle:CertiForo')->findBy(array('foro' => $foro->getId()),
+                                                                         array('fechaRegistro' => 'DESC'));
+
+        $foros_hijos = array();
+
+        foreach ($foros as $foro_hijo)
+        {
+
+            $foros_nietos = array();
+            $foros_nietos_bd = $em->getRepository('LinkComunBundle:CertiForo')->findBy(array('foro' => $foro_hijo->getId()),
+                                                                                       array('fechaRegistro' => 'DESC'));
+            foreach ($foros_nietos_bd as $foro_nieto)
+            {
+                $autor_nieto = $foro_nieto->getUsuario()->getId() == $session->get('usuario')['id'] ? $this->get('translator')->trans('Yo') : $foro_nieto->getUsuario()->getNombre().' '.$foro_nieto->getUsuario()->getApellido();
+                $foros_nietos[] = array('id' => $foro_nieto->getId(),
+                                        'usuario' => $autor_nieto,
+                                        'timeAgo' => $f->sinceTime($foro_nieto->getFechaPublicacion()->format('Y-m-d H:i:s')),
+                                        'mensaje' => $foro_nieto->getMensaje(),
+                                        'likes' => $f->likes($yml['parameters']['social']['espacio_colaborativo'], $foro_nieto->getId(), $session->get('usuario')['id']));
+            }
+            $autor = $foro_hijo->getUsuario()->getId() == $session->get('usuario')['id'] ? $this->get('translator')->trans('Yo') : $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
+            $foros_hijos[] = array('id' => $foro_hijo->getId(),
+                                   'usuario' => $autor,
+                                   'timeAgo' => $f->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s')),
+                                   'mensaje' => $foro_hijo->getMensaje(),
+                                   'likes' => $f->likes($yml['parameters']['social']['espacio_colaborativo'], $foro_hijo->getId(), $session->get('usuario')['id']),
+                                   'respuestas' => $foros_nietos);
+            
+        }
+
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$foro->getPagina()->getId()]);
+
+        // También se anexa a la indexación el programa padre
+        $programa = $foro->getPagina();
+        $pagina = $session->get('paginas')[$foro->getPagina()->getId()];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
+        $indexedPages[$pagina['id']] = $pagina;
+        $espacio_colaborativo = $indexedPages[$foro->getPagina()->getId()]['espacio_colaborativo'];
+
+        //return new Response(var_dump($indexedPages));
+
+        // Menú lateral dinámico
+        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$foro->getPagina()->getId()], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $foro->getPagina()->getId())), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
+
+        return $this->render('LinkFrontendBundle:Colaborativo:detalle.html.twig', array('programa' => $programa,    
+                                                                                        'foro' => $foro,
+                                                                                        'likes' => $likes,
+                                                                                        'timeAgo' => $timeAgo,
+                                                                                        'foros_hijos' => $foros_hijos,
+                                                                                        'subpagina_id' => $subpagina_id,
+                                                                                        'menu_str' => $menu_str,));
+
     }
 
 }
