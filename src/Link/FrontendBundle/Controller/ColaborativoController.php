@@ -129,6 +129,8 @@ class ColaborativoController extends Controller
     {
         
         $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $html = '';
 
@@ -176,7 +178,44 @@ class ColaborativoController extends Controller
         // Generación de alarmas
         if (!$foro_id)
         {
-            // 
+
+            $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha creado un tema en el espacio colaborativo del').' '.$pagina->getCategoria()->getNombre().' '.$pagina->getNombre().'.';
+
+            $query = $em->createQuery("SELECT np FROM LinkComunBundle:CertiNivelPagina np 
+                                        JOIN np.paginaEmpresa pe 
+                                        WHERE pe.empresa = :empresa_id 
+                                        AND pe.pagina = :pagina_id 
+                                        ORDER BY np.id ASC")
+                        ->setParameters(array('empresa_id' => $session->get('empresa')['id'],
+                                              'pagina_id' => $pagina_id));
+            $nivel_paginas = $query->getResult();
+
+            $usuarios_id = array();
+            $usuarios_arr = array();
+
+            foreach ($nivel_paginas as $np)
+            {
+                $usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByNivel($np->getNivel()->getId());
+                foreach ($usuarios as $usuario_nivel)
+                {
+                    $query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
+                                                WHERE ru.rol = :rol_id AND ru.usuario = :usuario_id')
+                                ->setParameters(array('rol_id' => $yml['parameters']['rol']['participante'],
+                                                      'usuario_id' => $usuario_nivel->getId()));
+                    $participante = $query->getSingleScalarResult();
+                    if (!in_array($usuario_nivel->getId(), $usuarios_id) && $participante && $usuario_nivel->getId() != $usuario->getId())
+                    {
+                        $usuarios_id[] = $usuario_nivel->getId();
+                        $usuarios_arr[] = $usuario_nivel;
+                    }
+                }
+            }
+
+            foreach ($usuarios_arr as $usuario_nivel)
+            {
+                $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'], $descripcion, $usuario_nivel, $foro->getId());
+            }
+
         }
 
         $foro_hijo = $em->getRepository('LinkComunBundle:CertiForo')->findOneBy(array('foro' => $foro->getId()),
