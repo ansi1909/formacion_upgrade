@@ -9,21 +9,6 @@ $(document).ready(function() {
 		toolbar : 'MyToolbar'
 	});
 
-    /*CKEDITOR.replace( 'mensaje', {
-    	toolbar :
-		[
-			{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-			{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-			{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-			{ name: 'styles', groups: [ 'styles' ] },
-			'/',
-			{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-			{ name: 'colors', groups: [ 'colors' ] },
-			{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-			{ name: 'tools', items : [ 'Maximize','-','About' ] }
-		]
-	} );*/
-
 	$('.iframe-btn').fancybox({	
 		'width'		: 900,
 		'height'	: 900,

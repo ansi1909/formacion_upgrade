@@ -173,6 +173,12 @@ class ColaborativoController extends Controller
         $em->persist($foro);
         $em->flush();
 
+        // Generación de alarmas
+        if (!$foro_id)
+        {
+            // 
+        }
+
         $foro_hijo = $em->getRepository('LinkComunBundle:CertiForo')->findOneBy(array('foro' => $foro->getId()),
                                                                                 array('fechaRegistro' => 'DESC'));
 
