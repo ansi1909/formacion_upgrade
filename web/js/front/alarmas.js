@@ -11,11 +11,37 @@ function getAlarma()
         async: true,
         dataType: "json",
         success: function(data) {
-            $('#noti').val(data.html);
+            $('#noti').html(data.noti);
+            observeNotify();
         },
         error: function(){
-            console.log('Error editando el espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
-            $('#button-comment').show();
+           
+        }
+    });
+}
+
+function observeNotify()
+{    var x = 0, y = 0, z = 0;
+    $("#notify").on('click',function(){
+        if(y == 0){
+            if(x == 1){
+                $(".dropDownMenu").slideUp(50);
+                x = 0;
+            }else if(z == 1){
+                $(".dropDownApps").slideUp(50);
+                $(".markApps").fadeOut(40);
+                z = 0;
+            }
+            $(".dropDownNotify").slideDown(500, function(){
+                $(".markNotify").fadeIn(100).delay(25);
+                $(".opcListNotify").show();
+            });
+            y = 1;
+        }else {
+            $(".dropDownNotify").slideUp(500, function(){
+                $(".markNotify").fadeOut(600);
+            });
+            y = 0;
         }
     });
 }
