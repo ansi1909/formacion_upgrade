@@ -304,7 +304,7 @@ class ProgramadosController extends Controller
             $formulario .='<div class="jsonfileds">
                 <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
-                    <select multiple=multiple class="form-control form_sty_sel form_sty_modal" id="entidad_id_grupo" name="entidad_id_grupo[]" style="border-radius: 5px;">
+                    <select multiple=multiple class="valid form_sty_sel form_sty_modal" id="entidad_id_grupo" name="entidad_id_grupo[]" style="border-radius: 5px; width: 100%;">
                         <option value=""></option>';
                         foreach ($usuarios_grupo as $usuario_grupo) {
                             $formulario .='<option value="'.$usuario_grupo->getId().'" >'.$usuario_grupo->getNombre().' '.$usuario_grupo->getApellido().' ('.$usuario_grupo->getLogin().')</option>';
@@ -617,7 +617,7 @@ class ProgramadosController extends Controller
             $formulario .='<div class="jsonfileds">
                 <label for="entidad_id" class="form-control-label">'.$this->get('translator')->trans('Seleccione el/los usuarios').':</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
-                    <select multiple=multiple class="form-control form_sty_sel form_sty_modal" id="entidad_id_grupo" name="entidad_id_grupo[]" style="border-radius: 5px;">
+                    <select multiple=multiple class="valid form_sty_sel form_sty_modal" id="entidad_id_grupo" name="entidad_id_grupo[]" style="border-radius: 5px; width: 100%;">
                         <option value=""></option>';
                         foreach ($usuarios_grupo as $usuario_grupo) {
                             $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np 
