@@ -51,7 +51,7 @@ class UsersProgramsCommand extends ContainerAwareCommand
           $parametros = array();
           $parametros= array('twig'=>$template,
                              'asunto'=>$asunto,
-                             'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación 2.0'),
+                             'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación2.0'),
                              'destinatario'=>$correo,
                              'datos'=>array('mensaje' => $mensaje, 'nombre'=> $nombre, 'apellido' => $apellido ));
 

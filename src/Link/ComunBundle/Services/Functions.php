@@ -723,7 +723,7 @@ class Functions
 		foreach ($usuarios as $usuario) {
           $parametros= array('twig'=>$template,
                              'asunto'=>$notificacion->getAsunto(),
-                             'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación 2.0'),
+                             'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación2.0'),
                              'destinatario'=>$usuario->getCorreoCorporativo(),
                              'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
 
