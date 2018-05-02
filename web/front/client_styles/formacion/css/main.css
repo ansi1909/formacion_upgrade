@@ -2759,9 +2759,9 @@ p.up {
   height: 100vh;
   width: 20rem;
   position: fixed;
-  top: calc(4rem + 6px);
+  top: calc(2rem - 7px);
   right: -25rem;
-  padding: 4rem calc(2rem - 8px) 8rem calc(2rem - 8px);
+  padding: 4rem 0rem 8rem 0rem;
   transition: .8s ease;
   z-index: 10;
   box-shadow: -4px 0px 15px rgba(56, 56, 56, 0.3); }
@@ -2770,12 +2770,16 @@ p.up {
       top: calc(4rem + 6px); } }
   .downloads .titulo {
     font-family: "Open Sans";
-    font-weight: 600; }
+    font-weight: 600;
+    padding-left: 1rem; }
   .downloads .barra {
     font-size: calc(1rem + 8px);
     position: relative;
     top: calc(-1rem + 6px);
-    margin: 0 1rem; }
+    margin: 0 1rem;
+    cursor: default; }
+  .downloads .icCloseSid {
+    padding-right: 1rem; }
   .downloads.open-downloads {
     right: 0; }
   .downloads .cont-downloads {
@@ -2783,8 +2787,10 @@ p.up {
     width: 20rem;
     position: relative;
     top: calc(1rem - 8px);
+    left: 1rem;
     overflow-y: auto;
-    background: #fff; }
+    background: #fff;
+    padding: 0; }
     .downloads .cont-downloads::-webkit-scrollbar {
       width: calc(1rem - 10px); }
     .downloads .cont-downloads::-webkit-scrollbar-track {
@@ -2793,7 +2799,18 @@ p.up {
       background-color: #DAE1E6;
       outline: 1px solid #565656; }
     .downloads .cont-downloads .list-downloads {
-      list-style: none; }
+      list-style: none;
+      padding: 0;
+      width: 20rem; }
+      .downloads .cont-downloads .list-downloads .element-downloads {
+        width: 20rem;
+        padding: 1rem 2rem;
+        border-top: 2px solid #F0F4F7;
+        border-bottom: 2px solid #F0F4F7; }
+        .downloads .cont-downloads .list-downloads .element-downloads .imgdl {
+          width: 2rem;
+          height: 2rem;
+          margin-right: calc(1rem - 8px); }
 
 .subtitulo-recurso {
   color: #797D80;
