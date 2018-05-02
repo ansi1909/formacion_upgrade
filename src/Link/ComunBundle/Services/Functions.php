@@ -865,6 +865,7 @@ class Functions
 	        } 
 	    } 
 	    closedir($dir);
+	    chmod($dst,0750);
 
 	}
 

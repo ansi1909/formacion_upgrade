@@ -87,7 +87,7 @@
 	d. Correr el comando:
 	   		where sass 		--> En ambiente Windows
 	   		which sass 		--> En ambiente Linux
-	   Con el resultado, reemplazar la constante ['parameters']['comandos']['sass'] en app/config/parametros.yml
+	   Con el resultado, reemplazar la constante ['parameters']['comandos']['sass'] en app/config/parameters.yml
 
 ---------------------------------------------------------------------------------------------------------
 OJO: Cuando se instaló el Bundle de html2pdf generó el siguiente warning:

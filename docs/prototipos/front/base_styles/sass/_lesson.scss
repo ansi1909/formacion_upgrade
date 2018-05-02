@@ -14,7 +14,7 @@
         color: #7b7b7b;
         width: 75%;
         font-weight: 200;
-        text-align: left;
+        text-align: justify;
         margin: 1.6rem auto;
 
     }
@@ -30,14 +30,23 @@
             margin-bottom: 1rem;
         }
     }
-
+    
+    hr{
+        margin: 1rem auto;
+        width: 75%;
+    }
+    
     h4 {
-      margin: 1.5rem 0;
+      margin: 1.5rem auto;
       font-size: 1.3rem;
-
+      width: 75%;
       a {
           color: $yellow;
       }
+    }
+    
+    img{
+        border-radius: 1rem;
     }
 
 }
