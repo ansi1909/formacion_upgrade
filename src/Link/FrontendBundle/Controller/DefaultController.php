@@ -377,7 +377,8 @@ class DefaultController extends Controller
 
                 if ($preferencia)
                 {
-                    $logo = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
+                    $logo = $preferencia->getLogo() ? $preferencia->getLogo() : '';
+                    $logo_login = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
                     $favicon = $preferencia->getFavicon();
                     $layout = explode(".", $preferencia->getLayout()->getTwig());
                     $layout = $layout[0]."_";
@@ -389,6 +390,7 @@ class DefaultController extends Controller
                 }
                 else {
                     $logo = '';
+                    $logo_login = '';
                     $favicon = '';
                     $layout = 'base_';
                     $title = '';
@@ -456,6 +458,7 @@ class DefaultController extends Controller
                         {
 
                             $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                                                                                                                     'logo_login' => $logo_login,
                                                                                                                      'error' => $iniciarSesion['error']));
                             return $response;
                         }
@@ -463,6 +466,7 @@ class DefaultController extends Controller
                 }
                 else {
                     $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                                                                                                             'logo_login' => $logo_login,
                                                                                                              'error' => $error));
                     return $response;
                 }
