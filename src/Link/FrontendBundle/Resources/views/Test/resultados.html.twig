@@ -108,10 +108,11 @@
                         <ul class="resp-eval">
                             {% for nro, pregunta in preguntas %}
                                 {% set sufijo = pregunta.errada ? 'reprob' : 'aprob' %}
+                                {% set check = pregunta.errada ? 'clear' : 'done' %}
                                 <li>
                                     <div class="preg-{{ sufijo }}">
                                         <div class="preg_num-{{ sufijo }} text-center">
-                                            <span class="preg_n">{{ nro }}</span>
+                                            <span class="preg_n"><i class="material-icons check">{{ ckeck }}</i></span>
                                         </div>
                                         <div class="preg_enun">
                                             <span class="preg_e">{{ pregunta.enunciado }}</span>
