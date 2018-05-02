@@ -110,11 +110,6 @@
                                     {% endif %}
                                 </div>
                                 {% if pd.continuar in [2, 3] %}
-                                    {% if pd.continuar == 2 %}
-                                        {% set class = '' %}
-                                    {% else %}
-                                        {% set class = 'disabled' %}
-                                    {% endif %}
                                 <div class="card-footer  d-flex justify-content-around">
                                     <a href="{{ path('_generarCertificado', { 'programa_id': pd.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
                                         <i class="material-icons d-block">aspect_ratio</i>
@@ -124,7 +119,11 @@
                                         <i class="material-icons d-block">content_copy</i>
                                         <small class=" d-block"> Notas </small>
                                     </a>
-                                    <a href="#" class="flex-column align-items-center col-4 btn-edge btn-ver {{ class }}" >
+                                    {% if pd.continuar == 2 %}
+                                        <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver" >
+                                    {% else %}
+                                        <a href="#" class="flex-column align-items-center col-4 btn-edge btn-ver disabled" >
+                                    {% endif %}
                                         <i class="material-icons d-block">visibility</i>
                                         <small class=" d-block"> Ver </small>
                                     </a>

@@ -1,5 +1,22 @@
 $(document).ready(function() {
 
+	var root_site = $('#root_site').val();
+	var empresa_id = $('#empresa_id').val();
+	var subpagina_id = $('#subpagina_id').val();
+
+	CKEDITOR.replace( 'mensaje',
+	{
+		toolbar : 'MyToolbar'
+	});
+
+	$('.iframe-btn').fancybox({	
+		'width'		: 900,
+		'height'	: 900,
+		'type'		: 'iframe',
+        'autoScale' : false,
+		'autoSize'	: false
+    });
+
 	$('#fechaPublicacion').datepicker({
 	    startView: 1,
 	    autoclose: true,
@@ -26,17 +43,50 @@ $(document).ready(function() {
     	$('#fechaPublicacion').datepicker('setEndDate', endDate);
 	});
 
-	observeTopic();
+	$('#cancelar').click(function(){
+		$('#section-form').hide(1000);
+        $('#section-list').show(1000);
+        $('html, body').animate({
+		    scrollTop: 0
+		},2000);
+	});
+
+	$('.newTopic').each(function(){
+		observeTopic($(this));
+	});
+
+	$(".table-card").paginate({
+        perPage: 5,
+        autoScroll: false,
+        paginatePosition: ['bottom'],
+        useHashLocation: true,
+        onPageClick: function() {
+        	$('html, body').animate({
+			    scrollTop: 0
+			},2000);
+        }
+    });
+
+    $( "#search" ).autocomplete({
+    	source: $('#url_search').val(),
+      	minLength: 3,
+      	select: function( event, ui ) {
+        	//console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
+        	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
+      	}
+    });
 
 });
 
-function observeTopic()
+function observeTopic(newTopic)
 {
-	$('.newTopic').click(function(){
+	newTopic.click(function(){
 		var foro_id = $(this).attr('data');
 		$('#foro_id').val(foro_id);
 		$('#mensaje_content').val('');
-		if (foro_id != 0)
+		$('#section-list').hide(1000);
+		$('#wait').show(1000);
+		if (foro_id != '0')
 		{
 			$.ajax({
 		        type: "GET",
@@ -55,6 +105,11 @@ function observeTopic()
 		            endDate.setDate(endDate.getDate() + 1);
 		            $('#fechaVencimiento').datepicker('setStartDate', startDate);
 			    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
+			    	$('#section-form').show(1000);
+					$('#wait').hide(1000);
+					$('html, body').animate({
+					    scrollTop: ($('#section-form').offset().top-100)
+					},2000);
 		            //clearTimeout( timerId );
 		        },
 		        error: function(){
@@ -66,6 +121,8 @@ function observeTopic()
 		else {
 			$('.form-control').val('');
 			CKEDITOR.instances.mensaje.setData('');
+			$('#section-form').show(1000);
+			$('#wait').hide(1000);
 		}
 	});
 
@@ -75,6 +132,8 @@ function saveForo()
 {
 	$('label.mensaje-error').hide();
     $('#publicar').hide();
+    $('#cancelar').hide();
+    $('#wait').show(1000);
     var foro_id = $('#foro_id').val();
     $.ajax({
         type: "POST",
@@ -95,16 +154,13 @@ function saveForo()
             else {
             	$( "#ul-foros" ).prepend(data.html);
             }
-            observeTopic();
-            $('#publicar').show();
-            $('.btn_close_modal').trigger( "click" );
-            $('#fechaPublicacion').datepicker('setEndDate', null);
-            $('#fechaVencimiento').datepicker('setEndDate', null);
-            //clearTimeout( timerId );
+            location.reload();
         },
         error: function(){
             console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
-            $('#button-comment').show();
+            $('#publicar').show();
+            $('#cancelar').show();
+            $('#wait').hide(1000);
         }
     });
 }

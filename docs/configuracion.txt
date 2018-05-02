@@ -16,6 +16,7 @@
 			participantes/		# Aquí se almacenan los archivos excel de los participantes
 			certificados/		# Aquí se almacenan los archivos de los certificados
 			empresas/			# Aquí se almacenan los archivos provenientes del ckeditor en el registro de empresas
+			espacio/			# Aquí se almacenan los archivos del espacio colaborativo
 			qr/					# Aquí se almacenan las imágenes del código QR que se generan de los certificados
 			thumbnails/			# Aquí se almacenan los archivos para los thumbnails de las plantillas
 								# 	OJO: Podemos importar las imágenes iniciales a este directorio desde docs/prototipos/front/thumbnails

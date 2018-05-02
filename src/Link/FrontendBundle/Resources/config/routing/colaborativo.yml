@@ -16,4 +16,10 @@ _ajaxEditForo:
 
 _detalleColaborativo:
     path:     /detalle/{foro_id}/{subpagina_id}
-    defaults: { _controller: LinkFrontendBundle:Colaborativo:detalle, subpagina_id: 0 }
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:detalle, foro_id: 0, subpagina_id: 0 }
+
+_ajaxSearchForo:
+    path:     /ajaxSearchForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSearchForo }
+    requirements:
+        _method: GET

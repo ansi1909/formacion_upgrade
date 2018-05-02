@@ -20,11 +20,6 @@ class FaqsController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('iniFront'))
-        {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-        }
-        $f->setRequest($session->get('sesion_id'));
 
         if ($this->container->get('session')->isStarted())
         {

@@ -543,5 +543,41 @@ class DefaultController extends Controller
 
     }
         
+    public function ajaxNotiAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
+                                   WHERE a.usuario = :usuario_id')
+                    ->setParameter('usuario_id', $usuario->getId());
+        $notificaciones = $query->getResult();
+
+
+        $noti = ' ';
+        $sonar=0;
+        foreach ($notificaciones as $notificacion)
+        {
+                $noti.='<a href="#">';
+                    if ($notificacion->getLeido() == true) {
+                            $noti .= '<li class="AnunListNotify ">';
+                        }
+                        elseif ($notificacion->getLeido() == false) {
+                            $sonar= 1;
+                            $noti .= '<li class="AnunListNotify notiSinLeer ">';
+                        }       
+                               $noti .= '<div class="anunNotify">
+                                   <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss() .'"><i class="material-icons icNotify">'. $notificacion->getTipoAlarma()->getIcono() .'</i></span>
+                                   <p class="textNotify text-justify">'. $notificacion->getDescripcion() .'</p>
+                               </div>
+                            </li>
+                        </a>';
+        }
+
+        $return = json_encode($noti);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
 
 }

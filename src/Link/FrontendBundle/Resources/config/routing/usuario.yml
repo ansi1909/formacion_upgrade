@@ -19,3 +19,9 @@ _ajaxImg:
     defaults: { _controller: LinkFrontendBundle:Usuario:ajaxImagen }
     requirements:
         method: POST
+
+_ajaxNoti:
+    path:     /ajaxNoti
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxNoti }
+    requirements:
+        method: GET
