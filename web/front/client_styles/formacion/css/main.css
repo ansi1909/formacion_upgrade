@@ -2023,13 +2023,10 @@ p.up {
     font-family: "Roboto";
     font-size: calc($h5-font-size + 2px);
     line-height: calc(1rem + 8px); }
-  .table-card .f-table .status_f-table, .table-card .f-table-lt .status_f-table {
-    display: none; }
-    .table-card .f-table .status_f-table:hover, .table-card .f-table-lt .status_f-table:hover {
-      cursor: pointer;
-      background: #3D93CC; }
-      .table-card .f-table .status_f-table:hover .status_ft, .table-card .f-table-lt .status_f-table:hover .status_ft {
-        font-weight: 600 !important; }
+  .table-card .f-table .icEditEcT:hover, .table-card .f-table-lt .icEditEcT:hover {
+    color: #FFDC60; }
+  .table-card .f-table .icDeleEcT:hover, .table-card .f-table-lt .icDeleEcT:hover {
+    color: #df584c; }
   .table-card .f-table .txt-description, .table-card .f-table-lt .txt-description {
     color: #AAAFB3;
     font-family: "Roboto";
@@ -2046,8 +2043,6 @@ p.up {
         font-size: 1rem;
         position: relative;
         top: calc(1rem - 11px); }
-  .table-card .f-table .activar-destacado, .table-card .f-table-lt .activar-destacado {
-    display: flex; }
 .table-card .f-table {
   border-bottom: 1px solid #F0F4F7; }
 
@@ -2167,7 +2162,7 @@ p.up {
   margin: 2rem auto 1rem auto;
   width: 62.25rem; }
 
-.table-card .f-table .status_f-table, .table-card .f-table-lt .status_f-table, .table-card-det .status_f-table {
+.table-card-det .status_f-table {
   border-radius: 1rem;
   background-color: #5CAEE6;
   float: right;
@@ -2175,7 +2170,7 @@ p.up {
   height: 1.125rem;
   position: relative;
   top: 0.1rem; }
-  .table-card .f-table .status_f-table .status_ft, .table-card .f-table-lt .status_f-table .status_ft, .table-card-det .status_f-table .status_ft {
+  .table-card-det .status_f-table .status_ft {
     color: #fff;
     font-family: "Roboto";
     font-size: 0.75rem;
@@ -2218,6 +2213,11 @@ p.up {
   position: absolute;
   z-index: 2;
   background: url(../../../assets/img/star.svg); }
+
+.table-card .f-table .icEditEcT, .table-card .f-table-lt .icEditEcT, .table-card .f-table .icDeleEcT, .table-card .f-table-lt .icDeleEcT {
+  color: #adb5bd;
+  font-size: calc(1rem + 4px);
+  margin: auto calc(1rem - 8px); }
 
 .rank-table {
   max-width: 28rem;
@@ -2771,6 +2771,11 @@ p.up {
   .downloads .titulo {
     font-family: "Open Sans";
     font-weight: 600; }
+  .downloads .barra {
+    font-size: calc(1rem + 8px);
+    position: relative;
+    top: calc(-1rem + 6px);
+    margin: 0 1rem; }
   .downloads.open-downloads {
     right: 0; }
   .downloads .cont-downloads {

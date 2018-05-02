@@ -611,15 +611,17 @@
             font-size: calc($h5-font-size + 2px);
             line-height: calc(1rem + 8px);
         }
-        .status_f-table{
-            display: none;
-            @extend %status-ft;
+        
+        .icEditEcT{
+            @extend %ic_Ed_Del;
             &:hover{
-                .status_ft{
-                    font-weight: 600 !important;
-                }
-                cursor: pointer;
-                background: $bluedark;
+                color: $yellow;
+            }
+        }
+        .icDeleEcT{
+            @extend %ic_Ed_Del;
+            &:hover{
+                color: $red;
             }
         }
         .txt-description{
@@ -647,9 +649,6 @@
                     top: calc(1rem - 11px);
                 }
             }
-        }
-        .activar-destacado{
-            display: flex;
         }
     }
     .f-table{
@@ -889,4 +888,10 @@
     position: absolute;
     z-index: 2;
     background: url(../../../assets/img/star.svg);
+}
+
+%ic_Ed_Del{
+    color: $gray-500;
+    font-size: calc(1rem + 4px);
+    margin: auto calc(1rem - 8px);
 }

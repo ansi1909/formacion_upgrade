@@ -16,6 +16,12 @@
         font-family: $lessons-font;
         font-weight: $font-weight-easy-medium;
     }
+    .barra{
+        font-size: calc(1rem + 8px);
+        position: relative;
+        top: calc(-1rem + 6px);
+        margin: 0 1rem;
+    }
     &.open-downloads{
         right: 0;
     }

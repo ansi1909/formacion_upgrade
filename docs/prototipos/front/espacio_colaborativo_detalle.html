@@ -541,11 +541,10 @@
                         <div class="col-auto">
                             <h5 class="color-grey text-left titulo">Descargas</h5>
                         </div>
-                        <div class="col-auto">
-                            <a href="#"><span class="material-icons">file_upload</span></a>
-                        </div>
-                        <div class="col-auto">
-                            <a href="#"><span class="material-icons color-light-grey">clear</span></a>
+                        <div class="col-auto d-flex">
+                            <a href="#"><span class="material-icons color-light-grey" data-toggle="tooltip" data-placement="left" title="Subir archivo">file_upload</span></a>
+                            <span class="color-light-grey barra">|</span>
+                            <a href="#"><span class="material-icons color-light-grey" data-toggle="tooltip" data-placement="bottom" title="Cerrar panel">clear</span></a>
                         </div>
                     </div>
                     <div class="row justify-content-center cont-downloads">
@@ -553,7 +552,7 @@
                             <a href="#">
                                 <li class="element-downloads">
                                     <div class="row justify-content-center">
-                                        
+                                        img
                                     </div>
                                 </li>
                             </a>
@@ -564,6 +563,7 @@
         </div>
         <!-- JAVASCRIPT -->
         <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/popper.min.js" ></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/custom.js"></script>
         <script type="text/javascript" src="js/esp_col.js"></script>
