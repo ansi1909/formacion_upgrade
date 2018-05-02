@@ -31,7 +31,7 @@
                             <h3 class="sloganLogin">{{ 'Experimenta la pontencialidad de la capacitación online'|trans }}. </h3>
                         </div>
                         <div class="col-12 text-center">
-                            {% set img_logo = empresa.logo is not null and empresa.logo != '' ? uploads~empresa.logo : asset('front/assets/img/logo_formacion.png') %}
+                            {% set img_logo = logo_login ? uploads~logo_login : asset('front/assets/img/logo_formacion.png') %}
                             <img class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
                         </div>
                     </div>
