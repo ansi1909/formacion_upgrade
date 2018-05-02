@@ -1290,6 +1290,8 @@ p.up {
   width: 75%; }
   .lesson-container h4 a {
     color: #FFDC60; }
+.lesson-container img {
+  border-radius: 1rem; }
 
 .wraper-nav-less {
   position: relative;
