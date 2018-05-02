@@ -143,6 +143,7 @@ class TestController extends Controller
                                         'descripcion' => $po->getOpcion()->getDescripcion(),
                                         'imagen' => $po->getOpcion()->getImagen());
                 }
+                shuffle($opciones);
 
             }
             else {
