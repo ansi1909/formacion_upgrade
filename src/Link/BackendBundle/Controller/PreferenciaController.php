@@ -253,7 +253,7 @@ class PreferenciaController extends Controller
             fclose($fp);
 
             // Aquí se correría el comando que genera el nuevo main.css de la empresa
-            $command = $yml['parameters']['comandos']['sass'];
+            $command = $this->container->getParameter('comandos')['sass'];
             $source = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/sass/main.scss';
             $dest = $this->container->getParameter('folders')['dir_project'].'web/front/client_styles/'.$empresa_id.'/css/main.css';
             shell_exec($command.' '.$source.':'.$dest);
