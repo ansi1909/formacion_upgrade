@@ -549,6 +549,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
                                    WHERE a.usuario = :usuario_id')
@@ -556,11 +557,28 @@ class DefaultController extends Controller
         $notificaciones = $query->getResult();
 
 
-        $noti = ' ';
+        $noti ='';
         $sonar=0;
         foreach ($notificaciones as $notificacion)
         {
-                $noti.='<a href="#">';
+               if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
+
+                    $noti.='<a href="#" data-toggle="modal" data-target="#modalMn">';
+
+                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) {
+
+                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
+                    $noti.='<a href="'.$this->generateUrl('_espacioColaborativo', array('programa_id' =>$entidad->getPagina()->getId())).'">';
+
+                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento']) {
+
+                    $noti.='<a href="'.$this->generateUrl('_calendarioDeEventos').'">';
+
+                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) {
+
+                    $noti.='<a href="aporte">';
+
+                }
                     if ($notificacion->getLeido() == true) {
                             $noti .= '<li class="AnunListNotify ">';
                         }
@@ -576,7 +594,7 @@ class DefaultController extends Controller
                         </a>';
         }
 
-        $return = json_encode($noti);
+        $return = json_encode(array('noti' => $noti));
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
