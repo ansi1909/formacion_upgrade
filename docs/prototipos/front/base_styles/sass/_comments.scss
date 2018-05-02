@@ -8,7 +8,7 @@
     right: -400px;
     padding: 64px 24px 128px 24px;
     transition: .8s ease;
-    overflow-y: scroll;
+    overflow-y: auto;
     z-index: 6;
     &::-webkit-scrollbar {
         width: calc(1rem - 8px);
@@ -69,5 +69,5 @@
 }
 
 #iconComments i:hover {
-    color : $green;
+    color : $blue;
 }

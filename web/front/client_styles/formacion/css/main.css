@@ -1271,7 +1271,7 @@ p.up {
   color: #7b7b7b;
   width: 75%;
   font-weight: 200;
-  text-align: left;
+  text-align: justify;
   margin: 1.6rem auto; }
 .lesson-container ul, .lesson-container ol {
   display: inline-block;
@@ -1281,9 +1281,12 @@ p.up {
   width: 75%; }
   .lesson-container ul li, .lesson-container ol li {
     margin-bottom: 1rem; }
+.lesson-container hr {
+  width: 75%; }
 .lesson-container h4 {
   margin: 1.5rem 0;
-  font-size: 1.3rem; }
+  font-size: 1.3rem;
+  width: 75%; }
   .lesson-container h4 a {
     color: #FFDC60; }
 
@@ -2704,7 +2707,7 @@ p.up {
   right: -400px;
   padding: 64px 24px 128px 24px;
   transition: .8s ease;
-  overflow-y: scroll;
+  overflow-y: auto;
   z-index: 6; }
   #comments::-webkit-scrollbar {
     width: calc(1rem - 8px); }
@@ -2746,7 +2749,43 @@ p.up {
     color: #5CAEE6; }
 
 #iconComments i:hover {
-  color: #CFE65C; }
+  color: #5CAEE6; }
+
+.downloads {
+  background-color: #FAFAFA;
+  height: 100vh;
+  width: 20rem;
+  position: fixed;
+  top: calc(4rem + 6px);
+  right: -25rem;
+  padding: 4rem calc(2rem - 8px) 8rem calc(2rem - 8px);
+  transition: .8s ease;
+  z-index: 10;
+  box-shadow: -4px 0px 15px rgba(56, 56, 56, 0.3); }
+  @media (max-width: 991.98px) {
+    .downloads {
+      top: calc(4rem + 6px); } }
+  .downloads .titulo {
+    font-family: "Open Sans";
+    font-weight: 600; }
+  .downloads.open-downloads {
+    right: 0; }
+  .downloads .cont-downloads {
+    height: 82vh;
+    width: 20rem;
+    position: relative;
+    top: calc(1rem - 8px);
+    overflow-y: auto;
+    background: #fff; }
+    .downloads .cont-downloads::-webkit-scrollbar {
+      width: calc(1rem - 10px); }
+    .downloads .cont-downloads::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+    .downloads .cont-downloads::-webkit-scrollbar-thumb {
+      background-color: #DAE1E6;
+      outline: 1px solid #565656; }
+    .downloads .cont-downloads .list-downloads {
+      list-style: none; }
 
 .subtitulo-recurso {
   color: #797D80;
@@ -3064,143 +3103,164 @@ p.up {
     background: #ebebeb;
     color: #000;
 }*/
-.contenedor {
-  display: inline-block;
-  height: 25rem;
-  width: 25rem;
-  float: left;
-  padding: 0;
-  background: #3D93CC;
-  position: relative;
-  transition: all .2s ease;
-  border: 3px solid #DAE1E6;
-  border-radius: 1rem;
-  width: 15rem;
-  height: 15rem; }
-  .contenedor:hover span {
-    bottom: 0px;
-    opacity: 1;
-    transition: all .2s ease;
-    z-index: 2; }
-  .contenedor span {
-    color: #fff;
-    font-family: "Roboto";
-    font-weight: 500;
-    position: absolute;
-    font-size: 1.125rem;
-    width: 24.6rem;
-    height: 4rem;
-    text-align: center;
-    bottom: 0px;
-    margin: 0;
-    background-color: rgba(58, 58, 58, 0.5);
-    opacity: 0;
-    padding: 1rem 0;
-    border-radius: 0 0 .7rem .7rem;
-    text-transform: uppercase;
-    transition: all .2s ease;
-    width: 14.6rem;
-    height: 3rem;
-    padding: .5rem 0; }
-  .contenedor .reloj {
-    border-radius: calc(4rem - 4px);
-    border: 3px solid #fff; }
-    .contenedor .reloj::after {
-      content: "";
-      position: absolute;
-      background-color: #fff;
-      top: calc(1rem - 14px);
-      left: 48%;
-      height: calc(2rem + 6px);
-      width: calc(1rem - 12px);
-      border-radius: calc(1rem - 11px);
-      -webkit-transform-origin: 50% 97%;
-      transform-origin: 50% 97%;
-      -webkit-animation: minAgu 2s linear infinite;
-      animation: minAgu 2s linear infinite; }
-    .contenedor .reloj::before {
-      content: "";
-      position: absolute;
-      background-color: #fff;
-      top: calc(1rem - 10px);
-      left: 48%;
-      height: calc(2rem + 3px);
-      width: calc(1rem - 12px);
-      border-radius: calc(1rem - 11px);
-      -webkit-transform-origin: 50% 94%;
-      transform-origin: 50% 94%;
-      -webkit-animation: hrAgu 12s linear infinite;
-      animation: hrAgu 12s linear infinite; }
-  .contenedor .relojArena {
-    border: 3px solid #fff;
-    border-radius: 5rem;
-    -webkit-transform-origin: 50% 50%;
-    transform-origin: 50% 50%;
-    -webkit-animation: rArena 3s ease-in-out infinite;
-    animation: rArena 3s ease-in-out infinite; }
-    .contenedor .relojArena::before {
-      top: calc(1rem - 10px);
-      border-width: calc(2rem + 5px) calc(1rem + 6px) 0 calc(1rem + 6px);
-      border-color: #fff transparent transparent transparent; }
-    .contenedor .relojArena::after {
-      top: calc(2rem - 1px);
-      border-width: 0 calc(1rem + 6px) calc(2rem + 5px) calc(1rem + 6px);
-      border-color: transparent transparent #fff transparent; }
-  .contenedor .radar {
+/*.contenedor{
+    display: inline-block;
+    height: 25rem;
+    width: 25rem;
+    float:left;
+    padding: 0;
+    background: $bluedark;
     position: relative;
-    width: calc(1rem - 11px);
-    height: calc(1rem - 11px);
-    top: 49%;
-    top: -webkit-calc(50% - calc(3rem - 5px));
-    top: calc(50% - calc(1rem - 13.5px));
-    left: 49%;
-    left: -webkit-calc(50% - calc(3rem - 5px));
-    left: calc(50% - calc(1rem - 13.5px));
-    background-color: #fff;
-    border-radius: 50px; }
-    .contenedor .radar::after {
-      content: "";
-      position: absolute;
-      top: calc(1rem - 13px);
-      right: calc(1rem - 13px);
-      border-bottom: 3px solid #fff;
-      border-left: 3px solid #fff;
-      border-radius: 0 0 0 calc(2rem + 2px);
-      width: calc(2rem - 8px);
-      height: calc(2rem - 8px);
-      background-color: rgba(255, 255, 255, 0.1);
-      -webkit-transform-origin: 100% 0%;
-      transform-origin: 100% 0%;
-      -webkit-animation: radar 1.5s linear infinite;
-      animation: radar 1.5s linear infinite; }
-    .contenedor .radar::before {
-      content: "";
-      position: absolute;
-      top: calc(-1 * calc(1rem + 6px));
-      right: calc(-1 * calc(1rem + 6px));
-      border-top: 3px solid #fff;
-      border-right: 3px solid #fff;
-      border-radius: 0 calc(2rem + 2px) 0px 0;
-      width: calc(2rem - 8px);
-      height: calc(2rem - 8px);
-      background-color: rgba(255, 255, 255, 0.1);
-      -webkit-transform-origin: 0% 100%;
-      transform-origin: 0% 100%;
-      -webkit-animation: radar 1.5s linear infinite;
-      animation: radar 1.5s linear infinite; }
-  .contenedor .radarDouble {
-    border-radius: calc(3rem + 2px);
-    background-color: rgba(255, 255, 255, 0.2);
-    border-width: calc(3rem - 8px);
-    border-style: double;
-    border-color: transparent #fff;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-transform-origin: 50% 50%;
-    transform-origin: 50% 50%;
-    -webkit-animation: rd 2s linear infinite;
-    animation: rd 2s linear infinite; }
+    transition: all .2s ease;
+    border: 3px solid $gray-400;
+    border-radius: 1rem;
+    @include media-breakpoint-down(xl){
+        width: 15rem;
+        height: 15rem;
+    }
+    &:hover{
+        span{
+            bottom: 0px;
+            opacity: 1;
+            transition: all .2s ease;
+            z-index: 2;
+        }
+    }
+    span{
+        color: $white;
+        font-family: $primary-font;
+        font-weight: $font-weight-normal-hard;
+        position: absolute;
+        font-size: $h5-font-size;
+        width: 24.6rem;
+        height: 4rem;
+        text-align: center;
+        bottom: 0px;
+        margin: 0;
+        background-color: rgba(58, 58, 58, .5);
+        opacity: 0;
+        padding: 1rem 0;
+        border-radius: 0 0 .7rem .7rem; 
+        text-transform: uppercase;
+        transition: all .2s ease;
+        @include media-breakpoint-down(xl){
+            width: 14.6rem;
+            height: 3rem;
+            padding: .5rem 0;
+        }
+    }
+    .reloj{
+        border-radius: calc(4rem - 4px);
+        @extend %forma;
+        border: 3px solid $white;
+        &::after{
+            content: "";
+            position: absolute;
+            background-color: $white;
+            top: calc(1rem - 14px);
+            left: 48%;
+            height: calc(2rem + 6px);
+            width: calc(1rem - 12px);
+            border-radius: calc(1rem - 11px);
+            -webkit-transform-origin: 50% 97%;
+            transform-origin: 50% 97%;
+            -webkit-animation: minAgu 2s linear infinite;
+            animation: minAgu 2s linear infinite;
+        }
+        &::before{
+            content: "";
+            position: absolute;
+            background-color: $white;
+            top: calc(1rem - 10px);
+            left: 48%;
+            height: calc(2rem + 3px);
+            width: calc(1rem - 12px);
+            border-radius: calc(1rem - 11px);
+            -webkit-transform-origin: 50% 94%;
+            transform-origin: 50% 94%;
+            -webkit-animation: hrAgu 12s linear infinite;
+            animation: hrAgu 12s linear infinite;
+        }
+    }
+    .relojArena{
+        @extend %forma;
+        border: 3px solid $white;
+        border-radius: 5rem;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        -webkit-animation: rArena 3s ease-in-out infinite;
+        animation: rArena 3s ease-in-out infinite;
+        &::before{
+            top: calc(1rem - 10px);
+            @extend %relojAre;
+            border-width: calc(2rem + 5px) calc(1rem + 6px) 0 calc(1rem + 6px);
+            border-color: $white transparent transparent transparent;
+        }
+        &::after{
+            top: calc(2rem - 1px);
+            @extend %relojAre;
+            border-width: 0 calc(1rem + 6px) calc(2rem + 5px) calc(1rem + 6px);
+            border-color: transparent transparent $white transparent;
+        }
+    }
+    
+    .radarDouble{
+        border-radius: calc(3rem + 2px);
+        background-color: rgba(255, 255, 255, .2);
+        border-width: calc(3rem - 8px);
+        border-style: double;
+        border-color: transparent $white;
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing:border-box;
+        box-sizing:border-box;
+        -webkit-transform-origin:  50% 50%;
+        transform-origin:  50% 50% ;
+        -webkit-animation: rd 2s linear infinite;
+        animation: rd 2s linear infinite;
+    }
+}*/
+.radar {
+  position: relative;
+  width: calc(1rem - 11px);
+  height: calc(1rem - 11px);
+  top: 49%;
+  top: -webkit-calc(50% - calc(3rem - 5px));
+  top: calc(50% - calc(1rem - 13.5px));
+  left: 49%;
+  left: -webkit-calc(50% - calc(3rem - 5px));
+  left: calc(50% - calc(1rem - 13.5px));
+  background-color: #5CAEE6;
+  border-radius: 50px; }
+  .radar::after {
+    content: "";
+    position: absolute;
+    top: calc(1rem - 13px);
+    right: calc(1rem - 13px);
+    border-bottom: 3px solid #5CAEE6;
+    border-left: 3px solid #5CAEE6;
+    border-radius: 0 0 0 calc(2rem + 2px);
+    width: calc(2rem - 8px);
+    height: calc(2rem - 8px);
+    background-color: rgba(92, 174, 230, 0.1);
+    -webkit-transform-origin: 100% 0%;
+    transform-origin: 100% 0%;
+    -webkit-animation: radar 1.5s linear infinite;
+    animation: radar 1.5s linear infinite; }
+  .radar::before {
+    content: "";
+    position: absolute;
+    top: calc(-1 * calc(1rem + 6px));
+    right: calc(-1 * calc(1rem + 6px));
+    border-top: 3px solid #5CAEE6;
+    border-right: 3px solid #5CAEE6;
+    border-radius: 0 calc(2rem + 2px) 0px 0;
+    width: calc(2rem - 8px);
+    height: calc(2rem - 8px);
+    background-color: rgba(92, 174, 230, 0.1);
+    -webkit-transform-origin: 0% 100%;
+    transform-origin: 0% 100%;
+    -webkit-animation: radar 1.5s linear infinite;
+    animation: radar 1.5s linear infinite; }
 
 @-webkit-keyframes minAgu {
   0% {
@@ -3256,25 +3316,6 @@ p.up {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
-.contenedor .relojArena::before, .contenedor .relojArena::after {
-  content: "";
-  position: absolute;
-  left: 1rem;
-  width: 0;
-  height: 0;
-  border-style: solid; }
-
-.contenedor .reloj, .contenedor .relojArena, .contenedor .radarDouble {
-  height: 5rem;
-  width: 5rem;
-  position: relative;
-  top: 28%;
-  top: -webkit-calc(50% - calc(3rem - 5px));
-  top: calc(50% - calc(3rem - 5px));
-  left: 35%;
-  left: -webkit-calc(50% - calc(3rem - 5px));
-  left: calc(50% - calc(3rem - 5px)); }
-
 .cQR {
   width: 100%;
   height: auto;
