@@ -3,9 +3,9 @@
     height: 100vh;
     width: 20rem;
     position: fixed;
-    top: calc(4rem + 6px);
+    top: calc(2rem - 7px);
     right: -25rem;
-    padding: 4rem calc(2rem - 8px) 8rem calc(2rem - 8px);
+    padding: 4rem 0rem 8rem 0rem;
     transition: .8s ease;
     z-index: 10;
     box-shadow: -4px 0px 15px rgba(56, 56, 56, .3);
@@ -15,12 +15,17 @@
     .titulo{
         font-family: $lessons-font;
         font-weight: $font-weight-easy-medium;
+        padding-left: 1rem;
     }
     .barra{
         font-size: calc(1rem + 8px);
         position: relative;
         top: calc(-1rem + 6px);
         margin: 0 1rem;
+        cursor: default;
+    }
+    .icCloseSid{
+        padding-right: 1rem;
     }
     &.open-downloads{
         right: 0;
@@ -30,8 +35,10 @@
         width: 20rem;
         position: relative;
         top: calc(1rem - 8px);
+        left: 1rem;
         overflow-y: auto;
         background: $white;
+        padding: 0;
         &::-webkit-scrollbar {
             width: calc(1rem - 10px);
         }
@@ -44,8 +51,18 @@
         }
         .list-downloads{
             list-style: none;
+            padding: 0;
+            width: 20rem;
             .element-downloads{
-                
+                width: 20rem;
+                padding: 1rem 2rem;
+                border-top: 2px solid $gray-300;
+                border-bottom: 2px solid $gray-300;
+                .imgdl{
+                    width: 2rem;
+                    height: 2rem;
+                    margin-right: calc(1rem - 8px);
+                }
             }
         }
     }
