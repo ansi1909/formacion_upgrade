@@ -27,11 +27,11 @@
         <!-- HEADER -->
         <header>
             <nav class="navbar  justify-content-between pb-1 fixed-top bg-white">
-                <a class="navbar-brand d-none d-md-block" href="#">
-                    <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+                <a class="navbar-brand d-none d-md-block text-center" href="#">
+                    <img class="img-fluid py-1 imgLogoCir" src="assets/img/439108.jpg" width= "200" alt="logo formación 2.0">
                 </a>
                 <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-                    <a id="iconComments" href="#">
+                    <a id="iconDownloads" href="#">
                         <i class="material-icons mx-3 color-light-grey">cloud_download</i>
                     </a>
                     <div class=" d-flex flex-column ">
@@ -515,15 +515,15 @@
                         </div>
                     </div>
                 </section>
-                <div class="downloads open-downloads"  >
-                    <div class="d-flex row justify-content-between">
-                        <div class="col-auto">
+                <div class="downloads"  >
+                    <div class="d-flex px-3 row justify-content-between">
+                        <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto">
                             <h5 class="color-grey text-left titulo">Descargas</h5>
                         </div>
-                        <div class="col-auto d-flex">
-                            <a href="#"><span class="material-icons color-light-grey" data-toggle="tooltip" data-placement="left" title="Subir archivo">file_upload</span></a>
+                        <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto d-flex">
+                            <a href="#"><span class="material-icons color-light-grey icUpload" data-toggle="tooltip" data-placement="left" title="Subir archivo">file_upload</span></a>
                             <span class="color-light-grey barra">|</span>
-                            <a href="#"><span class="material-icons color-light-grey icCloseSid" data-toggle="tooltip" data-placement="left" title="Cerrar panel">clear</span></a>
+                            <a href="#"><span class="material-icons color-light-grey icClose" id="iconCloseDownloads" data-toggle="tooltip" data-placement="bottom" title="Cerrar panel">clear</span></a>
                         </div>
                     </div>
                     <div class="row justify-content-center cont-downloads">
@@ -531,14 +531,66 @@
                             <a href="#">
                                 <li class="element-downloads">
                                     <div class="row px-0 d-flex justify-content-between">
-                                        <div class="col-auto px-0 d-flex">
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
                                             <img src="assets/img/xls.svg" class="imgdl" alt="">
-                                            <span class="nameArch">reporte semanal</span>
+                                            <p class="nameArch">reporte semanal</p>
                                         </div>
-                                        <div class="col-auto px-0">
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                             <div class="cont-opc">
-                                                <span class="material-icons">file_download</span>
+                                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
                                             </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="element-downloads">
+                                    <div class="row px-0 d-flex justify-content-between">
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                            <img src="assets/img/pdf.svg" class="imgdl" alt="">
+                                            <p class="nameArch">financiamiento al terrorismo y prevención de capitales</p>
+                                        </div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                            <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="element-downloads">
+                                    <div class="row px-0 d-flex justify-content-between">
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                            <img src="assets/img/liderazgo-hrz.png" class="imgdl" alt="">
+                                            <p class="nameArch">liderazgo</p>
+                                        </div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                            <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="element-downloads">
+                                    <div class="row px-0 d-flex justify-content-between">
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                            <img src="assets/img/jpg.svg" class="imgdl" alt="">
+                                            <p class="nameArch">liderazgo personal</p>
+                                        </div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                            <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                            <a href="#">
+                                <li class="element-downloads finElement-downloads">
+                                    <div class="row px-0 d-flex justify-content-between">
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                            <img src="assets/img/doc.svg" class="imgdl" alt="">
+                                            <p class="nameArch">Ambiente toxico</p>
+                                        </div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                            <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
                                         </div>
                                     </div>
                                 </li>

@@ -1,3 +1,8 @@
+#iconDownloads{
+    i:hover{
+        color: $blue;
+    }
+}
 .downloads{
     background-color: $gray-100;
     height: 100vh;
@@ -5,17 +10,16 @@
     position: fixed;
     top: calc(2rem - 7px);
     right: -25rem;
-    padding: 4rem 0rem 8rem 0rem;
+    padding: 4rem 0rem;
     transition: .8s ease;
     z-index: 10;
-    box-shadow: -4px 0px 15px rgba(56, 56, 56, .3);
+    box-shadow: -2px 0px 20px rgba(56, 56, 56, .2);
     @include media-breakpoint-down(md) {
         top: calc(4rem + 6px);
     }
     .titulo{
         font-family: $lessons-font;
         font-weight: $font-weight-easy-medium;
-        padding-left: 1rem;
     }
     .barra{
         font-size: calc(1rem + 8px);
@@ -24,8 +28,11 @@
         margin: 0 1rem;
         cursor: default;
     }
-    .icCloseSid{
-        padding-right: 1rem;
+    .icUpload:hover{
+        color: $yellow;    
+    }
+    .icClose:hover{
+        color: $red;
     }
     &.open-downloads{
         right: 0;
@@ -57,12 +64,41 @@
                 width: 20rem;
                 padding: 1rem 2rem;
                 border-top: 2px solid $gray-300;
-                border-bottom: 2px solid $gray-300;
                 .imgdl{
                     width: 2rem;
                     height: 2rem;
                     margin-right: calc(1rem - 8px);
                 }
+                .nameArch{
+                    position: relative;
+                    top: calc(1rem - 8px);
+                    color: $gray-500;
+                    font-weight: $font-weight-easy-medium;
+                    font-family: $lessons-font;
+                    font-size: $font-size-sm;
+                    white-space: pre-wrap;
+                    max-width: 13rem;
+                    text-align: justify;
+                    line-height: 1rem;
+                }
+                .icDl{
+                    font-size: calc(1rem + 4px);
+                    color: $gray-500;
+                    position: relative;
+                    top: calc(1rem - 12px);
+                    &:hover{
+                        color: $blue;   
+                    }
+                }
+                &:hover{
+                    background: $blue-100;
+                    .nameArch{
+                        color: $gray-800;
+                    }
+                }
+            }
+            .finElement-downloads{
+                border-bottom: 2px solid $gray-300;
             }
         }
     }

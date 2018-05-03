@@ -54,6 +54,17 @@ nav.navbar{
     height: 70px;
 }
 
-.navbar-brand img{
-	max-width: 90%;
+.navbar-brand{
+    .imgLogoCir{
+        max-width: 4rem;
+        position: relative;
+        left: 4.5rem;
+    }
+    .imgLogoHor{
+        max-height: 4rem;
+        max-width: 12rem;
+    }
+    .imgLogoVer{
+        max-height: 5.75rem;
+    }
 }

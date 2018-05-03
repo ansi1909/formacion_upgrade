@@ -772,8 +772,15 @@ nav.navbar {
   box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56);
   height: 70px; }
 
-.navbar-brand img {
-  max-width: 90%; }
+.navbar-brand .imgLogoCir {
+  max-width: 4rem;
+  position: relative;
+  left: 4.5rem; }
+.navbar-brand .imgLogoHor {
+  max-height: 4rem;
+  max-width: 12rem; }
+.navbar-brand .imgLogoVer {
+  max-height: 5.75rem; }
 
 .icDown {
   position: relative;
@@ -1207,7 +1214,8 @@ a.active {
   position: relative;
   border-radius: 16px; }
   .for-message p {
-    max-width: 60%; }
+    max-width: 60%;
+    text-align: justify; }
 
 #equis {
   position: absolute;
@@ -2754,6 +2762,9 @@ p.up {
 #iconComments i:hover {
   color: #5CAEE6; }
 
+#iconDownloads i:hover {
+  color: #5CAEE6; }
+
 .downloads {
   background-color: #FAFAFA;
   height: 100vh;
@@ -2761,25 +2772,26 @@ p.up {
   position: fixed;
   top: calc(2rem - 7px);
   right: -25rem;
-  padding: 4rem 0rem 8rem 0rem;
+  padding: 4rem 0rem;
   transition: .8s ease;
   z-index: 10;
-  box-shadow: -4px 0px 15px rgba(56, 56, 56, 0.3); }
+  box-shadow: -2px 0px 20px rgba(56, 56, 56, 0.2); }
   @media (max-width: 991.98px) {
     .downloads {
       top: calc(4rem + 6px); } }
   .downloads .titulo {
     font-family: "Open Sans";
-    font-weight: 600;
-    padding-left: 1rem; }
+    font-weight: 600; }
   .downloads .barra {
     font-size: calc(1rem + 8px);
     position: relative;
     top: calc(-1rem + 6px);
     margin: 0 1rem;
     cursor: default; }
-  .downloads .icCloseSid {
-    padding-right: 1rem; }
+  .downloads .icUpload:hover {
+    color: #FFDC60; }
+  .downloads .icClose:hover {
+    color: #df584c; }
   .downloads.open-downloads {
     right: 0; }
   .downloads .cont-downloads {
@@ -2805,12 +2817,35 @@ p.up {
       .downloads .cont-downloads .list-downloads .element-downloads {
         width: 20rem;
         padding: 1rem 2rem;
-        border-top: 2px solid #F0F4F7;
-        border-bottom: 2px solid #F0F4F7; }
+        border-top: 2px solid #F0F4F7; }
         .downloads .cont-downloads .list-downloads .element-downloads .imgdl {
           width: 2rem;
           height: 2rem;
           margin-right: calc(1rem - 8px); }
+        .downloads .cont-downloads .list-downloads .element-downloads .nameArch {
+          position: relative;
+          top: calc(1rem - 8px);
+          color: #adb5bd;
+          font-weight: 600;
+          font-family: "Open Sans";
+          font-size: 0.87rem;
+          white-space: pre-wrap;
+          max-width: 13rem;
+          text-align: justify;
+          line-height: 1rem; }
+        .downloads .cont-downloads .list-downloads .element-downloads .icDl {
+          font-size: calc(1rem + 4px);
+          color: #adb5bd;
+          position: relative;
+          top: calc(1rem - 12px); }
+          .downloads .cont-downloads .list-downloads .element-downloads .icDl:hover {
+            color: #5CAEE6; }
+        .downloads .cont-downloads .list-downloads .element-downloads:hover {
+          background: rgba(92, 174, 230, 0.1); }
+          .downloads .cont-downloads .list-downloads .element-downloads:hover .nameArch {
+            color: #5C6266; }
+      .downloads .cont-downloads .list-downloads .finElement-downloads {
+        border-bottom: 2px solid #F0F4F7; }
 
 .subtitulo-recurso {
   color: #797D80;
