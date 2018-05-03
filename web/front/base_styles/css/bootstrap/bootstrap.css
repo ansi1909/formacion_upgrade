@@ -3840,7 +3840,7 @@ button.close {
   color: #fff;
   text-align: center;
   background-color: #000;
-  border-radius: 1.25rem; }
+  border-radius: calc(1rem - 12px); }
 
 .popover {
   position: absolute;

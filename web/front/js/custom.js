@@ -9,6 +9,10 @@ function closeNav() {
         $("#comments").removeClass("open-comments");
         $("#main").removeClass("ml-comments");
     }
+    if(!$(".main-sidenav-close")[0] && $(".open-downloads")[0]){
+        $(".downloads").removeClass("open-downloads");
+        $("#main").removeClass("ml-comments");
+    }
 }
 
 window.onload=function(){
@@ -125,6 +129,24 @@ $(document).ready(function() {
              closeNav();
         }
     });
+    
+    $("#iconDownloads").click(function(){
+        $(".downloads").toggleClass("open-downloads");
+        $("#main").toggleClass("ml-comments");
+        if (!$(".main-sidenav-close")[0]){
+            closeNav();
+        }
+    });
+
+    $("#iconCloseDownloads").click(function(){
+        $(".downloads").removeClass("open-downloads");
+        $("#pills-tabContent").removeClass("hidden-nav-content");
+        $("#main").removeClass("ml-10");
+        $("#main").removeClass("ml-comments");
+        $("#menuArrow").removeClass("right");
+        $("#mainSidenav").removeClass("main-sidenav-close");
+    });
+    
     module.each(function(i, el){
         $(this).on('click',function(){
             module.each(function(){
