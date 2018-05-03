@@ -556,7 +556,9 @@ class DefaultController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
-                                   WHERE a.usuario = :usuario_id')
+                                   WHERE a.usuario = :usuario_id
+                                   ORDER BY a.id DESC')
+                    ->setMaxResults(10)
                     ->setParameter('usuario_id', $usuario->getId());
         $notificaciones = $query->getResult();
 
@@ -584,7 +586,7 @@ class DefaultController extends Controller
 
                 }
                     if ($notificacion->getLeido() == true) {
-                            $noti .= '<li class="AnunListNotify ">';
+                            $noti .= '<li class="AnunListNotify" id="hola">';
                         }
                         elseif ($notificacion->getLeido() == false) {
                             $sonar= 1;
@@ -598,7 +600,8 @@ class DefaultController extends Controller
                         </a>';
         }
 
-        $return = json_encode(array('noti' => $noti));
+        $return = json_encode(array('noti' => $noti,
+                                    'sonar' => $sonar));
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 

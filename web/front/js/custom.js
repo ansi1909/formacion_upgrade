@@ -67,7 +67,28 @@ $(document).ready(function() {
         }
     });
 
-    
+    $("#notify").on('click',function(){
+        if(y == 0){
+            if(x == 1){
+                $(".dropDownMenu").slideUp(50);
+                x = 0;
+            }else if(z == 1){
+                $(".dropDownApps").slideUp(50);
+                $(".markApps").fadeOut(40);
+                z = 0;
+            }
+            $(".dropDownNotify").slideDown(500, function(){
+                $(".markNotify").fadeIn(100).delay(25);
+                $(".opcListNotify").show();
+            });
+            y = 1;
+        }else {
+            $(".dropDownNotify").slideUp(500, function(){
+                $(".markNotify").fadeOut(600);
+            });
+            y = 0;
+        }
+    });
 
     $("#apps").on('click',function(){
         if(z == 0){
