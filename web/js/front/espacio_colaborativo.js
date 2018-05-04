@@ -56,7 +56,7 @@ $(document).ready(function() {
 	});
 
 	$(".table-card").paginate({
-        perPage: 5,
+        perPage: 10,
         autoScroll: false,
         paginatePosition: ['bottom'],
         useHashLocation: true,
@@ -74,6 +74,18 @@ $(document).ready(function() {
         	//console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
         	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
       	}
+    });
+
+    $('.deleteTopic').click(function(){
+    	var foro_id = $(this).attr('data');
+    	var tema = $(this).attr('tema');
+    	$('#foro_delete_id').val(foro_id);
+    	$('#titleDelete').html(tema);
+    });
+
+    $('.cancelarCs').click(function(){
+    	$('#foro_delete_id').val(0);
+    	$('#titleDelete').html('');
     });
 
 });

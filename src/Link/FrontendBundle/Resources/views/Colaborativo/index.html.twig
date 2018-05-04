@@ -191,14 +191,17 @@
                 {% for foro in foros %}
                     <li class="f-table" id="liForo-{{ foro.id }}">
                         <div class="row justify-content-between">
-                            <div class="col-6">
+                            <div class="col-auto">
                                 <a href="{{ path('_detalleColaborativo', { 'foro_id': foro.id, 'subpagina_id': subpagina_id }) }}"><h5 class="titulo_f-table">{{ foro.tema }}</h5></a>
                             </div>
-                            <div class="col-2">
-                                <div class="status_f-table {% if app.session.get('usuario').tutor and app.session.get('usuario').id == foro.usuario_id %}activar-destacado{% endif %}">
-                                    <a class="newTopic" data="{{ foro.id }}" id="aForo-{{ foro.id }}"><span class="status_ft">{{ 'Editar'|trans }}</span></a>
+                            {% if app.session.get('usuario').tutor %}
+                                <div class="col-auto d-flex text-right">
+                                    {% if app.session.get('usuario').id == foro.usuario_id %}
+                                        <a href="#" class="newTopic" data="{{ foro.id }}" id="aForo-{{ foro.id }}"><span class="material-icons icEditEcT">mode_edit</span></a>
+                                    {% endif %}
+                                    <a href="#" class="deleteTopic" data="{{ foro.id }}" tema="{{ foro.tema }}" data-toggle="modal" data-target="#modalDelete"><span class="material-icons icDeleEcT">delete</span></a>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                         <div class="row align-items-end foo-esp_col">
                             <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
@@ -239,6 +242,29 @@
         <div class="col-auto px-0 py-0">
             <div class="contenedor">
                 <div class="radar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Tema -->
+    <div class="modal modalCEval" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <input type="hidden" id="foro_delete_id" name="foro_delete_id" value="0">
+        <div class="container-fluid">
+            <div class="row mt-6 justify-content-center align-items-center">
+                <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                    <h4 class="titulo">{{ '¿Estás segur@ de que deseas eliminar este registro?'|trans }}</h4>
+                    <strong id="titleDelete"></strong>
+                </div>
+            </div>
+            <div class="row mt-3 align-items-center justify-content-center">
+                <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                    <button type="button" id="eliminar" class="btn btn-primary btn-Cs">{{ 'Eliminar'|trans }}</button>
+                </div>
+            </div>
+            <div class="row mt-3 align-items-end justify-content-center">
+                <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                    <a href="#" class="cancelarCs" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
+                </div>
             </div>
         </div>
     </div>

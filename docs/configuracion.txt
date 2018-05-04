@@ -1,6 +1,6 @@
 1. Descomprimir todo el directorio formacion2.0 en la carpeta web del servidor.
 
-2. Otorgar permisos de usuarios sobre el diterctorio del proyecto:
+2. Otorgar permisos de usuarios sobre el directorio del proyecto:
 	chown -R www-data.www-data formacion2.0/
 	chmod -R 777 formacion2.0/
 
