@@ -586,11 +586,11 @@ class DefaultController extends Controller
 
                 }
                     if ($notificacion->getLeido() == true) {
-                            $noti .= '<li class="AnunListNotify" id="hola">';
+                            $noti .= '<li class="AnunListNotify hola" data="'.$notificacion->getId() .'">';
                         }
                         elseif ($notificacion->getLeido() == false) {
                             $sonar= 1;
-                            $noti .= '<li class="AnunListNotify notiSinLeer ">';
+                            $noti .= '<li class="AnunListNotify notiSinLeer hola" data="'.$notificacion->getId() .'">';
                         }       
                                $noti .= '<div class="anunNotify">
                                    <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss() .'"><i class="material-icons icNotify">'. $notificacion->getTipoAlarma()->getIcono() .'</i></span>

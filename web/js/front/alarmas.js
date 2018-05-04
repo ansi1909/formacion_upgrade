@@ -1,10 +1,6 @@
 $(document).ready(function() {
    getAlarma();
 
-   $('#').click(function(){
-        getLeido();
-    });
-
 });
 
 function getAlarma()
@@ -16,9 +12,12 @@ function getAlarma()
         dataType: "json",
         success: function(data) {
             $('#noti').html(data.noti);
+            observeLeido();
+           
             if (data.sonar == 1) {
                 $('#sonar').show();
             }
+
         },
         error: function(){
            
@@ -26,8 +25,15 @@ function getAlarma()
     });
 }
 
+function observeLeido()
+{
+    $('.hola').click(function(){
+        var noti_id = $(this).attr('data');
+        getLeido();
+    });
+}
 
 function getLeido()
 {
-    $('#sonar').hiden();   
+    $("#sonar").hide();   
 }
