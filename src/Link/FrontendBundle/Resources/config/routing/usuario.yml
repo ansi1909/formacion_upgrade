@@ -25,3 +25,9 @@ _ajaxNoti:
     defaults: { _controller: LinkFrontendBundle:Default:ajaxNoti }
     requirements:
         method: GET
+
+_ajaxLeido:
+    path:     /ajaxLeido
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxLeido }
+    requirements:
+        method: POST

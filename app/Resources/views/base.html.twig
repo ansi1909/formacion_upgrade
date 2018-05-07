@@ -36,6 +36,7 @@
         <header>
             {% block header %}
             <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
+            <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
             <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
                 <div class="logo d-none d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">

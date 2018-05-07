@@ -1,5 +1,6 @@
 $(document).ready(function() {
    getAlarma();
+   getNotificaciones();
 
 });
 
@@ -27,13 +28,35 @@ function getAlarma()
 
 function observeLeido()
 {
-    $('.hola').click(function(){
+    $('.leido').click(function(){
         var noti_id = $(this).attr('data');
-        getLeido();
+        getLeido(noti_id);
     });
 }
 
-function getLeido()
+function getLeido(noti_id)
 {
-    $("#sonar").hide();   
+    /*$("#sonar").hide();*/
+    $.ajax({
+        type: "POST",
+        url: $('#url_leido').val(),
+        async: true,
+        data: {noti_id: noti_id},
+        dataType: "json",
+        success: function(data) {
+            getAlarma();
+           
+        },
+        error: function(){
+           
+        }
+    });
+}
+
+function getNotificaciones()
+{
+    var timer = setInterval(function(){ 
+        getAlarma();
+    }, 60000);
+   
 }

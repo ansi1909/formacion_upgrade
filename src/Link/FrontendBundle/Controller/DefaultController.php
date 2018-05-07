@@ -586,11 +586,11 @@ class DefaultController extends Controller
 
                 }
                     if ($notificacion->getLeido() == true) {
-                            $noti .= '<li class="AnunListNotify hola" data="'.$notificacion->getId() .'">';
+                            $noti .= '<li class="AnunListNotify leido" data="'.$notificacion->getId() .'">';
                         }
                         elseif ($notificacion->getLeido() == false) {
                             $sonar= 1;
-                            $noti .= '<li class="AnunListNotify notiSinLeer hola" data="'.$notificacion->getId() .'">';
+                            $noti .= '<li class="AnunListNotify notiSinLeer leido" data="'.$notificacion->getId() .'">';
                         }       
                                $noti .= '<div class="anunNotify">
                                    <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss() .'"><i class="material-icons icNotify">'. $notificacion->getTipoAlarma()->getIcono() .'</i></span>
@@ -600,9 +600,36 @@ class DefaultController extends Controller
                         </a>';
         }
 
+        $noti .= '<li class="listMoreNotify text-center">
+                    <a href="#"><span class="moreNotify"><i class="material-icons icMore">add</i>Ver más</span></a>
+                  </li>';
+
         $return = json_encode(array('noti' => $noti,
                                     'sonar' => $sonar));
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function ajaxLeidoAction(Request $request)
+    {
+
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $noti_id = $request->request->get('noti_id');
+
+        $notificacion = $em->getRepository('LinkComunBundle:AdminAlarma')->find($noti_id);
+
+        $notificacion->setLeido(TRUE);
+        
+        $em->persist($notificacion);
+        $em->flush();
+
+        $return = 'ok';
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
 }
