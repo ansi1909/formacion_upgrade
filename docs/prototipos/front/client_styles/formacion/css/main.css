@@ -728,11 +728,15 @@ a:focus, a:active, a:target, a:checked {
     color: #565656; }
 
 .avatar-img {
-  width: 2.5vw;
-  height: 2.5vw;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50rem;
   position: relative;
   top: -.2rem; }
+  @media (max-width: 575.98px) {
+    .avatar-img {
+      max-height: 2rem;
+      max-width: 2rem; } }
 
 .eval_header {
   height: 6rem !important;
@@ -766,12 +770,21 @@ a:focus, a:active, a:target, a:checked {
     text-align: center; }
 
 .navbar .logo {
-  width: 250px; }
+  width: 15.625rem; }
+  @media (max-width: 575.98px) {
+    .navbar .logo {
+      max-width: 7.8125rem; } }
 
 nav.navbar {
   box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56);
-  height: 70px; }
+  height: calc(4rem + 6px); }
+  @media (max-width: 575.98px) {
+    nav.navbar {
+      padding: .25rem .5rem; } }
 
+@media (max-width: 575.98px) {
+  .navbar-brand {
+    margin-right: .5rem; } }
 .navbar-brand .imgLogoCir {
   max-width: 4rem;
   position: relative;
@@ -779,6 +792,22 @@ nav.navbar {
 .navbar-brand .imgLogoHor {
   max-height: 4rem;
   max-width: 12rem; }
+  @media (max-width: 1199.98px) {
+    .navbar-brand .imgLogoHor {
+      max-height: 4rem;
+      max-width: 10rem; } }
+  @media (max-width: 991.98px) {
+    .navbar-brand .imgLogoHor {
+      max-height: 4rem;
+      max-width: 10rem; } }
+  @media (max-width: 767.98px) {
+    .navbar-brand .imgLogoHor {
+      max-height: 4rem;
+      max-width: 8rem; } }
+  @media (max-width: 575.98px) {
+    .navbar-brand .imgLogoHor {
+      max-height: 2.5rem;
+      max-width: 5rem; } }
 .navbar-brand .imgLogoVer {
   max-height: 5.75rem; }
 
@@ -800,6 +829,9 @@ nav.navbar {
   border-radius: 0 0 .5rem .5rem;
   display: none;
   z-index: 10; }
+  @media (min-width: 320px) and (max-width: 575.98px) {
+    .dropDownMenu {
+      width: 16.75rem; } }
   .dropDownMenu .mark {
     position: absolute;
     width: 1rem;
@@ -812,6 +844,9 @@ nav.navbar {
     border-left: calc(1rem - 6px) solid #00253D;
     display: none;
     right: 3.9rem; }
+    @media (min-width: 320px) and (max-width: 575.98px) {
+      .dropDownMenu .mark {
+        right: 2.8rem; } }
   .dropDownMenu .opcList {
     position: relative;
     width: 14rem;
@@ -819,6 +854,9 @@ nav.navbar {
     left: 0;
     padding: 1rem;
     color: #DAE1E6; }
+    @media (min-width: 320px) and (max-width: 575.98px) {
+      .dropDownMenu .opcList {
+        width: 16.75rem; } }
     .dropDownMenu .opcList span {
       font-size: 0.87rem;
       font-family: "Roboto";
@@ -855,6 +893,12 @@ nav.navbar {
   z-index: 1;
   display: none;
   right: 6rem; }
+  @media (max-width: 575.98px) {
+    .dropDownNotify {
+      right: 0rem;
+      width: 16.75rem;
+      box-shadow: -3px 3px 10px rgba(56, 56, 56, 0.5);
+      max-height: 31rem; } }
   .dropDownNotify::-webkit-scrollbar {
     width: .3rem; }
   .dropDownNotify::-webkit-scrollbar-thumb {
@@ -869,6 +913,9 @@ nav.navbar {
     top: 0;
     left: 0;
     padding: 1rem; }
+    @media (max-width: 575.98px) {
+      .dropDownNotify .AnunListNotify {
+        width: 16.75rem; } }
     .dropDownNotify .AnunListNotify .anunNotify {
       position: relative;
       display: flex;
@@ -882,6 +929,11 @@ nav.navbar {
         padding: .1rem;
         border-radius: 50rem;
         box-shadow: 1px 1px 5px rgba(58, 58, 58, 0.5); }
+        @media (max-width: 575.98px) {
+          .dropDownNotify .AnunListNotify .anunNotify .stickerNotify {
+            width: 1.5rem;
+            height: 1.5rem;
+            padding: 0; } }
         .dropDownNotify .AnunListNotify .anunNotify .stickerNotify .icNotify {
           margin: 0 auto;
           padding: .5rem;
@@ -891,6 +943,10 @@ nav.navbar {
           top: 0;
           color: #212529;
           font-size: calc(1rem + 8px); }
+          @media (max-width: 575.98px) {
+            .dropDownNotify .AnunListNotify .anunNotify .stickerNotify .icNotify {
+              font-size: calc(1rem - 2px);
+              top: -.2rem; } }
       .dropDownNotify .AnunListNotify .anunNotify .textNotify {
         padding: 0;
         max-width: 24rem;
@@ -903,6 +959,10 @@ nav.navbar {
         line-height: 1rem;
         margin: 0;
         font-weight: 500; }
+        @media (max-width: 575.98px) {
+          .dropDownNotify .AnunListNotify .anunNotify .textNotify {
+            max-width: 15.25rem;
+            font-size: 0.75rem; } }
       .dropDownNotify .AnunListNotify .anunNotify .anunSticker {
         background: #ef6e62; }
       .dropDownNotify .AnunListNotify .anunNotify .notiSticker {
@@ -949,6 +1009,9 @@ nav.navbar {
   z-index: 2;
   display: none;
   right: 6.8rem; }
+  @media (max-width: 575.98px) {
+    .markNotify {
+      right: 5.8rem; } }
 
 .notify {
   position: relative; }
@@ -964,6 +1027,10 @@ nav.navbar {
     right: 1rem;
     position: absolute;
     width: calc(1rem - 10px); }
+    @media (max-width: 575.98px) {
+      .notify .sonar {
+        right: 1.125rem;
+        top: .1rem; } }
     .notify .sonar::after {
       content: '';
       position: absolute;
@@ -1001,6 +1068,10 @@ nav.navbar {
   z-index: 1;
   display: none;
   right: 8.6rem; }
+  @media (max-width: 575.98px) {
+    .dropDownApps {
+      right: 0;
+      width: 16.75rem; } }
   .dropDownApps .opcApps {
     width: 5rem;
     height: 5rem;
@@ -1093,6 +1164,9 @@ nav.navbar {
   z-index: 2;
   display: none;
   right: 9.4rem; }
+  @media (max-width: 575.98px) {
+    .markApps {
+      right: 8.2rem; } }
 
 .main-sidenav {
   height: 100%;
@@ -1112,6 +1186,9 @@ nav.navbar {
   .main-sidenav::-webkit-scrollbar-thumb {
     background-color: #AAAFB3;
     outline: 1px solid #565656; }
+  @media (max-width: 575.98px) {
+    .main-sidenav {
+      width: 40px; } }
 
 .main-sidenav-open {
   width: 200px; }
@@ -1155,6 +1232,9 @@ i.arrow {
   color: #818181;
   display: block;
   transition: 0.3s; }
+  @media (max-width: 575.98px) {
+    .main-sidenav a {
+      padding: 8px; } }
 
 .main-sidenav a:hover {
   color: #fff; }
@@ -1166,6 +1246,9 @@ i.arrow {
   top: 16px;
   right: 0px;
   margin-left: 50px; }
+  @media (min-width: 320px) and (max-width: 575.98px) {
+    .main-sidenav .closebtn {
+      top: 5px; } }
 
 a.active {
   color: #CFE65C; }

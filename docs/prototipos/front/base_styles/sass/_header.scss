@@ -1,9 +1,13 @@
 .avatar-img{
-    width: 2.5vw;
-    height: 2.5vw;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50rem;
     position: relative;
     top: -.2rem;
+    @include media-breakpoint-down(xs){
+        max-height: 2rem;
+        max-width: 2rem;
+    }
 }
 
 .eval_header{
@@ -46,15 +50,24 @@
 }
 
 .navbar .logo {
-    width: 250px;
+    width: 15.625rem;
+    @include media-breakpoint-down(xs){
+        max-width: 7.8125rem;
+    }
 }
 
 nav.navbar{
     box-shadow: 0 2px 8px 0 rgba(170,175,179,0.56);
-    height: 70px;
+    height: calc(4rem + 6px);
+    @include media-breakpoint-down(xs){
+        padding: .25rem .5rem;
+    }
 }
 
 .navbar-brand{
+    @include media-breakpoint-down(xs){
+        margin-right: .5rem;
+    }
     .imgLogoCir{
         max-width: 4rem;
         position: relative;
@@ -63,6 +76,22 @@ nav.navbar{
     .imgLogoHor{
         max-height: 4rem;
         max-width: 12rem;
+        @include media-breakpoint-down(lg){
+            max-height: 4rem;
+            max-width: 10rem;
+        }
+        @include media-breakpoint-down(md){
+            max-height: 4rem;
+            max-width: 10rem;
+        }
+        @include media-breakpoint-down(sm){
+            max-height: 4rem;
+            max-width: 8rem;
+        }
+        @include media-breakpoint-down(xs){
+            max-height: 2.5rem;
+            max-width: 5rem;
+        }
     }
     .imgLogoVer{
         max-height: 5.75rem;
