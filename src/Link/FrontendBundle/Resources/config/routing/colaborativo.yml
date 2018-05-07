@@ -23,3 +23,9 @@ _ajaxSearchForo:
     defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSearchForo }
     requirements:
         _method: GET
+
+_ajaxDeleteForo:
+    path:     /ajaxDeleteForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxDeleteForo }
+    requirements:
+        method: POST

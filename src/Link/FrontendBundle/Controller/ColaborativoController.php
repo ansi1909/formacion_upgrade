@@ -132,7 +132,6 @@ class ColaborativoController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
-        $html = '';
 
         $foro_id = $request->request->get('foro_id');
         $pagina_id = $request->request->get('pagina_id');
@@ -218,65 +217,7 @@ class ColaborativoController extends Controller
 
         }
 
-        $foro_hijo = $em->getRepository('LinkComunBundle:CertiForo')->findOneBy(array('foro' => $foro->getId()),
-                                                                                array('fechaRegistro' => 'DESC'));
-
-        if (!$foro_hijo)
-        {
-            $name_ft = $foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido();
-            $coment_f = $this->get('translator')->trans('Fecha de Publicación');
-            $coment_f_span = $foro->getFechaPublicacion()->format('d/m/Y');
-            $resp_ft = 0;
-        }
-        else {
-            $query = $em->createQuery('SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f 
-                                        WHERE f.foro = :foro_id')
-                        ->setParameter('foro_id', $foro->getId());
-            $total_comentarios = $query->getSingleScalarResult();
-            $name_ft = $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
-            $coment_f = $this->get('translator')->trans('Hizo un comentario');
-            $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s'));
-            $resp_ft = $total_comentarios;
-        }
-
-        if (!$foro_id)
-        {
-            $html .= '<li class="f-table" id="liForo-'.$foro->getId().'">';
-        }
-
-        $class_tutor = $session->get('usuario')['tutor'] ? 'activar-destacado' : '';
-        $html .= '<div class="row justify-content-between">
-                    <div class="col-6">
-                        <a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $foro->getId(), 'subpagina_id' => $subpagina_id)).'"><h5 class="titulo_f-table">'.$foro->getTema().'</h5></a>
-                    </div>
-                    <div class="col-2">
-                        <div class="status_f-table '.$class_tutor.'">
-                            <a href="#" class="newTopic" data="'.$foro->getId().'" id="aForo-'.$foro->getId().'"><span class="status_ft">'.$this->get('translator')->trans('Editar').'</span></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-end foo-esp_col">
-                    <div class="col-auto">
-                        <span class="name_ft">'.$foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido().'</span>
-                    </div>
-                    <div class="col-auto">
-                        <span class="coment_f-table">'.$this->get('translator')->trans('Fecha de Publicación').': <span>'.$foro->getFechaPublicacion()->format('d/m/Y').'</span></span>
-                    </div>';
-        if ($resp_ft)
-        {
-            $html .= '<div class="col-auto">
-                        <span class="resp_ft"><i class="material-icons ic-msg">message</i> '.$resp_ft.'</span>
-                    </div>';
-        }
-        $html .= '</div>';
-
-        if (!$foro_id)
-        {
-            $html .= '</li>';
-        }
-
-        $return = array('html' => $html,
-                        'foro_id' => $foro->getId());
+        $return = array('foro_id' => $foro->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -414,6 +355,65 @@ class ColaborativoController extends Controller
                                                                                         'foros_hijos' => $foros_hijos,
                                                                                         'subpagina_id' => $subpagina_id,
                                                                                         'menu_str' => $menu_str,));
+
+    }
+
+    public function ajaxDeleteForoAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $foro_id = $request->request->get('foro_id');
+
+        // Se eliminan primero las alarmas
+        $query = $em->createQuery("SELECT a FROM LinkComunBundle:AdminAlarma a 
+                                    WHERE a.tipoAlarma IN (:tipos) 
+                                    AND a.entidadId = :foro_id")
+                    ->setParameters(array('tipos' => array($yml['parameters']['tipo_alarma']['espacio_colaborativo'],
+                                                           $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']),
+                                          'foro_id' => $foro_id));
+        $alarmas = $query->getResult();
+
+        foreach ($alarmas as $alarma)
+        {
+            $em->remove($alarma);
+            $em->flush();
+        }
+
+        // Ahora los sub-foros
+        $foros_hijos = $em->getRepository('LinkComunBundle:CertiForo')->findByForo($foro_id);
+
+        foreach ($foros_hijos as $foro_hijo)
+        {
+            $em->remove($foro_hijo);
+            $em->flush();
+        }
+
+        // Eliminación de los archivos asociados
+        $archivos = $em->getRepository('LinkComunBundle:CertiForoArchivo')->findByForo($foro_id);
+
+        foreach ($archivos as $archivo)
+        {
+            $file = $this->container->getParameter('folders')['dir_uploads'].$archivo->getArchivo();
+            if (file_exists($file))
+            {
+                unlink($file);
+            }
+            $em->remove($archivo);
+            $em->flush();
+        }
+
+        // Finalmente se elimina el foro padre
+        $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
+        $em->remove($foro);
+        $em->flush();
+
+        $return = array('ok' => 1);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
 

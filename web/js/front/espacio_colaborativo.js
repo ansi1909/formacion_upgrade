@@ -88,6 +88,24 @@ $(document).ready(function() {
     	$('#titleDelete').html('');
     });
 
+    $('#eliminar').click(function(){
+    	$('.btn-modalDelete').hide();
+    	$.ajax({
+	        type: "POST",
+	        url: $('#url_delete').val(),
+	        async: true,
+	        data: { foro_id: $('#foro_delete_id').val() },
+	        dataType: "json",
+	        success: function(data) {
+	            location.reload();
+	        },
+	        error: function(){
+	            console.log('Error eliminando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
+	            $('.btn-modalDelete').show();
+	        }
+	    });
+    });
+
 });
 
 function observeTopic(newTopic)
@@ -154,18 +172,6 @@ function saveForo()
         data: $("#form").serialize(),
         dataType: "json",
         success: function(data) {
-            var none = $('#none_foros');
-            if (none.length)
-            {
-                none.remove();
-            }
-            if (foro_id != '0')
-            {
-                $( "#liForo-"+foro_id ).html( data.html );
-            }
-            else {
-            	$( "#ul-foros" ).prepend(data.html);
-            }
             location.reload();
         },
         error: function(){

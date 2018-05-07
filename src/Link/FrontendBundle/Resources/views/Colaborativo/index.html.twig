@@ -110,6 +110,7 @@
     <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditForo') }}">
     <input type="hidden" id="url_search" name="url_search" value="{{ path('_ajaxSearchForo') }}">
     <input type="hidden" id="url_detalle" name="url_detalle" value="{{ path('_detalleColaborativo') }}">
+    <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteForo') }}">
     <input type="hidden" id="titulo_new" name="titulo_new" value="{{ 'Crear nuevo tema'|trans }}">
     <input type="hidden" id="titulo_edit" name="titulo_edit" value="{{ 'Editar tema'|trans }}">
 
@@ -258,12 +259,12 @@
             </div>
             <div class="row mt-3 align-items-center justify-content-center">
                 <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
-                    <button type="button" id="eliminar" class="btn btn-primary btn-Cs">{{ 'Eliminar'|trans }}</button>
+                    <button type="button" id="eliminar" class="btn btn-primary btn-Cs btn-modalDelete">{{ 'Eliminar'|trans }}</button>
                 </div>
             </div>
             <div class="row mt-3 align-items-end justify-content-center">
                 <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                    <a href="#" class="cancelarCs" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
+                    <a href="#" class="cancelarCs btn-modalDelete" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
                 </div>
             </div>
         </div>
