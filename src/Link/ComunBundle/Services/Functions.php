@@ -2219,4 +2219,55 @@ public function iniciarSesionAdmin($datos)
 
 		return $porcentaje;
 	}
+
+	// Arreglo de comentarios en el espacio colaborativo y sus respuestas
+	public function forosHijos($foro_id, $offset, $limit, $usuario, $social_colaborativo)
+	{
+
+		$em = $this->em;
+		$qb = $em->createQueryBuilder();
+        $qb->select('f')
+           ->from('LinkComunBundle:CertiForo', 'f')
+           ->andWhere('f.foro = :foro_id')
+           ->orderBy('f.fechaRegistro', 'ASC')
+           ->setFirstResult($offset)
+           ->setMaxResults($limit)
+           ->setParameter('foro_id', $foro_id);
+        $query = $qb->getQuery();
+        $foros = $query->getResult();
+
+        $foros_hijos = array();
+
+        foreach ($foros as $foro_hijo)
+        {
+
+            $foros_nietos = array();
+            $foros_nietos_bd = $em->getRepository('LinkComunBundle:CertiForo')->findBy(array('foro' => $foro_hijo->getId()),
+                                                                                       array('fechaRegistro' => 'ASC'));
+            foreach ($foros_nietos_bd as $foro_nieto)
+            {
+                $autor_nieto = $foro_nieto->getUsuario()->getId() == $usuario['id'] ? $this->translator->trans('Yo') : $foro_nieto->getUsuario()->getNombre().' '.$foro_nieto->getUsuario()->getApellido();
+                $delete_link = $foro_nieto->getUsuario()->getId() != $usuario['id'] ? $usuario['tutor'] ? 1 : 0 : 1;
+                $foros_nietos[] = array('id' => $foro_nieto->getId(),
+                                        'usuario' => $autor_nieto,
+                                        'timeAgo' => $this->sinceTime($foro_nieto->getFechaPublicacion()->format('Y-m-d H:i:s')),
+                                        'mensaje' => $foro_nieto->getMensaje(),
+                                        'likes' => $this->likes($social_colaborativo, $foro_nieto->getId(), $usuario['id']),
+                                        'delete_link' => $delete_link);
+            }
+            $autor = $foro_hijo->getUsuario()->getId() == $usuario['id'] ? $this->translator->trans('Yo') : $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
+            $delete_link = $foro_hijo->getUsuario()->getId() != $usuario['id'] ? $usuario['tutor'] ? 1 : 0 : 1;
+            $foros_hijos[] = array('id' => $foro_hijo->getId(),
+                                   'usuario' => $autor,
+                                   'timeAgo' => $this->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s')),
+                                   'mensaje' => $foro_hijo->getMensaje(),
+                                   'likes' => $this->likes($social_colaborativo, $foro_hijo->getId(), $usuario['id']),
+                                   'delete_link' => $delete_link,
+                                   'respuestas' => $foros_nietos);
+            
+        }
+
+        return $foros_hijos;
+
+	}
 }

@@ -296,35 +296,7 @@ class ColaborativoController extends Controller
         $likes = $f->likes($yml['parameters']['social']['espacio_colaborativo'], $foro->getId(), $session->get('usuario')['id']);
         $timeAgo = $f->sinceTime($foro->getFechaPublicacion()->format('Y-m-d H:i:s'));
 
-        $foros = $em->getRepository('LinkComunBundle:CertiForo')->findBy(array('foro' => $foro->getId()),
-                                                                         array('fechaRegistro' => 'DESC'));
-
-        $foros_hijos = array();
-
-        foreach ($foros as $foro_hijo)
-        {
-
-            $foros_nietos = array();
-            $foros_nietos_bd = $em->getRepository('LinkComunBundle:CertiForo')->findBy(array('foro' => $foro_hijo->getId()),
-                                                                                       array('fechaRegistro' => 'DESC'));
-            foreach ($foros_nietos_bd as $foro_nieto)
-            {
-                $autor_nieto = $foro_nieto->getUsuario()->getId() == $session->get('usuario')['id'] ? $this->get('translator')->trans('Yo') : $foro_nieto->getUsuario()->getNombre().' '.$foro_nieto->getUsuario()->getApellido();
-                $foros_nietos[] = array('id' => $foro_nieto->getId(),
-                                        'usuario' => $autor_nieto,
-                                        'timeAgo' => $f->sinceTime($foro_nieto->getFechaPublicacion()->format('Y-m-d H:i:s')),
-                                        'mensaje' => $foro_nieto->getMensaje(),
-                                        'likes' => $f->likes($yml['parameters']['social']['espacio_colaborativo'], $foro_nieto->getId(), $session->get('usuario')['id']));
-            }
-            $autor = $foro_hijo->getUsuario()->getId() == $session->get('usuario')['id'] ? $this->get('translator')->trans('Yo') : $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
-            $foros_hijos[] = array('id' => $foro_hijo->getId(),
-                                   'usuario' => $autor,
-                                   'timeAgo' => $f->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s')),
-                                   'mensaje' => $foro_hijo->getMensaje(),
-                                   'likes' => $f->likes($yml['parameters']['social']['espacio_colaborativo'], $foro_hijo->getId(), $session->get('usuario')['id']),
-                                   'respuestas' => $foros_nietos);
-            
-        }
+        $foros_hijos = $f->forosHijos($foro_id, 0, 5, $session->get('usuario'), $yml['parameters']['social']['espacio_colaborativo']);
 
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$foro->getPagina()->getId()]);
