@@ -43,6 +43,9 @@
 
 #main.ml-10{
     margin-left: 9%;
+    @include media-breakpoint-down(xs){
+        margin-left: 0%;
+    }
 
  }
  #main.ml-comments{
@@ -67,6 +70,10 @@ i.arrow {
     transition: .3s;
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
+    @include media-breakpoint-down(xs){
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    }
 }
 
 

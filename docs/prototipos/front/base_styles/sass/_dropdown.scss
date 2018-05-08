@@ -32,7 +32,7 @@
         border-left: calc(1rem - 6px) solid $bluedarkest;
         display: none;
         @include media-breakpoint-down(xl){
-            right: 3.9rem;
+            right: 4rem;
         }
         @include media-breakpoint-only(xs) {
             right: 2.8rem;
@@ -230,10 +230,10 @@
     z-index: 2;
     display: none;
     @include media-breakpoint-down(xl){
-        right: 6.8rem;
+        right: 7.25rem;
     }
     @include media-breakpoint-down(xs){
-        right: 5.8rem;
+        right: 5.75rem;
     }
 }
 
@@ -411,7 +411,7 @@
     z-index: 2;
     display: none;
     @include media-breakpoint-down(xl){
-        right: 9.4rem;
+        right: 9.75rem;
     }
     @include media-breakpoint-down(xs){
         right: 8.2rem;

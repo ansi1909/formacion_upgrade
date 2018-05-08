@@ -1,0 +1,28 @@
+{
+  "name": "formacion2.0",
+  "version": "1.0.0",
+  "description": "formacion 2.0\r ==============",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startServer": "live-server",
+    "startCompile": "node-sass --watch docs/prototipos/front/client_styles/formacion/sass/main.scss docs/prototipos/front/client_styles/formacion/css/main.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://rvirguez@bitbucket.org/amst1909/formacion2.0.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/amst1909/formacion2.0#readme",
+  "dependencies": {
+    "live-server": "^1.2.0"
+  },
+  "devDependencies": {
+    "node-sass": "^4.9.0"
+  }
+}

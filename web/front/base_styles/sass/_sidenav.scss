@@ -22,6 +22,9 @@
     &:hover{
         // overflow: auto;
     }
+    @include media-breakpoint-down(xs){
+        width: 40px;
+    }
 }
 
 .main-sidenav-open{
@@ -40,6 +43,9 @@
 
 #main.ml-10{
     margin-left: 9%;
+    @include media-breakpoint-down(xs){
+        margin-left: 0%;
+    }
 
  }
  #main.ml-comments{
@@ -64,6 +70,10 @@ i.arrow {
     transition: .3s;
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
+    @include media-breakpoint-down(xs){
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    }
 }
 
 
@@ -79,6 +89,9 @@ i.arrow {
     color: #818181;
     display: block;
     transition: 0.3s;
+    @include media-breakpoint-down(xs){
+        padding: 8px;
+    }
 }
 
 .main-sidenav a:hover {
@@ -94,6 +107,9 @@ i.arrow {
     top: 16px;
     right: 0px;
     margin-left: 50px;
+    @include media-breakpoint-only(xs) {
+        top: 5px;
+    }
 }
 
 a.active {
