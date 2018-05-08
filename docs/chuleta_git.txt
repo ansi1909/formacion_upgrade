@@ -8,6 +8,7 @@ NOTAS:
 
 1. Para clonar el proyecto:
    git clone git@bitbucket.org:amst1909/formacion2.0
+   git clone https://amst1909@bitbucket.org/amst1909/formacion2.0
 
 2. Para actualizarse con los branches creados:
 	git fetch
