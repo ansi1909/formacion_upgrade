@@ -38,10 +38,10 @@
             <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
             <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
             <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
-                <div class="logo d-none d-md-block">
+                <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
                         {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                        <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+                        <img class="img-fluid py-1 imgLogoHor" src="{{ img_logo }}" alt="logo formación 2.0">
                     </a>
                 </div>
                 <div class="navbar-brand d-flex justify-content-center align-items-center">

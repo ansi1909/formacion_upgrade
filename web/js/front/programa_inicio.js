@@ -1,3 +1,3 @@
 $(document).ready(function() {
-   $('p').addClass('text-left mx-auto');
+   $('p').addClass('text-justify mx-auto');
 });
