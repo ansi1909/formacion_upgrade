@@ -31,3 +31,7 @@ _ajaxLeido:
     defaults: { _controller: LinkFrontendBundle:Default:ajaxLeido }
     requirements:
         method: POST
+
+_notificaciones:
+    path:     /notificaciones
+    defaults: { _controller: LinkFrontendBundle:Default:notificaciones }

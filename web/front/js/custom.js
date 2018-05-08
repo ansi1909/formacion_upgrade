@@ -85,12 +85,14 @@ $(document).ready(function() {
                 $(".markNotify").fadeIn(100).delay(25);
                 $(".opcListNotify").show();
             });
+            clearInterval(timer);
             y = 1;
         }else {
             $(".dropDownNotify").slideUp(500, function(){
                 $(".markNotify").fadeOut(600);
             });
             y = 0;
+            getNotificaciones();
         }
     });
 

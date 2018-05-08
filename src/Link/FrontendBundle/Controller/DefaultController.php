@@ -601,7 +601,7 @@ class DefaultController extends Controller
         }
 
         $noti .= '<li class="listMoreNotify text-center">
-                    <a href="#"><span class="moreNotify"><i class="material-icons icMore">add</i>Ver más</span></a>
+                    <a href="'.$this->generateUrl('_notificaciones').'"><span class="moreNotify"><i class="material-icons icMore">add</i>Ver más</span></a>
                   </li>';
 
         $return = json_encode(array('noti' => $noti,
@@ -632,4 +632,47 @@ class DefaultController extends Controller
 
     }
 
+    public function notificacionesAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
+                                       WHERE a.usuario = :usuario_id
+                                       ORDER BY a.id DESC')
+                        ->setParameter('usuario_id', $usuario->getId());
+            $alarmas = $query->getResult();
+
+            foreach($alarmas as $alarma)
+            {
+                $todas[] =array('id'=>$alarma->getId(),
+                                   'descripcion'=>$alarma->getDescripcion(),
+                                   'css'=>$alarma->getTipoAlarma()->getCss(),
+                                   'icono'=>$alarma->getTipoAlarma()->getIcono(),
+                                   'leido'=>$alarma->getLeido(),
+                                   'tipo'=>$alarma->getTipoAlarma()->getid());
+
+                if($alarma->getLeido() == TRUE)
+                {
+                    $leidas[] =array('id'=>$alarma->getId(),
+                                   'descripcion'=>$alarma->getDescripcion(),
+                                   'css'=>$alarma->getTipoAlarma()->getCss(),
+                                   'icono'=>$alarma->getTipoAlarma()->getIcono(),
+                                   'tipo'=>$alarma->getTipoAlarma()->getid());
+
+                }elseif ($alarma->getLeido() == FALSE) 
+                {
+                    $no_leidas[] =array('id'=>$alarma->getId(),
+                                   'descripcion'=>$alarma->getDescripcion(),
+                                   'css'=>$alarma->getTipoAlarma()->getCss(),
+                                   'tipo'=>$alarma->getTipoAlarma()->getid());
+                }
+            }
+
+            return $this->render('LinkFrontendBundle:Notificaciones:index.html.twig', array('todas' => $todas,
+                                                                                            'leidas' => $leidas,
+                                                                                            'no_leidas' => $no_leidas));
+    }
 }

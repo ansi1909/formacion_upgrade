@@ -1,8 +1,11 @@
 $(document).ready(function() {
+
    getAlarma();
    getNotificaciones();
 
 });
+
+var timer;
 
 function getAlarma()
 {
@@ -55,7 +58,7 @@ function getLeido(noti_id)
 
 function getNotificaciones()
 {
-    var timer = setInterval(function(){ 
+    timer = setInterval(function(){
         getAlarma();
     }, 60000);
    
