@@ -371,7 +371,7 @@ class Functions
 	}
 
 	// Calcula la diferencia de tiempo entre fecha y hoy
-	// Si es menos de una hora retorna la cantidad de minutos
+	// Si es menor de una hora retorna la cantidad de minutos
 	// Si es más de una hora y fecha es hoy retorna la hora de fecha
 	// Si fecha es ayer retorna "Ayer Hora"
 	// Si fecha es menor que ayer se muestra fecha formateado con la hora

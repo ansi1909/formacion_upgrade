@@ -276,7 +276,7 @@ class ColaborativoController extends Controller
         
     }
 
-    public function detalleAction($foro_id, $subpagina_id, Request $request)
+    public function detalleAction($foro_id, $subpagina_id)
     {
 
         $session = new Session();
