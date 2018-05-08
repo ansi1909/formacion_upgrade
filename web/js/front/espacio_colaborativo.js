@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
 	var root_site = $('#root_site').val();
-	var empresa_id = $('#empresa_id').val();
 	var subpagina_id = $('#subpagina_id').val();
 
 	CKEDITOR.replace( 'mensaje',
@@ -118,6 +117,7 @@ function observeTopic(newTopic)
 		$('#wait').show(1000);
 		if (foro_id != '0')
 		{
+			$('#titulo').html($('#titulo_edit').val());
 			$.ajax({
 		        type: "GET",
 		        url: $('#url_edit').val(),
@@ -149,6 +149,7 @@ function observeTopic(newTopic)
 		    });
 		}
 		else {
+			$('#titulo').html($('#titulo_new').val());
 			$('.form-control').val('');
 			CKEDITOR.instances.mensaje.setData('');
 			$('#section-form').show(1000);

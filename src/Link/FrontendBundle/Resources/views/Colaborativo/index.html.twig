@@ -104,8 +104,6 @@
 
 {% block body %}
 
-    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ app.session.get('empresa').id }}" />
-    <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
     <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
     <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditForo') }}">
     <input type="hidden" id="url_search" name="url_search" value="{{ path('_ajaxSearchForo') }}">

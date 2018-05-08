@@ -2250,6 +2250,7 @@ public function iniciarSesionAdmin($datos)
                 $delete_link = $foro_nieto->getUsuario()->getId() != $usuario['id'] ? $usuario['tutor'] ? 1 : 0 : 1;
                 $foros_nietos[] = array('id' => $foro_nieto->getId(),
                                         'usuario' => $autor_nieto,
+                                        'foto' => $foro_nieto->getUsuario()->getFoto(),
                                         'timeAgo' => $this->sinceTime($foro_nieto->getFechaPublicacion()->format('Y-m-d H:i:s')),
                                         'mensaje' => $foro_nieto->getMensaje(),
                                         'likes' => $this->likes($social_colaborativo, $foro_nieto->getId(), $usuario['id']),
@@ -2259,6 +2260,7 @@ public function iniciarSesionAdmin($datos)
             $delete_link = $foro_hijo->getUsuario()->getId() != $usuario['id'] ? $usuario['tutor'] ? 1 : 0 : 1;
             $foros_hijos[] = array('id' => $foro_hijo->getId(),
                                    'usuario' => $autor,
+                                   'foto' => $foro_hijo->getUsuario()->getFoto(),
                                    'timeAgo' => $this->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s')),
                                    'mensaje' => $foro_hijo->getMensaje(),
                                    'likes' => $this->likes($social_colaborativo, $foro_hijo->getId(), $usuario['id']),

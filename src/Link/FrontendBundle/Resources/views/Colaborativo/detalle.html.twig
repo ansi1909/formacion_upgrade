@@ -2,7 +2,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
@@ -16,14 +15,7 @@
         label.error, label.mensaje-error {
             color: #f00c0c;
         }
-        .ui-autocomplete-loading {
-            background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
-        }
     </style>
-{% endblock %}
-
-{% block clbody %}
-    lesson-body
 {% endblock %}
 
 {% block header %}
@@ -98,143 +90,164 @@
     </div>
 {% endblock %}
 
-{% block bg %}
-    bg-white
-{% endblock %}
-
 {% block body %}
 
-    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ app.session.get('empresa').id }}" />
-    <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
-    <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
-    <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditForo') }}">
-    <input type="hidden" id="url_search" name="url_search" value="{{ path('_ajaxSearchForo') }}">
-    <input type="hidden" id="url_detalle" name="url_detalle" value="{{ path('_detalleColaborativo') }}">
-    <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteForo') }}">
-    <input type="hidden" id="titulo_new" name="titulo_new" value="{{ 'Crear nuevo tema'|trans }}">
-    <input type="hidden" id="titulo_edit" name="titulo_edit" value="{{ 'Editar tema'|trans }}">
+    <input type="hidden" id="foro_main_id" name="foro_main_id" value="{{ foro.id }}">
+    <input type="hidden" id="foro_id" name="foro_id" value="0">
+    <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
+    <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
 
-    <section class="esp_col" id="section-form" style="display:none;">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-10">
-                    <div class="row mt-3 mb-2 align-items-center justify-content-center">
-                        <div class="col-auto text-center">
-                            <h4 class="titulo" id="titulo"></h4>
+    <section>
+        <div class="modal modal-resp" id="modalresp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-end">
+                    <div class="col-auto">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-3 mb-2 align-items-center justify-content-center">
+                    <div class="col-auto text-center">
+                        <h4 class="titulo">{{ 'Responder publicación'|trans }}</h4>
+                    </div>
+                </div>
+                <form id="form-reResponse" action="{{ path('_ajaxSaveForoResponse') }}" method="POST">
+                    <div class="row pl-3 align-items-center justify-content-center">
+                        <div class="form-group">
+                            <div class="col-12">
+                                <label class="mb-2 titulo-form" for="mensaje"> {{ 'Tu respuesta'|trans }}: </label>
+                                <textarea rows="3" id="mensaje-reResponse" name="mensaje-reResponse" cols="30"></textarea>
+                                <label id="mensaje-error-reResponse" class="mensaje-error" for="mensaje-reResponse" style="display:none;">{{ 'Este campo es requerido.'|trans }}</label>
+                            </div>
                         </div>
                     </div>
-                    <form id="form" action="{{ path('_ajaxSaveForo') }}" method="POST">
-                        <input type="hidden" id="foro_id" name="foro_id" value="0">
-                        <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
-                        <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
-                        <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
-                        <div class="row pl-3 align-items-center justify-content-center">
-                            <div class="col-12">
-                                <div class="form-group text-left">
-                                    <label class="mb-2 titulo-form" for="tema"> {{ 'Título'|trans }}: </label>
-                                    <input  type="text" class="form-control mb-4" id="tema" name="tema" value="">
-                                </div>
-                            </div>
+                    <div class="row mb-3 align-items-center justify-content-end">
+                        <div class="col-auto text-left">
+                            <button type="button" class="btn btn-warning cancelar">{{ 'Cancelar'|trans }}</button>
                         </div>
-                        <div class="row pl-3 align-items-center justify-content-center">
-                            <div class="col-6">
-                                <div class="form-group text-left">
-                                    <label class="mb-2 titulo-form" for="fechaPublicacion"> {{ 'Fecha de Publicación'|trans }}: </label>
-                                    <input  type="text" class="form-control mb-4 datepicker" id="fechaPublicacion" name="fechaPublicacion" value="">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group text-left">
-                                    <label class="mb-2 titulo-form" for="fechaVencimiento"> {{ 'Fecha de Vencimiento'|trans }}: </label>
-                                    <input  type="text" class="form-control mb-4 datepicker" id="fechaVencimiento" name="fechaVencimiento" value="">
-                                </div>
-                            </div>
+                        <div class="col-auto text-right">
+                            <button type="button" class="btn btn-primary publicar">{{ 'Responder'|trans }}</button>
                         </div>
-                        <div class="row pl-3 align-items-center justify-content-center">
-                            <div class="form-group">
-                                <div class="col-12">
-                                    <label class="mb-2 titulo-form" for="mensaje"> {{ 'Contenido'|trans }}: </label>
-                                    <textarea rows="3" id="mensaje" name="mensaje" cols="30"></textarea>
-                                    <label id="mensaje-error" class="mensaje-error" for="mensaje" style="display:none;">{{ 'El contenido es requerido.'|trans }}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 align-items-center justify-content-end">
-                            <div class="col-auto text-left">
-                                <button id="cancelar" type="button" class="btn btn-warning">{{ 'Cancelar'|trans }}</button>
-                            </div>
-                            <div class="col-auto text-right">
-                                <button id="publicar" type="button" class="btn btn-primary">{{ 'Publicar'|trans }}</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
     
     <section class="esp_col" id="section-list">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
-                {% if app.session.get('usuario').tutor %}
-                    <button class="btn btn-primary btn-nw-tema newTopic" data="0">{{ 'Crear nuevo tema'|trans }}</button>
-                {% else %}
-                    &nbsp;
-                {% endif %}
-            </div>
-            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4">
-                <input type="search" id="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}">
-                <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <ul class="table-card" id="ul-foros">
-                {% for foro in foros %}
-                    <li class="f-table" id="liForo-{{ foro.id }}">
+        <div class="row">
+            <ul class="table-card-det">
+                <li class="f-card-det">
+                    <div class="cont-det">
                         <div class="row justify-content-between">
                             <div class="col-auto">
-                                <a href="{{ path('_detalleColaborativo', { 'foro_id': foro.id, 'subpagina_id': subpagina_id }) }}"><h5 class="titulo_f-table">{{ foro.tema }}</h5></a>
-                            </div>
-                            {% if app.session.get('usuario').tutor %}
-                                <div class="col-auto d-flex text-right">
-                                    {% if app.session.get('usuario').id == foro.usuario_id %}
-                                        <a href="#" class="newTopic" data="{{ foro.id }}" id="aForo-{{ foro.id }}"><span class="material-icons icEditEcT">mode_edit</span></a>
-                                    {% endif %}
-                                    <a href="#" class="deleteTopic" data="{{ foro.id }}" tema="{{ foro.tema }}" data-toggle="modal" data-target="#modalDelete"><span class="material-icons icDeleEcT">delete</span></a>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="row align-items-end foo-esp_col">
-                            <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
-                                <span class="name_ft">{{ foro.name_ft }}</span>
-                            </div>
-                            {% if foro.coment_f %}
-                                <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
-                                    <span class="coment_f-table">{{ 'Hizo un comentario'|trans }}: <span>{{ foro.coment_f_span }}</span></span>
-                                </div>
-                            {% endif %}
-                            {% if foro.resp_ft %}
-                                <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
-                                    <span class="resp_ft"><i class="material-icons ic-msg">message</i> {{ foro.resp_ft }}</span>
-                                </div>
-                            {% endif %}
-                            <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
-                                <span class="name_ft">{{ 'Fecha de Publicación'|trans }}: {{ foro.publicacion }}</span>
-                            </div>
-                            <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
-                                <span class="name_ft">{{ 'Fecha de Vencimiento'|trans }}: {{ foro.vencimiento }}</span>
+                                {% set img_user = foro.usuario.foto ? uploads~foro.usuario.foto : asset('front/assets/img/user-default.png') %}
+                                {% set autor = foro.usuario.id == app.session.get('usuario').id ? 'Yo'|trans : foro.usuario.nombre~' '~foro.usuario.apellido %}
+                                <img class="img-ec-det" src="{{ img_user }}" alt="">
+                                <span class="name_ft">{{ autor }} <span class="coment_ft">{{ timeAgo }}</span></span>
                             </div>
                         </div>
-                    </li>
-                {% else %}
-                    <li id="none_foros" class="f-table">
-                        <div class="row justify-content-between">
-                            <div class="col-8">
-                                <h5 class="titulo_f-table">{{ 'El tutor virtual aún no ha creado un tema de discusión'|trans }}</h5>
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-justify">
+                                {{ foro.mensaje|raw }}
                             </div>
+                        </div>
+                        <div class="row align-items-end foo-esp_col-det justify-content-between">
+                            <div class="col-auto">
+                                <span class="like_ft like" data="{{ foro.id }}"><i class="material-icons ic-lke {{ likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> {{ likes.cantidad }}</span>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#" class="resp-down">
+                                    <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>{{ 'Responder'|trans }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% for foro_hijo in foros_hijos %}
+                    <li class="f-card-det">
+                        <div class="cont-det">
+                            <div class="row justify-content-between">
+                                <div class="col-auto">
+                                    {% set img_user = foro_hijo.foto ? uploads~foro_hijo.foto : asset('front/assets/img/user-default.png') %}
+                                    <img class="img-ec-det" src="{{ img_user }}" alt="">
+                                    <span class="name_ft">{{ foro_hijo.usuario }} <span class="coment_ft">{{ foro_hijo.timeAgo }}</span></span>
+                                </div>
+                                {% if foro_hijo.delete_link == 1 %}
+                                    <div class="col-auto">
+                                        <div class="text-right">
+                                            <a href="#"><span class="material-icons ic-del" data="{{ foro_hijo.id }}">delete</span></a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12 text-justify">
+                                    {{ foro_hijo.mensaje|raw }}
+                                </div>
+                            </div>
+                            <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                <div class="col-auto">
+                                    <span class="like_ft like" data="{{ foro_hijo.id }}"><i class="material-icons ic-lke {{ foro_hijo.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> {{ foro_hijo.likes.cantidad }}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" data-toggle="modal" data-target="#modalresp" class="reResponse" data="{{ foro_hijo.id }}">
+                                        <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>{{ 'Responder'|trans }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            {% for foro_nieto in foro_hijo.respuestas %}
+                                <div class="row resp-rply justify-content-center">
+                                    <div class="col-12 text-justify">
+                                        <div class="row justify-content-between">
+                                            <div class="col-auto">
+                                                {% set img_user = foro_nieto.foto ? uploads~foro_nieto.foto : asset('front/assets/img/user-default.png') %}
+                                                <img class="img-ec-det" src="{{ img_user }}" alt="">
+                                                <span class="name_ft">{{ foro_nieto.usuario }} <span class="coment_ft">{{ foro_nieto.timeAgo }}</span></span>
+                                            </div>
+                                            {% if foro_nieto.delete_link == 1 %}
+                                                <div class="col-auto">
+                                                    <div class="text-right">
+                                                        <a href="#"><span class="material-icons ic-del" data="{{ foro_nieto.id }}">delete</span></a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-12 text-justify">
+                                                {{ foro_nieto.mensaje|raw }}
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                            <div class="col-auto">
+                                                <span class="like_ft like" data="{{ foro_nieto.id }}"><i class="material-icons ic-lke {{ foro_nieto.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> {{ foro_nieto.likes.cantidad }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %} 
                         </div>
                     </li>
                 {% endfor %}
+                <li class="f-card-det-resp">
+                    <form id="form-response" action="{{ path('_ajaxSaveForoResponse') }}" method="POST">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <label class="mb-2 titulo-form" for="mensaje"> {{ 'Tu respuesta'|trans }}: </label>
+                                    <textarea rows="3" id="mensaje-response" name="mensaje-response" cols="30"></textarea>
+                                    <label id="mensaje-error-response" class="mensaje-error" for="mensaje-response" style="display:none;">{{ 'Este campo es requerido.'|trans }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto text-right">
+                                <button type="button" class="btn btn-primary publicar">{{ 'Responder'|trans }}</button>
+                            </div>
+                        </div>
+                    </form>
+                </li>
             </ul>
         </div>
     </section>
@@ -244,6 +257,90 @@
             <div class="contenedor">
                 <div class="radar"></div>
             </div>
+        </div>
+    </div>
+
+    <div class="downloads"  >
+        <div class="d-flex px-3 row justify-content-between">
+            <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto">
+                <h5 class="color-grey text-left titulo">Descargas</h5>
+            </div>
+            <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto d-flex">
+                <a href="#"><span class="material-icons color-light-grey icUpload" data-toggle="tooltip" data-placement="left" title="Subir archivo">file_upload</span></a>
+                <span class="color-light-grey barra">|</span>
+                <a href="#"><span class="material-icons color-light-grey icClose" id="iconCloseDownloads" data-toggle="tooltip" data-placement="bottom" title="Cerrar panel">clear</span></a>
+            </div>
+        </div>
+        <div class="row justify-content-center cont-downloads">
+            <ul class="list-downloads">
+                <a href="#">
+                    <li class="element-downloads">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="assets/img/xls.svg" class="imgdl" alt="">
+                                <p class="nameArch">reporte semanal</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <div class="cont-opc">
+                                    <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="element-downloads">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="assets/img/pdf.svg" class="imgdl" alt="">
+                                <p class="nameArch">financiamiento al terrorismo y prevención de capitales</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                            </div>
+                        </div>
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="element-downloads">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="assets/img/liderazgo-hrz.png" class="imgdl" alt="">
+                                <p class="nameArch">liderazgo</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                            </div>
+                        </div>
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="element-downloads">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="assets/img/jpg.svg" class="imgdl" alt="">
+                                <p class="nameArch">liderazgo personal</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                            </div>
+                        </div>
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="element-downloads finElement-downloads">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="assets/img/doc.svg" class="imgdl" alt="">
+                                <p class="nameArch">Ambiente toxico</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                            </div>
+                        </div>
+                    </li>
+                </a>
+            </ul>
         </div>
     </div>
 
@@ -274,15 +371,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
-    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
-    <script src="{{ asset('front/js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/esp_col.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/espacio_colaborativo.js') }}"></script>
     <script type="text/javascript">
 

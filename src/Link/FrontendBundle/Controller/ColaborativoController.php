@@ -135,7 +135,6 @@ class ColaborativoController extends Controller
 
         $foro_id = $request->request->get('foro_id');
         $pagina_id = $request->request->get('pagina_id');
-        $subpagina_id = $request->request->get('subpagina_id');
         $tema = $request->request->get('tema');
         $fechaPublicacion = $request->request->get('fechaPublicacion');
         $fechaVencimiento = $request->request->get('fechaVencimiento');
