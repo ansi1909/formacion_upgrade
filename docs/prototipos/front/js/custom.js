@@ -46,7 +46,8 @@ $(document).ready(function() {
 // $("#message").fadeIn("slow");
     var x = 0, y = 0, z = 0;
     var module = $('.modulo');
-    $("#config").on('click',function(){
+    $("#config").on('click',function(e){
+        e.preventDefault();
         if(x == 0){
             if(y == 1){
                 $(".dropDownNotify").slideUp(50, function(){
@@ -71,7 +72,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#notify").on('click',function(){
+    $("#notify").on('click',function(e){
+        e.preventDefault();
         if(y == 0){
             if(x == 1){
                 $(".dropDownMenu").slideUp(50);
@@ -94,7 +96,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#apps").on('click',function(){
+    $("#apps").on('click',function(e){
+        e.preventDefault();
         if(z == 0){
             if(x == 1){
                 $(".dropDownMenu").slideUp(50);

@@ -92,6 +92,9 @@
     @include media-breakpoint-down(xl){
         right: 6rem;
     }
+    @include media-breakpoint-down(sm){
+        right: 0rem;
+    }
     @include media-breakpoint-down(xs){
         right: 0rem;
         width: 16.75rem;

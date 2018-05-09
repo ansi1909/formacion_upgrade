@@ -1,5 +1,19 @@
 #message {
     // display: none;
+    @include media-breakpoint-down(sm){
+        padding: 3rem .75rem 1rem .75rem !important;
+        margin-left: 0 !important;
+        width: 31.5rem;
+        h1{
+            font-size: 3.5rem;
+            color: $bluedark;
+        }
+        p{
+            max-width: 80%;
+            color: $gray-700;
+            font-weight: 200;
+        }
+    }
     @include media-breakpoint-down(xs){
         padding: 3rem .75rem 1rem .75rem !important;
         margin-left: 0 !important;
@@ -20,9 +34,16 @@
         // width: 100%;
         // max-width: 1444px;
         position: relative;
-        border-radius: 16px;
+        border-radius: 1rem;
+        @include media-breakpoint-down(sm){
+            padding: 3rem .75rem 1rem .75rem !important;
+            width: 31.5rem;
+            h4{
+                text-align: left;
+            }
+        }
         @include media-breakpoint-down(xs){
-            padding: 3rem .75rem 1rem .75rem!important;
+            padding: 3rem .75rem 1rem .75rem !important;
             width: 16rem;
             h4{
                 text-align: center;
@@ -54,6 +75,13 @@
     background-repeat: no-repeat;
     background-position: 100% 30px;
     background-size: 35%;
+    @include media-breakpoint-down(sm){
+        padding: 3rem .75rem 1rem .75rem!important;
+        width: 31.5rem;
+        p{
+            max-width: 80%;
+        }
+    }
     @include media-breakpoint-down(xs){
         padding: 3rem .75rem 1rem .75rem!important;
         width: 16rem;

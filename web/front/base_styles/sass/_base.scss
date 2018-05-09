@@ -22,6 +22,7 @@ body {
     max-width: 90%;
     @include media-breakpoint-down(sm) {
         width: 90%;
+        margin-left: 1rem;
     }
     @include media-breakpoint-down(xs){
         margin-left: 1rem;
@@ -127,6 +128,55 @@ body.codigoQR{
     border-top: 1px solid $gray-400;
     padding: calc(1rem - 6px) 0;
     margin-top: calc(6rem + 4px);
+    @include media-breakpoint-down(sm){
+        width: 31.5rem;
+        .cpyR{
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: .825rem !important;
+        }
+        .links{
+            font-size: .825rem !important;
+        }
+        .ayudaForm{
+            padding-right: .5rem;
+            li{
+                .links{
+                    font-size: .825rem !important;
+                }
+            }
+        }
+        .imgForm{
+            position: relative;
+            left: 0rem;
+        }
+    }
+    @include media-breakpoint-down(xs){
+        width: 15rem;
+        .cpyR{
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: .625rem !important;
+        }
+        .links{
+            font-size: .625rem !important;
+        }
+        .ayudaForm{
+            padding: 0 !important;
+            margin-top: 20px !important;
+            li{
+                .links{
+                    font-size: .625rem !important;
+                    text-align: center;
+                }
+            }
+        }
+        .imgForm{
+            width: 5rem !important;
+            position: relative;
+            left: 1rem;
+        }
+    }
     .imgForm{
         width: calc(6rem + 5px);
         height: auto;

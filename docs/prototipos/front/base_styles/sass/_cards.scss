@@ -12,8 +12,22 @@
     margin: 32px;
     box-shadow: 0px 16px 32px -24px rgba(92,98,102,0.32), 0px 24px 43px -9px rgba(92,98,102,0.19);
     transition: .5s;
-    overflow-y: hidden;
-
+    overflow: hidden;
+    @include media-breakpoint-down(sm) {
+        left: 4.5rem;
+        p{
+            text-align: justify;
+        }
+    }
+    @include media-breakpoint-down(xs) {
+        padding: 0 !important;
+        left: 0;
+        margin: 1rem 0 !important;
+        width: 20rem;
+        p{
+            text-align: justify;
+        }
+    }
     .card-title {
         margin-bottom: 0.75rem;
         font-family: $primary-font;
@@ -55,11 +69,17 @@
         padding: 0 8px;
         font-weight: $font-weight-easy-medium;
         color: $gray-700;
+        @include media-breakpoint-down(xs) {
+            top: 9rem;
+        }
     }
 }
 
 .card-img-overlay {
     height: 50%;
+    @include media-breakpoint-down(xs) {
+        width: 100%;
+    }
     .alertTimeGood{
         background: $green;
     }
@@ -71,13 +91,33 @@
         color: $gray-100;
     }
 }
-
+.group{
+    @include media-breakpoint-down(sm) {
+        width: 31.5rem;
+    }
+    @include media-breakpoint-down(xs) {
+        width: 16.5rem;
+    }
+}
+.cards-section{
+    @include media-breakpoint-down(xs) {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 16rem !important;
+    }
+}
 .card-footer {
     position: relative;
     background-color: transparent;
     height: 8.5vh;
     transform: translateY(100%);
     transition: .5s;
+    @include media-breakpoint-down(xs) {
+        height: 6.5vh;
+        .textOpc{
+            font-size: .625rem;
+        }
+    }
 }
 
 .badge-wrap {
@@ -115,12 +155,25 @@
     @include media-breakpoint-down(xs) {
         display: block;
     }
+    
     .alertTimeGood{
         background: $green;
         border-radius: 50rem;
         padding: 0 calc(1rem - 8px);
         color: $gray-700;
         font-weight: $font-weight-medium;
+        @include media-breakpoint-down(sm) {
+            white-space: nowrap;
+            position: relative;
+            right: 5%;
+            font-size: .625rem;
+        }
+        @include media-breakpoint-down(xs) {
+            white-space: nowrap;
+            position: relative;
+            right: 85%;
+            font-size: .625rem;
+        }
     }
     .alertTimeWarning{
         background: $yellow;
@@ -128,6 +181,18 @@
         padding: 0 calc(1rem - 8px);
         color: $gray-700;
         font-weight: $font-weight-medium;
+        @include media-breakpoint-down(sm) {
+            white-space: nowrap;
+            position: relative;
+            right: 5%;
+            font-size: .625rem;
+        }
+        @include media-breakpoint-down(xs) {
+            white-space: nowrap;
+            position: relative;
+            right: 85%;
+            font-size: .625rem;
+        }
     }
     .alertTimeDanger{
         background: $red;
@@ -135,6 +200,18 @@
         border-radius: 50rem;
         padding: 0 calc(1rem - 8px);
         font-weight: $font-weight-medium;
+        @include media-breakpoint-down(sm) {
+            white-space: nowrap;
+            position: relative;
+            right: 5%;
+            font-size: .625rem;
+        }
+        @include media-breakpoint-down(xs) {
+            white-space: nowrap;
+            position: relative;
+            right: 85%;
+            font-size: .625rem;
+        }
     }
 }
 
@@ -149,8 +226,8 @@
     }
 
     @include media-breakpoint-down(sm) {
-        max-width: 400px;
-        height: 110px;
+        max-width: 470px;
+        height: 160px;
     }
     @include media-breakpoint-down(xs) {
         max-width: 15rem;
@@ -165,7 +242,7 @@
         width: 170px;
 
         @include media-breakpoint-down(sm) {
-            width: 120px;
+            width: 25%;
         }
         @include media-breakpoint-down(xs) {
             width: 100%;
@@ -178,7 +255,11 @@
 .card-hrz-body {
     width: 100%;
     padding: 1rem;
-
+    @include media-breakpoint-down(sm) {
+        .text-sm{
+            font-size: .725rem;
+        }
+    }
     h5 {
         font-weight: $font-weight-normal;
     }
@@ -192,9 +273,34 @@
         .progress-bar {
             background-color: $green;
         }
+        @include media-breakpoint-only(sm) {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            top: -.5rem;
+        }
     }
 }
 
+.card-hrz-right{
+    @include media-breakpoint-down(xs) {
+        .percent{
+            margin-top: 0 !important;
+            margin-bottom: 1rem;
+            .porcent-xs{
+                font-size: 1.5rem;
+                position: relative;
+                right: .5rem;
+            }
+        }
+        .btn-xs-cont{
+            position: relative;
+            right: 50%;
+            transform: translateX(-80%);
+        }
+    }
+}
 .card-mod {
     max-height: 100%;
     max-width: 100%;

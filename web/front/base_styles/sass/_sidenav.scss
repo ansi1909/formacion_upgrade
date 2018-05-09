@@ -10,7 +10,7 @@
     transition: 0.6s;
     padding-top: 30px;
     &::-webkit-scrollbar {
-        width: calc(1rem - 8px);
+        width: calc(1rem - 12px);
     }
     &::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -25,6 +25,9 @@
     @include media-breakpoint-down(xs){
         width: 40px;
     }
+    @include media-breakpoint-down(sm){
+        width: 40px;
+    }
 }
 
 .main-sidenav-open{
@@ -33,8 +36,17 @@
 
 #mainSidenav.main-sidenav-close{
     width: 40px;
-    overflow: hidden;
-
+    overflow: auto;
+    &::-webkit-scrollbar {
+        width: calc(1rem - 12px);
+    }
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-600;
+        outline: 1px solid $gray-850;
+    }
     a{
         padding-left: 8px;
     }
@@ -44,7 +56,10 @@
 #main.ml-10{
     margin-left: 9%;
     @include media-breakpoint-down(xs){
-        margin-left: 0%;
+        margin-left: 3% !important;
+    }
+    @include media-breakpoint-down(sm){
+        margin-left: 3% !important;
     }
 
  }
@@ -74,6 +89,12 @@ i.arrow {
         transform: rotate(-45deg);
         -webkit-transform: rotate(-45deg);
     }
+    @include media-breakpoint-down(sm){
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        position: relative;
+        left: .3rem;
+    }
 }
 
 
@@ -90,6 +111,9 @@ i.arrow {
     display: block;
     transition: 0.3s;
     @include media-breakpoint-down(xs){
+        padding: 8px;
+    }
+    @include media-breakpoint-down(sm){
         padding: 8px;
     }
 }
