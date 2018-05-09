@@ -582,7 +582,19 @@ class DefaultController extends Controller
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) {
 
-                    $noti.='<a href="aporte">';
+                    $noti.='<a href="#">';
+
+                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['noticia']) {
+
+                    $noti.='<a href="#">';
+
+                }elseif ($notificacion->getTipoAlarma()-getId() == $yml['parameters']['tipo_alarma']['novedad']) {
+
+                    $noti.='<a href="#">';
+
+                }elseif ($notificacion->getTipoAlarma()-getId() == $yml['parameters']['tipo_alarma']['biblioteca']) {
+
+                    $noti.='<a href="#">';
 
                 }
                     if ($notificacion->getLeido() == true) {
@@ -652,7 +664,8 @@ class DefaultController extends Controller
                                    'css'=>$alarma->getTipoAlarma()->getCss(),
                                    'icono'=>$alarma->getTipoAlarma()->getIcono(),
                                    'leido'=>$alarma->getLeido(),
-                                   'tipo'=>$alarma->getTipoAlarma()->getid());
+                                   'tipo'=>$alarma->getTipoAlarma()->getid(),
+                                   'entidad'=>$alarma->getEntidadId());
 
                 if($alarma->getLeido() == TRUE)
                 {
@@ -660,14 +673,17 @@ class DefaultController extends Controller
                                    'descripcion'=>$alarma->getDescripcion(),
                                    'css'=>$alarma->getTipoAlarma()->getCss(),
                                    'icono'=>$alarma->getTipoAlarma()->getIcono(),
-                                   'tipo'=>$alarma->getTipoAlarma()->getid());
+                                   'tipo'=>$alarma->getTipoAlarma()->getid(),
+                                   'entidad'=>$alarma->getEntidadId());
 
                 }elseif ($alarma->getLeido() == FALSE) 
                 {
                     $no_leidas[] =array('id'=>$alarma->getId(),
                                    'descripcion'=>$alarma->getDescripcion(),
                                    'css'=>$alarma->getTipoAlarma()->getCss(),
-                                   'tipo'=>$alarma->getTipoAlarma()->getid());
+                                   'icono'=>$alarma->getTipoAlarma()->getIcono(),
+                                   'tipo'=>$alarma->getTipoAlarma()->getid(),
+                                   'entidad'=>$alarma->getEntidadId());
                 }
             }
 

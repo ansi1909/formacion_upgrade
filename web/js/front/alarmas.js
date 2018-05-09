@@ -3,6 +3,11 @@ $(document).ready(function() {
    getAlarma();
    getNotificaciones();
 
+   $('.click').click(function(){
+        var noti_id = $(this).attr('data');
+        getLeido(noti_id);
+    });
+
 });
 
 var timer;
