@@ -395,4 +395,107 @@ class ColaborativoController extends Controller
 
     }
 
+    public function ajaxSaveForoResponseAction(Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $em = $this->getDoctrine()->getManager();
+        $html = '';
+
+        // Recepción de parámetros del request
+        $foro_id = $request->request->get('foro_id');
+        $mensaje = $request->request->get('mensaje');
+        $foro_main_id = $request->request->get('foro_main_id');
+
+        // Preparando entidades de almacenamiento
+        $foro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $foro_main = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_main_id);
+
+        $foro = new CertiForo();
+        $foro->setTema($foro_padre->getTema());
+        $foro->setMensaje($mensaje);
+        $foro->setPagina($foro_padre->getPagina());
+        $foro->setEmpresa($foro_padre->getEmpresa());
+        $foro->setForo($foro_padre);
+        $foro->setUsuario($usuario);
+        $foro->setFechaRegistro(new \DateTime('now'));
+        $foro->setFechaPublicacion(new \DateTime('now'));
+        $foro->setFechaVencimiento($foro_padre->getFechaVencimiento());
+        $em->persist($foro);
+        $em->flush();
+
+        // Generación de alarmas
+        if ($foro_main->getUsuario()->getId() != $usuario->getId() && $foro_main->getId() == $foro->getForo()->getId())
+        {
+            $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha comentado en el espacio colaborativo de').' '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
+            $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion, $foro_main->getUsuario(), $foro_main->getId());
+        }
+
+        if ($foro_id == $foro_main_id)
+        {
+            // Respuesta
+            $html .= '<li class="f-card-det">
+                        <div class="cont-det">';
+        }
+        else {
+            // Re-Respuesta
+            $html .= '<div class="row resp-rply justify-content-center">
+                        <div class="col-12 text-justify">';
+        }
+
+        $img_user = $usuario->getFoto() ? $this->container->getParameter('folders')['uploads'].$usuario->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
+
+        $html .= '<div class="row justify-content-between">
+                    <div class="col-auto">
+                        <img class="img-ec-det" src="'.$img_user.'" alt="">
+                        <span class="name_ft">'.$this->get('translator')->trans('Yo').' <span class="coment_ft">'.$this->get('translator')->trans('Ahora').'</span></span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="text-right">
+                            <a href="#"><span class="material-icons ic-del" data="'.$foro->getId().'">delete</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-12 text-justify">'.$foro->getMensaje().'</div>
+                </div>
+                <div class="row align-items-end foo-esp_col-det justify-content-between">
+                    <div class="col-auto">
+                        <span class="like_ft like" data="'.$foro->getId().'"><i class="material-icons ic-lke">thumb_up</i> 0</span>
+                    </div>';
+
+        if ($foro_id == $foro_main_id)
+        {
+            // Botón de responder
+            $html .= '<div class="col-auto">
+                            <a href="#" data-toggle="modal" data-target="#modalresp" class="reResponse" data="'.$foro->getId().'">
+                                <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>'.$this->get('translator')->trans('Responder').'</span>
+                            </a>
+                        </div>';
+        }
+
+        $html .= '</div>';
+
+        if ($foro_id == $foro_main_id)
+        {
+            $html .= '<div id="div_addReResponse'.$foro->getId().'">
+                        </div>
+                    </div>
+                </li>';
+        }
+        else {
+            $html .= '</div>
+                    </div>';
+        }
+
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
 }

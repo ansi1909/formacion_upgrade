@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+	var foro_main_id = $('#foro_main_id').val();
+
 	CKEDITOR.replace( 'mensaje_response',
 	{
 		toolbar : 'MyToolbar',
@@ -25,7 +27,8 @@ $(document).ready(function() {
         }
         else {
             $('#mensaje_content').val(editor_data);
-            saveForo(0,$('#foro_main_id').val());
+            saveForo(foro_main_id, foro_main_id);
+            CKEDITOR.instances.mensaje_response.setData('');
         }
 
     });
@@ -134,7 +137,7 @@ function observeTopic(newTopic)
 
 }
 
-function saveForo(modal, foro_id)
+function saveForo(foro_id, foro_main_id)
 {
 	$('.mensaje-error, .boton').hide();
     $('#wait').show(1000);
@@ -142,16 +145,24 @@ function saveForo(modal, foro_id)
         type: "POST",
         url: $('#url_save').val(),
         async: true,
-        data: $("#form").serialize(),
+        data: { foro_id: foro_id, mensaje: $('#mensaje_content').val(), foro_main_id: foro_main_id },
         dataType: "json",
         success: function(data) {
-            location.reload();
+        	if (foro_id == foro_main_id)
+        	{
+        		$('#div_addResponse').append(data.html);
+        	}
+        	else {
+        		$('#div_addReResponse').append(data.html);
+        	}
+        	$('#mensaje_content').val('');
+        	$('.boton').show();
+            $('#wait').hide(1000);
         },
         error: function(){
-            console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
-            $('#publicar').show();
-            $('#cancelar').show();
+            console.log('Error guardando la respuesta al espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
+            $('.boton').show();
             $('#wait').hide(1000);
         }
-    });*/
+    });
 }
