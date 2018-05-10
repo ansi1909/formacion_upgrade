@@ -1,37 +1,42 @@
 $(document).ready(function() {
 
-	var subpagina_id = $('#subpagina_id').val();
+	CKEDITOR.replace( 'mensaje_response',
+	{
+		toolbar : 'MyToolbar',
+		on: {
+	        focus: function() {
+	        	$('.mensaje-error').hide();
+	        }
+	    }
+	});
 
-	CKEDITOR.replace( 'mensaje',
+	CKEDITOR.replace( 'mensaje_reResponse',
 	{
 		toolbar : 'MyToolbar'
 	});
 
-	$('#fechaPublicacion').datepicker({
-	    startView: 1,
-	    autoclose: true,
-	    format: 'dd/mm/yyyy',
-	    language: 'es',
-	    startDate: '0d',
-	    clearBtn: true
-	})
-	.on( "changeDate", function(selected) {
-		var startDate = new Date(selected.date.valueOf());
-    	$('#fechaVencimiento').datepicker('setStartDate', startDate);
+	$('#publicar').click(function(){
+        
+        var editor_data = CKEDITOR.instances.mensaje_response.getData();
+        var contenido = editor_data.replace(/<[^>]+>/g, '');
+        
+        if (contenido == ""){
+            $('#mensaje-error-response').show();
+        }
+        else {
+            $('#mensaje_content').val(editor_data);
+            saveForo(0,$('#foro_main_id').val());
+        }
+
     });
 
-	$('#fechaVencimiento').datepicker({
-	    startView: 1,
-	    autoclose: true,
-	    format: 'dd/mm/yyyy',
-	    language: 'es',
-	    startDate: '0d',
-	    clearBtn: true
-	})
-	.on( "changeDate", function(selected) {
-		var endDate = new Date(selected.date.valueOf());
-    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
-	});
+	$('.iframe-btn').fancybox({	
+		'width'		: 900,
+		'height'	: 900,
+		'type'		: 'iframe',
+        'autoScale' : false,
+		'autoSize'	: false
+    });
 
 	$('#cancelar').click(function(){
 		$('#section-form').hide(1000);
@@ -45,28 +50,7 @@ $(document).ready(function() {
 		observeTopic($(this));
 	});
 
-	$(".table-card").paginate({
-        perPage: 10,
-        autoScroll: false,
-        paginatePosition: ['bottom'],
-        useHashLocation: true,
-        onPageClick: function() {
-        	$('html, body').animate({
-			    scrollTop: 0
-			},2000);
-        }
-    });
-
-    $( "#search" ).autocomplete({
-    	source: $('#url_search').val(),
-      	minLength: 3,
-      	select: function( event, ui ) {
-        	//console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
-        	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
-      	}
-    });
-
-    $('.deleteTopic').click(function(){
+	$('.deleteTopic').click(function(){
     	var foro_id = $(this).attr('data');
     	var tema = $(this).attr('tema');
     	$('#foro_delete_id').val(foro_id);
@@ -150,16 +134,13 @@ function observeTopic(newTopic)
 
 }
 
-function saveForo()
+function saveForo(modal, foro_id)
 {
-	$('label.mensaje-error').hide();
-    $('#publicar').hide();
-    $('#cancelar').hide();
+	$('.mensaje-error, .boton').hide();
     $('#wait').show(1000);
-    var foro_id = $('#foro_id').val();
     $.ajax({
         type: "POST",
-        url: $('#form').attr('action'),
+        url: $('#url_save').val(),
         async: true,
         data: $("#form").serialize(),
         dataType: "json",
@@ -172,5 +153,5 @@ function saveForo()
             $('#cancelar').show();
             $('#wait').hide(1000);
         }
-    });
+    });*/
 }

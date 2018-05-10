@@ -297,6 +297,12 @@ class ColaborativoController extends Controller
 
         $foros_hijos = $f->forosHijos($foro_id, 0, 5, $session->get('usuario'), $yml['parameters']['social']['espacio_colaborativo']);
 
+        // Total aportes de este espacio
+        $query = $em->createQuery('SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f 
+                                    WHERE f.foro = :foro_id')
+                    ->setParameter('foro_id', $foro_id);
+        $total_aportes = $query->getSingleScalarResult();
+
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$foro->getPagina()->getId()]);
 
@@ -325,7 +331,8 @@ class ColaborativoController extends Controller
                                                                                         'timeAgo' => $timeAgo,
                                                                                         'foros_hijos' => $foros_hijos,
                                                                                         'subpagina_id' => $subpagina_id,
-                                                                                        'menu_str' => $menu_str,));
+                                                                                        'menu_str' => $menu_str,
+                                                                                        'total_aportes' => $total_aportes));
 
     }
 
