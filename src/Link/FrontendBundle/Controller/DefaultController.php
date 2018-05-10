@@ -588,11 +588,11 @@ class DefaultController extends Controller
 
                     $noti.='<a href="#">';
 
-                }elseif ($notificacion->getTipoAlarma()-getId() == $yml['parameters']['tipo_alarma']['novedad']) {
+                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['novedad']) {
 
                     $noti.='<a href="#">';
 
-                }elseif ($notificacion->getTipoAlarma()-getId() == $yml['parameters']['tipo_alarma']['biblioteca']) {
+                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['biblioteca']) {
 
                     $noti.='<a href="#">';
 

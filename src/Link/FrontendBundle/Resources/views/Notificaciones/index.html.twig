@@ -106,6 +106,82 @@
                                     <li class="f-table-notify">
                                 {% endif %}
                             {% endif%}
+                    {% elseif toda.tipo == 4 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{toda.id}}">
+                            {% if toda.leido == FALSE %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                            {% else %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiLast ">
+                                {% else %}
+                                    <li class="f-table-notify">
+                                {% endif %}
+                            {% endif%}
+                    {% elseif toda.tipo == 5 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{toda.id}}">
+                            {% if toda.leido == FALSE %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                            {% else %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiLast ">
+                                {% else %}
+                                    <li class="f-table-notify">
+                                {% endif %}
+                            {% endif%}
+                    {% elseif toda.tipo == 6 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{toda.id}}">
+                            {% if toda.leido == FALSE %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                            {% else %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiLast ">
+                                {% else %}
+                                    <li class="f-table-notify">
+                                {% endif %}
+                            {% endif%}
+                    {% elseif toda.tipo == 7 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{toda.id}}">
+                            {% if toda.leido == FALSE %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                            {% else %}
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiLast ">
+                                {% else %}
+                                    <li class="f-table-notify">
+                                {% endif %}
+                            {% endif%}
                     {% endif %}       
                         <div class="row justify-content-between">
                             <div class="col-12 d-flex">
@@ -147,7 +223,43 @@
                                     <li class="f-table-notify notiSinLeer notiLast">
                                 {% else %}
                                     <li class="f-table-notify notiSinLeer">
-                                {% endif %}                            
+                                {% endif %}  
+                    {% elseif no_leido.tipo == 4 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{no_leido.id}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                    {% elseif no_leido.tipo == 5 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{no_leido.id}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                    {% elseif no_leido.tipo == 6 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{no_leido.id}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                    {% elseif no_leido.tipo == 7 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{no_leido.id}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}             
                     {% endif %}       
                         <div class="row justify-content-between">
                             <div class="col-12 d-flex">
@@ -189,7 +301,43 @@
                                     <li class="f-table-notify  notiLast">
                                 {% else %}
                                     <li class="f-table-notify ">
-                                {% endif %}                            
+                                {% endif %}     
+                    {% elseif leido.tipo == 4 %}
+                        <a href="#">
+                                {% if loop.first %}
+                                    <li class="f-table-notify  notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify  notiLast">
+                                {% else %}
+                                    <li class="f-table-notify ">
+                                {% endif %}
+                    {% elseif leido.tipo == 5 %}
+                        <a href="#">
+                                {% if loop.first %}
+                                    <li class="f-table-notify  notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify  notiLast">
+                                {% else %}
+                                    <li class="f-table-notify ">
+                                {% endif %}
+                    {% elseif leido.tipo == 6 %}
+                        <a href="#">
+                                {% if loop.first %}
+                                    <li class="f-table-notify  notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify  notiLast">
+                                {% else %}
+                                    <li class="f-table-notify ">
+                                {% endif %}
+                    {% elseif leido.tipo == 7 %}
+                        <a href="#">
+                                {% if loop.first %}
+                                    <li class="f-table-notify  notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify  notiLast">
+                                {% else %}
+                                    <li class="f-table-notify ">
+                                {% endif %}
                     {% endif %}       
                         <div class="row justify-content-between">
                             <div class="col-12 d-flex">
