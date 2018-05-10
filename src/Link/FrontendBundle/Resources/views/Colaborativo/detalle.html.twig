@@ -96,6 +96,8 @@
     <input type="hidden" id="foro_id" name="foro_id" value="0">
     <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
     <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
+    <input type="hidden" id="offset" name="offset" value="0">
+    <input type="hidden" id="url_save" name="url_save" value="{{ path('_ajaxSaveForoResponse') }}">
 
     <section>
         <div class="modal modal-resp" id="modalresp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,22 +114,22 @@
                         <h4 class="titulo">{{ 'Responder publicación'|trans }}</h4>
                     </div>
                 </div>
-                <form id="form-reResponse" action="{{ path('_ajaxSaveForoResponse') }}" method="POST">
+                <form id="form-reResponse" method="POST">
                     <div class="row pl-3 align-items-center justify-content-center">
                         <div class="form-group">
                             <div class="col-12">
                                 <label class="mb-2 titulo-form" for="mensaje"> {{ 'Tu respuesta'|trans }}: </label>
-                                <textarea rows="3" id="mensaje-reResponse" name="mensaje-reResponse" cols="30"></textarea>
-                                <label id="mensaje-error-reResponse" class="mensaje-error" for="mensaje-reResponse" style="display:none;">{{ 'Este campo es requerido.'|trans }}</label>
+                                <textarea rows="3" id="mensaje_reResponse" name="mensaje_reResponse" cols="30"></textarea>
+                                <label id="mensaje-error-reResponse" class="mensaje-error" for="mensaje_reResponse" style="display:none;">{{ 'Este campo es requerido.'|trans }}</label>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3 align-items-center justify-content-end">
                         <div class="col-auto text-left">
-                            <button type="button" class="btn btn-warning cancelar">{{ 'Cancelar'|trans }}</button>
+                            <button type="button" class="btn btn-warning boton">{{ 'Cancelar'|trans }}</button>
                         </div>
                         <div class="col-auto text-right">
-                            <button type="button" class="btn btn-primary publicar">{{ 'Responder'|trans }}</button>
+                            <button type="button" class="btn btn-primary boton">{{ 'Responder'|trans }}</button>
                         </div>
                     </div>
                 </form>
@@ -230,20 +232,29 @@
                         </div>
                     </li>
                 {% endfor %}
+                {% if total_aportes > foros_hijos|length %}
+                    <li class="f-card-det-resp">
+                        <div class="row mt-0 mb-3 align-items-center justify-content-center">
+                            <div class="col-auto">
+                                <a href="#" class="link more_sons"><i class="material-icons ic-plus">add</i>{{ 'Ver más'|trans }} </a> 
+                            </div>
+                        </div>
+                    </li>
+                {% endif %}
                 <li class="f-card-det-resp">
-                    <form id="form-response" action="{{ path('_ajaxSaveForoResponse') }}" method="POST">
+                    <form id="form-response" method="POST">
                         <div class="row align-items-center justify-content-center">
                             <div class="form-group">
                                 <div class="col-12">
                                     <label class="mb-2 titulo-form" for="mensaje"> {{ 'Tu respuesta'|trans }}: </label>
-                                    <textarea rows="3" id="mensaje-response" name="mensaje-response" cols="30"></textarea>
-                                    <label id="mensaje-error-response" class="mensaje-error" for="mensaje-response" style="display:none;">{{ 'Este campo es requerido.'|trans }}</label>
+                                    <textarea rows="3" id="mensaje_response" name="mensaje_response" cols="30"></textarea>
+                                    <label id="mensaje-error-response" class="mensaje-error" for="mensaje_response" style="display:none;">{{ 'Este campo es requerido.'|trans }}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="row align-items-center justify-content-end">
                             <div class="col-auto text-right">
-                                <button type="button" class="btn btn-primary publicar">{{ 'Responder'|trans }}</button>
+                                <button type="button" class="btn btn-primary boton" id="publicar">{{ 'Responder'|trans }}</button>
                             </div>
                         </div>
                     </form>
@@ -260,7 +271,7 @@
         </div>
     </div>
 
-    <div class="downloads"  >
+    <!--<div class="downloads"  >
         <div class="d-flex px-3 row justify-content-between">
             <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto">
                 <h5 class="color-grey text-left titulo">Descargas</h5>
@@ -342,7 +353,7 @@
                 </a>
             </ul>
         </div>
-    </div>
+    </div>-->
 
     <!-- Modal Eliminar Tema -->
     <div class="modal modalCEval" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -367,6 +378,10 @@
         </div>
     </div>
 
+    <!--
+    http://localhost/formacion2.0/web/app_dev.php/espacioColaborativo/detalle/4/14
+    -->
+
 {% endblock %}
 
 {% block javascripts %}
@@ -374,57 +389,6 @@
     <script type="text/javascript" src="{{ asset('front/js/esp_col.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/front/espacio_colaborativo.js') }}"></script>
-    <script type="text/javascript">
-
-        $('.form-control').focus(function(){
-            $('label.error').hide();
-        });
-
-        $('#publicar').click(function(){
-            var valid = $("#form").valid();
-            if (valid) 
-            {
-                // Validaciones adicionales
-                var editor_data = CKEDITOR.instances.mensaje.getData();
-                var contenido = editor_data.replace(/<[^>]+>/g, '');
-                
-                if (contenido == ""){
-                    $('#mensaje-error').show();
-                }
-                else {
-                    $('#mensaje_content').val(editor_data);
-                    saveForo();
-                }
-            }
-        });
-
-        $("#form").validate({
-            rules: {
-                'tema': {
-                    required: true,
-                    minlength: 10
-                },
-                'fechaPublicacion': {
-                    required: true
-                },
-                'fechaVencimiento': {
-                    required: true
-                }
-            },
-            messages: {
-                'tema': {
-                    required: "{{ 'El título es requerido.'|trans }}",
-                    minlength: "{{ 'El título debe contener al menos 10 caracteres'|trans }}"
-                },
-                'fechaPublicacion': {
-                    required: "{{ 'Debe seleccionar una fecha de publicación.'|trans }}"
-                },
-                'fechaVencimiento': {
-                    required: "{{ 'Debe seleccionar una fecha de vencimiento.'|trans }}"
-                }
-            }
-        });
-
-    </script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/detalle_espacio_colaborativo.js') }}"></script>
 {% endblock %}

@@ -29,3 +29,9 @@ _ajaxDeleteForo:
     defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxDeleteForo }
     requirements:
         method: POST
+
+_ajaxSaveForoResponse:
+    path:     /ajaxSaveForoResponse
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForoResponse }
+    requirements:
+        _method: POST

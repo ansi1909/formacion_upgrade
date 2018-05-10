@@ -50,48 +50,60 @@
             <ul class="table-card-notify contents">
                 {% for toda in todas %}
                     {% if toda.tipo == '1' %}
-                        <a href="#" data-toggle="modal" data-target="#modalMn">
+                        <a href="#" data-toggle="modal" data-target="#modalMn" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
                                     <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
                                 {% else %}
                                     <li class="f-table-notify notiSinLeer">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
                                     <li class="f-table-notify notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiLast ">
                                 {% else %}
-                                    <li class="f-table-notify ">
+                                    <li class="f-table-notify">
                                 {% endif %}
                             {% endif%}
                     {% elseif toda.tipo == 2 %} 
-                        <a href="#">
+                        <a href="{{ path('_espacioColaborativo', { 'programa_id': toda.entidad }) }}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
                                     <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
                                 {% else %}
                                     <li class="f-table-notify notiSinLeer">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
                                     <li class="f-table-notify notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiLast ">
                                 {% else %}
-                                    <li class="f-table-notify ">
+                                    <li class="f-table-notify">
                                 {% endif %}
                             {% endif%}
                     {% elseif toda.tipo == 3 %}
-                        <a href="#">
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
                                     <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
                                 {% else %}
                                     <li class="f-table-notify notiSinLeer">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
                                     <li class="f-table-notify notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiLast ">
                                 {% else %}
-                                    <li class="f-table-notify ">
+                                    <li class="f-table-notify">
                                 {% endif %}
                             {% endif%}
                     {% endif %}       
@@ -106,334 +118,90 @@
                     </li>
                 </a>
                 {% endfor %}
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#" data-toggle="modal" data-target=".modalMn">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify muroSticker"><i class="material-icons icNotify">mail</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ectSticker"><i class="material-icons icNotify">speaker_notes</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ecpSticker"><i class="material-icons icNotify">insert_comment</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiLast">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer notiUnik">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify biblioSticker"><i class="material-icons icNotify">import_contacts</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
             </ul>
             <ul class="table-card-notify contents">
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer notiFirst">
+                {% for no_leido in no_leidas %}
+                    {% if no_leido.tipo == '1' %}
+                        <a href="#" data-toggle="modal" data-target="#modalMn" class="click" data="{{no_leido.id}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}
+                    {% elseif no_leido.tipo == 2 %} 
+                        <a href="{{ path('_espacioColaborativo', { 'programa_id': no_leido.entidad }) }}" class="click" data="{{no_leido.id}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}        
+                    {% elseif no_leido.tipo == 3 %}
+                        <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{no_leido.id}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify notiSinLeer notiLast">
+                                {% else %}
+                                    <li class="f-table-notify notiSinLeer">
+                                {% endif %}                            
+                    {% endif %}       
                         <div class="row justify-content-between">
                             <div class="col-12 d-flex">
-                                <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
+                                <span class="stickerNotify {{no_leido.css}}"><i class="material-icons icNotify">{{no_leido.icono}}</i></span>
                                 <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                    {{no_leido.descripcion}}
                                 </p>
                             </div>
                         </div>
                     </li>
                 </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ectSticker"><i class="material-icons icNotify">speaker_notes</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify biblioSticker"><i class="material-icons icNotify">import_contacts</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ectSticker"><i class="material-icons icNotify">speaker_notes</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify biblioSticker"><i class="material-icons icNotify">import_contacts</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ectSticker"><i class="material-icons icNotify">speaker_notes</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiSinLeer notiLast">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify biblioSticker"><i class="material-icons icNotify">import_contacts</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
+                {% endfor %}
             </ul>
             <ul class="table-card-notify contents">
-                <a href="#" data-toggle="modal" data-target=".modalMn">
-                    <li class="f-table-notify notiFirst">
+                {% for leido in leidas %}
+                    {% if leido.tipo == '1' %}
+                        <a href="#" data-toggle="modal" data-target="#modalMn">
+                                {% if loop.first %}
+                                    <li class="f-table-notify  notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify  notiLast">
+                                {% else %}
+                                    <li class="f-table-notify ">
+                                {% endif %}
+                    {% elseif leido.tipo == 2 %} 
+                        <a href="{{ path('_espacioColaborativo', { 'programa_id': leido.entidad }) }}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify  notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify  notiLast">
+                                {% else %}
+                                    <li class="f-table-notify ">
+                                {% endif %}        
+                    {% elseif leido.tipo == 3 %}
+                        <a href="{{ path('_calendarioDeEventos')}}">
+                                {% if loop.first %}
+                                    <li class="f-table-notify  notiFirst">
+                                {% elseif loop.last %}
+                                    <li class="f-table-notify  notiLast">
+                                {% else %}
+                                    <li class="f-table-notify ">
+                                {% endif %}                            
+                    {% endif %}       
                         <div class="row justify-content-between">
                             <div class="col-12 d-flex">
-                                <span class="stickerNotify muroSticker"><i class="material-icons icNotify">mail</i></span>
+                                <span class="stickerNotify {{leido.css}}"><i class="material-icons icNotify">{{leido.icono}}</i></span>
                                 <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
+                                    {{leido.descripcion}}
                                 </p>
                             </div>
                         </div>
                     </li>
                 </a>
-                <a href="#">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ecpSticker"><i class="material-icons icNotify">insert_comment</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#" data-toggle="modal" data-target=".modalMn">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify muroSticker"><i class="material-icons icNotify">mail</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ecpSticker"><i class="material-icons icNotify">insert_comment</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#" data-toggle="modal" data-target=".modalMn">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify muroSticker"><i class="material-icons icNotify">mail</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify ecpSticker"><i class="material-icons icNotify">insert_comment</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="f-table-notify notiLast">
-                        <div class="row justify-content-between">
-                            <div class="col-12 d-flex">
-                                <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
-                                <p class="txt-desc-notify">
-                                    Aquí van las primeras lineas de este hilo Anything suspicious? Well... then should we go? Any uh... Cartel news these days? Seem …
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </a>
+                {% endfor %}
             </ul>
         </div>    
     </section>
