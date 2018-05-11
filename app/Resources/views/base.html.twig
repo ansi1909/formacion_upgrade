@@ -31,12 +31,12 @@
 
         {% set uri = app.request.getbasepath %}
         <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+        <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
+        <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
         
         {# HEADER #}
         <header>
             {% block header %}
-            <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
-            <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
             <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
                 <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
@@ -174,20 +174,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column">
-                        <div class="wrapperDdNotify" >
-                            <a href="#" id="notify">
-                                <div class="notify">
-                                    <i class="material-icons mr-3 color-light-grey">notifications</i>
-                                    <div class="sonar" id="sonar" style="display: none;"></div>
-                                </div>
-                            </a>
-                            <span class="markNotify"></span>
-                            <ul class="dropDownNotify" id="noti" >
-                                
-                            </ul>
-                        </div>
-                    </div>
+                    {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
                     <div class=" d-flex flex-column ">
                         <div class="wrapperDdMenu">
                             <a href="#" class="perfil no-decorate" id="config">
