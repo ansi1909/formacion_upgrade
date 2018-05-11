@@ -464,7 +464,7 @@ class ColaborativoController extends Controller
                 </div>
                 <div class="row align-items-end foo-esp_col-det justify-content-between">
                     <div class="col-auto">
-                        <span class="like_ft like" data="'.$foro->getId().'"><i class="material-icons ic-lke">thumb_up</i> 0</span>
+                        <span class="like_ft like" data="'.$foro->getId().'"><i id="like'.$foro->getId().'" class="material-icons ic-lke">thumb_up</i> <span id="cantidad_like-'.$foro->getId().'">0</span></span>
                     </div>';
 
         if ($foro_id == $foro_main_id)

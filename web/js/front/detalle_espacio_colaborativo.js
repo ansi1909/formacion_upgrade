@@ -105,7 +105,36 @@ $(document).ready(function() {
 	    });
     });
 
+    observeLike();
+
 });
+
+function observeLike()
+{
+	$('.like').unbind('click');
+	$('.like').click(function(){
+		var foro_id = $(this).attr('data');
+		$('#like'+foro_id).removeClass('ic-lke-act');
+		$.ajax({
+			type: "POST",
+			url: $('#url_like').val(),
+			async: true,
+			data: { social_id: 2, entidad_id: foro_id, usuario_id: $('#usuario_id').val() },
+			dataType: "json",
+			success: function(data) {
+				if (data.ilike)
+				{
+					$('#like'+foro_id).addClass('ic-lke-act');
+				}
+				$('#cantidad_like-'+foro_id).html(data.cantidad);
+				//clearTimeout( timerId );
+			},
+			error: function(){
+				console.log('Error en like'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
+	});
+}
 
 function observeTopic(newTopic)
 {
@@ -183,6 +212,7 @@ function saveForo(foro_id, foro_main_id)
 				    scrollTop: ($('#div_addReResponse'+foro_id).offset().top-100)
 				},1000);
         	}
+        	observeLike();
         	$('#mensaje_content').val('');
         	$('.boton').show();
             $('#wait').hide(1000);

@@ -98,6 +98,8 @@
     <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
     <input type="hidden" id="offset" name="offset" value="0">
     <input type="hidden" id="url_save" name="url_save" value="{{ path('_ajaxSaveForoResponse') }}">
+    <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+    <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
 
     <section>
         <div class="modal modal-resp" id="modalresp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -157,7 +159,7 @@
                         </div>
                         <div class="row align-items-end foo-esp_col-det justify-content-between">
                             <div class="col-auto">
-                                <span class="like_ft like" data="{{ foro.id }}"><i class="material-icons ic-lke {{ likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> {{ likes.cantidad }}</span>
+                                <span class="like_ft like" data="{{ foro.id }}"><i id="like{{ foro.id }}" class="material-icons ic-lke {{ likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="cantidad_like-{{ foro.id }}">{{ likes.cantidad }}</span></span>
                             </div>
                             <div class="col-auto">
                                 <a href="#" class="resp-down">
@@ -193,7 +195,7 @@
                             </div>
                             <div class="row align-items-end foo-esp_col-det justify-content-between">
                                 <div class="col-auto">
-                                    <span class="like_ft like" data="{{ foro_hijo.id }}"><i class="material-icons ic-lke {{ foro_hijo.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> {{ foro_hijo.likes.cantidad }}</span>
+                                    <span class="like_ft like" data="{{ foro_hijo.id }}"><i id="like{{ foro_hijo.id }}" class="material-icons ic-lke {{ foro_hijo.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="cantidad_like-{{ foro_hijo.id }}">{{ foro_hijo.likes.cantidad }}</span></span>
                                 </div>
                                 <div class="col-auto">
                                     <a href="#" data-toggle="modal" data-target="#modalresp" class="reResponse" data="{{ foro_hijo.id }}">
@@ -225,7 +227,7 @@
                                         </div>
                                         <div class="row align-items-end foo-esp_col-det justify-content-between">
                                             <div class="col-auto">
-                                                <span class="like_ft like" data="{{ foro_nieto.id }}"><i class="material-icons ic-lke {{ foro_nieto.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> {{ foro_nieto.likes.cantidad }}</span>
+                                                <span class="like_ft like" data="{{ foro_nieto.id }}"><i id="like{{ foro_nieto.id }}" class="material-icons ic-lke {{ foro_nieto.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="cantidad_like-{{ foro_nieto.id }}">{{ foro_nieto.likes.cantidad }}</span></span>
                                             </div>
                                         </div>
                                     </div>
