@@ -400,7 +400,7 @@ class Functions
 			elseif ($datetime1->format('Y-m-d') == $hoy) {
 				if ($interval->format('%h') > 1)
 				{
-					$time_ago = $datetime1->format('H:i');
+					$time_ago = $this->translator->trans('Hoy a las').' '.$datetime1->format('H:i');
 				}
 				else {
 					$time_ago = 'Hace '.$interval->format('%i').' '.$this->translator->trans('minutos');
@@ -2251,7 +2251,7 @@ public function iniciarSesionAdmin($datos)
                 $foros_nietos[] = array('id' => $foro_nieto->getId(),
                                         'usuario' => $autor_nieto,
                                         'foto' => $foro_nieto->getUsuario()->getFoto(),
-                                        'timeAgo' => $this->sinceTime($foro_nieto->getFechaPublicacion()->format('Y-m-d H:i:s')),
+                                        'timeAgo' => $this->sinceTime($foro_nieto->getFechaRegistro()->format('Y-m-d H:i:s')),
                                         'mensaje' => $foro_nieto->getMensaje(),
                                         'likes' => $this->likes($social_colaborativo, $foro_nieto->getId(), $usuario['id']),
                                         'delete_link' => $delete_link);
@@ -2261,7 +2261,7 @@ public function iniciarSesionAdmin($datos)
             $foros_hijos[] = array('id' => $foro_hijo->getId(),
                                    'usuario' => $autor,
                                    'foto' => $foro_hijo->getUsuario()->getFoto(),
-                                   'timeAgo' => $this->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s')),
+                                   'timeAgo' => $this->sinceTime($foro_hijo->getFechaRegistro()->format('Y-m-d H:i:s')),
                                    'mensaje' => $foro_hijo->getMensaje(),
                                    'likes' => $this->likes($social_colaborativo, $foro_hijo->getId(), $usuario['id']),
                                    'delete_link' => $delete_link,

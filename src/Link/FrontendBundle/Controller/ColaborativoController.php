@@ -76,7 +76,7 @@ class ColaborativoController extends Controller
                     $total_comentarios = $query->getSingleScalarResult();
                     $name_ft = $foro_hijo->getUsuario()->getNombre().' '.$foro_hijo->getUsuario()->getApellido();
                     $coment_f = 1;
-                    $coment_f_span = $f->sinceTime($foro_hijo->getFechaPublicacion()->format('Y-m-d H:i:s'));
+                    $coment_f_span = $f->sinceTime($foro_hijo->getFechaRegistro()->format('Y-m-d H:i:s'));
                     $resp_ft = $total_comentarios;
                 }
             }
@@ -293,7 +293,7 @@ class ColaborativoController extends Controller
 
         $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
         $likes = $f->likes($yml['parameters']['social']['espacio_colaborativo'], $foro->getId(), $session->get('usuario')['id']);
-        $timeAgo = $f->sinceTime($foro->getFechaPublicacion()->format('Y-m-d H:i:s'));
+        $timeAgo = $f->sinceTime($foro->getFechaRegistro()->format('Y-m-d H:i:s'));
 
         $foros_hijos = $f->forosHijos($foro_id, 0, 5, $session->get('usuario'), $yml['parameters']['social']['espacio_colaborativo']);
 

@@ -104,7 +104,7 @@
             <div class="container-fluid">
                 <div class="row align-items-center justify-content-end">
                     <div class="col-auto">
-                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                        <a class="close btn_close_modal cancel" data-dismiss="modal" aria-label="Close">
                             <span class="material-icons ic-close-white" aria-hidden="true">close</span>
                         </a>
                     </div>
@@ -126,10 +126,10 @@
                     </div>
                     <div class="row mb-3 align-items-center justify-content-end">
                         <div class="col-auto text-left">
-                            <button type="button" class="btn btn-warning boton">{{ 'Cancelar'|trans }}</button>
+                            <button type="button" class="btn btn-warning boton cancel" data-dismiss="modal" id="cancelar">{{ 'Cancelar'|trans }}</button>
                         </div>
                         <div class="col-auto text-right">
-                            <button type="button" class="btn btn-primary boton">{{ 'Responder'|trans }}</button>
+                            <button type="button" class="btn btn-primary boton" id="responder">{{ 'Responder'|trans }}</button>
                         </div>
                     </div>
                 </form>
@@ -167,6 +167,8 @@
                         </div>
                     </div>
                 </li>
+            </ul>
+            <ul class="table-card-det">
                 {% for foro_hijo in foros_hijos %}
                     <li class="f-card-det">
                         <div class="cont-det">

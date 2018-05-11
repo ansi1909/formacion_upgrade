@@ -1,11 +1,9 @@
 $(document).ready(function() {
     $('.resp-down').on('click', function(){
-        var scrollPositionResponse = $("#li_responder").offset().top;
-        var scrollPosition = scrollPositionResponse - 60;
-
-        $('html,body').animate({scrollTop: scrollPosition}, 'slow');
+    	$('html, body').animate({
+		    scrollTop: ($('#li_responder').offset().top-100)
+		},2000);
         CKEDITOR.instances.mensaje_response.focus(); 
-        
     });
 
 });

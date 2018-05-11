@@ -14,7 +14,12 @@ $(document).ready(function() {
 
 	CKEDITOR.replace( 'mensaje_reResponse',
 	{
-		toolbar : 'MyToolbar'
+		toolbar : 'MyToolbar',
+		on: {
+	        focus: function() {
+	        	$('.mensaje-error').hide();
+	        }
+	    }
 	});
 
 	$('#publicar').click(function(){
@@ -33,6 +38,35 @@ $(document).ready(function() {
 
     });
 
+    $('#responder').click(function(){
+        
+        var editor_data = CKEDITOR.instances.mensaje_reResponse.getData();
+        var contenido = editor_data.replace(/<[^>]+>/g, '');
+        
+        if (contenido == ""){
+            $('#mensaje-error-reResponse').show();
+        }
+        else {
+            $('#mensaje_content').val(editor_data);
+            saveForo($('#foro_id').val(), foro_main_id);
+            CKEDITOR.instances.mensaje_reResponse.setData('');
+            $( "#cancelar" ).trigger( "click" );
+        }
+
+    });
+
+    $('.reResponse').click(function(){
+    	var foro_id = $(this).attr('data');
+    	$('#foro_id').val(foro_id);
+    });
+
+    $('.cancel').click(function(){
+		$('#foro_id').val(0);
+		CKEDITOR.instances.mensaje_reResponse.setData('');
+		$('#mensaje_content').val('');
+	});
+
+
 	$('.iframe-btn').fancybox({	
 		'width'		: 900,
 		'height'	: 900,
@@ -40,18 +74,6 @@ $(document).ready(function() {
         'autoScale' : false,
 		'autoSize'	: false
     });
-
-	$('#cancelar').click(function(){
-		$('#section-form').hide(1000);
-        $('#section-list').show(1000);
-        $('html, body').animate({
-		    scrollTop: 0
-		},2000);
-	});
-
-	$('.newTopic').each(function(){
-		observeTopic($(this));
-	});
 
 	$('.deleteTopic').click(function(){
     	var foro_id = $(this).attr('data');
@@ -141,6 +163,9 @@ function saveForo(foro_id, foro_main_id)
 {
 	$('.mensaje-error, .boton').hide();
     $('#wait').show(1000);
+    $('html, body').animate({
+	    scrollTop: ($('#wait').offset().top-100)
+	},1000);
     $.ajax({
         type: "POST",
         url: $('#url_save').val(),
@@ -153,7 +178,10 @@ function saveForo(foro_id, foro_main_id)
         		$('#div_addResponse').append(data.html);
         	}
         	else {
-        		$('#div_addReResponse').append(data.html);
+        		$('#div_addReResponse'+foro_id).append(data.html);
+        		$('html, body').animate({
+				    scrollTop: ($('#div_addReResponse'+foro_id).offset().top-100)
+				},1000);
         	}
         	$('#mensaje_content').val('');
         	$('.boton').show();
