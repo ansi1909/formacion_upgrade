@@ -302,11 +302,21 @@
                     </div>
                 </div>
                 <form action="">
-                    <div class="row mt-3 justify-content-center align-items-center">
+                    {% if app.session.get('usuario').correo != '' %}
+                        <div class="row mt-3 justify-content-center align-items-center">
+                            <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
+                                <div class="form-group">
+                                    <label class="mb-1" for="asuntoV">{{ 'Correo'|trans }}</label>
+                                    <input  type="text" class="form-control" id="correo_soporte" name="correo_soporte" aria-describedby="correoSupportVitual" placeholder="{{ 'Escriba su correo'|trans }}">
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="row justify-content-center align-items-center">
                         <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
                             <div class="form-group">
-                                <label class="mb-1" for="asuntoV">{{ 'Asunto'|trans }}</label>
-                                <input  type="text" class="form-control" id="asuntoV" aria-describedby="asuntoSupportVitual" placeholder="{{ 'Escriba su asunto'|trans }}">
+                                <label class="mb-1" for="asuntoV">Asunto</label>
+                                <input  type="text" class="form-control" id="asuntoV" aria-describedby="asuntoSupportVitual" placeholder="Escriba su asunto">
                             </div>
                         </div>
                     </div>

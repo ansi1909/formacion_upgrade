@@ -1865,7 +1865,7 @@ class Functions
                                 $datosUsuario = array('id' => $usuario->getId(),
                                                       'nombre' => $usuario->getNombre(),
                                                       'apellido' => $usuario->getApellido(),
-                                                      'correo' => $usuario->getCorreoPersonal(),
+                                                      'correo' => trim($usuario->getCorreoPersonal()) != '' ? trim($usuario->getCorreoPersonal()) : trim($usuario->getCorreoCorporativo()),
                                                       'foto' => $usuario->getFoto(),
                                                       'participante' => $participante,
                                                       'tutor' => $tutor);
