@@ -174,6 +174,17 @@ $(document).ready(function() {
         if (!$(".main-sidenav-close")[0]){
             closeNav();
         }
+
+        $(".dropDownNotify").slideUp(500, function(){
+            $(".markNotify").fadeOut(600);
+        });
+        y = 0;
+        getNotificaciones();
+
+        $(".dropDownMenu").slideUp(500, function(){
+            $(".mark").fadeOut(600).delay(50);
+        });
+        x = 0;
     });
 
     $("#iconCloseDownloads").click(function(){

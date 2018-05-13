@@ -434,6 +434,17 @@ class ColaborativoController extends Controller
             $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion, $foro_main->getUsuario(), $foro_main->getId());
         }
 
+        // Puntaje obtenido
+        if ($session->get('usuario')['participante'])
+        {
+            $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $foro_padre->getPagina()->getid(),
+                                                                                                'usuario' => $session->get('usuario')['id']));
+            $puntos = $pagina_log->getPuntos() + $yml['parameters']['puntos']['espacio_colaborativo'];
+            $pagina_log->setPuntos($puntos);
+            $em->persist($pagina_log);
+            $em->flush();
+        }
+
         if ($foro_id == $foro_main_id)
         {
             // Respuesta

@@ -31,6 +31,9 @@
             <h6 class="mt-0 color-light-grey" >{{ programa.nombre }}</h6>
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            <a id="iconDownloads" href="#" title="{{ 'Archivos de este espacio'|trans }}">
+                <i class="material-icons mx-3 color-light-grey">cloud_download</i>
+            </a>
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class=" d-flex flex-column ">
                 <div class="wrapperDdMenu">
@@ -283,7 +286,7 @@
         </div>
     </div>
 
-    <!--<div class="downloads"  >
+    <div class="downloads"  >
         <div class="d-flex px-3 row justify-content-between">
             <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto">
                 <h5 class="color-grey text-left titulo">Descargas</h5>
@@ -365,7 +368,7 @@
                 </a>
             </ul>
         </div>
-    </div>-->
+    </div>
 
     <!-- Modal Eliminar Tema -->
     <div class="modal modalCEval" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
