@@ -35,3 +35,9 @@ _ajaxSaveForoResponse:
     defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForoResponse }
     requirements:
         _method: POST
+
+_ajaxMasForo:
+    path:     /ajaxMasForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxMasForo }
+    requirements:
+        _method: GET

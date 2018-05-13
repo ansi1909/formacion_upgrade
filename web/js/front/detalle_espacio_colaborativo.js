@@ -55,11 +55,6 @@ $(document).ready(function() {
 
     });
 
-    $('.reResponse').click(function(){
-    	var foro_id = $(this).attr('data');
-    	$('#foro_id').val(foro_id);
-    });
-
     $('.cancel').click(function(){
 		$('#foro_id').val(0);
 		CKEDITOR.instances.mensaje_reResponse.setData('');
@@ -75,39 +70,76 @@ $(document).ready(function() {
 		'autoSize'	: false
     });
 
-	$('.deleteTopic').click(function(){
+	$('.ic-del').click(function(){
     	var foro_id = $(this).attr('data');
-    	var tema = $(this).attr('tema');
     	$('#foro_delete_id').val(foro_id);
-    	$('#titleDelete').html(tema);
     });
 
     $('.cancelarCs').click(function(){
     	$('#foro_delete_id').val(0);
-    	$('#titleDelete').html('');
     });
 
     $('#eliminar').click(function(){
     	$('.btn-modalDelete').hide();
+    	var foro_id = $('#foro_delete_id').val();
     	$.ajax({
 	        type: "POST",
 	        url: $('#url_delete').val(),
 	        async: true,
-	        data: { foro_id: $('#foro_delete_id').val() },
+	        data: { foro_id: foro_id },
 	        dataType: "json",
 	        success: function(data) {
-	            location.reload();
+	            $('#toDel-'+foro_id).remove();
+	            $('.btn-modalDelete').show();
+	            $( ".cancelarCs" ).trigger( "click" );
 	        },
 	        error: function(){
-	            console.log('Error eliminando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
+	            console.log('Error eliminando el registro de respuesta de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
 	            $('.btn-modalDelete').show();
 	        }
 	    });
     });
 
+    $('.more_sons').click(function(){
+		var li = $('#more_sons');
+		var offset = $('#offset').val();
+		li.hide();
+		$.ajax({
+			type: "GET",
+			url: $('#url_more').val(),
+			async: false,
+			data: { foro_id: foro_main_id, offset: offset },
+			dataType: "json",
+			success: function(data) {
+				$('#div_addResponse').append(data.html);
+				if (data.more)
+				{
+					li.show();
+					$('#offset').val(data.offset);
+				}
+				observeResponse();
+    			observeLike();
+				//clearTimeout( timerId );
+			},
+			error: function(){
+				console.log('Error obteniendo más comentarios'); // Hay que implementar los mensajes de error para el frontend
+			}
+		});
+	});
+
+    observeResponse();
     observeLike();
 
 });
+
+function observeResponse()
+{
+	$('.reResponse').unbind('click');
+	$('.reResponse').click(function(){
+    	var foro_id = $(this).attr('data');
+    	$('#foro_id').val(foro_id);
+    });
+}
 
 function observeLike()
 {
@@ -136,58 +168,6 @@ function observeLike()
 	});
 }
 
-function observeTopic(newTopic)
-{
-	newTopic.click(function(){
-		var foro_id = $(this).attr('data');
-		$('#foro_id').val(foro_id);
-		$('#mensaje_content').val('');
-		$('#section-list').hide(1000);
-		$('#wait').show(1000);
-		if (foro_id != '0')
-		{
-			$('#titulo').html($('#titulo_edit').val());
-			$.ajax({
-		        type: "GET",
-		        url: $('#url_edit').val(),
-		        async: true,
-		        data: { foro_id: foro_id },
-		        dataType: "json",
-		        success: function(data) {
-		            $('#tema').val(data.tema);
-		            $('#fechaPublicacion').val(data.fechaPublicacion);
-		            $('#fechaVencimiento').val(data.fechaVencimiento);
-		            CKEDITOR.instances.mensaje.setData(data.mensaje);
-		            var startDate = new Date(data.fechaPublicacionF);
-		            startDate.setDate(startDate.getDate() + 1);
-		            var endDate = new Date(data.fechaVencimientoF);
-		            endDate.setDate(endDate.getDate() + 1);
-		            $('#fechaVencimiento').datepicker('setStartDate', startDate);
-			    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
-			    	$('#section-form').show(1000);
-					$('#wait').hide(1000);
-					$('html, body').animate({
-					    scrollTop: ($('#section-form').offset().top-100)
-					},2000);
-		            //clearTimeout( timerId );
-		        },
-		        error: function(){
-		            console.log('Error editando el espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
-		            $('#button-comment').show();
-		        }
-		    });
-		}
-		else {
-			$('#titulo').html($('#titulo_new').val());
-			$('.form-control').val('');
-			CKEDITOR.instances.mensaje.setData('');
-			$('#section-form').show(1000);
-			$('#wait').hide(1000);
-		}
-	});
-
-}
-
 function saveForo(foro_id, foro_main_id)
 {
 	$('.mensaje-error, .boton').hide();
@@ -205,14 +185,18 @@ function saveForo(foro_id, foro_main_id)
         	if (foro_id == foro_main_id)
         	{
         		$('#div_addResponse').append(data.html);
+        		$('html, body').animate({
+				    scrollTop: ($('#li_responder').offset().top-500)
+				},1000);
         	}
         	else {
         		$('#div_addReResponse'+foro_id).append(data.html);
         		$('html, body').animate({
-				    scrollTop: ($('#div_addReResponse'+foro_id).offset().top-100)
+				    scrollTop: ($('#div_addReResponse'+foro_id).offset().top-150)
 				},1000);
         	}
         	observeLike();
+        	observeResponse();
         	$('#mensaje_content').val('');
         	$('.boton').show();
             $('#wait').hide(1000);

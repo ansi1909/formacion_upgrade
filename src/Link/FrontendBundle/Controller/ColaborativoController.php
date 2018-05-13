@@ -437,12 +437,12 @@ class ColaborativoController extends Controller
         if ($foro_id == $foro_main_id)
         {
             // Respuesta
-            $html .= '<li class="f-card-det">
+            $html .= '<li class="f-card-det" id="toDel-'.$foro->getId().'">
                         <div class="cont-det">';
         }
         else {
             // Re-Respuesta
-            $html .= '<div class="row resp-rply justify-content-center">
+            $html .= '<div class="row resp-rply justify-content-center" id="toDel-'.$foro->getId().'">
                         <div class="col-12 text-justify">';
         }
 
@@ -496,6 +496,119 @@ class ColaborativoController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
+    }
+
+    public function ajaxMasForoAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $f = $this->get('funciones');
+        
+        $foro_id = $request->query->get('foro_id');
+        $offset = $request->query->get('offset');
+        $offset += 5;
+        $next_offset = $offset+5;
+        $more = 0;
+        $html = '';
+
+        $foros_hijos = $f->forosHijos($foro_id, $offset, 5, $session->get('usuario'), $yml['parameters']['social']['espacio_colaborativo']);
+
+        foreach ($foros_hijos as $foro_hijo)
+        {
+
+            $img_user = $foro_hijo['foto'] ? $this->container->getParameter('folders')['uploads'].$foro_hijo['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+            $like_class = $foro_hijo['likes']['ilike'] ? 'ic-lke-act' : '';
+            $html .= '<li class="f-card-det" id="toDel-'.$foro_hijo['id'].'">
+                        <div class="cont-det">
+                            <div class="row justify-content-between">
+                                <div class="col-auto">
+                                    <img class="img-ec-det" src="'.$img_user.'" alt="">
+                                    <span class="name_ft">'.$foro_hijo['usuario'].' <span class="coment_ft">'.$foro_hijo['timeAgo'].'</span></span>
+                                </div>';
+            if ($foro_hijo['delete_link'] == 1)
+            {
+                $html .= '<div class="col-auto">
+                                        <div class="text-right">
+                                            <a href="#" data-toggle="modal" data-target="#modalDelete"><span class="material-icons ic-del" data="{{ foro_hijo.id }}">delete</span></a>
+                                        </div>
+                                    </div>';
+            }
+            $html .= '</div>
+                            <div class="row justify-content-center">
+                                <div class="col-12 text-justify">
+                                    '.$foro_hijo['mensaje'].'
+                                </div>
+                            </div>
+                            <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                <div class="col-auto">
+                                    <span class="like_ft like" data="'.$foro_hijo['id'].'"><i id="like'.$foro_hijo['id'].'" class="material-icons ic-lke '.$like_class.'">thumb_up</i> <span id="cantidad_like-'.$foro_hijo['id'].'">'.$foro_hijo['likes']['cantidad'].'</span></span>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" data-toggle="modal" data-target="#modalresp" class="reResponse" data="'.$foro_hijo['id'].'">
+                                        <span class="resp_ft"><i class="material-icons ic-rpy">reply</i>'.$this->get('translator')->trans('Responder').'</span>
+                                    </a>
+                                </div>
+                            </div>';
+            foreach ($foro_hijo['respuestas'] as $foro_nieto)
+            {
+                $img_user = $foro_nieto['foto'] ? $this->container->getParameter('folders')['uploads'].$foro_nieto['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
+                $like_class = $foro_nieto['likes']['ilike'] ? 'ic-lke-act' : '';
+                $html .= '<div class="row resp-rply justify-content-center" id="toDel-'.$foro_nieto['id'].'">
+                                    <div class="col-12 text-justify">
+                                        <div class="row justify-content-between">
+                                            <div class="col-auto">
+                                                <img class="img-ec-det" src="'.$img_user.'" alt="">
+                                                <span class="name_ft">'.$foro_nieto['usuario'].' <span class="coment_ft">'.$foro_nieto['timeAgo'].'</span></span>
+                                            </div>';
+                if ($foro_nieto['delete_link'] == 1)
+                {
+                    $html .= '<div class="col-auto">
+                                                    <div class="text-right">
+                                                        <a href="#" data-toggle="modal" data-target="#modalDelete"><span class="material-icons ic-del" data="'.$foro_nieto['id'].'">delete</span></a>
+                                                    </div>
+                                                </div>';
+                }
+                $html .= '</div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-12 text-justify">
+                                                '.$foro_nieto['mensaje'].'
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-end foo-esp_col-det justify-content-between">
+                                            <div class="col-auto">
+                                                <span class="like_ft like" data="'.$foro_nieto['id'].'"><i id="like'.$foro_nieto['id'].'" class="material-icons ic-lke '.$like_class.'">thumb_up</i> <span id="cantidad_like-'.$foro_nieto['id'].'">'.$foro_nieto['likes']['cantidad'].'</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>';
+            }
+            $html .= '<div id="div_addReResponse'.$foro_hijo['id'].'">
+                            </div>
+                        </div>
+                    </li>';
+
+        }
+
+        // Total aportes de este espacio
+        $query = $em->createQuery('SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f 
+                                    WHERE f.foro = :foro_id')
+                    ->setParameter('foro_id', $foro_id);
+        $total_aportes = $query->getSingleScalarResult();
+
+        if ($total_aportes > $next_offset)
+        {
+            $more = 1;
+        }
+
+        $return = array('html' => $html,
+                        'more' => $more,
+                        'offset' => $offset);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }

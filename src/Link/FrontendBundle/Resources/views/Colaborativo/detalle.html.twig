@@ -31,6 +31,7 @@
             <h6 class="mt-0 color-light-grey" >{{ programa.nombre }}</h6>
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class=" d-flex flex-column ">
                 <div class="wrapperDdMenu">
                     <a href="#" class="perfil no-decorate" id="config">
@@ -99,6 +100,8 @@
     <input type="hidden" id="offset" name="offset" value="0">
     <input type="hidden" id="url_save" name="url_save" value="{{ path('_ajaxSaveForoResponse') }}">
     <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+    <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteForo') }}">
+    <input type="hidden" id="url_more" name="url_more" value="{{ path('_ajaxMasForo') }}">
     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
 
     <section>
@@ -172,7 +175,7 @@
             </ul>
             <ul class="table-card-det">
                 {% for foro_hijo in foros_hijos %}
-                    <li class="f-card-det">
+                    <li class="f-card-det" id="toDel-{{ foro_hijo.id }}">
                         <div class="cont-det">
                             <div class="row justify-content-between">
                                 <div class="col-auto">
@@ -183,7 +186,7 @@
                                 {% if foro_hijo.delete_link == 1 %}
                                     <div class="col-auto">
                                         <div class="text-right">
-                                            <a href="#"><span class="material-icons ic-del" data="{{ foro_hijo.id }}">delete</span></a>
+                                            <a href="#" data-toggle="modal" data-target="#modalDelete"><span class="material-icons ic-del" data="{{ foro_hijo.id }}">delete</span></a>
                                         </div>
                                     </div>
                                 {% endif %}
@@ -204,7 +207,7 @@
                                 </div>
                             </div>
                             {% for foro_nieto in foro_hijo.respuestas %}
-                                <div class="row resp-rply justify-content-center">
+                                <div class="row resp-rply justify-content-center" id="toDel-{{ foro_nieto.id }}">
                                     <div class="col-12 text-justify">
                                         <div class="row justify-content-between">
                                             <div class="col-auto">
@@ -215,7 +218,7 @@
                                             {% if foro_nieto.delete_link == 1 %}
                                                 <div class="col-auto">
                                                     <div class="text-right">
-                                                        <a href="#"><span class="material-icons ic-del" data="{{ foro_nieto.id }}">delete</span></a>
+                                                        <a href="#" data-toggle="modal" data-target="#modalDelete"><span class="material-icons ic-del" data="{{ foro_nieto.id }}">delete</span></a>
                                                     </div>
                                                 </div>
                                             {% endif %}
@@ -241,10 +244,11 @@
                 <div id="div_addResponse">
                 </div> 
                 {% if total_aportes > foros_hijos|length %}
-                    <li class="f-card-det-resp">
+                    <li class="f-card-det-resp" id="more_sons">
                         <div class="row mt-0 mb-3 align-items-center justify-content-center">
                             <div class="col-auto">
-                                <a href="#" class="link more_sons"><i class="material-icons ic-plus">add</i>{{ 'Ver más'|trans }} </a> 
+                                <input type="hidden" id="offset" name="offset" value="0">
+                                <a href="#more_sons" class="link more_sons"><i class="material-icons ic-plus">add</i>{{ 'Ver más'|trans }} </a> 
                             </div>
                         </div>
                     </li>
@@ -370,7 +374,6 @@
             <div class="row mt-6 justify-content-center align-items-center">
                 <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
                     <h4 class="titulo">{{ '¿Estás segur@ de que deseas eliminar este registro?'|trans }}</h4>
-                    <strong id="titleDelete"></strong>
                 </div>
             </div>
             <div class="row mt-3 align-items-center justify-content-center">
