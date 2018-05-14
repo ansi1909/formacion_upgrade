@@ -303,6 +303,9 @@ class ColaborativoController extends Controller
                     ->setParameter('foro_id', $foro_id);
         $total_aportes = $query->getSingleScalarResult();
 
+        // Archivos del foro
+        //$usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByNivel($np->getNivel()->getId());
+
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$foro->getPagina()->getId()]);
 
