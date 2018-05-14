@@ -22,10 +22,10 @@
     &:hover{
         // overflow: auto;
     }
-    @include media-breakpoint-down(xs){
+    @include media-breakpoint-only(sm){
         width: 40px;
     }
-    @include media-breakpoint-down(sm){
+    @include media-breakpoint-down(xs){
         width: 40px;
     }
 }
@@ -50,18 +50,28 @@
     a{
         padding-left: 8px;
     }
-
+    @include media-breakpoint-down(sm){
+        width: 12rem;
+        a{
+            padding-left: 2rem;
+        }
+    }
+    @include media-breakpoint-down(xs){
+        width: 19.5rem;
+        a{
+            padding-left: 4rem;
+        }
+    }
 }
 
 #main.ml-10{
     margin-left: 9%;
-    @include media-breakpoint-down(xs){
-        margin-left: 3% !important;
-    }
     @include media-breakpoint-down(sm){
-        margin-left: 3% !important;
+        margin-left: 20%;
     }
-
+    @include media-breakpoint-down(xs){
+        margin-left: 3%;
+    }
  }
  #main.ml-comments{
      margin-left: -8%;
@@ -69,7 +79,9 @@
          margin-left: 0;
          margin-right: 38%;
      }
-
+     @include media-breakpoint-down(sm){
+         margin-left: 0%;
+     }
   }
 
 
@@ -85,15 +97,16 @@ i.arrow {
     transition: .3s;
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
-    @include media-breakpoint-down(xs){
-        transform: rotate(-45deg);
-        -webkit-transform: rotate(-45deg);
-    }
     @include media-breakpoint-down(sm){
         transform: rotate(-45deg);
         -webkit-transform: rotate(-45deg);
         position: relative;
-        left: .3rem;
+        left: 0rem;
+        top: calc(1rem - 10);
+    }
+    @include media-breakpoint-down(xs){
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
     }
 }
 
@@ -101,6 +114,14 @@ i.arrow {
 .arrow.right {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
+    @include media-breakpoint-down(sm){
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+    }
+    @include media-breakpoint-down(xs){
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+    }
 }
 
 .main-sidenav a {
@@ -110,10 +131,10 @@ i.arrow {
     color: #818181;
     display: block;
     transition: 0.3s;
-    @include media-breakpoint-down(xs){
+    @include media-breakpoint-down(sm){
         padding: 8px;
     }
-    @include media-breakpoint-down(sm){
+    @include media-breakpoint-down(xs){
         padding: 8px;
     }
 }
@@ -131,9 +152,6 @@ i.arrow {
     top: 16px;
     right: 0px;
     margin-left: 50px;
-    @include media-breakpoint-only(xs) {
-        top: 5px;
-    }
 }
 
 a.active {
