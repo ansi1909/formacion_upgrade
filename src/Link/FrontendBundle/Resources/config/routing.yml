@@ -65,3 +65,8 @@ ranking:
 colaborativo:
     resource: "@LinkFrontendBundle/Resources/config/routing/colaborativo.yml"
     prefix: /espacioColaborativo
+
+soporte:
+    resource: "@LinkFrontendBundle/Resources/config/routing/soporte.yml"
+    prefix: /soporte
+    
