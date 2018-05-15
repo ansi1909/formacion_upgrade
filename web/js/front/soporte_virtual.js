@@ -10,23 +10,23 @@ $(document).ready(function()
 		      var error=0;
 
 		      if (correo) 
-		      {
-		      	  if (campo.valor.length!=0) //si el correo no esta vacio debemos verificar que sea un email valido
-		      	  {
-		      	  	  if(!emailValido.test(campo.valor))//si no es valido se muestra el mensaje de error
-		      	  	  {
-		      	  	  	$('#'+campo.error_id).show();
-		      	  	  	$('#'+campo.id).focus();
-		      	  	  	error=1;
-		      	  	  }
-		      	  }
-		      }
+		       {
+			      	  if (campo.valor.length!=0) //si el correo no esta vacio debemos verificar que sea un email valido
+			      	   {
+				      	  	  if(!emailValido.test(campo.valor))//si no es valido se muestra el mensaje de error
+				      	  	   {
+				      	  	  	$('#'+campo.error_id).show();
+				      	  	  	$('#'+campo.id).focus();
+				      	  	  	error=1;
+				      	  	   }
+			      	   }
+		       }
 		      if (campo.valor.length==0) //si el campo esta vacio se muestra el mensaje de error
-		      {
+		       {
 	              $('#'+campo.error_id).show();
 		      	  $('#'+campo.id).focus();
 		      	  error=1;
-		      }
+		       }
 
 		      return error;
 	   }
@@ -42,10 +42,10 @@ $(document).ready(function()
 				        success: function(data) 
 				        {
 				           if (data.respuesta==1) //si el mensaje se envio al equipo de soporte 
-				           {
-                             $('#modalSv').modal('hide');//se cierra el modal
-                             document.getElementById('formularioSoporte').reset();
-				           }
+				            {
+	                             $('#modalSv').modal('hide');//se cierra el modal
+	                             document.getElementById('formularioSoporte').reset();
+				            }
 				           
 				        },
 				        error: function(){
@@ -62,18 +62,17 @@ $(document).ready(function()
 		      { 
 		          
 		          
+		          var datosSession=1;
 		          var errores={'mensaje':0,'asunto':0,'correo':0};
 		          var campos={
-		          	           'correo':{'valor':$('#correo_soporte').val(),'id':'correo_soporte','error_id':'error_correo','error_visible':false},
-		          	           'asunto':{'valor':$('#asuntoV').val(),'id':'asuntoV','error_id':'error_asunto','error_visible':false},
-		          	           'mensaje':{'valor':$('#msjSv').val(),'id':'msjSv','error_id':'error_mensaje','error_visible':false}
+			          	           'correo':{'valor':$('#correo_soporte').val(),'id':'correo_soporte','error_id':'error_correo','error_visible':false},
+			          	           'asunto':{'valor':$('#asuntoV').val(),'id':'asuntoV','error_id':'error_asunto','error_visible':false},
+			          	           'mensaje':{'valor':$('#msjSv').val(),'id':'msjSv','error_id':'error_mensaje','error_visible':false}
 		          	          };
-		          var datosSession=1;
+		          
 		          
 
-		          ///Verificar que los campos esten llenos, verifica desde el 
-
-		          
+		          ///Verificar que los campos esten llenos
 		          errores.mensaje=campoVacio(campos.mensaje);
 		          errores.asunto=campoVacio(campos.asunto);
 		          if (campos.correo.valor!=undefined) //si el campo correo se muestra al usuario

@@ -16,22 +16,39 @@ class SoporteController extends Controller
 
 	
 
-	protected function enviarMail($datosAjax,$nombreUsuario)
+	protected function enviarMail($datosAjax,$nombreUsuario,$rolUsuario)
 	{
 		$sendMail= \Swift_Message::newInstance()
 			                    ->setSubject($datosAjax['asunto'])
 			                    ->setFrom('tutorvirtual@formacion2puntocero.com')
 			                    ->setTo($datosAjax['correo'])
 			                    ->setBody( $this->renderView(
-                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'correoUsuario'=>$datosAjax['correo'],'mensaje'=>$datosAjax['mensaje'])),'text/html');
+                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'correoUsuario'=>$datosAjax['correo'],'mensaje'=>$datosAjax['mensaje'],'rolUsuario'=>$rolUsuario)),'text/html');
 
 		$retorno=$this->get('mailer')->send($sendMail);
 
 		return $retorno;
 	}
 
+	protected function tipoUsuario($session)
+	{
+        $iSparticipante=$session->get('usuario')['participante'];
+        $iStutor=$session->get('usuario')['tutor'];
 
-	
+        if ($iStutor) 
+        {
+        	$retorno='Tutor';
+        }
+        else if($iSparticipante)
+        {
+            $retorno='Participante';
+        }
+
+        return $retorno;
+	}
+
+
+
 	
 	public function _ajaxEnviarMailSoporteAction(Request $request)
 	{
@@ -52,8 +69,11 @@ class SoporteController extends Controller
 					$datosAjax['correo']=$session->get('usuario')['correo'];
 				}
 
-			$nombreUsuario=ucwords($session->get('usuario')['nombre']).' '.ucwords($session->get('usuario')['nombre']);
-			$retorno=$this->enviarMail($datosAjax,$nombreUsuario);
+			$nombreUsuario=ucwords($session->get('usuario')['nombre']).' '.ucwords($session->get('usuario')['nombre']).' ('.ucwords($session->get('empresa')['nombre']).')';
+
+			$rolUsuario=$this->tipoUsuario($session);//preparamos el rol del usuario para enviarlo por correo electronico
+
+			$retorno=$this->enviarMail($datosAjax,$nombreUsuario,$rolUsuario);
 
 
 		return new Response(json_encode(['respuesta'=>$retorno]),200,array('Content-Type' => 'application/json'));

@@ -166,7 +166,7 @@ class Functions
 		return preg_replace($pattern, "\${1}".$break, $str);
 	}
 	
-	public function sendEmail($parametros, $controller)
+	public function sendEmail($parametros)
 	{
 
 		if ($this->container->getParameter('sendMail'))
