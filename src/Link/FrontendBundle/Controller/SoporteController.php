@@ -20,22 +20,33 @@ class SoporteController extends Controller
 	public function _ajaxEnviarMailSoporteAction(Request $request)
 	{
 		
-		// $datosAjax=[
-		// 			   'correo'=>$request->request->('correo'),
-		// 			   'asunto'=>$request->request->get('asunto'), 
-		// 			   'mensaje'=>$request->request->get('mensaje')
-		// 		    ];
-				    
-		$correo=$request->request->get('correo');
-		$asunto=$request->request->get('asunto');
-		$mensaje=$request->request->get('mensaje');
+			//$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-		$coreoelectronico= \Swift_Message::newInstance()
-		                    ->setSubject($asunto)
-		                    ->setFrom('tutorvirtual@formacion2puntocero.com')
-		                    ->setTo($correo)
-		                    ->setBody('<p>'.$mensaje.'</p>','text/html');
-		$retorno=$this->get('mailer')->send($coreoelectronico);
+		    $session = new Session();
+			$datosAjax=[
+						   'correo'=>$request->request->get('correo'),
+						   'asunto'=>$request->request->get('asunto'), 
+						   'mensaje'=>$request->request->get('mensaje'), 
+						   'datosSession'=>(int)$request->request->get('sesion')
+					    ];
+					    
+			
+			if ($datosAjax['datosSession']==1) //se verifica si el correo del usuario debe tomarse de la session
+				{
+					$datosAjax['correo']=$session->get('usuario')['correo'];
+				}
+
+			$nombreUsuario=ucwords($session->get('usuario')['nombre']).' '.ucwords($session->get('usuario')['nombre']);
+
+
+			$coreoelectronico= \Swift_Message::newInstance()
+			                    ->setSubject($datosAjax['asunto'])
+			                    ->setFrom('tutorvirtual@formacion2puntocero.com')
+			                    ->setTo($datosAjax['correo'])
+			                    ->setBody( $this->renderView(
+                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'correoUsuario'=>$datosAjax['correo'],'mensaje'=>$datosAjax['mensaje'])),'text/html');
+
+			$retorno=$this->get('mailer')->send($coreoelectronico);
 
 		return new Response(json_encode(['respuesta'=>$retorno]),200,array('Content-Type' => 'application/json'));
 

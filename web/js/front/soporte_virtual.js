@@ -35,24 +35,24 @@ $(document).ready(function()
 		      return error;
 	   }
 
-	   function enviarCorreo(campos)//llama al controlador con los datos del mensaje que se desea enviar
+	   function enviarCorreo(campos,sesion)//llama al controlador con los datos del mensaje que se desea enviar
 	   {
 	   		$.ajax({
 	        
 				        type: "POST",
 				        url:"/formacion2.0/web/app_dev.php/soporte/_ajaxEnviarMailSoporte",
-				        data: { correo: campos.correo.valor, asunto:campos.asunto.valor, mensaje:campos.mensaje.valor },
+				        data: { correo: campos.correo.valor, asunto:campos.asunto.valor, mensaje:campos.mensaje.valor,sesion:sesion},
 				        dataType: "json",
 				        success: function(data) 
 				        {
 				           if (data.respuesta==1) //si el mensaje se envio al equipo de soporte 
 				           {
-                             console.log('Exito al enviar el mensaje');//se despliega el mensaje de exito
                              $('#modalSv').modal('hide');//se cierra el modal
 				           }
+				           
 				        },
 				        error: function(){
-				            console.log('Error de coneccion');
+				            console.log('Error, el mensaje no fue enviado');
 				        }
 	               });
 
@@ -71,6 +71,7 @@ $(document).ready(function()
 		          	           'asunto':{'valor':$('#asuntoV').val(),'id':'asuntoV','error_id':'error_asunto','error_visible':false},
 		          	           'mensaje':{'valor':$('#msjSv').val(),'id':'msjSv','error_id':'error_mensaje','error_visible':false}
 		          	          };
+		          var datosSession=1;
 		          
 
 		          ///Verificar que los campos esten llenos, verifica desde el 
@@ -81,15 +82,12 @@ $(document).ready(function()
 		          if (campos.correo.valor!=undefined) //si el campo correo se muestra al usuario
 		          {
 		              errores.correo=campoVacio(campos.correo,true);
+		              datosSession=0;
 		          }
-		          else
-		          {
-		          	  campos.correo.valor=0;//para identificar en controlador que el correo para el usuario logueado no existe
-		          }
-		          
+		         
 		          if ((errores.mensaje+errores.asunto+errores.correo)==0) //si no existen errores se procede a enviar el correo
 		          {
-		          	  enviarCorreo(campos);
+		          	  enviarCorreo(campos,datosSession);
 		          }
 		          
 
