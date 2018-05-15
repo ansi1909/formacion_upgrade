@@ -4,6 +4,7 @@ $(document).ready(function()
     $('#error_correo').hide();
     $('#error_asunto').hide();
     $('#error_mensaje').hide();
+    $('#success_mensaje').hide();
 
     ////funciones creadas por el desarrollador
 
@@ -34,9 +35,28 @@ $(document).ready(function()
 		      return error;
 	   }
 
-	   function enviarCorreo(campos)
+	   function enviarCorreo(campos)//llama al controlador con los datos del mensaje que se desea enviar
 	   {
+	   		$.ajax({
+	        
+				        type: "POST",
+				        url:"/formacion2.0/web/app_dev.php/soporte/_ajaxEnviarMailSoporte",
+				        data: { correo: campos.correo.valor, asunto:campos.asunto.valor, mensaje:campos.mensaje.valor },
+				        dataType: "json",
+				        success: function(data) 
+				        {
+				           if (data.respuesta==1) //si el mensaje se envio al equipo de soporte 
+				           {
+                             console.log('Exito al enviar el mensaje');//se despliega el mensaje de exito
+                             $('#modalSv').modal('hide');//se cierra el modal
+				           }
+				        },
+				        error: function(){
+				            console.log('Error de coneccion');
+				        }
+	               });
 
+	   	    return 0;
 	   }
 
 
@@ -62,11 +82,15 @@ $(document).ready(function()
 		          {
 		              errores.correo=campoVacio(campos.correo,true);
 		          }
+		          else
+		          {
+		          	  campos.correo.valor=0;//para identificar en controlador que el correo para el usuario logueado no existe
+		          }
 		          
-		          // if ((errores.mensaje+errores.asunto+errores.correo)==0) //si no existen errores se procede a enviar el correo
-		          // {
-		          	 
-		          // }
+		          if ((errores.mensaje+errores.asunto+errores.correo)==0) //si no existen errores se procede a enviar el correo
+		          {
+		          	  enviarCorreo(campos);
+		          }
 		          
 
 		      });
@@ -74,7 +98,7 @@ $(document).ready(function()
 
    
 
-		      /////Limpiar mensajes de error al oprimir una tecla
+		      /////Limpiar mensajes de error, al escribir en uno de los input del formulario de soporte
 		      $('#correo_soporte').keydown(function()
 		        {
 		    		$('#error_correo').hide();
