@@ -1756,11 +1756,12 @@ class Functions
 
 	}
 
-	public function newAlarm($tipo_alarma_id, $descripcion, $usuario, $entidad_id)
+	public function newAlarm($tipo_alarma_id, $descripcion, $usuario, $entidad_id, $fecha = 0)
 	{
 
 		$em = $this->em;
 
+		$fecha = !$fecha ? new \DateTime('now') : $fecha;
 		$tipo_alarma = $em->getRepository('LinkComunBundle:AdminTipoAlarma')->find($tipo_alarma_id);
 
 		$alarma = new AdminAlarma();
@@ -1769,7 +1770,7 @@ class Functions
 		$alarma->setUsuario($usuario);
 		$alarma->setEntidadId($entidad_id);
 		$alarma->setLeido(false);
-		$alarma->setFechaCreacion(new \DateTime('now'));
+		$alarma->setFechaCreacion($fecha);
 		$em->persist($alarma);
         $em->flush();
 
