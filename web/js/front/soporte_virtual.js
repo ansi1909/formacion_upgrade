@@ -1,10 +1,6 @@
 $(document).ready(function() 
 {
-    ///inicializar como ocultos los mensajes de campos requerido
-    $('#error_correo').hide();
-    $('#error_asunto').hide();
-    $('#error_mensaje').hide();
-    $('#success_mensaje').hide();
+    
 
     ////funciones creadas por el desarrollador
 
@@ -40,7 +36,7 @@ $(document).ready(function()
 	   		$.ajax({
 	        
 				        type: "POST",
-				        url:"/formacion2.0/web/app_dev.php/soporte/_ajaxEnviarMailSoporte",
+				        url: $('#url_sendmail').val(),//"/formacion2.0/web/app_dev.php/soporte/_ajaxEnviarMailSoporte",
 				        data: { correo: campos.correo.valor, asunto:campos.asunto.valor, mensaje:campos.mensaje.valor,sesion:sesion},
 				        dataType: "json",
 				        success: function(data) 
@@ -112,5 +108,17 @@ $(document).ready(function()
 		        {
 		    	    $('#error_mensaje').hide();
 		        });
+
+
+		      ///al abrir el modal de correo
+		      $('#abrir_modal_soporte').click(function()
+		      	{
+		      		///inicializar como ocultos los mensajes de campos requerido y aseguramos que el formulario se encuentre vacio
+    				$('#error_correo').hide();
+    				$('#error_asunto').hide();
+   					$('#error_mensaje').hide();
+   					$('#success_mensaje').hide();
+   					document.getElementById('formularioSoporte').reset();
+		      	});
 
 });
