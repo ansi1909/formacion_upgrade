@@ -144,6 +144,51 @@
             </div>
         </div>
     </section>
+
+    <section>
+        <div class="modal modalCEval" id="modalupload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-end">
+                    <div class="col-auto">
+                        <a class="close btn_close_modal cancelUpload" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-3 mb-2 align-items-center justify-content-center">
+                    <div class="col-auto text-center">
+                        <h4 class="titulo">{{ 'Subir archivo'|trans }}</h4>
+                    </div>
+                </div>
+                <form id="form-upload" method="POST">
+                    <div class="row pl-3 align-items-center justify-content-center">
+                        <div class="col-12">
+                            <label class="mb-2 titulo-form" for="descripcion"> {{ 'Descripción'|trans }}: </label>
+                            <input type="text" class="form-control mb-4" id="descripcion" name="descripcion">
+                        </div>
+                    </div>
+                    <div class="row pl-3 align-items-center justify-content-center">
+                        <div class="col-10">
+                            <input type="text" class="form-control mb-4" id="archivo_input" name="archivo_input" placeholder="{{ 'Seleccione el archivo'|trans }}" readonly="readonly">
+                            <input type="hidden" id="archivo" name="archivo" value="">
+                        </div>
+                        <div class="col-2">
+                            {% set uri = app.request.getbasepath %}
+                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=archivo&rootFolder=recursos/empresas/{{ foro.empresa.id }}/colaborativo/{{ foro.id }}" class="iframe-btn"><span class="material-icons color-light-grey icUpload" data-toggle="tooltip" data-placement="left" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
+                        </div>
+                    </div>
+                    <div class="row mb-3 align-items-center justify-content-end">
+                        <div class="col-auto text-left">
+                            <button type="button" class="btn btn-warning boton cancelUpload" data-dismiss="modal" id="cancelarUpload">{{ 'Cancelar'|trans }}</button>
+                        </div>
+                        <div class="col-auto text-right">
+                            <button type="button" class="btn btn-primary boton" id="saveFile">{{ 'Guardar'|trans }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
     
     <section class="esp_col" id="section-list">
         <div class="row">
@@ -292,80 +337,29 @@
                 <h5 class="color-grey text-left titulo">{{ 'Descargas'|trans }}</h5>
             </div>
             <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto d-flex">
-                <a href="#"><span class="material-icons color-light-grey icUpload" data-toggle="tooltip" data-placement="left" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
+                <a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" data-toggle="tooltip" data-placement="left" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
                 <span class="color-light-grey barra">|</span>
                 <a href="#"><span class="material-icons color-light-grey icClose" id="iconCloseDownloads" data-toggle="tooltip" data-placement="bottom" title="{{ 'Cerrar panel'|trans }}">clear</span></a>
             </div>
         </div>
         <div class="row justify-content-center cont-downloads">
             <ul class="list-downloads">
-                <!--<a href="#">-->
+                {% for archivo in archivos %}
                     <li class="element-downloads">
                         <div class="row px-0 d-flex justify-content-between">
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <img src="assets/img/xls.svg" class="imgdl" alt="">
-                                <p class="nameArch">reporte semanal</p>
+                                <img src="{{ archivo.img }}" class="imgdl" alt="">
+                                <p class="nameArch">{{ archivo.descripcion }}</p>
                             </div>
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
-                                    <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
+                                    {% set file = uploads~archivo.archivo %}
+                                    <a href="{{ file }}" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="{{ 'Descargar archivo'|trans }}">file_download</span></a>
                                 </div>
                             </div>
                         </div>
                     </li>
-                <!--</a>-->
-                <a href="#">
-                    <li class="element-downloads">
-                        <div class="row px-0 d-flex justify-content-between">
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <img src="assets/img/pdf.svg" class="imgdl" alt="">
-                                <p class="nameArch">financiamiento al terrorismo y prevención de capitales</p>
-                            </div>
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
-                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="element-downloads">
-                        <div class="row px-0 d-flex justify-content-between">
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <img src="assets/img/liderazgo-hrz.png" class="imgdl" alt="">
-                                <p class="nameArch">liderazgo</p>
-                            </div>
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
-                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="element-downloads">
-                        <div class="row px-0 d-flex justify-content-between">
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <img src="assets/img/jpg.svg" class="imgdl" alt="">
-                                <p class="nameArch">liderazgo personal</p>
-                            </div>
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
-                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="element-downloads finElement-downloads">
-                        <div class="row px-0 d-flex justify-content-between">
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <img src="assets/img/doc.svg" class="imgdl" alt="">
-                                <p class="nameArch">Ambiente toxico</p>
-                            </div>
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
-                                <span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="Descargar archivo">file_download</span>
-                            </div>
-                        </div>
-                    </li>
-                </a>
+                {% endfor %}
             </ul>
         </div>
     </div>
@@ -403,6 +397,32 @@
     <script type="text/javascript" src="{{ asset('front/js/esp_col.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/detalle_espacio_colaborativo.js') }}"></script>
+    <script type="text/javascript">
+        $("#form-upload").validate({
+            rules: {
+                'descripcion': {
+                    required: true,
+                    minlength: 3
+                },
+                'archivo_input': {
+                    required: true,
+                    extension: "jpg|png|jpeg|gif|bmp|tiff|svg|doc|docx|xls|xlsx|pdf"
+                }
+            },
+            messages: {
+                'descripcion': {
+                    required: "{{ 'La descripción es requerida.'|trans }}",
+                    minlength: "{{ 'La descripción debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'archivo_input': {
+                    required: "{{ 'El archivo es requerido.'|trans }}",
+                    extension: "{{ 'Extensiones aceptadas'|trans }}: jpg, png, jpeg, gif, bmp, tiff, svg, doc, docx, xls, xlsx, pdf"
+                }
+            }
+        });
+    </script>
 {% endblock %}

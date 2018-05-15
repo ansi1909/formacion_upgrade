@@ -2272,4 +2272,44 @@ public function iniciarSesionAdmin($datos)
         return $foros_hijos;
 
 	}
+
+	// Arreglo del archivo en el espacio colaborativo
+	public function archivoForo($archivo, $usuario_id)
+	{
+
+		$extension = strtolower(substr($mystring, strrpos($archivo->getArchivo(), ".")+1));
+
+		$doc_extensions = array('doc', 'docx');
+		$img_extensions = array('png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'svg');
+		$excel_extensions = array('xls', 'xlsx');
+
+		if (in_array($extension, $doc_extensions))
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/doc.svg';
+		}
+		elseif (in_array($extension, $img_extensions))
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/jpg.svg';
+		}
+		elseif (in_array($extension, $excel_extensions))
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/xls.svg';
+		}
+		elseif ($extension == 'pdf')
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/pdf.svg';
+		}
+		else {
+			$img = $this->getWebDirectory().'/front/assets/img/jpg.svg';
+		}
+
+		$archivo_arr = array('id' => $archivo->getId(),
+							 'descripcion' => $archivo->getDescripcion(),
+							 'usuario' => $archivo->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $archivo->getUsuario()->getNombre().' '.$archivo->getUsuario()->getApellido(),
+							 'archivo' => $archivo->getArchivo(),
+							 'img' => $img);
+
+        return $archivo_arr;
+
+	}
 }
