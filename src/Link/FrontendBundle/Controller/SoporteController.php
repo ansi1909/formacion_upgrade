@@ -16,7 +16,23 @@ class SoporteController extends Controller
 
 	
 
+	protected function enviarMail($datosAjax,$nombreUsuario)
+	{
+		$sendMail= \Swift_Message::newInstance()
+			                    ->setSubject($datosAjax['asunto'])
+			                    ->setFrom('tutorvirtual@formacion2puntocero.com')
+			                    ->setTo($datosAjax['correo'])
+			                    ->setBody( $this->renderView(
+                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'correoUsuario'=>$datosAjax['correo'],'mensaje'=>$datosAjax['mensaje'])),'text/html');
 
+		$retorno=$this->get('mailer')->send($sendMail);
+
+		return $retorno;
+	}
+
+
+	
+	
 	public function _ajaxEnviarMailSoporteAction(Request $request)
 	{
 		
@@ -37,16 +53,8 @@ class SoporteController extends Controller
 				}
 
 			$nombreUsuario=ucwords($session->get('usuario')['nombre']).' '.ucwords($session->get('usuario')['nombre']);
+			$retorno=$this->enviarMail($datosAjax,$nombreUsuario);
 
-
-			$coreoelectronico= \Swift_Message::newInstance()
-			                    ->setSubject($datosAjax['asunto'])
-			                    ->setFrom('tutorvirtual@formacion2puntocero.com')
-			                    ->setTo($datosAjax['correo'])
-			                    ->setBody( $this->renderView(
-                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'correoUsuario'=>$datosAjax['correo'],'mensaje'=>$datosAjax['mensaje'])),'text/html');
-
-			$retorno=$this->get('mailer')->send($coreoelectronico);
 
 		return new Response(json_encode(['respuesta'=>$retorno]),200,array('Content-Type' => 'application/json'));
 
