@@ -3,6 +3,11 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <style type="text/css">
+        small {
+            font-style: italic;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -42,7 +47,12 @@
                         {% for asignacion in asignaciones %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ asignacion.pagina }}</td>
+                                <td>
+                                    {{ asignacion.pagina }}
+                                    {% if asignacion.prelacion %}
+                                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small class="text-muted">{{ asignacion.prelacion }}</small>
+                                    {% endif %}
+                                </td>
                                 <td>
                                     {% if asignacion.estructura.tiene > 0 %}
                                         <div class="tree">

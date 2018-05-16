@@ -587,10 +587,12 @@ class PaginaController extends Controller
             $asignaciones = $request->request->get('asignar') ? $request->request->get('asignar') : array();
             $activaciones = $request->request->get('activar') ? $request->request->get('activar') : array();
             $accesos = $request->request->get('acceso') ? $request->request->get('acceso') : array();
+            $orden = 0;
 
             foreach ($asignaciones as $pagina_id)
             {
 
+                $orden++;
                 $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
                 $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
                                                                                                             'empresa' => $empresa_id));
@@ -610,6 +612,7 @@ class PaginaController extends Controller
                     $pagina_empresa->setFechaVencimiento(new \DateTime($next_year)); // Fecha de vencimiento un año después
                     $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
                     $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $pagina_empresa->setOrden($orden);
                     $em->persist($pagina_empresa);
                     $em->flush();
 
@@ -622,6 +625,7 @@ class PaginaController extends Controller
                     // Solo actualizamos las páginas padres
                     $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
                     $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $pagina_empresa->setOrden($orden);
                     $em->persist($pagina_empresa);
                     $em->flush();
 
@@ -696,7 +700,7 @@ class PaginaController extends Controller
            ->from('LinkComunBundle:CertiPaginaEmpresa', 'pe')
            ->leftJoin('pe.pagina', 'p')
            ->andWhere('pe.empresa = :empresa_id')
-           ->orderBy('p.orden', 'ASC');
+           ->orderBy('pe.orden', 'ASC');
         $parametros['empresa_id'] = $empresa_id;
         if ($pagina_id)
         {
@@ -738,6 +742,7 @@ class PaginaController extends Controller
             $asignaciones[] = array('id' => $pe->getId(),
                                     'pagina_id' => $pe->getPagina()->getId(),
                                     'pagina' => $pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre(),
+                                    'prelacion' => $pe->getPrelacion() ? $this->get('translator')->trans('Prelada por').': '.$pe->getPrelacion()->getNombre() : 0,
                                     'estructura' => $f->subPaginasEmpresa($pe->getPagina()->getId(), $pe->getEmpresa()->getId(), 0),
                                     'permisos' => $permisos,
                                     'inicio' => $pe->getFechaInicio()->format('d/m/Y'),
@@ -841,7 +846,7 @@ class PaginaController extends Controller
            ->leftJoin('pe.pagina', 'p')
            ->andWhere('pe.empresa = :empresa_id')
            ->andWhere('p.id != :pagina_id')
-           ->orderBy('p.orden', 'ASC');
+           ->orderBy('pe.orden', 'ASC');
         $parametros['empresa_id'] = $pagina_empresa->getEmpresa()->getId();
         $parametros['pagina_id'] = $pagina_empresa->getPagina()->getId();
         if ($pagina_empresa->getPagina()->getPagina())
@@ -921,10 +926,12 @@ class PaginaController extends Controller
             $asignaciones = $request->request->get('asignar') ? $request->request->get('asignar') : array();
             $activaciones = $request->request->get('activar') ? $request->request->get('activar') : array();
             $accesos = $request->request->get('acceso') ? $request->request->get('acceso') : array();
+            $orden = 0;
 
             foreach ($asignaciones as $pagina_id)
             {
 
+                $orden++;
                 $p = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
                 $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
                                                                                                             'empresa' => $empresa_id));
@@ -944,6 +951,7 @@ class PaginaController extends Controller
                     $pagina_empresa->setFechaVencimiento(new \DateTime($next_year)); // Fecha de vencimiento un año después
                     $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
                     $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $pagina_empresa->setOrden($orden);
                     $em->persist($pagina_empresa);
                     $em->flush();
 
@@ -956,6 +964,7 @@ class PaginaController extends Controller
                     // Solo actualizamos las páginas padres
                     $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
                     $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
+                    $pagina_empresa->setOrden($orden);
                     $em->persist($pagina_empresa);
                     $em->flush();
 

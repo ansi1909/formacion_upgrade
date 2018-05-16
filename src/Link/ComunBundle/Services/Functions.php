@@ -715,7 +715,6 @@ class Functions
 
 	}
 
-	// Verifica si el usuario tiene el rol Empresa y devuelve empresa_id
 	public function emailUsuarios($usuarios, $notificacion, $template)
 	{
 		$controller = 'RecordatoriosCommand';
@@ -740,6 +739,7 @@ class Functions
 	{
 
 		$em = $this->em;
+		$orden = 0;
 		
 		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId(),
 																					'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']),
@@ -748,6 +748,7 @@ class Functions
 		foreach ($subpages as $subpage)
 		{
 
+			$orden++;
 			$subpagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $subpage->getId(),
                                                                                                     	   'empresa' => $pagina_empresa->getEmpresa()->getId()));
 
@@ -781,6 +782,7 @@ class Functions
 	            }
             }
             
+            $subpagina_empresa->setOrden($orden);
             $em->persist($subpagina_empresa);
             $em->flush();
 			
@@ -1999,7 +2001,7 @@ class Functions
 		return $subpaginas;
 	}
 
-public function iniciarSesionAdmin($datos)
+	public function iniciarSesionAdmin($datos)
     {
 
         $exito=false;
