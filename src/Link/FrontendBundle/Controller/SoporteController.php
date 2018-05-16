@@ -16,19 +16,20 @@ class SoporteController extends Controller
 
 	
 
-	protected function enviarMail($datosAjax,$nombreUsuario,$rolUsuario)
+	protected function enviarMail($datosAjax,$nombreUsuario)
 	{
 		$sendMail= \Swift_Message::newInstance()
-			                    ->setSubject($datosAjax['asunto'])
+			                    ->setSubject('Solicitud de soporte virtual desde: formación2.0')
 			                    ->setFrom('tutorvirtual@formacion2puntocero.com')
 			                    ->setTo($datosAjax['correo'])
 			                    ->setBody( $this->renderView(
-                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'correoUsuario'=>$datosAjax['correo'],'mensaje'=>$datosAjax['mensaje'],'rolUsuario'=>$rolUsuario)),'text/html');
+                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'datos'=>$datosAjax)),'text/html');
 
 		$retorno=$this->get('mailer')->send($sendMail);
 
 		return $retorno;
 	}
+	
 
 	protected function tipoUsuario($session)
 	{
@@ -71,9 +72,9 @@ class SoporteController extends Controller
 
 			$nombreUsuario=ucwords($session->get('usuario')['nombre']).' '.ucwords($session->get('usuario')['nombre']).' ('.ucwords($session->get('empresa')['nombre']).')';
 
-			$rolUsuario=$this->tipoUsuario($session);//preparamos el rol del usuario para enviarlo por correo electronico
+			//$rolUsuario=$this->tipoUsuario($session);//preparamos el rol del usuario para enviarlo por correo electronico
 
-			$retorno=$this->enviarMail($datosAjax,$nombreUsuario,$rolUsuario);
+			$retorno=$this->enviarMail($datosAjax,$nombreUsuario);
 
 
 		return new Response(json_encode(['respuesta'=>$retorno]),200,array('Content-Type' => 'application/json'));

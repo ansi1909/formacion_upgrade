@@ -45,6 +45,8 @@ $(document).ready(function()
 				            {
 	                             $('#modalSv').modal('hide');//se cierra el modal
 	                             document.getElementById('formularioSoporte').reset();
+	                             $('#btn_enviar_').show();
+   					             $('#wait_soporte').hide();
 				            }
 				           
 				        },
@@ -83,6 +85,8 @@ $(document).ready(function()
 		         
 		          if ((errores.mensaje+errores.asunto+errores.correo)==0) //si no existen errores se procede a enviar el correo
 		          {
+		          	  $('#btn_enviar_').hide();
+   					  $('#wait_soporte').show(1000);
 		          	  enviarCorreo(campos,datosSession);
 		          }
 		          
