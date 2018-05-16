@@ -124,6 +124,7 @@ class NovedadController extends Controller
 
         $session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
       
         if (!$session->get('ini'))
         {
@@ -224,6 +225,20 @@ class NovedadController extends Controller
             $biblioteca->setContenido($contenido);
             $em->persist($biblioteca);
             $em->flush();
+
+            $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                       WHERE u.activo = :activo 
+                                       AND u.empresa = :empresa_id')
+                        ->setParameters(array('activo' => true,
+                                              'empresa_id' => $empresa->getId()));
+            $usuarios = $query->getResult();
+
+            $descripcion= 'A sido publicado '. $titulo .'en la biblioteca';
+
+            foreach($usuarios as $usuario){
+
+                $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $biblioteca->getFechaPublicacion());
+            }
 
             return $this->redirectToRoute('_showBiblioteca', array('biblioteca_id' => $biblioteca->getId()));
 
@@ -358,6 +373,30 @@ class NovedadController extends Controller
             $noticia->setFechaPublicacion(new \DateTime($publicacion));
             $em->persist($noticia);
             $em->flush();
+
+            $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                       WHERE u.activo = :activo 
+                                       AND u.empresa = :empresa_id')
+                        ->setParameters(array('activo' => true,
+                                              'empresa_id' => $empresa->getId()));
+            $usuarios = $query->getResult();
+
+            
+
+            foreach($usuarios as $usuario){
+
+                if ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['noticia'] ) {
+                   
+                   $descripcion= 'Ha sido publicado una nueva noticia:  '. $titulo;
+                   $f->newAlarm($yml['parameters']['tipo_alarma']['noticia'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                }
+                elseif ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['novedad'] ) {
+                    
+                    $descripcion= 'Ha sido publicado una nueva novedad:  '. $titulo;
+                    $f->newAlarm($yml['parameters']['tipo_alarma']['novedad'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                }
+                
+            }
 
             return $this->redirectToRoute('_showNovedad', array('noticia_id' => $noticia->getId()));
 
