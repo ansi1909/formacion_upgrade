@@ -14,7 +14,7 @@
     transition: .5s;
     overflow: hidden;
     @include media-breakpoint-down(sm) {
-        left: 4.5rem;
+        margin: 1rem auto;
         p{
             text-align: justify;
         }
@@ -92,26 +92,41 @@
     }
 }
 .group{
+    @include media-breakpoint-down(md) {
+        width: 90vw !important;
+    }
     @include media-breakpoint-down(sm) {
-        width: 31.5rem;
+        width: 90vw;
     }
     @include media-breakpoint-down(xs) {
-        width: 16.5rem;
+        width: 85vw !important;
+        padding-left: 0;
     }
 }
+
 .cards-section{
+    @include media-breakpoint-down(md) {
+        width: 90vw;
+        margin: auto;
+    }
     @include media-breakpoint-down(xs) {
         padding: 0 !important;
-        margin: 0 !important;
         width: 16rem !important;
     }
 }
+
 .card-footer {
     position: relative;
     background-color: transparent;
     height: 8.5vh;
     transform: translateY(100%);
     transition: .5s;
+    @include media-breakpoint-down(sm) {
+        height: 4.5vh;
+        .textOpc{
+            font-size: .725rem;
+        }
+    }
     @include media-breakpoint-down(xs) {
         height: 6.5vh;
         .textOpc{

@@ -20,7 +20,11 @@ body {
     padding: 16px;
     margin-left: 170px;
     max-width: 90%;
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-only(md) {
+        width: 90%;
+        margin-left: 8rem;
+    }
+    @include media-breakpoint-only(sm) {
         width: 90%;
         margin-left: 1rem;
     }
@@ -129,7 +133,7 @@ body.codigoQR{
     padding: calc(1rem - 6px) 0;
     margin-top: calc(6rem + 4px);
     @include media-breakpoint-down(sm){
-        width: 31.5rem;
+        width: 90vw;
         .cpyR{
             margin: 0 !important;
             padding: 0 !important;
@@ -152,7 +156,7 @@ body.codigoQR{
         }
     }
     @include media-breakpoint-down(xs){
-        width: 15rem;
+        width: 78vw;
         .cpyR{
             margin: 0 !important;
             padding: 0 !important;
