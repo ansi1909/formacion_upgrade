@@ -562,11 +562,15 @@ class DefaultController extends Controller
                     ->setParameter('usuario_id', $usuario->getId());
         $notificaciones = $query->getResult();
 
-
+        $hoy = new \DateTime();
+        $now = strtotime($hoy->format('d-m-Y'));
         $noti ='';
         $sonar=0;
         foreach ($notificaciones as $notificacion)
         {
+            $fecha = strtotime($notificacion->getFechaCreacion()->format('d-m-Y'));
+            if ($fecha <= $now) {
+
                if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
 
                     $noti.='<a href="#" data-toggle="modal" data-target="#modalMn">';
@@ -574,7 +578,7 @@ class DefaultController extends Controller
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) {
 
                     $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
-                    $noti.='<a href="'.$this->generateUrl('_espacioColaborativo', array('programa_id' =>$entidad->getPagina()->getId())).'">';
+                    $noti.='<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' =>$entidad->getId())).'">';
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento']) {
 
@@ -582,19 +586,23 @@ class DefaultController extends Controller
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) {
 
-                    $noti.='<a href="#">';
+                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
+                    $noti.='<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' =>$entidad->getId())).'">';
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['noticia']) {
 
-                    $noti.='<a href="#">';
+                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($notificacion->getEntidadId());
+                    $noti.='<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' =>$entidad->getId())).'">';
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['novedad']) {
 
-                    $noti.='<a href="#">';
+                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($notificacion->getEntidadId());
+                    $noti.='<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' =>$entidad->getId())).'">';
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['biblioteca']) {
 
-                    $noti.='<a href="#">';
+                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($notificacion->getEntidadId());
+                    $noti.='<a href="'.$this->generateUrl('_bibliotecaDetalle', array('biblioteca_id' =>$entidad->getId())).'">';
 
                 }
                     if ($notificacion->getLeido() == true) {
@@ -610,6 +618,7 @@ class DefaultController extends Controller
                                </div>
                             </li>
                         </a>';
+            }
         }
 
         $noti .= '<li class="listMoreNotify text-center">
@@ -650,6 +659,9 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $todas=array();
+        $no_leidas=array();
+        $leidas=array();
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
                                        WHERE a.usuario = :usuario_id

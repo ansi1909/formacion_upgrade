@@ -70,7 +70,7 @@ parameters:
         receptor: 'josetayupo@gmail.com'
         plantila: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
-        evaluacion: 0.5
+        evaluacion: 0.2
     puntos:
         mitad_periodo: 100
         aprobar_primer_intento: 500
