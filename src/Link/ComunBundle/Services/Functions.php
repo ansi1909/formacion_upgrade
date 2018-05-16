@@ -916,7 +916,7 @@ class Functions
                                    	AND pe.activo = :activo 
                                    	AND pe.fechaInicio <= :hoy 
 						            AND pe.fechaVencimiento >= :hoy
-                                   ORDER BY p.orden')
+                                   ORDER BY pe.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                     					  'pagina_id' => $pagina_id,
                                           'estatus_activo' => $estatus_contenido,
@@ -934,6 +934,7 @@ class Functions
             $tiene_evaluacion = $query->getSingleScalarResult();
 
             $subpaginas[$subpage->getPagina()->getId()] = array('id' => $subpage->getPagina()->getId(),
+            													'orden' => $subpage->getOrden(),
                                     							'nombre' => $subpage->getPagina()->getNombre(),
                                     							'categoria' => $subpage->getPagina()->getCategoria()->getNombre(),
                                     							'foto' => $subpage->getPagina()->getFoto(),
@@ -1851,7 +1852,7 @@ class Functions
                                                         AND pe.activo = :activo 
                                                         AND pe.fechaInicio <= :hoy 
                                                         AND pe.fechaVencimiento >= :hoy
-                                                       ORDER BY p.orden')
+                                                       ORDER BY pe.orden')
                                         ->setParameters(array('empresa' => $datos['empresa']['id'],
                                                               'nivel_usuario' => $usuario->getNivel()->getId(),
                                                               'activo' => true,
@@ -1886,6 +1887,7 @@ class Functions
                                     $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
 
                                     $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
+                                    																	'orden' => $pagina->getPaginaEmpresa()->getOrden(),
                                                                                                         'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
                                                                                                         'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
                                                                                                         'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
