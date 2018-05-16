@@ -16,20 +16,22 @@ class SoporteController extends Controller
 
 	
 
-	protected function enviarMail($datosAjax,$nombreUsuario)
+	protected function enviarMail($datosAjax,$nombreUsuario,$remitente,$asunto)
 	{
 		$sendMail= \Swift_Message::newInstance()
-			                    ->setSubject('Solicitud de soporte virtual desde: formación2.0')
-			                    ->setFrom('tutorvirtual@formacion2puntocero.com')
-			                    ->setTo($datosAjax['correo'])
-			                    ->setBody( $this->renderView(
-                                                              'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'datos'=>$datosAjax)),'text/html');
+			        ->setSubject($asunto)
+			        ->setFrom($remitente)
+			        ->setTo($datosAjax['correo'])
+			        ->setBody( $this->renderView(
+                                                  'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'datos'=>$datosAjax)
+                                                 ),'text/html'
+			                 );
 
 		$retorno=$this->get('mailer')->send($sendMail);
 
 		return $retorno;
 	}
-	
+
 
 	protected function tipoUsuario($session)
 	{
@@ -54,7 +56,7 @@ class SoporteController extends Controller
 	public function _ajaxEnviarMailSoporteAction(Request $request)
 	{
 		
-			//$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+			$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
 		    $session = new Session();
 			$datosAjax=[
@@ -74,7 +76,7 @@ class SoporteController extends Controller
 
 			//$rolUsuario=$this->tipoUsuario($session);//preparamos el rol del usuario para enviarlo por correo electronico
 
-			$retorno=$this->enviarMail($datosAjax,$nombreUsuario);
+			$retorno=$this->enviarMail($datosAjax,$nombreUsuario,$yml['parameters']['correo_soporte']['remitente'],$yml['parameters']['correo_soporte']['asunto']);
 
 
 		return new Response(json_encode(['respuesta'=>$retorno]),200,array('Content-Type' => 'application/json'));
