@@ -30,6 +30,13 @@ class CertiPaginaEmpresa
     private $activo;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="acceso", type="boolean", nullable=true)
+     */
+    private $acceso;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_inicio", type="date", nullable=true)
@@ -74,16 +81,16 @@ class CertiPaginaEmpresa
     /**
      * @var boolean
      *
-     * @ORM\Column(name="acceso", type="boolean", nullable=true)
-     */
-    private $acceso;
-
-    /**
-     * @var boolean
-     *
      * @ORM\Column(name="colaborativo", type="boolean", nullable=true)
      */
     private $colaborativo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -149,6 +156,30 @@ class CertiPaginaEmpresa
     public function getActivo()
     {
         return $this->activo;
+    }
+
+    /**
+     * Set acceso
+     *
+     * @param boolean $acceso
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setAcceso($acceso)
+    {
+        $this->acceso = $acceso;
+    
+        return $this;
+    }
+
+    /**
+     * Get acceso
+     *
+     * @return boolean
+     */
+    public function getAcceso()
+    {
+        return $this->acceso;
     }
 
     /**
@@ -296,30 +327,6 @@ class CertiPaginaEmpresa
     }
 
     /**
-     * Set acceso
-     *
-     * @param boolean $acceso
-     *
-     * @return CertiPaginaEmpresa
-     */
-    public function setAcceso($acceso)
-    {
-        $this->acceso = $acceso;
-    
-        return $this;
-    }
-
-    /**
-     * Get acceso
-     *
-     * @return boolean
-     */
-    public function getAcceso()
-    {
-        return $this->acceso;
-    }
-
-    /**
      * Set colaborativo
      *
      * @param boolean $colaborativo
@@ -341,6 +348,30 @@ class CertiPaginaEmpresa
     public function getColaborativo()
     {
         return $this->colaborativo;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 
     /**

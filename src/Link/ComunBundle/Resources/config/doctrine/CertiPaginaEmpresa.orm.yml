@@ -28,6 +28,9 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
         activo:
             type: boolean
             nullable: true
+        acceso:
+            type: boolean
+            nullable: true
         fechaInicio:
             type: date
             nullable: true
@@ -56,12 +59,14 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
             type: boolean
             nullable: true
             column: muro_activo
-        acceso:
-            type: boolean
-            nullable: true
         colaborativo:
             type: boolean
             nullable: true
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

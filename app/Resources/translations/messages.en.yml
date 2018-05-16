@@ -289,7 +289,8 @@ Evaluación: Test
 Evaluación activa: Enabled test
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
-Experimenta la pontencialidad de la capacitación online: Experience the potential of online training
+Experimenta la potencialidad de la capacitación online: Experience the potential of online training
+Extensiones aceptadas: Allowed extensions
 Fecha: Date
 Fecha Creación: Creation Date
 Fecha fin: End date
@@ -362,7 +363,6 @@ La categoría ha sido almacenada con éxito: Category has been saved successfull
 La clave es requerida.: Password is required.
 La descripción debe ser mínimo de 3 caracteres.: Description must have at least 3 characters.
 La descripción es requerida.: Description is required.
-La descripcion debe ser mínimo de 3 caracteres.: La descripcion debe ser mínimo de 3 caracteres.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
 La empresa debe cargar el modelo de certificado y asociarlo a esta página: Company must upload the certficate model and associate it to this page
@@ -498,6 +498,7 @@ Preferencias de usuario: User preferences
 Pregunta: Question
 Preguntas: Questions
 Prelación: Prelation
+Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
 Procesando: Processing
 Procesar: Process
@@ -543,6 +544,7 @@ Salir: Log out
 Salir de la evaluación: Leave the evaluation
 se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione: results will be calculated leaving these questions unanswered. If you want to complete your answers press
 Seleccionado: Selected
+Seleccione el archivo: Select the file
 Seleccione el/los usuarios: Select the user
 Seleccione el nivel: Select the level
 Seleccione el programa: Select the program

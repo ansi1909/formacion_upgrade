@@ -166,7 +166,7 @@ class Functions
 		return preg_replace($pattern, "\${1}".$break, $str);
 	}
 	
-	public function sendEmail($parametros, $controller)
+	public function sendEmail($parametros)
 	{
 
 		if ($this->container->getParameter('sendMail'))
@@ -715,7 +715,6 @@ class Functions
 
 	}
 
-	// Verifica si el usuario tiene el rol Empresa y devuelve empresa_id
 	public function emailUsuarios($usuarios, $notificacion, $template)
 	{
 		$controller = 'RecordatoriosCommand';
@@ -740,6 +739,7 @@ class Functions
 	{
 
 		$em = $this->em;
+		$orden = 0;
 		
 		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId(),
 																					'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']),
@@ -748,6 +748,7 @@ class Functions
 		foreach ($subpages as $subpage)
 		{
 
+			$orden++;
 			$subpagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $subpage->getId(),
                                                                                                     	   'empresa' => $pagina_empresa->getEmpresa()->getId()));
 
@@ -781,6 +782,7 @@ class Functions
 	            }
             }
             
+            $subpagina_empresa->setOrden($orden);
             $em->persist($subpagina_empresa);
             $em->flush();
 			
@@ -914,7 +916,7 @@ class Functions
                                    	AND pe.activo = :activo 
                                    	AND pe.fechaInicio <= :hoy 
 						            AND pe.fechaVencimiento >= :hoy
-                                   ORDER BY p.orden')
+                                   ORDER BY pe.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                     					  'pagina_id' => $pagina_id,
                                           'estatus_activo' => $estatus_contenido,
@@ -932,6 +934,7 @@ class Functions
             $tiene_evaluacion = $query->getSingleScalarResult();
 
             $subpaginas[$subpage->getPagina()->getId()] = array('id' => $subpage->getPagina()->getId(),
+            													'orden' => $subpage->getOrden(),
                                     							'nombre' => $subpage->getPagina()->getNombre(),
                                     							'categoria' => $subpage->getPagina()->getCategoria()->getNombre(),
                                     							'foto' => $subpage->getPagina()->getFoto(),
@@ -1849,7 +1852,7 @@ class Functions
                                                         AND pe.activo = :activo 
                                                         AND pe.fechaInicio <= :hoy 
                                                         AND pe.fechaVencimiento >= :hoy
-                                                       ORDER BY p.orden')
+                                                       ORDER BY pe.orden')
                                         ->setParameters(array('empresa' => $datos['empresa']['id'],
                                                               'nivel_usuario' => $usuario->getNivel()->getId(),
                                                               'activo' => true,
@@ -1884,6 +1887,7 @@ class Functions
                                     $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
 
                                     $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
+                                    																	'orden' => $pagina->getPaginaEmpresa()->getOrden(),
                                                                                                         'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
                                                                                                         'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
                                                                                                         'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
@@ -1999,7 +2003,7 @@ class Functions
 		return $subpaginas;
 	}
 
-public function iniciarSesionAdmin($datos)
+	public function iniciarSesionAdmin($datos)
     {
 
         $exito=false;
@@ -2271,6 +2275,46 @@ public function iniciarSesionAdmin($datos)
         }
 
         return $foros_hijos;
+
+	}
+
+	// Arreglo del archivo en el espacio colaborativo
+	public function archivoForo($archivo, $usuario_id)
+	{
+
+		$extension = strtolower(substr($mystring, strrpos($archivo->getArchivo(), ".")+1));
+
+		$doc_extensions = array('doc', 'docx');
+		$img_extensions = array('png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'svg');
+		$excel_extensions = array('xls', 'xlsx');
+
+		if (in_array($extension, $doc_extensions))
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/doc.svg';
+		}
+		elseif (in_array($extension, $img_extensions))
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/jpg.svg';
+		}
+		elseif (in_array($extension, $excel_extensions))
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/xls.svg';
+		}
+		elseif ($extension == 'pdf')
+		{
+			$img = $this->getWebDirectory().'/front/assets/img/pdf.svg';
+		}
+		else {
+			$img = $this->getWebDirectory().'/front/assets/img/jpg.svg';
+		}
+
+		$archivo_arr = array('id' => $archivo->getId(),
+							 'descripcion' => $archivo->getDescripcion(),
+							 'usuario' => $archivo->getUsuario()->getId() == $usuario_id ? $this->translator->trans('Yo') : $archivo->getUsuario()->getNombre().' '.$archivo->getUsuario()->getApellido(),
+							 'archivo' => $archivo->getArchivo(),
+							 'img' => $img);
+
+        return $archivo_arr;
 
 	}
 }

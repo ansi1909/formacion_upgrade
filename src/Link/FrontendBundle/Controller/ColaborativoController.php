@@ -173,10 +173,18 @@ class ColaborativoController extends Controller
         $em->persist($foro);
         $em->flush();
 
-        // Generación de alarmas
         if (!$foro_id)
         {
 
+            // Se crea el subdirectorio para los archivos del espacio colaborativo
+            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+            $dir = $dir_uploads.'recursos/empresas/'.$empresa->getId().'/colaborativo/'.$foro->getId().'/';
+            if (!file_exists($dir) && !is_dir($dir))
+            {
+                mkdir($dir, 750, true);
+            }
+
+            // Generación de alarmas
             $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha creado un tema en el espacio colaborativo del').' '.$pagina->getCategoria()->getNombre().' '.$pagina->getNombre().'.';
 
             $query = $em->createQuery("SELECT np FROM LinkComunBundle:CertiNivelPagina np 
@@ -304,7 +312,13 @@ class ColaborativoController extends Controller
         $total_aportes = $query->getSingleScalarResult();
 
         // Archivos del foro
-        //$usuarios = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findByNivel($np->getNivel()->getId());
+        $archivos = array();
+        $archivos_bd = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForoArchivo')->findBy(array('foro' => $foro_id),
+                                                                                                       array('fechaRegistro' => 'ASC'));
+        foreach ($archivos_bd as $archivo)
+        {
+            $archivos[] = $f->archivoForo($archivo, $session->get('usuario')['id']);
+        }
 
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$foro->getPagina()->getId()]);
@@ -335,7 +349,8 @@ class ColaborativoController extends Controller
                                                                                         'foros_hijos' => $foros_hijos,
                                                                                         'subpagina_id' => $subpagina_id,
                                                                                         'menu_str' => $menu_str,
-                                                                                        'total_aportes' => $total_aportes));
+                                                                                        'total_aportes' => $total_aportes,
+                                                                                        'archivos' => $archivos));
 
     }
 

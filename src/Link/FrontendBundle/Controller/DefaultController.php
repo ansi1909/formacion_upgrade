@@ -335,7 +335,7 @@ class DefaultController extends Controller
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave()) );
                            // return new response(var_dump($parametros));
-                            $correoRecuperacion = $f->sendEmail($parametros, $this);
+                            $correoRecuperacion = $f->sendEmail($parametros);
                             return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }
                     }

@@ -127,6 +127,17 @@ $(document).ready(function() {
 		});
 	});
 
+	$('#saveFile').click(function(){
+        var valid = $("#form-upload").valid();
+        if (!valid) 
+        {
+            console.log('Hay errores');
+        }
+        else {
+            console.log('Ya todo está bien');
+        }
+    });
+
     observeResponse();
     observeLike();
 
@@ -207,4 +218,18 @@ function saveForo(foro_id, foro_main_id)
             $('#wait').hide(1000);
         }
     });
+}
+
+function responsive_filemanager_callback(field_id){
+	
+	// Ruta en el campo de texto
+	var url=jQuery('#'+field_id).val();
+	var arr = url.split('uploads/');
+	var new_path = arr[arr.length-1];
+	$('#'+field_id).val(new_path);
+
+	var arr = new_path.split('/');
+	var file = arr[arr.length-1];
+	$('#'+field_id+'_input').val(file);
+
 }
