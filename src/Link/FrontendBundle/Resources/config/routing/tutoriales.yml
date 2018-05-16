@@ -1,0 +1,3 @@
+_indexTutoriales:
+    path:  /listaTutoriales
+    defaults: { _controller: LinkFrontendBundle:Tutorial:index }

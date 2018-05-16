@@ -41,7 +41,7 @@ $(document).ready(function()
 				        dataType: "json",
 				        success: function(data) 
 				        {
-				           if (data.respuesta==1) //si el mensaje se envio al equipo de soporte 
+				           if (data.respuesta==true) //si el mensaje se envio al equipo de soporte 
 				            {
 	                             $('#modalSv').modal('hide');//se cierra el modal
 	                             document.getElementById('formularioSoporte').reset();
