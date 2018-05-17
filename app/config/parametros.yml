@@ -67,8 +67,8 @@ parameters:
     correo_soporte:
         asunto: 'Formación2.0 - Solicitud de soporte virtual. '
         remitente: 'tutorvirtual@formacion2puntocero.com'
-        receptor: 'josetayupo@gmail.com'
-        plantila: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
+        destinatario: 'josetayupo@gmail.com'
+        plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2
     puntos:

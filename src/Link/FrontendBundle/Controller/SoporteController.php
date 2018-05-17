@@ -15,43 +15,6 @@ class SoporteController extends Controller
 {
 
 	
-	
-	
-	protected function enviarMail($datosAjax,$nombreUsuario,$remitente,$asunto)
-	{
-		$sendMail= \Swift_Message::newInstance()
-			        ->setSubject($asunto)
-			        ->setFrom($remitente)
-			        ->setTo($datosAjax['correo'])
-			        ->setBody( $this->renderView(
-                                                  'LinkFrontendBundle:Soporte:EmailSoporte.html.twig',array('nombreUsuario' => $nombreUsuario,'datos'=>$datosAjax)
-                                                 ),'text/html'
-			                 );
-
-		$retorno=$this->get('mailer')->send($sendMail);
-
-		return $retorno;
-	}
-
-
-	protected function tipoUsuario($session)
-	{
-        $iSparticipante=$session->get('usuario')['participante'];
-        $iStutor=$session->get('usuario')['tutor'];
-
-        if ($iStutor) 
-        {
-        	$retorno='Tutor';
-        }
-        else if($iSparticipante)
-        {
-            $retorno='Participante';
-        }
-
-        return $retorno;
-	}
-
-
 
 	
 	public function _ajaxEnviarMailSoporteAction(Request $request)
@@ -93,9 +56,7 @@ class SoporteController extends Controller
 
 			$retorno=$f->sendEmail($datosCorreo);
 
-			//$rolUsuario=$this->tipoUsuario($session);//preparamos el rol del usuario para enviarlo por correo electronico
-
-			//$retorno=$this->enviarMail($datosAjax,$nombreUsuario,$yml['parameters']['correo_soporte']['remitente'],$yml['parameters']['correo_soporte']['asunto']);
+			
 
 
 		return new Response(json_encode(['respuesta'=>$retorno]),200,array('Content-Type' => 'application/json'));
