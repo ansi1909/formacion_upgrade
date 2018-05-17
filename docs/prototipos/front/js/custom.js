@@ -87,14 +87,12 @@ $(document).ready(function() {
                 $(".markNotify").fadeIn(100).delay(25);
                 $(".opcListNotify").show();
             });
-            clearInterval(timer);
             y = 1;
         }else {
             $(".dropDownNotify").slideUp(500, function(){
                 $(".markNotify").fadeOut(600);
             });
             y = 0;
-            getNotificaciones();
         }
     });
 
@@ -154,18 +152,6 @@ $(document).ready(function() {
         if (!$(".main-sidenav-close")[0]){
              closeNav();
         }
-
-        $(".dropDownNotify").slideUp(500, function(){
-            $(".markNotify").fadeOut(600);
-        });
-        y = 0;
-        getNotificaciones();
-
-        $(".dropDownMenu").slideUp(500, function(){
-            $(".mark").fadeOut(600).delay(50);
-        });
-        x = 0;
-            
     });
     
     $("#iconDownloads").click(function(){
@@ -174,19 +160,8 @@ $(document).ready(function() {
         if (!$(".main-sidenav-close")[0]){
             closeNav();
         }
-
-        $(".dropDownNotify").slideUp(500, function(){
-            $(".markNotify").fadeOut(600);
-        });
-        y = 0;
-        getNotificaciones();
-
-        $(".dropDownMenu").slideUp(500, function(){
-            $(".mark").fadeOut(600).delay(50);
-        });
-        x = 0;
     });
-
+    
     $("#iconCloseDownloads").click(function(){
         $(".downloads").removeClass("open-downloads");
         $("#pills-tabContent").removeClass("hidden-nav-content");
@@ -208,7 +183,7 @@ $(document).ready(function() {
     $(".bttnDownl").mouseenter(function(){
         $(".tooltipN").slideToggle(300);
     });
-
+    
     $(".bttnDownl").mouseleave(function(){
         $(".tooltipN").slideToggle(300);
     });
