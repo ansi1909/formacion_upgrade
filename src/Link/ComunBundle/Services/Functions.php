@@ -2331,7 +2331,10 @@ class Functions
 								 'nombre_pagina' => $nombre_pagina);
         $pagina_padre_id = 0;
 
-        if ($indexedPages[$pagina_id]['tiene_evaluacion'])
+        $pl = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
+                                                                                    'pagina' => $pagina_id));
+
+        if ($indexedPages[$pagina_id]['tiene_evaluacion'] && $pl->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
         {
         	$evaluacion = $this->evaluacionPagina($pagina_id, $usuario_id, $empresa_id, $yml);
         	$continue_button = array('next_lesson' => $next_lesson,
@@ -2356,8 +2359,8 @@ class Functions
                 // Buscar la próxima página hermana que no haya sido completada
                 foreach ($indexedPages[$pagina_padre_id]['subpaginas'] as $subpagina)
                 {
-                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
-                                                                                                                         'pagina' => $subpagina['id']));
+                    $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
+                                                                                                        'pagina' => $subpagina['id']));
                     if (!$pagina_log)
                     {
                         $next_lesson = $subpagina['id'];
