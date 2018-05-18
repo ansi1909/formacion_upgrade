@@ -331,6 +331,7 @@ Imagen: Image
 Imagen lado: Image side
 Índice: Index
 Ingrese un correo valido: Enter a valid email
+Indice del contenido: Content index
 Indique el asunto de su mensaje: Indicate the subject of your message
 Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
@@ -341,6 +342,7 @@ Inicio: Begin
 instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
 Interacción: Interaction
 Ir a detalles de la página: Go to page details
+Ir al inicio: Go to home
 Ir al listado: Go to list
 Ir al listado de evaluaciones: Go to tests list
 Ir al listado de opciones: Go to options list
@@ -515,6 +517,7 @@ QR: QR
 Recordarme: Remember me
 Recordar mi contaseña: Remember my password
 Recursos: Resources
+Recursos del programa: Program resources
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
 registros: items
@@ -552,6 +555,8 @@ Seleccione la empresa para mostrar los niveles: Select the company to show its l
 Seleccione fecha difusión: Select dissemination date
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
+Si deseas, puedes tomar la evaluación de: If you want, you can take the evaluation of
+Si deseas, puedes tomar la evaluación en este momento: If you want, you can take the evaluation in this moment
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
 Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: If check YES, page will have a section in which user can comment over the wall
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.

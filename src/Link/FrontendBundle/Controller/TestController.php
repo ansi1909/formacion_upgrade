@@ -610,6 +610,9 @@ class TestController extends Controller
             $em->persist($pagina_log);
             $em->flush();
 
+            // Cálculo del porcentaje de avance de toda la línea de ascendente
+            $f->calculoAvance($indexedPages, $pagina_id, $session->get('usuario')['id'], $yml, $puntos);
+
         }
 
         // Hacia la página de resultados
@@ -632,6 +635,9 @@ class TestController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $try_button = 0;
+        $continue_button = array('next_lesson' => 0,
+                                 'evaluacion' => 0,
+                                 'nombre_pagina' => '');
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
 
@@ -695,10 +701,35 @@ class TestController extends Controller
             }
         }
 
+        if (!$try_button)
+        {
+
+            // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+            $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+
+            // También se anexa a la indexación el programa
+            $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+            $pagina = $session->get('paginas')[$programa_id];
+            $pagina['padre'] = 0;
+            $pagina['sobrinos'] = 0;
+            $pagina['hijos'] = count($pagina['subpaginas']);
+            $pagina['descripcion'] = $programa->getDescripcion();
+            $pagina['contenido'] = $programa->getContenido();
+            $pagina['foto'] = $programa->getFoto();
+            $pagina['pdf'] = $programa->getPdf();
+            $pagina['next_subpage'] = 0;
+            $indexedPages[$pagina['id']] = $pagina;
+
+            // Aprobó la evaluación. Determinar siguiente lección a ver.
+            $continue_button = $f->nextLesson($indexedPages, $prueba_log->getPrueba()->getPagina()->getId(), $session->get('usuario')['id'], $session->get('empresa')['id'], $yml, $programa_id);
+
+        }
+
         return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
                                                                                    'preguntas' => $preguntas,
                                                                                    'programa_id' => $programa_id,
                                                                                    'try_button' => $try_button,
+                                                                                   'continue_button' => $continue_button,
                                                                                    'estados' => $yml['parameters']['estado_prueba'],
                                                                                    'puntos' => $puntos));
 

@@ -23,6 +23,8 @@
     <body>
         
         <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa_id }) }}">
+        <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa_id, 'subpagina_id': continue_button.next_lesson }) }}">
+        <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa_id }) }}">
         
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
@@ -123,10 +125,43 @@
                         </ul>
                     </div>
                 </div>
+                {% if not try_button %}
+                    {% if continue_button.evaluacion != 0 %}
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-8 text-center">
+                                <p class="text_fin-materia">{{ 'Si deseas, puedes tomar la evaluación de'|trans }} {{ continue_button.nombre_pagina }}.</p>
+                            </div>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-6 text-center">
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    {% else %}
+                        {% if continue_button.next_lesson != 0 %}
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-8 text-center">
+                                    <p class="text_fin-materia">¡{{ 'Sigue aprendiendo'|trans }}!</p>
+                                </div>
+                            </div>
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-6 text-center">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="next"> {{ 'Continuar'|trans }} </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
                 <div class="row align-items-center justify-content-center">
                     <div class="col-6 text-center">
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary" id="programa"> {{ 'Continuar'|trans }} </button>
+                            <button type="button" class="btn btn-primary continuar" id="programa"> {{ 'Volver al programa'|trans }} </button>
                         </div>
                     </div>
                 </div>
@@ -167,9 +202,11 @@
         <script src="{{ asset('front/js/custom.js') }}"></script>
         <script src="{{ asset('js/front/expireSession.js') }}"></script>
         <script type="text/javascript">
-            $("#programa").click(function(){
-                $(this).hide();
-                window.location.replace($('#url_programa').val());
+            $('.continuar').click(function(){
+                var button = $(this);
+                button.hide();
+                var id = button.attr('id');
+                window.location.replace($('#url_'+id).val());
             });
         </script>
 

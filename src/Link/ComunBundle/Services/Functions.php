@@ -2317,4 +2317,154 @@ class Functions
         return $archivo_arr;
 
 	}
+
+	public function nextLesson($indexedPages, $pagina_id, $usuario_id, $empresa_id, $yml, $programa_id)
+	{
+
+		$em = $this->em;
+
+		$next_lesson = 0;
+		$evaluacion = 0;
+		$nombre_pagina = $indexedPages[$pagina_id]['categoria'].': '.$indexedPages[$pagina_id]['nombre'];
+		$continue_button = array('next_lesson' => $next_lesson,
+								 'evaluacion' => $evaluacion,
+								 'nombre_pagina' => $nombre_pagina);
+        $pagina_padre_id = 0;
+
+        if ($indexedPages[$pagina_id]['tiene_evaluacion'])
+        {
+        	$evaluacion = $this->evaluacionPagina($pagina_id, $usuario_id, $empresa_id, $yml);
+        	$continue_button = array('next_lesson' => $next_lesson,
+								 	 'evaluacion' => $evaluacion,
+								 	 'nombre_pagina' => $nombre_pagina);
+        }
+
+        if ($indexedPages[$pagina_id]['padre'] && !$evaluacion)
+        {
+
+            $pagina_padre_id = $indexedPages[$pagina_id]['padre'];
+            $keys = array_keys($indexedPages[$pagina_padre_id]['subpaginas']);
+
+            if (isset($keys[array_search($pagina_id,$keys)+1]))
+            {
+            	// Próxima lección es hermana
+                $next_lesson = $keys[array_search($pagina_id,$keys)+1];
+                $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+            }
+            else {
+
+                // Buscar la próxima página hermana que no haya sido completada
+                foreach ($indexedPages[$pagina_padre_id]['subpaginas'] as $subpagina)
+                {
+                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
+                                                                                                                         'pagina' => $subpagina['id']));
+                    if (!$pagina_log)
+                    {
+                        $next_lesson = $subpagina['id'];
+                        $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                        break;
+                    }
+                    else {
+                        if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['iniciada'])
+                        {
+                            $next_lesson = $subpagina['id'];
+                            $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                            break;
+                        }
+                        elseif ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                        {
+                            $evaluacion = $subpagina['id'];
+                            $nombre_pagina = $indexedPages[$evaluacion]['categoria'].': '.$indexedPages[$evaluacion]['nombre'];
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            if ($next_lesson || $evaluacion)
+            {
+            	$continue_button = array('next_lesson' => $next_lesson,
+							 	 		 'evaluacion' => $evaluacion,
+							 	 		 'nombre_pagina' => $nombre_pagina);
+            }
+            else {
+            	if ($pagina_padre_id != $programa_id)
+            	{
+            		// nextLesson desde el punto de vista del padre
+            		$continue_button = $this->nextLesson($indexedPages, $pagina_padre_id, $usuario_id, $empresa_id, $yml, $programa_id);
+            	}
+            }
+
+        }
+
+        return $continue_button;
+
+	}
+
+	// Retorna 0 si la página no tiene evaluación que presentar, sino retorna la pagina_id de la evaluación
+	public function evaluacionPagina($pagina_id, $usuario_id, $empresa_id, $yml)
+	{
+
+		$em = $this->em;
+		$pagina_evaluacion_id = 0;
+
+		$query = $em->createQuery("SELECT pl FROM LinkComunBundle:CertiPruebaLog pl 
+                                    JOIN pl.prueba p 
+                                    WHERE pl.usuario = :usuario_id 
+                                    AND p.pagina = :pagina_id 
+                                    ORDER BY pl.id DESC")
+                    ->setParameters(array('usuario_id' => $usuario_id,
+                                          'pagina_id' => $pagina_id));
+        $pruebas_log = $query->getResult();
+        if ($pruebas_log)
+        {
+            switch ($pruebas_log[0]->getEstado())
+            {
+                case $yml['parameters']['estado_prueba']['curso']:
+                    $pagina_evaluacion_id = $pagina_id;
+                    break;
+                case $yml['parameters']['estado_prueba']['aprobado']:
+                    $pagina_evaluacion_id = 0;
+                    break;
+                case $yml['parameters']['estado_prueba']['reprobado']:
+                    // Cantidad de intentos
+                    $query = $em->createQuery("SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPruebaLog pl 
+                                                JOIN pl.prueba p 
+                                                WHERE pl.usuario = :usuario_id 
+                                                AND p.pagina = :pagina_id")
+                                ->setParameters(array('usuario_id' => $usuario_id,
+                                                      'pagina_id' => $pagina_id));
+                    $intentos = $query->getSingleScalarResult();
+                    $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                WHERE pe.empresa = :empresa_id 
+                                                AND pe.pagina = :pagina_id")
+                                ->setParameters(array('empresa_id' => $empresa_id,
+                                                      'pagina_id' => $pagina_id));
+                    $pe = $query->getResult();
+                    $max_intentos = $pe[0]->getMaxIntentos();
+                    if ($intentos < $max_intentos)
+                    {
+                        $pagina_evaluacion_id = $pagina_id;
+                    }
+                    break;
+            }
+        }
+        else {
+            // Se verifica si la página tiene creada una evaluación
+            $query = $em->createQuery("SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p 
+                                        WHERE p.pagina = :pagina_id 
+                                        AND p.estatusContenido = :activo")
+                        ->setParameters(array('activo' => $yml['parameters']['estatus_contenido']['activo'],
+                                              'pagina_id' => $pagina_id));
+            $evaluaciones = $query->getSingleScalarResult();
+            if ($evaluaciones)
+            {
+                $pagina_evaluacion_id = $pagina_id;
+            }
+        }
+        
+        return $pagina_evaluacion_id;
+
+	}
 }

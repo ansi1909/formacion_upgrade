@@ -64,7 +64,7 @@
     <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
         
         <div class="row justify-content-around">
-            <a href="#"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="Ir al inicio">home</i></a>
+            <a href="{{ path('_inicio') }}"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="{{ 'Ir al inicio'|trans }}">home</i></a>
             <a href="javascript:void(0)" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2" data-toggle="tooltip" data-placement="left" title="Cerrar sidebar"></i></a>
         </div>
 
@@ -76,12 +76,12 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link active" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
-                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Contenido del programa">view_list</i>
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Indice del contenido'|trans }}">view_list</i>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
-                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Recursos del programa">widgets</i>
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Recursos del programa'|trans }}">widgets</i>
                 </a>
             </li>
         </ul>
