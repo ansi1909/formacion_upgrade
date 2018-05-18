@@ -468,6 +468,108 @@ body.codigoQR {
   100% {
     transform: scale3d(1, 1, 1);
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.9); } }
+@-webkit-keyframes animateSuccessLong {
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  84% {
+    width: 55px;
+    right: 0px;
+    top: 35px; }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px; } }
+@-webkit-keyframes animateSuccessTip {
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px; }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px; }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px; } }
+@keyframes animateSuccessTip {
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px; }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px; }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px; } }
+@keyframes animateSuccessLong {
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  84% {
+    width: 55px;
+    right: 0px;
+    top: 35px; }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px; } }
+@-webkit-keyframes rotatePlaceholder {
+  0% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  5% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  12% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); }
+  100% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); } }
+@keyframes rotatePlaceholder {
+  0% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  5% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  12% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); }
+  100% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); } }
 .login-cover {
   background-image: url(../../../assets/img/login_cover.jpg);
   background-repeat: no-repeat;
@@ -693,6 +795,103 @@ a:focus, a:active, a:target, a:checked {
       .modalMuroNotify .msjMuroResp .muroComment .moreMuroNotify:hover {
         color: #5CAEE6; }
 
+.modalSuccess .check_mark {
+  width: 80px;
+  height: 130px;
+  margin: 0 auto; }
+  .modalSuccess .check_mark .sa-icon {
+    width: 80px;
+    height: 80px;
+    border: 4px solid #DAE1E6;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    border-radius: 50%;
+    margin: 20px auto;
+    padding: 0;
+    position: relative;
+    left: 0;
+    box-sizing: content-box; }
+    .modalSuccess .check_mark .sa-icon.sa-success {
+      border-color: #CFE65C;
+      border-color: transparent; }
+      .modalSuccess .check_mark .sa-icon.sa-success::before, .modalSuccess .check_mark .sa-icon.sa-success::after {
+        content: '';
+        -webkit-border-radius: 40px;
+        border-radius: 40px;
+        border-radius: 50%;
+        position: absolute;
+        width: 60px;
+        height: 120px;
+        background: #FAFAFA;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg); }
+      .modalSuccess .check_mark .sa-icon.sa-success::before {
+        -webkit-border-radius: 120px 0 0 120px;
+        border-radius: 120px 0 0 120px;
+        top: -7px;
+        left: -33px;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        -webkit-transform-origin: 60px 60px;
+        transform-origin: 60px 60px; }
+      .modalSuccess .check_mark .sa-icon.sa-success::after {
+        -webkit-border-radius: 0 120px 120px 0;
+        border-radius: 0 120px 120px 0;
+        top: -11px;
+        left: 30px;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        -webkit-transform-origin: 0px 60px;
+        transform-origin: 0px 60px; }
+      .modalSuccess .check_mark .sa-icon.sa-success .sa-placeholder {
+        width: 80px;
+        height: 80px;
+        border: 4px solid rgba(76, 175, 80, 0.5);
+        -webkit-border-radius: 40px;
+        border-radius: 40px;
+        border-radius: 50%;
+        box-sizing: content-box;
+        position: absolute;
+        left: -4px;
+        top: -4px;
+        z-index: 2; }
+      .modalSuccess .check_mark .sa-icon.sa-success .sa-fix {
+        width: 5px;
+        height: 90px;
+        background-color: #FAFAFA;
+        position: absolute;
+        left: 28px;
+        top: 8px;
+        z-index: 1;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg); }
+      .modalSuccess .check_mark .sa-icon.sa-success.animate::after {
+        -webkit-animation: rotatePlaceholder 4.25s ease-in;
+        animation: rotatePlaceholder 4.25s ease-in; }
+      .modalSuccess .check_mark .sa-icon.sa-success .sa-line.sa-tip {
+        -ms-transform: rotate(45deg) \9; }
+      .modalSuccess .check_mark .sa-icon.sa-success .sa-line.sa-long {
+        -ms-transform: rotate(-45deg) \9; }
+.modalSuccess .sa-icon.sa-success .sa-line {
+  height: 5px;
+  background-color: #CFE65C;
+  display: block;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 2; }
+  .modalSuccess .sa-icon.sa-success .sa-line.sa-tip {
+    width: 25px;
+    left: 14px;
+    top: 46px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); }
+  .modalSuccess .sa-icon.sa-success .sa-line.sa-long {
+    width: 47px;
+    right: 8px;
+    top: 38px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
@@ -725,29 +924,29 @@ a:focus, a:active, a:target, a:checked {
   height: 28.5rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modalEditP, .modalChagePwd, .modalSopVirtual {
+.modal-recuperacion, .modal-calendario, .modalEditP, .modalChagePwd, .modalSopVirtual, .modalSuccess, .modalWrong {
   height: 40rem;
   width: 33.5rem;
   height: 36rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify {
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
   margin: 8rem auto !important;
   border-radius: 1rem;
   background: #FAFAFA;
-  margin: 2rem auto !important; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal {
+  margin: calc(2rem - 4px) auto !important; }
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal, .modalSuccess .btn_close_modal, .modalWrong .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white, .modalMuroNotify .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white, .modalMuroNotify .btn_close_modal .ic-close-white, .modalSuccess .btn_close_modal .ic-close-white, .modalWrong .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo, .modalMuroNotify .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo, .modalMuroNotify .titulo, .modalSuccess .titulo, .modalWrong .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
