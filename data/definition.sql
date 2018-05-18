@@ -492,7 +492,11 @@ id serial,
 nombre varchar (250),
 pdf varchar(250),
 video varchar(250),
- PRIMARY KEY (id));
+imagen varchar(250),
+fecha timestamp without time zone,
+usuario_id integer,
+ PRIMARY KEY (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
 
 CREATE TABLE certi_tipo_certificado(
 -- Attributes --
