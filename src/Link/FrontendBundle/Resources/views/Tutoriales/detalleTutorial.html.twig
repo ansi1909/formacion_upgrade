@@ -1,0 +1,12 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+{% endblock %}
+
+{% block sidemenu %}
+    {{ parent() }}
+{% endblock %}
