@@ -2,6 +2,10 @@ $(document).ready(function() {
 
 	var foro_main_id = $('#foro_main_id').val();
 
+	$( document ).tooltip({
+      track: true
+    });
+
 	CKEDITOR.replace( 'mensaje_response',
 	{
 		toolbar : 'MyToolbar',

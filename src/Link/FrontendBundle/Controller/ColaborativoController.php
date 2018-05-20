@@ -26,6 +26,8 @@ class ColaborativoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
                                     WHERE f.pagina = :programa_id 
                                     AND f.empresa = :empresa_id 
@@ -96,32 +98,9 @@ class ColaborativoController extends Controller
             }
         }
 
-        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
-        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
-
-        // También se anexa a la indexación el programa padre
-        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-        $pagina = $session->get('paginas')[$programa_id];
-        $pagina['padre'] = 0;
-        $pagina['sobrinos'] = 0;
-        $pagina['hijos'] = count($pagina['subpaginas']);
-        $pagina['descripcion'] = $programa->getDescripcion();
-        $pagina['contenido'] = $programa->getContenido();
-        $pagina['foto'] = $programa->getFoto();
-        $pagina['pdf'] = $programa->getPdf();
-        $pagina['next_subpage'] = 0;
-        $indexedPages[$pagina['id']] = $pagina;
-        $espacio_colaborativo = $indexedPages[$programa_id]['espacio_colaborativo'];
-
-        //return new Response(var_dump($indexedPages));
-
-        // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-
         return $this->render('LinkFrontendBundle:Colaborativo:index.html.twig', array('programa' => $programa,
                                                                                       'foros' => $foros,
-                                                                                      'subpagina_id' => $subpagina_id,
-                                                                                      'menu_str' => $menu_str,));
+                                                                                      'subpagina_id' => $subpagina_id));
 
     }
 
@@ -320,35 +299,14 @@ class ColaborativoController extends Controller
             $archivos[] = $f->archivoForo($archivo, $session->get('usuario')['id']);
         }
 
-        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
-        $indexedPages = $f->indexPages($session->get('paginas')[$foro->getPagina()->getId()]);
-
-        // También se anexa a la indexación el programa padre
         $programa = $foro->getPagina();
-        $pagina = $session->get('paginas')[$foro->getPagina()->getId()];
-        $pagina['padre'] = 0;
-        $pagina['sobrinos'] = 0;
-        $pagina['hijos'] = count($pagina['subpaginas']);
-        $pagina['descripcion'] = $programa->getDescripcion();
-        $pagina['contenido'] = $programa->getContenido();
-        $pagina['foto'] = $programa->getFoto();
-        $pagina['pdf'] = $programa->getPdf();
-        $pagina['next_subpage'] = 0;
-        $indexedPages[$pagina['id']] = $pagina;
-        $espacio_colaborativo = $indexedPages[$foro->getPagina()->getId()]['espacio_colaborativo'];
-
-        //return new Response(var_dump($indexedPages));
-
-        // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$foro->getPagina()->getId()], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $foro->getPagina()->getId())), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-
+        
         return $this->render('LinkFrontendBundle:Colaborativo:detalle.html.twig', array('programa' => $programa,    
                                                                                         'foro' => $foro,
                                                                                         'likes' => $likes,
                                                                                         'timeAgo' => $timeAgo,
                                                                                         'foros_hijos' => $foros_hijos,
                                                                                         'subpagina_id' => $subpagina_id,
-                                                                                        'menu_str' => $menu_str,
                                                                                         'total_aportes' => $total_aportes,
                                                                                         'archivos' => $archivos));
 

@@ -31,13 +31,6 @@ class LeccionController extends Controller
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
         //return new Response(var_dump($indexedPages));
 
-        // Prueba activa
-        $prueba_activa = 0;
-        if ($session->get('paginas')[$programa_id]['tiene_evaluacion'])
-        {
-            $prueba_activa = $f->pruebaActiva($session->get('paginas')[$programa_id], $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-        }
-
         // También se anexa a la indexación el programa padre
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $pagina = $session->get('paginas')[$programa_id];
@@ -50,7 +43,6 @@ class LeccionController extends Controller
         $pagina['pdf'] = $programa->getPdf();
         $pagina['next_subpage'] = 0;
         $indexedPages[$pagina['id']] = $pagina;
-        $espacio_colaborativo = $indexedPages[$programa_id]['espacio_colaborativo'];
 
         //return new Response(var_dump($indexedPages));
 
@@ -143,13 +135,10 @@ class LeccionController extends Controller
 
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
                                                                                  'subpagina_id' => $subpagina_id,
-                                                                                 'menu_str' => $menu_str,
                                                                                  'lecciones' => $lecciones,
                                                                                  'titulo' => $titulo,
                                                                                  'subtitulo' => $subtitulo,
                                                                                  'wizard' => $wizard,
-                                                                                 'prueba_activa' => $prueba_activa,
-                                                                                 'espacio_colaborativo' => $espacio_colaborativo,
                                                                                  'puntos' => $puntos));
 
     }
@@ -259,9 +248,6 @@ class LeccionController extends Controller
 
         //return new Response(var_dump($indexedPages));
 
-        // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-
         // Se completa la lección
         $log_id = $f->finishLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $yml);
         
@@ -277,7 +263,6 @@ class LeccionController extends Controller
 
         return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
                                                                                         'subpagina' => $indexedPages[$subpagina_id],
-                                                                                        'menu_str' => $menu_str,
                                                                                         'continue_button' => $continue_button,
                                                                                         'puntos' => $puntos));
 
@@ -515,6 +500,44 @@ class LeccionController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function menuAction($programa_id, $subpagina_id, $active)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        $em = $this->getDoctrine()->getManager();
+
+        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
+        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
+        //return new Response(var_dump($indexedPages));
+
+        // También se anexa a la indexación el programa padre
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $pagina = $session->get('paginas')[$programa_id];
+        $pagina['padre'] = 0;
+        $pagina['sobrinos'] = 0;
+        $pagina['hijos'] = count($pagina['subpaginas']);
+        $pagina['descripcion'] = $programa->getDescripcion();
+        $pagina['contenido'] = $programa->getContenido();
+        $pagina['foto'] = $programa->getFoto();
+        $pagina['pdf'] = $programa->getPdf();
+        $pagina['next_subpage'] = 0;
+        $indexedPages[$pagina['id']] = $pagina;
+        $espacio_colaborativo = $indexedPages[$programa_id]['espacio_colaborativo'];
+
+        // Menú lateral dinámico
+        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
+
+        return $this->render('LinkFrontendBundle:Leccion:menu.html.twig', array('programa' => $programa,
+                                                                                'subpagina_id' => $subpagina_id,
+                                                                                'menu_str' => $menu_str,
+                                                                                'espacio_colaborativo' => $espacio_colaborativo,
+                                                                                'active' => $active));
+
     }
 
 }

@@ -1035,8 +1035,8 @@ class Functions
 					{
 						$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
 					}
-					$menu_str .= '<li>
-									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'" title="'.$prelada_por.'">'.$subpagina['nombre'].'</a>';
+					$menu_str .= '<li title="'.$prelada_por.'">
+									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
 					{
 						// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
@@ -1087,8 +1087,8 @@ class Functions
 				{
 					$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
 				}
-				$menu_str .= '<li>
-								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'" title="'.$prelada_por.'">'.$programa['nombre'].'</a>';
+				$menu_str .= '<li title="'.$prelada_por.'">
+								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
 			}
 		}
