@@ -4,6 +4,8 @@ $(document).ready(function() {
 	var programa_id = $('#programa_id').val();
 	var subpagina_id = $('#subpagina_id').val();
 
+	$( document ).tooltip();
+
 	$('.circle-nav').click(function(){
 
 		var circle_nav = $(this);

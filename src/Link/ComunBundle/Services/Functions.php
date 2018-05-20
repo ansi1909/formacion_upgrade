@@ -995,6 +995,8 @@ class Functions
 						}
 					}
 					$bloqueada = '';
+					$prelacion_id = 0;
+					$prelada_por = '';
 					if ($subpagina['prelacion'])
 					{
 						// Se determina si el contenido estará bloqueado
@@ -1007,6 +1009,7 @@ class Functions
 						                        		  'completada' => $estatus_completada));
 						$leccion_completada = $query->getSingleScalarResult();
 						$bloqueada = $leccion_completada ? '' : 'less-disabled';
+						$prelacion_id = $leccion_completada ? 0 : $subpagina['prelacion'];
 					}
 					else {
 						// Puede que el padre tenga prelación
@@ -1024,11 +1027,16 @@ class Functions
 								                        		  'completada' => $estatus_completada));
 								$leccion_completada = $query->getSingleScalarResult();
 								$bloqueada = $leccion_completada ? '' : 'less-disabled';
+								$prelacion_id = $leccion_completada ? 0 : $padre['prelacion'];
 							}
 						}
 					}
+					if ($prelacion_id)
+					{
+						$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
+					}
 					$menu_str .= '<li>
-									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
+									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'" title="'.$prelada_por.'">'.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
 					{
 						// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
@@ -1059,6 +1067,8 @@ class Functions
 			{
 				$active = ' active';
 				$bloqueada = '';
+				$prelacion_id = 0;
+				$prelada_por = '';
 				if ($programa['prelacion'])
 				{
 					// Se determina si el contenido estará bloqueado
@@ -1071,9 +1081,14 @@ class Functions
 					                        		  'completada' => $estatus_completada));
 					$leccion_completada = $query->getSingleScalarResult();
 					$bloqueada = $leccion_completada ? '' : 'less-disabled';
+					$prelacion_id = $leccion_completada ? 0 : $programa['prelacion'];
+				}
+				if ($prelacion_id)
+				{
+					$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
 				}
 				$menu_str .= '<li>
-								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';
+								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'" title="'.$prelada_por.'">'.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
 			}
 		}
