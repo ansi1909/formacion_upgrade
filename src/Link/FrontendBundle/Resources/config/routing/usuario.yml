@@ -35,3 +35,9 @@ _ajaxLeido:
 _notificaciones:
     path:     /notificaciones
     defaults: { _controller: LinkFrontendBundle:Default:notificaciones }
+
+_ajaxNotiMuro:
+    path:     /ajaxNotiMuro
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxNotiMuro }
+    requirements:
+        method: GET
