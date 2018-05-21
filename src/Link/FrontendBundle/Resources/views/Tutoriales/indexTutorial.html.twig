@@ -7,42 +7,37 @@
 
         {% block body %}
 
-            <div id="main" class="">
-                <div class="container">
+          <div class="container-fluid">
                     <div class="row mt-4">
                         <div class="col-12 text-center">
                             <h3 class="titulo_faqs">Tutoriales</h3>
                         </div>
                     </div>
                     <div class="contTutorial">
-                        <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                            <div class="row">
-                                {% for tutorial in tutoriales %}
-                                      <div class="col-3 col-md-6 col-sm-6 col-xl-3 col-lg-3">
-                                    <a href="#">
-                                        <div class="card-anuncio">
-                                            <div class="card_header">
-                                                <img src="assets/img/OBDL960.jpg" alt="" class="card_img">
+                            <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
+                                    {% for tutorial in tutoriales %}
+                                           <div class="col-3 col-md-6 col-sm-6 col-xl-3 col-lg-3">
+                                                    <a href="{{ path('_detalleTutoriales')~'/'~tutorial.id }}">
+                                                            <div class="card-anuncio">
+                                                                <div class="card_header">
+                                                                    <img src="{{directorio~tutorial.id~'/'~tutorial.imagen}}" alt="" class="card_img">
+                                                                </div>
+                                                                <div class="card_body">
+                                                                    <h5 class="titulo_anuncio">{{tutorial.nombre}}</h5>
+                                                                </div>
+                                                                <div class="card_footer">
+                                                                    <hr class="separador">
+                                                                    <div class="col-12 col-md-12 col-sm-12 col-xl-12 col-lg-12 text-right">
+                                                                        <span class="fecha_anuncio">Fecha</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    </a>
                                             </div>
-                                            <div class="card_body">
-                                                <h5 class="titulo_anuncio">{{tutorial['nombre']}}</h5>
-                                            </div>
-                                            <div class="card_footer">
-                                                <hr class="separador">
-                                                <div class="col-12 col-md-12 col-sm-12 col-xl-12 col-lg-12 text-right">
-                                                    <span class="fecha_anuncio">{{tutorial['fecha']}}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                {% endfor %}
+                                    {% endfor %}
                             </div>
-                        </div>
                     </div>
-
-                </div>
-            </div>
+          </div>
             
             
 

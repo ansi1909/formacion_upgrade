@@ -58,6 +58,13 @@ class AdminTutorial
     private $fecha;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=1000, nullable=true)
+     */
+    private $descripcion;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminUsuario")
@@ -197,6 +204,30 @@ class AdminTutorial
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return AdminTutorial
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 
     /**
