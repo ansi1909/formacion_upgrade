@@ -2298,7 +2298,7 @@ class Functions
 	public function archivoForo($archivo, $usuario_id)
 	{
 
-		$extension = strtolower(substr($mystring, strrpos($archivo->getArchivo(), ".")+1));
+		$extension = strtolower(substr($archivo->getArchivo(), strrpos($archivo->getArchivo(), ".")+1));
 
 		$doc_extensions = array('doc', 'docx');
 		$img_extensions = array('png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'svg');
