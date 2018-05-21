@@ -352,18 +352,19 @@
 .modalSuccess{
     @extend %modal-m;
     @extend %modal;
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
     .check_mark {
-        width: 80px;
-        height: 130px;
+        width: 10rem;
+        height: 16rem;
         margin: 0 auto;
         .sa-icon {
-            width: 80px;
-            height: 80px;
+            width: 10rem;
+            height: 10rem;
             border: 4px solid $gray-400;
-            -webkit-border-radius: 40px;
-            border-radius: 40px;
             border-radius: 50%;
-            margin: 20px auto;
+            margin: calc(1rem + 4px) auto;
             padding: 0;
             position: relative;
             left: 0;
@@ -372,12 +373,10 @@
                 border-color: $green;
                 &::before, &::after{
                     content: '';
-                    -webkit-border-radius: 40px;
-                    border-radius: 40px;
                     border-radius: 50%;
                     position: absolute;
-                    width: 60px;
-                    height: 120px;
+                    width: 6rem;
+                    height: 11rem;
                     background: $gray-100;
                     -webkit-transform: rotate(45deg);
                     transform: rotate(45deg);
@@ -385,29 +384,27 @@
                 &::before{
                     -webkit-border-radius: 120px 0 0 120px;
                     border-radius: 120px 0 0 120px;
-                    top: -7px;
-                    left: -33px;
+                    top: 1.5rem;
+                    left: -1.5rem;
                     -webkit-transform: rotate(-45deg);
                     transform: rotate(-45deg);
-                    -webkit-transform-origin: 60px 60px;
-                    transform-origin: 60px 60px;
+                    -webkit-transform-origin: 120px 120px;
+                    transform-origin: 120px 120px;
                 }
                 &::after{
                     -webkit-border-radius: 0 120px 120px 0;
                     border-radius: 0 120px 120px 0;
-                    top: -11px;
-                    left: 30px;
+                    top: 0rem;
+                    left: 3.75rem;
                     -webkit-transform: rotate(-45deg);
                     transform: rotate(-45deg);
-                    -webkit-transform-origin: 0px 60px;
-                    transform-origin: 0px 60px;
+                    -webkit-transform-origin: 0px 120px;
+                    transform-origin: 0px 120px;
                 }
                 .sa-placeholder {
-                    width: 80px;
-                    height: 80px;
-                    border: 4px solid rgba(76, 175, 80, .5);
-                    -webkit-border-radius: 40px;
-                    border-radius: 40px;
+                    width: 10rem;
+                    height: 10rem;
+                    border: 4px solid rgba(207, 230, 92, .7);
                     border-radius: 50%;
                     box-sizing: content-box;
                     position: absolute;
@@ -416,12 +413,12 @@
                     z-index: 2;
                 }
                 .sa-fix {
-                    width: 5px;
-                    height: 90px;
+                    width: .5rem;
+                    height: 5rem;
                     background-color: $gray-100;
                     position: absolute;
-                    left: 28px;
-                    top: 8px;
+                    left: 2.25rem;
+                    top: 1.85rem;
                     z-index: 1;
                     -webkit-transform: rotate(-45deg);
                     transform: rotate(-45deg);
@@ -443,28 +440,32 @@
         }
     }
     .sa-icon.sa-success .sa-line {
-        height: 5px;
+        height: 8px;
         background-color: $green;
         display: block;
         border-radius: 2px;
         position: absolute;
         z-index: 2;
         &.sa-tip {
-            width: 25px;
-            left: 14px;
-            top: 46px;
+            width: 3.5rem;
+            left: 1.5rem;
+            top: 5rem;
             -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
         }
         &.sa-long {
-            width: 47px;
-            right: 8px;
-            top: 38px;
+            width: 5.5rem;
+            left: 3.5rem;
+            top: 4.5rem;
             -webkit-transform: rotate(-45deg);
             transform: rotate(-45deg);
         }
     }
-
+    .msgText{
+        font-family: $lessons-font;
+        font-size: calc(2rem - 4px);
+        font-weight: $font-weight-normal;
+    }
 }
 
 .modalWrong{

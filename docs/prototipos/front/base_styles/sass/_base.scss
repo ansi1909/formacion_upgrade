@@ -198,6 +198,11 @@ body.codigoQR{
         line-height: calc(1rem - 2px);
     }
 }
+
+.hide{
+    display:none;
+}
+
 //animation
 @keyframes brillo {
     0%, 100%{
