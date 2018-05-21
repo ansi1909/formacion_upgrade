@@ -14,18 +14,24 @@ class TutorialController extends Controller
 
     public function indexAction(Request $request)
     {
-        $tutoriales=[
-                     ['id'=>1,'nombre'=>'Como navegar por la plataforma','fecha'=>'18/05/2018'],
-                     ['id'=>2,'nombre'=>'Como utilizar los faqs','fecha'=>'17/05/2018'],
-                     ['id'=>3,'nombre'=>'Como editar su perfil de usuario','fecha'=>'16/05/2018'],
-                     ['id'=>4,'nombre'=>'Como se usan las notificaciones del sistema','fecha'=>'15/05/2018'],
-                     ['id'=>5,'nombre'=>'Como navegar por la plataforma','fecha'=>'18/05/2018'],
-                     ['id'=>6,'nombre'=>'Como utilizar los faqs','fecha'=>'17/05/2018'],
-                     ['id'=>7,'nombre'=>'Como editar su perfil de usuario','fecha'=>'16/05/2018'],
-                     ['id'=>8,'nombre'=>'Como se usan las notificaciones del sistema','fecha'=>'15/05/2018']
-                    ];
+       
+       $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+       $directorioTut=$yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
+
+       $tutoriales = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->findAll();
         
-        return $this->render('LinkFrontendBundle:Tutoriales:indexTutorial.html.twig',['tutoriales'=>$tutoriales]);
+       return $this->render('LinkFrontendBundle:Tutoriales:indexTutorial.html.twig',['tutoriales'=>$tutoriales,'directorio'=>$directorioTut]);
+    }
+
+    public function detalleAction(Request $request, $tutorial_id)
+    {
+
+        $tutorial=$this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+        $directorioTut=$yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
+
+
+        return $this->render('LinkFrontendBundle:Tutoriales:detalleTutorial.html.twig',['tutorial'=>$tutorial,'directorio'=>$directorioTut]);
     }
 
 }
