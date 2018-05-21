@@ -172,16 +172,17 @@ class Functions
 		if ($this->container->getParameter('sendMail'))
 		{
 			// ->setBody($this->render($parametros['twig'], $parametros['datos']), 'text/html');
+			$ok=0;
 			$body = $this->templating->render($parametros['twig'],$parametros['datos']);
 			$message = \Swift_Message::newInstance()
 	            ->setSubject($parametros['asunto'])
 	            ->setFrom($parametros['remitente'])
 	            ->setTo($parametros['destinatario'])
 	            ->setBody($body, 'text/html');
-	        $this->mailer->send($message);
+	        $ok=$this->mailer->send($message);
 		}
 		
-        return true;
+        return $ok;
 	}
 
 	/**
