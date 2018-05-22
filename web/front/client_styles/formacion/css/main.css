@@ -1091,7 +1091,7 @@ a:focus, a:active, a:target, a:checked {
   .eval_header .exit_eval {
     cursor: pointer;
     position: relative;
-    top: .4rem; }
+    top: -.1rem; }
   .eval_header .txt_eval_header {
     color: #AAAFB3;
     font-family: "Roboto";
@@ -1928,23 +1928,23 @@ p.up {
     opacity: 1; }
 
 .s1_fin-materia {
-  padding-top: 5rem;
-  padding-bottom: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 2rem;
   background: #F7FAFC;
   border-radius: 1rem;
   position: relative;
-  left: 1rem; }
+  left: 0rem;
+  width: 100%; }
   .s1_fin-materia .titulo_fin-materia {
     color: #5CAEE6;
     font-family: "Roboto";
     font-size: 4.25rem;
-    line-height: calc(5rem - 5px); }
+    line-height: calc(2rem - 2px); }
   .s1_fin-materia .ic-verify {
     color: #CFE65C;
-    font-size: 8rem;
+    font-size: 6rem;
     opacity: 0.8;
-    margin-top: 1rem;
-    margin-bottom: 1rem; }
+    margin: 1rem auto; }
   .s1_fin-materia .text_fin-materia {
     color: #9B9B9B;
     font-family: "Roboto";
@@ -1958,7 +1958,7 @@ p.up {
     margin-right: calc(3rem + 7px);
     color: #AAAFB3;
     position: relative;
-    left: -2rem;
+    right: 5rem;
     margin-top: calc(2rem - 6px); }
     .s1_fin-materia .logro .num {
       color: #5CAEE6;
@@ -1976,13 +1976,13 @@ p.up {
         margin-left: calc(1rem - 8px); }
 
 .s2_fin-materia {
-  padding-top: 6rem; }
+  padding-top: 2rem; }
   .s2_fin-materia .text_fin-materia {
     color: #9B9B9B;
     font-family: "Roboto";
     font-size: 1.5rem;
     line-height: calc(2rem + 1px);
-    margin: 2rem 0; }
+    margin: 1rem 0; }
 
 .bttnDownl {
   width: 3rem;
@@ -3076,7 +3076,7 @@ p.up {
   display: flex;
   flex-direction: row;
   height: auto;
-  width: 45rem;
+  width: 57rem;
   margin: .5rem 0;
   cursor: pointer; }
   .opc .opc_letra {
@@ -3105,9 +3105,9 @@ p.up {
   .opc .opc_resp {
     position: relative;
     top: 0;
-    width: 40rem;
+    width: 52rem;
     min-height: 3rem;
-    padding: .75rem .75rem .25rem .75rem;
+    padding: 1rem .75rem .25rem .75rem;
     border-top: 0.125rem solid #DAE1E6;
     border-bottom: 0.125rem solid #DAE1E6;
     border-right: 0.125rem solid #DAE1E6;
@@ -3115,9 +3115,9 @@ p.up {
     .opc .opc_resp .opc_r {
       color: #5C6266;
       font-family: "Open Sans";
-      font-size: 1.125rem;
-      line-height: 2rem;
-      font-weight: 300; }
+      font-size: 0.87rem;
+      line-height: 1.25rem;
+      font-weight: 400; }
   .opc:hover .opc_resp {
     border-top: 0.125rem solid #80CCFF;
     border-bottom: 0.125rem solid #80CCFF;
@@ -3234,33 +3234,31 @@ p.up {
 .titulo-resul {
   color: #5CAEE6;
   font-family: "Roboto";
-  font-size: calc($h1-font-size - 4px);
-  line-height: calc($h1-font-size + 7px);
+  font-size: 4.25rem;
+  line-height: calc(2rem - 2px);
   margin-top: 3rem; }
 
 .ic-resul {
-  font-size: 8.25rem;
+  font-size: 5rem;
   color: #5CAEE6;
-  margin-top: calc(2rem - 7px); }
+  margin-top: calc(2rem - 8px); }
 
 .alreves {
   transform: scaleX(-1) rotate(5deg); }
 
 .txt-resul {
   font-family: "Roboto";
-  font-size: 1.5rem;
+  font-size: 2rem;
   line-height: calc(2rem + 1px);
-  margin: calc(2rem - 1px) 0 calc(4rem + 4px) 0; }
+  margin: 4rem 0 2rem 0; }
 
 .mostrar-resul {
   background: #fff;
-  padding-top: calc(6rem - 6px);
+  padding-top: calc(3rem - 4px);
   margin-top: 1.5rem;
-  margin-bottom: 3rem;
+  padding-bottom: 2rem;
   overflow-x: hidden !important;
-  width: 98.78vw;
-  position: relative;
-  left: -1rem; }
+  width: 100%; }
   .mostrar-resul .calif {
     left: 6rem; }
   .mostrar-resul .logro {
@@ -3272,7 +3270,7 @@ p.up {
       line-height: calc(2rem - 4px);
       margin-left: calc(1rem - 8px); }
   .mostrar-resul .anun-resul {
-    margin: calc(2rem + 4px) 0 calc(1rem + 4px) 0;
+    margin: calc(2rem - 8px) 0 1rem 0;
     color: #9B9B9B;
     font-family: "Open Sans";
     font-size: 1.125rem;
@@ -3404,9 +3402,10 @@ p.up {
   border-radius: 0 calc(1rem - 8px) calc(1rem - 8px) 0; }
   .mostrar-resul .resp-eval li .preg-aprob .preg_enun .preg_e, .mostrar-resul .resp-eval li .preg-reprob .preg_enun .preg_e {
     color: #5C6266;
-    font-family: "Roboto";
+    font-family: "Open Sans";
     font-size: 1.125rem;
-    line-height: calc($h4-font-size - 3px);
+    line-height: 1.25rem;
+    font-weight: 400;
     position: relative;
     display: block;
     left: 0;
