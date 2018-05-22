@@ -7,7 +7,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiForo;
+use Link\ComunBundle\Entity\CertiForoArchivo;
 use Symfony\Component\Yaml\Yaml;
+use Link\ComunBundle\Model\UploadHandler;
+
 
 class ColaborativoController extends Controller
 {
@@ -25,6 +28,8 @@ class ColaborativoController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
+
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
                                     WHERE f.pagina = :programa_id 
@@ -96,32 +101,9 @@ class ColaborativoController extends Controller
             }
         }
 
-        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
-        $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
-
-        // También se anexa a la indexación el programa padre
-        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
-        $pagina = $session->get('paginas')[$programa_id];
-        $pagina['padre'] = 0;
-        $pagina['sobrinos'] = 0;
-        $pagina['hijos'] = count($pagina['subpaginas']);
-        $pagina['descripcion'] = $programa->getDescripcion();
-        $pagina['contenido'] = $programa->getContenido();
-        $pagina['foto'] = $programa->getFoto();
-        $pagina['pdf'] = $programa->getPdf();
-        $pagina['next_subpage'] = 0;
-        $indexedPages[$pagina['id']] = $pagina;
-        $espacio_colaborativo = $indexedPages[$programa_id]['espacio_colaborativo'];
-
-        //return new Response(var_dump($indexedPages));
-
-        // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$programa_id], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $programa_id)), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-
         return $this->render('LinkFrontendBundle:Colaborativo:index.html.twig', array('programa' => $programa,
                                                                                       'foros' => $foros,
-                                                                                      'subpagina_id' => $subpagina_id,
-                                                                                      'menu_str' => $menu_str,));
+                                                                                      'subpagina_id' => $subpagina_id));
 
     }
 
@@ -320,35 +302,14 @@ class ColaborativoController extends Controller
             $archivos[] = $f->archivoForo($archivo, $session->get('usuario')['id']);
         }
 
-        // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
-        $indexedPages = $f->indexPages($session->get('paginas')[$foro->getPagina()->getId()]);
-
-        // También se anexa a la indexación el programa padre
         $programa = $foro->getPagina();
-        $pagina = $session->get('paginas')[$foro->getPagina()->getId()];
-        $pagina['padre'] = 0;
-        $pagina['sobrinos'] = 0;
-        $pagina['hijos'] = count($pagina['subpaginas']);
-        $pagina['descripcion'] = $programa->getDescripcion();
-        $pagina['contenido'] = $programa->getContenido();
-        $pagina['foto'] = $programa->getFoto();
-        $pagina['pdf'] = $programa->getPdf();
-        $pagina['next_subpage'] = 0;
-        $indexedPages[$pagina['id']] = $pagina;
-        $espacio_colaborativo = $indexedPages[$foro->getPagina()->getId()]['espacio_colaborativo'];
-
-        //return new Response(var_dump($indexedPages));
-
-        // Menú lateral dinámico
-        $menu_str = $f->menuLecciones($indexedPages, $session->get('paginas')[$foro->getPagina()->getId()], $subpagina_id, $this->generateUrl('_lecciones', array('programa_id' => $foro->getPagina()->getId())), $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['completada']);
-
+        
         return $this->render('LinkFrontendBundle:Colaborativo:detalle.html.twig', array('programa' => $programa,    
                                                                                         'foro' => $foro,
                                                                                         'likes' => $likes,
                                                                                         'timeAgo' => $timeAgo,
                                                                                         'foros_hijos' => $foros_hijos,
                                                                                         'subpagina_id' => $subpagina_id,
-                                                                                        'menu_str' => $menu_str,
                                                                                         'total_aportes' => $total_aportes,
                                                                                         'archivos' => $archivos));
 
@@ -638,6 +599,95 @@ class ColaborativoController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function ajaxUploadForoArchivoAction(Request $request)
+    {
+        
+        $session = new Session();
+        
+        $foro_id = $request->request->get('upload_foro_id');
+
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
+        $upload_dir = $dir_uploads.'recursos/empresas/'.$session->get('empresa')['id'].'/colaborativo/'.$foro_id.'/';
+        $upload_url = $uploads.'recursos/empresas/'.$session->get('empresa')['id'].'/colaborativo/'.$foro_id.'/';
+        $options = array('upload_dir' => $upload_dir,
+                         'upload_url' => $upload_url);
+        $upload_handler = new UploadHandler($options);
+
+        $return = json_encode($upload_handler);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxSaveForoArchivoAction(Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $em = $this->getDoctrine()->getManager();
+        $html = '';
+
+        // Recepción de parámetros del request
+        $foro_id = $request->request->get('foro_id');
+        $descripcion = $request->request->get('descripcion');
+        $archivo = $request->request->get('archivo');
+
+        // Preparando entidades de almacenamiento
+        $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $foro_archivo = new CertiForoArchivo();
+        $foro_archivo->setDescripcion($descripcion);
+        $foro_archivo->setForo($foro);
+        $foro_archivo->setUsuario($usuario);
+        $foro_archivo->setFechaRegistro(new \DateTime('now'));
+        $foro_archivo->setArchivo($archivo);
+        $em->persist($foro_archivo);
+        $em->flush();
+
+        // Generación de alarmas
+        if ($foro->getUsuario()->getId() != $usuario->getId())
+        {
+            $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
+            $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion, $foro->getUsuario(), $foro->getId());
+        }
+
+        // Puntaje obtenido
+        if ($session->get('usuario')['participante'])
+        {
+            $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $foro->getPagina()->getId(),
+                                                                                                'usuario' => $session->get('usuario')['id']));
+            $puntos = $pagina_log->getPuntos() + $yml['parameters']['puntos']['espacio_colaborativo'];
+            $pagina_log->setPuntos($puntos);
+            $em->persist($pagina_log);
+            $em->flush();
+        }
+
+        $archivo_arr = $f->archivoForo($foro_archivo, $session->get('usuario')['id']);
+        $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
+
+        $html .= '<li class="element-downloads">
+                    <div class="row px-0 d-flex justify-content-between">
+                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                            <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
+                            <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
+                        </div>
+                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                            <div class="cont-opc">
+                                <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>';
+
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
 }

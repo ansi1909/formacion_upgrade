@@ -1,3 +1,7 @@
 _indexTutoriales:
-    path:  /listaTutoriales
+    path:  /indexTutoriales
     defaults: { _controller: LinkFrontendBundle:Tutorial:index }
+
+_detalleTutoriales:
+    path: /detalleTutorial/{tutorial_id}
+    defaults: {  _controller: LinkFrontendBundle:Tutorial:detalle,tutorial_id: null}

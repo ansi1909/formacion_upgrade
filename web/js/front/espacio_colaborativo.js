@@ -2,6 +2,10 @@ $(document).ready(function() {
 
 	var subpagina_id = $('#subpagina_id').val();
 
+	$( document ).tooltip({
+      track: true
+    });
+
 	CKEDITOR.replace( 'mensaje',
 	{
 		toolbar : 'MyToolbar'

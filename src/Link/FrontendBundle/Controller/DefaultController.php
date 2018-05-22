@@ -573,7 +573,9 @@ class DefaultController extends Controller
 
                if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
 
-                    $noti.='<a href="#" data-toggle="modal" data-target="#modalMn">';
+                    $noti.='<a href="#" data-toggle="modal" data-target="#modalMn">
+                            <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="'. $this->generateUrl('_ajaxNotiMuro') .'">
+                            <input type="hidden" id=" muro_id " value= " '. $notificacion->getEntidadId() .' " >';
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) {
 
@@ -606,11 +608,13 @@ class DefaultController extends Controller
 
                 }
                     if ($notificacion->getLeido() == true) {
-                            $noti .= '<li class="AnunListNotify leido" data="'.$notificacion->getId() .'">';
+                            $noti .= '<li class="AnunListNotify leido" data="'.$notificacion->getId() .'">
+                                      <input type="hidden" class="tipo_noti" value= " '. $notificacion->getTipoAlarma()->getId() .' " >';
                         }
                         elseif ($notificacion->getLeido() == false) {
                             $sonar= 1;
-                            $noti .= '<li class="AnunListNotify notiSinLeer leido" data="'.$notificacion->getId() .'">';
+                            $noti .= '<li class="AnunListNotify notiSinLeer leido" data="'.$notificacion->getId() .'">
+                                      <input type="hidden" id="tipo_noti " value= " '. $notificacion->getTipoAlarma()->getId() .' " >';
                         }       
                                $noti .= '<div class="anunNotify">
                                    <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss() .'"><i class="material-icons icNotify">'. $notificacion->getTipoAlarma()->getIcono() .'</i></span>
@@ -664,10 +668,10 @@ class DefaultController extends Controller
         $leidas=array();
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
-                                       WHERE a.usuario = :usuario_id
-                                       ORDER BY a.id DESC')
-                        ->setParameter('usuario_id', $usuario->getId());
-            $alarmas = $query->getResult();
+                                   WHERE a.usuario = :usuario_id
+                                   ORDER BY a.id DESC')
+                    ->setParameter('usuario_id', $usuario->getId());
+        $alarmas = $query->getResult();
 
             foreach($alarmas as $alarma)
             {
@@ -702,5 +706,38 @@ class DefaultController extends Controller
             return $this->render('LinkFrontendBundle:Notificaciones:index.html.twig', array('todas' => $todas,
                                                                                             'leidas' => $leidas,
                                                                                             'no_leidas' => $no_leidas));
+    }
+
+    public function ajaxNotiMuroAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $muro_id = $request->request->get('muro_id');
+        $muro ="";
+
+        $padre = $em->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+
+        $query = $em->createQuery('SELECT m FROM LinkComunBundle:CertiMuro m
+                                   WHERE m.muro = :muro_id
+                                   ORDER BY a.id ASC')
+                    ->setParameter('muro_id', $padre->getId());
+        $hijos = $query->getResult();
+
+        $muro = '<img class="avatar-img" src="assets/img/user.svg" alt="">
+                    <div class="wrap-info-user flex-column ml-2">
+                        <div class="name text-xs color-dark-grey">'. $padre->getUsuario()->getLogin() .'</div>
+                         <div class="date text-xs color-grey">hace 2 días</div>
+                    </div>';
+
+        /*foreach( $hijos as $hijo )
+        {
+
+        }*/
+
+        $return = $muro;
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 }

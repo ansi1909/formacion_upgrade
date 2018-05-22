@@ -437,6 +437,9 @@ body.codigoQR {
     font-size: 0.75rem;
     line-height: calc(1rem - 2px); }
 
+.hide {
+  display: none; }
+
 @keyframes brillo {
   0%, 100% {
     opacity: 0;
@@ -468,6 +471,108 @@ body.codigoQR {
   100% {
     transform: scale3d(1, 1, 1);
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.9); } }
+@-webkit-keyframes animateSuccessLong {
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  84% {
+    width: 55px;
+    right: 0px;
+    top: 35px; }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px; } }
+@-webkit-keyframes animateSuccessTip {
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px; }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px; }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px; } }
+@keyframes animateSuccessTip {
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px; }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px; }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px; }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px; } }
+@keyframes animateSuccessLong {
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px; }
+  84% {
+    width: 55px;
+    right: 0px;
+    top: 35px; }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px; } }
+@-webkit-keyframes rotatePlaceholder {
+  0% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  5% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  12% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); }
+  100% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); } }
+@keyframes rotatePlaceholder {
+  0% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  5% {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg); }
+  12% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); }
+  100% {
+    transform: rotate(-405deg);
+    -webkit-transform: rotate(-405deg); } }
 .login-cover {
   background-image: url(../../../assets/img/login_cover.jpg);
   background-repeat: no-repeat;
@@ -693,6 +798,204 @@ a:focus, a:active, a:target, a:checked {
       .modalMuroNotify .msjMuroResp .muroComment .moreMuroNotify:hover {
         color: #5CAEE6; }
 
+.modalSuccess {
+  -webkit-animation: bounce .5s ease-in 1 forwards;
+  /*-moz-animation-name: bounce;*/
+  animation: bounce .5s ease-in 1 forwards; }
+  .modalSuccess .check_mark {
+    width: 10rem;
+    height: 10rem;
+    margin: 0 auto; }
+    .modalSuccess .check_mark .sa-icon {
+      width: 10rem;
+      height: 10rem;
+      border: 4px solid #DAE1E6;
+      border-radius: 50%;
+      margin: calc(1rem + 4px) auto;
+      padding: 0;
+      position: relative;
+      left: 0;
+      box-sizing: content-box; }
+      .modalSuccess .check_mark .sa-icon.sa-success {
+        border-color: #CFE65C;
+        border-color: transparent; }
+        .modalSuccess .check_mark .sa-icon.sa-success::before, .modalSuccess .check_mark .sa-icon.sa-success::after {
+          content: '';
+          border-radius: 50%;
+          position: absolute;
+          width: 6rem;
+          height: 11rem;
+          background: #FAFAFA;
+          -webkit-transform: rotate(45deg);
+          transform: rotate(45deg); }
+        .modalSuccess .check_mark .sa-icon.sa-success::before {
+          -webkit-border-radius: 120px 0 0 120px;
+          border-radius: 120px 0 0 120px;
+          top: 1.5rem;
+          left: -1.5rem;
+          -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+          -webkit-transform-origin: 120px 120px;
+          transform-origin: 120px 120px; }
+        .modalSuccess .check_mark .sa-icon.sa-success::after {
+          -webkit-border-radius: 0 120px 120px 0;
+          border-radius: 0 120px 120px 0;
+          top: 0rem;
+          left: 3.75rem;
+          -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+          -webkit-transform-origin: 0px 120px;
+          transform-origin: 0px 120px; }
+        .modalSuccess .check_mark .sa-icon.sa-success .sa-placeholder {
+          width: 10rem;
+          height: 10rem;
+          border: 4px solid rgba(207, 230, 92, 0.7);
+          border-radius: 50%;
+          box-sizing: content-box;
+          position: absolute;
+          left: -4px;
+          top: -4px;
+          z-index: 2; }
+        .modalSuccess .check_mark .sa-icon.sa-success .sa-fix {
+          width: .5rem;
+          height: 5rem;
+          background-color: #FAFAFA;
+          position: absolute;
+          left: 2.25rem;
+          top: 1.85rem;
+          z-index: 1;
+          -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg); }
+        .modalSuccess .check_mark .sa-icon.sa-success.animate::after {
+          -webkit-animation: rotatePlaceholder 4.25s ease-in;
+          animation: rotatePlaceholder 4.25s ease-in; }
+        .modalSuccess .check_mark .sa-icon.sa-success .sa-line.sa-tip {
+          -ms-transform: rotate(45deg) \9; }
+        .modalSuccess .check_mark .sa-icon.sa-success .sa-line.sa-long {
+          -ms-transform: rotate(-45deg) \9; }
+  .modalSuccess .sa-icon.sa-success .sa-line {
+    height: 8px;
+    background-color: #CFE65C;
+    display: block;
+    border-radius: 2px;
+    position: absolute;
+    z-index: 2; }
+    .modalSuccess .sa-icon.sa-success .sa-line.sa-tip {
+      width: 3.5rem;
+      left: 1.5rem;
+      top: 5rem;
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg); }
+    .modalSuccess .sa-icon.sa-success .sa-line.sa-long {
+      width: 5.5rem;
+      left: 3.5rem;
+      top: 4.5rem;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg); }
+  .modalSuccess .msgText {
+    font-family: "Open Sans";
+    font-size: calc(2rem - 4px);
+    font-weight: 400; }
+
+.modalWrong {
+  -webkit-animation: bounce .5s ease-in 1 forwards;
+  /*-moz-animation-name: bounce;*/
+  animation: bounce .5s ease-in 1 forwards; }
+  .modalWrong .wrong_mark {
+    width: 10rem;
+    height: 10rem;
+    margin: 0 auto; }
+    .modalWrong .wrong_mark .sa-icon {
+      width: 10rem;
+      height: 10rem;
+      border: 4px solid #DAE1E6;
+      border-radius: 50%;
+      margin: calc(1rem + 4px) auto;
+      padding: 0;
+      position: relative;
+      left: 0;
+      box-sizing: content-box; }
+      .modalWrong .wrong_mark .sa-icon.sa-error {
+        border-color: #df584c;
+        border-color: transparent; }
+        .modalWrong .wrong_mark .sa-icon.sa-error::before, .modalWrong .wrong_mark .sa-icon.sa-error::after {
+          content: '';
+          border-radius: 50%;
+          position: absolute;
+          width: 6rem;
+          height: 11rem;
+          background: #FAFAFA;
+          -webkit-transform: rotate(45deg);
+          transform: rotate(45deg); }
+        .modalWrong .wrong_mark .sa-icon.sa-error::before {
+          -webkit-border-radius: 120px 0 0 120px;
+          border-radius: 120px 0 0 120px;
+          top: 1.5rem;
+          left: -1.5rem;
+          -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+          -webkit-transform-origin: 120px 120px;
+          transform-origin: 120px 120px; }
+        .modalWrong .wrong_mark .sa-icon.sa-error::after {
+          -webkit-border-radius: 0 120px 120px 0;
+          border-radius: 0 120px 120px 0;
+          top: 0rem;
+          left: 3.75rem;
+          -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+          -webkit-transform-origin: 0px 120px;
+          transform-origin: 0px 120px; }
+        .modalWrong .wrong_mark .sa-icon.sa-error .sa-placeholder {
+          width: 10rem;
+          height: 10rem;
+          border: 4px solid rgba(223, 88, 76, 0.7);
+          border-radius: 50%;
+          box-sizing: content-box;
+          position: absolute;
+          left: -4px;
+          top: -4px;
+          z-index: 2; }
+        .modalWrong .wrong_mark .sa-icon.sa-error .sa-fix {
+          width: .5rem;
+          height: 5rem;
+          background-color: #FAFAFA;
+          position: absolute;
+          left: 2.25rem;
+          top: 1.85rem;
+          z-index: 1;
+          -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg); }
+        .modalWrong .wrong_mark .sa-icon.sa-error.animate::after {
+          -webkit-animation: rotatePlaceholder 4.25s ease-in;
+          animation: rotatePlaceholder 4.25s ease-in; }
+        .modalWrong .wrong_mark .sa-icon.sa-error .sa-line.sa-tip {
+          -ms-transform: rotate(45deg) \9; }
+        .modalWrong .wrong_mark .sa-icon.sa-error .sa-line.sa-long {
+          -ms-transform: rotate(-45deg) \9; }
+  .modalWrong .sa-icon.sa-error .sa-line {
+    height: 8px;
+    background-color: #df584c;
+    display: block;
+    border-radius: 2px;
+    position: absolute;
+    z-index: 2; }
+    .modalWrong .sa-icon.sa-error .sa-line.sa-tip {
+      width: 8rem;
+      left: 1rem;
+      top: 4.75rem;
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg); }
+    .modalWrong .sa-icon.sa-error .sa-line.sa-long {
+      width: 8rem;
+      left: 1rem;
+      top: 4.75rem;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg); }
+  .modalWrong .msgText {
+    font-family: "Open Sans";
+    font-size: calc(2rem - 4px);
+    font-weight: 400; }
+
 .modal-resp {
   height: 37rem;
   width: 65rem;
@@ -725,29 +1028,29 @@ a:focus, a:active, a:target, a:checked {
   height: 28.5rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modalEditP, .modalChagePwd, .modalSopVirtual {
+.modal-recuperacion, .modal-calendario, .modalEditP, .modalChagePwd, .modalSopVirtual, .modalSuccess, .modalWrong {
   height: 40rem;
   width: 33.5rem;
   height: 36rem;
   width: 30.5rem; }
 
-.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify {
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
   margin: 8rem auto !important;
   border-radius: 1rem;
   background: #FAFAFA;
-  margin: 2rem auto !important; }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal {
+  margin: calc(2rem - 4px) auto !important; }
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal, .modalSuccess .btn_close_modal, .modalWrong .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white, .modalMuroNotify .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white, .modalMuroNotify .btn_close_modal .ic-close-white, .modalSuccess .btn_close_modal .ic-close-white, .modalWrong .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo, .modalMuroNotify .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo, .modalMuroNotify .titulo, .modalSuccess .titulo, .modalWrong .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
@@ -788,7 +1091,7 @@ a:focus, a:active, a:target, a:checked {
   .eval_header .exit_eval {
     cursor: pointer;
     position: relative;
-    top: .4rem; }
+    top: -.1rem; }
   .eval_header .txt_eval_header {
     color: #AAAFB3;
     font-family: "Roboto";
@@ -1625,23 +1928,23 @@ p.up {
     opacity: 1; }
 
 .s1_fin-materia {
-  padding-top: 5rem;
-  padding-bottom: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 2rem;
   background: #F7FAFC;
   border-radius: 1rem;
   position: relative;
-  left: 1rem; }
+  left: 0rem;
+  width: 100%; }
   .s1_fin-materia .titulo_fin-materia {
     color: #5CAEE6;
     font-family: "Roboto";
     font-size: 4.25rem;
-    line-height: calc(5rem - 5px); }
+    line-height: calc(2rem - 2px); }
   .s1_fin-materia .ic-verify {
     color: #CFE65C;
-    font-size: 8rem;
+    font-size: 6rem;
     opacity: 0.8;
-    margin-top: 1rem;
-    margin-bottom: 1rem; }
+    margin: 1rem auto; }
   .s1_fin-materia .text_fin-materia {
     color: #9B9B9B;
     font-family: "Roboto";
@@ -1655,7 +1958,7 @@ p.up {
     margin-right: calc(3rem + 7px);
     color: #AAAFB3;
     position: relative;
-    left: -2rem;
+    right: 5rem;
     margin-top: calc(2rem - 6px); }
     .s1_fin-materia .logro .num {
       color: #5CAEE6;
@@ -1673,13 +1976,13 @@ p.up {
         margin-left: calc(1rem - 8px); }
 
 .s2_fin-materia {
-  padding-top: 6rem; }
+  padding-top: 2rem; }
   .s2_fin-materia .text_fin-materia {
     color: #9B9B9B;
     font-family: "Roboto";
     font-size: 1.5rem;
     line-height: calc(2rem + 1px);
-    margin: 2rem 0; }
+    margin: 1rem 0; }
 
 .bttnDownl {
   width: 3rem;
@@ -2773,7 +3076,7 @@ p.up {
   display: flex;
   flex-direction: row;
   height: auto;
-  width: 45rem;
+  width: 57rem;
   margin: .5rem 0;
   cursor: pointer; }
   .opc .opc_letra {
@@ -2802,9 +3105,9 @@ p.up {
   .opc .opc_resp {
     position: relative;
     top: 0;
-    width: 40rem;
+    width: 52rem;
     min-height: 3rem;
-    padding: .75rem .75rem .25rem .75rem;
+    padding: 1rem .75rem .25rem .75rem;
     border-top: 0.125rem solid #DAE1E6;
     border-bottom: 0.125rem solid #DAE1E6;
     border-right: 0.125rem solid #DAE1E6;
@@ -2812,9 +3115,9 @@ p.up {
     .opc .opc_resp .opc_r {
       color: #5C6266;
       font-family: "Open Sans";
-      font-size: 1.125rem;
-      line-height: 2rem;
-      font-weight: 300; }
+      font-size: 0.87rem;
+      line-height: 1.25rem;
+      font-weight: 400; }
   .opc:hover .opc_resp {
     border-top: 0.125rem solid #80CCFF;
     border-bottom: 0.125rem solid #80CCFF;
@@ -2931,33 +3234,31 @@ p.up {
 .titulo-resul {
   color: #5CAEE6;
   font-family: "Roboto";
-  font-size: calc($h1-font-size - 4px);
-  line-height: calc($h1-font-size + 7px);
+  font-size: 4.25rem;
+  line-height: calc(2rem - 2px);
   margin-top: 3rem; }
 
 .ic-resul {
-  font-size: 8.25rem;
+  font-size: 5rem;
   color: #5CAEE6;
-  margin-top: calc(2rem - 7px); }
+  margin-top: calc(2rem - 8px); }
 
 .alreves {
   transform: scaleX(-1) rotate(5deg); }
 
 .txt-resul {
   font-family: "Roboto";
-  font-size: 1.5rem;
+  font-size: 2rem;
   line-height: calc(2rem + 1px);
-  margin: calc(2rem - 1px) 0 calc(4rem + 4px) 0; }
+  margin: 4rem 0 2rem 0; }
 
 .mostrar-resul {
   background: #fff;
-  padding-top: calc(6rem - 6px);
+  padding-top: calc(3rem - 4px);
   margin-top: 1.5rem;
-  margin-bottom: 3rem;
+  padding-bottom: 2rem;
   overflow-x: hidden !important;
-  width: 98.78vw;
-  position: relative;
-  left: -1rem; }
+  width: 100%; }
   .mostrar-resul .calif {
     left: 6rem; }
   .mostrar-resul .logro {
@@ -2969,7 +3270,7 @@ p.up {
       line-height: calc(2rem - 4px);
       margin-left: calc(1rem - 8px); }
   .mostrar-resul .anun-resul {
-    margin: calc(2rem + 4px) 0 calc(1rem + 4px) 0;
+    margin: calc(2rem - 8px) 0 1rem 0;
     color: #9B9B9B;
     font-family: "Open Sans";
     font-size: 1.125rem;
@@ -3101,9 +3402,10 @@ p.up {
   border-radius: 0 calc(1rem - 8px) calc(1rem - 8px) 0; }
   .mostrar-resul .resp-eval li .preg-aprob .preg_enun .preg_e, .mostrar-resul .resp-eval li .preg-reprob .preg_enun .preg_e {
     color: #5C6266;
-    font-family: "Roboto";
+    font-family: "Open Sans";
     font-size: 1.125rem;
-    line-height: calc($h4-font-size - 3px);
+    line-height: 1.25rem;
+    font-weight: 400;
     position: relative;
     display: block;
     left: 0;

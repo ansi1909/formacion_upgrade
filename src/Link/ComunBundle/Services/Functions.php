@@ -172,16 +172,17 @@ class Functions
 		if ($this->container->getParameter('sendMail'))
 		{
 			// ->setBody($this->render($parametros['twig'], $parametros['datos']), 'text/html');
+			$ok=0;
 			$body = $this->templating->render($parametros['twig'],$parametros['datos']);
 			$message = \Swift_Message::newInstance()
 	            ->setSubject($parametros['asunto'])
 	            ->setFrom($parametros['remitente'])
 	            ->setTo($parametros['destinatario'])
 	            ->setBody($body, 'text/html');
-	        $this->mailer->send($message);
+	        $ok=$this->mailer->send($message);
 		}
 		
-        return true;
+        return $ok;
 	}
 
 	/**
@@ -995,6 +996,8 @@ class Functions
 						}
 					}
 					$bloqueada = '';
+					$prelacion_id = 0;
+					$prelada_por = '';
 					if ($subpagina['prelacion'])
 					{
 						// Se determina si el contenido estará bloqueado
@@ -1007,6 +1010,7 @@ class Functions
 						                        		  'completada' => $estatus_completada));
 						$leccion_completada = $query->getSingleScalarResult();
 						$bloqueada = $leccion_completada ? '' : 'less-disabled';
+						$prelacion_id = $leccion_completada ? 0 : $subpagina['prelacion'];
 					}
 					else {
 						// Puede que el padre tenga prelación
@@ -1024,10 +1028,15 @@ class Functions
 								                        		  'completada' => $estatus_completada));
 								$leccion_completada = $query->getSingleScalarResult();
 								$bloqueada = $leccion_completada ? '' : 'less-disabled';
+								$prelacion_id = $leccion_completada ? 0 : $padre['prelacion'];
 							}
 						}
 					}
-					$menu_str .= '<li>
+					if ($prelacion_id)
+					{
+						$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
+					}
+					$menu_str .= '<li title="'.$prelada_por.'">
 									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
 					{
@@ -1059,6 +1068,8 @@ class Functions
 			{
 				$active = ' active';
 				$bloqueada = '';
+				$prelacion_id = 0;
+				$prelada_por = '';
 				if ($programa['prelacion'])
 				{
 					// Se determina si el contenido estará bloqueado
@@ -1071,8 +1082,13 @@ class Functions
 					                        		  'completada' => $estatus_completada));
 					$leccion_completada = $query->getSingleScalarResult();
 					$bloqueada = $leccion_completada ? '' : 'less-disabled';
+					$prelacion_id = $leccion_completada ? 0 : $programa['prelacion'];
 				}
-				$menu_str .= '<li>
+				if ($prelacion_id)
+				{
+					$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
+				}
+				$menu_str .= '<li title="'.$prelada_por.'">
 								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
 			}
@@ -2282,7 +2298,7 @@ class Functions
 	public function archivoForo($archivo, $usuario_id)
 	{
 
-		$extension = strtolower(substr($mystring, strrpos($archivo->getArchivo(), ".")+1));
+		$extension = strtolower(substr($archivo->getArchivo(), strrpos($archivo->getArchivo(), ".")+1));
 
 		$doc_extensions = array('doc', 'docx');
 		$img_extensions = array('png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'svg');
@@ -2331,7 +2347,10 @@ class Functions
 								 'nombre_pagina' => $nombre_pagina);
         $pagina_padre_id = 0;
 
-        if ($indexedPages[$pagina_id]['tiene_evaluacion'])
+        $pl = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
+                                                                                    'pagina' => $pagina_id));
+
+        if ($indexedPages[$pagina_id]['tiene_evaluacion'] && $pl->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
         {
         	$evaluacion = $this->evaluacionPagina($pagina_id, $usuario_id, $empresa_id, $yml);
         	$continue_button = array('next_lesson' => $next_lesson,
@@ -2356,8 +2375,8 @@ class Functions
                 // Buscar la próxima página hermana que no haya sido completada
                 foreach ($indexedPages[$pagina_padre_id]['subpaginas'] as $subpagina)
                 {
-                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
-                                                                                                                         'pagina' => $subpagina['id']));
+                    $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
+                                                                                                        'pagina' => $subpagina['id']));
                     if (!$pagina_log)
                     {
                         $next_lesson = $subpagina['id'];

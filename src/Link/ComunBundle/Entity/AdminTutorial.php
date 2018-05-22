@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminTutorial
  *
- * @ORM\Table(name="admin_tutorial")
+ * @ORM\Table(name="admin_tutorial", indexes={@ORM\Index(name="IDX_52CBF8EFDB38439E", columns={"usuario_id"})})
  * @ORM\Entity
  */
 class AdminTutorial
@@ -42,6 +42,37 @@ class AdminTutorial
      * @ORM\Column(name="video", type="string", length=250, nullable=true)
      */
     private $video;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="imagen", type="string", length=250, nullable=true)
+     */
+    private $imagen;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="time", nullable=true)
+     */
+    private $fecha;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=1000, nullable=true)
+     */
+    private $descripcion;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminUsuario
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminUsuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $usuario;
 
 
 
@@ -125,5 +156,101 @@ class AdminTutorial
     public function getVideo()
     {
         return $this->video;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     *
+     * @return AdminTutorial
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return AdminTutorial
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+    
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return AdminTutorial
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Link\ComunBundle\Entity\AdminUsuario $usuario
+     *
+     * @return AdminTutorial
+     */
+    public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Link\ComunBundle\Entity\AdminUsuario
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

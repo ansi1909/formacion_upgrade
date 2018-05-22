@@ -1,6 +1,10 @@
 Link\ComunBundle\Entity\AdminTutorial:
     type: entity
     table: admin_tutorial
+    indexes:
+        IDX_52CBF8EFDB38439E:
+            columns:
+                - usuario_id
     id:
         id:
             type: integer
@@ -29,4 +33,30 @@ Link\ComunBundle\Entity\AdminTutorial:
             length: 250
             options:
                 fixed: false
+        imagen:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        fecha:
+            type: time
+            nullable: true
+        descripcion:
+            type: string
+            nullable: true
+            length: 1000
+            options:
+                fixed: false
+    manyToOne:
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

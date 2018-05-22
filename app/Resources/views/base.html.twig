@@ -56,7 +56,7 @@
                             <div class="dropDownApps">
                                 <div class="row align-items-center justify-content-between px-0 py-0 mx-0 my-1">
                                     <div class="col-4 px-0 py-0">
-                                        <a href="">
+                                        <a href="{{ path('_indexTutoriales') }}">
                                             <div class="opcApps text-center">
                                                 <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                      viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
@@ -342,11 +342,7 @@
                             </div>
                         </div>
                 </div>
-                <div class="row mt-3 align-items-end justify-content-center">
-                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <a href="#" class="cerrarSv" data-dismiss="modal" id="correo_soporte_btn_cerrar">{{ 'Cerrar'|trans }}</a>
-                    </div>
-                </div>
+               
             </div>
         </div>
 
@@ -393,10 +389,10 @@
                 </div>
                 <div class="row mt-2 mb-2 justify-content-center align-items-center">
                     <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center py-0">
-                        <div class="msjMuro">
+                        <div class="msjMuro" >
                             <div class="comment">
                                 <div class="comm-header d-flex justify-content-between align-items-center mb-2">
-                                    <div class="profile d-flex">
+                                    <div class="profile d-flex" id="padre">
                                         <img class="avatar-img" src="assets/img/user.svg" alt="">
                                         <div class="wrap-info-user flex-column ml-2">
                                             <div class="name text-xs color-dark-grey">Alexander</div>
@@ -514,9 +510,7 @@
             <script src="{{ asset('front/js/plugins/mediaelement-4.2.8/build/mediaelement-and-player.min.js') }}"></script>
             <script src="{{ asset('front/js/audio.js') }}"></script>
             <script src="{{ asset('js/front/expireSession.js') }}"></script>
-            <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>
-
-            
+            <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>       
         {% endblock %}
     </body>
 </html>

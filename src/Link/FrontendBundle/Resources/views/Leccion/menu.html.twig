@@ -1,0 +1,41 @@
+<div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
+        
+    <div class="row justify-content-around">
+        <a href="{{ path('_inicio') }}"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="{{ 'Ir al inicio'|trans }}">home</i></a>
+        <a href="javascript:void(0)" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2" data-toggle="tooltip" data-placement="left" title="Cerrar sidebar"></i></a>
+    </div>
+
+    <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('_programa', { 'programa_id': programa.id }) }}">
+                <i class="material-icons rotate-180" data-toggle="tooltip" data-placement="bottom" title="{{ 'Volver al programa'|trans }}">exit_to_app</i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if active == 'lecciones' %}active{% endif %}" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
+                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Indice del contenido'|trans }}">view_list</i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if active == 'espacio' %}active{% endif %}" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
+                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Recursos del programa'|trans }}">widgets</i>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content menu-lesson" id="pills-tabContent" >
+        <div class="tab-pane fade {% if active == 'lecciones' %}show active{% endif %}" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
+            <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Índice'|trans }}</h5>
+            <ol id="menu_indice">
+                {{ menu_str|raw }}
+            </ol>
+        </div>
+        <div class="tab-pane fade {% if active == 'espacio' %}show active{% endif %}" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <h5 class="text-center my-3 color-light-grey font-normal ">{{ 'Recursos'|trans }}</h5>
+            {% if espacio_colaborativo %}
+                <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}" class="{% if active == 'espacio' %}active{% endif %}">{{ 'Espacio colaborativo'|trans }}</a>
+            {% endif %}
+            <a href="">{{ 'Reportar problema'|trans }}</a>
+        </div>
+    </div>
+</div>

@@ -41,3 +41,15 @@ _ajaxMasForo:
     defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxMasForo }
     requirements:
         _method: GET
+
+_ajaxUploadForoArchivo:
+    path:     /ajaxUploadForoArchivo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxUploadForoArchivo }
+    requirements:
+        _method: POST
+
+_ajaxSaveForoArchivo:
+    path:     /ajaxSaveForoArchivo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForoArchivo }
+    requirements:
+        _method: POST

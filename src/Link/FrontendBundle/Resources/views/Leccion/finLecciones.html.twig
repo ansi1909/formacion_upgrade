@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
     <style>
         .menu{
             width: 60%;
@@ -50,37 +51,7 @@
 {% endblock %}
 
 {% block sidemenu %}
-    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
-        <a class="d-flex mt-1 mb-3 text-nowrap" href="{{ path('_programa', { 'programa_id': programa.id }) }}"> <i class="material-icons mr-2 rotate-180">exit_to_app</i>{{ 'Volver al programa'|trans }}</a>
-
-        <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
-                     <i class="material-icons">view_list</i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
-                    <i class="material-icons">widgets</i>
-                </a>
-            </li>
-        </ul>
-
-        <div class="tab-content menu-lesson" id="pills-tabContent" >
-            <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
-                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Indice'|trans }}</h5>
-                <ol id="menu_indice">
-                    {{ menu_str|raw }}
-                </ol>
-            </div>
-            <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <h5 class="text-center my-3 color-light-grey font-normal "> Recursos </h5>
-                <a href="">Espacio colaborativo</a>
-                <a href="">Reportar problema</a>
-            </div>
-        </div>
-    </div>
+    {{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina.id, 'active': 'lecciones' })) }}
 {% endblock %}
 
 {% block bg %}
@@ -90,8 +61,8 @@
 {% block body %}
 
     <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
-    <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': next_lesson }) }}">
-    <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': pagina_evaluacion_id, 'programa_id': programa.id }) }}">
+    <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': continue_button.next_lesson }) }}">
+    <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa.id }) }}">
     
     <section class="s1_fin-materia mt-3">
         <div class="row align-items-center justify-content-center">
@@ -112,15 +83,15 @@
         </div>
         <div class="row align-items-center justify-content-end">
             <div class="col-6 text-right">
-                <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Pts</span></span></span>
+                <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
             </div>
         </div>
     </section>
     <section class="s2_fin-materia">
-        {% if boton_evaluacion == 1 %}
+        {% if continue_button.evaluacion != 0 %}
             <div class="row align-items-center justify-content-center">
                 <div class="col-8 text-center">
-                    <p class="text_fin-materia">{{ 'Si deseas puedes tomar la evaluación en este momento'|trans  }}</p>
+                    <p class="text_fin-materia">{{ 'Si deseas, puedes tomar la evaluación de'|trans }} {{ continue_button.nombre_pagina }}.</p>
                 </div>
             </div>
             <div class="row align-items-center justify-content-center">
@@ -139,7 +110,7 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-6 text-center">
                     <div class="text-center">
-                        {% if next_lesson %}
+                        {% if continue_button.next_lesson != 0 %}
                             <button type="button" class="btn btn-warning bttn_fm continuar" id="next"> {{ 'Continuar'|trans }} </button>
                         {% else %}
                             <button type="button" class="btn btn-warning bttn_fm continuar" id="programa"> {{ 'Continuar'|trans }} </button>
@@ -150,17 +121,31 @@
         {% endif %}
     </section>
 
+    <div class="row justify-content-center" style="display:none;" id="wait">
+        <div class="col-auto px-0 py-0">
+            <div class="contenedor">
+                <div class="radar"></div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
     <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
     <script type="text/javascript">
         $('.continuar').click(function(){
             var button = $(this);
-            button.hide();
+            $('.continuar').hide();
+            $('#wait').show();
             var id = button.attr('id');
             window.location.replace($('#url_'+id).val());
+        });
+
+        $( document ).tooltip({
+          track: true
         });
     </script>
 {% endblock %}

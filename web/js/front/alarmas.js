@@ -5,7 +5,16 @@ $(document).ready(function() {
 
    $('.click').click(function(){
         var noti_id = $(this).attr('data');
+        var tipo_noti = $('.tipo_noti').val();
+
+        if (tipo_noti == '1') {
+            var muro_id = $('#muro_id');
+            notiMuro(muro_id);
+
+        }
         getLeido(noti_id);
+        
+        
     });
 
 });
@@ -34,6 +43,24 @@ function getAlarma()
     });
 }
 
+function notiMuro(muro_id)
+{
+    $.ajax({
+        type: "GET",
+        url: $('#url_NotiMuro').val(),
+        async: true,
+        data: {muro_id: muro_id}, 
+        dataType: "json",
+        success: function(data) {
+            $('#padre').html(data);
+
+        },
+        error: function(){
+           
+        }
+    });
+}
+
 function observeLeido()
 {
     $('.leido').click(function(){
@@ -42,17 +69,18 @@ function observeLeido()
     });
 }
 
-function getLeido(noti_id)
+function getLeido(noti_id,tipo_noti)
 {
     /*$("#sonar").hide();*/
     $.ajax({
         type: "POST",
         url: $('#url_leido').val(),
         async: true,
-        data: {noti_id: noti_id},
+        data: {noti_id: noti_id, tipo_noti: tipo_noti},
         dataType: "json",
         success: function(data) {
             getAlarma();
+            console.log(tipo_noti);
            
         },
         error: function(){

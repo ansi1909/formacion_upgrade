@@ -2,7 +2,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
     <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
         .menu{
@@ -61,37 +62,7 @@
 {% endblock %}
 
 {% block sidemenu %}
-    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
-        <a class="d-flex mt-1 mb-3 text-nowrap" href="{{ path('_programa', { 'programa_id': programa.id }) }}"> <i class="material-icons mr-2 rotate-180">exit_to_app</i>{{ 'Volver al programa'|trans }}</a>
-
-        <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="false">
-                     <i class="material-icons">view_list</i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="true">
-                    <i class="material-icons">widgets</i>
-                </a>
-            </li>
-        </ul>
-
-        <div class="tab-content menu-lesson" id="pills-tabContent" >
-            <div class="tab-pane fade" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
-                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Índice'|trans }}</h5>
-                <ol id="menu_indice">
-                    {{ menu_str|raw }}
-                </ol>
-            </div>
-            <div class="tab-pane fade show active" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <h5 class="text-center my-3 color-light-grey font-normal ">{{ 'Recursos'|trans }}</h5>
-                <a class="active" href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}">{{ 'Espacio colaborativo'|trans }}</a>
-                <a href="">{{ 'Reportar problema'|trans }}</a>
-            </div>
-        </div>
-    </div>
+    {{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina_id, 'active': 'espacio' })) }}
 {% endblock %}
 
 {% block body %}
@@ -105,7 +76,10 @@
     <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
     <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteForo') }}">
     <input type="hidden" id="url_more" name="url_more" value="{{ path('_ajaxMasForo') }}">
+    <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadForoArchivo') }}">
+    <input type="hidden" id="url_archivo" name="url_archivo" value="{{ path('_ajaxSaveForoArchivo') }}">
     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
+    <input type="hidden" id="base_upload" name="base_upload" value="recursos/empresas/{{ foro.empresa.id }}/colaborativo/{{ foro.id }}/">
 
     <section>
         <div class="modal modal-resp" id="modalresp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -161,6 +135,7 @@
                     </div>
                 </div>
                 <form id="form-upload" method="POST">
+                    <input type="hidden" id="upload_foro_id" name="upload_foro_id" value="{{ foro.id }}">
                     <div class="row pl-3 align-items-center justify-content-center">
                         <div class="col-12">
                             <label class="mb-2 titulo-form" for="descripcion"> {{ 'Descripción'|trans }}: </label>
@@ -173,16 +148,33 @@
                             <input type="hidden" id="archivo" name="archivo" value="">
                         </div>
                         <div class="col-2">
-                            {% set uri = app.request.getbasepath %}
-                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=archivo&rootFolder=recursos/empresas/{{ foro.empresa.id }}/colaborativo/{{ foro.id }}" class="iframe-btn"><span class="material-icons color-light-grey icUpload" data-toggle="tooltip" data-placement="left" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
+                            <a href="#" class="fileinput-button">
+                                <span class="material-icons color-light-grey icUpload" data-toggle="tooltip" data-placement="left" title="{{ 'Subir archivo'|trans }}">file_upload</span>
+                                <input id="fileupload" type="file" name="files[]" multiple>
+                            </a>
                         </div>
                     </div>
+                    <div class="row pl-3 align-items-center justify-content-center">
+                        <div class="col-12">
+                            <div id="progress" class="progress">
+                                <div class="progress-bar progress-bar-success"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row mb-3 align-items-center justify-content-end">
                         <div class="col-auto text-left">
                             <button type="button" class="btn btn-warning boton cancelUpload" data-dismiss="modal" id="cancelarUpload">{{ 'Cancelar'|trans }}</button>
                         </div>
                         <div class="col-auto text-right">
                             <button type="button" class="btn btn-primary boton" id="saveFile">{{ 'Guardar'|trans }}</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center" style="display:none;" id="wait_file">
+                        <div class="col-auto px-0 py-0">
+                            <div class="contenedor">
+                                <div class="radar"></div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -394,12 +386,15 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/esp_col.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/detalle_espacio_colaborativo.js') }}"></script>
     <script type="text/javascript">
         $("#form-upload").validate({
