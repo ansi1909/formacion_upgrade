@@ -71,13 +71,25 @@
                 }
                 .nameArch{
                     position: relative;
-                    top: calc(1rem - 8px);
+                    top: .3rem;
                     color: $gray-500;
+                    display: block;
                     font-weight: $font-weight-easy-medium;
                     font-family: $lessons-font;
                     font-size: $font-size-sm;
                     white-space: pre-wrap;
                     max-width: 13rem;
+                    text-align: justify;
+                    line-height: 1rem;
+                }
+                .nameUpload{
+                    position: relative;
+                    top: -.6rem;
+                    left: 2.5rem;
+                    color: $gray-500;
+                    font-weight: $font-weight-easy-medium;
+                    font-family: $lessons-font;
+                    font-size: $font-size-xs;
                     text-align: justify;
                     line-height: 1rem;
                 }
