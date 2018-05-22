@@ -33,6 +33,7 @@
         <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
         <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
         <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
+        <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
         
         {# HEADER #}
         <header>
@@ -388,99 +389,9 @@
                     </div>
                 </div>
                 <div class="row mt-2 mb-2 justify-content-center align-items-center">
-                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center py-0">
-                        <div class="msjMuro" >
-                            <div class="comment">
-                                <div class="comm-header d-flex justify-content-between align-items-center mb-2">
-                                    <div class="profile d-flex" id="padre">
-                                        <img class="avatar-img" src="assets/img/user.svg" alt="">
-                                        <div class="wrap-info-user flex-column ml-2">
-                                            <div class="name text-xs color-dark-grey">Alexander</div>
-                                            <div class="date text-xs color-grey">hace 2 días</div>
-                                        </div>
-                                    </div>
-                                    <a href="" class="mr-0 text-sm color-light-grey">
-                                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
-                                    </a>
-                                </div>
-                                <div class="comm-body text-justify">
-                                    <p class="textMuroNoti">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <ul class="msjMuroResp">
-                            <li class="comment">
-                                <div class="comm-header d-flex justify-content-between align-items-center mb-2">
-                                    <div class="profile d-flex text-left">
-                                        <img class="avatar-img" src="assets/img/user.svg" alt="">
-                                        <div class="wrap-info-user flex-column ml-2">
-                                            <div class="name text-xs color-dark-grey">Carol</div>
-                                            <div class="date text-xs color-grey">hace 2 días</div>
-                                        </div>
-                                    </div>
-                                    <a href="" class="mr-0 text-sm color-light-grey">
-                                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
-                                    </a>
-                                </div>
-                                <div class="comm-body text-justify">
-                                    <p class="textMuroNoti">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <div class="comm-header d-flex justify-content-between align-items-center mb-2">
-                                    <div class="profile d-flex text-left">
-                                        <img class="avatar-img" src="assets/img/user.svg" alt="">
-                                        <div class="wrap-info-user flex-column ml-2">
-                                            <div class="name text-xs color-dark-grey">Carl</div>
-                                            <div class="date text-xs color-grey">hace 2 días</div>
-                                        </div>
-                                    </div>
-                                    <a href="" class="mr-0 text-sm color-light-grey">
-                                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
-                                    </a>
-                                </div>
-                                <div class="comm-body text-justify">
-                                    <p class="textMuroNoti">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <div class="comm-header d-flex justify-content-between align-items-center mb-2">
-                                    <div class="profile d-flex text-left">
-                                        <img class="avatar-img" src="assets/img/user.svg" alt="">
-                                        <div class="wrap-info-user flex-column ml-2">
-                                            <div class="name text-xs color-dark-grey">Morgan</div>
-                                            <div class="date text-xs color-grey">hace 2 días</div>
-                                        </div>
-                                    </div>
-                                    <a href="" class="mr-0 text-sm color-light-grey">
-                                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
-                                    </a>
-                                </div>
-                                <div class="comm-body text-justify">
-                                    <p class="textMuroNoti">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <div class="comm-header d-flex justify-content-between align-items-center mb-2">
-                                    <div class="profile d-flex text-left">
-                                        <img class="avatar-img" src="assets/img/user.svg" alt="">
-                                        <div class="wrap-info-user flex-column ml-2">
-                                            <div class="name text-xs color-dark-grey">Tara</div>
-                                            <div class="date text-xs color-grey">hace 2 días</div>
-                                        </div>
-                                    </div>
-                                    <a href="" class="mr-0 text-sm color-light-grey">
-                                        <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
-                                    </a>
-                                </div>
-                                <div class="comm-body text-justify">
-                                    <p class="textMuroNoti">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </div>
-                            </li>
-                            <li class="muroComment">
-                                <a href="#"><span class="moreMuroNotify"><i class="material-icons icMore">add</i>Ver más</span></a>
-                            </li>
-                        </ul>
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center py-0" id="padre">
+                        
+                        
                     </div>
                 </div>
                 <form action="">

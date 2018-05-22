@@ -566,6 +566,7 @@ class DefaultController extends Controller
         $now = strtotime($hoy->format('d-m-Y'));
         $noti ='';
         $sonar=0;
+        $noti = '';
         foreach ($notificaciones as $notificacion)
         {
             $fecha = strtotime($notificacion->getFechaCreacion()->format('d-m-Y'));
@@ -573,9 +574,8 @@ class DefaultController extends Controller
 
                if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
 
-                    $noti.='<a href="#" data-toggle="modal" data-target="#modalMn">
-                            <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="'. $this->generateUrl('_ajaxNotiMuro') .'">
-                            <input type="hidden" id=" muro_id " value= " '. $notificacion->getEntidadId() .' " >';
+                    $noti.='<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId() .'>
+                            <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId() .'">';
 
                 }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) {
 
@@ -608,13 +608,13 @@ class DefaultController extends Controller
 
                 }
                     if ($notificacion->getLeido() == true) {
-                            $noti .= '<li class="AnunListNotify leido" data="'.$notificacion->getId() .'">
-                                      <input type="hidden" class="tipo_noti" value= " '. $notificacion->getTipoAlarma()->getId() .' " >';
+                            $noti .= '<li class="AnunListNotify " data="'.$notificacion->getId() .'">
+                                      <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value= "'. $notificacion->getTipoAlarma()->getId() .'" >';
                         }
                         elseif ($notificacion->getLeido() == false) {
                             $sonar= 1;
-                            $noti .= '<li class="AnunListNotify notiSinLeer leido" data="'.$notificacion->getId() .'">
-                                      <input type="hidden" id="tipo_noti " value= " '. $notificacion->getTipoAlarma()->getId() .' " >';
+                            $noti .= '<li class="AnunListNotify notiSinLeer leido " data="'.$notificacion->getId() .'">
+                                      <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value= "'. $notificacion->getTipoAlarma()->getId() .'" >';
                         }       
                                $noti .= '<div class="anunNotify">
                                    <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss() .'"><i class="material-icons icNotify">'. $notificacion->getTipoAlarma()->getIcono() .'</i></span>
@@ -713,27 +713,64 @@ class DefaultController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        $muro_id = $request->request->get('muro_id');
+        $muro_id = $request->query->get('muro_id');
         $muro ="";
+        $upload= 'http://localhost/uploads/';
 
         $padre = $em->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
 
         $query = $em->createQuery('SELECT m FROM LinkComunBundle:CertiMuro m
                                    WHERE m.muro = :muro_id
-                                   ORDER BY a.id ASC')
+                                   ORDER BY m.id ASC')
                     ->setParameter('muro_id', $padre->getId());
         $hijos = $query->getResult();
 
-        $muro = '<img class="avatar-img" src="assets/img/user.svg" alt="">
-                    <div class="wrap-info-user flex-column ml-2">
-                        <div class="name text-xs color-dark-grey">'. $padre->getUsuario()->getLogin() .'</div>
-                         <div class="date text-xs color-grey">hace 2 días</div>
-                    </div>';
+        $img = $upload.$padre->getUsuario()->getFoto();
 
-        /*foreach( $hijos as $hijo )
+        $muro = '<div class="msjMuro" >
+                    <div class="comment">
+                        <div class="comm-header d-flex justify-content-between align-items-center mb-2">
+                            <div class="profile d-flex">
+                                <img class="avatar-img" src="'.$img.'" alt="">
+                                <div class="wrap-info-user flex-column ml-2">
+                                    <div class="name text-xs color-dark-grey">'.$padre->getUsuario()->getLogin().'</div>
+                                    <div class="date text-xs color-grey">hace 2 días</div>
+                                </div>
+                            </div>
+                            <a href="" class="mr-0 text-sm color-light-grey">
+                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                            </a>
+                        </div>
+                        <div class="comm-body text-justify">
+                            <p class="textMuroNoti">'. $padre->getMensaje() .'</p>
+                        </div>
+                    </div>
+                </div>
+                <ul class="msjMuroResp">';
+
+        foreach( $hijos as $hijo )
         {
+            $img = $upload.$hijo->getUsuario()->getFoto();
+            $muro .='<li class="comment">
+                        <div class="comm-header d-flex justify-content-between align-items-center mb-2">
+                            <div class="profile d-flex text-left">
+                                <img class="avatar-img" src="'.$img.'" alt="">
+                                <div class="wrap-info-user flex-column ml-2">
+                                    <div class="name text-xs color-dark-grey">'.$hijo->getUsuario()->getLogin().'</div>
+                                    <div class="date text-xs color-grey">hace 2 días</div>
+                                </div>
+                            </div>
+                            <a href="" class="mr-0 text-sm color-light-grey">
+                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                            </a>
+                        </div>
+                        <div class="comm-body text-justify">
+                            <p class="textMuroNoti">'. $hijo->getMensaje() .'</p>
+                        </div>
+                    </li>';
+        }
 
-        }*/
+        $muro .='</ul>';
 
         $return = $muro;
 
