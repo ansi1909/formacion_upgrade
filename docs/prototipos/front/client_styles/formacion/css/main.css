@@ -2699,6 +2699,10 @@ p.up {
         font-size: 1rem;
         position: relative;
         top: calc(1rem - 11px); }
+      .table-card .f-table .foo-esp_col .resp_ft .ic-msg2, .table-card .f-table-lt .foo-esp_col .resp_ft .ic-msg2 {
+        font-size: 1rem;
+        position: relative;
+        top: calc(1rem - 13px); }
 .table-card .f-table {
   border-bottom: 1px solid #F0F4F7; }
 
@@ -3527,13 +3531,24 @@ p.up {
           margin-right: calc(1rem - 8px); }
         .downloads .cont-downloads .list-downloads .element-downloads .nameArch {
           position: relative;
-          top: calc(1rem - 8px);
+          top: .3rem;
           color: #adb5bd;
+          display: block;
           font-weight: 600;
           font-family: "Open Sans";
           font-size: 0.87rem;
           white-space: pre-wrap;
           max-width: 13rem;
+          text-align: justify;
+          line-height: 1rem; }
+        .downloads .cont-downloads .list-downloads .element-downloads .nameUpload {
+          position: relative;
+          top: -.6rem;
+          left: 2.5rem;
+          color: #adb5bd;
+          font-weight: 600;
+          font-family: "Open Sans";
+          font-size: 0.75rem;
           text-align: justify;
           line-height: 1rem; }
         .downloads .cont-downloads .list-downloads .element-downloads .icDl {
