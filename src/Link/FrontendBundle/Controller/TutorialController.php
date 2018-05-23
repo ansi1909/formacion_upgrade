@@ -32,7 +32,6 @@ class TutorialController extends Controller
         $tutorial=$this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $directorioTut=$yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
-        //$fecha=$tutorial->getFecha()->format('y-m-d');
 
         
        return $this->render('LinkFrontendBundle:Tutoriales:detalleTutorial.html.twig',['tutorial'=>$tutorial,'directorio'=>$directorioTut]);
