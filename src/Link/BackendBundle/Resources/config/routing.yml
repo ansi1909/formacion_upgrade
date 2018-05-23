@@ -32,7 +32,6 @@ _ajaxQR:
     path:     /ajaxQR
     defaults: { _controller: LinkBackendBundle:Default:ajaxQR }
 
-
 roles:
     resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
     prefix: /rol
@@ -120,3 +119,7 @@ muro:
 foro:
     resource: "@LinkBackendBundle/Resources/config/routing/foro.yml"
     prefix: /foro
+
+_reordenarAsignacion:
+    path:     /reordenarAsignacion/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Default:reordenarAsignacion }

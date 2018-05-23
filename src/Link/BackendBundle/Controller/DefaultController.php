@@ -383,4 +383,42 @@ class DefaultController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
+    public function reordenarAsignacionAction($empresa_id, Request $request)
+    {
+
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $orden = 0;
+        $paginas_ordenadas = array();
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                   JOIN pe.pagina p
+                                   WHERE pe.empresa = :empresa_id 
+                                    AND p.pagina IS NULL 
+                                    ORDER BY p.orden')
+                    ->setParameter('empresa_id', $empresa_id);
+        $pes = $query->getResult();
+
+        foreach ($pes as $pe)
+        {
+
+            $orden++;
+            $pe->setOrden($orden);
+            $em->persist($pe);
+            $em->flush();
+
+            $paginas_ordenadas[] = array('orden' => $orden,
+                                         'pagina_id' => $pe->getPagina()->getId(),
+                                         'pagina_empresa_id' => $pe->getId(),
+                                         'nombre' => $pe->getPagina()->getCategoria()->getNombre().' '.$pe->getPagina()->getNombre(),
+                                         'subpaginas' => $f->reordenarSubAsignaciones($pe));
+
+        }
+
+        return new Response('<p><b>Páginas asignadas a la empresa '.$empresa->getNombre().':</b></p>'.var_dump($paginas_ordenadas));
+
+    }
+
 }
