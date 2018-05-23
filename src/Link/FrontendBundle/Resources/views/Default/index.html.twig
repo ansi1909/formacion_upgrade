@@ -45,7 +45,11 @@
                     <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
                     <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">Finaliza en {{ ar.fecha_vencimiento }} días</span>
                 </div>
-                <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                {% if ar.avanzar == 2 %}
+                    <a href="{{ path('_test', { 'pagina_id':  ar.evaluacion_pagina, 'programa_id': ar.evaluacion_programa, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                {% else %}
+                    <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

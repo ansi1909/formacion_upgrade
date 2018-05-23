@@ -2486,4 +2486,43 @@ class Functions
         return $pagina_evaluacion_id;
 
 	}
+
+	// Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
+	public function reordenarSubAsignaciones($pagina_empresa)
+	{
+
+		$em = $this->em;
+		$orden = 0;
+		$paginas_ordenadas = array();
+		
+		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId()),
+																			  array('orden' => 'ASC'));
+		
+		foreach ($subpages as $subpage)
+		{
+
+			$subpagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $subpage->getId(),
+                                                                                                    	   'empresa' => $pagina_empresa->getEmpresa()->getId()));
+
+			if ($subpagina_empresa)
+            {
+
+            	$orden++;
+            	$subpagina_empresa->setOrden($orden);
+	            $em->persist($subpagina_empresa);
+	            $em->flush();
+
+	            $paginas_ordenadas[] = array('orden' => $orden,
+                                         	 'pagina_id' => $subpage->getId(),
+                                         	 'pagina_empresa_id' => $subpagina_empresa->getId(),
+                                         	 'nombre' => $subpage->getCategoria()->getNombre().' '.$subpage->getNombre(),
+                                         	 'subpaginas' => $this->reordenarSubAsignaciones($subpagina_empresa));
+                
+            }
+
+		}
+
+		return $paginas_ordenadas;
+
+	}
 }

@@ -52,6 +52,7 @@ class ProgramaController extends Controller
         $porcentaje_avance = round($pagina_log->getPorcentajeAvance());
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+
         $pagina_sesion = $session->get('paginas')[$programa_id];
         /*echo $programa_id;
         var_dump($pagina_sesion);*/
@@ -163,12 +164,23 @@ class ProgramaController extends Controller
                     
                     $lis_mods .= '</div>';
                 }
+                // buscando registros de la pagina principal para validar si esta en evaluación
+                $datos_log_pag = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                        'pagina' => $programa_id));
+                if($datos_log_pag && $datos_log_pag->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                    $avanzar = 2;
+                    $evaluacion_pagina = $programa_id;
+                    $evaluacion_programa = $programa_id;
+                }
 
                 $lis_mods .= '<div class="progress mt-4 mb-3">';
                 $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
                 $lis_mods .= '</div>';
                 $lis_mods .= '</div>';
                 if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+
+                    $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                                     'pagina' => $programa_id));
 
                     $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">';
                     $lis_mods .= '<div class="percent text-center mt-5">';
@@ -179,6 +191,10 @@ class ProgramaController extends Controller
                     $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
                     $lis_mods .= '<span class="text-badge"> Aprobado </span>';
                     $lis_mods .= '</div>';
+                    if($datos_certi_pagina->getAcceso()){
+                        // aprobado y con acceso de seguir viendo
+                        $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                    }
                     $lis_mods .= '</div>';
                     
                 }else{
@@ -287,6 +303,19 @@ class ProgramaController extends Controller
                         $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
                         $porcentaje = round($arp->getPorcentajeAvance());
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+                        // buscando registros de la pagina para validar si esta en evaluación
+                        $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                            'pagina' => $id));
+                        if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                            $avanzar = 2;
+                            $evaluacion_pagina = $id;
+                            $evaluacion_programa = $padre_id;
+                        }else{
+                            $avanzar = 0;
+                            $evaluacion_pagina = 0;
+                            $evaluacion_programa = 0;
+                        }
+                        
 
                     }
                 }else{
@@ -299,8 +328,21 @@ class ProgramaController extends Controller
                     $categoria = $arp->getPagina()->getCategoria()->getNombre();
                     $porcentaje = round($arp->getPorcentajeAvance());
                     $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+                    // buscando registros de la pagina para validar si esta en evaluación
+                    $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                        'pagina' => $padre_id));
+                    if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                        $avanzar = 2;
+                        $evaluacion_pagina = $padre_id;
+                        $evaluacion_programa = $padre_id;
+                    }else{
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
 
                 }
+
 
                 $actividad_reciente[]= array('id'=>$id,
                                              'padre_id'=>$padre_id,
@@ -309,7 +351,10 @@ class ProgramaController extends Controller
                                              'imagen'=>$imagen,
                                              'categoria'=>$categoria,
                                              'fecha_vencimiento'=>$fecha_vencimiento,
-                                             'porcentaje'=>$porcentaje);
+                                             'porcentaje'=>$porcentaje,
+                                             'avanzar'=>$avanzar,
+                                             'evaluacion_pagina'=>$evaluacion_pagina,
+                                             'evaluacion_programa'=>$evaluacion_programa);
             }
         // No tiene actividades
         }else{
