@@ -1833,18 +1833,21 @@ p.up {
   margin: 1.5rem auto;
   font-size: 1.3rem;
   width: 75%;
+  text-align: justify;
   font-family: "Open Sans"; }
   .lesson-container h4 a {
     color: #FFDC60; }
 .lesson-container h3 {
   margin: 1.5rem auto;
   width: 75%;
-  font-family: "Open Sans"; }
+  font-family: "Open Sans";
+  text-align: justify; }
 .lesson-container img {
   border-radius: 1rem;
   width: 80%;
   height: auto; }
 .lesson-container .audio-player img {
+  width: 100%;
   border-radius: 1rem 1rem 0 0; }
 
 .wraper-nav-less {

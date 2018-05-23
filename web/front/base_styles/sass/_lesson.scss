@@ -40,6 +40,7 @@
       margin: 1.5rem auto;
       font-size: 1.3rem;
       width: 75%;
+      text-align: justify;
       font-family:$lessons-font;
       a {
           color: $yellow;
@@ -50,6 +51,7 @@
         margin: 1.5rem auto;
         width: 75%;
         font-family:$lessons-font;
+        text-align: justify;
     }
     
     img{
@@ -59,6 +61,7 @@
     }
     .audio-player{
         img{
+            width: 100%;
             border-radius: 1rem 1rem 0 0;    
         }
     }
