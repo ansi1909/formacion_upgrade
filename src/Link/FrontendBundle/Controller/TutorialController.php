@@ -34,4 +34,18 @@ class TutorialController extends Controller
         return $this->render('LinkFrontendBundle:Tutoriales:detalleTutorial.html.twig',['tutorial'=>$tutorial,'directorio'=>$directorioTut]);
     }
 
+    public function _descargarPdfAction(Request $request)
+    {
+        $tutorial_id=$request->request->get('id');
+        $tutorial=$this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+         
+        
+        // ////generar respuesta con la descarga
+        // $response = new Response();
+        // $response->headers->set('Content-Disposition', 'attachment; filename=' . basename($tutorial->getPdf()) );
+        
+
+    }
+
 }

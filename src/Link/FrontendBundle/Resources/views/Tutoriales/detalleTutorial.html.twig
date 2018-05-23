@@ -48,20 +48,27 @@
                             <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 col-8 text-right">
                                 <div class="dlTuto">
                                     <span class="textTuto">Puedes descargar el tutorial en formato PDF </span>
-                                    <button class="btn btn-primary btn-sm btn-dlt" type="button">Descargar</button>
+                                    <button class="btn btn-primary btn-sm btn-dlt descargaTutorial" id="{{tutorial.id}}"  type="button">Descargar</button>
+                                    <input type="hidden" name="url_dowloadpdf" id="url_dowloadpdf" value="{{path('_descargarPdf')}}" }">
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-4 mb-3 justify-content-center align-items-center">
                             <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-xs-10 col-10 text-justify">
                                 <div class="infoTuto">
-                                    <p class="textInfoTuto">Recuerda que puedes escribir a: <a href="" >soporte@formacion2puntocero.com</a> en caso de tener alguna duda o inconveniente. El equipo de soporte te apoyará para que tu experiencia de aprendizaje culmine exitosamente.</p>
+                                    <p class="textInfoTuto">Recuerda que puedes escribir a: <a href="" data-toggle="modal" data-target="#modalSv" id="abrir_modal_soporte" class="abrir_modal_soporte">soporte@formacion2puntocero.com</a> en caso de tener alguna duda o inconveniente. El equipo de soporte te apoyará para que tu experiencia de aprendizaje culmine exitosamente.</p>
                                 </div>
                             </div>
                         </div>
                     </section>
                 </div>
             </div>
+           
+            
+                
+            
 	        
     {% endblock %}
+
+
   

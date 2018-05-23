@@ -5,3 +5,9 @@ _indexTutoriales:
 _detalleTutoriales:
     path: /detalleTutorial/{tutorial_id}
     defaults: {  _controller: LinkFrontendBundle:Tutorial:detalle,tutorial_id: null}
+
+_descargarPdf:
+    path: /_descargarPdf
+    defaults: {  _controller: LinkFrontendBundle:Tutorial:_descargarPdf}
+    methods:  [POST]
+
