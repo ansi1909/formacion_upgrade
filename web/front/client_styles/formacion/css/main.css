@@ -197,6 +197,15 @@ input.form-control:focus {
     background-color: #ffd43a;
     border-color: #ffd12d; }
 
+.btnAp {
+  background: #CFE65C;
+  border: 0px;
+  color: #FAFAFA;
+  font-family: "Open Sans";
+  font-weight: 400; }
+  .btnAp:hover {
+    background: #5CAEE6; }
+
 .btn-edge {
   position: absolute;
   top: 0;

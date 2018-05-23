@@ -23,6 +23,17 @@
 
 }
 
+.btnAp{
+    background: $green;
+    border: 0px;
+    color: $gray-100;
+    font-family: $lessons-font;
+    font-weight: $font-weight-normal;
+    &:hover{
+        background: $blue;
+    }
+}
+
 .btn-edge{
     position: absolute;
     top: 0;
