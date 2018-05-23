@@ -40,15 +40,28 @@
       margin: 1.5rem auto;
       font-size: 1.3rem;
       width: 75%;
+      font-family:$lessons-font;
       a {
           color: $yellow;
       }
     }
     
+    h3{
+        margin: 1.5rem auto;
+        width: 75%;
+        font-family:$lessons-font;
+    }
+    
     img{
         border-radius: 1rem;
+        width: 80%;
+        height: auto;
     }
-
+    .audio-player{
+        img{
+            border-radius: 1rem 1rem 0 0;    
+        }
+    }
 }
 
 .wraper-nav-less {
