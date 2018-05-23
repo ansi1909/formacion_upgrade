@@ -179,6 +179,9 @@ class ProgramaController extends Controller
                 $lis_mods .= '</div>';
                 if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
 
+                    $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                                     'pagina' => $programa_id));
+
                     $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">';
                     $lis_mods .= '<div class="percent text-center mt-5">';
                     $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
@@ -188,6 +191,10 @@ class ProgramaController extends Controller
                     $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
                     $lis_mods .= '<span class="text-badge"> Aprobado </span>';
                     $lis_mods .= '</div>';
+                    if($datos_certi_pagina->getAcceso()){
+                        // aprobado y con acceso de seguir viendo
+                        $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
+                    }
                     $lis_mods .= '</div>';
                     
                 }else{
