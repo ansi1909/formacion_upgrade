@@ -51,7 +51,7 @@
 {% endblock %}
 
 {% block sidemenu %}
-    {{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina_id, 'active': 'lecciones' })) }}
+    {{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina.id, 'active': 'lecciones' })) }}
 {% endblock %}
 
 {% block bg %}

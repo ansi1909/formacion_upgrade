@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminEmpresa;
 use Link\ComunBundle\Entity\AdminUsuario;
 use Link\ComunBundle\Entity\AdminEvento;
+use Symfony\Component\Yaml\Yaml;
 
 
 class CalendarioController extends Controller
@@ -136,6 +137,7 @@ class CalendarioController extends Controller
         $empresa_usuario = $request->request->get("empresa_usuario");
         $fecha_inicio = $request->request->get('start');
         $fecha_fin = $request->request->get('end');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         if($empresa_usuario){
             $empresa_id = $empresa_usuario;
@@ -168,6 +170,30 @@ class CalendarioController extends Controller
         $evento->setUsuario($usuario);
         $em->persist($evento);
         $em->flush();
+
+        if($nivel_id != 0){
+            $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                   WHERE u.activo = :activo 
+                                   AND u.nivel = :nivel_id')
+                    ->setParameters(array('activo' => true,
+                                          'nivel_id' => $nivel_id));
+        }else{
+
+            $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                                   WHERE u.activo = :activo 
+                                   AND u.empresa = :empresa_id')
+                    ->setParameters(array('activo' => true,
+                                          'empresa_id' => $empresa->getId()));
+        }
+
+         
+        $alarma_usuarios = $query->getResult();
+
+        $descripcion= 'A sido publicado el evento '. $evento->getNombre() .' inicia el '. $evento->getFechaInicio()->format('d-m-Y G:ia') . ' y finaliza el '. $evento->getFechaFin()->format('d-m-Y G:ia');
+            foreach($alarma_usuarios as $usuario){
+
+                $f->newAlarm($yml['parameters']['tipo_alarma']['evento'], $descripcion, $usuario, $evento->getId(), $evento->getFechaInicio());
+            }
 
         if($evento->getNivel()){
             $nombre_nivel = $evento->getNivel()->getNombre();

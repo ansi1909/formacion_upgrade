@@ -36,7 +36,7 @@
     display: flex;
     flex-direction: row;
     height: auto;
-    width: 45rem;
+    width: 57rem;
     margin: .5rem 0;
     cursor: pointer;
     .opc_letra{
@@ -67,9 +67,9 @@
     .opc_resp{
         position: relative;
         top: 0;
-        width: 40rem;
+        width: 52rem;
         min-height: 3rem;
-        padding: .75rem .75rem .25rem .75rem;
+        padding: 1rem .75rem .25rem .75rem;
         border-top: .125rem solid $gray-400;
         border-bottom: .125rem solid $gray-400;
         border-right: .125rem solid $gray-400;
@@ -77,9 +77,9 @@
         .opc_r{
             color: $gray-800;
             font-family: $lessons-font;
-            font-size: $p-font-size;
-            line-height: 2rem;
-            font-weight: $font-weight-light;
+            font-size: $font-size-sm;
+            line-height: 1.25rem;
+            font-weight: $font-weight-normal;
         }
     }
     &:hover{
@@ -260,15 +260,15 @@
 .titulo-resul{
     color: $blue;
     font-family: $primary-font;
-    font-size: calc($h1-font-size - 4px);
-    line-height: calc($h1-font-size + 7px);
+    font-size: $h1-font-size;
+    line-height: calc(2rem - 2px);
     margin-top: 3rem;
 }
 
 .ic-resul{
-    font-size: $h1-font-size + 4rem;
+    font-size: 5rem;
     color: $blue;
-    margin-top: calc(2rem - 7px);
+    margin-top: calc(2rem - 8px);
 }
 
 .alreves{
@@ -277,20 +277,18 @@
 
 .txt-resul{
     font-family: $primary-font;
-    font-size: $h4-font-size;
+    font-size: $h3-font-size;
     line-height: calc(2rem + 1px);
-    margin: calc(2rem - 1px) 0 calc(4rem + 4px) 0 ;
+    margin: 4rem 0 2rem 0;
 }
 
 .mostrar-resul{
     background: $white;
-    padding-top: calc(6rem - 6px);
+    padding-top: calc(3rem - 4px);
     margin-top: 1.5rem;
-    margin-bottom: 3rem;
+    padding-bottom: 2rem;
     overflow-x: hidden !important;
-    width: 98.78vw;
-    position: relative;
-    left: -1rem;
+    width: 100%;
     .calif{
         @extend %cal-log;
         left: 6rem;
@@ -313,7 +311,7 @@
         }
     }
     .anun-resul{
-        margin: calc(2rem + 4px) 0 calc(1rem + 4px) 0;
+        margin: calc(2rem - 8px) 0 1rem 0;
         color: $gray-650;	
         font-family: $secondary-font;	
         font-size: $p-font-size;	
@@ -365,7 +363,7 @@
 //Extends
 %enunc{
     color: $gray-800;
-    font-family: $secondary-font;
+    font-family: $lessons-font;
     line-height: $h4-font-size;
     font-size: $p-font-size;
     text-align: justify;
@@ -488,9 +486,10 @@
     border-radius: 0 calc(1rem - 8px) calc(1rem - 8px) 0;
     .preg_e{
         color: $gray-800;
-        font-family: $primary-font;
-        font-size: $h5-font-size;
-        line-height: calc($h4-font-size - 3px);
+        font-family: $lessons-font;
+        font-size: $p-font-size;
+        line-height: 1.25rem;
+        font-weight: $font-weight-normal;
         position: relative;
         display: block;
         left: 0;

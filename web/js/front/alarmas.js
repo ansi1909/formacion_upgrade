@@ -2,20 +2,8 @@ $(document).ready(function() {
 
    getAlarma();
    getNotificaciones();
+   observeMuro();
 
-   $('.click').click(function(){
-        var noti_id = $(this).attr('data');
-        var tipo_noti = $('.tipo_noti').val();
-
-        if (tipo_noti == '1') {
-            var muro_id = $('#muro_id');
-            notiMuro(muro_id);
-
-        }
-        getLeido(noti_id);
-        
-        
-    });
 
 });
 
@@ -31,6 +19,7 @@ function getAlarma()
         success: function(data) {
             $('#noti').html(data.noti);
             observeLeido();
+            observeMuro();
            
             if (data.sonar == 1) {
                 $('#sonar').show();
@@ -67,20 +56,36 @@ function observeLeido()
         var noti_id = $(this).attr('data');
         getLeido(noti_id);
     });
+
 }
 
-function getLeido(noti_id,tipo_noti)
+function observeMuro()
 {
-    /*$("#sonar").hide();*/
+    $('.click').click(function(){
+        var noti_id = $(this).attr('data');
+        var tipo_noti = $('#tipo_noti'+noti_id).val();
+
+        if (tipo_noti == 1) {
+            var muro_id = $('#muro_id'+noti_id).val();
+            notiMuro(muro_id);
+
+        }
+        
+        
+    });
+}
+
+function getLeido(noti_id)
+{
     $.ajax({
         type: "POST",
         url: $('#url_leido').val(),
         async: true,
-        data: {noti_id: noti_id, tipo_noti: tipo_noti},
+        data: {noti_id: noti_id},
         dataType: "json",
         success: function(data) {
             getAlarma();
-            console.log(tipo_noti);
+            
            
         },
         error: function(){

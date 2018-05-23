@@ -33,6 +33,7 @@ class CertificadoController extends Controller
 
 		if($pagina)
 		{
+
 			$certificado=false;
 			//consultamos el certificado por pagina
 	        $certificado_pagina = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $session->get('empresa')['id'],
@@ -54,10 +55,10 @@ class CertificadoController extends Controller
 
 	        	}else
 	        	{
-	        		//consultamos el certificado por empresa
+	        		//consultamos el certificado por empresa     'entidadId' => 0
 			        $certificado_empresas = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-		        					     																		    'tipoCertificado' => 1,
-		                                                                                               			    'entidadId' => null));
+		        					     																		    'tipoCertificado' => 1
+		                                                                                               			    ));
 			        if($certificado_empresas)
 		        	{
 		        		$certificado = $certificado_empresas;
@@ -77,10 +78,13 @@ class CertificadoController extends Controller
 
 	        	$fecha = $f->fechaNatural($fecha_vencimiento);
 				
-				$aleatorio = $f->generarClave();
+				$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                	'pagina' => $pagina->getId() ));
 
-		        $contenido = $aleatorio.$session->get('usuario')['apellido'].$session->get('usuario')['nombre'].$pagina->getNombre();
-		        $size = 2;
+				//$aleatorio = $f->generarClave();
+		        //$contenido = $aleatorio.$session->get('usuario')['apellido'].$session->get('usuario')['nombre'].$pagina->getNombre();
+		        $size =2;
+				$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
 
 		        $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
 
