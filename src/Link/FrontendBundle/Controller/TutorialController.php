@@ -33,10 +33,10 @@ class TutorialController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $directorioTut=$yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
 
-
-        return $this->render('LinkFrontendBundle:Tutoriales:detalleTutorial.html.twig',['tutorial'=>$tutorial,'directorio'=>$directorioTut]);
+        
+       return $this->render('LinkFrontendBundle:Tutoriales:detalleTutorial.html.twig',['tutorial'=>$tutorial,'directorio'=>$directorioTut]);
     }
-    
+
 
     public function _descargarPdfAction(Request $request,$tutorial_id)
     {
