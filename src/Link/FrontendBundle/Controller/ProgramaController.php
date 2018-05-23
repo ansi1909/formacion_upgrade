@@ -89,13 +89,6 @@ class ProgramaController extends Controller
                     $next_pagina = $subpagina['id'];
                 }
 
-                // validando si la subpagina esta en evaluacion
-                if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
-                    $avanzar = 2;
-                    $evaluacion_pagina = $subpagina['id'];
-                    $evaluacion_programa = $programa_id;
-                }
-
                 if($subpagina['prelacion']){
                     $query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
                                                WHERE pl.pagina = :pagina_id 
@@ -113,6 +106,13 @@ class ProgramaController extends Controller
                     }
                 }else{
                     $avanzar = 1;
+                }
+
+                // validando si la subpagina esta en evaluacion
+                if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                    $avanzar = 2;
+                    $evaluacion_pagina = $subpagina['id'];
+                    $evaluacion_programa = $programa_id;
                 }
                 
                 if (count($subpagina['subpaginas']))
@@ -172,6 +172,9 @@ class ProgramaController extends Controller
                     $evaluacion_pagina = $programa_id;
                     $evaluacion_programa = $programa_id;
                 }
+                // depurando en el log symfony
+                //$logger = $this->get('logger');
+                //$logger->error('AVANZAR = '.$avanzar);
 
                 $lis_mods .= '<div class="progress mt-4 mb-3">';
                 $lis_mods .= '<div class="progress-bar" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>';
@@ -182,19 +185,28 @@ class ProgramaController extends Controller
                     $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                                      'pagina' => $programa_id));
 
-                    $lis_mods .= '<div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">';
-                    $lis_mods .= '<div class="percent text-center mt-5">';
+                    if($datos_certi_pagina->getAcceso()){
+                        // aprobado y con acceso de seguir viendo
+                        $boton_continuar = '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm btn-primary mt-4 btnAp px-4"> Ver </a>';
+                        $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1';
+                        $div_class2 = 'percent text-center mt-3';
+                        $span_class = 'count mt-0 text-xs color-light-grey';
+                    }else{
+                        $boton_continuar = '';
+                        $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-4 pb-1';
+                        $div_class2 = 'percent text-center mt-5';
+                        $span_class = 'count mt-0 mb-2 text-xs color-light-grey';                        
+                    }
+                    $lis_mods .= '<div class="'.$div_class1.'">';
+                    $lis_mods .= '<div class="'.$div_class2.'">';
                     $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
-                    $lis_mods .= '<span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>';
+                    $lis_mods .= '<span class="'.$span_class.'">Calificación</span>';
                     $lis_mods .= '</div>';
                     $lis_mods .= '<div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">';
                     $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
                     $lis_mods .= '<span class="text-badge"> Aprobado </span>';
                     $lis_mods .= '</div>';
-                    if($datos_certi_pagina->getAcceso()){
-                        // aprobado y con acceso de seguir viendo
-                        $lis_mods .= '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm '.$clase.' mt-6 mb-4"> '.$boton.' </a>';
-                    }
+                    $lis_mods .= $boton_continuar;
                     $lis_mods .= '</div>';
                     
                 }else{
