@@ -52,6 +52,7 @@ class ProgramaController extends Controller
         $porcentaje_avance = round($pagina_log->getPorcentajeAvance());
 
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+
         $pagina_sesion = $session->get('paginas')[$programa_id];
         /*echo $programa_id;
         var_dump($pagina_sesion);*/
@@ -162,6 +163,14 @@ class ProgramaController extends Controller
                 }else{
                     
                     $lis_mods .= '</div>';
+                }
+                // buscando registros de la pagina principal para validar si esta en evaluación
+                $datos_log_pag = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                        'pagina' => $programa_id));
+                if($datos_log_pag && $datos_log_pag->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                    $avanzar = 2;
+                    $evaluacion_pagina = $programa_id;
+                    $evaluacion_programa = $programa_id;
                 }
 
                 $lis_mods .= '<div class="progress mt-4 mb-3">';
@@ -287,6 +296,19 @@ class ProgramaController extends Controller
                         $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
                         $porcentaje = round($arp->getPorcentajeAvance());
                         $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+                        // buscando registros de la pagina para validar si esta en evaluación
+                        $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                            'pagina' => $id));
+                        if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                            $avanzar = 2;
+                            $evaluacion_pagina = $id;
+                            $evaluacion_programa = $padre_id;
+                        }else{
+                            $avanzar = 0;
+                            $evaluacion_pagina = 0;
+                            $evaluacion_programa = 0;
+                        }
+                        
 
                     }
                 }else{
@@ -299,8 +321,21 @@ class ProgramaController extends Controller
                     $categoria = $arp->getPagina()->getCategoria()->getNombre();
                     $porcentaje = round($arp->getPorcentajeAvance());
                     $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
+                    // buscando registros de la pagina para validar si esta en evaluación
+                    $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                        'pagina' => $padre_id));
+                    if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                        $avanzar = 2;
+                        $evaluacion_pagina = $padre_id;
+                        $evaluacion_programa = $padre_id;
+                    }else{
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
 
                 }
+
 
                 $actividad_reciente[]= array('id'=>$id,
                                              'padre_id'=>$padre_id,
@@ -309,7 +344,10 @@ class ProgramaController extends Controller
                                              'imagen'=>$imagen,
                                              'categoria'=>$categoria,
                                              'fecha_vencimiento'=>$fecha_vencimiento,
-                                             'porcentaje'=>$porcentaje);
+                                             'porcentaje'=>$porcentaje,
+                                             'avanzar'=>$avanzar,
+                                             'evaluacion_pagina'=>$evaluacion_pagina,
+                                             'evaluacion_programa'=>$evaluacion_programa);
             }
         // No tiene actividades
         }else{
