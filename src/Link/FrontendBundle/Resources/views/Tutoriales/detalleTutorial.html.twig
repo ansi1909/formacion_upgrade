@@ -48,8 +48,8 @@
                             <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 col-8 text-right">
                                 <div class="dlTuto">
                                     <span class="textTuto">Puedes descargar el tutorial en formato PDF </span>
-                                    <button class="btn btn-primary btn-sm btn-dlt descargaTutorial" id="{{tutorial.id}}"  type="button">Descargar</button>
-                                    <input type="hidden" name="url_dowloadpdf" id="url_dowloadpdf" value="{{path('_descargarPdf')}}" }">
+                                    <button class="btn btn-primary btn-sm btn-dlt descargaTutorial" id="{{tutorial.id}}"  type="button" data-ruta="{{path('_descargarPdf')~'/'~tutorial.id}}" >Descargar</button>
+                                   
                                 </div>
                             </div>
                         </div>

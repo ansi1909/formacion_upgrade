@@ -7,7 +7,7 @@ _detalleTutoriales:
     defaults: {  _controller: LinkFrontendBundle:Tutorial:detalle,tutorial_id: null}
 
 _descargarPdf:
-    path: /_descargarPdf
-    defaults: {  _controller: LinkFrontendBundle:Tutorial:_descargarPdf}
-    methods:  [POST]
+    path: /_descargarPdf/{tutorial_id}
+    defaults: {  _controller: LinkFrontendBundle:Tutorial:_descargarPdf,tutorial_id: null}
+    methods:  [GET]
 
