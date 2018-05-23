@@ -1,0 +1,64 @@
+ <!-- Modal Soporte virtual-->
+        <div class="modal modalSopVirtual" id="modalSv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">{{ 'Soporte virtual'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-2 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
+                        <p class="txtModalVs">{{ '¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.'|trans }}</p>
+                    </div>
+                </div>
+                <form id="formularioSoporte">
+                    {% if app.session.get('usuario').correo == '' %}
+                        <div class="row mt-3 justify-content-center align-items-center">
+                            <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
+                                <div class="form-group">
+                                    <label class="mb-1" for="asuntoV">{{ 'Correo'|trans }}</label><label id="error_correo" style="color:#F00C0C">&nbsp;&nbsp;&nbsp;{{'Ingrese un correo valido'|trans}}</label>
+                                    <input  type="text" class="form-control" id="correo_soporte" name="correo_soporte" aria-describedby="correoSupportVitual" placeholder="{{ 'Escriba su correo'|trans }}">
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
+                            <div class="form-group">
+                                <label class="mb-1" for="asuntoV">Asunto</label><label id="error_asunto" style="color:#F00C0C">&nbsp;&nbsp;&nbsp;{{'Indique el asunto de su mensaje'|trans}}</label>
+                                <input  type="text" class="form-control" id="asuntoV" aria-describedby="asuntoSupportVitual" placeholder="Escriba su asunto">
+                                 <input type="hidden" id="url_sendmail" name="url_sendmail" value="{{ path('_ajaxEnviarMailSoporte') }}">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row mt-1 justify-content-center">
+                        <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
+                            <div class="form-group">
+                                <label class="mb-1" for="msjSv">{{ 'Mensaje'|trans }}</label><label id="error_mensaje" style="color:#F00C0C">&nbsp;&nbsp;&nbsp;{{'Ingrese el mensaje que desea enviar'|trans}}</label>
+                                <textarea class="form-control textAsv" rows="4" id="msjSv" aria-describedby="messageSupportVirtual" placeholder="{{ 'Escriba su mensaje'|trans }}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row mt-2 align-items-center justify-content-center" id="btn_enviar_">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#"><button type="button" id="correo_soporte_btn_enviar" class="btn btn-primary btnEnv">{{ 'Enviar'|trans }}</button></a>
+                    </div>
+                </div>
+                 <div class="row mt-2 align-items-center justify-content-center" style="display:none;" id="wait_soporte">
+                        <div class="col-auto px-0 py-0">
+                            <div class="contenedor">
+                                    <div class="radar"></div>
+                            </div>
+                        </div>
+                </div>
+               
+            </div>
+        </div>

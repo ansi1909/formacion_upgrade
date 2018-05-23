@@ -41,17 +41,30 @@ $(document).ready(function()
 				        dataType: "json",
 				        success: function(data) 
 				        {
+				           
+				           $('#modalSv').modal('hide');
+				            document.getElementById('formularioSoporte').reset();
+	                       $('#btn_enviar_').show();
+   					       $('#wait_soporte').hide();
+
 				           if (data.respuesta==1) //si el mensaje se envio al equipo de soporte 
 				            {
-	                             $('#modalSv').modal('hide');//se cierra el modal
-	                             document.getElementById('formularioSoporte').reset();
-	                             $('#btn_enviar_').show();
-   					             $('#wait_soporte').hide();
+	                             //se muestra el modal de exito
+	                             $('#modalSuccess').modal('show');//abre el modal de confirmacion
+	                            
+				            }
+				            else
+				            {
+				                  $('#modalWrong').modal('show');	 
 				            }
 				           
 				        },
 				        error: function(){
-				            console.log('Error, el mensaje no fue enviado');
+				               $('#modalSv').modal('hide');
+					           document.getElementById('formularioSoporte').reset();
+		                       $('#btn_enviar_').show();
+	   					       $('#wait_soporte').hide();
+	   					       $('#modalWrong').modal('show');
 				        }
 	               });
 
@@ -64,6 +77,7 @@ $(document).ready(function()
 		      { 
 		          
 		          
+		         
 		          var datosSession=1;
 		          var errores={'mensaje':0,'asunto':0,'correo':0};
 		          var campos={
@@ -114,9 +128,10 @@ $(document).ready(function()
 
 
 		      ///al abrir el modal de correo
-		      $('#abrir_modal_soporte').click(function()
+		      $('.abrir_modal_soporte').click(function()
 		      	{
-		      		///inicializar como ocultos los mensajes de campos requerido y aseguramos que el formulario se encuentre vacio
+		      		
+		      		//inicializar como ocultos los mensajes de campos requerido y aseguramos que el formulario se encuentre vacio
     				$('#error_correo').hide();
     				$('#error_asunto').hide();
    					$('#error_mensaje').hide();

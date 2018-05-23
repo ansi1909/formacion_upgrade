@@ -1,12 +1,13 @@
 $(document).ready(function() 
 {
-    
 
-    /////presionar boton tutorial 
+    /////presionar bptpn para enviar mensaje al equipo de soporte
 
-    $('#tutorial_open').click(function()
+    $('.descargaTutorial').click(function()
     {
-        alert('Hola');
+      	
+      	location.href =  $(this).data('ruta');
+      	
     });
 
 
