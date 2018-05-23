@@ -4,6 +4,24 @@ $(document).ready(function() {
    getNotificaciones();
    observeMuro();
 
+   $('#responder').click(function(){
+        var muro_id = $('#id_muro').attr('data');
+        var mensaje = $('#comentario').val();
+        $.ajax({
+            type: "POST",
+            url: $('#respuesta').attr('action'),
+            async: true,
+            data: {muro_id: muro_id , mensaje: mensaje},
+            dataType: "json",
+            success: function(data) {
+                console.log(data.muro);
+                console.log(data.mensaje);
+            },
+            error: function(){
+                
+            }
+        });
+    });
 
 });
 
@@ -25,6 +43,7 @@ function getAlarma()
                 $('#sonar').show();
             }
 
+
         },
         error: function(){
            
@@ -41,7 +60,9 @@ function notiMuro(muro_id)
         data: {muro_id: muro_id}, 
         dataType: "json",
         success: function(data) {
-            $('#padre').html(data);
+            $('#padre').html(data.html);
+            $('#escondido').html(data.muro);
+            getAlarma();
 
         },
         error: function(){

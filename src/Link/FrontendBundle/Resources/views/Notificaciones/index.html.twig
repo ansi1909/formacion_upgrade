@@ -53,11 +53,11 @@
                         <a href="#" data-toggle="modal" data-target="#modalMn" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{toda.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{toda.id}}>
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{toda.id}}>
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
@@ -72,11 +72,11 @@
                         <a href="{{ path('_detalleColaborativo', { 'foro_id': toda.entidad }) }}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{toda.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{toda.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{toda.id}}">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
@@ -91,11 +91,11 @@
                         <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{toda.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{toda.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{toda.id}}">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
@@ -110,11 +110,11 @@
                         <a href="{{ path('_detalleColaborativo', { 'foro_id': toda.entidad }) }}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{toda.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{toda.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{toda.id}}">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
@@ -129,11 +129,11 @@
                         <a href="{{ path('_noticiaDetalle', { 'noticia_id': toda.entidad }) }}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{toda.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{toda.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{toda.id}}">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
@@ -148,11 +148,11 @@
                         <a href="{{ path('_noticiaDetalle', { 'noticia_id': toda.entidad }) }}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{toda.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{toda.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{toda.id}}">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
@@ -167,11 +167,11 @@
                         <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': toda.entidad }) }}" class="click" data="{{toda.id}}">
                             {% if toda.leido == FALSE %}
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{toda.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{toda.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{toda.id}}">
                                 {% endif %}
                             {% else %}
                                 {% if loop.first %}
@@ -200,65 +200,65 @@
                     {% if no_leido.tipo == '1' %}
                         <a href="#" data-toggle="modal" data-target="#modalMn" class="click" data="{{no_leido.id}}">
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{no_leido.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{no_leido.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{no_leido.id}}">
                                 {% endif %}
                     {% elseif no_leido.tipo == 2 %} 
                         <a href="{{ path('_detalleColaborativo', { 'foro_id': no_leido.entidad }) }}" class="click" data="{{no_leido.id}}">
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{no_leido.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{no_leido.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{no_leido.id}}">
                                 {% endif %}        
                     {% elseif no_leido.tipo == 3 %}
                         <a href="{{ path('_calendarioDeEventos')}}" class="click" data="{{no_leido.id}}">
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{no_leido.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{no_leido.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{no_leido.id}}">
                                 {% endif %}  
                     {% elseif no_leido.tipo == 4 %}
                         <a href="{{ path('_detalleColaborativo', { 'foro_id': no_leido.entidad }) }}" class="click" data="{{no_leido.id}}">
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{no_leido.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{no_leido.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{no_leido.id}}">
                                 {% endif %}
                     {% elseif no_leido.tipo == 5 %}
                         <a href="{{ path('_noticiaDetalle', { 'noticia_id': no_leido.entidad }) }}" class="click" data="{{no_leido.id}}">
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{no_leido.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{no_leido.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{no_leido.id}}">
                                 {% endif %}
                     {% elseif no_leido.tipo == 6 %}
                         <a href="{{ path('_noticiaDetalle', { 'noticia_id': no_leido.entidad }) }}" class="click" data="{{no_leido.id}}">
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{no_leido.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{no_leido.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{no_leido.id}}">
                                 {% endif %}
                     {% elseif no_leido.tipo == 7 %}
                         <a href="{{ path('_bibliotecaDetalle', { 'biblioteca_id': no_leido.entidad }) }}" class="click" data="{{no_leido.id}}">
                                 {% if loop.first %}
-                                    <li class="f-table-notify notiSinLeer notiFirst">
+                                    <li class="f-table-notify notiSinLeer notiFirst leido" data="{{no_leido.id}}">
                                 {% elseif loop.last %}
-                                    <li class="f-table-notify notiSinLeer notiLast">
+                                    <li class="f-table-notify notiSinLeer notiLast leido" data="{{no_leido.id}}">
                                 {% else %}
-                                    <li class="f-table-notify notiSinLeer">
+                                    <li class="f-table-notify notiSinLeer leido" data="{{no_leido.id}}">
                                 {% endif %}             
                     {% endif %}       
                         <div class="row justify-content-between">

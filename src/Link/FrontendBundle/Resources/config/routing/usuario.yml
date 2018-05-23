@@ -41,3 +41,9 @@ _ajaxNotiMuro:
     defaults: { _controller: LinkFrontendBundle:Default:ajaxNotiMuro }
     requirements:
         method: GET
+
+_ajaxRespuestaComentario:
+    path:     /ajaxRespuestaComentario
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxRespuestaComentario }
+    requirements:
+        method: POST

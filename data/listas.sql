@@ -338,13 +338,16 @@ INSERT INTO admin_social (id, nombre) VALUES (2, 'Espacio colaborativo');
 -- Name: idadmin_tipo_alarma_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_alarma', 'id'), 5, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_alarma', 'id'), 8, false);
 
 --
 -- Data for Name: admin_tipo_alarma; Type: TABLE DATA; Schema: public;
 --
 
-INSERT INTO admin_tipo_alarma (id, nombre) VALUES (1, 'Notificación de respuesta a una interacción al comentario en el muro');
-INSERT INTO admin_tipo_alarma (id, nombre) VALUES (2, 'Notificación del espacio colaborativo');
-INSERT INTO admin_tipo_alarma (id, nombre) VALUES (3, 'Notificación de un evento creado');
-INSERT INTO admin_tipo_alarma (id, nombre) VALUES (4, 'Notificación de un aporte al espacio colaborativo');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (1, 'Notificación de respuesta a una interacción al comentario en el muro', 'mail', 'muroSticker');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (2, 'Notificación del espacio colaborativo', 'speaker_notes', 'ectSticker');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (3, 'Notificación de un evento creado', 'event_note', 'calenSticker');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (4, 'Notificación de un aporte al espacio colaborativo', 'insert_comment', 'ecpSticker');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (5, 'Notificación de una noticia', 'library_books', 'notiSticker');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (6, 'Notificación de una novedad', 'volume_down', 'anunSticker');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (7, 'Notificación de la biblioteca', 'import_contacts', 'biblioSticker');

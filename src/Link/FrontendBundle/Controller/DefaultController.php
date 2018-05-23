@@ -727,6 +727,11 @@ class DefaultController extends Controller
 
         $img = $upload.$padre->getUsuario()->getFoto();
 
+        $query = $em->createQuery('SELECT COUNT(l.id) FROM LinkComunBundle:AdminLike l
+                                   WHERE l.entidadId = :muro_id')
+                    ->setParameter('muro_id', $padre->getId());
+        $likes = $query->getSingleScalarResult();
+
         $muro = '<div class="msjMuro" >
                     <div class="comment">
                         <div class="comm-header d-flex justify-content-between align-items-center mb-2">
@@ -738,7 +743,7 @@ class DefaultController extends Controller
                                 </div>
                             </div>
                             <a href="" class="mr-0 text-sm color-light-grey">
-                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> '.$likes.'
                             </a>
                         </div>
                         <div class="comm-body text-justify">
@@ -751,6 +756,12 @@ class DefaultController extends Controller
         foreach( $hijos as $hijo )
         {
             $img = $upload.$hijo->getUsuario()->getFoto();
+
+            $query = $em->createQuery('SELECT COUNT(l.id) FROM LinkComunBundle:AdminLike l
+                                       WHERE l.entidadId = :muro_id')
+                        ->setParameter('muro_id', $hijo->getId());
+            $likes = $query->getSingleScalarResult();
+
             $muro .='<li class="comment">
                         <div class="comm-header d-flex justify-content-between align-items-center mb-2">
                             <div class="profile d-flex text-left">
@@ -761,7 +772,7 @@ class DefaultController extends Controller
                                 </div>
                             </div>
                             <a href="" class="mr-0 text-sm color-light-grey">
-                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> '.$likes.'
                             </a>
                         </div>
                         <div class="comm-body text-justify">
@@ -772,7 +783,26 @@ class DefaultController extends Controller
 
         $muro .='</ul>';
 
-        $return = $muro;
+        $input='<input type="hidden" id="id_muro" data= "'.$padre->getId().'" >';
+
+        $return = array('html' => $muro,
+                        'muro' => $input);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function ajaxRespuestaComentarioAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $mensaje = $request->request->get('mensaje');
+        $muro_id = $request->request->get('muro_id');
+
+        $return = array('mensaje' => $mensaje,
+                        'muro' => $muro_id);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
