@@ -12,6 +12,14 @@ body {
         background-color: $gray-600;
         outline: 1px solid $gray-850;
     }
+    &.bckLogin{
+        @include media-breakpoint-down(sm){
+            background: url(../../../assets/img/decorate_qr.svg) no-repeat top right;
+        }
+        @include media-breakpoint-down(xs){
+            background: url(../../../assets/img/decorate_qr.svg) no-repeat top right;
+        }
+    }
 }
 
 

@@ -309,6 +309,12 @@ body {
   body::-webkit-scrollbar-thumb {
     background-color: #AAAFB3;
     outline: 1px solid #565656; }
+  @media (max-width: 767.98px) {
+    body.bckLogin {
+      background: url(../../../assets/img/decorate_qr.svg) no-repeat top right; } }
+  @media (max-width: 559.98px) {
+    body.bckLogin {
+      background: url(../../../assets/img/decorate_qr.svg) no-repeat top right; } }
 
 #main {
   transition: all .6s;
@@ -599,6 +605,41 @@ a.links:focus {
 
 a:focus, a:active, a:target, a:checked {
   outline: none !important; }
+
+@media (max-width: 559.98px) {
+  .imgLogin {
+    width: 13rem;
+    margin: 1.5rem auto !important;
+    position: relative;
+    left: 0;
+    transform: translateX(-25%); } }
+
+@media (max-width: 559.98px) {
+  .pnlogin .titleLogin, .pnlogin .txtLogin {
+    width: 13rem;
+    margin: 1rem auto !important;
+    position: relative;
+    left: 0;
+    transform: translateX(-32.5%); }
+  .pnlogin .userLogin, .pnlogin .pwdLogin {
+    width: 15rem;
+    position: relative;
+    left: 0;
+    transform: translateX(-45%); }
+  .pnlogin .checkLogin {
+    width: 15rem;
+    margin: 0 auto !important;
+    position: relative;
+    left: 0;
+    transform: translateX(-45%); }
+  .pnlogin .btnLogin {
+    transform: translateX(-45%);
+    margin: 1rem auto !important; }
+  .pnlogin .recupLogin {
+    width: 15rem;
+    margin: 1rem auto !important;
+    white-space: nowrap;
+    transform: translateX(-40%); } }
 
 .modal-recuperacion .titulo {
   margin-top: calc(-1*calc(2rem - 7px)); }
