@@ -14,6 +14,8 @@ $(document).ready(function() {
 		$('#nombre').val("");
 		$('#pdf').val("");
 		$('#video').val("");
+		$('#imagen').val("");
+		$('#descripcion').val("");
 		$('#div-alert').hide();
 	});
 
@@ -55,6 +57,8 @@ $(document).ready(function() {
 				$('#nombre').val(data.nombre);
 				$('#pdf').val(data.pdf);
 				$('#video').val(data.video);
+				$('#imagen').val(data.imagen);
+				$('#descripcion').val(data.descripcion);
 			},
 			error: function(){
 				$('alert-error').html($('#error_msg_edit').val());
@@ -108,6 +112,8 @@ function saveTutorial()
 				$('#p-nombre').html(data.nombre);
 				$('#p-pdf').html(data.pdf);
 				$('#p-video').html(data.video);
+				$('#p-imagen').html(data.imagen);
+				$('#p-descripcion').html(data.descripcion);
 				console.log('Formulario enviado. Id '+data.id);
 				$( "#detail-edit" ).attr( "data", data.id );
 				if (data.delete_disabled != '') 
