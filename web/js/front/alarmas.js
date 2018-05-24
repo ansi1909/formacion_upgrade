@@ -2,26 +2,8 @@ $(document).ready(function() {
 
    getAlarma();
    getNotificaciones();
-   observeMuro();
 
-   $('#responder').click(function(){
-        var muro_id = $('#id_muro').attr('data');
-        var mensaje = $('#comentario').val();
-        $.ajax({
-            type: "POST",
-            url: $('#respuesta').attr('action'),
-            async: true,
-            data: {muro_id: muro_id , mensaje: mensaje},
-            dataType: "json",
-            success: function(data) {
-                console.log(data.muro);
-                console.log(data.mensaje);
-            },
-            error: function(){
-                
-            }
-        });
-    });
+   
 
 });
 
@@ -36,13 +18,18 @@ function getAlarma()
         dataType: "json",
         success: function(data) {
             $('#noti').html(data.noti);
+            console.log('por aca');
+            if (data.sonar == 1) {
+                $('#sonar').show();
+         
+            }
+            else{
+                $('#sonar').hide();
+                
+            }
             observeLeido();
             observeMuro();
            
-            if (data.sonar == 1) {
-                $('#sonar').show();
-            }
-
 
         },
         error: function(){
@@ -62,7 +49,7 @@ function notiMuro(muro_id)
         success: function(data) {
             $('#padre').html(data.html);
             $('#escondido').html(data.muro);
-            getAlarma();
+            $(".msjMuroResp").animate({ scrollTop: $('.msjMuroResp')[0].scrollHeight}, 1000);
 
         },
         error: function(){
@@ -93,6 +80,26 @@ function observeMuro()
         }
         
         
+    });
+
+    $('#responder').click(function(){
+        var muro_id = $('#id_muro').attr('data');
+        var mensaje = $('#comentario').val();
+        var pagina = $('#id_pagina').attr('data');
+        $.ajax({
+            type: "POST",
+            url: $('#respuesta').attr('action'),
+            async: true,
+            data: {muro_id: muro_id , mensaje: mensaje , pagina: pagina},
+            dataType: "json",
+            success: function(data) {
+                notiMuro(muro_id);
+               $('#comentario').val("");
+            },
+            error: function(){
+                
+            }
+        });
     });
 }
 

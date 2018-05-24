@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
 use Link\ComunBundle\Entity\AdminLike;
+use Link\ComunBundle\Entity\CertiMuro;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
@@ -759,6 +760,8 @@ class DefaultController extends Controller
                     ->setParameter('muro_id', $padre->getId());
         $likes = $query->getSingleScalarResult();
 
+        $fechap = $f->sinceTime($padre->getFechaRegistro()->format('Y-m-d H:i:s'));
+
         $muro = '<div class="msjMuro" >
                     <div class="comment">
                         <div class="comm-header d-flex justify-content-between align-items-center mb-2">
@@ -766,7 +769,7 @@ class DefaultController extends Controller
                                 <img class="avatar-img" src="'.$img.'" alt="">
                                 <div class="wrap-info-user flex-column ml-2">
                                     <div class="name text-xs color-dark-grey">'.$padre->getUsuario()->getLogin().'</div>
-                                    <div class="date text-xs color-grey">hace 2 días</div>
+                                    <div class="date text-xs color-grey">'.$fechap.'</div>
                                 </div>
                             </div>
                             <a href="" class="mr-0 text-sm color-light-grey">
@@ -789,13 +792,15 @@ class DefaultController extends Controller
                         ->setParameter('muro_id', $hijo->getId());
             $likes = $query->getSingleScalarResult();
 
+            $fechah = $f->sinceTime($hijo->getFechaRegistro()->format('Y-m-d H:i:s'));
+
             $muro .='<li class="comment">
                         <div class="comm-header d-flex justify-content-between align-items-center mb-2">
                             <div class="profile d-flex text-left">
                                 <img class="avatar-img" src="'.$img.'" alt="">
                                 <div class="wrap-info-user flex-column ml-2">
                                     <div class="name text-xs color-dark-grey">'.$hijo->getUsuario()->getLogin().'</div>
-                                    <div class="date text-xs color-grey">hace 2 días</div>
+                                    <div class="date text-xs color-grey">'.$fechah.'</div>
                                 </div>
                             </div>
                             <a href="" class="mr-0 text-sm color-light-grey">
@@ -808,9 +813,11 @@ class DefaultController extends Controller
                     </li>';
         }
 
-        $muro .='</ul>';
+        $muro .='<input type="hidden" id="ultimo" >
+                </ul>';
 
-        $input='<input type="hidden" id="id_muro" data= "'.$padre->getId().'" >';
+        $input='<input type="hidden" id="id_muro" data= "'.$padre->getId().'" >
+                <input type="hidden" id="id_pagina" data= "'.$padre->getPagina()->getId().'" >';
 
         $return = array('html' => $muro,
                         'muro' => $input);
@@ -824,9 +831,31 @@ class DefaultController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $mensaje = $request->request->get('mensaje');
         $muro_id = $request->request->get('muro_id');
+        $pagina_id = $request->request->get('pagina');
+
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
+        $muro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+
+        $comentario = new CertiMuro();
+
+        $comentario->setMensaje($mensaje);
+        $comentario->setPagina($pagina);
+        $comentario->setUsuario($usuario);
+        $comentario->setMuro($muro);
+        $comentario->setEmpresa($empresa);
+        $comentario->setFechaRegistro(new \DateTime('now'));
+
+        $em->persist($comentario);
+        $em->flush();
+
+        $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu comentario en el muro de').' '.$pagina->getNombre().'.';
+
+        $f->newAlarm($yml['parameters']['tipo_alarma']['respuesta_muro'], $descripcion, $usuario, $muro->getId(), $comentario->getFechaRegistro());
 
         $return = array('mensaje' => $mensaje,
                         'muro' => $muro_id);
