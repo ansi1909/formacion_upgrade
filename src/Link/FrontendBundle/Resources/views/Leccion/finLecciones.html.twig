@@ -60,30 +60,25 @@
     <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
     <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': continue_button.next_lesson }) }}">
     <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa.id }) }}">
-    
-    <section class="s1_fin-materia mt-3">
+
+    <section class="s1_fin-materia">
         <div class="row align-items-center justify-content-center">
-            <div class="col-8 text-center">
-                <h1 class="titulo_fin-materia">¡Excelente!</h1>
-            </div>
-        </div>
-        <div class="row align-items-center justify-content-center">
-            <div class="col-8 text-center">
-                <span class="material-icons ic-verify">check_circle</span>
-            </div>
-        </div>
-        <div class="row align-items-center justify-content-center">
-            <div class="col-10 text-center">
+            <div class="col-6 text-center">
                 {% set articulo = subpagina.categoria != 'Materia' ? 'el'|trans : 'la'|trans %}
                 <p class="text_fin-materia">{{ 'Has completado con éxito'|trans }} {{ articulo~' '~subpagina.categoria }} <strong>{{ subpagina.nombre }}</strong>.</p>
             </div>
+            <div class="col-4 text-center">
+                <h1 class="titulo_fin-materia">¡{{ 'Excelente'|trans }}!</h1>
+                <span class="material-icons ic-verify">check_circle</span>
+            </div>
         </div>
         <div class="row align-items-center justify-content-end">
-            <div class="col-6 text-right">
+            <div class="col-auto text-center">
                 <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
             </div>
         </div>
     </section>
+    
     <section class="s2_fin-materia">
         {% if continue_button.evaluacion != 0 %}
             <div class="row align-items-center justify-content-center">

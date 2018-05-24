@@ -42,11 +42,11 @@
             </nav>
         </header>
 
-        <div class="container-fluid mt-22v">
+        <div class="container-fluid mt-6 px-0">
 
             <section>
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-10 text-center">
+                <div class="row py-4 align-items-center justify-content-center">
+                    <div class="col-4 text-center">
                         <p class="txt-resul">
                             {% if prueba_log.estado == estados.aprobado %}
                                 {{ 'Has aprobado con éxito la evaluación'|trans }} <strong>{{ prueba_log.prueba.nombre }}</strong>.
@@ -57,38 +57,22 @@
                             {% endif %}
                         </p>
                     </div>
-                </div>
-                {% if prueba_log.estado == estados.aprobado %}
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-8 text-center">
-                            <h1 class="titulo-resul">
-                                ¡ {{ 'FELICIDADES'|trans }} !
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-8 text-center">
+                    {% if prueba_log.estado == estados.aprobado %}
+                        <div class="col-6 text-center">
+                            <h1 class="titulo-resul">¡ {{ 'FELICIDADES'|trans }} !</h1>
                             <span class="material-icons ic-resul">thumb_up</span>
                         </div>
-                    </div>
-                {% else %}
-                    {% if try_button %}
-                        <div class="row align-items-center justify-content-center">
-                            <div class="col-8 text-center">
-                                <h1 class="titulo-resul">
-                                    {{ 'Sigue intentándolo'|trans }}
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <div class="col-8 text-center">
+                    {% else %}
+                        {% if try_button %}
+                            <div class="col-6 text-center">
+                                <h1 class="titulo-resul">{{ 'Sigue intentándolo'|trans }}</h1>
                                 <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
                                     <span class="material-icons ic-resul alreves">replay</span>
                                 </a>
                             </div>
-                        </div>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
+                </div>
             </section>
 
             <section class="mostrar-resul">

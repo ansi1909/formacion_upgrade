@@ -121,9 +121,14 @@
                     {{ lecciones.contenido|raw }}
                     {% if lecciones.pdf != '' %}
                         {% set pdf = uploads~lecciones.pdf %}
-                        <p class="fa fa-file-pdf-o">
-                            <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
-                        </p>
+                        <div class="row justify-content-center">
+                            <div class="col-auto text-center">
+                                <a href="{{ pdf }}" target="_blank">
+                                    <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
+                                    <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p></div>
+                                </a>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
                 <nav class="container text-center">
@@ -142,9 +147,14 @@
                         {{ subpagina.contenido|raw }}
                         {% if subpagina.pdf != '' %}
                             {% set pdf = uploads~subpagina.pdf %}
-                            <p>
-                                <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
-                            </p>
+                            <div class="row justify-content-center">
+                                <div class="col-auto text-center">
+                                    <a href="{{ pdf }}" target="_blank">
+                                        <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
+                                        <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p></div>
+                                    </a>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
                     <nav class="container text-center">

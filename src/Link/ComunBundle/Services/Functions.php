@@ -908,6 +908,7 @@ class Functions
 
 		$em = $this->em;
 		$subpaginas = array();
+		$orden = 0;
 
 		$query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
@@ -928,6 +929,8 @@ class Functions
 		foreach ($subpages as $subpage)
 		{
             
+            $orden++;
+
 			$query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p
                                        WHERE p.estatusContenido = :activo AND p.pagina = :pagina_id')
                         ->setParameters(array('activo' => $estatus_contenido,
@@ -935,7 +938,7 @@ class Functions
             $tiene_evaluacion = $query->getSingleScalarResult();
 
             $subpaginas[$subpage->getPagina()->getId()] = array('id' => $subpage->getPagina()->getId(),
-            													'orden' => $subpage->getOrden(),
+            													'orden' => $orden,
                                     							'nombre' => $subpage->getPagina()->getNombre(),
                                     							'categoria' => $subpage->getPagina()->getCategoria()->getNombre(),
                                     							'foto' => $subpage->getPagina()->getFoto(),
@@ -1892,8 +1895,12 @@ class Functions
                                 
                                 // Estructura de páginas
                                 $paginas = array();
+                                $orden = 0;
                                 foreach ($paginas_bd as $pagina)
                                 {
+
+                                	$orden++;
+
                                     $query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
                                                                WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
                                                 ->setParameters(array('activo' => $datos['yml']['estatus_contenido']['activo'],
@@ -1903,7 +1910,7 @@ class Functions
                                     $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
 
                                     $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
-                                    																	'orden' => $pagina->getPaginaEmpresa()->getOrden(),
+                                    																	'orden' => $orden,
                                                                                                         'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
                                                                                                         'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
                                                                                                         'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
@@ -1915,6 +1922,7 @@ class Functions
                                                                                                         'inicio' => $pagina->getPaginaEmpresa()->getFechaInicio()->format('d/m/Y'),
                                                                                                         'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
                                                                                                         'subpaginas' => $subPaginas);
+
                                 }
 
                                 // Cierre de sesiones activas
