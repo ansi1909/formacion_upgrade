@@ -62,7 +62,7 @@
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="registrosTutoriales">
                       {% for tutorial in tutoriales %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{eo}}">
@@ -103,9 +103,9 @@
             <span class="fa fa-cube"></span>
         </div>
         <div class="form-group">
-            <label for="recipient-name" class="form-control-label">{{ 'Descripcion'|trans }}:</label>
-            <input type="text" class="form-control form_sty_modal" id="descripcion" name="descripcion" value="">
-            <span class="fa fa-cube"></span>
+            <label for="descripcion" class="form-control-label">{{ 'Descripcion'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal2" id="descripcion" name="descripcion" value="">
+            <span class="fa fa-align-justify"></span>
         </div>
         <div class="form-group ">
             <label for="recipient-name" class="form-control-label">PDF:</label>
