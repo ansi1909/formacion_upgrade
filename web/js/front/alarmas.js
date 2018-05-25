@@ -3,7 +3,32 @@ $(document).ready(function() {
    getAlarma();
    getNotificaciones();
 
-   
+   $('#responder').click(function(){
+        $('#responder').hide();
+        $('#notificaciones_wait').show();
+        var muro_id = $('#notificaciones_muro_id').val();
+        var mensaje = $('#comentario').val();
+        $.ajax({
+            type: "POST",
+            url: $('#respuesta').attr('action'),
+            async: true,
+            data: {muro_id: muro_id , mensaje: mensaje},
+            dataType: "json",
+            success: function(data) {
+                $('.msjMuroResp').append(data.html);
+                $(".msjMuroResp").animate({ scrollTop: $('.msjMuroResp')[0].scrollHeight}, 1000);
+                $('#comentario').val("");
+                $('#notificaciones_wait').hide();
+                $('#responder').show();
+                observeLike();
+            },
+            error: function(){
+                $('#notificaciones_wait').hide();
+                $('#responder').show();
+                console.log('Error respondiendo un comentario del muro'); // Hay que implementar los mensajes de error para el frontend
+            }
+        });
+    });
 
 });
 
@@ -48,12 +73,16 @@ function notiMuro(muro_id)
         dataType: "json",
         success: function(data) {
             $('#padre').html(data.html);
-            $('#escondido').html(data.muro);
+            $('#notificaciones_muro_id').val(muro_id);
+            observeLike();
+            
+            /*$('html, body').animate({
+                scrollTop: ($('#li_responder').offset().top-500)
+            },1000);*/
             $(".msjMuroResp").animate({ scrollTop: $('.msjMuroResp')[0].scrollHeight}, 1000);
-
         },
         error: function(){
-           
+            console.log('Error obteniendo las respuestas del muro'); // Hay que implementar los mensajes de error para el frontend
         }
     });
 }
@@ -71,36 +100,10 @@ function observeMuro()
 {
     $('.click').click(function(){
         var noti_id = $(this).attr('data');
-        var tipo_noti = $('#tipo_noti'+noti_id).val();
-
-        if (tipo_noti == 1) {
-            var muro_id = $('#muro_id'+noti_id).val();
-            notiMuro(muro_id);
-
-        }
-        
-        
+        var muro_id = $('#muro_id'+noti_id).val();
+        notiMuro(muro_id); 
     });
 
-    $('#responder').click(function(){
-        var muro_id = $('#id_muro').attr('data');
-        var mensaje = $('#comentario').val();
-        var pagina = $('#id_pagina').attr('data');
-        $.ajax({
-            type: "POST",
-            url: $('#respuesta').attr('action'),
-            async: true,
-            data: {muro_id: muro_id , mensaje: mensaje , pagina: pagina},
-            dataType: "json",
-            success: function(data) {
-                notiMuro(muro_id);
-               $('#comentario').val("");
-            },
-            error: function(){
-                
-            }
-        });
-    });
 }
 
 function getLeido(noti_id)
@@ -128,4 +131,31 @@ function getNotificaciones()
         getAlarma();
     }, 60000);
    
+}
+
+function observeLike()
+{
+    $('.like').unbind('click');
+    $('.like').click(function(){
+        var muro_id = $(this).attr('data');
+        $('#like'+muro_id).removeClass('ic-lke-act');
+        $.ajax({
+            type: "POST",
+            url: $('#url_like').val(),
+            async: true,
+            data: { social_id: 1, entidad_id: muro_id, usuario_id: $('#like_usuario_id').val() },
+            dataType: "json",
+            success: function(data) {
+                if (data.ilike)
+                {
+                    $('#like'+muro_id).addClass('ic-lke-act');
+                }
+                $('#cantidad_like-'+muro_id).html(data.cantidad);
+                //clearTimeout( timerId );
+            },
+            error: function(){
+                console.log('Error en like'); // Hay que implementar los mensajes de error para el frontend
+            }
+        });
+    });
 }

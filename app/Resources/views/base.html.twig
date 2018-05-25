@@ -34,6 +34,10 @@
         <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
         <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
         <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
+        <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+        {% set like_usuario_id = app.session.get('usuario')['id'] %}
+        <input type="hidden" id="like_usuario_id" name="like_usuario_id" value="{{ like_usuario_id }}">
+
         
         {# HEADER #}
         <header>
@@ -332,17 +336,24 @@
                     </div>
                 </div>
                 <form id="respuesta" method="POST" action="{{ path('_ajaxRespuestaComentario') }}">
-                    <div id="escondido" value="hola"></div>
+                    <input type="hidden" id="notificaciones_muro_id" name="notificaciones_muro_id" value="">
                     <div class="row mt-1 justify-content-center">
                         <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-left">
                             <div class="form-group">
-                                <textarea class="form-control textAsv"  rows="4" id="comentario" aria-describedby="messageSupportVirtual" placeholder="Escriba su mensaje"></textarea>
+                                <textarea class="form-control textAsv" rows="4" id="comentario" aria-describedby="messageSupportVirtual" placeholder="Escriba su mensaje"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row mt-1 align-items-center justify-content-center">
                         <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
                             <a href="#"><button type="button" id="responder" class="btn btn-primary btnEnv">Enviar</button></a>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center" style="display:none;" id="notificaciones_wait">
+                        <div class="col-auto px-0 py-0">
+                            <div class="contenedor">
+                                <div class="radar"></div>
+                            </div>
                         </div>
                     </div>
                 </form>

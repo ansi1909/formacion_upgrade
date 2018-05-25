@@ -742,8 +742,9 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $muro_id = $request->query->get('muro_id');
-        $muro ="";
-        $upload= 'http://localhost/uploads/';
+        $html = "";
+        $upload = $this->container->getParameter('folders')['uploads'];
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $padre = $em->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
 
@@ -753,27 +754,26 @@ class DefaultController extends Controller
                     ->setParameter('muro_id', $padre->getId());
         $hijos = $query->getResult();
 
-        $img = $upload.$padre->getUsuario()->getFoto();
+        $img = $padre->getUsuario()->getFoto() ? $upload.$padre->getUsuario()->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
+        $autor = $padre->getUsuario()->getId() == $session->get('usuario')['id'] ? $this->get('translator')->trans('Yo') : $padre->getUsuario()->getNombre().' '.$padre->getUsuario()->getApellido();
 
-        $query = $em->createQuery('SELECT COUNT(l.id) FROM LinkComunBundle:AdminLike l
-                                   WHERE l.entidadId = :muro_id')
-                    ->setParameter('muro_id', $padre->getId());
-        $likes = $query->getSingleScalarResult();
+        $likes = $f->likes($yml['parameters']['social']['muro'], $padre->getId(), $session->get('usuario')['id']);
+        $like = $likes["ilike"] ? "ic-lke-act" : "";
 
         $fechap = $f->sinceTime($padre->getFechaRegistro()->format('Y-m-d H:i:s'));
 
-        $muro = '<div class="msjMuro" >
+        $html .= '<div class="msjMuro" >
                     <div class="comment">
                         <div class="comm-header d-flex justify-content-between align-items-center mb-2">
                             <div class="profile d-flex">
                                 <img class="avatar-img" src="'.$img.'" alt="">
                                 <div class="wrap-info-user flex-column ml-2">
-                                    <div class="name text-xs color-dark-grey">'.$padre->getUsuario()->getLogin().'</div>
+                                    <div class="name text-xs color-dark-grey">'.$autor.'</div>
                                     <div class="date text-xs color-grey">'.$fechap.'</div>
                                 </div>
                             </div>
-                            <a href="" class="mr-0 text-sm color-light-grey">
-                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> '.$likes.'
+                            <a href="#" class="mr-0 text-sm color-light-grey">
+                                <span class="like_ft like" data="'.$padre->getId().'"><i id="like'.$padre->getId().'" class="material-icons ic-lke '.$like .'">thumb_up</i> <span id="cantidad_like-'.$padre->getId().'">'. $likes['cantidad'] .'</span></span>
                             </a>
                         </div>
                         <div class="comm-body text-justify">
@@ -785,7 +785,12 @@ class DefaultController extends Controller
 
         foreach( $hijos as $hijo )
         {
-            $img = $upload.$hijo->getUsuario()->getFoto();
+            $likes = $f->likes($yml['parameters']['social']['muro'], $hijo->getId(), $session->get('usuario')['id']);
+            $like = $likes["ilike"] ? "ic-lke-act" : "";
+            $cantidad = $likes['cantidad'];
+
+            $img = $hijo->getUsuario()->getFoto() ? $upload.$hijo->getUsuario()->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
+            $autor = $hijo->getUsuario()->getId() == $session->get('usuario')['id'] ? $this->get('translator')->trans('Yo') : $hijo->getUsuario()->getNombre().' '.$hijo->getUsuario()->getApellido();
 
             $query = $em->createQuery('SELECT COUNT(l.id) FROM LinkComunBundle:AdminLike l
                                        WHERE l.entidadId = :muro_id')
@@ -794,17 +799,17 @@ class DefaultController extends Controller
 
             $fechah = $f->sinceTime($hijo->getFechaRegistro()->format('Y-m-d H:i:s'));
 
-            $muro .='<li class="comment">
+            $html .='<li class="comment">
                         <div class="comm-header d-flex justify-content-between align-items-center mb-2">
                             <div class="profile d-flex text-left">
                                 <img class="avatar-img" src="'.$img.'" alt="">
                                 <div class="wrap-info-user flex-column ml-2">
-                                    <div class="name text-xs color-dark-grey">'.$hijo->getUsuario()->getLogin().'</div>
+                                    <div class="name text-xs color-dark-grey">'.$autor.'</div>
                                     <div class="date text-xs color-grey">'.$fechah.'</div>
                                 </div>
                             </div>
-                            <a href="" class="mr-0 text-sm color-light-grey">
-                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> '.$likes.'
+                            <a href="#" class="mr-0 text-sm color-light-grey">
+                                <span class="like_ft like" data="'.$hijo->getId().'"><i id="like'.$hijo->getId().'" class="material-icons ic-lke '.$like .'">thumb_up</i> <span id="cantidad_like-'.$hijo->getId().'">'. $cantidad.'</span></span>
                             </a>
                         </div>
                         <div class="comm-body text-justify">
@@ -813,14 +818,10 @@ class DefaultController extends Controller
                     </li>';
         }
 
-        $muro .='<input type="hidden" id="ultimo" >
-                </ul>';
+        $html .='</ul>';
 
-        $input='<input type="hidden" id="id_muro" data= "'.$padre->getId().'" >
-                <input type="hidden" id="id_pagina" data= "'.$padre->getPagina()->getId().'" >';
 
-        $return = array('html' => $muro,
-                        'muro' => $input);
+        $return = array('html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -832,33 +833,49 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $upload = $this->container->getParameter('folders')['uploads'];
+
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $mensaje = $request->request->get('mensaje');
         $muro_id = $request->request->get('muro_id');
-        $pagina_id = $request->request->get('pagina');
 
-        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
         $muro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
 
         $comentario = new CertiMuro();
-
         $comentario->setMensaje($mensaje);
-        $comentario->setPagina($pagina);
+        $comentario->setPagina($muro->getPagina());
         $comentario->setUsuario($usuario);
         $comentario->setMuro($muro);
-        $comentario->setEmpresa($empresa);
+        $comentario->setEmpresa($muro->getEmpresa());
         $comentario->setFechaRegistro(new \DateTime('now'));
 
         $em->persist($comentario);
         $em->flush();
 
-        $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu comentario en el muro de').' '.$pagina->getNombre().'.';
+        $img = $usuario->getFoto() ? $upload.$usuario->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
+        $autor = $this->get('translator')->trans('Yo');
+        $fechah = $this->get('translator')->trans('Ahora');
+        $likes = 0;
 
-        $f->newAlarm($yml['parameters']['tipo_alarma']['respuesta_muro'], $descripcion, $usuario, $muro->getId(), $comentario->getFechaRegistro());
+        $html ='<li class="comment">
+                        <div class="comm-header d-flex justify-content-between align-items-center mb-2">
+                            <div class="profile d-flex text-left">
+                                <img class="avatar-img" src="'.$img.'" alt="">
+                                <div class="wrap-info-user flex-column ml-2">
+                                    <div class="name text-xs color-dark-grey">'.$autor.'</div>
+                                    <div class="date text-xs color-grey">'.$fechah.'</div>
+                                </div>
+                            </div>
+                            <a href="" class="mr-0 text-sm color-light-grey">
+                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> '.$likes.'
+                            </a>
+                        </div>
+                        <div class="comm-body text-justify">
+                            <p class="textMuroNoti">'. $mensaje .'</p>
+                        </div>
+                    </li>';
 
-        $return = array('mensaje' => $mensaje,
-                        'muro' => $muro_id);
+        $return = array('html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
