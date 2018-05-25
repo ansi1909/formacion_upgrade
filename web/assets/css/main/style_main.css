@@ -983,6 +983,19 @@
         top: 0;
         right: 0;
     }
+    .imgLogoHor {
+        max-height: 4rem;
+        max-width: 12rem; 
+    }
+    .imgLogoCC {
+        max-width: 9rem;
+    }
+    .imgLogoVer{
+       max-height: 9rem;
+       position: relative;
+       left: 0;
+       transform: translateX(-35%);
+   }
 /*Fin de acciones*/
 
 /*Identificadores*/

@@ -33,10 +33,6 @@
         #label-logo {
             margin-left: 50px;
         }
-        .imgLogoHor {
-            max-height: 4rem;
-            max-width: 12rem; 
-        }
     </style>
 {% endblock %}
 
@@ -256,8 +252,14 @@
                                 </div>
                                 <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
                                     <label for="logo" class="col-form-label" id="label-logo">{{ 'Vista previa'|trans }}</label>
-                                    {% set img = preferencia.logo ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
-                                    <div id="figure_logo"><img src="{{ img }}" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoHor"></div>
+                                    {% set img_hor = preferencia.logo ? uploads~preferencia.logo : asset('img/imgLogoHor.svg') %}
+                                    {% set img_ver = preferencia.logo ? uploads~preferencia.logo : asset('img/imgLogoVer.svg') %}
+                                    {% set img_cc = preferencia.logo ? uploads~preferencia.logo : asset('img/imgLogoCC.svg') %}
+                                    <div id="figure_logo">
+                                        <img src="{{ img_hor }}" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoHor">
+                                        <img src="{{ img_ver }}" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoVer" style="display:none;">
+                                        <img src="{{ img_cc }}" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoCC" style="display:none;">
+                                    </div>
                                 </div>
                                 <!--<div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <label for="logo" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;Logo</label>

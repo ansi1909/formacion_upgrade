@@ -60,6 +60,12 @@ $(document).ready(function() {
        $('#form').submit();
     });
 
+    $('#tipo_logo_id').change(function(){
+    	tipoLogo();
+    });
+
+    tipoLogo();
+
 });
 
 function responsive_filemanager_callback(field_id){
@@ -79,4 +85,27 @@ function responsive_filemanager_callback(field_id){
 	}
 	$('#figure_'+field_id).html('<img src="'+url+'" width="'+w+'" height="'+h+'">');
 	
+}
+
+function tipoLogo()
+{
+	var tipo_logo_id = $('#tipo_logo_id').val();
+	switch (tipo_logo_id)
+	{
+		case '1':
+			$('.imgLogoHor').show();
+			$('.imgLogoVer').hide();
+			$('.imgLogoCC').hide();
+			break;
+		case '2':
+			$('.imgLogoHor').hide();
+			$('.imgLogoVer').show();
+			$('.imgLogoCC').hide();
+			break;
+		case '3':
+			$('.imgLogoHor').hide();
+			$('.imgLogoVer').hide();
+			$('.imgLogoCC').show();
+			break;
+	}
 }
