@@ -639,6 +639,18 @@
         height: 36rem;
         width: 30.5rem;
     }
+    @include media-breakpoint-only(xs){
+        height: 33rem;
+        width: 19.5rem;
+        &::-webkit-scrollbar {
+            width: .7rem;
+        }
+        &::-webkit-scrollbar-track {
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $gray-400;
+        }
+    }
 }
 
 %modal{
@@ -647,6 +659,9 @@
     background: $gray-100;
     @include media-breakpoint-down(xl){
         margin: calc(2rem - 4px) auto !important;
+    }
+    @include media-breakpoint-down(xs){
+        margin: calc(1rem + 4px) auto !important;
     }
     .btn_close_modal{
         position: relative;
