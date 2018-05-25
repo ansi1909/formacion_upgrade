@@ -34,7 +34,7 @@ $(document).ready(function() {
 		window.location.replace($('#url_list').val());
 	});
 
-	$('.edit').click(function(){
+	$( "#registrosTutoriales .edit" ).on( "click" , function (){
 		var tutorial_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
 		$('#guardar').prop('disabled', false);
@@ -69,8 +69,8 @@ $(document).ready(function() {
 
 	$('.delete').click(function(){
 		var tutorial_id = $(this).attr('data');
-		sweetAlertDelete(tutorial_id, 'AdminTutorial');
-	});
+		sweetAlertDelete(tutorial_id, 'AdminTutorial');	});
+
 
 
 	$('.iframe-btn').fancybox({	
