@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminPreferencia
  *
- * @ORM\Table(name="admin_preferencia", indexes={@ORM\Index(name="preferencia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_2B27D1B8DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_2B27D1B88C22AA1A", columns={"layout_id"})})
+ * @ORM\Table(name="admin_preferencia", indexes={@ORM\Index(name="preferencia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_2B27D1B8DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_2B27D1B88C22AA1A", columns={"layout_id"}), @ORM\Index(name="IDX_2B27D1B8EA7635EA", columns={"tipo_logo_id"})})
  * @ORM\Entity
  */
 class AdminPreferencia
@@ -86,6 +86,16 @@ class AdminPreferencia
      * })
      */
     private $layout;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminTipoLogo
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminTipoLogo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipo_logo_id", referencedColumnName="id")
+     * })
+     */
+    private $tipoLogo;
 
 
 
@@ -289,5 +299,29 @@ class AdminPreferencia
     public function getLayout()
     {
         return $this->layout;
+    }
+
+    /**
+     * Set tipoLogo
+     *
+     * @param \Link\ComunBundle\Entity\AdminTipoLogo $tipoLogo
+     *
+     * @return AdminPreferencia
+     */
+    public function setTipoLogo(\Link\ComunBundle\Entity\AdminTipoLogo $tipoLogo = null)
+    {
+        $this->tipoLogo = $tipoLogo;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoLogo
+     *
+     * @return \Link\ComunBundle\Entity\AdminTipoLogo
+     */
+    public function getTipoLogo()
+    {
+        return $this->tipoLogo;
     }
 }

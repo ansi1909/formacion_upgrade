@@ -11,6 +11,9 @@ Link\ComunBundle\Entity\AdminPreferencia:
         IDX_2B27D1B88C22AA1A:
             columns:
                 - layout_id
+        IDX_2B27D1B8EA7635EA:
+            columns:
+                - tipo_logo_id
     id:
         id:
             type: integer
@@ -78,6 +81,16 @@ Link\ComunBundle\Entity\AdminPreferencia:
             inversedBy: null
             joinColumns:
                 layout_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoLogo:
+            targetEntity: AdminTipoLogo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_logo_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }
