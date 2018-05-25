@@ -466,10 +466,12 @@ logo varchar(250),
 favicon varchar(250),
 usuario_id integer,
 logo_login boolean,
+tipo_logo_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (empresa_id) REFERENCES admin_empresa (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id),
- FOREIGN KEY (layout_id) REFERENCES admin_layout (id));
+ FOREIGN KEY (layout_id) REFERENCES admin_layout (id),
+ FOREIGN KEY (tipo_logo_id) REFERENCES admin_tipo_logo (id));
 
 CREATE TABLE admin_tipo_pregunta(
 -- Attributes --
@@ -632,3 +634,10 @@ fecha_creacion timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_alarma_id) REFERENCES admin_tipo_alarma (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_tipo_logo(
+-- Attributes --
+id serial,
+nombre varchar(20),
+css varchar(50),
+ PRIMARY KEY (id));

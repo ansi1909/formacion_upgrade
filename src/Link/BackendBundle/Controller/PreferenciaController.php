@@ -189,6 +189,9 @@ class PreferenciaController extends Controller
             $preferencia->setTitle($this->get('translator')->trans('Sistema Formación').' 2.0');
         }
 
+        // Tipos de logos
+        $tls = $em->getRepository('LinkComunBundle:AdminTipoLogo')->findAll();
+
         if ($request->getMethod() == 'POST')
         {
 
@@ -278,7 +281,8 @@ class PreferenciaController extends Controller
         
         return $this->render('LinkBackendBundle:Preferencia:edit.html.twig', array('preferencia' => $preferencia,
                                                                                    'layouts' => $layouts,
-                                                                                   'atributos' => $atributos));
+                                                                                   'atributos' => $atributos,
+                                                                                   'tls' => $tls));
 
     }
 

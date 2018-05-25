@@ -4,6 +4,8 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/colorpicker/css/colorpicker.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/colorpicker/css/layout.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
     <style>
         .input-group-addon{padding:0px;}
@@ -11,7 +13,8 @@
             z-index: 1;
         }
         .input-group {
-            margin-top: 35px;
+            margin-top: 20px;
+            margin-left: 20px;
         }
         .photo_img{
             height: auto;
@@ -26,6 +29,13 @@
         .dimensions {
             margin-left: 50px;
             margin-top: 80px;
+        }
+        #label-logo {
+            margin-left: 50px;
+        }
+        .imgLogoHor {
+            max-height: 4rem;
+            max-width: 12rem; 
         }
     </style>
 {% endblock %}
@@ -216,7 +226,40 @@
                             </div>
                             <br><br>
             				<div class="row">
-                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    <label for="pais_id" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Tipo de logo'|trans }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <select class="form-control form_sty_select" name="tipo_logo_id" id="tipo_logo_id">
+                                            {% for tipo_logo in tls %}
+                                                {% set selected = preferencia.tipoLogo ? preferencia.tipoLogo.id == tipo_logo.id ? 'selected="selected"' : '' : '' %}
+                                                <option value="{{ tipo_logo.id }}" {{ selected }}>{{ tipo_logo.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="fa fa-globe"></span>
+                                        <div class="input-group">
+                                            <input type="hidden" id="logo" name="logo" value="{{ preferencia.logo }}">
+                                            <span class="input-group-addon">
+                                                <a href="#" class="fileinput-button">
+                                                    <button type="button" class="btn_addImg">
+                                                        <span class="fa fa-photo"></span>
+                                                    </button>
+                                                    <input class="fileupload" type="file" name="files[]" multiple>
+                                                </a>
+                                                <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=logo&rootFolder=recursos/empresas/{{ preferencia.empresa.id }}" class="btn iframe-btn" type="button">
+                                                    <button type="button" class="btn_addImg">
+                                                        <span class="fa fa-photo"></span>
+                                                    </button>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    <label for="logo" class="col-form-label" id="label-logo">{{ 'Vista previa'|trans }}</label>
+                                    {% set img = preferencia.logo ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
+                                    <div id="figure_logo"><img src="{{ img }}" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoHor"></div>
+                                </div>
+                                <!--<div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <label for="logo" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;Logo</label>
                                     {% set img = preferencia.logo ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
                                     <div class="photo_img" id="figure_logo"><img src="{{ img }}" alt="{{ 'Logo de la empresa'|trans }}" width="356px" height="87px"></div>
@@ -240,7 +283,7 @@
                                 </div>
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <small id="logoHelp" class="form-text text-muted dimensions">{{ 'Dimensiones recomendadas'|trans }}: 356x87</small>
-                                </div>
+                                </div>-->
                             </div>
                             <br><br>
                             <div class="row">
@@ -306,5 +349,8 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/eye.js') }}"></script> 
     <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/utils.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/preferencia.js') }}"></script>
 {% endblock %}

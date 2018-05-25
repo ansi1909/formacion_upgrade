@@ -351,3 +351,17 @@ INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (4, 'Notificación
 INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (5, 'Notificación de una noticia', 'library_books', 'notiSticker');
 INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (6, 'Notificación de una novedad', 'volume_down', 'anunSticker');
 INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (7, 'Notificación de la biblioteca', 'import_contacts', 'biblioSticker');
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_tipo_logo_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_logo', 'id'), 4, false);
+
+--
+-- Data for Name: admin_social; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (1, 'Horizontal', 'imgLogoHor');
+INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (2, 'Vertical', 'imgLogoVer');
+INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (3, 'Circular/Cuadrado', 'imgLogoCir');
