@@ -344,8 +344,7 @@ class PreferenciaController extends Controller
     public function ajaxUploadLogoAction(Request $request)
     {
         
-        $session = new Session();
-        
+        // Parámetro adicional
         $base_upload = $request->request->get('base_upload');
 
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];

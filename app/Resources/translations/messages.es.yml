@@ -61,6 +61,7 @@ Búsqueda de participantes por empresa: Búsqueda de participantes por empresa
 Búsqueda de notificaciones empresa: Búsqueda de notificaciones empresa
 Búsqueda de notificaciones por empresa: Búsqueda de notificaciones por empresa
 Cambiar contraseña: Cambiar contraseña
+Cambiar imagen: Cambiar imagen
 Cancelar: Cancelar
 Cantidad de filas: Cantidad de filas
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
@@ -101,6 +102,7 @@ Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
 Configurar página: Configurar página
 Confirmar: Confirmar
+Confirmar contraseña: Confirmar contraseña
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla
 Contacte al Administrador del Sistema para mayor información: Contacte al Administrador del Sistema para mayor información
 Contenido: Contenido
@@ -111,6 +113,7 @@ Contraseña: Contraseña
 Copia: Copia
 Correcta: Correcta
 Correo: Correo
+Correo adicional: Correo adicional
 Correo Electrónico: Correo Electrónico
 Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
@@ -140,6 +143,7 @@ Datos notificación: Datos notificación
 Dar acceso: Dar acceso
 de la evaluación: de la evaluación
 de un total de: de un total de
+Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
@@ -166,6 +170,7 @@ Editar: Editar
 Editar asignación: Editar asignación
 Editar evaluación: Editar evaluación
 Editar página: Editar página
+Editar perfil: Editar perfil
 Editar tema: Editar tema
 el: el
 Elegir empresa: Elegir empresa
@@ -367,6 +372,7 @@ La cantidad máxima de intentos es requerida.: La cantidad máxima de intentos e
 La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
 La clave es requerida.: La clave es requerida.
+La contraseña es requerida: La contraseña es requerida
 La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mínimo de 3 caracteres.
 La descripción es requerida.: La descripción es requerida.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
@@ -459,10 +465,12 @@ No se pudo habilitar/inhabilitar el acceso a esta página.: No se pudo habilitar
 No te rindas: No te rindas
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
+Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Notificaciones: Notificaciones
+Nueva contraseña: Nueva contraseña
 Nueva evaluación: Nueva evaluación
 Nueva página: Nueva página
 Nueva pregunta: Nueva pregunta
@@ -637,7 +645,9 @@ Ver historial: Ver historial
 Ver más: Ver más
 Ver más comentarios: Ver más comentarios
 Ver más respuestas: Ver más respuestas
+Ver mis certificados: Ver mis certificados
 Ver páginas asignadas: Ver páginas asignadas
+Ver ranking: Ver ranking
 Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails

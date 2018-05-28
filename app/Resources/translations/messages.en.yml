@@ -61,6 +61,7 @@ Búsqueda de participantes por empresa: Search participants by company
 Búsqueda de notificaciones empresa: Search notifications company
 Búsqueda de notificaciones por empresa: Search notifications by company
 Cambiar contraseña: Change password
+Cambiar imagen: Change image
 Cancelar: Cancel
 Cantidad de filas: Number of rows
 Cantidad de preguntas a mostrar: Number of questions to show
@@ -101,6 +102,7 @@ Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
 Configurar página: Configure page
 Confirmar: Confirm
+Confirmar contraseña: Confirm password
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contact to System Administrator to add thumbnails to this template
 Contacte al Administrador del Sistema para mayor información: Contact to System Administrator for further information
 Contenido: Content
@@ -111,7 +113,8 @@ Contraseña: Password
 Copia: Copy
 Correcta: Correct
 Correo: Email
-Correo Electrónico: Email
+Correo adicional: Additional email
+Correo electrónico: Email
 Correo electrónico repetido: Email repeated
 Correo electrónico requerido: Email required
 Correo corporativo: Company email
@@ -140,7 +143,8 @@ Datos notificación: Notification details
 Dar acceso: Provide access
 de la evaluación: of the test
 de un total de: of total of
-Debe ingresar el correo electronico.: You must enter the email.
+Debe coincidir con la contraseña: It must be equal to password
+Debe ingresar el correo electrónico.: You must enter the email.
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
@@ -166,6 +170,7 @@ Editar: Edit
 Editar asignación: Edit assignment
 Editar evaluación: Edit test
 Editar página: Edit page
+Editar perfil: Edit profile
 Editar tema: Edit topic
 el: the
 Elegir empresa: Choose company
@@ -367,6 +372,7 @@ La cantidad máxima de intentos es requerida.: The max number of attempts is req
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.
+La contraseña es requerida: Password is required
 La descripción debe ser mínimo de 3 caracteres.: Description must have at least 3 characters.
 La descripción es requerida.: Description is required.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
@@ -459,10 +465,12 @@ No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/d
 No te rindas: Do not give up
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
+Nombre de usuario: Username
 Nombre para esta página: Name for this page
 Nombre requerido: Name required
 Nombres deben ser solo alfabéticos: Names must be alphabetical
 Notificaciones: Notifications
+Nueva contraseña: New password
 Nueva evaluación: New test
 Nueva página: New page
 Nueva pregunta: New question
@@ -637,7 +645,9 @@ Ver historial: See history
 Ver más: See more
 Ver más comentarios: See more comments
 Ver más respuestas: See more resplies
+Ver mis certificados: See my certificates
 Ver páginas asignadas: View assigned pages
+Ver ranking: See ranking
 Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails

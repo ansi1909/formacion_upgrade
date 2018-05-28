@@ -71,7 +71,7 @@ class LoginController extends Controller
 			}
 		}else
 		{
-            $error = $this->get('translator')->trans('Debe ingresar el correo electronico.');
+            $error = $this->get('translator')->trans('Debe ingresar el correo electrónico.');
 		}
 
       /*  if ($ok == 1)

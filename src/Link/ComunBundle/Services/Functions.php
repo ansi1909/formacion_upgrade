@@ -1886,9 +1886,13 @@ class Functions
                             
                                 // Se setea los datos del usuario
                                 $datosUsuario = array('id' => $usuario->getId(),
+                                					  'login' => $usuario->getLogin(),
                                                       'nombre' => $usuario->getNombre(),
                                                       'apellido' => $usuario->getApellido(),
                                                       'correo' => trim($usuario->getCorreoPersonal()) != '' ? trim($usuario->getCorreoPersonal()) : trim($usuario->getCorreoCorporativo()),
+                                                      'correo_corporativo' => trim($usuario->getCorreoCorporativo()),
+                                                      'fecha_nacimiento' => $usuario->getFechaNacimiento()->format('Y-m-d'),
+                                                      'fecha_nacimiento_formateada' => $usuario->getFechaNacimiento()->format('d/m/Y'),
                                                       'foto' => $usuario->getFoto(),
                                                       'participante' => $participante,
                                                       'tutor' => $tutor);

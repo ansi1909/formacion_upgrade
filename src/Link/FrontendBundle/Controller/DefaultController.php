@@ -372,7 +372,7 @@ class DefaultController extends Controller
         }else
         {
                        
-            $error = $this->get('translator')->trans('Debe ingresar el correo electronico.');
+            $error = $this->get('translator')->trans('Debe ingresar el correo electrónico.');
         }
 
         $return = array('ok' => $ok, 'error' => $error);

@@ -1,64 +1,113 @@
 $(document).ready(function() {
 
-   $('#cambio').click(function(){
-		var p_new = $('#p_new').val();
-		var p_conf = $('#p_conf').val();
-		var usuario_id = $('#usuario_id').val();
-		var url_ajaxClave = $('#url_ajaxClave').val();
-		if (p_new && p_conf) {
-			$.ajax({
-				type: "POST",
-				url: url_ajaxClave,
-				async: true,
-				data: { p_new: p_new, p_conf: p_conf, usuario_id: usuario_id },
-				dataType: "json",
-				success: function(data) {
-					$('#mensaje').html(data.html);
-					$('#mensaje').show();
-					$('#cambio').hide();
-					$('#aceptar').show();
-				},
-				error: function(){
-					
-				}
-			});
-		}
-	});
+	$( document ).tooltip({
+    	track: true
+    });
 
-   $('#aceptar').click(function(){
-		window.location.replace($('#url_list').val());
-	});
+    $('#modificar').click(function(){
+    	var valid = $("#form").valid();
+    	if (valid)
+    	{
+    		$('.boton').hide();
+            $('#wait_profile').show(1000);
+		    $.ajax({
+		        type: "POST",
+		        url: $('#form').attr('action'),
+		        async: true,
+		        data: $("#form").serialize(),
+		        dataType: "json",
+		        success: function(data) {
+		        	$('#label-correo').html(data.correo);
+		        	$('#label-correo_corporativo').html(data.correo_corporativo);
+		        	$('#label-fn').html(data.fechaNacimiento);
+		        	$('.boton').show();
+		            $('#wait_profile').hide(1000);
+		            $( ".close" ).trigger( "click" );
+		        },
+		        error: function(){
+		            console.log('Error guardando los datos del perfil del usuario'); // Hay que implementar los mensajes de error para el frontend
+		            $('.boton').show();
+		            $('#wait_profile').hide(1000);
+		        }
+		    });
+    	}
+    });
 
-   $('.iframe-btn').fancybox({	
-		'width'		: 900,
-		'height'	: 900,
-		'type'		: 'iframe',
-        'autoScale' : false,
-		'autoSize'	: false
+    $('#cambio').click(function(){
+    	var valid = $("#form-clave").valid();
+    	if (valid)
+    	{
+    		$('.boton').hide();
+            $('#wait_password').show(1000);
+		    $.ajax({
+		        type: "POST",
+		        url: $('#form-clave').attr('action'),
+		        async: true,
+		        data: $("#form-clave").serialize(),
+		        dataType: "json",
+		        success: function(data) {
+		        	$('#clave').val('');
+		        	$('#confirmar').val('');
+		        	$('.boton').show();
+		            $('#wait_password').hide(1000);
+		            $( ".close" ).trigger( "click" );
+		            console.log('cambio de contraseña realizado'); // Hay que implementar los mensajes de error para el frontend
+		        },
+		        error: function(){
+		            console.log('Error cambiando la contraseña'); // Hay que implementar los mensajes de error para el frontend
+		            $('.boton').show();
+		            $('#wait_password').hide(1000);
+		        }
+		    });
+    	}
+    });
+
+   	$('.fileinput-button').click(function(){
+    	$('.error').html('');
+    });
+
+   	$('#fileupload').fileupload({
+        url: $('#url_upload').val(),
+        dataType: 'json',
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        add: function (e, data) {
+	        var goUpload = true;
+	        var uploadFile = data.files[0];
+	        if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(uploadFile.name)) {
+	            $('#error').html('Sólo archivo de imagen');
+	            goUpload = false;
+	        }
+	        if (goUpload == true) {
+	            data.submit();
+	        }
+	    },
+        done: function (e, data) {
+        	$.each(data.result.response.files, function (index, file) {
+
+        		// Actualizar img
+        		var uploads = $('#uploads').val();
+        		var base_upload = $('#base_upload').val();
+        		var img = $('#perfil');
+        		img.attr("src", uploads+base_upload+file.name);
+
+        		// Actualización de la foto en BD
+        		var foto = base_upload+file.name;
+        		$.ajax({
+					type: "POST",
+					url: $('#url_img').val(),
+					async: true,
+					data: { foto: foto },
+					dataType: "json",
+					success: function(dataAjax) {
+						console.log('Archivo: '+file.name+' actualizado en el usuario '+dataAjax.id);
+					},
+					error: function(){
+						console.log('Error actualizando la foto'); // Hay que implementar los mensajes de error para el frontend
+					}
+				});
+
+            });
+        }
     });
 
 });
-
-function responsive_filemanager_callback(field_id){
-	
-	// Ruta en el campo de texto
-	var url=jQuery('#'+field_id).val();
-	var arr = url.split('uploads/');
-	var new_image = arr[arr.length-1];
-	var usuario_id = $('#usuario_id').val();
-	var url_ajaxImg = $('#url_ajaxImg').val();
-	$('#'+field_id).val(new_image);
-	$.ajax({
-		type: "POST",
-		url: url_ajaxImg,
-		async: true,
-		data: {  usuario_id: usuario_id, new_image: new_image },
-		dataType: "json",
-		success: function(data) {
-			$('#figure').html('<img src="'+url+'" class="img-user-pic">');
-		},
-		error: function(){
-			
-		}
-	});
-}

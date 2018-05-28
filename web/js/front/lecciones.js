@@ -5,7 +5,7 @@ $(document).ready(function() {
 	var subpagina_id = $('#subpagina_id').val();
 
 	$( document ).tooltip({
-      track: true
+    	track: true
     });
 
 	$('.circle-nav').click(function(){

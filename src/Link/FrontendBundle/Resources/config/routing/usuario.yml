@@ -2,15 +2,15 @@ _usuariop:
     path:     /usuario
     defaults: { _controller: LinkFrontendBundle:Usuario:index }
 
-_editUsuario:
-    path:     /usuario
-    defaults: { _controller: LinkFrontendBundle:Usuario:index }
+_ajaxSavePerfil:
+    path:     /ajaxSavePerfil
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxSavePerfil }
     requirements:
         _method: POST
 
 _ajaxClave:
     path:     /ajaxClave
-    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxVerificar }
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxClave }
     requirements:
         method: POST
 
@@ -19,6 +19,12 @@ _ajaxImg:
     defaults: { _controller: LinkFrontendBundle:Usuario:ajaxImagen }
     requirements:
         method: POST
+
+_ajaxUploadFotoUsuario:
+    path:     /ajaxUploadFotoUsuario
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxUploadFotoUsuario }
+    requirements:
+        _method: POST
 
 _ajaxNoti:
     path:     /ajaxNoti
