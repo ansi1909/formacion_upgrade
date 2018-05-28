@@ -43,7 +43,7 @@ function getAlarma()
         dataType: "json",
         success: function(data) {
             $('#noti').html(data.noti);
-            console.log('por aca');
+            
             if (data.sonar == 1) {
                 $('#sonar').show();
          
