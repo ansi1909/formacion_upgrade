@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminTutorial; 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Translation\TranslatorInterface;
 
 
 class TutorialController extends Controller
@@ -31,26 +32,27 @@ class TutorialController extends Controller
         		return $this->redirectToRoute('_authException');
         	}
         }
-        $f->setRequest($session->get('sesion_id'));
+        // $f->setRequest($session->get('sesion_id'));
 
-        $em = $this->getDoctrine()->getManager();
+        // $em = $this->getDoctrine()->getManager();
 
-        $tutorialdb= array();
+        // $tutorialdb= array();
 
-        $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
-                                        ORDER BY t.nombre ASC');
-        $tutoriales=$query->getResult();
+        // $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
+        //                                 ORDER BY t.nombre ASC');
+        // $tutoriales=$query->getResult();
         
-        foreach ($tutoriales as $tutorial)
-        {
-            $tutorialdb[]= array('id'=>$tutorial->getId(),
-                              'nombre'=>$tutorial->getNombre(),
-                              'pdf'=>$tutorial->getPdf(),
-                              'video'=>$tutorial->getVideo(),
-                              'delete_disabled'=>$f->linkEliminar($tutorial->getId(),'AdminTutorial'));
-        }
+        // foreach ($tutoriales as $tutorial)
+        // {
 
-       return $this->render('LinkBackendBundle:Tutorial:index.html.twig', array('tutoriales'=>$tutorialdb) );
+        //     $tutorialdb[]= array('id'=>$tutorial->getId(),
+        //                       'nombre'=>$tutorial->getNombre(),
+        //                       'pdf'=>$tutorial->getPdf(),
+        //                       'video'=>$tutorial->getVideo(),
+        //                       'delete_disabled'=>$f->linkEliminar($tutorial->getId(),'AdminTutorial'));
+        // }
+
+       return $this->render('LinkBackendBundle:Tutorial:index.html.twig' );
 
     }
 
@@ -160,7 +162,7 @@ class TutorialController extends Controller
         $em->persist($tutorial);
         $em->flush();
 
-        if($nuevo==1)
+        if(!$tutorial_id)
         {
             rename($raiz.$rutaTutoriales.$default, $raiz.$rutaTutoriales.$tutorial->getId());
         }
@@ -194,6 +196,49 @@ class TutorialController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+
+    public function ajaxRefreshTableAction(Request $request)
+    {
+
+          
+                
+                $yml= Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+                $ruta=$yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
+                $em = $this->getDoctrine()->getManager();
+                $data= ['data'=>[]];
+
+                $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
+                                                ORDER BY t.id ASC');
+                $tutoriales=$query->getResult();
+                $f = $this->get('funciones');
+                
+                foreach ($tutoriales as $tutorial)
+                {
+
+                    
+                        $delete_disabled = $f->linkEliminar($tutorial->getId(),'AdminTutorial');
+                        $delete = $delete_disabled == '' ? 'delete' : '';
+
+                        $enlacePdf='<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getPdf().'" target="_blank">'.$tutorial->getPdf().' </a>';
+                        $enlaceVideo='<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getVideo().'" target="_blank">'.$tutorial->getVideo().' </a>';
+                        $acciones='
+                                    <td class="center" >
+                                        <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'" ><span class="fa fa-pencil"></span> 
+                                        </a>
+                                        <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$delete.''.$delete_disabled.'" data="'.$tutorial->getId().'"><span class="fa fa-trash"></span>
+
+                                        </a>
+                                    </td>';
+                        $aux=[$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones];
+                        array_push($data['data'],$aux);
+                }
+
+           $return = json_encode($data);
+           return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
         
     }
 

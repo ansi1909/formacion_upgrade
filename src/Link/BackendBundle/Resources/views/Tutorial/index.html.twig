@@ -37,6 +37,7 @@
 {% set ruta = ' /formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=pdf&rootFolder=recursos/tutorial/ ' %}
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_tutorial', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
+<input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -53,7 +54,7 @@
                 <h5 class="card-title">{{ 'Listado de tutoriales' |trans}}</h5>
             </div>
             <div class="card-block">
-                <table class="table" id="dt">
+                <table class="table" id="tablaTutoriales">
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">{{'Nombre' |trans }}</th>
@@ -62,21 +63,8 @@
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
-                    <tbody id="registrosTutoriales">
-                      {% for tutorial in tutoriales %}
-                            {% set eo = cycle(['odd', 'even'], loop.index) %}
-                            <tr class="{{eo}}">
-                                <td>{{tutorial.nombre}}</td>
-                                {% set pdf = uploads~tutorial.pdf %}
-                                <td><a href="{{pdf}}" target="_blank">{{tutorial.pdf}}</a></td>
-                                {% set pdf = uploads~tutorial.video %}
-                                <td><a href="{{pdf}}" target="_blank">{{tutorial.video}}</a></td>
-                                <td class="center">
-                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ tutorial.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if tutorial.delete_disabled == '' %}delete{% endif %} {{ tutorial.delete_disabled }}" data="{{tutorial.id}}"><span class="fa fa-trash"></span></a>
-                                </td>
-                            </tr>
-                      {% endfor %}
+                    <tbody id="BodyTable">
+                     
                     </tbody>
                 </table>                 
             </div>
@@ -103,7 +91,7 @@
             <span class="fa fa-cube"></span>
         </div>
         <div class="form-group">
-            <label for="descripcion" class="form-control-label">{{ 'Descripcion'|trans }}:</label>
+            <label for="descripcion" class="form-control-label">{{ 'Descripción'|trans }}:</label>
             <input type="text" class="form-control form_sty_modal2" id="descripcion" name="descripcion" value="">
             <span class="fa fa-align-justify"></span>
         </div>
@@ -111,7 +99,7 @@
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value=" " >
-                <span class="input-group-addon">
+                <span class="input-group-addon span-filemanager">
                     <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
                         <span class="fa fa-photo"></span>
                     </a>
@@ -121,9 +109,9 @@
          <div class="form-group ">
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="imagen" id="imagen" value=" " >
-                <span class="input-group-addon">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=imagen&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
+                <input type="text" class="form-control " name="imagen" id="imagen" value="">
+                <span class="input-group-addon span-filemanager">
+                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>
@@ -133,7 +121,7 @@
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="video" id="video" value=" " >
-                <span class="input-group-addon">
+                <span class="input-group-addon span-filemanager">
                     <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=video&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
                         <span class="fa fa-photo"></span>
                     </a>

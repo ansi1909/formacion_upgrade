@@ -13,3 +13,10 @@ _ajaxEditTutorial:
     defaults: { _controller: LinkBackendBundle:Tutorial:ajaxEditTutorial }
     requirements:
         method: GET
+
+
+_ajaxRefreshTable:
+    path: /_ajaxRefreshTable
+    defaults: { _controller: LinkBackendBundle:Tutorial:ajaxRefreshTable}
+
+
