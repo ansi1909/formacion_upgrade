@@ -10,6 +10,7 @@ use Link\ComunBundle\Entity\AdminPreferencia;
 use Link\ComunBundle\Entity\AdminColor;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Yaml\Yaml;
+use Link\ComunBundle\Model\UploadHandler;
 
 class PreferenciaController extends Controller
 {
@@ -197,12 +198,14 @@ class PreferenciaController extends Controller
 
             $layout_id = $request->request->get('layout_id');
             $title = $request->request->get('title');
+            $tipo_logo_id = trim($request->request->get('tipo_logo_id'));
             $logo = trim($request->request->get('logo'));
             $favicon = trim($request->request->get('favicon'));
             $logo_login = $request->request->get('logo_login');
 
             $layout = $em->getRepository('LinkComunBundle:AdminLayout')->find($layout_id[0]);
             $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+            $tipo_logo = $em->getRepository('LinkComunBundle:AdminTipoLogo')->find($tipo_logo_id);
             
             // Preferencia
             $preferencia->setLayout($layout);
@@ -211,6 +214,7 @@ class PreferenciaController extends Controller
             $preferencia->setFavicon($favicon != '' ? $favicon : null);
             $preferencia->setUsuario($usuario);
             $preferencia->setLogoLogin(isset($logo_login) ? $logo_login ? true : false : false);
+            $preferencia->setTipoLogo($tipo_logo);
             $em->persist($preferencia);
             $em->flush();
 
@@ -334,6 +338,26 @@ class PreferenciaController extends Controller
         return $this->render('LinkBackendBundle:Preferencia:show.html.twig', array('preferencia' => $preferencia,
                                                                                    'atributos' => $atributos,
                                                                                    'thumbnails' => $thumbnails));
+
+    }
+
+    public function ajaxUploadLogoAction(Request $request)
+    {
+        
+        $session = new Session();
+        
+        $base_upload = $request->request->get('base_upload');
+
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
+        $upload_dir = $dir_uploads.$base_upload;
+        $upload_url = $uploads.$base_upload;
+        $options = array('upload_dir' => $upload_dir,
+                         'upload_url' => $upload_url);
+        $upload_handler = new UploadHandler($options);
+
+        $return = json_encode($upload_handler);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 

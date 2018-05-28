@@ -40,15 +40,7 @@ $(document).ready(function() {
 	    widt = !widt;
 	});
 
-	$('.iframe-btn').fancybox({	
-		'width'		: 900,
-		'height'	: 900,
-		'type'		: 'iframe',
-        'autoScale' : false,
-		'autoSize'	: false
-    });
-
-    $(".btn_clearImg").on("click",function(event) {
+	$(".btn_clearImg").on("click",function(event) {
     	var id = $(this).attr('id');
 		var id_arr = id.split('btn_clear_');
 		var field_id = id_arr[1];
@@ -57,7 +49,48 @@ $(document).ready(function() {
     });
 
     $('#finish').click(function(){
-       $('#form').submit();
+    	$('#form').submit();
+    });
+
+    $('.btn_addImg').click(function(){
+    	var a_data = $(this).attr('data');
+    	$('#file_input').val(a_data);
+    	$('.error').html('');
+    });
+
+    $('.fileupload').fileupload({
+        url: $('#url_upload').val(),
+        dataType: 'json',
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        add: function (e, data) {
+	        var goUpload = true;
+	        var uploadFile = data.files[0];
+	        var file_input = $('#file_input').val();
+	        if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(uploadFile.name)) {
+	            $('#error_'+file_input).html('Debes seleccionar sólo archivo de imagen');
+	            goUpload = false;
+	        }
+	        if (goUpload == true) {
+	            data.submit();
+	        }
+	    },
+        done: function (e, data) {
+        	$.each(data.result.response.files, function (index, file) {
+        		var file_input = $('#file_input').val();
+        		var uploads = $('#uploads').val();
+        		var base_upload = $('#base_upload').val();
+        		if (file_input == 'logo')
+        		{
+        			var tipo_logo_id = $('#tipo_logo_id').val();
+        			var img = $('#'+file_input+'_'+tipo_logo_id);
+        		}
+        		else {
+        			var img = $('#icono');
+        		}
+        		$('#'+file_input).val(base_upload+file.name);
+        		img.attr("src", uploads+base_upload+file.name);
+            });
+        }
     });
 
     $('#tipo_logo_id').change(function(){
@@ -68,28 +101,12 @@ $(document).ready(function() {
 
 });
 
-function responsive_filemanager_callback(field_id){
-	
-	// Ruta en el campo de texto
-	var url=jQuery('#'+field_id).val();
-	var arr = url.split('uploads/');
-	var new_image = arr[arr.length-1];
-	$('#'+field_id).val(new_image);
-	if (field_id == 'logo'){
-		var w = '356px';
-		var h = '87px';
-	}
-	else {
-		var w = '32px';
-		var h = '32px';
-	}
-	$('#figure_'+field_id).html('<img src="'+url+'" width="'+w+'" height="'+h+'">');
-	
-}
-
 function tipoLogo()
 {
+
 	var tipo_logo_id = $('#tipo_logo_id').val();
+
+	// Aparición del vista previa correspondiente
 	switch (tipo_logo_id)
 	{
 		case '1':
@@ -108,4 +125,10 @@ function tipoLogo()
 			$('.imgLogoCC').show();
 			break;
 	}
+
+	var src = $('#logo'+'_'+tipo_logo_id).attr('src');
+	var arr = src.split('uploads/');
+	var logo = arr[arr.length-1];
+	$('#logo').val(logo);
+
 }

@@ -364,4 +364,4 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_logo', 'i
 
 INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (1, 'Horizontal', 'imgLogoHor');
 INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (2, 'Vertical', 'imgLogoVer');
-INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (3, 'Circular/Cuadrado', 'imgLogoCir');
+INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (3, 'Circular/Cuadrado', 'imgLogoCC');
