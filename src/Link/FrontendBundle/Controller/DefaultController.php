@@ -406,6 +406,7 @@ class DefaultController extends Controller
                 if ($preferencia)
                 {
                     $logo = $preferencia->getLogo() ? $preferencia->getLogo() : '';
+                    $tipo_logo = $preferencia->getTipoLogo() ? $preferencia->getTipoLogo()->getCss() : 'imgLogoHor';
                     $logo_login = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
                     $favicon = $preferencia->getFavicon();
                     $layout = explode(".", $preferencia->getLayout()->getTwig());
@@ -415,9 +416,17 @@ class DefaultController extends Controller
                     $webinar = $empresa_bd->getWebinar();
                     $chat = $empresa_bd->getChatActivo();
                     $plantilla = $preferencia->getLayout()->getTwig();
+                    if ($preferencia->getTipoLogo())
+                    {
+                        switch ($preferencia->getTipoLogo()->getId())
+                        {
+                            case $yml['parameters']['social']['muro']:
+                        }
+                    }
                 }
                 else {
                     $logo = '';
+                    $tipo_logo = 'imgLogoHor';
                     $logo_login = '';
                     $favicon = '';
                     $layout = 'base_';
@@ -441,6 +450,7 @@ class DefaultController extends Controller
                                  'webinar' => $webinar,
                                  'plantilla' => $plantilla,
                                  'logo' => $logo,
+                                 'tipo_logo' => $tipo_logo,
                                  'favicon' => $favicon,
                                  'titulo' => $title,
                                  'css' => $css);
