@@ -498,16 +498,16 @@
         }
         .starShiney1{
             @extend %star;
-            top: 1.2rem;
-            left: 6.8rem;
+            top: 1rem;
+            left: 7.8rem;
             animation: brillo 1s ease-in-out infinite;
             animation-direction: alternate;
             animation-fill-mode: both;
         }
         .starShiney2{
             @extend %star;
-            top: 2.3rem;
-            left: 10rem;
+            top: 2.7rem;
+            left: 12rem;
             animation: brillo 1s ease-in-out infinite;
             animation-direction: alternate;
             animation-fill-mode: both;
@@ -515,8 +515,8 @@
         }
         .starShiney3{
             @extend %star;
-            top: 4.8rem;
-            left: 7.7rem;
+            top: 4.9rem;
+            left: 8.9rem;
             animation: brillo 1s ease-in-out infinite;
             animation-direction: alternate;
             animation-fill-mode: both;
@@ -524,8 +524,8 @@
         }
         .starShiney4{
             @extend %star;
-            top: 4.7rem;
-            right: 6.5rem;
+            top: 5.75rem;
+            right: 7.8rem;
             animation: brillo 1s ease-in-out infinite;
             animation-direction: alternate;
             animation-fill-mode: both;

@@ -2565,28 +2565,28 @@ p.up {
       height: auto;
       width: 8rem; }
     .card-datos .imgExp-coin .starShiney1 {
-      top: 1.2rem;
-      left: 6.8rem;
+      top: 1rem;
+      left: 7.8rem;
       animation: brillo 1s ease-in-out infinite;
       animation-direction: alternate;
       animation-fill-mode: both; }
     .card-datos .imgExp-coin .starShiney2 {
-      top: 2.3rem;
-      left: 10rem;
+      top: 2.7rem;
+      left: 12rem;
       animation: brillo 1s ease-in-out infinite;
       animation-direction: alternate;
       animation-fill-mode: both;
       animation-delay: .3s; }
     .card-datos .imgExp-coin .starShiney3 {
-      top: 4.8rem;
-      left: 7.7rem;
+      top: 4.9rem;
+      left: 8.9rem;
       animation: brillo 1s ease-in-out infinite;
       animation-direction: alternate;
       animation-fill-mode: both;
       animation-delay: .5s; }
     .card-datos .imgExp-coin .starShiney4 {
-      top: 4.7rem;
-      right: 6.5rem;
+      top: 5.75rem;
+      right: 7.8rem;
       animation: brillo 1s ease-in-out infinite;
       animation-direction: alternate;
       animation-fill-mode: both;
