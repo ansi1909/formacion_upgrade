@@ -6,4 +6,9 @@ _bibliotecaDetalle:
     path:     /bibliotecaDetalle/{biblioteca_id}
     defaults: { _controller: LinkFrontendBundle:Biblioteca:detalle }
 
+_buscarBiblioteca:
+    path:     /Biblioteca
+    defaults: { _controller: LinkFrontendBundle:Biblioteca:index }
+    requirements:
+        _method: POST
 
