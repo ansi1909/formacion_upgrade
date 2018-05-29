@@ -160,7 +160,7 @@ class ColaborativoController extends Controller
 
             // Se crea el subdirectorio para los archivos del espacio colaborativo
             $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
-            $dir = $dir_uploads.'recursos/empresas/'.$empresa->getId().'/colaborativo/'.$foro->getId().'/';
+            $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
                 mkdir($dir, 750, true);
@@ -610,8 +610,8 @@ class ColaborativoController extends Controller
 
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
         $uploads = $this->container->getParameter('folders')['uploads'];
-        $upload_dir = $dir_uploads.'recursos/empresas/'.$session->get('empresa')['id'].'/colaborativo/'.$foro_id.'/';
-        $upload_url = $uploads.'recursos/empresas/'.$session->get('empresa')['id'].'/colaborativo/'.$foro_id.'/';
+        $upload_dir = $dir_uploads.'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
+        $upload_url = $uploads.'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
         $options = array('upload_dir' => $upload_dir,
                          'upload_url' => $upload_url);
         $upload_handler = new UploadHandler($options);
@@ -679,6 +679,11 @@ class ColaborativoController extends Controller
                             <div class="cont-opc">
                                 <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row px-0 justify-content-start">
+                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                            <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
                         </div>
                     </div>
                 </li>';

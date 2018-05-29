@@ -79,7 +79,7 @@
     <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadForoArchivo') }}">
     <input type="hidden" id="url_archivo" name="url_archivo" value="{{ path('_ajaxSaveForoArchivo') }}">
     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
-    <input type="hidden" id="base_upload" name="base_upload" value="recursos/empresas/{{ foro.empresa.id }}/colaborativo/{{ foro.id }}/">
+    <input type="hidden" id="base_upload" name="base_upload" value="recursos/espacio/{{ foro.empresa.id }}/{{ foro.id }}/">
 
     <section>
         <div class="modal modal-resp" id="modalresp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -348,6 +348,11 @@
                                     {% set file = uploads~archivo.archivo %}
                                     <a href="{{ file }}" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="{{ 'Descargar archivo'|trans }}">file_download</span></a>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row px-0 justify-content-start">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <p class="nameUpload">{{ archivo.usuario }}</p>
                             </div>
                         </div>
                     </li>
