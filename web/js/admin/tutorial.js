@@ -103,57 +103,58 @@ function responsive_filemanager_callback(field_id){
 function saveTutorial()
 {
      // var pagina=window.table.page();
-     window.table.ajax.reload( null,false);
+    
      
      // console.log('estoy en la pagina: '+pagina);
      
-	// $('#div-alert').hide();
-	// if ($("#form").valid())
-	// {
-	// 	$('#guardar').prop('disabled', true);
-	// 	$.ajax({
-	// 		type: "POST",
-	// 		url: $('#form').attr('action'),
-	// 		async: true,
-	// 		data: $("#form").serialize(),
-	// 		dataType: "json",
-	// 		success: function(data) {
-	// 			$('#p-nombre').html(data.nombre);
-	// 			$('#p-pdf').html(data.pdf);
-	// 			$('#p-video').html(data.video);
-	// 			$('#p-imagen').html(data.imagen);
-	// 			$('#p-descripcion').html(data.descripcion);
-	// 			console.log('Formulario enviado. Id '+data.id);
-	// 			$( "#detail-edit" ).attr( "data", data.id );
-	// 			if (data.delete_disabled != '') 
-	// 			{
-	// 				$("#detail-delete").hide();
-	// 				$("#detail-delete").removeClass( "delete" );
-	// 			}
-	// 			else
-	// 			{
-	// 				$( "#detail-delete" ).attr("data",data.id);
-	// 				$( "#detail-delete" ).addClass("delete");
-	// 				$( "#detail-delete" ).show();
-	// 				$('.delete').click(function()
-	// 				{
-	// 					var tutorial_id= $(this).attr('data');
- //                        sweetAlertDelete(tutorial_id,'AdminTutorial');
-	// 				});
-	// 			}
-	// 			$('#form').hide();
-	// 			$('#alert-success').show();
-	// 			$('#detail').show();
-	// 			$('#aceptar').show();
-	// 			$('#guardar').hide();
-	// 			$('#cancelar').hide();
-	// 		},
-	// 		error: function(){
-	// 			$('#alert-error').html($('#error_msg-save').val());
-	// 			$('#div-alert').show();
-	// 		}
-	// 	});
-	// }
+	$('#div-alert').hide();
+	if ($("#form").valid())
+	{
+		$('#guardar').prop('disabled', true);
+		$.ajax({
+			type: "POST",
+			url: $('#form').attr('action'),
+			async: true,
+			data: $("#form").serialize(),
+			dataType: "json",
+			success: function(data) {
+				$('#p-nombre').html(data.nombre);
+				$('#p-pdf').html(data.pdf);
+				$('#p-video').html(data.video);
+				$('#p-imagen').html(data.imagen);
+				$('#p-descripcion').html(data.descripcion);
+				console.log('Formulario enviado. Id '+data.id);
+				$( "#detail-edit" ).attr( "data", data.id );
+				if (data.delete_disabled != '') 
+				{
+					$("#detail-delete").hide();
+					$("#detail-delete").removeClass( "delete" );
+				}
+				else
+				{
+					$( "#detail-delete" ).attr("data",data.id);
+					$( "#detail-delete" ).addClass("delete");
+					$( "#detail-delete" ).show();
+					$('.delete').click(function()
+					{
+						var tutorial_id= $(this).attr('data');
+                        sweetAlertDelete(tutorial_id,'AdminTutorial');
+					});
+				}
+				$('#form').hide();
+				$('#alert-success').show();
+				$('#detail').show();
+				$('#aceptar').show();
+				$('#guardar').hide();
+				$('#cancelar').hide();
+			},
+			error: function(){
+				$('#alert-error').html($('#error_msg-save').val());
+				$('#div-alert').show();
+			}
+		});
+		 
+	}
 
 }
 

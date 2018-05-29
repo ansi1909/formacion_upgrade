@@ -56,117 +56,113 @@ class TutorialController extends Controller
 
     }
 
-    protected function actualizarArchivo($archivo,$newArchivo,$rutaRaiz,$rutaTutoriales,$tutorial,$metodo)// modfica los archivos de un tutorial que existe
-    {
-         /////se usa para obtener el nombre del archivo que se esta obteniendo del tutorial
-         switch ($metodo) 
-         {
-             case 'pdf':
-                        $metodo=$tutorial->getPdf();
-                        break;
-             case 'video':
-                        $metodo=$tutorial->getVideo();
-                        break;
-             case 'imagen':
-                        $metodo=$tutorial->getImagen();
-                        break;
-         }
-
-         /// ahora realizamos la modificacion correspondiente en el archivo
-
-         if (count($newArchivo)>=3)//si es true es porque se cargo un nuevo archivo
-            {
-                $archivo=$newArchivo[2];
-                unlink($rutaRaiz.$rutaTutoriales.$tutorial->getId().'/'.$metodo);//se elimina el archivo viejo
-                rename($rutaRaiz.$rutaTutoriales.$archivo,$rutaRaiz.$rutaTutoriales.$tutorial->getId().'/'.$archivo);//se agrega el nuevo archivo al directorio del tutorial correspondiente
-            }
-            else
-            {
-                rename($rutaRaiz.$rutaTutoriales.$tutorial->getId().'/'.$metodo,$rutaRaiz.$rutaTutoriales.$tutorial->getId().'/'.$archivo); 
-            }
-
-            return $archivo;
-    }
-
     
-    // cuando el archivo se crea de nuevo
-    protected function nuevoArchivo($rutaRaiz,$rutaTutoriales,$pdf,$imagen,$video,$default)
+
+    protected function nameArchivo($name)
     {
-            mkdir($rutaRaiz.$rutaTutoriales.$default,0777);//crea la carpeta nueva
-            rename($rutaRaiz.$rutaTutoriales.$pdf,$rutaRaiz.$rutaTutoriales.$default.'/'.$pdf);//mueve el pdf a lacarpeta default
-            rename($rutaRaiz.$rutaTutoriales.$imagen,$rutaRaiz.$rutaTutoriales.$default.'/'.$imagen);//mueve la imagen a la carpeta default
-            rename($rutaRaiz.$rutaTutoriales.$video,$rutaRaiz.$rutaTutoriales.$default.'/'.$video);//mueve el video a la carpeta default
 
-            return true;
+        $aux=explode("/",$name);
+        $longitud=count($aux);
+        $name_=false;
+        $route=false;
 
+        if ($longitud==3)//carpeta : recursos/tutoriales
+        {
+            $name_=$aux[2];
+            $route='';
+        }
+        else if($longitud==4)
+        {
+            $name_=$aux[3];
+            $route=$aux[2].'/';
+        }
+        
+        return ['name'=>$name_,'route'=>$route];
     }
 
-
-
-    public function ajaxUpdateTutorialAction(Request $request)
+    protected function setTutorial($em,$datosAjax,$tutorial)
     {
-        
-        $ymlParameters = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
-        $ymlParametros = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $pdf_=$this->nameArchivo($datosAjax['pdf']);
+        $video_=$this->nameArchivo($datosAjax['video']);
+        $imagen_=$this->nameArchivo($datosAjax['imagen']);
 
-        $raiz=$ymlParameters['parameters']['folders']['dir_uploads'];
-        $rutaTutoriales=$ymlParametros['parameters']['tutoriales']['ruta'];
-        $default=$ymlParametros['parameters']['tutoriales']['default'];
-
-        $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
-
-        $nuevo=0;
-        $tutorial_id = $request->request->get('tutorial_id');
-        $nombre = $request->request->get('nombre');
-        $pdf = $request->request->get('pdf');
-        $video = $request->request->get('video');
-        $imagen = $request->request->get('imagen');
-        $descripcion=$request->request->get('descripcion');
-
-
-        $newPdf=explode("/",$pdf);
-        $newImagen=explode("/",$imagen);
-        $newVideo=explode("/",$video);
-
-        if ($tutorial_id)
-        {
-            $tutorial = $em->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
-
-            
-            $pdf=$this->actualizarArchivo($pdf,$newPdf,$raiz,$rutaTutoriales,$tutorial,'pdf');
-            $imagen=$this->actualizarArchivo($imagen,$newImagen,$raiz,$rutaTutoriales,$tutorial,'imagen');
-            $video=$this->actualizarArchivo($video,$newVideo,$raiz,$rutaTutoriales,$tutorial,'video');
-        }
-        else 
-        {
-            $tutorial = new AdminTutorial();
-            $nuevo=1;
-
-            $pdf=$newPdf[2];
-            $imagen=$newImagen[2];
-            $video=$newVideo[2];
-
-            $this->nuevoArchivo($raiz,$rutaTutoriales,$pdf,$imagen,$video,$default);
-
-           
-        }
-
-        $tutorial->setNombre($nombre);
-        $tutorial->setPdf($pdf);
-        $tutorial->setVideo($video);
-        $tutorial->setImagen($imagen);
-        $tutorial->setDescripcion($descripcion);
+        $tutorial->setNombre($datosAjax['nombre']);
+        $tutorial->setDescripcion($datosAjax['descripcion']);
+        $tutorial->setPdf($pdf_['name']);
+        $tutorial->setVideo($video_['name']);
+        $tutorial->setImagen($imagen_['name']);
+       
         $tutorial->setFecha(new \DateTime('now'));
         
         $em->persist($tutorial);
         $em->flush();
 
-        if(!$tutorial_id)
+        return ['tutorial'=>$tutorial,'routePdf'=>$pdf_['route'],'routeVideo'=>$video_['route'],'routeImagen'=>$imagen_['route']];
+
+    }
+
+    
+    protected function moverArchivo($rutaArchivo,$nameArchivo,$yml,$tutorial_id)
+    {
+        if ($rutaArchivo=='') 
         {
-            rename($raiz.$rutaTutoriales.$default, $raiz.$rutaTutoriales.$tutorial->getId());
+           rename($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$nameArchivo,
+                  $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
         }
-                    
+        else
+        {
+           copy($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$rutaArchivo.'/'.$nameArchivo,
+                $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
+        }
+
+        return true;
+    }
+
+    protected function carpetaNueva($tutorial,$rutaPdf,$rutaImagen,$rutaVideo,$yml)
+    {
+       
+        mkdir($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial->getId(),0777);
+        $this->moverArchivo($rutaPdf,$tutorial->getPdf(),$yml,$tutorial->getId());
+        $this->moverArchivo($rutaImagen,$tutorial->getImagen(),$yml,$tutorial->getId());
+        $this->moverArchivo($rutaVideo,$tutorial->getVideo(),$yml,$tutorial->getId());
+
+        return true;
+
+    }
+
+    
+    public function ajaxUpdateTutorialAction(Request $request)
+    {
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+        $datosAjax=
+        [
+            'tutorial_id'=>$request->request->get('tutorial_id'),
+            'nombre'=>$request->request->get('nombre'), 
+            'pdf'=>$request->request->get('pdf'),
+            'video'=>$request->request->get('video'), 
+            'imagen'=>$request->request->get('imagen'),
+            'descripcion'=>$request->request->get('descripcion')
+        ];
+
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+       
+        if ($datosAjax['tutorial_id']) 
+        {
+            $tutorial = $em->getRepository('LinkComunBundle:AdminTutorial')->find($datosAjax['tutorial_id']);
+            $datos=$this->setTutorial($em,$datosAjax,$tutorial);
+            $tutorial=$datos['tutorial'];
+        }
+        else
+        {
+             $tutorial = new AdminTutorial();
+             $datos=$this->setTutorial($em,$datosAjax,$tutorial);
+             $tutorial=$datos['tutorial'];
+             $this->carpetaNueva($tutorial, $datos['routePdf'], $datos['routeImagen'],$datos['routeVideo'],$yml);
+
+        }
+
+       
         $return = array('id' => $tutorial->getId(),
                         'nombre' =>$tutorial->getNombre(),
                         'pdf' =>$tutorial->getPdf(),
@@ -179,6 +175,7 @@ class TutorialController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
+
 
     public function ajaxEditTutorialAction(Request $request)
     {
@@ -232,8 +229,8 @@ class TutorialController extends Controller
 
                                         </a>
                                     </td>';
-                        $aux=[$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones];
-                        array_push($data['data'],$aux);
+                        
+                        array_push($data['data'],[$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones]);
                 }
 
            $return = json_encode($data);

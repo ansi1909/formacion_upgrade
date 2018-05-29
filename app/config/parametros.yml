@@ -48,6 +48,10 @@ parameters:
         noticia : 5
         novedad : 6
         biblioteca : 7
+    tipo_archivos:
+        pdf: 'pdf'
+        imagen: 'jpg-jpeg-bmp-svg-png-gif-tiff'
+        video: 'mov-mpeg-m4v-mp4-avi-mpg-wma-flv-webm'
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2
