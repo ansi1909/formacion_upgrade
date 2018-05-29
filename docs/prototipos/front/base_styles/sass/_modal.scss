@@ -105,6 +105,7 @@
 .modalEditP{
     @extend %modal-m;
     @extend %modal;
+    padding-right: 0px !important;
     &::-webkit-scrollbar {
         width: .75rem;
     }

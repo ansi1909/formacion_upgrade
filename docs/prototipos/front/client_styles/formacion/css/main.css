@@ -693,10 +693,12 @@ a:focus, a:active, a:target, a:checked {
 .modal-resp::-webkit-scrollbar-thumb {
   background-color: #DAE1E6; }
 
-.modalEditP::-webkit-scrollbar {
-  width: .75rem; }
-.modalEditP::-webkit-scrollbar-thumb {
-  background-color: #DAE1E6; }
+.modalEditP {
+  padding-right: 0px !important; }
+  .modalEditP::-webkit-scrollbar {
+    width: .75rem; }
+  .modalEditP::-webkit-scrollbar-thumb {
+    background-color: #DAE1E6; }
 
 .modalChagePwd::-webkit-scrollbar {
   width: .75rem; }
