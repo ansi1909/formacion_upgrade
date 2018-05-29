@@ -159,6 +159,9 @@
                     </div>
                     <nav class="container text-center">
                         {% set last = loop.last ? 1 : 0 %}
+                        {% if not loop.first %}
+                            <div class="btn-warning btn before_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Anterior'|trans }}</div>
+                        {% endif %}
                         <div class="btn-primary btn next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Continuar'|trans }}</div>
                     </nav>
                 </div>

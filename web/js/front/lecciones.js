@@ -73,6 +73,7 @@ $(document).ready(function() {
 	$('.next_lesson').click(function(){
 		var button = $(this);
 		button.hide();
+		$('.before_lesson').hide();
 		$('#wait').show();
 		var str = button.attr('data');
 		var arr = str.split('-');
@@ -102,6 +103,7 @@ $(document).ready(function() {
 				// Nos vamos al primer tab faltante
 				$('#wait').hide();
 				$('.btn-primary').show();
+				$('.before_lesson').show();
 				nextPage(pagina_faltante);
 			}
 			else {
@@ -122,9 +124,41 @@ $(document).ready(function() {
 			{
 				$('#wait').hide();
 				$('.btn-primary').show();
+				$('.before_lesson').show();
 				id_arr = id_str.split('-');
 				nextPage(id_arr[1]);
 			}
+		}
+	});
+
+	$('.before_lesson').click(function(){
+		var button = $(this);
+		button.hide();
+		$('.next_lesson').hide();
+		$('#wait').show();
+		var str = button.attr('data');
+		var arr = str.split('-');
+		var programa_id = arr[0];
+		var subpagina_id = arr[1];
+		var step = arr[2];
+		var last = arr[3];
+		
+		$('.tab-'+step).addClass('circle-less-vista');
+		step = parseInt(step)-parseInt(1);
+		var id_str = $('.tab-'+step).attr('id');
+		if (id_str != 'one-tab')
+		{
+			$('#wait').hide();
+			$('.btn-primary').show();
+			$('.before_lesson').show();
+			id_arr = id_str.split('-');
+			nextPage(id_arr[1]);
+		}
+		else {
+			$('#wait').hide();
+			$('.btn-primary').show();
+			$('.before_lesson').show();
+			$('#one-tab').trigger( "click" );
 		}
 	});
 
