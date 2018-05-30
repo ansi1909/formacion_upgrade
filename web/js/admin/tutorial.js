@@ -1,7 +1,13 @@
 $(document).ready(function() {
 
-	window.table=$('#tablaTutoriales').DataTable( { paging: true, searching: true, ajax: $('#url_update').val()} );
-	observe();
+	window.urlsHref={
+		             'pdf_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales',
+		             'imagen_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/tutoriales',
+		             'video_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=video&rootFolder=recursos/tutoriales'
+		            };
+
+	window.table=$('#tablaTutoriales').DataTable( { paging: true, searching: true, ajax: $('#url_update').val(),order: [[ 0, "desc" ]]} );
+	
 
 	$('#div-active-alert').hide();
 
@@ -25,6 +31,15 @@ $(document).ready(function() {
 
 	$('#guardar').click(function(){
 		saveTutorial();
+	});
+
+	$('#nuevoTutorial').click(function()
+	{
+		$('#pdf_').attr('href',window.urlsHref['pdf_']);
+		$('#imagen_').attr('href',window.urlsHref['imagen_']);
+		$('#video_').attr('href',window.urlsHref['video_']);
+
+		
 	});
 
 	$('#form').submit(function(e)
@@ -72,10 +87,10 @@ $(document).ready(function() {
 				$('#video').val(data.video);
 				$('#imagen').val(data.imagen);
 				$('#descripcion').val(data.descripcion);
-				$('.span-filemanager a').each(function(){
-					var href = $(this).attr('href');
-					$(this).attr('href', href+'/'+tutorial_id)
-				});
+				
+				$('#pdf_').attr('href',window.urlsHref['pdf_']+'/'+tutorial_id);
+				$('#imagen_').attr('href',window.urlsHref['imagen_']+'/'+tutorial_id);
+				$('#video_').attr('href',window.urlsHref['video_']+'/'+tutorial_id);
 			},
 			error: function(){
 				$('alert-error').html($('#error_msg_edit').val());
@@ -102,11 +117,7 @@ function responsive_filemanager_callback(field_id){
 
 function saveTutorial()
 {
-     // var pagina=window.table.page();
-    
-     
-     // console.log('estoy en la pagina: '+pagina);
-     
+    window.table.ajax.reload(null,true);
 	$('#div-alert').hide();
 	if ($("#form").valid())
 	{
@@ -121,9 +132,6 @@ function saveTutorial()
 				$('#p-nombre').html(data.nombre);
 				$('#p-pdf').html(data.pdf);
 				$('#p-video').html(data.video);
-				$('#p-imagen').html(data.imagen);
-				$('#p-descripcion').html(data.descripcion);
-				console.log('Formulario enviado. Id '+data.id);
 				$( "#detail-edit" ).attr( "data", data.id );
 				if (data.delete_disabled != '') 
 				{

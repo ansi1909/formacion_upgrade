@@ -44,7 +44,7 @@
         <h3>{{'Tutoriales'|trans}}</h3>
     </div>
    <div class="col text-right">
-       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
+       <button type="button" id="nuevoTutorial" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
    </div>
 </div>
 <div class="row">
@@ -57,6 +57,7 @@
                 <table class="table" id="tablaTutoriales">
                     <thead class="sty__title">
                         <tr>
+                            <th class="hd__title">ID</th>
                             <th class="hd__title">{{'Nombre' |trans }}</th>
                             <th class="hd__title">PDF</th>
                             <th class="hd__title">Videos</th>
@@ -98,9 +99,9 @@
         <div class="form-group ">
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="pdf" id="pdf" value=" " >
+                <input type="text" class="form-control " name="pdf" id="pdf" value=" " readonly >
                 <span class="input-group-addon span-filemanager">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
+                    <a href="" class="btn iframe-btn" type="button" id='pdf_'>
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>
@@ -109,9 +110,9 @@
          <div class="form-group ">
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="imagen" id="imagen" value="">
+                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly>
                 <span class="input-group-addon span-filemanager">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
+                    <a href="" class="btn iframe-btn" type="button" id='imagen_'>
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>
@@ -120,9 +121,9 @@
          <div class="form-group ">
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="video" id="video" value=" " >
+                <input type="text" class="form-control " name="video" id="video" value=" " readonly>
                 <span class="input-group-addon span-filemanager">
-                    <a href="/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=video&rootFolder=recursos/tutoriales" class="btn iframe-btn" type="button">
+                    <a href="" class="btn iframe-btn" type="button" id="video_">
                         <span class="fa fa-photo"></span>
                     </a>
                 </span>
@@ -188,14 +189,25 @@
                 'nombre': {
                     required: true,
                     minlength: 3
+                },
+                'descripcion':{
+                    required: true,
+                    minlength: 3
+
                 }
+                
             },
             messages: {
                 'nombre': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'descripcion':{
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}",
                 }
-            }
+           
+        }
         });
 
         

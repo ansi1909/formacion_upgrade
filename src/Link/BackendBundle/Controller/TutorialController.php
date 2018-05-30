@@ -76,22 +76,27 @@ class TutorialController extends Controller
             $name_=$aux[3];
             $route=$aux[2].'/';
         }
+        else if($longitud==1)
+        {
+            $name_=$name;
+        }
         
         return ['name'=>$name_,'route'=>$route];
     }
 
-    protected function setTutorial($em,$datosAjax,$tutorial)
+    protected function setTutorial($em,$datosAjax,$tutorial,$session)
     {
         $pdf_=$this->nameArchivo($datosAjax['pdf']);
         $video_=$this->nameArchivo($datosAjax['video']);
         $imagen_=$this->nameArchivo($datosAjax['imagen']);
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        $tutorial->setNombre($datosAjax['nombre']);
-        $tutorial->setDescripcion($datosAjax['descripcion']);
+        $tutorial->setNombre(ucfirst(strtolower($datosAjax['nombre'])));
+        $tutorial->setDescripcion(ucfirst(strtolower($datosAjax['descripcion'])));
         $tutorial->setPdf($pdf_['name']);
         $tutorial->setVideo($video_['name']);
         $tutorial->setImagen($imagen_['name']);
-       
+        $tutorial->setUsuario($usuario);
         $tutorial->setFecha(new \DateTime('now'));
         
         $em->persist($tutorial);
@@ -130,10 +135,50 @@ class TutorialController extends Controller
 
     }
 
+    protected function eliminarArchivos($tutorial,$rutaTutorial,$tipoArchivo)
+    {
+        $extensiones['pdf']='pdf';
+        $extensiones['imagen']=explode('-',$tipoArchivo['imagen']);
+        $extensiones['video']=explode('-',$tipoArchivo['video']);
+
+        $archivosDirectorio=scandir($rutaTutorial);
+        for ($i=0; $i <count($archivosDirectorio) ; $i++) 
+        { 
+            $archivo=explode('.',$archivosDirectorio[$i]);
+            if (count($archivo)==2) 
+            {
+                for ($j=0; $j <count($extensiones['imagen']) ; $j++) 
+                { 
+                    if (($archivo[1]==$extensiones['imagen'][$j])&&($tutorial->getImagen()!=$archivosDirectorio[$i])) 
+                    {
+                        unlink($rutaTutorial.'/'.$archivosDirectorio[$i]);
+                    }
+                }
+                for ($k=0; $k <count($extensiones['video']) ; $k++) 
+                { 
+                     if (($archivo[1]==$extensiones['video'][$k]) &&($tutorial->getVideo()!=$archivosDirectorio[$i]))
+                    {
+                        unlink($rutaTutorial.'/'.$archivosDirectorio[$i]);
+                    }
+                }
+
+                if (($archivo[1]=='pdf')&&($tutorial->getPdf()!=$archivosDirectorio[$i]))
+                {
+                     unlink($rutaTutorial.'/'.$archivosDirectorio[$i]);
+                }
+            }
+        }
+
+        return true;
+    }
+
     
     public function ajaxUpdateTutorialAction(Request $request)
     {
+        $session = new Session();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+        $tipoArchivo=Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
         $datosAjax=
         [
             'tutorial_id'=>$request->request->get('tutorial_id'),
@@ -150,13 +195,16 @@ class TutorialController extends Controller
         if ($datosAjax['tutorial_id']) 
         {
             $tutorial = $em->getRepository('LinkComunBundle:AdminTutorial')->find($datosAjax['tutorial_id']);
-            $datos=$this->setTutorial($em,$datosAjax,$tutorial);
+            $datos=$this->setTutorial($em,$datosAjax,$tutorial,$session);
             $tutorial=$datos['tutorial'];
+            $rutaTutorial=$yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial->getId();
+            $this->eliminarArchivos($tutorial,$rutaTutorial,$tipoArchivo['parameters']['tipo_archivos']);
+
         }
         else
         {
              $tutorial = new AdminTutorial();
-             $datos=$this->setTutorial($em,$datosAjax,$tutorial);
+             $datos=$this->setTutorial($em,$datosAjax,$tutorial,$session);
              $tutorial=$datos['tutorial'];
              $this->carpetaNueva($tutorial, $datos['routePdf'], $datos['routeImagen'],$datos['routeVideo'],$yml);
 
@@ -230,7 +278,7 @@ class TutorialController extends Controller
                                         </a>
                                     </td>';
                         
-                        array_push($data['data'],[$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones]);
+                        array_push($data['data'],[$tutorial->getId(),$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones]);
                 }
 
            $return = json_encode($data);

@@ -3,9 +3,6 @@
 namespace Link\FrontendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
 
@@ -14,7 +11,7 @@ class TutorialController extends Controller
 
     
 
-    public function indexAction(Request $request)
+    public function indexAction()
     {
        
        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
@@ -26,7 +23,7 @@ class TutorialController extends Controller
     }
 
 
-    public function detalleAction(Request $request, $tutorial_id)
+    public function detalleAction($tutorial_id)
     {
 
         $tutorial=$this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
@@ -38,7 +35,7 @@ class TutorialController extends Controller
     }
 
 
-    public function _descargarPdfAction(Request $request,$tutorial_id)
+    public function _descargarPdfAction($tutorial_id)
     {
        
         $tutorial=$this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
