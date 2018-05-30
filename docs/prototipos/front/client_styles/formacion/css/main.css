@@ -299,14 +299,6 @@ input.form-control:focus {
   line-height: calc(1rem + 3px);
   text-align: center; }
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-size: inherit; }
-
 body {
   background-color: #F7F7F7;
   overflow-x: hidden; }

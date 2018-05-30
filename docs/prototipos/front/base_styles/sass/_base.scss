@@ -1,13 +1,4 @@
 // estilos estandar para todas los layouts y variaciones
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: inherit;
-}
-
 body {
     background-color: $gray-150;
     overflow-x: hidden;
