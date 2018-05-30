@@ -587,7 +587,8 @@ class Functions
                                'usuario' => $page->getUsuario()->getNombre().' '.$page->getUsuario()->getApellido(),
                                'status' => $page->getEstatusContenido()->getNombre(),
                                'subpaginas' => $subpaginas,
-                               'delete_disabled' => $this->linkEliminar($page->getId(), 'CertiPagina'));
+                               'delete_disabled' => $this->linkEliminar($page->getId(), 'CertiPagina'),
+                               'mover' => $this->paginaMovible($page->getId()));
 
         }
 
@@ -1871,7 +1872,7 @@ class Functions
                                                         AND pe.activo = :activo 
                                                         AND pe.fechaInicio <= :hoy 
                                                         AND pe.fechaVencimiento >= :hoy
-                                                       ORDER BY pe.orden')
+                                                       ORDER BY p.orden')
                                         ->setParameters(array('empresa' => $datos['empresa']['id'],
                                                               'nivel_usuario' => $usuario->getNivel()->getId(),
                                                               'activo' => true,
@@ -2535,6 +2536,20 @@ class Functions
 		}
 
 		return $paginas_ordenadas;
+
+	}
+
+	// Retorna 0 si la pagina_id ha sido asignada a alguna empresa y no se puede mover
+	public function paginaMovible($pagina_id)
+	{
+
+		$em = $this->em;
+
+		$query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe 
+		                                        WHERE pe.pagina = :pagina_id')
+		            ->setParameter('pagina_id', $pagina_id);
+		
+		return $query->getSingleScalarResult();
 
 	}
 }
