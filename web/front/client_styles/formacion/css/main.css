@@ -1180,7 +1180,8 @@ a:focus, a:active, a:target, a:checked {
     text-align: center; }
 
 .navbar .logo {
-  width: 15.625rem; }
+  width: 15.625rem;
+  text-align: center; }
   @media (max-width: 559.98px) {
     .navbar .logo {
       max-width: 7.8125rem; } }
@@ -1793,6 +1794,8 @@ a.active {
       width: 16rem; }
       .for-message h4 {
         text-align: center; } }
+  .for-message h1 {
+    font-size: 3.45rem; }
   .for-message p {
     max-width: 60%;
     text-align: justify; }
@@ -1835,7 +1838,12 @@ a.active {
   max-width: 70%;
   max-height: 900px;
   opacity: 1;
-  transition: all 1.5s ease-in-out; }
+  transition: all 1.5s ease-in-out;
+  margin-top: 2rem; }
+.well-message-prog img {
+  width: 820px;
+  transform: translateX(-6.25%);
+  border-radius: .5rem; }
 
 .avance-message {
   background-color: #fff;
@@ -1898,7 +1906,8 @@ p.up {
 .lesson-container img {
   border-radius: 1rem;
   width: 80%;
-  height: auto; }
+  height: auto;
+  transform: translateX(-6.25%); }
 .lesson-container .audio-player img {
   width: 100%;
   border-radius: 1rem 1rem 0 0; }
@@ -2362,14 +2371,14 @@ p.up {
 
 .card-current {
   width: 700px;
-  height: 160px; }
+  height: auto; }
   @media (max-width: 991.98px) {
     .card-current {
       width: 500px; } }
   @media (max-width: 767.98px) {
     .card-current {
       max-width: 470px;
-      height: 160px; } }
+      height: auto; } }
   @media (max-width: 559.98px) {
     .card-current {
       max-width: 15rem;
