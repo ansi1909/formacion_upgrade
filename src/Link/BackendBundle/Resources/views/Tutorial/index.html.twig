@@ -38,6 +38,7 @@
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_tutorial', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
 <input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
+<input type="hidden" id="url_updateTutorial" name="url_updateTutorial" value="{{path( '_ajaxUpdateTutorial') }}">
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -84,7 +85,7 @@
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form" action="{{ path( '_ajaxUpdateTutorial')}}"  method="POST">
+    <form id="form" name="form"   >
         <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
@@ -99,7 +100,7 @@
         <div class="form-group ">
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="pdf" id="pdf" value=" " readonly >
+                <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" >
                 <span class="input-group-addon span-filemanager">
                     <a href="" class="btn iframe-btn" type="button" id='pdf_'>
                         <span class="fa fa-photo"></span>
@@ -110,7 +111,7 @@
          <div class="form-group ">
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly>
+                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly">
                 <span class="input-group-addon span-filemanager">
                     <a href="" class="btn iframe-btn" type="button" id='imagen_'>
                         <span class="fa fa-photo"></span>
@@ -121,7 +122,7 @@
          <div class="form-group ">
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="video" id="video" value=" " readonly>
+                <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly">
                 <span class="input-group-addon span-filemanager">
                     <a href="" class="btn iframe-btn" type="button" id="video_">
                         <span class="fa fa-photo"></span>
@@ -161,6 +162,7 @@
                     </div>
                 </div>
                 <br>
+               
             </div>
         </div>
         <div class="card-footer">
@@ -178,6 +180,7 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
@@ -194,8 +197,26 @@
                     required: true,
                     minlength: 3
 
-                }
-                
+                },
+                'pdf':
+                    {
+                      required: true,
+                      extension: "pdf"
+
+                    },
+                'video':
+                    {
+                      required: true,
+                      extension: "mov|mpeg|m4v|mp4|avi|mpg|wma|flv|webm"
+
+                    },
+                'imagen':
+                    {
+                      
+                      extension: "jpg|jpeg|bmp|svg|png|gif|tiff"
+
+                    }
+
             },
             messages: {
                 'nombre': {
@@ -205,10 +226,71 @@
                 'descripcion':{
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}",
+                },
+                 'pdf':{
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    extension: "{{ 'Extensiones aceptadas'|trans }}: pdf"
+                   
+                },
+                'video':{
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    extension: "{{ 'Extensiones aceptadas'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm"
+                   
+                },
+                'imagen':{
+                   
+                    extension: "{{ 'Extensiones aceptadas'|trans }}: jpg,jpeg,bmp,svg,png,gif,tiff"
+                   
                 }
+
+
            
         }
         });
+
+                
+                function sweetAlertDeleteTutorial(id, entity, preg_opt=0)
+                {
+                    swal({
+                        title: "{{ '¿Desea eliminar el registro?'|trans }}",
+                        text: "{{ 'Si acepta no puede revertir el cambio'|trans }}",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#e04646',
+                        cancelButtonColor: '#97af21',
+                        confirmButtonText: "{{ 'Eliminar'|trans }}",
+                        confirmButtonClass: 'fa fa-trash',
+                        cancelButtonClass: 'fa fa-times',
+                        cancelButtonText: "{{ 'Cancelar'|trans }}",
+                        allowOutsideClick: false
+                    }).then(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: preg_opt == 0 ? $('#url_delete').val() : preg_opt,
+                            async: true,
+                            data: { id: id, entity: entity },
+                            dataType: "json",
+                            success: function(data) {
+                                swal(
+                                    "{{ 'Eliminado'|trans }}!",
+                                    "{{ 'Su registro ha sido eliminado'|trans }}",
+                                    'success'
+                                );
+                                setTimeout(function() {
+                                    window.table.ajax.reload(null,false);
+                                }, 3000);
+                            },
+                            error: function(){
+                                swal(
+                                    "{{ 'Mensaje del servidor'|trans }}!",
+                                    "{{ 'Ha ocurrido un error en la eliminación de este registro'|trans }}",
+                                    'error'
+                                );
+                            }
+                        });
+                    });
+                }
+
 
         
     </script>

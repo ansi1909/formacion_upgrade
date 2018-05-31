@@ -32,25 +32,6 @@ class TutorialController extends Controller
         		return $this->redirectToRoute('_authException');
         	}
         }
-        // $f->setRequest($session->get('sesion_id'));
-
-        // $em = $this->getDoctrine()->getManager();
-
-        // $tutorialdb= array();
-
-        // $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
-        //                                 ORDER BY t.nombre ASC');
-        // $tutoriales=$query->getResult();
-        
-        // foreach ($tutoriales as $tutorial)
-        // {
-
-        //     $tutorialdb[]= array('id'=>$tutorial->getId(),
-        //                       'nombre'=>$tutorial->getNombre(),
-        //                       'pdf'=>$tutorial->getPdf(),
-        //                       'video'=>$tutorial->getVideo(),
-        //                       'delete_disabled'=>$f->linkEliminar($tutorial->getId(),'AdminTutorial'));
-        // }
 
        return $this->render('LinkBackendBundle:Tutorial:index.html.twig' );
 
