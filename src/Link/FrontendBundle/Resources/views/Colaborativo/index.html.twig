@@ -27,10 +27,10 @@
 
 {% block header %}
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
-        <div class="logo d-none d-md-block">
+        <div class="logo d-sm-block d-md-block">
             <a class="navbar-brand" href="{{ path('_inicio') }}">
                 {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
             </a>
         </div>
         <div class="wraper-title-lesson d-flex flex-column align-items-center">
@@ -39,8 +39,8 @@
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
-            <div class=" d-flex flex-column ">
-                <div class="wrapperDdMenu">
+            <div class="d-flex flex-column">
+                <div class="wrapperDdMenu" data-toggle="tooltip" data-placement="bottom" title="{{ 'Configuración del usuario'|trans }}">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                         <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
