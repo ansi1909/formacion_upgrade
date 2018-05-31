@@ -106,6 +106,7 @@ Confirmar: Confirmar
 Confirmar contraseña: Confirmar contraseña
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla
 Contacte al Administrador del Sistema para mayor información: Contacte al Administrador del Sistema para mayor información
+Constancia de Notas: Constancia de Notas
 Contenido: Contenido
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Continuar: Continuar
@@ -317,8 +318,11 @@ filtrado de un total de: filtrado de un total de
 Filtrar comentarios del foro: Filtrar comentarios del foro
 Filtrar comentarios del muro: Filtrar comentarios del muro
 Filtrar usuarios: Filtrar usuarios
+Fin del programa: Fin del programa
 Finalizar: Finalizar
 Finalizar Evaluación: Finalizar Evaluación
+Firma del Participante: Firma del Participante
+Firma del Supervisor: Firma del Supervisor
 Formato de correo inválido: Formato de correo inválido
 Formato sugerido se especifica en: Formato sugerido se especifica en
 Foto de la página: Foto de la página
@@ -351,6 +355,7 @@ Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su emp
 Ingrese lo que desea buscar: Ingrese lo que desea buscar
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
+Inicio del programa: Inicio del programa
 instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
 Interacción: Interacción
 Ir a detalles de la página: Ir a detalles de la página
@@ -380,6 +385,7 @@ La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mín
 La descripción es requerida.: La descripción es requerida.
 La empresa a la que pertenece este usuario está inactiva: La empresa a la que pertenece este usuario está inactiva.
 La empresa aún no tiene configurado ningún nivel: La empresa aún no tiene configurado ningún nivel
+La empresa no tiene páginas asignadas o ya fueron asignadas: La empresa no tiene páginas asignadas o ya fueron asignadas
 La empresa debe cargar el modelo de certificado y asociarlo a esta página: La empresa debe cargar el modelo de certificado y asociarlo a esta página
 La empresa está inactiva: La empresa está inactiva
 La empresa es requerida.: La empresa es requerida.
@@ -439,6 +445,7 @@ minutos: minutos
 Modificado el: Modificado el
 Modificado por: Modificado por
 Modificar evento: Modificar evento
+Módulos: Módulos
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
 Mostrar preferencia: Mostrar preferencia
@@ -504,6 +511,7 @@ Paso: Paso
 País: País
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 particpantes: particpantes
+particpante: participante
 Pdf: Pdf
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
@@ -513,6 +521,7 @@ Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
 Plantilla: Plantilla
 Por favor, ingresa tu usuario y contraseña: Por favor, ingresa tu usuario y contraseña
+Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a
 Preferencias de la empresa: Preferencias de la empresa
 Preferencia de plantillas de las empresas: Preferencia de plantillas de las empresas
 Preferencias de usuario: Preferencias de usuario
@@ -531,7 +540,9 @@ Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede 
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
 Puede ingresar de nuevo desde la pantalla de login: Puede ingresar de nuevo desde la pantalla de login
 Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0: Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0
+Puntaje: Puntaje
 Puntaje con que se aprueba: Puntaje con que se aprueba
+Puntaje definitivo del programa: Puntaje definitivo del programa
 QR: QR
 Recordarme: Recordarme
 Recordar mi contaseña: Recordar mi contaseña
@@ -646,6 +657,7 @@ Usuarios registrados: Usuarios registrados
 Validar: Validar
 Valor de la pregunta: Valor de la pregunta
 Variables de colores que se aplican a la plantilla: Variables de colores que se aplican a la plantilla
+Veces cursadas: Times Coursed
 Vencido: Vencimiento
 Vencimiento: Vencimiento
 Ver historial: Ver historial

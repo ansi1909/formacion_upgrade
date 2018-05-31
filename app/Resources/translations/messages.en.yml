@@ -106,6 +106,7 @@ Confirmar: Confirm
 Confirmar contraseña: Confirm password
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contact to System Administrator to add thumbnails to this template
 Contacte al Administrador del Sistema para mayor información: Contact to System Administrator for further information
+Constancia de Notas: Proof of Notes
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
@@ -317,8 +318,11 @@ filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
 Filtrar comentarios del muro: Filter wall comments
 Filtrar usuarios: Filter users
+Fin del programa: End of the program
 Finalizar: Finish
 Finalizar Evaluación: Finish Test
+Firma del Participante: Signature of the Participant
+Firma del Supervisor: Supervisor's signature
 Formato de correo inválido: invalid email format
 Formato sugerido se especifica en: Suggested format, see
 Foto de la página: Page picture
@@ -351,6 +355,7 @@ Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su emp
 Ingrese lo que desea buscar: Enter what you want to search
 Iniciar Sesión: Log in
 Inicio: Begin
+Inicio del programa: Program start
 instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
 Interacción: Interaction
 Ir a detalles de la página: Go to page details
@@ -380,6 +385,7 @@ La descripción debe ser mínimo de 3 caracteres.: Description must have at leas
 La descripción es requerida.: Description is required.
 La empresa a la que pertenece este usuario está inactiva: The company which this user belongs is inactive.
 La empresa aún no tiene configurado ningún nivel: Company has not any level added yet
+La empresa no tiene páginas asignadas o ya fueron asignadas: The company does not have assigned pages or they have already been assigned
 La empresa debe cargar el modelo de certificado y asociarlo a esta página: Company must upload the certficate model and associate it to this page
 La empresa está inactiva: The company is inactive
 La empresa es requerida.: Company is required.
@@ -439,6 +445,7 @@ minutos: minutes
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
+Módulos: Modules
 Mostrando registros del: Showing items of
 Mostrar: Show
 Mostrar preferencia: Show preference
@@ -504,6 +511,7 @@ Paso: Step
 País: Country
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 particpantes: participants
+particpante: participant
 Pdf: Pdf
 Perfil Empresarial: Company Profile
 Periodo: Period
@@ -513,6 +521,7 @@ Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
 Plantilla: Template
 Por favor, ingresa tu usuario y contraseña: Please, enter your username and password
+Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: It is hereby certified that the above-mentioned participant has completed and approved the corresponding tests
 Preferencias de la empresa: Preferences of company
 Preferencia de plantillas de las empresas: Layout preferences of the companies
 Preferencias de usuario: User preferences
@@ -531,7 +540,9 @@ Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You ca
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: You can contact to System Administrator in order to grant access to this module
 Puede ingresar de nuevo desde la pantalla de login: You can try loging in again
 Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0: You can request create a test for this page through the Content Administrator of Formación 2.0 team
+Puntaje: Score
 Puntaje con que se aprueba: Score with which it is approved
+Puntaje definitivo del programa: Definitive score of the program
 QR: QR
 Recordarme: Remember me
 Recordar mi contaseña: Remember my password
@@ -646,6 +657,7 @@ Usuarios registrados: Registered users
 Validar: Validate
 Valor de la pregunta: Question weighing
 Variables de colores que se aplican a la plantilla: Color variables that are applied to the template
+Veces cursadas: Veces cursadas
 Vencido: Expired
 Vencimiento: Expiration
 Ver historial: See history

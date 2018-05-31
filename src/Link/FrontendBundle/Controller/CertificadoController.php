@@ -81,8 +81,6 @@ class CertificadoController extends Controller
 				$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                 	'pagina' => $pagina->getId() ));
 
-				//$aleatorio = $f->generarClave();
-		        //$contenido = $aleatorio.$session->get('usuario')['apellido'].$session->get('usuario')['nombre'].$pagina->getNombre();
 		        $size =2;
 				$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
 
@@ -283,7 +281,7 @@ class CertificadoController extends Controller
 	                                    <span class='tituloPart'>".$this->get('translator')->trans('Participante').": <span>".$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido']."</span></span>
 		                            </div>
 		                            <div class='row'>
-	                                    <span class='tituloPart'>".$this->get('translator')->trans('Email').": <span>".$session->get('usuario')['correo']."</span></span>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Correo electrónico').": <span>".$session->get('usuario')['correo']."</span></span>
 		                            </div>
 		                            <div class='row'>
 	                                    <span class='tituloPart'>".$this->get('translator')->trans('Programa').": <span>".$session->get('paginas')[$programa_id]['nombre']."</span></span>
@@ -297,7 +295,7 @@ class CertificadoController extends Controller
 		                        </div>
 			                </div>
 			                <div class='row'>
-		                        <p class='textConst'>".$this->get('translator')->trans('Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a:')."</p>
+		                        <p class='textConst'>".$this->get('translator')->trans('Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a').":</p>
 			                </div>
 			                <div class='row'>";
 			                $puntaje=0;
@@ -405,7 +403,7 @@ class CertificadoController extends Controller
 									<tr>
 										<td width='150' class='center'>".$this->get('translator')->trans('Firma del Participante')."</td>
 										<td width='150'></td>
-										<td width='150' class='center'>".$this->get('translator')->trans('Firma del supervisor')."</td>
+										<td width='150' class='center'>".$this->get('translator')->trans('Firma del Supervisor')."</td>
 									</tr>
 								</table>
 							</div>

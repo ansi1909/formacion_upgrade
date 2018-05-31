@@ -344,7 +344,7 @@ class CertificadoController extends Controller
                         {
                             $error = 1;
                             $html .= '<div class="col-sm-14 col-md-14 col-lg-14">
-                                        <label for="texto" class="col-20 col-form-label">La Empresa no tiene Páginas asignadas o ya fueron asignadas.</label>
+                                        <label for="texto" class="col-20 col-form-label">'.$this->get('translator')->trans('La empresa no tiene páginas asignadas o ya fueron asignadas').'.</label>
                                         <input class="form-control form_sty1" type="hidden" name="entidad" id="entidad" value="">
                                        </div>';
                         }
