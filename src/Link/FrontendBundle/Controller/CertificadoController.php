@@ -301,7 +301,7 @@ class CertificadoController extends Controller
 			                $puntaje=0;
 			                $indice=1;
 							if(count($session->get('paginas')[$programa_id]['subpaginas']))
-							{									
+							{
 								$valor='';
 								$style='';
 								$guion='';
@@ -322,7 +322,7 @@ class CertificadoController extends Controller
 								            </tr>";
 								foreach ($programa_aprobado as $programa)
 						        {
-						        	$indice=$indice+1;
+						        	
 						        	if($programa['categoria']==2)
 						        	{
 						        		$valor=20;
@@ -344,10 +344,11 @@ class CertificadoController extends Controller
 							        }
 									$puntaje = $puntaje+$programa['nota'];
 
-									if($programa['nota']!=0) 
+									if($programa['nota']!=0)
+									{
+										$indice=$indice+1;
 										$nota=$programa['nota'];
-									else 
-										$nota="N/A";
+									}
         $html .= "  						<tr ".$style.">
 						               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
 								               	<td class='center'>".$programa['cantidad_intentos']."</td>
