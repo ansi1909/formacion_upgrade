@@ -455,6 +455,13 @@ id serial,
 twig varchar(100),
  PRIMARY KEY (id));
 
+CREATE TABLE admin_tipo_logo(
+-- Attributes --
+id serial,
+nombre varchar(20),
+css varchar(50),
+ PRIMARY KEY (id));
+
 CREATE TABLE admin_preferencia(
 -- Attributes --
 id serial,
@@ -634,10 +641,3 @@ fecha_creacion timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_alarma_id) REFERENCES admin_tipo_alarma (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
-
-CREATE TABLE admin_tipo_logo(
--- Attributes --
-id serial,
-nombre varchar(20),
-css varchar(50),
- PRIMARY KEY (id));
