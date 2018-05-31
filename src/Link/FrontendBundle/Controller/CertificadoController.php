@@ -212,192 +212,206 @@ class CertificadoController extends Controller
 		    $constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 10, 15, 5));
 
 			$html="<!DOCTYPE html>
-					<html lang='es'>
-					    <head>
-					        <meta charset='UTF-8'>
-					        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-					        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-					        <title>Verificacion del codigoQR</title>
-					        <style type='text/css'>
-								body.detalle-noticias {
-									background-color: #fff; }
-								.constancia {
-							    	padding: 2px 0px; }
-								.constancia .imgConst {
-									width: 250px; 
-									height: 72px; }
-								.constancia .tituloConst {
-								    color: #5CAEE6;
-								    font-size: 2.25rem;
-								    font-weight: 400;
-								    line-height: 10px;}
-								.constancia .datosParticipante {
-								    margin-top: 1rem;
-								    border-radius: 1rem;
-								    background: #FAFAFA; }
-								.constancia .textConst {
-								    color: #212529;
-								    font-size: 1.5rem;
-								    font-weight: 400;
-								    line-height: 25px;
-								    text-aling:justify; }
-								.constancia .datosParticipante .tituloPart, .constancia .tituloPart {
-									padding: 4px;
-								  	color: #5C6266;
-								  	font-size: 1.125rem;
-								  	font-weight: 400;
-								  	line-height: 10px; }
-								.row {
-								    display: flex; flex-wrap: wrap; padding: 4px; }
-								.center {
-					        		text-align: center;}
-								.table-notas {
-						        	font-size: 1.125rem;
-						        	line-height: 10px;
-						        	font-weight: 300;
-						        	text-align: left; }	
-							    .table-notas thead th {
-							    	line-height: 10px;
-							    	color: #212529;
-							    	font-weight: 300;
-								    text-align: center;
-   							  	    padding: 6px; }
-								.table-notas tbody tr {
-								    color: #5CAEE6; }
-								.table-notas tbody td {
-								    border-bottom:1px solid #CFD1D2;
-								    padding: 4px;
-									cellpadding: 0; 
-									cellspacing: 0; }
-						    </style>
-				        </head>
-					    <body class='detalle-noticias'>
-					        <div class='constancia'>
-				                <div class='row center'>
-									<img class='imgConst' src='".$file."'/>
-			                        <h3 class='tituloConst'>Constancia de notas</h3>
-				                </div>
-				                <div class='row'>
-			                        <div class='datosParticipante'>
-			                            <div class='row'>
-		                                    <span class='tituloPart'>Participante: <span>".$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido']."</span></span>
-			                            </div>
-			                            <div class='row'>
-		                                    <span class='tituloPart'>Email: <span>".$session->get('usuario')['correo']."</span></span>
-			                            </div>
-			                            <div class='row'>
-		                                    <span class='tituloPart'>Programa: <span>".$session->get('paginas')[$programa_id]['nombre']."</span></span>
-			                            </div>
-			                            <div class='row'>
-		                                    <span class='tituloPart'>Inicio del programa: <span>".$session->get('paginas')[$programa_id]['inicio']."</span></span>
-			                            </div>
-			                            <div class='row'>
-		                                    <span class='tituloPart'>Fin del programa: <span>".$session->get('paginas')[$programa_id]['vencimiento']."</span></span>
-			                            </div>
-			                        </div>
-				                </div>
-				                <div class='row'>
-			                        <p class='textConst'>Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a:</p>
-				                </div>
-				                <div class='row'>";
-				                $puntaje=0;
-								if(count($session->get('paginas')[$programa_id]['subpaginas']))
-								{									
-									$valor='';
-									$style='';
-									$guion='';
-									$puntaje = $puntaje+$nota;
-			                    $html .= "<table class='table-notas'>
-				                            <thead>
-				                                <tr>
-				                                    <th style='width: 380;'>Modulos</th>
-				                                    <th style='width: 100;'>Veces cursadas</th>
-				                                    <th style='width: 100;'>Puntaje</th>
-				                                </tr>
-				                            </thead>
-				                            <tbody>
-												<tr style='font-size: 14px; font-weight: 300;'>
-									               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-									               <td class='center'>".$cantidad_intentos."</td>
-									               <td class='center'>".$nota."</td>
-									            </tr>";
-									foreach ($programa_aprobado as $programa)
-							        {
-							        	if($programa['categoria']==2)
+				<html lang='es'>
+				    <head>
+				        <meta charset='UTF-8'>
+				        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+				        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+				        <title>Constancia de notas</title>
+				        <style type='text/css'>
+							body.detalle-noticias {
+								background-color: #fff; }
+							.constancia {
+						    	padding: 2px 0px; }
+							.constancia .imgConst {
+								width: 250px; 
+								height: 72px; }
+							.constancia .tituloConst {
+							    color: #5CAEE6;
+							    font-size: 2.25rem;
+							    font-weight: 400;
+							    line-height: 10px;}
+							.constancia .datosParticipante {
+							    margin-top: 1rem;
+							    border-radius: 1rem;
+							    background: #FAFAFA; }
+							.constancia .textConst {
+							    color: #212529;
+							    font-size: 1.5rem;
+							    font-weight: 400;
+							    line-height: 25px;
+							    text-aling:justify; }
+							.constancia .datosParticipante .tituloPart, .constancia .tituloPart {
+								padding: 4px;
+							  	color: #5C6266;
+							  	font-size: 1.125rem;
+							  	font-weight: 400;
+							  	line-height: 10px; }
+							.row {
+							    display: flex; flex-wrap: wrap; padding: 4px; }
+							.center {
+				        		text-align: center;}
+							.table-notas {
+					        	font-size: 1.125rem;
+					        	line-height: 10px;
+					        	font-weight: 300;
+					        	text-align: left; }	
+						    .table-notas thead th {
+						    	line-height: 10px;
+						    	color: #212529;
+						    	font-weight: 300;
+							    text-align: center;
+							  	    padding: 6px; }
+							.table-notas tbody tr {
+							    color: #5CAEE6; }
+							.table-notas tbody td {
+							    border-bottom:1px solid #CFD1D2;
+							    padding: 4px;
+								cellpadding: 0; 
+								cellspacing: 0; }
+					    </style>
+			        </head>
+				    <body class='detalle-noticias'>
+				        <div class='constancia'>
+			                <div class='row center'>
+								<img class='imgConst' src='".$file."'/>
+		                        <h3 class='tituloConst'>".$this->get('translator')->trans('Constancia de Notas')."</h3>
+			                </div>
+			                <div class='row'>
+		                        <div class='datosParticipante'>
+		                            <div class='row'>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Participante').": <span>".$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido']."</span></span>
+		                            </div>
+		                            <div class='row'>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Email').": <span>".$session->get('usuario')['correo']."</span></span>
+		                            </div>
+		                            <div class='row'>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Programa').": <span>".$session->get('paginas')[$programa_id]['nombre']."</span></span>
+		                            </div>
+		                            <div class='row'>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Inicio del programa').": <span>".$session->get('paginas')[$programa_id]['inicio']."</span></span>
+		                            </div>
+		                            <div class='row'>
+	                                    <span class='tituloPart'>".$this->get('translator')->trans('Fin del programa').": <span>".$session->get('paginas')[$programa_id]['vencimiento']."</span></span>
+		                            </div>
+		                        </div>
+			                </div>
+			                <div class='row'>
+		                        <p class='textConst'>".$this->get('translator')->trans('Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a:')."</p>
+			                </div>
+			                <div class='row'>";
+			                $puntaje=0;
+			                $indice=1;
+							if(count($session->get('paginas')[$programa_id]['subpaginas']))
+							{									
+								$valor='';
+								$style='';
+								$guion='';
+								$puntaje = $puntaje+$nota;
+		                    $html .= "<table class='table-notas'>
+			                            <thead>
+			                                <tr>
+			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
+			                                    <th style='width: 100;'>".$this->get('translator')->trans('Veces cursadas')."</th>
+			                                    <th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
+			                                </tr>
+			                            </thead>
+			                            <tbody>
+											<tr style='font-size: 14px; font-weight: 300;'>
+								               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
+								               <td class='center'>".$cantidad_intentos."</td>
+								               <td class='center'>".$nota."</td>
+								            </tr>";
+								foreach ($programa_aprobado as $programa)
+						        {
+						        	$indice=$indice+1;
+						        	if($programa['categoria']==2)
+						        	{
+						        		$valor=20;
+						        		$guion='';
+						        	}else
+						        	{
+							        	if($programa['categoria']==3)
 							        	{
-							        		$valor=20;
-							        		$guion='';
-							        		//$style="'style='background: #DAE1E6;'";
+							        		$valor=30;
+							        		$guion='+ ';
 							        	}else
 							        	{
-								        	if($programa['categoria']==3)
-								        	{
-								        		$valor=30;
-								        		$guion='+ ';
-								        		//$style="'style='background: #F1F4F6;'";
-								        	}else
-								        	{
-								        		if($programa['categoria']==4)
-								        		{
-								        			$valor=40;
-								        			$guion='- ';
-									        		//$style="'style='background: #F1F4F6;'";
-								        		}
-								        	}
-								        }
-										$puntaje = $puntaje+$programa['nota'];
+							        		if($programa['categoria']==4)
+							        		{
+							        			$valor=40;
+							        			$guion='- ';
+							        		}
+							        	}
+							        }
+									$puntaje = $puntaje+$programa['nota'];
 
-	        $html .= "  						<tr ".$style.">
-							               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
-									               	<td class='center'>".$programa['cantidad_intentos']."</td>
-									               	<td class='center'>".$programa['nota']."</td>
-									            </tr>";
-									}
-									$margin='50';
-			$html .= "			            </tbody>
-	  			           		        </table>";
-								}else
-								{
-									$puntaje = $programa_aprobado['nota'];
-									$margin = '200';
-			$html .= "					<table class='table-notas' cellpadding='0' cellspacing='0'>
-				                            <thead>
-				                                <tr>
-				                                    <th style='width: 380;'>Modulos</th>
-				                                    <th style='width: 100;'>Veces cursadas</th>
-				                                    <th style='width: 100;'>Puntaje</th>
-				                                </tr>
-				                            </thead>
-				                            <tbody>
-												<tr style='font-size: 14px; font-weight: 300;'>
-									               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-									               <td class='center'>".$programa_aprobado['cantidad_intentos']."</td>
-									               <td class='center'>".$programa_aprobado['nota']."</td>
-									            </tr>
-											</tbody>
-						                </table>";
-								}			                       
-            $html .= "          </div>
-				                <div class='row'>
-			                        <span class='tituloPart'>Puntaje definitivo del programa: <span>".$puntaje/(count($session->get('paginas')[$programa_id]['subpaginas'])+1)."</span></span>
-				                </div>
-				                <div class='row' style='margin-top:".$margin."px;'>
-									<table text-align='center' width='600' border=0' height='50'>
-										<tr>
-											<td width='150' class='center'>_____________________</td>
-											<td width='150'></td>
-											<td width='150' class='center'>_____________________</td>
-										</tr>
-										<tr>
-											<td width='150' class='center'>Firma del Participante</td>
-											<td width='150'></td>
-											<td width='150' class='center'>Firma del supervisor</td>
-										</tr>
-									</table>
-								</div>
-					        </div>
-					    </body>
-					</html>";
+									if($programa['nota']!=0) 
+										$nota=$programa['nota'];
+									else 
+										$nota="N/A";
+        $html .= "  						<tr ".$style.">
+						               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
+								               	<td class='center'>".$programa['cantidad_intentos']."</td>
+								               	<td class='center'>".$nota."</td>
+								            </tr>";
+								}
+								$margin='50';
+		$html .= "			            </tbody>
+  			           		        </table>";
+							}else
+							{
+								$puntaje = $programa_aprobado['nota'];
+								if($programa_aprobado['nota']!=0) 
+									$nota=$programa_aprobado['nota'];
+								else 
+									$nota="N/A";
+
+								$margin = '200';
+		$html .= "					<table class='table-notas' cellpadding='0' cellspacing='0'>
+			                            <thead>
+			                                <tr>
+			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
+			                                    <th style='width: 100;'>".$this->get('translator')->trans('Veces cursadas')."</th>
+			                                    <th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
+			                                </tr>
+			                            </thead>
+			                            <tbody>
+											<tr style='font-size: 14px; font-weight: 300;'>
+								               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
+								               <td class='center'>".$programa_aprobado['cantidad_intentos']."</td>
+								               <td class='center'>".$nota."</td>
+								            </tr>
+										</tbody>
+					                </table>";
+							}
+							
+        $html .= "          </div>
+			                <div class='row'>		                        
+								<table class='table-notas' cellpadding='0' cellspacing='0'>
+									<tr style='font-size: 16px; font-weight: 300;'>
+						               <td style='width: 500;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
+						               <td style='width: 170;' class='center'>".$puntaje/$indice."</td>
+						            </tr>
+				                </table>
+			                </div>
+			                <div class='row' style='margin-top:".$margin."px;'>
+								<table text-align='center' width='600' border=0' height='50'>
+									<tr>
+										<td width='150' class='center'>_____________________</td>
+										<td width='150'></td>
+										<td width='150' class='center'>_____________________</td>
+									</tr>
+									<tr>
+										<td width='150' class='center'>".$this->get('translator')->trans('Firma del Participante')."</td>
+										<td width='150'></td>
+										<td width='150' class='center'>".$this->get('translator')->trans('Firma del supervisor')."</td>
+									</tr>
+								</table>
+							</div>
+				        </div>
+				    </body>
+				</html>";
 
 			$constancia_pdf->WriteHTML($html);
             $constancia_pdf->output('notas.pdf');

@@ -2021,12 +2021,14 @@ class Functions
 			}
 	        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($subpage);
 			
-	        $subpaginas[$subpage] = array('id' => $subpage,
-	        							  'nombre' => $pagina->getNombre(),
-	        							  'categoria' => $pagina->getCategoria()->getId(),
-							  		      'nota' => $nota,
-			               			      'cantidad_intentos' => $cantidad_intentos);
-
+			if($nota>0)
+			{
+		        $subpaginas[$subpage] = array('id' => $subpage,
+		        							  'nombre' => $pagina->getNombre(),
+		        							  'categoria' => $pagina->getCategoria()->getId(),
+								  		      'nota' => $nota,
+				               			      'cantidad_intentos' => $cantidad_intentos);
+		    }
 		}
 
 		return $subpaginas;
