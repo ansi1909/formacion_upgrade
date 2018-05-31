@@ -35,14 +35,14 @@
         <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
         <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
         <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
-        {% set like_usuario_id = app.session.get('usuario')['id'] %}
-        <input type="hidden" id="like_usuario_id" name="like_usuario_id" value="{{ like_usuario_id }}">
+        {#{% set like_usuario_id = app.session.get('usuario')['id'] %}
+        <input type="hidden" id="like_usuario_id" name="like_usuario_id" value="{{ like_usuario_id }}">#}
 
         
         {# HEADER #}
         <header>
             {% block header %}
-            <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
                 <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
                         {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
@@ -137,8 +137,8 @@
                         </div>
                     </div>
                     {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
-                    <div class=" d-flex flex-column ">
-                        <div class="wrapperDdMenu" data-toggle="tooltip" data-placement="bottom" title="Configuración de usuarios">
+                    <div class="d-flex flex-column">
+                        <div class="wrapperDdMenu" data-toggle="tooltip" data-placement="bottom" title="{{ 'Configuración del usuario'|trans }}">
                             <a href="#" class="perfil no-decorate" id="config">
                                 {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                                 <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown" >expand_more</span>
