@@ -52,6 +52,7 @@
 
 .navbar .logo {
     width: 15.625rem;
+    text-align: center;
     @include media-breakpoint-down(xs){
         max-width: 7.8125rem;
     }
