@@ -100,7 +100,7 @@ class CertificadoController extends Controller
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
 		            $certificado_pdf->writeHTML('<page title="prueba" pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
 		                                            <div style="font-size:20px;">'.$certificado->getEncabezado().'</div>
-		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
+		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 		                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
 		                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
@@ -126,7 +126,7 @@ class CertificadoController extends Controller
                 		$constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 60, 10, 5));
 		                $constancia_pdf->writeHTML('<page  orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
 		                                                <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
-		                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
+		                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 		                                                <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
 		                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">'.$pagina->getNombre().'</div>
 		                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getTitulo().'</div>
@@ -301,7 +301,7 @@ class CertificadoController extends Controller
 			                $puntaje=0;
 			                $indice=1;
 							if(count($session->get('paginas')[$programa_id]['subpaginas']))
-							{									
+							{
 								$valor='';
 								$style='';
 								$guion='';
@@ -322,7 +322,7 @@ class CertificadoController extends Controller
 								            </tr>";
 								foreach ($programa_aprobado as $programa)
 						        {
-						        	$indice=$indice+1;
+						        	
 						        	if($programa['categoria']==2)
 						        	{
 						        		$valor=20;
@@ -344,10 +344,11 @@ class CertificadoController extends Controller
 							        }
 									$puntaje = $puntaje+$programa['nota'];
 
-									if($programa['nota']!=0) 
+									if($programa['nota']!=0)
+									{
+										$indice=$indice+1;
 										$nota=$programa['nota'];
-									else 
-										$nota="N/A";
+									}
         $html .= "  						<tr ".$style.">
 						               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
 								               	<td class='center'>".$programa['cantidad_intentos']."</td>
