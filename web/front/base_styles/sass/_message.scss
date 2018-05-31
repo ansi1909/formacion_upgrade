@@ -47,14 +47,14 @@
                 text-align: center;
             }
         }
-    p {
-        max-width: 60%;
-        text-align: justify;
+        h1{
+            font-size: 3.45rem; 
+        }
+        p {
+            max-width: 60%;
+            text-align: justify;
+        }
     }
-
-
-
-}
 #equis {
     position: absolute;
     right: 0;
@@ -111,12 +111,17 @@
 }
 
 .well-message-prog {
-
     p{
         max-width: 70%;
         max-height: 900px;
         opacity: 1;
         transition:  all 1.5s ease-in-out;
+        margin-top: 2rem;
+    }
+    img{
+        width: 820px;
+        transform: translateX(-6.25%);
+        border-radius: .5rem;
     }
 }
 
