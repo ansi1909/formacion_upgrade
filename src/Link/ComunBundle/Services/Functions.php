@@ -2552,4 +2552,18 @@ class Functions
 		return $query->getSingleScalarResult();
 
 	}
+
+	// Retorna el id de la página padre de todas
+	public function paginaRaiz($pagina)
+	{
+
+		if ($pagina->getPagina())
+		{
+			return $this->paginaRaiz($pagina->getPagina());
+		}
+		else {
+			return $pagina->getId();
+		}
+
+	}
 }

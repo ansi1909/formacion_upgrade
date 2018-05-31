@@ -148,6 +148,7 @@ Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar la página.: Debe seleccionar la página.
+Debe seleccionar la página destino: Debe seleccionar la página destino
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
@@ -175,6 +176,7 @@ Editar perfil: Editar perfil
 Editar tema: Editar tema
 el: el
 Elegir empresa: Elegir empresa
+Elija el destino de la página: Elija el destino de la página
 Eliminado: Eliminado
 Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
@@ -440,6 +442,7 @@ Modificar evento: Modificar evento
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
 Mostrar preferencia: Mostrar preferencia
+Mover: Mover
 Muro: Muro
 Ningún dato disponible en esta tabla: Ningún dato disponible en esta tabla
 Nivel: Nivel
@@ -447,6 +450,7 @@ Nivel no existente para esta empresa: Nivel no existente para esta empresa
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
+No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
 No existen páginas: No existen páginas
 No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
@@ -486,6 +490,8 @@ Opciones de la pregunta: Opciones de la pregunta
 Orden: Orden
 Página: Página
 Página asociada: Página asociada
+Página a mover: Página a mover
+Página movida: Página movida
 Página seleccionada: Página seleccionada
 Página asociada a la evaluación: Página asociada a la evaluación
 Página padre: Página padre

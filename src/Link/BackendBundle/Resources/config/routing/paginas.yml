@@ -73,3 +73,7 @@ _showAsignacion:
 _moverPagina:
     path:     /mover/{pagina_id}
     defaults: { _controller: LinkBackendBundle:Pagina:mover }
+
+_paginaMovida:
+    path:     /paginaMovida/{pagina_id}/{programa_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:paginaMovida }

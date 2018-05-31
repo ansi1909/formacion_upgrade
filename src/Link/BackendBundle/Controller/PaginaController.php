@@ -1035,14 +1035,18 @@ class PaginaController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
-            $pagina_mover_id = $request->request->get('pagina_mover_id');
-            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_mover_id);
 
-            $pagina->setPagina($pagina_id);
+            $pagina_padre_id = $request->request->get('pagina_padre_id');
+            $pagina_padre = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+
+            $pagina->setPagina($pagina_padre);
             $em->persist($pagina);
             $em->flush();
 
-            return $this->redirectToRoute('_paginas', array('app_id' => $session->get('app_id')));
+            $programa_id = $f->paginaRaiz($pagina_padre);
+
+            return $this->redirectToRoute('_paginaMovida', array('pagina_id' => $pagina->getId(), 'programa_id' => $programa_id));
+
         }
 
         // Páginas hermanas
@@ -1052,7 +1056,7 @@ class PaginaController extends Controller
         $qb->select('p')
            ->from('LinkComunBundle:CertiPagina', 'p')
            ->andWhere('p.id != :me')
-           ->orderBy('p.orden', 'DESC');
+           ->orderBy('p.orden', 'ASC');
         $parametros['me'] = $pagina_id;
         if ($pagina->getPagina())
         {
@@ -1083,6 +1087,42 @@ class PaginaController extends Controller
 
         return $this->render('LinkBackendBundle:Pagina:mover.html.twig', array('pagina' => $pagina,
                                                                                'pagina_str' => $str));
+
+    }
+
+    public function paginaMovidaAction($pagina_id, $programa_id, Request $request)
+    {
+
+        $session = new Session();
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+      
+        if (!$session->get('ini'))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $programa = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $paginas_asociadas[] = $pagina_id;
+        
+        $str = '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$programa->getId().'" p_str="'.$programa->getCategoria()->getNombre().': '.$programa->getNombre().'">'.$programa->getCategoria()->getNombre().': '.$programa->getNombre();
+        $subPaginas = $f->subPaginas($programa->getId(), $paginas_asociadas);
+        if ($subPaginas['tiene'] > 0)
+        {
+            $str .= '<ul>';
+            $str .= $subPaginas['return'];
+            $str .= '</ul>';
+        }
+        $str .= '</li>';
+
+        return $this->render('LinkBackendBundle:Pagina:paginaMovida.html.twig', array('pagina_str' => $str));
 
     }    
 

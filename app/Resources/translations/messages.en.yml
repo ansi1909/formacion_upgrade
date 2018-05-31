@@ -148,6 +148,7 @@ Debe coincidir con la contraseña: It must be equal to password
 Debe ingresar el correo electrónico.: You must enter the email.
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar la página.: You must select the page.
+Debe seleccionar la página destino: You must select the destination page
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
 Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
@@ -175,6 +176,7 @@ Editar perfil: Edit profile
 Editar tema: Edit topic
 el: the
 Elegir empresa: Choose company
+Elija el destino de la página: Choose target of the page
 Eliminado: Deleted
 Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
@@ -440,6 +442,7 @@ Modificar evento: Modify event
 Mostrando registros del: Showing items of
 Mostrar: Show
 Mostrar preferencia: Show preference
+Mover: Move
 Muro: Wall
 Ningún dato disponible en esta tabla: No data available in this table
 Nivel: Level
@@ -447,6 +450,7 @@ Nivel no existente para esta empresa: No level for this company
 Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
+No existe destino al que se pueda mover la página: There is not destination in which the page can be moved
 No existe evaluación para esta página: There is not test for this page
 No existen páginas: There are no pages
 No hay problema, te enviaremos un correo con: No problem, we send you an email with
@@ -486,6 +490,8 @@ Opciones de la pregunta: Options of the question
 Orden: Order
 Página: Page
 Página asociada: Associated page
+Página a mover: Page to move
+Página movida: Page moved
 Página seleccionada: Selected page
 Página asociada a la evaluación: Page associated to this test
 Página padre: Father page
