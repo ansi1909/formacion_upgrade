@@ -1920,7 +1920,7 @@ p.up {
   font-family: "Open Sans"; }
 .lesson-container img {
   border-radius: 1rem;
-  width: 80% !important;
+  width: 100% !important;
   height: auto; }
 .lesson-container .audio-player img {
   width: 100%;
