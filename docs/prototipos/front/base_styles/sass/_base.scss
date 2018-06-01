@@ -125,6 +125,15 @@ body.codigoQR{
     background-repeat: no-repeat;
     background-size: 30vw auto;
     background-position: top right;
+    @include media-breakpoint-down(md){
+        background-size: 50% auto;
+    }
+    @include media-breakpoint-down(sm){
+        background-size: 75% auto;
+    }
+    @include media-breakpoint-down(xs){
+        background-size: 100% auto;
+    }
 }
 
 .audio-player{

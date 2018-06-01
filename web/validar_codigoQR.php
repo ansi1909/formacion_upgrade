@@ -52,7 +52,7 @@ if(!$connect)
 	                        <img class="imgForm" src="/formacion2.0/web/front/assets/img/formacion2.0.svg" alt="">
 	                    </div> 
 	                </div>
-	                <div class="row mt-6 mb-2">
+	                <div class="row">
 	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
 	                        <h3 class="text-cQR">Se hace constar que:</h3>
 	                    </div> 
@@ -62,7 +62,7 @@ if(!$connect)
 	                        <h1 class="nameP-cQR"><?php echo $usuario;?></h1>
 	                    </div>
 	                </div>
-	                <div class="row mt-6">
+	                <div class="row">
 	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
 	                        <h3 class="text-cQR">Completó exitosamente el programa:</h3>
 	                    </div> 
@@ -73,12 +73,12 @@ if(!$connect)
 	                    </div>
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
-	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
+	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
 	                        <span class="text-cQR">Si quiere saber mas de nuestros productos y servicios, visitanos en:</span>
 	                    </div> 
 	                </div>
 	                <div class="row align-items-center justify-content-center mt-3">
-	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
+	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12 text-center">
 	                        <a class="link" href="https://www.formacion2puntocero.com/" target="_blank">https://www.formacion2puntocero.com/</a>
 	                    </div> 
 	                </div>

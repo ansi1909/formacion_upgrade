@@ -6,6 +6,25 @@
     .imgForm{
         width: 25rem;
         height: auto;
+        @include media-breakpoint-only(sm){
+            width: 18rem;
+            position: relative;
+            top: 10%;
+        }
+        @include media-breakpoint-only(xs){
+            width: 10rem;
+            position: relative;
+            top: 20%;
+            left: 100%;
+            transform: translateX(-40%);
+        }
+        @include media-breakpoint-only(xxs){
+            width: 10rem;
+            position: relative;
+            top: 20%;
+            left: 95%;
+            transform: translateX(-50%);
+        }
     }
     .text-cQR{
         color: $gray-700;	
@@ -14,6 +33,22 @@
         line-height: 1.5rem;
         text-transform: uppercase;
         font-weight: $font-weight-normal;
+        margin-top: 2rem;
+        @include media-breakpoint-only(sm){
+            font-size: $p-font-size;
+            margin-top: 3rem;
+            width: 100%;
+        }
+        @include media-breakpoint-only(xs){
+            font-size: $font-size-sm;
+            margin-top: 3rem;
+            width: 100%;
+        }
+        @include media-breakpoint-only(xxs){
+            font-size: $font-size-sm;
+            margin-top: 3rem;
+            width: 100%;
+        }
     }
     .nameP-cQR{
         color: $blue;	
@@ -23,6 +58,19 @@
         line-height: 1rem;
         text-shadow: 2px 2px 2px rgba(56, 56, 56, .2);
         text-transform: uppercase;
+        @include media-breakpoint-only(sm){
+            font-size: $h4-font-size;
+            line-height: 1.5rem;
+            width: 75%;
+        }
+        @include media-breakpoint-only(xs){
+            font-size: $font-size-base;
+            width: 75%;
+        }
+        @include media-breakpoint-only(xxs){
+            font-size: $font-size-base;
+            width: 75%;
+        }
     }
     .progA-cQR{
         color: $blue;	
@@ -32,6 +80,19 @@
         line-height: 2.5rem;
         text-shadow: 2px 2px 2px rgba(56, 56, 56, .2);
         text-transform: uppercase;
+        margin-bottom: 2rem;
+        @include media-breakpoint-only(sm){
+            font-size: $h4-font-size;
+            line-height: 1.75rem;
+        }
+        @include media-breakpoint-only(xs){
+            font-size: $font-size-base;
+            line-height: 1.5rem;
+        }
+        @include media-breakpoint-only(xxs){
+            font-size: $font-size-base;
+            line-height: 1.5rem;
+        }
     }
     
     .link{
@@ -42,5 +103,18 @@
         text-decoration: none;
         font-weight: $font-weight-normal-hard;
         text-align: center;
+        padding-bottom: 2rem;
+        @include media-breakpoint-only(sm){
+            font-size: $h5-font-size;
+            line-height: 1.5rem;
+        }
+        @include media-breakpoint-only(xs){
+            font-size: $font-size-base;
+            width: 75%;
+        }
+        @include media-breakpoint-only(xxs){
+            font-size: $font-size-base;
+            width: 75%;
+        }
     }
 }

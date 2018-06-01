@@ -46,6 +46,7 @@ $tam-ha:                      $tam-base * 3;
 // adapting to different screen sizes, for use in media queries.
 
 $grid-breakpoints: (
+  xxs: 300px,
   xs: 325px,
   sm: 560px,
   md: 768px,
