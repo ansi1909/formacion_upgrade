@@ -189,11 +189,10 @@ class CalendarioController extends Controller
          
         $alarma_usuarios = $query->getResult();
 
-        $descripcion= 'A sido publicado el evento '. $evento->getNombre() .' inicia el '. $evento->getFechaInicio()->format('d-m-Y G:ia') . ' y finaliza el '. $evento->getFechaFin()->format('d-m-Y G:ia');
-            foreach($alarma_usuarios as $usuario){
-
-                $f->newAlarm($yml['parameters']['tipo_alarma']['evento'], $descripcion, $usuario, $evento->getId(), $evento->getFechaInicio());
-            }
+        $descripcion= $this->get('translator')->trans('Ha sido publicado el evento').' '. $evento->getNombre() .'. '.$this->get('translator')->trans('Inicia el').' '. $evento->getFechaInicio()->format('d-m-Y H:i a') . ' '.$this->get('translator')->trans('y finaliza el').' '. $evento->getFechaFin()->format('d-m-Y H:i a').'.';
+        foreach($alarma_usuarios as $usuario){
+            $f->newAlarm($yml['parameters']['tipo_alarma']['evento'], $descripcion, $usuario, $evento->getId(), $evento->getFechaInicio());
+        }
 
         if($evento->getNivel()){
             $nombre_nivel = $evento->getNivel()->getNombre();

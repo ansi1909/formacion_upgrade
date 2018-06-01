@@ -13,11 +13,12 @@ use Symfony\Component\HttpFoundation\Cookie;
 class CalendarioDeEventosController extends Controller
 {
 
-    public function indexAction()
+    public function indexAction($view, $date)
     {
-       $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
+
         $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
 
         if (!$session->get('iniFront'))
         {
@@ -25,21 +26,18 @@ class CalendarioDeEventosController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
 
-        $usuario_id = $session->get('usuario')['id'];
-
-        return $this->render('LinkFrontendBundle:CalendarioDeEventos:index.html.twig', array('usuario_id' => $usuario_id));
-
-        $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
-
-        return $response;
+        return $this->render('LinkFrontendBundle:CalendarioDeEventos:index.html.twig', array('view' => $view,
+                                                                                             'date' => $date));
 
     }
 
-    public function eventosAction($userID)
+    public function eventosAction()
     {
         
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($userID); 
+        
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
         $consult_eventos = $em->createQuery('SELECT ae FROM LinkComunBundle:AdminEvento ae
                                              JOIN LinkComunBundle:AdminEmpresa e 
@@ -59,7 +57,8 @@ class CalendarioDeEventosController extends Controller
             if($evento->getNivel()){
                 $nombre_nivel = $evento->getNivel()->getNombre();
                 $id_nivel = $evento->getNivel()->getId();
-            }else{
+            }
+            else{
                 $nombre_nivel = 'Todos los niveles';
                 $id_nivel = 0;
             }

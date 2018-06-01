@@ -587,89 +587,81 @@ class DefaultController extends Controller
         
     public function ajaxNotiAction(Request $request)
     {
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $f = $this->get('funciones');
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
-                                   WHERE a.usuario = :usuario_id
+                                   WHERE a.usuario = :usuario_id 
+                                    AND a.fechaCreacion <= :hoy 
                                    ORDER BY a.id DESC')
                     ->setMaxResults(10)
-                    ->setParameter('usuario_id', $usuario->getId());
+                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                          'hoy' => date('Y-m-d H:i:s')));
         $notificaciones = $query->getResult();
 
-        $hoy = new \DateTime();
-        $now = strtotime($hoy->format('d-m-Y'));
-        $noti ='';
-        $sonar=0;
-        $noti = '';
+        $sonar = 0;
+        $html = '';
+        
         foreach ($notificaciones as $notificacion)
         {
-            $fecha = strtotime($notificacion->getFechaCreacion()->format('d-m-Y'));
-            if ($fecha <= $now) {
+            
+            if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
+                $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().'>
+                            <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
 
-               if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
-
-                    $noti.='<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId() .'>
-                            <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId() .'">';
-
-                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) {
-
-                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
-                    $noti.='<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' =>$entidad->getId())).'">';
-
-                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento']) {
-
-                    $noti.='<a href="'.$this->generateUrl('_calendarioDeEventos').'">';
-
-                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) {
-
-                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
-                    $noti.='<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' =>$entidad->getId())).'">';
-
-                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['noticia']) {
-
-                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($notificacion->getEntidadId());
-                    $noti.='<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' =>$entidad->getId())).'">';
-
-                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['novedad']) {
-
-                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($notificacion->getEntidadId());
-                    $noti.='<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' =>$entidad->getId())).'">';
-
-                }elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['biblioteca']) {
-
-                    $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($notificacion->getEntidadId());
-                    $noti.='<a href="'.$this->generateUrl('_bibliotecaDetalle', array('biblioteca_id' =>$entidad->getId())).'">';
-
-                }
-                    if ($notificacion->getLeido() == true) {
-                            $noti .= '<li class="AnunListNotify " data="'.$notificacion->getId() .'">
-                                      <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value= "'. $notificacion->getTipoAlarma()->getId() .'" >';
-                        }
-                        elseif ($notificacion->getLeido() == false) {
-                            $sonar= 1;
-                            $noti .= '<li class="AnunListNotify notiSinLeer leido " data="'.$notificacion->getId() .'">
-                                      <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value= "'. $notificacion->getTipoAlarma()->getId() .'" >';
-                        }       
-                               $noti .= '<div class="anunNotify">
-                                   <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss() .'"><i class="material-icons icNotify">'. $notificacion->getTipoAlarma()->getIcono() .'</i></span>
-                                   <p class="textNotify text-justify">'. $notificacion->getDescripcion() .'</p>
-                               </div>
-                            </li>
-                        </a>';
             }
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) 
+            {
+                $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
+            }
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento'])
+            {
+                $html .= '<a href="'.$this->generateUrl('_calendarioDeEventos', array('view' => 'basicDay', 'date' => $notificacion->getFechaCreacion()->format('Y-m-d'))).'">';
+            }
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) 
+            {
+                $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
+            }
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['noticia'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['novedad']) 
+            {
+                $html .= '<a href="'.$this->generateUrl('_noticiaDetalle', array('noticia_id' => $notificacion->getEntidadId())).'">';
+            }
+            elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['biblioteca']) 
+            {
+                $html .= '<a href="'.$this->generateUrl('_bibliotecaDetalle', array('biblioteca_id' => $notificacion->getEntidadId())).'">';
+            }
+                
+            if ($notificacion->getLeido()) 
+            {
+                    $html .= '<li class="AnunListNotify " data="'.$notificacion->getId().'">
+                              <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId() .'">';
+            }
+            else {
+                $sonar = 1;
+                $html .= '<li class="AnunListNotify notiSinLeer leido " data="'.$notificacion->getId().'">
+                          <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId().'">';
+            }       
+            
+            $html .= '<div class="anunNotify">
+                        <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss().'"><i class="material-icons icNotify">'.$notificacion->getTipoAlarma()->getIcono().'</i></span>
+                            <p class="textNotify text-justify">'. $notificacion->getDescripcion().'</p>
+                    </div>
+                </li>
+            </a>';
+
         }
 
-        $noti .= '<li class="listMoreNotify text-center">
-                    <a href="'.$this->generateUrl('_notificaciones').'"><span class="moreNotify"><i class="material-icons icMore">add</i>Ver más</span></a>
+        $html .= '<li class="listMoreNotify text-center">
+                    <a href="'.$this->generateUrl('_notificaciones').'"><span class="moreNotify"><i class="material-icons icMore">add</i>'.$this->get('translator')->trans('Ver más').'</span></a>
                   </li>';
 
-        $return = json_encode(array('noti' => $noti,
+        $return = json_encode(array('html' => $html,
                                     'sonar' => $sonar));
+
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
     public function ajaxLeidoAction(Request $request)
