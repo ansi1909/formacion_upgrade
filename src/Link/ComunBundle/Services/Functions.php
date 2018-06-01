@@ -2568,4 +2568,14 @@ class Functions
 		}
 
 	}
+
+	public function sesionBloqueda($sesion_id)
+	{
+
+		$em = $this->em;
+		$sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($sesion_id);
+
+		return !$sesion->getDisponible();
+
+	}
 }
