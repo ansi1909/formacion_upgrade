@@ -168,16 +168,17 @@
     margin: 32px;
     box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19);
     transition: .5s;
+    height: auto;
     @include media-breakpoint-down(xs) {
         display: block;
     }
-    
     .alertTimeGood{
         background: $green;
         border-radius: 50rem;
         padding: 0 calc(1rem - 8px);
         color: $gray-700;
         font-weight: $font-weight-medium;
+        font-size: 11px;
         @include media-breakpoint-down(sm) {
             white-space: nowrap;
             position: relative;
@@ -197,6 +198,7 @@
         padding: 0 calc(1rem - 8px);
         color: $gray-700;
         font-weight: $font-weight-medium;
+        font-size: 11px;
         @include media-breakpoint-down(sm) {
             white-space: nowrap;
             position: relative;
@@ -216,6 +218,7 @@
         border-radius: 50rem;
         padding: 0 calc(1rem - 8px);
         font-weight: $font-weight-medium;
+        font-size: 11px;
         @include media-breakpoint-down(sm) {
             white-space: nowrap;
             position: relative;
@@ -234,7 +237,7 @@
 
 .card-current {
     width: 700px;
-    height: auto;
+    height: 160px;
 
     @include media-breakpoint-down(md) {
         width: 500px;
@@ -255,8 +258,8 @@
     .card-hrz-img {
         // position: absolute;
         // top: 0;
-        width: 170px;
-
+        width: 25%;
+        height: auto;
         @include media-breakpoint-down(sm) {
             width: 25%;
         }
@@ -270,7 +273,7 @@
 }
 .card-hrz-body {
     width: 100%;
-    padding: 1rem;
+    padding: .5rem 1rem;
     @include media-breakpoint-down(sm) {
         .text-sm{
             font-size: .725rem;

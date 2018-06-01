@@ -1185,6 +1185,12 @@ a:focus, a:active, a:target, a:checked {
   @media (max-width: 559.98px) {
     .navbar .logo {
       max-width: 7.8125rem; } }
+.navbar .wraper-title-lesson {
+  max-width: 72%;
+  text-align: center;
+  margin: 0; }
+  .navbar .wraper-title-lesson h4 {
+    font-size: 1.4rem; }
 
 nav.navbar {
   box-shadow: 0 2px 8px 0 rgba(170, 175, 179, 0.56);
@@ -2310,7 +2316,8 @@ p.up {
   border-radius: 1rem;
   margin: 32px;
   box-shadow: 0px 16px 32px -24px rgba(92, 98, 102, 0.32), 0px 24px 43px -9px rgba(92, 98, 102, 0.19);
-  transition: .5s; }
+  transition: .5s;
+  height: auto; }
   @media (max-width: 559.98px) {
     .card-hrz {
       display: block; } }
@@ -2319,7 +2326,8 @@ p.up {
     border-radius: 50rem;
     padding: 0 calc(1rem - 8px);
     color: #797D80;
-    font-weight: 700; }
+    font-weight: 700;
+    font-size: 11px; }
     @media (max-width: 767.98px) {
       .card-hrz .alertTimeGood {
         white-space: nowrap;
@@ -2337,7 +2345,8 @@ p.up {
     border-radius: 50rem;
     padding: 0 calc(1rem - 8px);
     color: #797D80;
-    font-weight: 700; }
+    font-weight: 700;
+    font-size: 11px; }
     @media (max-width: 767.98px) {
       .card-hrz .alertTimeWarning {
         white-space: nowrap;
@@ -2355,7 +2364,8 @@ p.up {
     color: #FAFAFA;
     border-radius: 50rem;
     padding: 0 calc(1rem - 8px);
-    font-weight: 700; }
+    font-weight: 700;
+    font-size: 11px; }
     @media (max-width: 767.98px) {
       .card-hrz .alertTimeDanger {
         white-space: nowrap;
@@ -2371,7 +2381,7 @@ p.up {
 
 .card-current {
   width: 700px;
-  height: auto; }
+  height: 160px; }
   @media (max-width: 991.98px) {
     .card-current {
       width: 500px; } }
@@ -2384,7 +2394,8 @@ p.up {
       max-width: 15rem;
       height: auto; } }
   .card-current .card-hrz-img {
-    width: 170px; }
+    width: 25%;
+    height: auto; }
     @media (max-width: 767.98px) {
       .card-current .card-hrz-img {
         width: 25%; } }
@@ -2396,7 +2407,7 @@ p.up {
 
 .card-hrz-body {
   width: 100%;
-  padding: 1rem; }
+  padding: .5rem 1rem; }
   @media (max-width: 767.98px) {
     .card-hrz-body .text-sm {
       font-size: .725rem; } }

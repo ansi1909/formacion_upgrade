@@ -36,11 +36,11 @@
                 <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
                 <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>
                 <span class="text-sm color-light-grey d-none d-lg-block"> {{ ar.titulo_hijo }} </span>
-                <div class="progress mt-3">
+                <div class="progress mt-2">
                     <div class="progress-bar" role="progressbar" style="width: {{ ar.porcentaje }}%" aria-valuenow="{{ ar.porcentaje }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
-            <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
+            <div class="card-hrz-right float-right px-2 d-flex flex-wrap align-items-center justify-content-center ">
                 <div class="percent text-center mt-3">
                     <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
                     <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">Finaliza en {{ ar.fecha_vencimiento }} días</span>
