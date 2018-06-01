@@ -39,15 +39,15 @@ Link\ComunBundle\Entity\AdminTutorial:
             length: 250
             options:
                 fixed: false
-        fecha:
-            type: time
-            nullable: true
         descripcion:
             type: string
             nullable: true
             length: 1000
             options:
                 fixed: false
+        fecha:
+            type: date
+            nullable: true
     manyToOne:
         usuario:
             targetEntity: AdminUsuario

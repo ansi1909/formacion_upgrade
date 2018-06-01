@@ -51,18 +51,18 @@ class AdminTutorial
     private $imagen;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha", type="time", nullable=true)
-     */
-    private $fecha;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="descripcion", type="string", length=1000, nullable=true)
      */
     private $descripcion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="date", nullable=true)
+     */
+    private $fecha;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
@@ -183,30 +183,6 @@ class AdminTutorial
     }
 
     /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return AdminTutorial
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-    
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
      * Set descripcion
      *
      * @param string $descripcion
@@ -228,6 +204,30 @@ class AdminTutorial
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return AdminTutorial
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+    
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
     }
 
     /**

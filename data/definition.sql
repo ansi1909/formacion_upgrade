@@ -503,7 +503,7 @@ pdf varchar(250),
 video varchar(250),
 imagen varchar(250),
 descripcion varchar(1000),
-fecha timestamp without time zone,
+fecha date,
 usuario_id integer,
  PRIMARY KEY (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
