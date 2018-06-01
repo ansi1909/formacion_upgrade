@@ -220,6 +220,8 @@ El nombre de la evaluación es requerido.: El nombre de la evaluación es requer
 El nombre de la página debe ser mínimo de 3 caracteres.: El nombre de la página debe ser mínimo de 3 caracteres.
 El nombre de la página es requerido.: El nombre de la página es requerido.
 El nombre del archivo no debe contener acentos o caracteres especiales: El nombre del archivo no debe contener acentos o caracteres especiales
+El nombre del tutorial debe ser mínimo de 3 caracteres: El nombre del tutorial debe ser mínimo de 3 caracteres
+El nombre del tutorial es requerido: El nombre del tutorial es requerido
 El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
@@ -246,6 +248,7 @@ El valor del puntaje con que se aprueba no debe sobrepasar a 100.: El valor del 
 El tutor virtual aún no ha creado un tema de discusión: El tutor virtual aún no ha creado un tema de discusión
 El tutorial ha sido almacenada con éxito: El tutorial ha sido almacenada con éxito
 El Url proporcionado no es correcto: El Url proporcionado no es correcto
+El vídeo es requerido: El vídeo es requerido
 Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresa con estatus inactivo: Empresa con estatus inactivo
@@ -304,6 +307,9 @@ Evento no guardado: Evento no guardado
 Excelente: Excelente
 Experimenta la potencialidad de la capacitación online: Experimenta la potencialidad de la capacitación online
 Extensiones aceptadas: Extensiones aceptadas
+Extensiones aceptadas para el campo PDF: Extensiones aceptadas para el campo PDF
+Extensiones aceptadas para imagen: Extensiones aceptadas para imagen
+Extensiones aceptadas para vídeo: Extensiones aceptadas para vídeo
 Fecha: Fecha
 Fecha Creación: Fecha Creación
 Fecha fin: Fecha fin 
@@ -517,6 +523,7 @@ Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para env
 particpantes: particpantes
 particpante: participante
 Pdf: Pdf
+PDF requerido: PDF requerido
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
 Permisos: Permisos

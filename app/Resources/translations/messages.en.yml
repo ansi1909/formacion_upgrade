@@ -220,6 +220,8 @@ El nombre de la evaluación es requerido.: Test name is required.
 El nombre de la página debe ser mínimo de 3 caracteres.: Page name must have at leat 3 characters.
 El nombre de la página es requerido.: Page name is required.
 El nombre del archivo no debe contener acentos o caracteres especiales: File name must not have neither accents nor special characters
+El nombre del tutorial debe ser mínimo de 3 caracteres: Tutorial name must have at least 3 characters
+El nombre del tutorial es requerido: Tutorial name is required
 El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
@@ -246,6 +248,7 @@ El valor del puntaje con que se aprueba no debe sobrepasar a 100.: The score val
 El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
 El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
 El Url proporcionado no es correcto: Url given is incorrect
+El vídeo es requerido: Video is required
 Email de contacto: Contact Email
 Empresa: Company
 Empresa con estatus inactivo: Company with inactive status
@@ -304,6 +307,9 @@ Evento no guardado: Unsaved event
 Excelente: Excelent
 Experimenta la potencialidad de la capacitación online: Experience the potential of online training
 Extensiones aceptadas: Allowed extensions
+Extensiones aceptadas para el campo PDF: Allowed extensions for PDF file
+Extensiones aceptadas para imagen: Allowed extensions for image
+Extensiones aceptadas para vídeo: Allowed extensions for video
 Fecha: Date
 Fecha Creación: Creation Date
 Fecha fin: End date
@@ -517,6 +523,7 @@ Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send 
 particpantes: participants
 particpante: participant
 Pdf: Pdf
+PDF requerido: PDF is required
 Perfil Empresarial: Company Profile
 Periodo: Period
 Permisos: Permissions

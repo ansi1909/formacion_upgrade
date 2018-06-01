@@ -160,10 +160,10 @@ class TutorialController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $tipoArchivo=Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        $datosAjax=
+        $datosAjax =
         [
-            'tutorial_id'=>$request->request->get('tutorial_id'),
-            'nombre'=>$request->request->get('nombre'), 
+            'tutorial_id'=> $request->request->get('tutorial_id'),
+            'nombre' => $request->request->get('nombre'), 
             'pdf'=>$request->request->get('pdf'),
             'video'=>$request->request->get('video'), 
             'imagen'=>$request->request->get('imagen'),
@@ -185,8 +185,8 @@ class TutorialController extends Controller
         else
         {
              $tutorial = new AdminTutorial();
-             $datos=$this->setTutorial($em,$datosAjax,$tutorial,$session);
-             $tutorial=$datos['tutorial'];
+             $datos = $this->setTutorial($em,$datosAjax,$tutorial,$session);
+             $tutorial = $datos['tutorial'];
              $this->carpetaNueva($tutorial, $datos['routePdf'], $datos['routeImagen'],$datos['routeVideo'],$yml);
 
         }
@@ -197,8 +197,7 @@ class TutorialController extends Controller
                         'pdf' =>$tutorial->getPdf(),
                         'video' =>$tutorial->getVideo(),
                         'imagen'=>$tutorial->getImagen(),
-                        'descripcion'=>$tutorial->getDescripcion(),
-                        'delete_disabled' =>$f->linkEliminar($tutorial->getId(),'AdminTutorial'));
+                        'descripcion'=>$tutorial->getDescripcion());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

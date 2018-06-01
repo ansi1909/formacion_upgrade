@@ -63,8 +63,8 @@
 
 12. Aumentar las cantidad de memoria PHP de las siguientes variables en php.ini:
 	memory_limit = 128M
-	post_max_size = 8M
-	upload_max_filesize = 20M
+	post_max_size = 80M
+	upload_max_filesize = 80M
 	max_file_uploads = 20
 
 13. Para debugg se puede setear las siguientes variables en php.ini

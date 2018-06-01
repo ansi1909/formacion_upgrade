@@ -130,14 +130,16 @@
                 </span>
             </div>
         </div>
-        
     </form>
+    <div class="col-sm-16 col-md-16 col-lg-16 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
         <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El tutorial ha sido almacenada con éxito'|trans }}. 
     </div>
     <div class="card" id="detail" style="display:none;">
         <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
-            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Básicos'|trans}}</h4>
+            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{ 'Datos Básicos'|trans }}</h4>
         </div>
         <div class="card-block">
             <div class="container">
@@ -166,9 +168,9 @@
             </div>
         </div>
         <div class="card-footer">
-            <div class="col-sm-16 col-md-16 text-right">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+            <div class="col-sm-16 col-md-16 text-right" id="buttons">
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
@@ -188,6 +190,8 @@
     <script type="text/javascript">
 
         $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
             rules: {
                 'nombre': {
                     required: true,
@@ -196,102 +200,83 @@
                 'descripcion':{
                     required: true,
                     minlength: 3
-
                 },
-                'pdf':
-                    {
-                      required: true,
-                      extension: "pdf"
-
-                    },
-                'video':
-                    {
-                      required: true,
-                      extension: "mov|mpeg|m4v|mp4|avi|mpg|wma|flv|webm"
-
-                    },
-                'imagen':
-                    {
-                      
-                      extension: "jpg|jpeg|bmp|svg|png|gif|tiff"
-
-                    }
-
+                'pdf': {
+                  required: true,
+                  extension: "pdf"
+                },
+                'video': {
+                  required: true,
+                  extension: "mov|mpeg|m4v|mp4|avi|mpg|wma|flv|webm"
+                },
+                'imagen': {
+                  extension: "jpg|jpeg|bmp|svg|png|gif|tiff"
+                }
             },
             messages: {
                 'nombre': {
-                    required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'El nombre del tutorial es requerido'|trans }}.",
+                    minlength: "- {{ 'El nombre del tutorial debe ser mínimo de 3 caracteres'|trans }}."
                 },
                 'descripcion':{
-                    required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}",
+                    required: "- {{ 'La descripción es requerida.'|trans }}",
+                    minlength: "- {{ 'La descripción debe ser mínimo de 3 caracteres.'|trans }}",
                 },
                  'pdf':{
-                    required: "{{ 'Este campo es requerido.'|trans }}",
-                    extension: "{{ 'Extensiones aceptadas'|trans }}: pdf"
-                   
+                    required: "- {{ 'PDF requerido'|trans }}.",
+                    extension: "- {{ 'Extensiones aceptadas para el campo PDF'|trans }}: pdf."
                 },
                 'video':{
-                    required: "{{ 'Este campo es requerido.'|trans }}",
-                    extension: "{{ 'Extensiones aceptadas'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm"
-                   
+                    required: "- {{ 'El vídeo es requerido'|trans }}.",
+                    extension: "- {{ 'Extensiones aceptadas para vídeo'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm."
                 },
                 'imagen':{
-                   
-                    extension: "{{ 'Extensiones aceptadas'|trans }}: jpg,jpeg,bmp,svg,png,gif,tiff"
-                   
+                    extension: "- {{ 'Extensiones aceptadas para imagen'|trans }}: jpg,jpeg,bmp,svg,png,gif,tiff."
                 }
-
-
-           
-        }
+            }
         });
 
-                
-                function sweetAlertDeleteTutorial(id, entity, preg_opt=0)
-                {
-                    swal({
-                        title: "{{ '¿Desea eliminar el registro?'|trans }}",
-                        text: "{{ 'Si acepta no puede revertir el cambio'|trans }}",
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#e04646',
-                        cancelButtonColor: '#97af21',
-                        confirmButtonText: "{{ 'Eliminar'|trans }}",
-                        confirmButtonClass: 'fa fa-trash',
-                        cancelButtonClass: 'fa fa-times',
-                        cancelButtonText: "{{ 'Cancelar'|trans }}",
-                        allowOutsideClick: false
-                    }).then(function () {
-                        $.ajax({
-                            type: "POST",
-                            url: preg_opt == 0 ? $('#url_delete').val() : preg_opt,
-                            async: true,
-                            data: { id: id, entity: entity },
-                            dataType: "json",
-                            success: function(data) {
-                                swal(
-                                    "{{ 'Eliminado'|trans }}!",
-                                    "{{ 'Su registro ha sido eliminado'|trans }}",
-                                    'success'
-                                );
-                                setTimeout(function() {
-                                    window.table.ajax.reload(null,false);
-                                }, 3000);
-                            },
-                            error: function(){
-                                swal(
-                                    "{{ 'Mensaje del servidor'|trans }}!",
-                                    "{{ 'Ha ocurrido un error en la eliminación de este registro'|trans }}",
-                                    'error'
-                                );
-                            }
-                        });
-                    });
-                }
-
-
+        function sweetAlertDeleteTutorial(id, entity, preg_opt=0)
+        {
+            swal({
+                title: "{{ '¿Desea eliminar el registro?'|trans }}",
+                text: "{{ 'Si acepta no puede revertir el cambio'|trans }}",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e04646',
+                cancelButtonColor: '#97af21',
+                confirmButtonText: "{{ 'Eliminar'|trans }}",
+                confirmButtonClass: 'fa fa-trash',
+                cancelButtonClass: 'fa fa-times',
+                cancelButtonText: "{{ 'Cancelar'|trans }}",
+                allowOutsideClick: false
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: preg_opt == 0 ? $('#url_delete').val() : preg_opt,
+                    async: true,
+                    data: { id: id, entity: entity },
+                    dataType: "json",
+                    success: function(data) {
+                        swal(
+                            "{{ 'Eliminado'|trans }}!",
+                            "{{ 'Su registro ha sido eliminado'|trans }}",
+                            'success'
+                        );
+                        setTimeout(function() {
+                            window.table.ajax.reload(null,false);
+                        }, 3000);
+                    },
+                    error: function(){
+                        swal(
+                            "{{ 'Mensaje del servidor'|trans }}!",
+                            "{{ 'Ha ocurrido un error en la eliminación de este registro'|trans }}",
+                            'error'
+                        );
+                    }
+                });
+            });
+        }
         
     </script>
 {% endblock %}

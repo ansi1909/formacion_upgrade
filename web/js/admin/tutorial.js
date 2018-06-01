@@ -3,23 +3,31 @@ $(document).ready(function() {
 	///Variables globales ////////////
 
 	window.table=$('#tablaTutoriales').DataTable( //inicializacion de la tabla que contendra los registros	
-		{	paging: true, 
-			searching: true, 
-			ajax: $('#url_update').val(),
-			order: [[ 0, "desc" ]]
-		} );
+	{	
+		paging: true, 
+		searching: true, 
+		ajax: $('#url_update').val(),
+		order: [[ 0, "desc" ]]
+	} );
 
 	window.urlsHref=
-		{ //href de los input para cargar archivos
-		    'pdf_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales',
-		    'imagen_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/tutoriales',
-		    'video_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=video&rootFolder=recursos/tutoriales'
-		};
+	{ //href de los input para cargar archivos
+	    'pdf_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales',
+	    'imagen_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/tutoriales',
+	    'video_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=video&rootFolder=recursos/tutoriales'
+	};
 
-	
-	
+	$('.form-control').focus(function(){
+		$('#div-alert').hide();
+		$('#div-error').hide();
+		$('.form-control').removeClass('error');
+	});
 
-	$('#div-active-alert').hide();
+	$('.iframe-btn').click(function(){
+		$('#div-alert').hide();
+		$('#div-error').hide();
+		$('.form-control').removeClass('error');
+	});
 
 	$('.new').click(function(){
 		$('label.error').hide();
@@ -36,30 +44,26 @@ $(document).ready(function() {
 		$('#imagen').val("");
 		$('#descripcion').val("");
 		$('#div-alert').hide();
+		$('#div-error').hide();
 	});
 
 
 	$('#guardar').click(function(){
-		
 		console.log('Tutorial gurdar');
 		saveTutorial();
 	});
 
-	$('#nuevoTutorial').click(function()
-	{
+	$('#nuevoTutorial').click(function(){
 		document.getElementById("form").reset();
 		$('#guardar').prop('disabled',false);
 		$('#pdf_').attr('href',window.urlsHref['pdf_']);
 		$('#imagen_').attr('href',window.urlsHref['imagen_']);
 		$('#video_').attr('href',window.urlsHref['video_']);
-
-		
 	});
 
 	
 
-	$('#aceptar').click(function()
-	{
+	$('#aceptar').click(function(){
 		var tutorial_id=$('#tutorial_id').val();
 		if(tutorial_id!='')//si se edita un tutorial
 		{
@@ -69,8 +73,6 @@ $(document).ready(function() {
 		{
 			window.table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
 		}
-
-		
 	});
 
 	$('.iframe-btn').fancybox({	
@@ -81,8 +83,7 @@ $(document).ready(function() {
 		'autoSize'	: false
     });
 
-
-	$( "#BodyTable" ).on( "click",".edit" , function (){
+	$( "#BodyTable, #buttons" ).on( "click",".edit" , function (){
 		document.getElementById("form").reset();
 		var tutorial_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
@@ -95,6 +96,7 @@ $(document).ready(function() {
 		$('#guardar').show();
 		$('#cancelar').show();
 		$('#div-alert').hide();
+		$('#div-error').hide();
 		$.ajax({
 			type: "GET",
 			url: url_edit,
@@ -121,7 +123,7 @@ $(document).ready(function() {
 	});
 
 
-	$( "#BodyTable" ).on( "click",".delete" , function (){
+	$( "#BodyTable, #buttons" ).on( "click",".delete" , function (){
 		var tutorial_id = $(this).attr('data');
 		sweetAlertDeleteTutorial(tutorial_id, 'AdminTutorial');	
      });
@@ -143,6 +145,7 @@ function saveTutorial()
 {
     console.log('Save tutorial');
 	$('#div-alert').hide();
+	$('#div-error').hide();
 	if ($("#form").valid())
 	{
 		$('#guardar').prop('disabled', true);
@@ -157,22 +160,7 @@ function saveTutorial()
 				$('#p-pdf').html(data.pdf);
 				$('#p-video').html(data.video);
 				$( "#detail-edit" ).attr( "data", data.id );
-				if (data.delete_disabled != '') 
-				{
-					$("#detail-delete").hide();
-					$("#detail-delete").removeClass( "delete" );
-				}
-				else
-				{
-					$( "#detail-delete" ).attr("data",data.id);
-					$( "#detail-delete" ).addClass("delete");
-					$( "#detail-delete" ).show();
-					$('.delete').click(function()
-					{
-						var tutorial_id= $(this).attr('data');
-                        sweetAlertDelete(tutorial_id,'AdminTutorial');
-					});
-				}
+				$( "#detail-delete" ).attr("data",data.id);
 				$('#form').hide();
 				$('#alert-success').show();
 				$('#detail').show();
@@ -183,9 +171,12 @@ function saveTutorial()
 			error: function(){
 				$('#alert-error').html($('#error_msg-save').val());
 				$('#div-alert').show();
+				$('#guardar').prop('disabled', false);
 			}
-		});
-		 
+		}); 
+	}
+	else {
+		$('#div-error').show();
 	}
 
 }
