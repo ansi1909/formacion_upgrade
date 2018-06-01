@@ -409,6 +409,7 @@ La primera fila se puede utilizar como encabezado y no se tomará en cuenta para
 La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
 Lecciones: Lecciones
+Leidos: Leidos
 Línea: Línea
 Listado de: Listado de
 Listado de Aplicaciones: Listado de Aplicaciones
@@ -602,6 +603,7 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Sigue aprendiendo: Sigue aprendiendo
 Sigue intentándolo: Sigue intentándolo
 Siguiente: Siguiente
+Sin leer: Sin leer
 Sistema Formación: Sistema Formación
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.

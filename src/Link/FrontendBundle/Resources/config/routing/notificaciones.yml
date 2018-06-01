@@ -1,0 +1,27 @@
+_ajaxNoti:
+    path:     /ajaxNoti
+    defaults: { _controller: LinkFrontendBundle:Notificacion:ajaxNoti }
+    requirements:
+        method: GET
+
+_ajaxLeido:
+    path:     /ajaxLeido
+    defaults: { _controller: LinkFrontendBundle:Notificacion:ajaxLeido }
+    requirements:
+        method: POST
+
+_notificaciones:
+    path:     /notificaciones
+    defaults: { _controller: LinkFrontendBundle:Notificacion:notificaciones }
+
+_ajaxNotiMuro:
+    path:     /ajaxNotiMuro
+    defaults: { _controller: LinkFrontendBundle:Notificacion:ajaxNotiMuro }
+    requirements:
+        method: GET
+
+_ajaxRespuestaComentario:
+    path:     /ajaxRespuestaComentario
+    defaults: { _controller: LinkFrontendBundle:Notificacion:ajaxRespuestaComentario }
+    requirements:
+        method: POST

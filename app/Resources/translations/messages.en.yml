@@ -409,6 +409,7 @@ La primera fila se puede utilizar como encabezado y no se tomará en cuenta para
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lecciones: Lessons
+Leidos: Read
 Línea: Line
 Listado de: List of
 Listado de Aplicaciones: List of Applications
@@ -602,6 +603,7 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Sigue aprendiendo: Keep learning
 Sigue intentándolo: Keep trying
 Siguiente: Next
+Sin leer: Unread
 Sistema Formación: System Training
 Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
@@ -636,7 +638,8 @@ Tipo Destino: Destinit Type
 Tipo de Destinos: Desnity Types
 Título: Title
 Título en la ventana del navegador: Title of browser window
-Todos: Everybody
+Todas: All
+Todos: All
 Tomar evaluación: Take test
 Tu calificación: Your score
 Tu respuesta: Your answer

@@ -689,6 +689,7 @@ class DefaultController extends Controller
 
     public function notificacionesAction(Request $request)
     {
+        
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
