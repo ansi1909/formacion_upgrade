@@ -18,6 +18,7 @@ $(document).ready(function() {
         eventLimit: true, // allow "more" link when too many events
         selectable: false,
         selectHelper: true,
+        defaultView: $('#view').val(),
         eventRender: function(event, element) {
             element.bind('click', function() {
                 var eve_id = event.id;
@@ -35,5 +36,12 @@ $(document).ready(function() {
         events: url_eventos,
         timeFormat: 'hh:mm a'
     });
+    
+    var view = $('#view').val();
+    var date = $('#date').val();
+    if (view == 'basicDay')
+    {
+        $('#calendar').fullCalendar('gotoDate', date);
+    }
     $('#calEve').addClass("active");
 });

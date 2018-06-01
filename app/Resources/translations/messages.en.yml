@@ -335,6 +335,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
+Ha sido publicado el evento: It has been published an event
 ha subido un archivo en el espacio colaborativo de: has uploaded a file into the collaborative space of
 Has aprobado con éxito la evaluación: You have approved successfully the test
 Has completado con éxito: You have completed successfully
@@ -354,6 +355,7 @@ Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
 Ingrese lo que desea buscar: Enter what you want to search
+Inicia el: Starts at
 Iniciar Sesión: Log in
 Inicio: Begin
 Inicio del programa: Program start
@@ -675,5 +677,6 @@ Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
 Volver: Back
 Volver al programa: Back to program page
+y finaliza el: and ends at
 Yo: Me
 ¿Olvidaste tu contraseña?: Did you forget your password?

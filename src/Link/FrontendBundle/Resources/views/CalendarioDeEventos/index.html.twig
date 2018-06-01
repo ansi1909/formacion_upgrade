@@ -37,92 +37,93 @@
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
-<input type="hidden" id="url_eventos" name="url_eventos" value="{{ path('_eventosDelUsuario', { 'userID': usuario_id }) }}">
+<input type="hidden" id="url_eventos" name="url_eventos" value="{{ path('_eventosDelUsuario') }}">
+<input type="hidden" id="view" name="view" value="{{ view }}">
+<input type="hidden" id="date" name="date" value="{{ date }}">
 <br>
 <br>
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
-      <div id='calendar'></div>
+      <div id="calendar"></div>
     </div>
     <!-- Modal -->
     <div class="modal modal-calendario" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-3 text-right offset-9">
-                                <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
-                                    <span class="material-icons ic-close-white" aria-hidden="true">close</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row mt-5 mb-2 justify-content-center align-items-center">
-                            <div class="col-10 text-center">
-                                <h4 class="titulo">Datos Evento</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-10 offset-1">
-                                <h5 class="sub-line">Título:</h5>
-                            </div>
-                            <div class="col-auto offset-1">
-                                <p class="pl-4" id="p-titulo"></p>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-10 offset-1">
-                                <h5 class="sub-line">Fecha</h5>
-                            </div>
-                            <div class="col-auto offset-1">
-                                <span class="pl-4 text-calendar px-0 mx-0">Desde: <span id="p-fechainicio"></span></span>
-                            </div>
-                            <div class="col-auto offset-1">
-                                <span class="pl-4 text-calendar px-0">Hasta: <span id="p-fechafin"></span></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-10 offset-1">
-                                <h5 class="sub-line">Descripción:</h5>
-                            </div>
-                            <div class="col-auto offset-1">
-                                <p class="pl-4" id="p-descripcion"></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-10 offset-1">
-                                <h5 class="sub-line">Lugar:</h5>
-                            </div>
-                            <div class="col-auto offset-1">
-                                <p class="pl-4" id="p-lugar"></p>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-10 offset-1">
-                                <h5 class="sub-line">Nivel:</h5>
-                            </div>
-                            <div class="col-auto offset-1">
-                                <p class="pl-4" id="p-nivel"></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 mt-4 text-center">
-                                <button type="button" class="btn btn-primary btn_rc" data-dismiss="modal">Aceptar</button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-3 text-right offset-9">
+                    <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                        <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                    </a>
                 </div>
+            </div>
+            <div class="row mt-5 mb-2 justify-content-center align-items-center">
+                <div class="col-10 text-center">
+                    <h4 class="titulo">Datos Evento</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <h5 class="sub-line">Título:</h5>
+                </div>
+                <div class="col-auto offset-1">
+                    <p class="pl-4" id="p-titulo"></p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-10 offset-1">
+                    <h5 class="sub-line">Fecha</h5>
+                </div>
+                <div class="col-auto offset-1">
+                    <span class="pl-4 text-calendar px-0 mx-0">Desde: <span id="p-fechainicio"></span></span>
+                </div>
+                <div class="col-auto offset-1">
+                    <span class="pl-4 text-calendar px-0">Hasta: <span id="p-fechafin"></span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <h5 class="sub-line">Descripción:</h5>
+                </div>
+                <div class="col-auto offset-1">
+                    <p class="pl-4" id="p-descripcion"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <h5 class="sub-line">Lugar:</h5>
+                </div>
+                <div class="col-auto offset-1">
+                    <p class="pl-4" id="p-lugar"></p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-10 offset-1">
+                    <h5 class="sub-line">Nivel:</h5>
+                </div>
+                <div class="col-auto offset-1">
+                    <p class="pl-4" id="p-nivel"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-4 text-center">
+                    <button type="button" class="btn btn-primary btn_rc" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.es.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/cicular_progress/circle-progress.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/sparklines/jquery.sparkline.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/lib/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/fullcalendar.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/locale/es.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/calendar.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.es.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/front/calendario.js') }}"></script>   
+    <script type="text/javascript" src="{{ asset('js/front/calendario.js') }}"></script>
 {% endblock %}
