@@ -8,6 +8,12 @@ Link\ComunBundle\Entity\AdminNoticia:
         IDX_F51CDD1FDB38439E:
             columns:
                 - usuario_id
+        IDX_F51CDD1F8146238:
+            columns:
+                - tipo_noticia_id
+        IDX_F51CDD1F6AED89B7:
+            columns:
+                - tipo_biblioteca_id
     id:
         id:
             type: integer
@@ -18,12 +24,6 @@ Link\ComunBundle\Entity\AdminNoticia:
             generator:
                 strategy: SEQUENCE
     fields:
-        tipo:
-            type: string
-            nullable: true
-            length: 20
-            options:
-                fixed: false
         fechaRegistro:
             type: datetime
             nullable: true
@@ -48,6 +48,30 @@ Link\ComunBundle\Entity\AdminNoticia:
             type: date
             nullable: true
             column: fecha_vencimiento
+        titulo:
+            type: string
+            nullable: true
+            length: 500
+            options:
+                fixed: false
+        autor:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        pdf:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        imagen:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
@@ -67,6 +91,26 @@ Link\ComunBundle\Entity\AdminNoticia:
             inversedBy: null
             joinColumns:
                 usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoNoticia:
+            targetEntity: AdminTipoNoticia
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_noticia_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoBiblioteca:
+            targetEntity: AdminTipoBiblioteca
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_biblioteca_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

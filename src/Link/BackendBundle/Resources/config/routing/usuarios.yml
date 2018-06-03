@@ -1,0 +1,43 @@
+_usuarios:
+    path:     /usuarios/{app_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:index }
+
+_usuario:
+    path:     /usuario/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:usuario, usuario_id: 0 }
+
+_showUsuario:
+    path:     /showUsuario/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:showUsuario }
+
+_ajaxValidLogin:
+    path:     /ajaxValidLogin
+    defaults: { _controller: LinkBackendBundle:Usuario:ajaxValidLogin }
+    requirements:
+        _method: POST
+
+_participantes:
+    path:     /participantes/{app_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:participantes }
+
+_nuevoParticipante:
+    path:     /nuevoParticipante/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:nuevoParticipante, usuario_id: 0 }
+
+_ajaxParticipantes:
+    path:     /ajaxParticipantes
+    defaults: { _controller: LinkBackendBundle:Usuario:ajaxParticipantes }
+    requirements:
+        method: GET
+
+_showParticipante:
+    path:     /showParticipante/{usuario_id}
+    defaults: { _controller: LinkBackendBundle:Usuario:showParticipante }
+
+_uploadParticipantes:
+    path:     /uploadParticipantes
+    defaults: { _controller: LinkBackendBundle:Usuario:uploadParticipantes }
+
+_procesarParticipantes:
+    path:     /procesarParticipantes/{empresa_id}/{archivo}
+    defaults: { _controller: LinkBackendBundle:Usuario:procesarParticipantes, empresa_id: 0, archivo: 0 }

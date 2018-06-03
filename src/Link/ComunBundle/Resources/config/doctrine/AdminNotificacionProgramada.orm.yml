@@ -1,0 +1,81 @@
+Link\ComunBundle\Entity\AdminNotificacionProgramada:
+    type: entity
+    table: admin_notificacion_programada
+    indexes:
+        IDX_CA62D9964D633FC4:
+            columns:
+                - notificacion_id
+        IDX_CA62D99675B0043D:
+            columns:
+                - tipo_destino_id
+        IDX_CA62D996DB38439E:
+            columns:
+                - usuario_id
+        IDX_CA62D9969C833003:
+            columns:
+                - grupo_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        entidadId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: entidad_id
+        fechaDifusion:
+            type: datetime
+            nullable: true
+            column: fecha_difusion
+        enviado:
+            type: boolean
+            nullable: true
+    manyToOne:
+        notificacion:
+            targetEntity: AdminNotificacion
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                notificacion_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        tipoDestino:
+            targetEntity: AdminTipoDestino
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_destino_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        grupo:
+            targetEntity: AdminNotificacionProgramada
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                grupo_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

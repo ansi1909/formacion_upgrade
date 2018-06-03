@@ -1,0 +1,188 @@
+{% extends '::admin.html.twig' %}
+
+
+{% block body %}
+<br>
+<input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Usuarios'|trans }}</h3>
+    </div>
+    <div class="col text-right">
+        <a href="{{ path('_usuario')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo registro'|trans }}</span></a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <form id="form" action="{{ path('_usuarios', { 'app_id': app.session.get('app_id') }) }}" method="POST">
+            <div class="card">
+                <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                    <h5 class="card-title">{{ 'Filtrar usuarios' |trans}}</h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="texto" class="col-2 col-form-label">{{ 'Rol'|trans }}</label>
+                                <div class="col-14">
+                                    <select class="form-control form_sty1" name="rol_id" id="rol_id">
+                                        {% for rol in roles %}
+                                            {% set selected = rol_id == rol.id ? 'selected="selected"' : '' %}
+                                            <option value="{{ rol.id }}" {{ selected }} >{{ rol.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="fa fa-group"></span>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
+                                <div class="col-14">
+                                    <select class="form-control form_sty1" name="empresa_id" id="empresa_id">
+                                        {% if not empresa_asignada %}
+                                            <option value="0"></option>
+                                        {% endif %}
+                                        {% for empresa in empresas %}
+                                            {% set selected = empresa_id == empresa.id ? 'selected="selected"' : '' %}
+                                            <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="fa fa-industry"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="texto" class="col-2 col-form-label">{{ 'Nivel'|trans }}</label>
+                                <div class="col-14">
+                                    <select class="form-control form_sty1" name="nivel_id" id="nivel_id">
+                                        <option value="0">{{ 'Seleccione la empresa para mostrar los niveles'|trans }}</option>
+                                        {% for nivel in niveles %}
+                                            {% set selected = nivel_id == nivel.id ? 'selected="selected"' : '' %}
+                                            <option value="{{ nivel.id }}" {{ selected }} >{{ nivel.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="fa fa-list-ol"></span>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="texto" class="col-2 col-form-label">{{ 'Nombre'|trans }}</label>
+                                <div class="col-14">
+                                    <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="{{ nombre }}">
+                                    <span class="fa fa-user"></span>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="texto" class="col-2 col-form-label">{{ 'Apellido'|trans }}</label>
+                                <div class="col-14">
+                                    <input type="text" class="form-control form_sty1" name="apellido" id="apellido" value="{{ apellido }}">
+                                    <span class="fa fa-user"></span>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="texto" class="col-2 col-form-label">Login</label>
+                                <div class="col-14">
+                                    <input type="text" class="form-control form_sty1" name="login" id="login" value="{{ login }}">
+                                    <span class="fa fa-user"></span>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Buscar' |trans}}"><span class="fa fa-search"></span></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de usuarios'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th>{{ 'Nombre'|trans }}</th>
+                            <th>{{ 'Apellido'|trans }}</th>
+                            <th>Login</th>
+                            <th>{{ 'Empresa'|trans }}</th>
+                            <th>{{ 'Nivel'|trans }}</th>
+                            <th>{{ 'Roles'|trans }}</th>
+                            <th>{{ 'Activo'|trans }}</th>
+                            <th>{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>{{ usuario.nombre }}</td>
+                                <td>{{ usuario.apellido }}</td>
+                                <td>{{ usuario.login }}</td>
+                                <td>{{ usuario.empresa }}</td>
+                                <td>{{ usuario.nivel }}</td>
+                                <td>
+                                    <div class="tree">
+                                        <ul data-jstree='{ "opened" : true }'>
+                                            {% for rol in usuario.roles %}
+                                                <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ rol.rol.nombre }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td class="center">
+                                    <div class="can-toggle demo-rebrand-2 small">
+                                        <input id="f{{ usuario.id }}" class="cb_activo" type="checkbox" {% if usuario.activo %}checked{% endif %}>
+                                        <label for="f{{ usuario.id }}">
+                                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="center">
+                                    <a href="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if usuario.delete_disabled == '' %}delete{% endif %} {{ usuario.delete_disabled }}" data="{{ usuario.id }}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/usuarios.js') }}"></script>
+{% endblock %}

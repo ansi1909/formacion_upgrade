@@ -1,0 +1,79 @@
+_paginas:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:index }
+
+_pagina:
+    path:     /configure/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:pagina }
+
+_newPagina:
+    path:     /new
+    defaults: { _controller: LinkBackendBundle:Pagina:new }
+
+_editPagina:
+    path:     /edit/{pagina_padre_id}/{pagina_id}/{categoria_id}/{estatus_contenido_id}/{cantidad}/{total}
+    defaults: { _controller: LinkBackendBundle:Pagina:edit, pagina_padre_id: 0, pagina_id: 0, categoria_id: 0, estatus_contenido_id: 0, cantidad: 1, total: 1 }
+
+_ajaxDuplicatePage:
+    path:     /ajaxDuplicatePage
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxDuplicatePage }
+    requirements:
+        _method: POST
+
+_ajaxGetPage:
+    path:     /ajaxGetPage
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxGetPage }
+    requirements:
+        _method: GET
+
+_ajaxTreePaginas:
+    path:     /ajaxTreePaginas/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxTreePaginas, pagina_id: 0 }
+    requirements:
+        method: GET
+
+_empresasPaginas:
+    path:     /empresasPaginas/{app_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:empresasPaginas }
+
+_ajaxPaginasEmpresa:
+    path:     /ajaxPaginasEmpresa
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxPaginasEmpresa }
+    requirements:
+        _method: GET
+
+_empresaPaginas:
+    path:     /empresaPaginas/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:empresaPaginas }
+
+_ajaxTreePaginasEmpresa:
+    path:     /ajaxTreePaginasEmpresa/{pagina_empresa_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxTreePaginasEmpresa, pagina_empresa_id: 0 }
+    requirements:
+        method: GET
+
+_ajaxAccesoPagina:
+    path:     /ajaxAccesoPagina
+    defaults: { _controller: LinkBackendBundle:Pagina:ajaxAccesoPagina }
+    requirements:
+        _method: POST
+
+_asignarSubpaginas:
+    path:     /asignarSubpaginas/{empresa_id}/{pagina_padre_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:asignarSubpaginas }
+
+_editAsignacion:
+    path:     /editAsignacion/{pagina_empresa_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:editAsignacion }
+
+_showAsignacion:
+    path:     /showAsignacion/{empresa_id}/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:showAsignacion, pagina_id: 0 }
+
+_moverPagina:
+    path:     /mover/{pagina_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:mover }
+
+_paginaMovida:
+    path:     /paginaMovida/{pagina_id}/{programa_id}
+    defaults: { _controller: LinkBackendBundle:Pagina:paginaMovida }

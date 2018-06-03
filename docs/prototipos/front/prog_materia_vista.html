@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+        <title>Programa materia vista</title>
+
+        <style>
+            .menu{
+                width: 60%;
+                height: 300px;
+            }
+        </style>
+    </head>
+    <body class="lesson-body">
+
+
+        <!-- HEADER -->
+        <header>
+            <nav class="navbar  justify-content-between py-0  fixed-top bg-white">
+                <a class="navbar-brand d-none d-md-block" href="#">
+                    <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+                </a>
+                <!--<div class="wraper-title-lesson d-flex flex-column  align-items-center">
+                    <h3 class="mt-2 mb-1 color-grey" > Materia </h3>
+                    <h5 class="mt-0 color-grey" > Finalizada </h5>
+                </div>-->
+                <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+                    <div class=" d-flex flex-column  ">
+                        <div class="dropdown show">
+                            <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-fluid mx-auto" src="assets/img/avatar_user.png"  width="80%" alt="usuario">
+                            </a>
+                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a href="#"> Salir </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<a id="iconComments" href="#">
+                        <i class="material-icons mx-3 color-light-grey">comment</i>
+                    </a>-->
+                </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid mt-6 ">
+            <!-- SIDE MENU LESSON  -->
+            <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson  "  >
+                <!-- <div class="" data-simplebar > -->
+
+
+                <!-- <a href="javascript:void(0)" class="openbtn" onclick="openNav()"><i class="arrow right"></i></a> -->
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+                <a class="d-flex mt-1 mb-3 text-nowrap " href="#"> <i class="material-icons mr-2 rotate-180">exit_to_app</i> Volver al programa </a>
+
+                <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active " id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
+                            <i class="material-icons">view_list</i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
+                            <i class="material-icons">widgets</i>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content menu-lesson" id="pills-tabContent" >
+                    <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <h5 class="text-center mb-3 mt-1 color-light-grey font-normal "> Indice </h5>
+                        <ol>
+                            <li><a href="">Relación entre cambio y liderazgo</a></li>
+                            <ul class="ul-items">
+                                <li><a href="">Cambios tecnológicos</a></li>
+                                <li><a href="">Nuevos paradigmas</a></li>
+                                <li><a href="">Nuevos modelos</a></li>
+                            </ul>
+                            <li><a href="">Necesidad de liderazgo</a></li>
+                            <ul class="ul-items">
+                                <li><a href="">Tres ámbitos del cambio</a></li>
+                                <li><a href="">Cambios globales requieren innovacción</a></li>
+                                <li><a href="">Cambios empresariales requieren liderazgo</a></li>
+                                <li><a class="active" href="">Cambios personales requieren actitud</a></li>
+                            </ul>
+                            <li><a class="less-disabled" href="">Capacidad de liderazgo</a></li>
+                            <ul class="ul-items">
+                                <li><a class="lesson-pending less-disabled" href="">Lider de consecución</a></li>
+                                <li><a class="lesson-pending less-disabled" href="">Lider integrador</a></li>
+                                <li><a class="lesson-pending less-disabled" href="">Lider visionario</a></li>
+                                <li><a class="lesson-pending less-disabled"  href="">Lider 360 grados</a></li>
+                            </ul>
+
+                            <li>Evaluación</li>
+                        </ol>
+                    </div>
+                    <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <h5 class="text-center my-3 color-light-grey font-normal "> Recursos </h5>
+
+                        <a href="">Espacio colaborativo</a>
+                        <a href="">Tutor</a>
+                        <a href="">Recursos</a>
+                        <a href="">Reportar problema</a>
+
+                    </div>
+                </div>
+
+
+                <!-- </div>    -->
+            </div> <!-- END NAV-LESSON -->
+
+            <div id="main" class="bg-white">
+
+                <!-- NAVEGACION LECCION -->
+                <!-- La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo -->
+                <!--<div class="wraper-nav-less" id="wraperNavLess">
+                    <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
+                    <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
+                    <div class=" nav-less-container text-center  lesson-nav py-2 mb-1 mt-3" id="NavLess">
+                        <ul class="nav  nav-tabs" id="navlesson" role="tablist">
+                            <li class="nav-item">
+                                <a class="circle-nav circle-less-vista" id="one-tab" data-toggle="tab" href="#uno" role="tab" aria-controls="uno" aria-selected="true">1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav circle-less-vista " id="dos-tab" data-toggle="tab" href="#dos" role="tab" aria-controls="dos" aria-selected="false">2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav circle-less-vista" id="tres-tab" data-toggle="tab" href="#tres" role="tab" aria-controls="tres" aria-selected="false">3</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="circle-nav circle-less-viendo " id="cuatro-tab" data-toggle="tab" href="#cuatro" role="tab" aria-controls="cuatro" aria-selected="false">4</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled  " id="cinco-tab" data-toggle="tab" href="#cinco" role="tab" aria-controls="cinco" aria-selected="false">5</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled " id="seis-tab" data-toggle="tab" href="#seis" role="tab" aria-controls="seis" aria-selected="false">6</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled  " id="siete-tab" data-toggle="tab" href="#siete" role="tab" aria-controls="siete" aria-selected="false">7</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled " id="ocho-tab" data-toggle="tab" href="#ocho" role="tab" aria-controls="ocho" aria-selected="false">8</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled " id="nueve-tab" data-toggle="tab" href="#nueve" role="tab" aria-controls="nueve" aria-selected="false">9</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled " id="diez-tab" data-toggle="tab" href="#diez" role="tab" aria-controls="diez" aria-selected="false">10</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled " id="once-tab" data-toggle="tab" href="#once" role="tab" aria-controls="once" aria-selected="false">11</a>
+                            </li><li class="nav-item">
+                            <a class="circle-nav less-disabled " id="doce-tab" data-toggle="tab" href="#doce" role="tab" aria-controls="doce" aria-selected="false">12</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled " id="trece-tab" data-toggle="tab" href="#trece" role="tab" aria-controls="trece" aria-selected="false">13</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="circle-nav less-disabled " id="catorce-tab" data-toggle="tab" href="#catorce" role="tab" aria-controls="catorce" aria-selected="false">14</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="circle-nav" id="evaluacion-tab" data-toggle="tab" href="#evaluacion" role="tab" aria-controls="evaluacion" aria-selected="false"><i class="material-icons">assignment_turned_in</i></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>-->
+                <section class="s1_fin-materia">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-6 text-center">
+                            <p class="text_fin-materia">Haz completado con éxito  la materia de <strong>Cambios personales que requieren actitud.</strong></p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <h1 class="titulo_fin-materia">¡Excelente!</h1>
+                            <span class="material-icons ic-verify">check_circle</span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-end">
+                        <div class="col-auto text-center">
+                            <span class="logro">Haz ganado: <span class="num">1000<span class="unidad">Exp</span></span></span>
+                        </div>
+                    </div>
+                </section>
+                <section class="s2_fin-materia">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-8 text-center">
+                            <p class="text_fin-materia">Si deseas puedes tomar la evaluación en este momento</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-6 text-center">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary"> Tomar evaluación </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-8 text-center">
+                            <p class="text_fin-materia">¡Sigue aprendiendo!</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-6 text-center">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-warning bttn_fm"> Continuar </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            <div id="comments" class="px-3 pt-3"  >
+                <h5 class="color-grey text-center">Comentarios del módulo</h5>
+                <form class=" mt-4  mb-6" action="index.html" method="post">
+                    <div class="form-group">
+                        <textarea class="form-control" id="comentario" rows="3" placeholder="Escriba su comentario..."></textarea>
+                    </div>
+                    <button type="button" name="button" class="btn btn-sm btn-primary float-right"> Comentar </button>
+                </form>
+                <div class="tab mt-6 d-flex justify-content-around text-xs ">
+                    <a href="" class="active-line color-light-grey mt-3 "> Más recientes </a>
+                    <a href="" class="color-light-grey mt-3">  Más valorado </a>
+                </div>
+
+                <!-- COMENTARIOS -->
+                <div class="comment">
+                    <div class="comm-header d-flex align-items-center mb-2">
+                        <img src="assets/img/user-default.png" alt="">
+                        <div class="wrap-info-user flex-column ml-2">
+                            <div class="name text-xs color-dark-grey">Alexander</div>
+                            <div class="date text-xs color-grey">hace 2 días</div>
+                        </div>
+                    </div>
+                    <div class="comm-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                    <div class="comm-footer d-flex justify-content-between align-items-center">
+                        <a href="" class="mr-0 text-sm color-light-grey">
+                            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                        </a>
+                        <a href="" class="links text-right text-xs ">Responder</a>
+                    </div>
+                </div>
+
+                <div class="comment">
+                    <div class="comm-header d-flex align-items-center mb-2">
+                        <img src="assets/img/user-default.png" alt="">
+                        <div class="wrap-info-user flex-column ml-2">
+                            <div class="name text-xs color-dark-grey">Alexander</div>
+                            <div class="date text-xs color-grey">hace 2 días</div>
+                        </div>
+                    </div>
+                    <div class="comm-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                    <div class="comm-footer d-flex justify-content-between align-items-center">
+                        <a href="" class="mr-0 text-sm color-light-grey">
+                            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                        </a>
+                        <a href="" class="links text-right text-xs ">Responder</a>
+                    </div>
+                    <!-- RESPONSE -->
+                    <div class="response d-flex align-items-center justify-content-between">
+                        <img src="assets/img/user-default.png" alt="">
+                        <form class="mt-3" action="index.html" method="post">
+                            <div class="form-group">
+                                <textarea class="form-control" id="respuesta" rows="5" placeholder="Escriba su respuesta"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- END RESPONSE -->
+                    <!-- RESPUESTA PUBLICADA -->
+                    <div class="comment replied">
+                        <div class="comm-header d-flex align-items-center mb-2">
+                            <img src="assets/img/user-default.png" alt="">
+                            <div class="wrap-info-user flex-column ml-2">
+                                <div class="name text-xs color-dark-grey">Alexander</div>
+                                <div class="date text-xs color-grey">hace 2 días</div>
+                            </div>
+                        </div>
+                        <div class="comm-body">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                        <div class="comm-footer d-flex justify-content-between align-items-center">
+                            <a href="" class="mr-0 text-sm color-light-grey">
+                                <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 3
+                            </a>
+
+                        </div>
+                    </div>
+                    <!-- END RESPUESTA -->
+                </div>
+            </div>
+
+        </div>    <!-- END MAIN  -->
+
+        <!-- JAVASCRIPT -->
+        <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" charset="utf-8"></script>
+        <script src="js/jquery.scrollTo.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/simplebar.js"></script>
+        <script src="js/custom.js"></script>
+
+        <script>
+            $('.nav-less-container').scrollTo($('.circle-less-viendo'));
+        </script>
+    </body>
+</html>

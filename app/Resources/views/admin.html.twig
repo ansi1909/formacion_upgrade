@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Backend Formación 2.0{% endblock %}</title>
+        {% block stylesheets %}
+
+            <link rel="icon" type="image/x-icon" href="{{ asset('img/icono.png') }}" />
+            {# CSS #}
+            <link rel="stylesheet" href="{{ asset('assets/css/main/reset.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/main/style_main.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/main/style_select.css') }}">
+            
+            {# Fontawesome iconos CSS #}
+            <link rel="stylesheet" href="{{ asset('assets/vendor/font-awesome-4.7.0/css/font-awesome.min.css') }}" type="text/css">
+            
+            {# Bootstrap CSS #}
+            <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap4alpha/css/bootstrap.css') }}" type="text/css">
+            <link rel="stylesheet" href="{{ asset('assets/vendor/Bootstrap-selectv-12/dist/css/bootstrap-select.css') }}">
+            
+            {# DataTables Responsive CSS #}
+            <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/css/dataTables.bootstrap4.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/css/responsive.dataTables.min.css') }}">
+            
+            {# Morris Charts CSS #}
+            <link rel="stylesheet" href="{{ asset('assets/vendor/morrisjs/morris.css') }}">
+            
+            {# Adminux CSS #}
+            <link rel="stylesheet" href="{{ asset('assets/css/light_adminux.css') }}">
+            
+            {# Sweetalert CSS #}
+            <link rel="stylesheet" href="{{ asset('assets/vendor/sweetalert/dist/sweetalert2.min.css') }}">
+
+            {# Admin CSS #}
+            <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+
+            {# Video y Podcast CSS #}
+            <link href="{{ asset('front/js/plugins/video.js/video-js.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('front/js/plugins/video.js/vsg-skin.css') }}" rel="stylesheet">
+
+        {% endblock %}
+    </head>
+    <body class="rounded">
+        <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDelete') }}">
+        <input type="hidden" id="url_active" name="url_active" value="{{ path('_ajaxActive') }}">
+        <input type="hidden" id="url_order" name="url_order" value="{{ path('_ajaxOrder') }}">
+        <input type="hidden" id="error_msg-save" name="error_msg-save" value="{{ 'No se pudo almacenar este registro.'|trans }}">
+        <input type="hidden" id="error_msg-edit" name="error_msg-edit" value="{{ 'No se pudo editar este registro.'|trans }}">
+        <input type="hidden" id="error_msg-active" name="error_msg-active" value="{{ 'No se pudo activar/desactivar este registro.'|trans }}">
+        <input type="hidden" id="error_msg-filter" name="error_msg-filter" value="{{ 'No se pudo filtrar el listado.'|trans }}">
+        <input type="hidden" id="sesion_time" name="sesion_time" value="{{sesion_time}}">
+        <input type="hidden" id="timerId" name="timerId" value="">
+        <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}">
+        <input type="hidden" id="url_qr" name="url_qr" value="{{ path('_ajaxQR') }}">
+
+        {# Cabecera del area de trabajo #}
+        <header class="navbar-fixed">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
+                <div class="sidebar-left">
+                    <a href="{{ path('_inicioAdmin') }}" class="navbar-brand">
+                        <img src="{{ asset('img/logo_formacion.png') }}" alt="Formación 2.0">
+                    </a>
+                    <button class="btn btn-link icon-header mr-sm-2 pull-right menu-collapse"><span class="fa fa-bars"></span></button>
+                </div>
+                <div class="d-flex mr-auto"> &nbsp;</div>
+                <ul class="navbar-nav content-right">
+                    <li class="v-devider"></li>
+                    <li class="nav-item active">
+                        <button class="btn btn-link icon-header bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-envelope-o ico_1"></span>
+                            <span class="badge-number bg-success"></span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link icon-header badgeCircle bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-bell-o ico_1"></span>
+                            <span class="badge-number bg-danger"></span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="sidebar-right pull-right">
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="userpic">
+                                    {% set img = app.session.get('usuario').foto ? uploads~app.session.get('usuario').foto : asset('img/1034.png') %}
+                                    <img src="{{ img }}" alt="Usuario"></span> 
+                                    <span class="text">{{ app.session.get('usuario').nombre }}</span>
+                            </button>
+                            <div class="dropdown-menu"> 
+                                <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
+                                <a class="dropdown-item" href="#"><span class="fa fa-pie-chart"> Estadísticas</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><span class="fa fa-cog"> Configuración</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}" class="btn btn-link icon-header bttn1">
+                                <span class="fa fa-sign-out ico_1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        {# fin de Cabecera del area de trabajo#}
+        {# Sidebar del area de trabajo#}
+        <div class="sidebar-left">
+            {% block user_menu %}
+            <div class="user-menu-items">
+                <div class="list-unstyled btn-group rec_user">
+                    <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="message_userpic">
+                            <img src="{{ asset('img/1034.png') }}" alt="Usuario" class="d-flex mr-3">
+                        </span>
+                        <span class="media-body info_user">
+                            <span class="mt-0 mb-1 us1">{{ app.session.get('usuario').nombre }}</span>
+                            <span class="us1">{{ app.session.get('usuario').apellido }}</span>    
+                        </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item"><span class="fa fa-user space_icon"></span> Perfil</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-envelope"></span> Correo</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-bar-chart"></span> Estadística</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item"><span class="fa fa-cog space_icon"></span> Configuración</a>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+            <br/>
+            {% block menu %}
+                <ul class="nav flex-column in" id="side-menu">
+                    <li class="title-nav">MENÚ</li>
+                    {% set ultimo = 0 %}
+                    {% set ultimosub = 0 %}
+                    {% for menu in app.session.get('menu') %}
+                    {% if ultimo != menu.id %}
+                        <li class="nav-item">
+                            <a href="{{ menu.url_existente ? path(menu.url, { 'app_id': menu.id }) : '#'~loop.index }}" class="{% if menu.submenu|length > 0 %}menudropdown {% endif %}nav-link">
+                                {% if menu.submenu|length > 0 %}
+                                        <span class="fa {{ menu.icono }}"></span> {{ menu.nombre }} <i class="fa fa-chevron-circle-down"></i> 
+                                {% else %}
+                                    <i class="fa {{ menu.icono }}"></i> {{ menu.nombre }}
+                                {% endif %}
+                            </a>
+                            {% set ultimo = menu.id %}
+                    {% endif %}
+                            {% if menu.submenu|length > 0 %}
+                                <ul class="nav flex-column nav-second-level">
+                                    {% for submenu in menu.submenu %}
+                                    {% if ultimosub != submenu.id %}
+                                        <li class="nav-item">
+                                            <a href="{{ submenu.url_existente ? path(submenu.url, { 'app_id': submenu.id }) : '#'~loop.index }}" class="nav-link"><i class="fa {{ submenu.icono }}"></i> {{ submenu.nombre }}</a>
+                                        </li>
+                                        {% set ultimosub = submenu.id %}
+                                    {% endif %}     
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endblock %}
+        </div>
+        {# fin sidebar del area de trabajo #}
+        <div class="wrapper-content">
+            <div class="container">
+                {% block body %}{% endblock %}   
+            </div>
+        </div>
+        
+        {# Modal #}
+        <div class="modal dark_bg fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    {% block formModal %}
+                        <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                            <h5 class="modal-title" id="formModalLabel">New message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="form-control-label">Recipient:</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="form-control-label">Message:</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    {% endblock %}
+                    <div class="row" id="div-alert" style="display:none;">
+                        <div class="col-sm-2">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger" role="alert"> 
+                                <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar"><span class="text__cancel">{{'Cancelar'|trans}}</span><span class="fa fa-times"></span></button>
+                        <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{'Guardar'|trans}}</span><span class="fa fa-save"></span></button>
+                        <button type="button" class="bttn__save" id="aceptar" style="display:none;" data-dismiss="modal"><span class="text__save">{{'Aceptar'|trans}}</span><span class="fa fa-check"></span></button>
+                        <button type="button" class="bttn__save" id="procesar" style="display:none;" data-dismiss="modal"><span class="text__save">{{'Procesar'|trans}}</span><span class="fa fa-stack-overflow"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block javascripts %}
+            {# Jquery, Tether and Bootstrap JS. #}
+            <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('assets/vendor/bootstrap4alpha/js/tether.min.js') }}"></script>
+            <script src="{{ asset('assets/vendor/bootstrap4alpha/js/bootstrap.min.js') }}" type="text/javascript"></script>
+            
+            {# IE10 viewport hack for Surface/desktop Windows 8 bug #} 
+            <script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js') }}"></script>
+
+            {# Video y Podcast #}
+            <script src="{{ asset('front/js/plugins/video.js/video.min.js') }}"></script>
+
+            
+            {# DataTables JavaScript #}
+            <script src="{{ asset('assets/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+            <script src="{{ asset('assets/vendor/datatables/js/dataTables.bootstrap4.js') }}"></script>
+            <script src="{{ asset('assets/vendor/datatables/js/dataTables.responsive.min.js') }}"></script>
+            
+            {# Notify #}
+            <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+
+            {# custome template js #}
+            <script src="{{ asset('assets/js/adminux.js') }}" type="text/javascript"></script>
+
+            {# Sweetalert JS #}
+            <script src="{{ asset('assets/vendor/sweetalert/dist/sweetalert2.min.js') }}"></script>
+
+            <script src="{{ asset('js/comun.js') }}" type="text/javascript"></script>
+
+            <script type="text/javascript">
+                
+                function sweetAlertDelete(id, entity, preg_opt=0)
+                {
+                    swal({
+                        title: "{{ '¿Desea eliminar el registro?'|trans }}",
+                        text: "{{ 'Si acepta no puede revertir el cambio'|trans }}",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#e04646',
+                        cancelButtonColor: '#97af21',
+                        confirmButtonText: "{{ 'Eliminar'|trans }}",
+                        confirmButtonClass: 'fa fa-trash',
+                        cancelButtonClass: 'fa fa-times',
+                        cancelButtonText: "{{ 'Cancelar'|trans }}",
+                        allowOutsideClick: false
+                    }).then(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: preg_opt == 0 ? $('#url_delete').val() : preg_opt,
+                            async: true,
+                            data: { id: id, entity: entity },
+                            dataType: "json",
+                            success: function(data) {
+                                swal(
+                                    "{{ 'Eliminado'|trans }}!",
+                                    "{{ 'Su registro ha sido eliminado'|trans }}",
+                                    'success'
+                                );
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 3000);
+                            },
+                            error: function(){
+                                swal(
+                                    "{{ 'Mensaje del servidor'|trans }}!",
+                                    "{{ 'Ha ocurrido un error en la eliminación de este registro'|trans }}",
+                                    'error'
+                                );
+                            }
+                        });
+                    });
+                }
+
+                activarTimeout();
+
+                function activarTimeout(){
+                    var timerId = setTimeout(function()
+                    { 
+                        swal({
+                              title: "{{'Aviso de cierre de sesión'|trans }}",
+                              text: "{{'No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos'|trans}}",
+                              onOpen: function () {
+                                swal.showLoading()
+                              },
+                              allowOutsideClick: false
+                        }).then(function (result) {
+                              if (result.dismiss === 'timer') {
+                                console.log('I was closed by the timer')
+                              }
+                            })  
+                        setTimeout(function()
+                            {
+                                window.location=($('#url_logout').val());
+                            },5000);
+                    }, $('#sesion_time').val());
+                    $('#timerId').val(timerId);
+                }
+
+                function notify(msg)
+                {
+                    $.notify({
+                        // options
+                        title: "<b>{{ 'Errores de validación'|trans }}</b><br>",
+                        message: msg
+                    },{
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: "danger",
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "bottom",
+                            align: "center"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 2000,
+                        timer: 3000,
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        icon_type: 'class'
+                    });
+                }
+
+                function reordenar(id, entity, orden)
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: $('#url_order').val(),
+                        async: true,
+                        data: { id: id, entity: entity, orden: orden },
+                        dataType: "json",
+                        success: function(data) {
+                            console.log('El id reordenado fue '+data.id);
+                        },
+                        error: function(){
+                            swal(
+                                "{{ 'Mensaje del servidor'|trans }}!",
+                                "{{ 'Ha ocurrido un error reordenando de este registro'|trans }}",
+                                'error'
+                            );
+                        }
+                    });
+                }
+
+                function applyDataTable()
+                {
+                    $('#dt, #dt2').DataTable({
+                        responsive: true,
+                        pageLength:10,
+                        sPaginationType: "full_numbers",
+                        oLanguage: {
+                            "sProcessing":    "{{ 'Procesando'|trans }}...",
+                            "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                            "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                            "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                            "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                            "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                            "sInfoPostFix":   "",
+                            "sSearch":        "{{ 'Buscar'|trans }}:",
+                            "sUrl":           "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                            oPaginate: {
+                                sFirst: "<<",
+                                sPrevious: "<",
+                                sNext: ">", 
+                                sLast: ">>" 
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                            }
+                        }
+                    });
+                }
+            </script>
+        {% endblock %}
+    </body>
+</html>

@@ -8,6 +8,9 @@ Link\ComunBundle\Entity\AdminUsuario:
         IDX_E65932D4DA3426AE:
             columns:
                 - nivel_id
+        IDX_E65932D4C604D5C6:
+            columns:
+                - pais_id
     id:
         id:
             type: integer
@@ -67,19 +70,13 @@ Link\ComunBundle\Entity\AdminUsuario:
             type: date
             nullable: true
             column: fecha_nacimiento
-        pais:
+        campo1:
             type: string
             nullable: true
             length: 50
             options:
                 fixed: false
-        ciudad:
-            type: string
-            nullable: true
-            length: 50
-            options:
-                fixed: false
-        region:
+        campo2:
             type: string
             nullable: true
             length: 50
@@ -91,14 +88,32 @@ Link\ComunBundle\Entity\AdminUsuario:
             length: 250
             options:
                 fixed: false
-        divisionFuncional:
+        campo3:
             type: string
             nullable: true
             length: 100
             options:
                 fixed: false
-            column: division_funcional
-        cargo:
+        campo4:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        competencia:
+            type: boolean
+            nullable: true
+        codigo:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        fechaModificacion:
+            type: datetime
+            nullable: true
+            column: fecha_modificacion
+        cookies:
             type: string
             nullable: true
             length: 100
@@ -123,6 +138,16 @@ Link\ComunBundle\Entity\AdminUsuario:
             inversedBy: null
             joinColumns:
                 nivel_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pais:
+            targetEntity: AdminPais
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pais_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

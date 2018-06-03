@@ -1,0 +1,41 @@
+NOTAS: 
+- Luego de clonar el proyecto, ejecutar los comandos en la raíz del proyecto, 
+  es decir en: C:\wamp\www\formacion2.0
+- El deber ser:
+	-) Antes de iniciar el desarrollo en un ambiente nuevo, ejecutar los pasos 1, 3 y 4.
+	-) Al inicio de una jornada, ejecutar paso 5.
+	-) Antes de subir tus cambios, ejecutar los pasos 5, 6, 7, 8 y 9.
+
+1. Para clonar el proyecto:
+   git clone git@bitbucket.org:amst1909/formacion2.0
+   git clone https://amst1909@bitbucket.org/amst1909/formacion2.0
+
+2. Para actualizarse con los branches creados:
+	git fetch
+
+3. Ver los branches:
+   git branches
+
+4. Swicharse a un branch específico:
+	git checkout spring6		(donde spring6 es el nombre del branch)
+
+5. Actualizar los últimos cambios:
+   git pull
+
+6. Ver el status de tu copia local:
+   git status -s
+   donde: M = Significa que el archivo fue modificado en tu copia local
+          D = Significa que el archivo fue eliminado en tu copia local
+          A = Significa que el archivo está agregado para ser subido al repositorio
+          ? = Significa que el archivo es nuevo en la copia local, pero aún no ha sido agregado para el repositorio
+
+7. Agregar todos los archivos nuevos, modificados y eliminados para el repositorio:
+   git add archivo.doc 			(Agrega un archivo en específico)
+   git add .					(Agrega todos los archivos)
+
+8. Hacer commit de los cambios:
+   git commit -m "Algún mensaje que describa los cambios que están por subirse. Es bueno ser explícito."
+
+9. Subir los cambios:
+   git push origin spring6 		(donde spring6 es el nombre del branch)
+

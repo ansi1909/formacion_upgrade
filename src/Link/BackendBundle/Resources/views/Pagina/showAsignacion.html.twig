@@ -1,0 +1,95 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <style type="text/css">
+        small {
+            font-style: italic;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<br><br>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-left">
+        <a href="{{ path('_empresasPaginas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col text-right">
+            <a href="{{ path('_showAsignacion', { 'empresa_id': empresa.id, 'pagina_id': pagina_padre_id })}}" class="bttn__bck3"><span class="fa fa-level-up"></span><span class="text__bck3">{{ 'Asignación de página padre'|trans }}</span></a>
+    </div>
+    {% if pagina.id %}
+        <div class="col-16 col-sm-16 page-title">
+            <h3>{{ pagina.categoria.nombre }}: {{ pagina.nombre }}</h3>
+        </div>
+    {% endif %}
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Asignación de páginas de la empresa'|trans }} {{ empresa.nombre }}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Página'|trans }}</th>
+                            <th class="hd__title">{{ 'Estructura'|trans }}</th>
+                            <th class="hd__title">{{ 'Permisos'|trans }}</th>
+                            <th class="hd__title">{{ 'Inicio'|trans }}</th>
+                            <th class="hd__title">{{ 'Vencimiento'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for asignacion in asignaciones %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>
+                                    {{ asignacion.pagina }}
+                                    {% if asignacion.prelacion %}
+                                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small class="text-muted">{{ asignacion.prelacion }}</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if asignacion.estructura.tiene > 0 %}
+                                        <div class="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {{ asignacion.estructura.return|raw }}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'No tiene sub-páginas'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="tree">
+                                        <ul data-jstree='{ "opened" : true }'>
+                                            {{ asignacion.permisos|raw }}
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>{{ asignacion.inicio }}</td>
+                                <td>{{ asignacion.vencimiento }}</td>
+                                <td class="center">
+                                    <a href="{{ path('_editAsignacion', { 'pagina_empresa_id': asignacion.id }) }}" title="{{ 'Editar asignación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_asignarSubpaginas', { 'empresa_id': empresa.id, 'pagina_padre_id': asignacion.pagina_id }) }}" title="{{ 'Configurar asignación de sub-páginas'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-sitemap"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/showAsignacion.js') }}"></script>
+{% endblock %}

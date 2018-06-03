@@ -1,0 +1,516 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .social-profile-pic img {
+            width: 10rem;
+            height: auto;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: -1rem 0 0 .8rem;
+        }
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% set uri = app.request.getbasepath %}
+<br><br>
+<input type="hidden" id="avatar" name="avatar" value="{{ asset('img/user.png') }}">
+<div class="row align-items-center justify-content-start">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="{{ path('_usuarios', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Registrar Usuario'|trans }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <form id="form" name="form" action="{{ path('_usuario', { 'usuario_id': usuario.id }) }}" class="container-fluid p-0" method="POST">
+                    <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
+                    <input type="hidden" id="url_login" name="url_login" value="{{ path('_ajaxValidLogin') }}">
+                    <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
+                    <input type="hidden" id="roles_empresa_str" name="roles_empresa_str" value="{{ roles_empresa_str }}">
+                    <div class="container_wizard wizard-thin">
+                    	<div class="stepwizard">
+                    		<div class="stepwizard-row setup-panel d-flex">
+                				<div class="stepwizard-step col">
+                                    <a href="#det0" class="btn bttn__fndo pass">
+                                        <span class="btn-round">1</span>
+                                        <p>{{ 'Datos Básicos'|trans }}</p>
+                                    </a>
+                                </div>
+                                <div class="stepwizard-step col">
+                                    <a href="#det1" class="btn btn-secondary pass disabled">
+                                        <span class="btn-round">2</span>
+                                        <p>{{ 'Perfil Empresarial'|trans }}</p>
+                                    </a>
+                                </div>
+                                <div class="stepwizard-step col">
+                                    <a href="#det2" class="btn btn-secondary pass disabled">
+                                        <span class="btn-round">3</span>
+                                        <p>{{ 'Roles'|trans }}</p>
+                                    </a>
+                                </div>
+                    		</div>
+                    	</div>
+                		<div class="row setup-content" id="det0">	
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 1</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="row" id="start_img">
+                                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                                {% set img = usuario.foto ? uploads~usuario.foto : asset('img/user.png') %}
+                                                <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" class="img_figure"></figure>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                                <div class="input-group">
+                                                    <input type="hidden" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
+                                                    <span class="input-group-addon">
+                                                        {% if empresa_asignada %}
+                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios/{{ empresa_asignada }}" class="btn iframe-btn" type="button" style="height: 2rem; width: 2rem;">
+                                                        {% else %}
+                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios" class="btn iframe-btn" type="button" style="height: 2rem; width: 2rem;">
+                                                        {% endif %}
+                                                            <button type="button" class="btn_addImg">
+                                                                <span class="fa fa-photo"></span>
+                                                            </button>
+                                                        </a>
+                                                    </span>
+                                                    <span class="input-group-addon">
+                                                        <button id="btn_clear" class="btn_clearImg" type="button">
+                                                            <span class="fa fa-times"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <div class="row">
+                                            <label for="nombre" class="col-sm-2 col-md-2 col-lg-2 offset-sm-4 offset-md-4 offset-lg-4 col-form-label">{{ 'Nombre'|trans }}</label>
+                                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                                <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="{{ usuario.nombre }}">
+                                                <span class="fa fa-user-circle"></span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <label for="apellido" class="col-sm-2 col-md-2 col-lg-2 offset-sm-4 offset-md-4 offset-lg-4 col-form-label">{{ 'Apellido'|trans }}</label>
+                                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                                <input type="text" class="form-control form_sty1" name="apellido" id="apellido" value="{{ usuario.apellido }}">
+                                                <span class="fa fa-user-circle-o"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-5 col-lg-5 col-md-5">
+                                        <label for="login" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Usuario'|trans }}</label>
+                                        <div class="col-sm-14 col-md-14 col-lg-14">
+                                            {% set readonly = usuario.id ? 'readonly="readonly"' : '' %}
+                                            <input type="text" class="form-control form_sty1" name="login" id="login" value="{{ usuario.login }}" {{ readonly }}>
+                                            <span class="fa fa-id-badge"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                        <div class="form-group">
+                                            <label for="clave" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Contraseña'|trans }}</label>
+                                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                                {% set disabled = usuario.id ? 'disabled="disabled"' : '' %}
+                                                    <input type="password" class="form-control form_sty1" name="clave" id="clave" {{ disabled }}>
+                                                    <span class="fa fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if usuario.id %}
+                                        <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top: 2.5em;">
+                                            <div class="form-group">
+                                                <label class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cambiar" name="cambiar" value="1">
+                                                    <span class="custom-control-indicator"></span> <span class="custom-control-description">{{ 'Cambiar contraseña'|trans }}</span> 
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5">
+                                        <div class="form-group">
+                                            <label for="correo_personal" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Correo personal'|trans }}</label>
+                                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                                <input type="email" class="form-control form_sty1" name="correo_personal" id="correo_personal" value="{{ usuario.correoPersonal }}">
+                                                <span class="fa fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5 justify-content-end">
+                                        <label for="fecha_nacimiento" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha de nacimiento'|trans }}</label>
+                                        <div class="col-sm-14 col-md-14 col-lg-14">
+                                            {% set fecha_nacimiento = usuario.fechaNacimiento ? usuario.fechaNacimiento|date('d/m/Y') : '' %}
+                                            <input type="text" class="form-control form_sty1" id="fecha_nacimiento" placeholder="DD/MM/YYYY" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" data-date-end-date="-18y">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="activo" class="col-2 col-form-label">{{ 'Activo'|trans }}</label>
+                                            <div class="col-14">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f" id="activo" name="activo" type="checkbox" {% if usuario.activo %}checked{% endif %}>
+                                                    <label for="f">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det1">
+                			<div class="col-sm-16">
+                				<div class="row">
+	                                <div class="col-sm-16">
+	                                    <h3 class="mb-2">{{ 'Paso'|trans }} 2</h3>
+	                                </div>
+	                            </div>
+	                            <br>
+	                            <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="correo_corporativo" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Correo corporativo'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="email" class="form-control form_sty1" name="correo_corporativo" id="correo_corporativo" value="{{ usuario.correoCorporativo }}">
+                                                <span class="fa fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 justify-content-start">
+                                        <label for="pais_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'País'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select class="form-control form_sty_select" name="pais_id" id="pais_id">
+                                                <option value=""></option>
+                                                {% for pais in paises %}
+                                                    {% set selected = usuario.pais ? usuario.pais.id == pais.id ? 'selected="selected"' : '' : '' %}
+                                                    <option value="{{ pais.id }}" {{ selected }} >{{ pais.nombre|trim }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span class="fa fa-globe"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="campo1" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo1'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="campo1" id="campo1" value="{{ usuario.campo1 }}">
+                                                <span class="fa fa-map-marker"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="campo2" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo2'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="campo2" id="campo2" value="{{ usuario.campo2 }}">
+                                                <span class="fa fa-map-signs"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 justify-content-start">
+                                        <label for="empresa_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Empresa'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
+                                                {% if empresa_asignada %}
+                                                    {% for empresa in empresas %}
+                                                        <option value="{{ empresa.id }}">{{ empresa.nombre|trim }}</option>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option value="0"></option>
+                                                    {% for empresa in empresas %}
+                                                        {% set selected = usuario.empresa ? usuario.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
+                                                        <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                            <span class="fa fa-industry"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="nivel_id" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Nivel'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select class="form-control form_sty_select" name="nivel_id" id="nivel_id">
+                                                <option value="0">{{ 'Seleccione la empresa para mostrar los niveles'|trans }}</option>
+                                                {% for nivel in niveles %}
+                                                    {% set selected = usuario.nivel ? usuario.nivel.id == nivel.id ? 'selected="selected"' : '' : '' %}
+                                                    <option value="{{ nivel.id }}" {{ selected }} >{{ nivel.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span class="fa fa-list-ol"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="campo3" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo3'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="campo3" id="campo3" value="{{ usuario.campo3 }}">
+                                                <span class="fa fa-cubes"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label for="campo4" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo4'|trans }}</label>
+                                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                                <input type="text" class="form-control form_sty1" name="campo4" id="campo4" value="{{ usuario.campo4 }}">
+                                                <span class="fa fa-id-badge"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det2">
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <label for="nivel_id" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Roles asignados'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <select name="roles[]" id="roles" class="form-control" multiple="multiple">
+                                                {% for rol in roles %}
+                                                    {% set selected = rol.id in roles_asignados ? 'selected' : ''  %}
+                                                    <option value="{{ rol.id }}" {{ selected }}>{{ rol.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                    </div>
+                </form>
+            </div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
+    <script type="text/javascript">
+        $("#btn_clear").on("click",function(event) {
+            $("#foto").val("");
+            $("#figure").html('<img src="'+$('#avatar').val()+'" style="background: transparent; border-radius: 50%;">');
+        });
+        
+        $('#roles').multiSelect({
+            selectableHeader: "<div class='sty__title'>{{ 'Roles a seleccionar'|trans }}</div>",
+            selectionHeader: "<div class='sty__title'>{{ 'Roles asignados'|trans }}</div>"
+        });
+
+        $('#finish').click(function(){
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                notify($('#div-error').html());
+            }
+            else {
+
+                // Validaciones adicionales
+                var roles = $('#roles').val();
+                var empresa_id = $('#empresa_id').val();
+                var nivel_id = $('#nivel_id').val();
+                var roles_empresa_str = $('#roles_empresa_str').val();
+                var usuario_id = $('#usuario_id').val();
+                var login = $('#login').val();
+
+                for (i=0; i<roles.length; i++)
+                {
+                    if ((roles_empresa_str.indexOf(roles[i]) >= 0) && (empresa_id == 0 || nivel_id == 0))
+                    {
+                        valid = false;
+                    }
+                }
+
+                if (!valid){
+                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar tanto la empresa como el nivel.'|trans }}</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else {
+
+                    // Validar si el login no existe cuando es un usuario nuevo
+                    if (!usuario_id)
+                    {
+                        $.ajax({
+                            type: "POST",
+                            url: $('#url_login').val(),
+                            async: true,
+                            data: { login: login },
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.ok != 0)
+                                {
+                                    $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
+                                    $('#div-error ul').show();
+                                    notify($('#div-error').html());
+                                }
+                                else {
+                                    $('#form').submit();
+                                }
+                            },
+                            error: function(){
+                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
+                                $('#div-error ul').show();
+                                notify($('#div-error').html());
+                            }
+                        });
+                    }
+                    else {
+                        $('#form').submit();
+                    }
+                }
+
+            }
+        });
+
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'apellido': {
+                    required: true,
+                    minlength: 3
+                },
+                'login': {
+                    required: true,
+                    minlength: 3
+                },
+                'clave': {
+                    required: {
+                        depends: function(element) {
+                            return $("#cambiar").is(":checked") || $('#usuario_id').val() == '';
+                        }
+                    }
+                },
+                'correo_personal': {
+                    email: true
+                },
+                'fecha_nacimiento': {
+                    required: true
+                },
+                'correo_corporativo': {
+                    email: true
+                },
+                'roles[]': {
+                    required: true,
+                    minlength: 1
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "- {{ 'El nombre del usuario es requerido.'|trans }}",
+                    minlength: "- {{ 'El nombre del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'apellido': {
+                    required: "- {{ 'El apellido del usuario es requerido.'|trans }}",
+                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'login': {
+                    required: "- {{ 'El campo usuario es requerido.'|trans }}",
+                    minlength: "- {{ 'El campo usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'clave': {
+                    required: "- {{ 'La clave es requerida.'|trans }}"
+                },
+                'correo_personal': {
+                    email: "- {{ 'El correo personal tiene un formato inválido.'|trans }}"
+                },
+                'fecha_nacimiento': {
+                    required: "- {{ 'Fecha de nacimiento es requerida.'|trans }}"
+                },
+                'correo_corporativo': {
+                    email: "- {{ 'El correo corporativo tiene un formato inválido.'|trans }}"
+                },
+                'roles[]': {
+                    required: "- {{ 'Debe seleccionar al menos un rol.'|trans }}",
+                    minlength: "- {{ 'Debe seleccionar al menos un rol.'|trans }}"
+                }
+            }
+        });
+
+    </script>
+    <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
+{% endblock %}

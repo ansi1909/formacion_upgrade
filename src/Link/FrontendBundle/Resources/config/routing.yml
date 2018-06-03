@@ -1,0 +1,79 @@
+_inicio:
+    path:     /
+    defaults: { _controller: LinkFrontendBundle:Default:index }
+
+_login:
+    path:     /login/{empresa_id}
+    defaults: { _controller: LinkFrontendBundle:Default:login }
+
+_authExceptionEmpresa:
+    path:     /authExceptionEmpresa/{tipo}
+    defaults: { _controller: LinkFrontendBundle:Default:authExceptionEmpresa }
+
+_ajaxCorreo:
+    path:     /ajaxCorreo
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxCorreo }
+    requirements:
+        _method: POST
+
+lecciones:
+    resource: "@LinkFrontendBundle/Resources/config/routing/lecciones.yml"
+    prefix: /lecciones
+
+calendarioDeEventos:
+    resource: "@LinkFrontendBundle/Resources/config/routing/calendarioDeEventos.yml"
+    prefix: /calendarioDeEventos
+
+programa:
+    resource: "@LinkFrontendBundle/Resources/config/routing/programa.yml"
+    prefix: /
+
+tests:
+    resource: "@LinkFrontendBundle/Resources/config/routing/tests.yml"
+    prefix: /tests
+
+noticias:
+    resource: "@LinkFrontendBundle/Resources/config/routing/noticias.yml"
+    prefix: /noticias
+
+certificados:
+    resource: "@LinkFrontendBundle/Resources/config/routing/certificados.yml"
+    prefix: /certificados
+
+biblioteca:
+    resource: "@LinkFrontendBundle/Resources/config/routing/biblioteca.yml"
+    prefix: /biblioteca
+
+_ajaxLike:
+    path:     /ajaxLike
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxLike }
+    requirements:
+        _method: POST
+
+faqs:
+    resource: "@LinkFrontendBundle/Resources/config/routing/faqs.yml"
+    prefix: /faqs
+
+usuario:
+    resource: "@LinkFrontendBundle/Resources/config/routing/usuario.yml"
+    prefix: /usuario
+
+ranking:
+    resource: "@LinkFrontendBundle/Resources/config/routing/ranking.yml"
+    prefix: /ranking
+
+colaborativo:
+    resource: "@LinkFrontendBundle/Resources/config/routing/colaborativo.yml"
+    prefix: /espacioColaborativo
+
+soporte:
+    resource: "@LinkFrontendBundle/Resources/config/routing/soporte.yml"
+    prefix: /soporte
+
+tutorial:
+    resource: "@LinkFrontendBundle/Resources/config/routing/tutoriales.yml"
+    prefix: /tutorial
+
+notificaciones:
+    resource: "@LinkFrontendBundle/Resources/config/routing/notificaciones.yml"
+    prefix: /notificaciones

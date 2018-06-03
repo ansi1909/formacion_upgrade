@@ -1,0 +1,707 @@
+@charset "utf-8";
+//recuperar password
+.modal-recuperacion{
+    @extend %modal-m;
+    @extend %modal;
+    @include media-breakpoint-down(xl){
+        .titulo{
+            margin-top: calc(-1*calc(2rem - 7px));
+        }
+        .btn_rc{
+            margin: 1rem 0;
+            padding: auto 0;
+            
+        }
+        .txt-modal-footer{
+            margin-top: 2rem;
+        }
+    }
+    .txt-modal{
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: $font-size-base;
+        line-height: 1.1875rem;
+        text-align: center;
+    }
+    .txt-modal-footer{
+        position: relative;
+        bottom: calc(-1 * calc(2rem + 3px));
+    }
+    input{
+        align-items: center;
+    }
+    .btn_rc{
+        text-align: center;
+        margin: 1rem 0 calc(1rem - 8px) 0; 
+    }
+    .link_ri{
+        font-size: $font-size-sm;
+        color: $primary;
+        font-family: $secondary-font;
+        font-weight: $font-weight-normal;
+        position: relative;
+        text-align: center !important;
+        float: none !important;
+    }
+}
+
+//Modal calendario
+.modal-calendario{
+    @extend %modal-m;
+    @extend %modal;
+    @include media-breakpoint-down(xl){
+        .titulo{
+            margin-top: calc(-1*calc(2rem - 7px));
+        }
+        .btn_rc{
+            margin-top: -2rem; 
+        }
+    }
+    .text-calendar{
+        color: $gray-700;
+        font-family: $primary-font;
+        font-size: calc($p-font-size - 2px);
+        line-height: 1.1875rem;
+        text-align: center;
+        font-weight: $font-weight-light;
+    }
+}
+
+//Modal editar hilo en espacio colaborativo
+.modal-edit{
+    @extend %modal-l;
+    @extend %modal;
+    &::-webkit-scrollbar {
+        width: .75rem;
+    }
+    &::-webkit-scrollbar-track {
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+    }
+    .titulo-form{
+        @extend %tituloForm;
+    }
+}
+
+//Modal responder hilo en espacio colaborativo
+.modal-resp{
+    @extend %modal-sl;
+    @extend %modal;
+    &::-webkit-scrollbar {
+        width: .75rem;
+    }
+    &::-webkit-scrollbar-track {
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+    }
+    .titulo-form{
+        @extend %tituloForm;
+    }
+}
+
+//Modal Editar perfil
+.modalEditP{
+    @extend %modal-m;
+    @extend %modal;
+    padding-right: 0px !important;
+    &::-webkit-scrollbar {
+        width: .75rem;
+    }
+    &::-webkit-scrollbar-track {
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+    }
+    .titulo-form{
+            @extend %tituloForm;
+    }
+}
+
+//Modal change password
+.modalChagePwd{
+    @extend %modal-m;
+    @extend %modal;
+    &::-webkit-scrollbar {
+        width: .75rem;
+    }
+    &::-webkit-scrollbar-track {
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+    }
+    .titulo-form{
+        @extend %tituloForm;
+    }
+}
+
+//Cerrar sesion
+.modalCerrarSesion{
+    @extend %modal-s;
+    @extend %modal;
+    .textModalCs{
+        font-size: calc(1rem + 9px);
+        font-family: $primary-font;
+        line-height: 1rem;
+        color: $gray-400;
+    }
+    .btn-Cs{
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 2rem;
+        border-radius: 50rem;;
+        background: linear-gradient(to left, $blue 0%, $bluedark 100%);
+        &:hover{
+            background: linear-gradient(to right, $blue 0%, $bluedark 100%);
+        }
+    }
+    
+    .cancelarCs{
+        @extend %btn-cc;
+    }
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
+}
+
+//Soporte virtual
+.modalSopVirtual{
+    @extend %modal-m;
+    @extend %modal;
+    .txtModalVs{
+        color: $gray-700;	
+        font-family: $primary-font;	
+        font-size: $font-size-base;	
+        line-height: calc(1rem + 3px);
+    }
+    .btnEnv{
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+    }
+    .cerrarSv{
+        color: $blue;	
+        font-family: $primary-font;	
+        font-size: $font-size-sm;	
+        line-height: 1rem;	
+        text-align: center;
+    }
+    .textAsv{
+        padding: .5rem;
+    }
+    &::-webkit-scrollbar {
+        width: .75rem;
+    }
+    &::-webkit-scrollbar-track {
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+    }
+}
+
+//Modal cerrar evaluacion
+.modalCEval{
+    @extend %modal-sm;
+    @extend %modal;
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
+    .textModalCs{
+        font-size: calc(1rem + 9px);
+        font-family: $primary-font;
+        line-height: 1rem;
+        color: $gray-400;
+    }
+    .btn-Cs{
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 2rem;
+        border-radius: 50rem;
+        color: $gray-700;
+        background: linear-gradient(to left, $yellow 0%, $yellow 100%);
+        &:hover{
+            background: linear-gradient(to right, $yellow 0%, $yellow 100%);
+            color: $gray-850;
+        }
+    }
+    .cancelarCs{
+        @extend %btn-cc;
+    }
+}
+
+.modalEEval{
+    @extend %modal-sm;
+    @extend %modal;
+    .textModalEv{
+        font-size: calc(1rem + 9px);
+        font-family: $primary-font;
+        line-height: 1rem;
+        color: $gray-400;
+        font-weight: $font-weight-normal;
+    }
+    .btn-Fe{
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 1.5rem;
+        border-radius: 50rem;
+        color: $gray-200;
+    }
+    .btn-contEval{
+        color: $gray-850;
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 1.5rem;
+        border-radius: 50rem;
+        &:hover{
+            color: $gray-200;
+        }
+    }
+}
+
+//Modal Notificacion de muro
+.modalMuroNotify{
+    @extend %modal-l;
+    @extend %modal;
+    .textAsv{
+        padding: .5rem;
+        border-radius: calc(1rem - 8px);
+    }
+    &::-webkit-scrollbar {
+        width: .7rem;
+    }
+    &::-webkit-scrollbar-track {
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+    }
+    .msjMuro{
+        background: $white;
+        width: 50rem;
+        max-height: 9rem;
+        padding: 1rem 2rem .5rem 2rem;
+        border-radius: calc(1rem - 8px);
+        overflow-y: auto;
+        margin-bottom: calc(1rem - 8px);
+        &::-webkit-scrollbar {
+            width: .3rem;
+        }
+        &::-webkit-scrollbar-track {
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $gray-400;
+        }
+        .textMuroNoti{
+            font-family: $lessons-font;
+            font-size: $font-size-sm;
+            line-height: calc(1rem + 4px);
+        }
+    }
+    .msjMuroResp{
+        background: $gray-400;
+        width: 50rem;
+        max-height: 18rem;
+        padding: 0;
+        border-radius: calc(1rem - 8px);
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: .3rem;
+        }
+        &::-webkit-scrollbar-track {
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $gray-600;
+        }
+        .comment{
+            list-style-type: none;
+            border-bottom: 1px solid $gray-100;
+            padding: 1rem 2rem .5rem 2rem;
+            .textMuroNoti{
+                font-family: $lessons-font;
+                font-size: $font-size-sm;
+                line-height: calc(1rem + 4px);
+            }
+        }
+        .muroComment{
+            padding: .4rem;
+            .moreMuroNotify{
+                font-size: $font-size-sm;
+                font-weight: $font-weight-normal;
+                color: $gray-700;
+                .icMore{
+                    position: relative;
+                    right: .25rem;
+                    top: .3rem;
+                }
+                &:hover{
+                    color: $blue;
+                }
+            }
+        }
+    }
+}
+
+.modalSuccess{
+    @extend %modal-m;
+    @extend %modal;
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
+    .check_mark {
+        width: 10rem;
+        height: 10rem;
+        margin: 0 auto;
+        .sa-icon {
+            width: 10rem;
+            height: 10rem;
+            border: 4px solid $gray-400;
+            border-radius: 50%;
+            margin: calc(1rem + 4px) auto;
+            padding: 0;
+            position: relative;
+            left: 0;
+            box-sizing: content-box;
+            &.sa-success{
+                border-color: $green;
+                &::before, &::after{
+                    content: '';
+                    border-radius: 50%;
+                    position: absolute;
+                    width: 6rem;
+                    height: 11rem;
+                    background: $gray-100;
+                    -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                }
+                &::before{
+                    -webkit-border-radius: 120px 0 0 120px;
+                    border-radius: 120px 0 0 120px;
+                    top: 1.5rem;
+                    left: -1.5rem;
+                    -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+                    -webkit-transform-origin: 120px 120px;
+                    transform-origin: 120px 120px;
+                }
+                &::after{
+                    -webkit-border-radius: 0 120px 120px 0;
+                    border-radius: 0 120px 120px 0;
+                    top: 0rem;
+                    left: 3.75rem;
+                    -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+                    -webkit-transform-origin: 0px 120px;
+                    transform-origin: 0px 120px;
+                }
+                .sa-placeholder {
+                    width: 10rem;
+                    height: 10rem;
+                    border: 4px solid rgba(207, 230, 92, .7);
+                    border-radius: 50%;
+                    box-sizing: content-box;
+                    position: absolute;
+                    left: -4px;
+                    top: -4px;
+                    z-index: 2;
+                }
+                .sa-fix {
+                    width: .5rem;
+                    height: 5rem;
+                    background-color: $gray-100;
+                    position: absolute;
+                    left: 2.25rem;
+                    top: 1.85rem;
+                    z-index: 1;
+                    -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+                }
+                &.animate::after {
+                    -webkit-animation: rotatePlaceholder 4.25s ease-in;
+                    animation: rotatePlaceholder 4.25s ease-in;
+                }
+                border-color: transparent;
+                .sa-line {
+                    &.sa-tip {
+                        -ms-transform: rotate(45deg) \9;
+                    }
+                    &.sa-long {
+                        -ms-transform: rotate(-45deg) \9;
+                    }
+                }
+            }
+        }
+    }
+    .sa-icon.sa-success .sa-line {
+        height: 8px;
+        background-color: $green;
+        display: block;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 2;
+        &.sa-tip {
+            width: 3.5rem;
+            left: 1.5rem;
+            top: 5rem;
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        &.sa-long {
+            width: 5.5rem;
+            left: 3.5rem;
+            top: 4.5rem;
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+    }
+    .msgText{
+        font-family: $lessons-font;
+        font-size: calc(2rem - 4px);
+        font-weight: $font-weight-normal;
+    }
+}
+
+.modalWrong{
+    @extend %modal-m;
+    @extend %modal;
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
+    .wrong_mark{
+        width: 10rem;
+        height: 10rem;
+        margin: 0 auto;
+        .sa-icon{
+            width: 10rem;
+            height: 10rem;
+            border: 4px solid $gray-400;
+            border-radius: 50%;
+            margin: calc(1rem + 4px) auto;
+            padding: 0;
+            position: relative;
+            left: 0;
+            box-sizing: content-box;
+            &.sa-error{
+                border-color: $red;
+                &::before, &::after{
+                    content: '';
+                    border-radius: 50%;
+                    position: absolute;
+                    width: 6rem;
+                    height: 11rem;
+                    background: $gray-100;
+                    -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                }
+                &::before{
+                    -webkit-border-radius: 120px 0 0 120px;
+                    border-radius: 120px 0 0 120px;
+                    top: 1.5rem;
+                    left: -1.5rem;
+                    -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+                    -webkit-transform-origin: 120px 120px;
+                    transform-origin: 120px 120px;
+                }
+                &::after{
+                    -webkit-border-radius: 0 120px 120px 0;
+                    border-radius: 0 120px 120px 0;
+                    top: 0rem;
+                    left: 3.75rem;
+                    -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+                    -webkit-transform-origin: 0px 120px;
+                    transform-origin: 0px 120px;
+                }
+                .sa-placeholder {
+                    width: 10rem;
+                    height: 10rem;
+                    border: 4px solid rgba(223, 88, 76, .7);
+                    border-radius: 50%;
+                    box-sizing: content-box;
+                    position: absolute;
+                    left: -4px;
+                    top: -4px;
+                    z-index: 2;
+                }
+                .sa-fix {
+                    width: .5rem;
+                    height: 5rem;
+                    background-color: $gray-100;
+                    position: absolute;
+                    left: 2.25rem;
+                    top: 1.85rem;
+                    z-index: 1;
+                    -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+                }
+                &.animate::after {
+                    -webkit-animation: rotatePlaceholder 4.25s ease-in;
+                    animation: rotatePlaceholder 4.25s ease-in;
+                }
+                border-color: transparent;
+                .sa-line {
+                    &.sa-tip {
+                        -ms-transform: rotate(45deg) \9;
+                    }
+                    &.sa-long {
+                        -ms-transform: rotate(-45deg) \9;
+                    }
+                }
+            }
+        }
+    }
+    .sa-icon.sa-error .sa-line {
+        height: 8px;
+        background-color: $red;
+        display: block;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 2;
+        &.sa-tip {
+            width: 8rem;
+            left: 1rem;
+            top: 4.75rem;
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        &.sa-long {
+            width: 8rem;
+            left: 1rem;
+            top: 4.75rem;
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+    }
+    .msgText{
+        font-family: $lessons-font;
+        font-size: calc(2rem - 4px);
+        font-weight: $font-weight-normal;
+    }
+}
+//Extend
+
+%modal-sl{
+    height: 37rem;
+    width: 65rem;
+    @include media-breakpoint-down(xl){
+        height: 33rem;
+        width: 62rem;
+    }
+}
+
+%modal-l{
+    height: 46rem;
+    width: 65rem;
+    @include media-breakpoint-down(xl){
+        height: 36rem;
+        width: 62rem;
+    }
+}
+
+%modal-s{
+    height: 32.5rem;
+    min-height: 32.5rem;
+    max-height: 36.5rem;
+    width: 32.5rem;
+    min-width: 32.5rem;
+    max-width: 36.5rem;
+    @include media-breakpoint-down(xl){
+        min-width: 26rem;
+        width: 26rem;
+        max-width: 30rem;
+        height: 20rem;
+        max-height: 30rem;
+        min-height: 20rem;
+    }   
+}
+
+%modal-sm{
+    height: 33.5rem;
+    width: 33.5rem;
+    @include media-breakpoint-down(xl){
+        height: 28.5rem;
+        width: 30.5rem;
+    }
+}
+
+%modal-m{
+    height: 40rem;
+    width: 33.5rem;
+    @include media-breakpoint-down(xl){
+        height: 36rem;
+        width: 30.5rem;
+    }
+    @include media-breakpoint-only(xs){
+        height: 33rem;
+        width: 19.5rem;
+        &::-webkit-scrollbar {
+            width: .7rem;
+        }
+        &::-webkit-scrollbar-track {
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $gray-400;
+        }
+    }
+}
+
+%modal{
+    margin: 8rem auto !important;
+    border-radius: 1rem;
+    background: $gray-100;
+    @include media-breakpoint-down(xl){
+        margin: calc(2rem - 4px) auto !important;
+    }
+    @include media-breakpoint-down(xs){
+        margin: calc(1rem + 4px) auto !important;
+    }
+    .btn_close_modal{
+        position: relative;
+        top: 1.3125rem;
+        right: 0;
+        border: 0;
+        background: transparent;
+        .ic-close-white{
+            height: 1.5rem;
+            width: 1.5rem;
+            cursor: pointer;
+            color: $gray-600;
+        }
+    }
+    .titulo{
+        color: $gray-700;
+        font-family: $secondary-font;
+        font-weight: $font-weight-easy-medium;
+        font-size: $h4-font-size;
+        text-align: center;
+        line-height: 2.375rem;
+    }
+}
+
+%tituloForm{
+    color: $gray-700;
+    font-family: $primary-font;
+    font-size: $font-size-base;
+    line-height: 1.1875rem;
+    font-weight: $font-weight-normal-hard;
+    text-align: left;
+}
+
+%btn-cc{
+    text-transform: uppercase;
+    font-family: $primary-font;
+    font-weight: $font-weight-medium;
+    color: $gray-500;
+    &:hover{
+        color: $gray-850;
+    }
+}

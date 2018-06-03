@@ -1,0 +1,28 @@
+.titulo-ec{
+    color: $gray-700;	
+    font-family: $primary-font;	
+    font-size: $h2-font-size;	
+    line-height: calc(3rem - 6px);
+    font-weight: $font-weight-normal-hard;
+}
+
+.esp_col{
+    margin: 1rem auto;
+    width: 62.25rem;
+    @include media-breakpoint-down(xl){
+        margin: 1rem auto;
+    }
+    .btn-nw-tema{
+        width: 10rem;
+        padding: calc(1rem - 8px) 0;
+        color: $gray-300;	
+        font-family: $primary-font;	
+        font-size: calc($p-font-size - 2px);	
+        font-weight: $font-weight-easy-medium;	
+        line-height: calc(1rem + 3px);	
+        text-align: center;
+        &:focus{
+            outline: none;
+        }
+    }
+}

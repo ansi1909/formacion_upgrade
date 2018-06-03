@@ -1,0 +1,7 @@
+_calendarioDeEventos:
+    path:     /index/{view}/{date}
+    defaults: { _controller: LinkFrontendBundle:CalendarioDeEventos:index, view: month, date: 0 }
+
+_eventosDelUsuario:
+    path:  /eventos
+    defaults: { _controller: LinkFrontendBundle:CalendarioDeEventos:eventos }

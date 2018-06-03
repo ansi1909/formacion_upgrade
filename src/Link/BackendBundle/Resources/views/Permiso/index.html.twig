@@ -1,0 +1,81 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+<br>
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Permisos de Acceso'|trans }}</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Permisos por Rol'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Rol'|trans }}</th>
+                            <th class="hd__title">{{ 'Aplicaciones a la que tiene acceso'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for permiso in permisos %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>{{ permiso.rol_nombre }}</td>
+                                <td>
+                                    {% if permiso.aplicaciones|length > 0 %}
+                                        <div class="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {% for aplicacion in permiso.aplicaciones %}
+                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ aplicacion.nombre }}
+                                                        {% if aplicacion.subaplicaciones|length %}
+                                                            <ul>
+                                                                {% for subaplicacion in aplicacion.subaplicaciones %}
+                                                                    <li data-jstree='{ "icon" : "fa fa-angle-right" }'>{{ subaplicacion.nombre }}</li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'Este rol aún no tiene permisos de acceso'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td class="center">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="{{ path('_permisosRol', { 'rol_id': permiso.rol_id }) }}">{{ 'Configurar'|trans }}</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/permisos.js') }}"></script>
+{% endblock %}

@@ -48,6 +48,10 @@ parameters:
         noticia : 5
         novedad : 6
         biblioteca : 7
+    tipo_archivos:
+        pdf: 'pdf'
+        imagen: 'jpg-jpeg-bmp-svg-png-gif-tiff'
+        video: 'mov-mpeg-m4v-mp4-avi-mpg-wma-flv-webm'
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2
@@ -62,12 +66,12 @@ parameters:
     layout:
         base: 1
     correo_recuperacion:
-        asunto: 'FormaciÃ³n2.0 - RecuperaciÃ³n de usuario y clave.'
-        remitente: 'tutorvirtualformacion@gmail.com'
+        asunto: 'Formación2.0 - Recuperación de usuario y clave.'
+        remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
-        asunto: 'Formaci¨®n2.0 - Solicitud de soporte virtual. '
-        remitente: 'tutorvirtual@formacion2puntocero.com'
-        destinatario: 'josetayupo@gmail.com'
+        asunto: 'Formación2.0 - Solicitud de soporte virtual. '
+        remitente: 'soporte@formacion2puntocero.com'
+        destinatario: 'soporte@formacion2puntocero.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2
@@ -80,3 +84,6 @@ parameters:
         respuesta_muro: 50
         espacio_colaborativo: 100
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
+    tutoriales:
+        ruta: 'recursos/tutoriales/'
+        default: '/default'

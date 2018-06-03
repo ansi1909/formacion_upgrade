@@ -1,0 +1,25 @@
+_certificados:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:index }
+
+_registroCertificado:
+    path:     /registroCertificado/{certificado_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:registro, certificado_id: 0 }
+
+_showCertificado:
+    path:     /mostrarCertificado/{certificado_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:mostrar }
+
+_ajaxTipoCertificado:
+    path:     /ajaxTipoCertificado
+    defaults: { _controller: LinkBackendBundle:Certificado:ajaxTipoCertificado }
+    requirements:
+        method: GET
+
+_generarVistaPdf:
+    path:     /vistaPreviaPdf/{id_certificado}
+    defaults: { _controller: LinkBackendBundle:Certificado:generarVistaPdf }
+
+_generarPdf:
+    path:     /generarPdf/{id_certificado}
+    defaults: { _controller: LinkBackendBundle:Certificado:generarPdf }

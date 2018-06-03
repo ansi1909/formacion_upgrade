@@ -1,0 +1,342 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/colorpicker/css/colorpicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/colorpicker/css/layout.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
+    <style>
+        .input-group-addon{
+            padding:0px;
+            border-radius: 50px !important;
+        }
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .input-group {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        .photo_img{
+            height: auto;
+            overflow: hidden;
+            border: 0;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: 1rem 1rem 0 3rem;
+        }
+        .dimensions {
+            margin-left: 50px;
+            margin-top: 40px;
+        }
+        #label-logo {
+            margin-left: 50px;
+        }
+        .fileinput-button {
+            position: inherit !important;
+        }
+        .btn_addImg span {
+            padding-top: 1rem;
+        }
+        #error_logo {
+            margin-left: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% set uri = app.request.getbasepath %}
+<form id="form" name="form" action="{{ path('_preferencia', { 'empresa_id': preferencia.empresa.id, 'preferencia_id': preferencia.id }) }}" method="POST">
+<input type="hidden" id="default_logo" name="default_logo" value="{{ asset('front/assets/img/logo_formacion.png') }}">
+<input type="hidden" id="default_favicon" name="default_favicon" value="{{ asset('img/icono.png') }}">
+<input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadLogo') }}">
+<input type="hidden" id="base_upload" name="base_upload" value="recursos/empresas/{{ preferencia.empresa.id }}/">
+<input type="hidden" id="file_input" name="file_input" value="">
+<input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
+<br><br>
+<div class="row align-items-center justify-content-start">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="{{ path('_preferencias', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Preferencias de la empresa'|trans }} {{ preferencia.empresa.nombre }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Plantilla'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Customización'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Logo'|trans }}</p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+            		<div class="row setup-content" id="det0">	
+            			<div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Escoja una plantilla'|trans }}</h3>
+                                </div>
+                            </div>
+                            <br>
+            				{% for layout in layouts %}
+                                {% if loop.first %}
+                                    <div class="row">
+                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                {% endif %}
+                                <div class="card cardThumb"  id="thumbnails-{{ layout.id }}">
+                                    <div class="card-header gradiente">
+                                        <h5 class="card-title">{{ 'Thumbnails de la plantilla'|trans }} {{ layout.twig }}</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        {% for thumbnail in layout.thumbnails %}
+                                            {% if loop.first %}
+                                                <div class="list-unstyled project-list row">
+                                            {% endif %}
+                                            <div class="col-md-16 col-lg-8 col-xl-8">
+                                                {% set img = thumbnail.url ? uploads~thumbnail.url : asset('img/picture.png') %}
+                                                <div class="media flex-column">
+                                                    <span class="projectpic"><img src="{{ img }}" alt="Thumbnail"><span class="user-status bg-success"></span></span>
+                                                </div>
+                                                <p class="card-text">{{ thumbnail.nombre }}</p>
+                                            </div>
+                                            {% if loop.index is divisibleby(2) %}
+                                                </div>
+                                                <br>
+                                                {% if not loop.last %}
+                                                    <div class="list-unstyled project-list row">
+                                                {% endif %}
+                                            {% else %}
+                                                {% if loop.last %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="alert alert-danger" role="alert">
+                                                <h4 class="alert-heading">{{ 'Thumbnails inexistentes'|trans }}!</h4>
+                                                <p>{{ 'Esta plantilla no posee thumbnails en la base de datos'|trans }}.</p>
+                                                <p>{{ 'Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla'|trans }}.</b>.</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="col-12">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                {% set chk = layout.checked ? 'checked="checked"' : '' %}
+                                                <input id="f{{ layout.id }}" name="layout_id[]" class="layout" type="checkbox" {{ chk }} value="{{ layout.id }}">
+                                                <label for="f{{ layout.id }}">
+                                                    <div class="can-toggle__switch" data-checked="Ok" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if loop.index is divisibleby(2) %}
+                                    </div>
+                                    </div>
+                                    {% if not loop.last %}
+                                        <div class="row">
+                                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    {% endif %}
+                                {% else %}
+                                    </div>
+                                    {% if loop.last %}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+                    <div class="row setup-content" id="det1">
+                        <div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Variables de colores que se aplican a la plantilla'|trans }}</h3>
+                                </div>
+                            </div>
+                            <br>
+                            {% for atributo in atributos %}
+                                {% if loop.first %}
+                                    <div class="row">
+                                {% endif %}
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="form-group">
+                                        <input type="hidden" id="atributos_id{{ atributo.id }}" name="atributos_id{{ atributo.id }}" value="{{ atributo.valor }}">
+                                        <label for="atributos_id{{ atributo.id }}" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ atributo.variable }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <div id="customWidget">
+                                                <div id="colorSelector{{ atributo.id }}" class="cs">
+                                                    <div style="background-color: {{ atributo.valor }}"></div>
+                                                </div>
+                                                <div id="colorpickerHolder{{ atributo.id }}" class="ch"> </div>
+                                            </div>
+                                        </div>
+                                        <small id="atributoHelp{{ atributo.id }}" class="form-text text-muted">{{ atributo.descripcion }}</small>
+                                    </div>
+                                </div>
+                                {% if loop.index is divisibleby(2) %}
+                                    </div>
+                                    <br>
+                                    {% if not loop.last %}
+                                        <div class="row">
+                                    {% endif %}
+                                {% else %}
+                                    {% if loop.last %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            		<div class="row setup-content" id="det2">
+            			<div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16 col-lg-16 col-md-16">
+                                    <label for="title" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Título en la ventana del navegador' }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <input type="text" id="title" name="title" class="form-control form_sty1" value="{{ preferencia.title }}">
+                                        <span class="fa fa-font"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+            				<div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    <label for="pais_id" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Tipo de logo'|trans }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <select class="form-control form_sty_select" name="tipo_logo_id" id="tipo_logo_id">
+                                            {% for tipo_logo in tls %}
+                                                {% set selected = preferencia.tipoLogo ? preferencia.tipoLogo.id == tipo_logo.id ? 'selected="selected"' : '' : '' %}
+                                                <option value="{{ tipo_logo.id }}" {{ selected }}>{{ tipo_logo.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="fa fa-tags"></span>
+                                        <div class="input-group">
+                                            <input type="hidden" id="logo" name="logo" value="{{ preferencia.logo }}">
+                                            <span class="input-group-addon">
+                                                <a class="fileinput-button btn_addImg" data="logo">
+                                                    <span class="fa fa-photo"></span>
+                                                    <input class="fileupload" type="file" name="files[]" multiple>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    <label for="logo" class="col-form-label" id="label-logo">{{ 'Vista previa'|trans }}</label>
+                                    {% set img_hor = preferencia.logo ? uploads~preferencia.logo : asset('img/imgLogoHor.svg') %}
+                                    {% set img_ver = preferencia.logo ? uploads~preferencia.logo : asset('img/imgLogoVer.svg') %}
+                                    {% set img_cc = preferencia.logo ? uploads~preferencia.logo : asset('img/imgLogoCC.svg') %}
+                                    <div id="figure_logo">
+                                        <img src="{{ img_hor }}" id="logo_1" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoHor">
+                                        <img src="{{ img_ver }}" id="logo_2" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoVer" style="display:none;">
+                                        <img src="{{ img_cc }}" id="logo_3" alt="{{ 'Logo de la empresa'|trans }}" class="imgLogoCC" style="display:none;">
+                                    </div>
+                                    <span class="error" id="error_logo"></span>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-16 col-lg-16 col-md-16">
+                                    <label for="logoLogin" class="col-sm-6 col-md-6 col-lg-6 col-form-label">¿{{ 'El logo de la empresa se mostrará en la página de login' }}?</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <div class="can-toggle demo-rebrand-2 small">
+                                            {% set chk = preferencia.logoLogin ? 'checked="checked"' : '' %}
+                                            <input id="logo_login" name="logo_login" type="checkbox" {{ chk }} value="1">
+                                            <label for="logo_login">
+                                                <div class="can-toggle__switch" data-checked="{{ 'Sí'|trans }}" data-unchecked="No"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <label for="favicon" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;{{ 'Icono'|trans }}</label>
+                                    {% set img = preferencia.favicon ? uploads~preferencia.favicon : asset('img/icono.png') %}
+                                    <div class="photo_img" id="figure_favicon"><img id="icono" src="{{ img }}" alt="{{ 'Icono de la empresa'|trans }}" width="32px" height="32px"></div>
+                                </div>
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <div class="input-group">
+                                        <input type="hidden" id="favicon" name="favicon" value="{{ preferencia.favicon }}">
+                                        <span class="input-group-addon">
+                                            <a class="fileinput-button btn_addImg" data="favicon">
+                                                <span class="fa fa-photo"></span>
+                                                <input class="fileupload" type="file" name="files[]" multiple>
+                                            </a>
+                                        </span>
+                                        <!--<span class="input-group-addon">
+                                            <button id="btn_clear_favicon" class="btn_clearImg" type="button">
+                                                <span class="fa fa-times"></span>
+                                            </button>
+                                        </span>-->
+                                    </div>
+                                </div>
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <small id="logoHelp" class="form-text text-muted dimensions">{{ 'Dimensiones recomendadas'|trans }}: 32x32</small>
+                                    <br>
+                                    <span class="error" id="error_favicon"></span>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/colorpicker.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/eye.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/utils.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/preferencia.js') }}"></script>
+{% endblock %}

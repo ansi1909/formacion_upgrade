@@ -1,0 +1,423 @@
+.icDown{
+    position: relative;
+    top: calc(1rem - 10px);
+}
+
+.dropDownMenu{
+    position: absolute;
+    width: 14rem;
+    height: auto;
+    right: .1rem;
+    top: 4.35rem;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background: $bluedarkest;
+    box-shadow: 2px 2px 10px rgba(56, 56, 56, .1);
+    border-radius: 0 0 .5rem .5rem;
+    display: none;
+    z-index: 10;
+    @include media-breakpoint-only(xs) {
+        width: 16.75rem;
+    }
+    .mark{
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        top: -.5rem;
+        right: 4.3rem;
+        transform: rotate(45deg);
+        background: transparent;
+        border-top: calc(1rem - 6px) solid $bluedarkest;
+        border-left: calc(1rem - 6px) solid $bluedarkest;
+        display: none;
+        @include media-breakpoint-down(xl){
+            right: 4rem;
+        }
+        @include media-breakpoint-only(xs) {
+            right: 2.8rem;
+        }
+    }
+    .opcList{
+        position: relative;
+        width: 14rem;
+        top: 0;
+        left: 0;
+        padding: 1rem;
+        color: $gray-400;
+        @include media-breakpoint-only(xs) {
+            width: 16.75rem;
+        }
+        span{
+            font-size: $font-size-sm;
+            font-family: $primary-font;
+            font-weight: $font-weight-normal;
+            .icMenu{
+                font-size: calc(1rem + 8px);
+                float: right;
+                -moz-margin-start: -1.5rem; 
+                margin-top: .3rem;
+            }
+        }
+        &:hover{
+            color: $green;
+        }
+    }
+    .markOpc{
+        border-top: 1px solid $gray-200;
+    }
+}
+
+.dropDownNotify{
+    position: absolute;
+    max-width: 27rem;
+    width: 27rem;
+    height: auto;
+    max-height: 20rem;
+    right: 7rem;
+    top: 4.35rem;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background: $white;
+    border-left: 1px solid $gray-300;
+    border-bottom: 1px solid $gray-300;
+    border-right: 1px solid $gray-300;
+    border-top: 0px;
+    box-shadow: 3px 3px 10px rgba(56, 56, 56, .5);
+    border-radius: 0 0 .5rem .5rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1;
+    display: none;
+    @include media-breakpoint-down(xl){
+        right: 6rem;
+    }
+    @include media-breakpoint-down(sm){
+        right: 0rem;
+    }
+    @include media-breakpoint-down(xs){
+        right: 0rem;
+        width: 16.75rem;
+        box-shadow: -3px 3px 10px rgba(56, 56, 56, .5);
+        max-height: 31rem;
+    }
+    &::-webkit-scrollbar {
+        width: .3rem;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+        border-radius: 1rem;
+        border: 0px;
+    }
+    .AnunListNotify{
+        position: relative;
+        width: 27rem;
+        max-height: 12rem;
+        border-bottom: 1px solid $gray-300;
+        top: 0;
+        left: 0;
+        padding: 1rem;
+        @include media-breakpoint-down(xs){
+            width: 16.75rem;
+        }
+        .anunNotify{
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+            .stickerNotify{
+                height: 2.5rem;
+                width: 2.5rem;
+                margin: 0 1rem 0 0;
+                padding: .1rem;
+                border-radius: 50rem;
+                box-shadow: 1px 1px 5px rgba(58, 58, 58, .5);
+                @include media-breakpoint-down(xs){
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    padding: 0;
+                }
+                .icNotify{
+                    margin: 0 auto;
+                    padding: .5rem;
+                    position: relative;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    top: 0;
+                    color: $gray-900;
+                    font-size: calc(1rem + 8px);
+                    @include media-breakpoint-down(xs){
+                        font-size: calc(1rem - 2px);
+                        top: -.2rem;
+                    }
+                }
+            }
+            .textNotify{
+                padding: 0;
+                max-width: 24rem;
+                height: auto;
+                white-space: pre-wrap;
+                color: $gray-700;
+                font-size: $font-size-sm;
+                text-align: justify;
+                text-justify: auto;
+                line-height: 1rem;
+                margin: 0;
+                font-weight: $font-weight-normal-hard;
+                @include media-breakpoint-down(xs){
+                    max-width: 15.25rem;
+                    font-size: $font-size-xs;
+                }
+            }
+            .anunSticker{
+                background: $lightred;
+            }
+            .notiSticker{
+                background: $lightgreen;
+            }
+            .muroSticker{
+                background: $yellow;
+            }
+            .ecpSticker{
+                background: $lightblue;
+            }
+            .ectSticker{
+                background: $green;
+            }
+            .calenSticker{
+                background: $purple;
+            }
+            .biblioSticker{
+                background: $lightorange;
+            }
+        }
+        &:hover{
+            background: linear-gradient(to right, $lightblue 0%, $blue 100%);
+            .textNotify{
+                color: $white;
+            }
+        }
+    }
+    .notiSinLeer{
+        background: #e5eaf2;
+    }
+    .listMoreNotify{
+        padding: .5rem;
+        .moreNotify{
+            font-size: $p-font-size;
+            font-weight: $font-weight-normal;
+            color: $gray-700;
+            .icMore{
+                position: relative;
+                right: .25rem;
+                top: .3rem;
+            }
+            &:hover{
+                color: $blue;
+            }
+        }
+    }
+}
+
+.markNotify{
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    top: 3.8rem;
+    right: 7.8rem;
+    background: transparent;
+    transform: rotate(45deg);
+    border-top: 1px solid $gray-400;
+    border-left: 1px solid $gray-400;
+    z-index: 2;
+    display: none;
+    @include media-breakpoint-down(xl){
+        right: 7.25rem;
+    }
+    @include media-breakpoint-down(xs){
+        right: 5.75rem;
+    }
+}
+
+.notify{
+    position: relative;
+    .sonar{
+        cursor: default;
+        -webkit-border-radius: 1rem;
+        -moz-border-radius: 1rem;
+        -ms-border-radius: 1rem;
+        border-radius: 1rem;
+        background: $greendark;
+        height: calc(1rem - 10px);
+        top: 0;
+        right: 1rem;
+        position: absolute;
+        width: calc(1rem - 10px);
+        @include media-breakpoint-down(xs){
+            right: 1.125rem;
+            top: .1rem;
+        }
+        &::after{
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            border: 2px solid $greendark;
+            opacity: 0;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
+            width: calc(1rem - 4px);
+            height: calc(1rem - 4px);
+            animation: sonar 2s infinite;
+            -moz-animation: sonar 2s infinite;
+            -ms-animation: sonar 2s infinite;
+            -webkit-animation: sonar 2s infinite;
+        }
+    }
+}
+
+.dropDownApps{
+    position: absolute;
+    width: 16rem;
+    height: auto;
+    right: 9.5rem;
+    top: 4.35rem;
+    margin: 0;
+    padding: 0 .5rem;
+    list-style-type: none;
+    background: $bluedarkest;
+    border-left: 1px solid $bluedarkest;
+    border-bottom: 1px solid $bluedarkest;
+    border-right: 1px solid $bluedarkest;
+    border-top: 0px;
+    box-shadow: 3px 3px 10px rgba(56, 56, 56, .5);
+    border-radius: 0 0 .5rem .5rem;
+    z-index: 1;
+    display: none;
+    @include media-breakpoint-down(xl){
+        right: 8.6rem;
+    }
+    @include media-breakpoint-down(xs){
+        right: 0;
+        width: 16.75rem;
+    }
+    .opcApps{
+        width:5rem;
+        height: 5rem;
+        padding: .5rem;
+        margin: 0;
+        .imgApps{
+            width: 2rem;
+            height:  2rem;
+            display: block;
+            margin: 0 auto;
+        }
+        .changeApp{
+            fill: #818181;
+        }
+        
+        .tituloApps{
+            white-space: pre-wrap;
+            font-size: calc(1rem - 4px);
+            font-weight: $font-weight-normal-hard;
+            text-align: center;
+            font-family: $primary-font;
+            line-height: .8rem;
+            margin-top: .2rem;
+            color: #818181;
+        }
+        &:hover{
+            //background: linear-gradient(to right, $lightblue 0%, $blue 100%);
+            border-radius: 1rem;
+            .tituloApps{
+                color: $green;
+                text-shadow: 2px 2px 10px rgba(58, 58, 58, .3);
+            }
+            .changeApp{
+                fill: $green;
+            }
+        }
+    }
+}
+
+.countDownMS{
+    position: absolute;
+    width: 10rem;
+    height: 4rem;
+    right: 3rem;
+    top: 6rem;
+    margin: 0;
+    padding: .3rem;
+    list-style-type: none;
+    background: $gray-100;
+    border-left: 1px solid $gray-300;
+    border-bottom: 1px solid $gray-300;
+    border-right: 1px solid $gray-300;
+    border-top: 0px;
+    box-shadow: 1px 3px 5px rgba(56, 56, 56, .3);
+    border-radius: 0 0 .5rem .5rem;
+    @include media-breakpoint-down(xl){
+        top: 6rem;
+    }
+    .countDownC { 
+        margin:0 auto; 
+        width: 17rem; 
+        display: block; 
+        position: relative; 
+        top: -.5rem; 
+        left: .4rem;
+    }
+}
+
+.countDownHMS{
+    position: absolute;
+    width: 14.5rem;
+    height: 4rem;
+    right: 1.5rem;
+    top: 6rem;
+    margin: 0;
+    padding: .5rem;
+    list-style-type: none;
+    background: $gray-100;
+    border-left: 1px solid $gray-300;
+    border-bottom: 1px solid $gray-300;
+    border-right: 1px solid $gray-300;
+    border-top: 0px;
+    box-shadow: 1px 3px 5px rgba(56, 56, 56, .3);
+    border-radius: 0 0 .5rem .5rem;
+    @include media-breakpoint-down(xl){
+        top: 6rem;
+    }
+    .countDownC { 
+        margin:0 auto; 
+        width: 17rem; 
+        display: block; 
+        position: relative; 
+        top: -.7rem; 
+        left: .5rem;
+    }
+}
+
+.markApps{
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    top: 3.9rem;
+    right: 10.2rem;
+    background: transparent !important;
+    transform: rotate(45deg);
+    border-top: 10px solid $bluedarkest;
+    border-left: 10px solid $bluedarkest;
+    z-index: 2;
+    display: none;
+    @include media-breakpoint-down(xl){
+        right: 9.75rem;
+    }
+    @include media-breakpoint-down(xs){
+        right: 8.2rem;
+    }
+}

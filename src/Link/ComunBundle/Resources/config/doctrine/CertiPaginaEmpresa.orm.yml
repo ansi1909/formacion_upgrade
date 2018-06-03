@@ -12,6 +12,9 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
         IDX_5C87DB9957991ECF:
             columns:
                 - pagina_id
+        IDX_5C87DB99DCCF207D:
+            columns:
+                - prelacion
     id:
         id:
             type: integer
@@ -23,6 +26,9 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
                 strategy: SEQUENCE
     fields:
         activo:
+            type: boolean
+            nullable: true
+        acceso:
             type: boolean
             nullable: true
         fechaInicio:
@@ -46,13 +52,21 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
         puntajeAprueba:
             type: decimal
             nullable: true
-            precision: 3
+            precision: 10
             scale: 2
             column: puntaje_aprueba
         muroActivo:
             type: boolean
             nullable: true
             column: muro_activo
+        colaborativo:
+            type: boolean
+            nullable: true
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
@@ -72,6 +86,16 @@ Link\ComunBundle\Entity\CertiPaginaEmpresa:
             inversedBy: null
             joinColumns:
                 pagina_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        prelacion:
+            targetEntity: CertiPagina
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                prelacion:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

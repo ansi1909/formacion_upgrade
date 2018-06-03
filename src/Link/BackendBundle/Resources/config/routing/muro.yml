@@ -1,0 +1,27 @@
+_filtroMuro:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Muro:index }
+
+_ajaxPaginasMuro:
+    path:     /ajaxPaginasMuro
+    defaults: { _controller: LinkBackendBundle:Muro:ajaxPaginasMuro }
+    requirements:
+        method: GET
+
+_ajaxComentariosMuro:
+    path:     /ajaxComentariosMuro
+    defaults: { _controller: LinkBackendBundle:Muro:ajaxComentariosMuro }
+    requirements:
+        _method: GET
+
+_ajaxRespuestasComentariosMuro:
+    path:     /ajaxRespuestasComentariosMuro
+    defaults: { _controller: LinkBackendBundle:Muro:ajaxRespuestasComentariosMuro }
+    requirements:
+        _method: GET
+
+_ajaxUpdateRespuestaMuro:
+    path:     /ajaxUpdateRespuestaMuro
+    defaults: { _controller: LinkBackendBundle:Muro:ajaxUpdateRespuestaMuro }
+    requirements:
+        _method: POST

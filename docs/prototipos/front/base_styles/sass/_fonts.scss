@@ -1,0 +1,70 @@
+/* FONTS */
+
+
+// Headings
+//
+//
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: $headings-margin-bottom;
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  line-height: $headings-line-height;
+  color: $headings-color;
+}
+
+h1, .h1 { font-size: $h1-font-size; }
+h2, .h2 { font-size: $h2-font-size; }
+h3, .h3 { font-size: $h3-font-size; }
+h4, .h4 { font-size: $h4-font-size; }
+h5, .h5 { font-size: $h5-font-size; }
+// h6, .h6 { font-size: $h6-font-size; }
+
+
+
+.font-light { font-weight: $font-weight-light; }
+.font-normal { font-weight: $font-weight-normal; }
+.font-medium { font-weight: $font-weight-medium; }
+.font-bold { font-weight: $font-weight-bold; }
+
+p {
+    font-family: $secondary-font;
+    font-size: $p-font-size;
+    color: $gray-700;
+    font-weight: $font-weight-light;
+}
+
+label{
+    font-size: $p-font-size;
+    color: $gray-700;
+    font-weight: lighter;
+}
+
+.title-grey { color: $gray-700; }
+.links {
+    color: $primary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-light;
+ }
+
+ .text-sm { font-size: $font-size-sm; }
+ .text-xs { font-size: $font-size-xs; }
+ .text-xxs { font-size: $font-size-xxs; }
+
+
+
+// MEDIA QUERIES
+
+ @include media-breakpoint-down(md) {
+
+    // html{
+    // font-size:  0.8rem;
+    // }
+     h1, .h1 { font-size: $h1-font-size * 0.75; }
+     h2, .h2 { font-size: $h2-font-size * 0.75; }
+     h3, .h3 { font-size: $h3-font-size * 0.75; }
+     h4, .h4 { font-size: $h4-font-size * 0.75; }
+     h5, .h5 { font-size: $h5-font-size * 0.75; }
+
+     p, body, label { font-size: $p-font-size * 0.8; }
+}

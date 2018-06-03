@@ -25,7 +25,7 @@ class CertiPagina
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=500, nullable=true)
      */
     private $nombre;
 
@@ -60,9 +60,30 @@ class CertiPagina
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_creacion", type="date", nullable=true)
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
      */
     private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="encuesta", type="text", nullable=true)
+     */
+    private $encuesta;
 
     /**
      * @var \Link\ComunBundle\Entity\CertiPagina
@@ -126,7 +147,7 @@ class CertiPagina
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -150,7 +171,7 @@ class CertiPagina
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-
+    
         return $this;
     }
 
@@ -174,7 +195,7 @@ class CertiPagina
     public function setContenido($contenido)
     {
         $this->contenido = $contenido;
-
+    
         return $this;
     }
 
@@ -198,7 +219,7 @@ class CertiPagina
     public function setFoto($foto)
     {
         $this->foto = $foto;
-
+    
         return $this;
     }
 
@@ -222,7 +243,7 @@ class CertiPagina
     public function setPdf($pdf)
     {
         $this->pdf = $pdf;
-
+    
         return $this;
     }
 
@@ -246,7 +267,7 @@ class CertiPagina
     public function setFechaCreacion($fechaCreacion)
     {
         $this->fechaCreacion = $fechaCreacion;
-
+    
         return $this;
     }
 
@@ -261,6 +282,78 @@ class CertiPagina
     }
 
     /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiPagina
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return CertiPagina
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * Set encuesta
+     *
+     * @param string $encuesta
+     *
+     * @return CertiPagina
+     */
+    public function setEncuesta($encuesta)
+    {
+        $this->encuesta = $encuesta;
+    
+        return $this;
+    }
+
+    /**
+     * Get encuesta
+     *
+     * @return string
+     */
+    public function getEncuesta()
+    {
+        return $this->encuesta;
+    }
+
+    /**
      * Set pagina
      *
      * @param \Link\ComunBundle\Entity\CertiPagina $pagina
@@ -270,7 +363,7 @@ class CertiPagina
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -294,7 +387,7 @@ class CertiPagina
     public function setCategoria(\Link\ComunBundle\Entity\CertiCategoria $categoria = null)
     {
         $this->categoria = $categoria;
-
+    
         return $this;
     }
 
@@ -318,7 +411,7 @@ class CertiPagina
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -342,7 +435,7 @@ class CertiPagina
     public function setEstatusContenido(\Link\ComunBundle\Entity\CertiEstatusContenido $estatusContenido = null)
     {
         $this->estatusContenido = $estatusContenido;
-
+    
         return $this;
     }
 

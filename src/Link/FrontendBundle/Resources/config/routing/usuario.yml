@@ -1,0 +1,55 @@
+_usuariop:
+    path:     /usuario
+    defaults: { _controller: LinkFrontendBundle:Usuario:index }
+
+_ajaxSavePerfil:
+    path:     /ajaxSavePerfil
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxSavePerfil }
+    requirements:
+        _method: POST
+
+_ajaxClave:
+    path:     /ajaxClave
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxClave }
+    requirements:
+        method: POST
+
+_ajaxImg:
+    path:     /ajaxImg
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxImagen }
+    requirements:
+        method: POST
+
+_ajaxUploadFotoUsuario:
+    path:     /ajaxUploadFotoUsuario
+    defaults: { _controller: LinkFrontendBundle:Usuario:ajaxUploadFotoUsuario }
+    requirements:
+        _method: POST
+
+_ajaxNoti:
+    path:     /ajaxNoti
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxNoti }
+    requirements:
+        method: GET
+
+_ajaxLeido:
+    path:     /ajaxLeido
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxLeido }
+    requirements:
+        method: POST
+
+_notificaciones:
+    path:     /notificaciones
+    defaults: { _controller: LinkFrontendBundle:Default:notificaciones }
+
+_ajaxNotiMuro:
+    path:     /ajaxNotiMuro
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxNotiMuro }
+    requirements:
+        method: GET
+
+_ajaxRespuestaComentario:
+    path:     /ajaxRespuestaComentario
+    defaults: { _controller: LinkFrontendBundle:Default:ajaxRespuestaComentario }
+    requirements:
+        method: POST

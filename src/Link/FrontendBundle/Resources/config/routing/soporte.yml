@@ -1,0 +1,5 @@
+_ajaxEnviarMailSoporte:
+    path:     /_ajaxEnviarMailSoporte
+    defaults: { _controller: LinkFrontendBundle:Soporte:_ajaxEnviarMailSoporte }
+    requirements:
+        _method: POST

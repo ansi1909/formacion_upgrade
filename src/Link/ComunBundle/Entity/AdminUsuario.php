@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminUsuario
  *
- * @ORM\Table(name="admin_usuario", indexes={@ORM\Index(name="IDX_E65932D4521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_E65932D4DA3426AE", columns={"nivel_id"})})
+ * @ORM\Table(name="admin_usuario", indexes={@ORM\Index(name="IDX_E65932D4521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_E65932D4DA3426AE", columns={"nivel_id"}), @ORM\Index(name="IDX_E65932D4C604D5C6", columns={"pais_id"})})
  * @ORM\Entity
  */
 class AdminUsuario
@@ -88,23 +88,16 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="pais", type="string", length=50, nullable=true)
+     * @ORM\Column(name="campo1", type="string", length=50, nullable=true)
      */
-    private $pais;
+    private $campo1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ciudad", type="string", length=50, nullable=true)
+     * @ORM\Column(name="campo2", type="string", length=50, nullable=true)
      */
-    private $ciudad;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="region", type="string", length=50, nullable=true)
-     */
-    private $region;
+    private $campo2;
 
     /**
      * @var string
@@ -116,16 +109,44 @@ class AdminUsuario
     /**
      * @var string
      *
-     * @ORM\Column(name="division_funcional", type="string", length=100, nullable=true)
+     * @ORM\Column(name="campo3", type="string", length=100, nullable=true)
      */
-    private $divisionFuncional;
+    private $campo3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cargo", type="string", length=100, nullable=true)
+     * @ORM\Column(name="campo4", type="string", length=100, nullable=true)
      */
-    private $cargo;
+    private $campo4;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="competencia", type="boolean", nullable=true)
+     */
+    private $competencia;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=50, nullable=true)
+     */
+    private $codigo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cookies", type="string", length=100, nullable=true)
+     */
+    private $cookies;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -146,6 +167,16 @@ class AdminUsuario
      * })
      */
     private $nivel;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminPais
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminPais")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
+     * })
+     */
+    private $pais;
 
 
 
@@ -169,7 +200,7 @@ class AdminUsuario
     public function setLogin($login)
     {
         $this->login = $login;
-
+    
         return $this;
     }
 
@@ -193,7 +224,7 @@ class AdminUsuario
     public function setClave($clave)
     {
         $this->clave = $clave;
-
+    
         return $this;
     }
 
@@ -217,7 +248,7 @@ class AdminUsuario
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -241,7 +272,7 @@ class AdminUsuario
     public function setApellido($apellido)
     {
         $this->apellido = $apellido;
-
+    
         return $this;
     }
 
@@ -265,7 +296,7 @@ class AdminUsuario
     public function setCorreoPersonal($correoPersonal)
     {
         $this->correoPersonal = $correoPersonal;
-
+    
         return $this;
     }
 
@@ -289,7 +320,7 @@ class AdminUsuario
     public function setCorreoCorporativo($correoCorporativo)
     {
         $this->correoCorporativo = $correoCorporativo;
-
+    
         return $this;
     }
 
@@ -313,7 +344,7 @@ class AdminUsuario
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
+    
         return $this;
     }
 
@@ -337,7 +368,7 @@ class AdminUsuario
     public function setFechaRegistro($fechaRegistro)
     {
         $this->fechaRegistro = $fechaRegistro;
-
+    
         return $this;
     }
 
@@ -361,7 +392,7 @@ class AdminUsuario
     public function setFechaNacimiento($fechaNacimiento)
     {
         $this->fechaNacimiento = $fechaNacimiento;
-
+    
         return $this;
     }
 
@@ -376,75 +407,51 @@ class AdminUsuario
     }
 
     /**
-     * Set pais
+     * Set campo1
      *
-     * @param string $pais
+     * @param string $campo1
      *
      * @return AdminUsuario
      */
-    public function setPais($pais)
+    public function setCampo1($campo1)
     {
-        $this->pais = $pais;
-
+        $this->campo1 = $campo1;
+    
         return $this;
     }
 
     /**
-     * Get pais
+     * Get campo1
      *
      * @return string
      */
-    public function getPais()
+    public function getCampo1()
     {
-        return $this->pais;
+        return $this->campo1;
     }
 
     /**
-     * Set ciudad
+     * Set campo2
      *
-     * @param string $ciudad
+     * @param string $campo2
      *
      * @return AdminUsuario
      */
-    public function setCiudad($ciudad)
+    public function setCampo2($campo2)
     {
-        $this->ciudad = $ciudad;
-
+        $this->campo2 = $campo2;
+    
         return $this;
     }
 
     /**
-     * Get ciudad
+     * Get campo2
      *
      * @return string
      */
-    public function getCiudad()
+    public function getCampo2()
     {
-        return $this->ciudad;
-    }
-
-    /**
-     * Set region
-     *
-     * @param string $region
-     *
-     * @return AdminUsuario
-     */
-    public function setRegion($region)
-    {
-        $this->region = $region;
-
-        return $this;
-    }
-
-    /**
-     * Get region
-     *
-     * @return string
-     */
-    public function getRegion()
-    {
-        return $this->region;
+        return $this->campo2;
     }
 
     /**
@@ -457,7 +464,7 @@ class AdminUsuario
     public function setFoto($foto)
     {
         $this->foto = $foto;
-
+    
         return $this;
     }
 
@@ -472,51 +479,147 @@ class AdminUsuario
     }
 
     /**
-     * Set divisionFuncional
+     * Set campo3
      *
-     * @param string $divisionFuncional
+     * @param string $campo3
      *
      * @return AdminUsuario
      */
-    public function setDivisionFuncional($divisionFuncional)
+    public function setCampo3($campo3)
     {
-        $this->divisionFuncional = $divisionFuncional;
-
+        $this->campo3 = $campo3;
+    
         return $this;
     }
 
     /**
-     * Get divisionFuncional
+     * Get campo3
      *
      * @return string
      */
-    public function getDivisionFuncional()
+    public function getCampo3()
     {
-        return $this->divisionFuncional;
+        return $this->campo3;
     }
 
     /**
-     * Set cargo
+     * Set campo4
      *
-     * @param string $cargo
+     * @param string $campo4
      *
      * @return AdminUsuario
      */
-    public function setCargo($cargo)
+    public function setCampo4($campo4)
     {
-        $this->cargo = $cargo;
-
+        $this->campo4 = $campo4;
+    
         return $this;
     }
 
     /**
-     * Get cargo
+     * Get campo4
      *
      * @return string
      */
-    public function getCargo()
+    public function getCampo4()
     {
-        return $this->cargo;
+        return $this->campo4;
+    }
+
+    /**
+     * Set competencia
+     *
+     * @param boolean $competencia
+     *
+     * @return AdminUsuario
+     */
+    public function setCompetencia($competencia)
+    {
+        $this->competencia = $competencia;
+    
+        return $this;
+    }
+
+    /**
+     * Get competencia
+     *
+     * @return boolean
+     */
+    public function getCompetencia()
+    {
+        return $this->competencia;
+    }
+
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     *
+     * @return AdminUsuario
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+    
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return AdminUsuario
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
+    }
+
+    /**
+     * Set cookies
+     *
+     * @param string $cookies
+     *
+     * @return AdminUsuario
+     */
+    public function setCookies($cookies)
+    {
+        $this->cookies = $cookies;
+    
+        return $this;
+    }
+
+    /**
+     * Get cookies
+     *
+     * @return string
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
     }
 
     /**
@@ -529,7 +632,7 @@ class AdminUsuario
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 
@@ -553,7 +656,7 @@ class AdminUsuario
     public function setNivel(\Link\ComunBundle\Entity\AdminNivel $nivel = null)
     {
         $this->nivel = $nivel;
-
+    
         return $this;
     }
 
@@ -565,5 +668,29 @@ class AdminUsuario
     public function getNivel()
     {
         return $this->nivel;
+    }
+
+    /**
+     * Set pais
+     *
+     * @param \Link\ComunBundle\Entity\AdminPais $pais
+     *
+     * @return AdminUsuario
+     */
+    public function setPais(\Link\ComunBundle\Entity\AdminPais $pais = null)
+    {
+        $this->pais = $pais;
+    
+        return $this;
+    }
+
+    /**
+     * Get pais
+     *
+     * @return \Link\ComunBundle\Entity\AdminPais
+     */
+    public function getPais()
+    {
+        return $this->pais;
     }
 }

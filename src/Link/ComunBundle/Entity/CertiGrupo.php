@@ -25,7 +25,7 @@ class CertiGrupo
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=100, nullable=true)
      */
     private $nombre;
 
@@ -68,7 +68,7 @@ class CertiGrupo
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -92,7 +92,7 @@ class CertiGrupo
     public function setOrden($orden)
     {
         $this->orden = $orden;
-
+    
         return $this;
     }
 
@@ -116,7 +116,7 @@ class CertiGrupo
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 

@@ -1,0 +1,17 @@
+_test:
+    path:     /test/{pagina_id}/{programa_id}
+    defaults: { _controller: LinkFrontendBundle:Test:index }
+
+_ajaxTestResponse:
+    path:     /ajaxTestResponse
+    defaults: { _controller: LinkFrontendBundle:Test:ajaxTestResponse }
+    requirements:
+        _method: POST
+
+_finTest:
+    path:     /fin/{programa_id}/{prueba_log_id}/{cantidad_preguntas}/{preguntas_str}
+    defaults: { _controller: LinkFrontendBundle:Test:fin }
+
+_resultadosTest:
+    path:     /resultados/{programa_id}/{prueba_log_id}/{puntos}
+    defaults: { _controller: LinkFrontendBundle:Test:resultados, puntos: 0 }

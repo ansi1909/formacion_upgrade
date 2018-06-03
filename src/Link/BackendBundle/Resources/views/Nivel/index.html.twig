@@ -1,0 +1,110 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_empresasNiveles', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeNiveles') }}">
+<br>
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{'Niveles por empresas' |trans}}</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Listado de Empresas' |trans}}</h5>
+            </div>
+            <div class="card-block" style=" padding-bottom:45px; ">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{'Empresa'|trans}}</th>
+                            <th class="hd__title">{{'País'|trans }}</th>
+                            <th class="hd__title">{{'Niveles'|trans}}</th>
+                            <th class="hd__title">{{'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-empresas">
+                      {% for empresa in empresas %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{eo}}" id="tr-{{ empresa.id }}">
+                                <td>{{ empresa.nombre }}</td>
+                                <td>{{ empresa.pais.nombre }}</td>
+                                <td id="td-{{ empresa.id }}">
+                                    &nbsp;
+                                </td>
+                                <td class="center">
+                                    {% if empresa.activo %}
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle add_style" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Acción'|trans }}</button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="{{ path('_niveles', { 'empresa_id': empresa.id }) }}">{{ 'Configurar'|trans }}</a>
+                                                <a class="dropdown-item new" data-toggle="modal" data-target="#formModal" data="{{ empresa.id }}" empresa="{{ empresa.nombre }}" href="#">{{ 'Nuevo nivel'|trans }}</a>
+                                                <a class="dropdown-item" href="{{ path('_uploadNiveles', { 'empresa_id': empresa.id }) }}">{{ 'Subir Archivo de Niveles'|trans }}</a>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <span class="error">{{ 'Empresa con estatus inactivo'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>                 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block formModal %}
+<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+    <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Nuevo nivel de la empresa'|trans }} <span id="header-empresa"></span></h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: #fff;">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateNivel')}}" method="POST">
+        <input type="hidden" id="empresa_id" name="empresa_id" value="">
+        <div class="form-group">
+            <label for="recipient-name" class="form-control-label">{{ 'Nivel'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
+            <span class="fa fa-cube"></span>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/empresasNiveles.js') }}"></script>
+    <script type="text/javascript">
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+
+        
+    </script>
+{% endblock %}

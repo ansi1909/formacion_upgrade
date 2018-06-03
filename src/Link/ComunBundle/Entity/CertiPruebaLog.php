@@ -39,7 +39,7 @@ class CertiPruebaLog
     /**
      * @var string
      *
-     * @ORM\Column(name="porcentaje_avance", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="porcentaje_avance", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $porcentajeAvance;
 
@@ -60,7 +60,7 @@ class CertiPruebaLog
     /**
      * @var string
      *
-     * @ORM\Column(name="nota", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="nota", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $nota;
 
@@ -70,6 +70,13 @@ class CertiPruebaLog
      * @ORM\Column(name="estado", type="string", length=15, nullable=true)
      */
     private $estado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="preguntas_erradas", type="string", length=100, nullable=true)
+     */
+    private $preguntasErradas;
 
     /**
      * @var \Link\ComunBundle\Entity\CertiPrueba
@@ -113,7 +120,7 @@ class CertiPruebaLog
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-
+    
         return $this;
     }
 
@@ -137,7 +144,7 @@ class CertiPruebaLog
     public function setFechaFin($fechaFin)
     {
         $this->fechaFin = $fechaFin;
-
+    
         return $this;
     }
 
@@ -161,7 +168,7 @@ class CertiPruebaLog
     public function setPorcentajeAvance($porcentajeAvance)
     {
         $this->porcentajeAvance = $porcentajeAvance;
-
+    
         return $this;
     }
 
@@ -185,7 +192,7 @@ class CertiPruebaLog
     public function setCorrectas($correctas)
     {
         $this->correctas = $correctas;
-
+    
         return $this;
     }
 
@@ -209,7 +216,7 @@ class CertiPruebaLog
     public function setErradas($erradas)
     {
         $this->erradas = $erradas;
-
+    
         return $this;
     }
 
@@ -233,7 +240,7 @@ class CertiPruebaLog
     public function setNota($nota)
     {
         $this->nota = $nota;
-
+    
         return $this;
     }
 
@@ -257,7 +264,7 @@ class CertiPruebaLog
     public function setEstado($estado)
     {
         $this->estado = $estado;
-
+    
         return $this;
     }
 
@@ -272,6 +279,30 @@ class CertiPruebaLog
     }
 
     /**
+     * Set preguntasErradas
+     *
+     * @param string $preguntasErradas
+     *
+     * @return CertiPruebaLog
+     */
+    public function setPreguntasErradas($preguntasErradas)
+    {
+        $this->preguntasErradas = $preguntasErradas;
+    
+        return $this;
+    }
+
+    /**
+     * Get preguntasErradas
+     *
+     * @return string
+     */
+    public function getPreguntasErradas()
+    {
+        return $this->preguntasErradas;
+    }
+
+    /**
      * Set prueba
      *
      * @param \Link\ComunBundle\Entity\CertiPrueba $prueba
@@ -281,7 +312,7 @@ class CertiPruebaLog
     public function setPrueba(\Link\ComunBundle\Entity\CertiPrueba $prueba = null)
     {
         $this->prueba = $prueba;
-
+    
         return $this;
     }
 
@@ -305,7 +336,7 @@ class CertiPruebaLog
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 

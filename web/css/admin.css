@@ -1,0 +1,24 @@
+.error {
+    color: #e60f0f;
+}
+
+.gradiente {
+	background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%) !important;
+}
+
+.stronger {
+    font-weight: bold;
+}
+
+.sub {
+	padding-left: 50px !important;
+}
+
+.tree a {
+    color: #666666;
+    text-decoration: none;
+}
+
+.right-pad {
+	padding-right: 30px !important;
+}

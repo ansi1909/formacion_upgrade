@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+        <title>Asignacion</title>
+    </head>
+    <body>
+
+
+        <!-- HEADER -->
+        <header>
+            <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
+                <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+                    <a href="#" data-toggle="modal" data-target="#modalCe">
+                        <i class="material-icons mr-3 color-light-grey rotate-180 exit_eval">exit_to_app</i>
+                        <span class="txt_eval_header">Salir de la evaluación</span>
+                    </a>
+                </div>
+                <div class="navbar-brand justify-content-center align-items-center " href="#">
+                    <h2 class="titulo_eval pl-5">Evaluación</h2>
+                    <h5 class="sub_titulo_eval pl-5">Nombre del módulo</h5>
+                </div>
+                <a class="navbar-brand" href="#">
+                    <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+                </a>
+            </nav>
+        </header>
+
+        <div class="container mt-22v pb-5">
+            <div class="row">
+                <div class="col-2">
+                    <span class="num_preg">05 / 20</span>
+                </div>
+                <div class="col-10">
+                    <div class="progress mt-3">
+                        <div class="progress-bar progress-bar_eval" role="progressbar" style="width: 20%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 offset-2">
+                    <p class="enun_eval">One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his 
+                        bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he
+                        could see his brown belly, slightly domed and divided by arches into stiff sections.</p>
+                </div>
+            </div>
+            <div class="row mgn justify-content-center">
+                <div class="col-3 px-0">
+                    <div class="opc_img_lado-a text-center">
+                        <img class="img_opc_ra" src="assets/img/img-exam-manos1.png" alt="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="opc_lado-b text-center">
+                        <p class="opc_rb">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+                                          Aenean commodo ligula eget dolor. Aenean massa. Cum sociis 
+                                          natoque penatibus et magnis dis parturient montes, nascetur 
+                                          ridiculus mus. Donec quam felis, ultricies nec.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mgn justify-content-center">
+                <div class="col-3 px-0">
+                    <div class="opc_img_lado-a text-center">
+                        <img class="img_opc_ra" src="assets/img/img-exam-manos2.png" alt="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="opc_lado-b text-center">
+                        <p class="opc_rb">Rechazo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mgn justify-content-center">
+                <div class="col-3 px-0">
+                    <div class="opc_img_lado-a text-center">
+                        <img class="img_opc_ra" src="assets/img/img-exam-manos3.png" alt="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="opc_lado-b text-center">
+                        <p class="opc_rb">Indiferencia</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 align-items-center">
+                <div class="col-6 text-center">
+                    <a href="#" class="btn_sp2">
+                        <span>Saltar pregunta</span>
+                    </a>
+                </div>
+                <div class="col-6 text-center">
+                    <a href="#" class="btn_sp1">
+                        <span>Siguiente pregunta</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Cerrar evaluacion-->
+        <div class="modal modalCEval" id="modalCe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">¿Estás Segur@ que desea salir de la evaluación?</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
+                        <p class="txtModalVs">¡Estimado participante! Si usted decide salir sin antes terminar de realizar la evaluación perdera todas las respuetas que haya contestado hasta los momentos.</p>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#"><button type="button" class="btn btn-danger btn-Cs">Salir de evaluación</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" class="cancelarCs" data-dismiss="modal">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- JAVASCRIPT -->
+        <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/custom.js"></script>
+        <script src="js/eval.js"></script>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+_espacioColaborativo:
+    path:     /listado/{programa_id}/{subpagina_id}
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:index, subpagina_id: 0 }
+
+_ajaxSaveForo:
+    path:     /ajaxSaveForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForo }
+    requirements:
+        _method: POST
+
+_ajaxEditForo:
+    path:     /ajaxEditForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxEditForo }
+    requirements:
+        _method: GET
+
+_detalleColaborativo:
+    path:     /detalle/{foro_id}/{subpagina_id}
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:detalle, foro_id: 0, subpagina_id: 0 }
+
+_ajaxSearchForo:
+    path:     /ajaxSearchForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSearchForo }
+    requirements:
+        _method: GET
+
+_ajaxDeleteForo:
+    path:     /ajaxDeleteForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxDeleteForo }
+    requirements:
+        method: POST
+
+_ajaxSaveForoResponse:
+    path:     /ajaxSaveForoResponse
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForoResponse }
+    requirements:
+        _method: POST
+
+_ajaxMasForo:
+    path:     /ajaxMasForo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxMasForo }
+    requirements:
+        _method: GET
+
+_ajaxUploadForoArchivo:
+    path:     /ajaxUploadForoArchivo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxUploadForoArchivo }
+    requirements:
+        _method: POST
+
+_ajaxSaveForoArchivo:
+    path:     /ajaxSaveForoArchivo
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForoArchivo }
+    requirements:
+        _method: POST

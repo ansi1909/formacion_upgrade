@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminNotificacion
  *
- * @ORM\Table(name="admin_notificacion", indexes={@ORM\Index(name="notificacion_ndx1", columns={"usuario_id", "usuario_tutor_id"}), @ORM\Index(name="IDX_BDBBB019B394FE3", columns={"tipo_notificacion_id"}), @ORM\Index(name="IDX_BDBBB01DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_BDBBB01C84E9668", columns={"usuario_tutor_id"})})
+ * @ORM\Table(name="admin_notificacion", indexes={@ORM\Index(name="notificacion_ndx1", columns={"usuario_id"}), @ORM\Index(name="IDX_BDBBB019B394FE3", columns={"tipo_notificacion_id"}), @ORM\Index(name="IDX_BDBBB01521E1991", columns={"empresa_id"})})
  * @ORM\Entity
  */
 class AdminNotificacion
@@ -23,18 +23,18 @@ class AdminNotificacion
     private $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="valor_notificacion", type="integer", nullable=true)
+     * @ORM\Column(name="asunto", type="string", length=500, nullable=true)
      */
-    private $valorNotificacion;
+    private $asunto;
 
     /**
-     * @var boolean
+     * @var string
      *
-     * @ORM\Column(name="leido", type="boolean", nullable=true)
+     * @ORM\Column(name="mensaje", type="text", nullable=true)
      */
-    private $leido;
+    private $mensaje;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminTipoNotificacion
@@ -57,14 +57,14 @@ class AdminNotificacion
     private $usuario;
 
     /**
-     * @var \Link\ComunBundle\Entity\AdminUsuario
+     * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
-     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminUsuario")
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usuario_tutor_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="empresa_id", referencedColumnName="id")
      * })
      */
-    private $usuarioTutor;
+    private $empresa;
 
 
 
@@ -79,51 +79,51 @@ class AdminNotificacion
     }
 
     /**
-     * Set valorNotificacion
+     * Set asunto
      *
-     * @param integer $valorNotificacion
+     * @param string $asunto
      *
      * @return AdminNotificacion
      */
-    public function setValorNotificacion($valorNotificacion)
+    public function setAsunto($asunto)
     {
-        $this->valorNotificacion = $valorNotificacion;
-
+        $this->asunto = $asunto;
+    
         return $this;
     }
 
     /**
-     * Get valorNotificacion
+     * Get asunto
      *
-     * @return integer
+     * @return string
      */
-    public function getValorNotificacion()
+    public function getAsunto()
     {
-        return $this->valorNotificacion;
+        return $this->asunto;
     }
 
     /**
-     * Set leido
+     * Set mensaje
      *
-     * @param boolean $leido
+     * @param string $mensaje
      *
      * @return AdminNotificacion
      */
-    public function setLeido($leido)
+    public function setMensaje($mensaje)
     {
-        $this->leido = $leido;
-
+        $this->mensaje = $mensaje;
+    
         return $this;
     }
 
     /**
-     * Get leido
+     * Get mensaje
      *
-     * @return boolean
+     * @return string
      */
-    public function getLeido()
+    public function getMensaje()
     {
-        return $this->leido;
+        return $this->mensaje;
     }
 
     /**
@@ -136,7 +136,7 @@ class AdminNotificacion
     public function setTipoNotificacion(\Link\ComunBundle\Entity\AdminTipoNotificacion $tipoNotificacion = null)
     {
         $this->tipoNotificacion = $tipoNotificacion;
-
+    
         return $this;
     }
 
@@ -160,7 +160,7 @@ class AdminNotificacion
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -175,26 +175,26 @@ class AdminNotificacion
     }
 
     /**
-     * Set usuarioTutor
+     * Set empresa
      *
-     * @param \Link\ComunBundle\Entity\AdminUsuario $usuarioTutor
+     * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
      *
      * @return AdminNotificacion
      */
-    public function setUsuarioTutor(\Link\ComunBundle\Entity\AdminUsuario $usuarioTutor = null)
+    public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
-        $this->usuarioTutor = $usuarioTutor;
-
+        $this->empresa = $empresa;
+    
         return $this;
     }
 
     /**
-     * Get usuarioTutor
+     * Get empresa
      *
-     * @return \Link\ComunBundle\Entity\AdminUsuario
+     * @return \Link\ComunBundle\Entity\AdminEmpresa
      */
-    public function getUsuarioTutor()
+    public function getEmpresa()
     {
-        return $this->usuarioTutor;
+        return $this->empresa;
     }
 }

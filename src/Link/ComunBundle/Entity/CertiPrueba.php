@@ -39,9 +39,30 @@ class CertiPrueba
     /**
      * @var integer
      *
-     * @ORM\Column(name="duracion", type="integer", nullable=true)
+     * @ORM\Column(name="cantidad_mostrar", type="integer", nullable=true)
+     */
+    private $cantidadMostrar;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="duracion", type="time", nullable=true)
      */
     private $duracion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_modificacion", type="datetime", nullable=true)
+     */
+    private $fechaModificacion;
 
     /**
      * @var \Link\ComunBundle\Entity\CertiPagina
@@ -95,7 +116,7 @@ class CertiPrueba
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -119,7 +140,7 @@ class CertiPrueba
     public function setCantidadPreguntas($cantidadPreguntas)
     {
         $this->cantidadPreguntas = $cantidadPreguntas;
-
+    
         return $this;
     }
 
@@ -134,27 +155,99 @@ class CertiPrueba
     }
 
     /**
+     * Set cantidadMostrar
+     *
+     * @param integer $cantidadMostrar
+     *
+     * @return CertiPrueba
+     */
+    public function setCantidadMostrar($cantidadMostrar)
+    {
+        $this->cantidadMostrar = $cantidadMostrar;
+    
+        return $this;
+    }
+
+    /**
+     * Get cantidadMostrar
+     *
+     * @return integer
+     */
+    public function getCantidadMostrar()
+    {
+        return $this->cantidadMostrar;
+    }
+
+    /**
      * Set duracion
      *
-     * @param integer $duracion
+     * @param \DateTime $duracion
      *
      * @return CertiPrueba
      */
     public function setDuracion($duracion)
     {
         $this->duracion = $duracion;
-
+    
         return $this;
     }
 
     /**
      * Get duracion
      *
-     * @return integer
+     * @return \DateTime
      */
     public function getDuracion()
     {
         return $this->duracion;
+    }
+
+    /**
+     * Set fechaCreacion
+     *
+     * @param \DateTime $fechaCreacion
+     *
+     * @return CertiPrueba
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+        $this->fechaCreacion = $fechaCreacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaCreacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaCreacion()
+    {
+        return $this->fechaCreacion;
+    }
+
+    /**
+     * Set fechaModificacion
+     *
+     * @param \DateTime $fechaModificacion
+     *
+     * @return CertiPrueba
+     */
+    public function setFechaModificacion($fechaModificacion)
+    {
+        $this->fechaModificacion = $fechaModificacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaModificacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaModificacion()
+    {
+        return $this->fechaModificacion;
     }
 
     /**
@@ -167,7 +260,7 @@ class CertiPrueba
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -191,7 +284,7 @@ class CertiPrueba
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -215,7 +308,7 @@ class CertiPrueba
     public function setEstatusContenido(\Link\ComunBundle\Entity\CertiEstatusContenido $estatusContenido = null)
     {
         $this->estatusContenido = $estatusContenido;
-
+    
         return $this;
     }
 

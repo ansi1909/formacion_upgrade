@@ -1,0 +1,129 @@
+Link\ComunBundle\Entity\TmpParticipante:
+    type: entity
+    table: tmp_participante
+    indexes:
+        IDX_6321D189521E1991:
+            columns:
+                - empresa_id
+        IDX_6321D189DA3426AE:
+            columns:
+                - nivel_id
+        IDX_6321D189C604D5C6:
+            columns:
+                - pais_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        codigo:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        login:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        nombre:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        apellido:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        fechaRegistro:
+            type: date
+            nullable: true
+            column: fecha_registro
+        clave:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        correoPersonal:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: correo_personal
+        competencia:
+            type: boolean
+            nullable: true
+        campo1:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        campo2:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        campo3:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        campo4:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        transaccion:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                fixed: false
+    manyToOne:
+        empresa:
+            targetEntity: AdminEmpresa
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                empresa_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        nivel:
+            targetEntity: AdminNivel
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                nivel_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        pais:
+            targetEntity: AdminPais
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pais_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

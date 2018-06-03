@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+    <title>Dashboard</title>
+</head>
+<body>
+
+
+<!-- HEADER -->
+<header>
+        <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+            <a class="navbar-brand" href="#">
+                <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+            </a>
+            <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+                <i class="material-icons mr-3 color-light-grey">mail_outline</i>
+                <div class=" d-flex flex-column  ">
+                    <div class="dropdown show">
+                        <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="img-fluid mx-auto" src="assets/img/avatar_user.png"  width="80%" alt="usuario">
+                        </a>
+                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a href="#"> Salir </a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+</header>
+
+<div class="container-fluid mt-6">
+    <!-- SIDE MENU  -->
+    <nav>
+        <div id="mainSidenav" class="main-sidenav ">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+            <a class="d-flex mt-1 mb-3 text-nowrap active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
+            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+            <a class="d-flex mb-1 text-nowrap" href="#"> <i class="material-icons mr-2">library_books</i>  Noticias & <br/>novedades </a>
+            <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs </a>
+        </div>
+    </nav>
+
+    <div id="main" class="">
+
+        <div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
+            <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
+            <h5>Bienvenido al programa de </h5>
+            <h1 class="mb-5">Nombre del programa</h1>
+            <p class="text-justify mx-auto">El Programa de Liderazgo de Formación 2.0 es un programa de desarrollo a distancia, que recopila las experiencias más exitosas de las mejores escuelas de negocios, seleccionando los mejores contenidos, enfoques y autores, incorporando tecnologías de información para generar un espacio de formación permanente las 24 horas al día, los 7 días de la semana, sin barreras de lugar, ni tiempo, con la finalidad de formar líderes integrales con una visión global, para potenciar  la capacidad de influencia e inspiración de manera tal que permita la transformación productiva en sus organizaciones, siempre pensando en la gente y en los resultados.</p>
+
+<!-- MAPA DE PROGRESO -->
+        <div>
+            <h4 class="color-light-grey my-3 mt-5">Tu progreso</h4>
+            <!--?xml version="1.0" encoding="UTF-8"?-->
+            <svg width="100%" height="300px" viewBox="0 0 1051 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="">
+                <defs>
+                    <path id="path-1" d="M133.96582,40L825.760742,40L1019.46338,201.353516L0,201.353516Z" class="mjAkFdae_0"></path>
+                    <filter x="-4.2%" y="-13.3%" width="107.9%" height="153.3%" filterUnits="objectBoundingBox" id="filter-2">
+                        <feOffset dx="-2" dy="24" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                        <feGaussianBlur stdDeviation="9.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                        <feColorMatrix values="0 0 0 0 0.665   0 0 0 0 0.686   0 0 0 0 0.7  0 0 0 0.55247962 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                    </filter>
+                </defs>
+                <g id="Prototype" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Programa---bienvenida" transform="translate(-261.000000, -608.000000)">
+                        <g id="map" transform="translate(279.000000, 608.000000)">
+                            <g id="base">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                                <use fill="#F7FAFC" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            </g>
+
+                    <path id="grey" stroke="#DAE1E6" stroke-width="4" stroke-linejoin="round" d="M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312,146.380371L794.882813,146.380371L730.555176,70L794.882812,70.7143555" class="mjAkFdae_1"></path>
+                    <path id="green" stroke="#CFE65C" stroke-width="4" stroke-linejoin="round" d="M191.69043,70.7143555L244.182129,70.7143555L207,146.380371L367.880859,146.380371L376.774414,71.2866211L509.732422,70.7143555L527.570312,146.380371L794.882813,146.380371L730.555176,70L794.882812,70.7143555" class="progress-bar" style="stroke-dashoffset: 1017;"></path>
+
+                    <path d="M794.5,77.2518536 C812.449254,77.0296453 827,73.3937078 827,69.1307599 C827,64.8678119 812.449254,61.2318744 794.5,61.0096661 C776.550746,60.7874578 762,64.4233953 762,69.1307599 C762,73.8381244 776.550746,77.4740619 794.5,77.2518536 Z" id="goal" fill="#DAE1E6" class="mjAkFdae_3" ></path>
+                    <path d="M179.5,75.7044826 C190.269553,75.5974962 199,73.4362247 199,70.8784559 C199,68.3206872 190.269553,66.1604837 179.5,66.054815 C168.730447,65.9505916 160,68.1118632 160,70.8808417 C160,73.6498202 168.730447,75.8100236 179.5,75.7044826 Z" id="start" fill="#CFE65C" transform="translate(179.500000, 70.879695) rotate(-1.000000) translate(-179.500000, -70.879695) " class="mjAkFdae_4"></path>
+
+    						<g id="percent" transform="translate(-50,-75)" >
+                                <path d="M60.7231801,50.4 L77,50.4 C85.836556,50.4 93,43.236556 93,34.4 L93,34.4 L93,16 C93,7.163444 85.836556,-9.47168734e-15 77,0 L16,0 L16,0 C7.163444,1.623249e-15 -1.082166e-15,7.163444 0,16 L0,16 L0,34.4 C1.082166e-15,43.236556 7.163444,50.4 16,50.4 L16,50.4 L35.4837165,50.4 L48.1034483,64 L60.7231801,50.4 Z" id="Combined-Shape" fill="#80CCFF" class="mjAkFdae_5"></path>
+                                <text id="num" x="15" y="34" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="400" letter-spacing="-0.0641666874" fill="#3D93CC"> 00% </text>
+    							<animateMotion
+    								 xlink:href="#percent"
+    								 dur="4s"
+    								 repeatCount="1"
+    								 fill="freeze"
+    								 calcMode="linear">
+    								<mpath xlink:href="#green"/>
+    							</animateMotion>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+        	</svg>
+        </div>
+<!-- FIN MAPA DE PROGRESO -->
+
+        </div>
+
+        <!-- MODULOS -->
+        <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line container ">Módulos</h4>
+
+        <!--CONTENDOR DE LAS CARDS  -->
+        <div class="container d-flex flex-column justify-content-center align-items-center ">
+
+                <!-- CARDS MODULOS HZR -->
+                <div class="card-hrz card-mod">
+                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
+                        <h1>02</h1>
+                    </div>
+                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
+                        <div class="card-hrz-body ">
+                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
+                                <div class="card-mod-less text-sm color-light-grey">
+                                    <ol>
+                                        <li class="my-1 " > Liderazgo para la conducción de personas  </li>
+                                        <li class="my-1 " > Liderazgo para </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción  personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para l de personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas</li>
+                                    </ol>
+                                </div>
+                            <div class="progress mt-4 mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">
+                            <div class="percent text-center mt-3">
+                                <h2 class="color-light-grey mb-0 pb-0"> 20% </h2>
+
+                            </div>
+                            <a href="#" class="btn btn-sm btn-continuar mt-6 mb-4"> Continuar </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hrz card-mod">
+                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
+                        <h1>03</h1>
+                    </div>
+                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
+                        <div class="card-hrz-body ">
+                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
+                                <div class="card-mod-less text-sm color-light-grey">
+                                    <ol>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas  </li>
+                                        <li class="my-1 color-grey" > Liderazgo para </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción  personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para l de personas </li>
+                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas</li>
+                                    </ol>
+                                </div>
+                            <div class="progress mt-4 mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">
+                            <div class="percent text-center mt-3">
+                                <h2 class="color-light-grey mb-0 pb-0"> 0%</h2>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-primary mt-6 mb-4 px-4"> Iniciar </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hrz card-mod">
+                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
+                        <h1>01</h1>
+                    </div>
+                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
+                        <div class="card-hrz-body ">
+                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
+                                <div class="card-mod-less text-sm color-light-grey">
+                                    <ol>
+                                        <li class="my-1 " > Liderazgo para la conducción de personas  </li>
+                                        <li class="my-1 " > Liderazgo para </li>
+                                        <li class="my-1 " > Liderazgo para la conducción  personas </li>
+                                        <li class="my-1 " > Liderazgo para l de personas </li>
+                                        <li class="my-1 " > Liderazgo para la conducción de personas</li>
+                                    </ol>
+                                </div>
+                            <div class="progress mt-4 mb-3">
+                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">
+                            <div class="percent text-center mt-5">
+                                <h2 class="color-light-grey mb-0 pb-0"> 100 </h2>
+                                <span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>
+                            </div>
+                            <div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">
+                                <i class="material-icons badge-aprobado ">check_circle</i>
+                                <span class="text-badge"> Aprobado </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="card-hrz card-mod">
+                <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
+                    <h1>02</h1>
+                </div>
+                <div class="wraper d-flex flex-wrap flex-row justify-content-center">
+                    <div class="card-hrz-body ">
+                        <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
+                        <div class="card-mod-less text-sm color-light-grey">
+                            <ol>
+                                <li class="my-1 " > Liderazgo para la conducción de personas  </li>
+                                <li class="my-1 " > Liderazgo para </li>
+                                <li class="my-1 " > Liderazgo para la conducción  personas </li>
+                                <li class="my-1 " > Liderazgo para l de personas </li>
+                                <li class="my-1 " > Liderazgo para la conducción de personas</li>
+                            </ol>
+                        </div>
+                        <div class="progress mt-4 mb-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="card-hrz-right d-flex flex-column  justify-content-top mx-3 pb-1">
+                        <div class="percent text-center mt-3">
+                            <h2 class="color-light-grey mb-0 pb-0"> 100 </h2>
+                            <span class="count mt-0 text-xs color-light-grey ">Calificación</span>
+                        </div>
+                        <div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">
+                            <i class="material-icons badge-aprobado">check_circle</i>
+                            <span class="text-badge"> Aprobado </span>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-primary mt-4 btnAp px-4"> Ver </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="js/jquery-3.3.1.min.js" ></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="js/mapa.js"></script>
+
+</body>
+</html>

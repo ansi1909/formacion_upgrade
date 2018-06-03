@@ -1,0 +1,84 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+
+<br><br>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-left">
+        <a href="{{ path('_paginas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    {% if pagina.pagina %}
+        <div class="col text-right">
+            <a href="{{ path('_pagina', { 'pagina_id': pagina.pagina.id })}}" class="bttn__bck"><span class="fa fa-level-up"></span><span class="text__bck">{{ 'Volver'|trans }}</span></a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="row">
+	<div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Mover Página'|trans }}</h6>
+                </div>
+            </div>
+            <div class="card-block fnd__wzd">
+                <form id="form" name="form" action="{{ path('_moverPagina', { 'pagina_id': pagina.id }) }}" class="container-fluid p-0" method="POST">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <h5>{{ 'Página a mover'|trans }}: {{ pagina.categoria.nombre }} {{ pagina.nombre }} </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                           <h5>{{ 'Elija el destino de la página'|trans }}</h5>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-2 pnl__tree">
+                                    {% if pagina_str != '' %}
+                                        <div class="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {{ pagina_str|raw }}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'No existe destino al que se pueda mover la página'|trans }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label for="pg_sel" class="col-16 col-form-label">{{ 'Página seleccionada'|trans }}</label>
+                                <div class="col-14">
+                                    <input type="text" class="form-control" id="pagina_padre_str" name="pagina_padre_str" readonly="readonly" value="">
+                                    <input type="hidden" id="pagina_padre_id" name="pagina_padre_id" value="">
+                                    <span id="pagina_padre_error" class="error" style="display:none;">{{ 'Debe seleccionar la página destino'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="wizard-footer">
+                    <div class="col-sm-16 text-right">
+                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Mover'|trans }}</span><span class="fa fa-check"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/mover.js') }}"></script>
+{% endblock %}

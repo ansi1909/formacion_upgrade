@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CertiPaginaEmpresa
  *
- * @ORM\Table(name="certi_pagina_empresa", indexes={@ORM\Index(name="pagina_empresa_ndx1", columns={"empresa_id", "pagina_id"}), @ORM\Index(name="IDX_5C87DB99521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_5C87DB9957991ECF", columns={"pagina_id"})})
+ * @ORM\Table(name="certi_pagina_empresa", indexes={@ORM\Index(name="pagina_empresa_ndx1", columns={"empresa_id", "pagina_id"}), @ORM\Index(name="IDX_5C87DB99521E1991", columns={"empresa_id"}), @ORM\Index(name="IDX_5C87DB9957991ECF", columns={"pagina_id"}), @ORM\Index(name="IDX_5C87DB99DCCF207D", columns={"prelacion"})})
  * @ORM\Entity
  */
 class CertiPaginaEmpresa
@@ -28,6 +28,13 @@ class CertiPaginaEmpresa
      * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="acceso", type="boolean", nullable=true)
+     */
+    private $acceso;
 
     /**
      * @var \DateTime
@@ -60,7 +67,7 @@ class CertiPaginaEmpresa
     /**
      * @var string
      *
-     * @ORM\Column(name="puntaje_aprueba", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="puntaje_aprueba", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $puntajeAprueba;
 
@@ -70,6 +77,20 @@ class CertiPaginaEmpresa
      * @ORM\Column(name="muro_activo", type="boolean", nullable=true)
      */
     private $muroActivo;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="colaborativo", type="boolean", nullable=true)
+     */
+    private $colaborativo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
 
     /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
@@ -90,6 +111,16 @@ class CertiPaginaEmpresa
      * })
      */
     private $pagina;
+
+    /**
+     * @var \Link\ComunBundle\Entity\CertiPagina
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPagina")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="prelacion", referencedColumnName="id")
+     * })
+     */
+    private $prelacion;
 
 
 
@@ -113,7 +144,7 @@ class CertiPaginaEmpresa
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
+    
         return $this;
     }
 
@@ -128,6 +159,30 @@ class CertiPaginaEmpresa
     }
 
     /**
+     * Set acceso
+     *
+     * @param boolean $acceso
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setAcceso($acceso)
+    {
+        $this->acceso = $acceso;
+    
+        return $this;
+    }
+
+    /**
+     * Get acceso
+     *
+     * @return boolean
+     */
+    public function getAcceso()
+    {
+        return $this->acceso;
+    }
+
+    /**
      * Set fechaInicio
      *
      * @param \DateTime $fechaInicio
@@ -137,7 +192,7 @@ class CertiPaginaEmpresa
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-
+    
         return $this;
     }
 
@@ -161,7 +216,7 @@ class CertiPaginaEmpresa
     public function setFechaVencimiento($fechaVencimiento)
     {
         $this->fechaVencimiento = $fechaVencimiento;
-
+    
         return $this;
     }
 
@@ -185,7 +240,7 @@ class CertiPaginaEmpresa
     public function setPruebaActiva($pruebaActiva)
     {
         $this->pruebaActiva = $pruebaActiva;
-
+    
         return $this;
     }
 
@@ -209,7 +264,7 @@ class CertiPaginaEmpresa
     public function setMaxIntentos($maxIntentos)
     {
         $this->maxIntentos = $maxIntentos;
-
+    
         return $this;
     }
 
@@ -233,7 +288,7 @@ class CertiPaginaEmpresa
     public function setPuntajeAprueba($puntajeAprueba)
     {
         $this->puntajeAprueba = $puntajeAprueba;
-
+    
         return $this;
     }
 
@@ -257,7 +312,7 @@ class CertiPaginaEmpresa
     public function setMuroActivo($muroActivo)
     {
         $this->muroActivo = $muroActivo;
-
+    
         return $this;
     }
 
@@ -272,6 +327,54 @@ class CertiPaginaEmpresa
     }
 
     /**
+     * Set colaborativo
+     *
+     * @param boolean $colaborativo
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setColaborativo($colaborativo)
+    {
+        $this->colaborativo = $colaborativo;
+    
+        return $this;
+    }
+
+    /**
+     * Get colaborativo
+     *
+     * @return boolean
+     */
+    public function getColaborativo()
+    {
+        return $this->colaborativo;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
      * Set empresa
      *
      * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
@@ -281,7 +384,7 @@ class CertiPaginaEmpresa
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 
@@ -305,7 +408,7 @@ class CertiPaginaEmpresa
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -317,5 +420,29 @@ class CertiPaginaEmpresa
     public function getPagina()
     {
         return $this->pagina;
+    }
+
+    /**
+     * Set prelacion
+     *
+     * @param \Link\ComunBundle\Entity\CertiPagina $prelacion
+     *
+     * @return CertiPaginaEmpresa
+     */
+    public function setPrelacion(\Link\ComunBundle\Entity\CertiPagina $prelacion = null)
+    {
+        $this->prelacion = $prelacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get prelacion
+     *
+     * @return \Link\ComunBundle\Entity\CertiPagina
+     */
+    public function getPrelacion()
+    {
+        return $this->prelacion;
     }
 }

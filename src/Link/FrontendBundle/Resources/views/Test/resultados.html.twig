@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <title>
+            {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
+                {{ app.session.get('empresa').titulo }}
+            {% else %}
+                {{ 'Sistema Formación'|trans }} 2.0
+            {% endif %}
+        </title>
+        {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
+        <link rel="icon" type="image/x-icon" href="{{ img }}" />
+        <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
+        {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
+        <link rel="stylesheet" href="{{ css }}">
+    </head>
+    
+    <body>
+        
+        <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa_id }) }}">
+        <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa_id, 'subpagina_id': continue_button.next_lesson }) }}">
+        <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa_id }) }}">
+        
+        <header>
+            <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
+                <div class="navbar-brand d-flex justify-content-center align-items-center">
+                    
+                </div>
+                <div class="navbar-brand justify-content-center align-items-center " href="#">
+                    <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
+                    <h5 class="sub_titulo_eval pl-5">{{ 'Resultados'|trans }}</h5>
+                </div>
+                <a class="navbar-brand" href="#">
+                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                </a>
+            </nav>
+        </header>
+
+        <div class="container-fluid mt-6 px-0">
+
+            <section>
+                <div class="row py-4 align-items-center justify-content-center">
+                    <div class="col-4 text-center">
+                        <p class="txt-resul">
+                            {% if prueba_log.estado == estados.aprobado %}
+                                {{ 'Has aprobado con éxito la evaluación'|trans }} <strong>{{ prueba_log.prueba.nombre }}</strong>.
+                                <br>{{ 'Sigue aprendiendo'|trans }}.
+                            {% else %}
+                                {{ 'No has alcanzado la calificación para la aprobación de'|trans }} <strong>{{ prueba_log.prueba.nombre }}</strong>.
+                                <br>{{ 'No te rindas'|trans }}!
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% if prueba_log.estado == estados.aprobado %}
+                        <div class="col-6 text-center">
+                            <h1 class="titulo-resul">¡ {{ 'FELICIDADES'|trans }} !</h1>
+                            <span class="material-icons ic-resul">thumb_up</span>
+                        </div>
+                    {% else %}
+                        {% if try_button %}
+                            <div class="col-6 text-center">
+                                <h1 class="titulo-resul">{{ 'Sigue intentándolo'|trans }}</h1>
+                                <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
+                                    <span class="material-icons ic-resul alreves">replay</span>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="mostrar-resul">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-5 text-center">
+                        <span class="calif">{{ 'Tu calificación'|trans }} <span class="num"> {{ prueba_log.nota|round }}/100 </span></span>
+                    </div>
+                    <div class="col-5 text-center">
+                        <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }} <span class="unidad">Exp</span></span></span>
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-8 text-center anun-resul">
+                        <p class="anun-resul">{{ 'Estos son los resultados que has obtenido'|trans }}</p>
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-10 col-md-10 col-xl-10 col-lg-10 col-sm-12 col-xs-12">
+                        <ul class="resp-eval">
+                            {% for nro, pregunta in preguntas %}
+                                {% set sufijo = pregunta.errada ? 'reprob' : 'aprob' %}
+                                {% set check = pregunta.errada ? 'clear' : 'done' %}
+                                <li>
+                                    <div class="preg-{{ sufijo }}">
+                                        <div class="preg_num-{{ sufijo }} text-center">
+                                            <span class="preg_n"><i class="material-icons check">{{ check }}</i></span>
+                                        </div>
+                                        <div class="preg_enun">
+                                            <span class="preg_e">{{ pregunta.enunciado }}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% if not try_button %}
+                    {% if continue_button.evaluacion != 0 %}
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-8 text-center">
+                                <p class="text_fin-materia">{{ 'Si deseas, puedes tomar la evaluación de'|trans }} {{ continue_button.nombre_pagina }}.</p>
+                            </div>
+                        </div>
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-6 text-center">
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    {% else %}
+                        {% if continue_button.next_lesson != 0 %}
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-8 text-center">
+                                    <p class="text_fin-materia">¡{{ 'Sigue aprendiendo'|trans }}!</p>
+                                </div>
+                            </div>
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-6 text-center">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="next"> {{ 'Continuar'|trans }} </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-6 text-center">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary continuar" id="programa"> {{ 'Volver al programa'|trans }} </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="row justify-content-center" style="display:none;" id="wait">
+                <div class="col-auto px-0 py-0">
+                    <div class="contenedor">
+                        <div class="radar"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <a data-toggle="modal" data-target="#modalCs2" id="automaticLogout"></a>
+
+        <!-- Modal Cierre Automático de Sesion-->
+        <div class="modal modalCerrarSesion" id="modalCs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">{{ 'La sesión se cerrará automáticamente en'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <input type="hidden" id="remaining" name="remaining" value="{{ remaining_time }}">
+                        <input type="hidden" id="remaining_time" name="remaining_time" value="{{ remaining_time }}">
+                        <input type="hidden" id="timer" name="timer" value="">
+                        <input type="hidden" id="sesion_time" name="sesion_time" value="{{ sesion_front_time }}">
+                        <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_login' }) }}">
+                        <h3><span id="seconds">{{ remaining_time }}</span> segundos</h3>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <button type="button" class="btn btn-primary btn-Cs" id="keepSession" data-dismiss="modal">{{ 'Mantener abierta la sesión'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('front/js/custom.js') }}"></script>
+        <script src="{{ asset('js/front/expireSession.js') }}"></script>
+        <script type="text/javascript">
+            $('.continuar').click(function(){
+                var button = $(this);
+                $('.continuar').hide();
+                $('#wait').show();
+                var id = button.attr('id');
+                window.location.replace($('#url_'+id).val());
+            });
+        </script>
+
+    </body>
+</html>

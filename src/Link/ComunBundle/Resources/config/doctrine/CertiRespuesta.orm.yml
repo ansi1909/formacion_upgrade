@@ -8,9 +8,9 @@ Link\ComunBundle\Entity\CertiRespuesta:
         IDX_98EB1A455BDBF2F:
             columns:
                 - opcion_id
-        IDX_98EB1A45DB38439E:
+        IDX_98EB1A4525A67894:
             columns:
-                - usuario_id
+                - prueba_log_id
     id:
         id:
             type: integer
@@ -25,6 +25,11 @@ Link\ComunBundle\Entity\CertiRespuesta:
             type: datetime
             nullable: true
             column: fecha_registro
+        nro:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         pregunta:
             targetEntity: CertiPregunta
@@ -46,14 +51,14 @@ Link\ComunBundle\Entity\CertiRespuesta:
                 opcion_id:
                     referencedColumnName: id
             orphanRemoval: false
-        usuario:
-            targetEntity: AdminUsuario
+        pruebaLog:
+            targetEntity: CertiPruebaLog
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                usuario_id:
+                prueba_log_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

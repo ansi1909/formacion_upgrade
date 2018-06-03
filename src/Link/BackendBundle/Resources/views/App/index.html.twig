@@ -1,0 +1,241 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/css/rowReorder.dataTables.min.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+<br>
+<input type="hidden" id="aplicaciones_str" name="aplicaciones_str" value="{{ aplicaciones_str }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditAplicacion') }}">
+<input type="hidden" id="url_subapps" name="url_subapps" value="{{ path('_ajaxSubAplicaciones') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_aplicaciones', { 'app_id': app.session.get('app_id') }) }}">
+<input type="hidden" id="error_msg-subapps" name="error_msg-subapps" value="{{ 'Error al obtener las subaplicaciones.'|trans }}">
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Aplicaciones'|trans }}</h3>
+    </div>
+    <div class="col text-right">
+        <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{ 'Nuevo registro'|trans }}</span></button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-9 col-md-9 col-lg-9">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de Aplicaciones'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Orden'|trans }}</th>
+                            <th class="hd__title">Id</th>
+                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                            <th class="hd__title">{{ 'Activo'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aplicacion in aplicaciones %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td class="columorden">{{ aplicacion.orden }}</td>
+                                <td>{{ aplicacion.id }}</td>
+                                <td>{{ aplicacion.nombre }}</td>
+                                <td class="center">
+                                    <div class="can-toggle demo-rebrand-2 small">
+                                        <input id="f{{ aplicacion.id }}" class="cb_activo" type="checkbox" {% if aplicacion.activo %}checked{% endif %}>
+                                        <label for="f{{ aplicacion.id }}">
+                                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="center f_icon">
+                                    <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ aplicacion.id }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if aplicacion.delete_disabled == '' %}delete{% endif %} {{ aplicacion.delete_disabled }}" data="{{ aplicacion.id }}"><span class="fa fa-trash"></span></a>
+                                    {% if aplicacion.tiene_subaplicaciones %}
+                                        <a href="#" title="{{ 'Ver Sub-Aplicaciones'|trans }}" class="btn btn-link btn-sm see" data="{{ aplicacion.id }}"><span class="fa fa-eye"></span></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7" style="display:none;" id="div-subapps">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Sub-Aplicaciones de'|trans }} <span id="appTitle"></span></h5>
+            </div>
+            <div class="card-block" id="subapp">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block formModal %}
+    <div class="modal-header gradiente">
+        <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la Aplicación'|trans }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+    </div>
+    <div class="modal-body">
+        <form id="form" name="form" action="{{ path('_ajaxUpdateAplicacion') }}" method="POST">
+            <input type="hidden" id="app_id" name="app_id" value="">
+            <div class="form-group row justify-content-end">
+                <label for="nombre" class="col-2 col-form-label">{{ 'Nombre'|trans }}:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="nombre" name="nombre" value="">
+                    <span class="fa fa-keyboard-o"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="url" class="col-2 col-form-label">Url:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="url" name="url" value="">
+                    <span class="fa fa-link"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="icono" class="col-2 col-form-label">{{ 'Icono'|trans }}:</label>
+                <div class="col-14">
+                    <input type="text" class="form-control form_sty1" id="icono" name="icono" value="">
+                    <span class="fa fa-square"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="activo" class="col-4 col-form-label">{{ 'Activo'|trans }}:</label>
+                <div class="col-12">
+                    <div class="can-toggle demo-rebrand-2 small">
+                        <input id="activo" name="activo" type="checkbox" checked>
+                        <label for="activo">
+                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row justify-content-end">
+                <label for="subaplicacion_id" class="col-4 col-form-label">{{ 'Sub-Aplicación de'|trans }}:</label>
+                <div class="col-12">
+                    <select class="form-control form_sty_sm" id="subaplicacion_id" name="subaplicacion_id" style="border-radius: 5px;">
+                    </select>
+                    <span class="fa fa-dedent"></span>
+                </div>
+            </div>
+        </form>
+        <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+            <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La aplicación ha sido almacenada con éxito'|trans }}. 
+        </div>
+        <div class="card" id="detail" style="display:none;">
+            <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+                <h4 class="card-title" style="color: #fff; text-transform: uppercase">Datos Básicos</h4>
+            </div>
+            <div class="card-block">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Nombre'|trans }}:</h5>
+                            <p id="p-nombre">Lorem Ipsum</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>Url:</h5>
+                            <p id="p-url">https://Loremipsumdolorsitamet.domain/</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Icono'|trans }}:</h5>
+                            <p id="p-icono"><span class="fa fa-users"></span></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Activo'|trans }}:</h5>
+                            <p id="p-activo">Si</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between" id="div-subaplicacion">
+                        <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Sub-Aplicación de'|trans }}:</h5>
+                            <p id="p-subaplicacion">5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-sm-16 col-md-16 text-right">
+                    <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                    <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar' |trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/aplicacion.js') }}"></script>
+    <script type="text/javascript">
+
+        jQuery.validator.addMethod("noSpace", function(value, element) { 
+            return value.indexOf(" ") < 0; 
+        }, "{{ 'No se permiten espacios en blanco.'|trans }}");
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'url': {
+                    noSpace: true
+                },
+                'icono': {
+                    noSpace: true
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+
+        $( ".columorden" )
+          .mouseover(function() {
+            $( '.columorden' ).css( 'cursor','move' );
+          })
+          .mouseout(function() {
+            $( '.columorden' ).css( 'cursor','auto' );
+          });
+
+    </script>
+{% endblock %}

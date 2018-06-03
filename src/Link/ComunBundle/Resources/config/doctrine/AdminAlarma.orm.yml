@@ -1,0 +1,61 @@
+Link\ComunBundle\Entity\AdminAlarma:
+    type: entity
+    table: admin_alarma
+    indexes:
+        IDX_4D69BE95D8285FD0:
+            columns:
+                - tipo_alarma_id
+        IDX_4D69BE95DB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        descripcion:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        entidadId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: entidad_id
+        leido:
+            type: boolean
+            nullable: true
+        fechaCreacion:
+            type: datetime
+            nullable: true
+            column: fecha_creacion
+    manyToOne:
+        tipoAlarma:
+            targetEntity: AdminTipoAlarma
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_alarma_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

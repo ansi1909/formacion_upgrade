@@ -36,9 +36,14 @@ Link\ComunBundle\Entity\CertiPaginaLog:
         porcentajeAvance:
             type: decimal
             nullable: true
-            precision: 3
+            precision: 5
             scale: 2
             column: porcentaje_avance
+        puntos:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         pagina:
             targetEntity: CertiPagina

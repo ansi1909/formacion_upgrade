@@ -51,7 +51,7 @@ class AdminLayout
     public function setTwig($twig)
     {
         $this->twig = $twig;
-
+    
         return $this;
     }
 

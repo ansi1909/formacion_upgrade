@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+        <link rel="stylesheet" href="js/plugins/jquery-upload-file/css/style.css">
+        <link rel="stylesheet" href="js/plugins/jquery-upload-file/css/jquery.fileupload.css">
+        <title>Perfil de Usuario</title>
+    </head>
+    <body>
+
+
+        <!-- HEADER -->
+        <header>
+            <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+                <a class="navbar-brand" href="#">
+                    <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+                </a>
+                <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
+                    <i class="material-icons mr-3 color-light-grey">mail_outline</i>
+                    <div class=" d-flex flex-column ">
+                        <div class="dropdown show">
+                            <a href="#" class="perfil dropdown-toggle no-decorate" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-fluid mx-auto avatar-img" src="assets/img/user-profile-female.png" alt="usuario">
+                            </a>
+                            <div class="perfil-dropdown dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a href="#"> Salir </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid mt-6">
+            <!-- SIDE MENU  -->
+            <nav>
+                <div id="mainSidenav" class="main-sidenav ">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+                    <a class="d-flex mt-1 mb-3 text-nowrap active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+                    <a class="d-flex mb-1 text-nowrap" href="#"> <i class="material-icons mr-2">library_books</i>  Noticias & <br/>novedades </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs </a>
+                </div>
+            </nav>
+            
+            <div id="main">
+                <section class="card-datos">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
+                            <div class="pic-img">
+                                <a href="#" class="fileinput-button" data-toggle="tooltip" data-placement="bottom" title="Cambiar imagen">
+                                    <img src="assets/img/user.svg" class="img-user-pic">
+                                    <input id="fileupload" type="file" name="files[]">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-5 col-sm-5 col-md-5 col-5 col-lg-5 col-xl-5">
+                            <h2 class="name-titulo text-center">Angela Merkel</h2>
+                            <div class="row justify-content-between">
+                                <div class="col-6 text-right">
+                                    <span class="info_datos">Nombre de usuario</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="datos_user">amerkel</span>
+                                </div>
+                            </div>
+                            <div class="row justify-content-betwee5">
+                                <div class="col-6 text-right">
+                                    <span class="info_datos">Correo electrónico</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="datos_user">amerkel@tuempresa.com</span>
+                                </div>
+                            </div>
+                            <div class="row justify-content-betwee5">
+                                <div class="col-6 text-right">
+                                    <span class="info_datos">Correo adicional</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="datos_user">amerkel@gmail.com</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <span class="info_datos">Fecha de nacimiento </span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="datos_user">02/03/1984</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center">
+                            <div class="imgExp-coin">
+                                <img class="imgExp" src="assets/img/medal.svg" alt="">
+                                <div class="starShiney1">
+                                </div>
+                                <div class="starShiney2">
+                                </div>
+                                <div class="starShiney3">
+                                </div>
+                                <div class="starShiney4">
+                                </div>
+                            </div>
+                            <span class="numExp">5.0 K</span>
+                            <h3 class="tituloExp">EXP</h3>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-around mt-12v">
+                        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                            <a href="#"><button type="button" class="btn btn-primary">Ver mis certificados</button></a>
+                        </div>
+                        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">Editar perfil</button></a>
+                        </div>
+                        <!--<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                            <a href="#"><button type="button" class="btn btn-primary">Ver ranking</button></a>
+                        </div>-->
+                        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+                            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">Cambiar contraseña</button></a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Modal Editar perfil-->
+            <div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="container-fluid">
+                    <div class="row justify-content-end">
+                        <div class="col-auto">
+                            <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                                <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center mt-4">
+                        <div class="col-12">
+                            <h4 class="pb-1 title-grey sub-line"> Editar Perfil </h4>
+                        </div>
+                    </div>
+                    <form action="">
+                        <div class="row aling-item-center justify-content-center mt-3 mx-auto">
+                            <div class="col-8">
+                                <div class="form-group text-left">
+                                    <label for="nameUser">Nombre de usuario</label>
+                                    <input  type="password" class="form-control mb-4" id="nameUser">
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="mailP">Correo electrónico</label>
+                                    <input type="mail" class="form-control mb-1" id="mailP">
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="mailAd">Correo electrónico adicional</label>
+                                    <input  type="mail" class="form-control mb-4" id="mailAd">
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="fechaN">Fecha de nacimiento</label>
+                                    <input  type="date" class="form-control mb-4" id="fechaN">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row aling-item-center justify-content-center">
+                            <div class="col-6 text-center">
+                                <button type="submit" class="btn btn-primary">Editar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Modal cambiar contraseña-->
+            <div class="modal modalChagePwd" id="modalpwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="container-fluid">
+                    <div class="row justify-content-end mt-3">
+                        <div class="col-auto">
+                            <a class="btn_close_modal" data-dismiss="modal" aria-label="Close">
+                                <span class=" close material-icons ic-close-white" aria-hidden="true">close</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center mt-4">
+                        <div class="col-12">
+                            <h4 class="pb-1 title-grey sub-line "> Cambiar contraseña </h4>
+                        </div>
+                    </div>
+                    <form action="">
+                        <div class="row aling-item-center justify-content-center mt-5">
+                            <div class="col-8">
+                                <div class="form-group text-left">
+                                    <label for="pwd_act">Contraseña actual</label>
+                                    <input  type="password" class="form-control mb-4" id="pwd_act">
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="pwd_new">Nueva contraseña</label>
+                                    <input type="password" class="form-control mb-1" id="pwd_new">
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="pwd_conf_new">Confirmar nueva contraseña</label>
+                                    <input type="password" class="form-control mb-1" id="pwd_conf_new">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row aling-item-center justify-content-center mt-5">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- JAVASCRIPT -->
+        <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/popper.min.js" ></script>
+        <script src="js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js" ></script>
+        <script src="js/plugins/jquery-upload-file/js/jquery.iframe-transport.js" ></script>
+        <script src="js/plugins/jquery-upload-file/js/jquery.fileupload.js" ></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/custom.js"></script>
+        <script>
+            /*jslint unparam: true */
+            /*global window, $ */
+            $(function () {
+                'use strict';
+                // Change this to the location of your server-side upload handler:
+                var url = 'upload.php';
+                $('#fileupload').fileupload({
+                    url: url,
+                    dataType: 'json',
+                    done: function (e, data) {
+                        $.each(data.result.files, function (index, file) {
+                            //$('<p/>').text(file.name).appendTo('#files');
+                            console.log('Archivo subido: '+file.name);
+                        });
+                    },
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                        );
+                    }
+                }).prop('disabled', !$.support.fileInput)
+                    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+            });
+        </script>
+    </body>
+</html>

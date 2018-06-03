@@ -1,0 +1,171 @@
+.rank-table{
+    max-width: 28rem;
+    width: 28rem;
+    margin: auto;
+    padding: 0 1rem;
+    thead{
+        border-bottom: 1px solid $gray-400;
+        th{
+            color: $gray-600;
+            @extend %font-table;
+            padding: calc(1rem - 8px);
+            text-align: center;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            vertical-align: middle;
+            &:first-child{
+                text-align: center;
+            }
+            &:nth-child(2){
+            }
+            &:nth-child(3){
+            }
+            &:nth-child(4){
+                padding: calc(1rem - 8px) 0;
+            }
+            &:last-child{
+            }
+        }
+    }
+    tbody{
+        tr{
+            color: $blue;
+            cursor: default;
+            td{
+                padding: calc(1rem - 7px) 0;
+                &:first-child{
+                    font-family: $primary-font;	
+                    font-size: $h4-font-size;	
+                    font-weight: $font-weight-normal-hard;
+                    line-height: calc(2rem - 4px);
+                    text-align: center;
+                    vertical-align:middle;
+                }
+                &:nth-child(2){
+                    .up{
+                        width: 2rem;
+                        height: auto;
+                        position: relative;
+                        left: 0rem;
+                        border-radius: calc(3rem + 4px);
+                        text-align: center;
+                    }
+                }
+                &:nth-child(3){
+                    @extend %font-table;
+                    text-align: left;
+                    padding-left: 2rem;
+                }
+                &:nth-child(4){
+                    @extend %font-table;
+                }
+                &:last-child{
+                    text-align: left;
+                    .img-coin{
+                        position: relative;
+                        .starShiney{
+                            @extend %star;
+                            top: .1rem;
+                            left: 0rem;
+                            opacity: 0;
+                        }
+                        img{
+                            width: 1rem;
+                            height: auto;
+                            position: relative;
+                            top: -.1rem;
+                        }
+                        .text-coin{
+                            left: .1rem;
+                            font-weight: $font-weight-normal-hard;
+                        }
+                    }
+                }
+            }
+            &:hover{
+                color: $white;
+                background: $blue-700;
+                font-weight: $font-weight-normal-hard;
+                text-shadow: 0px 1px 1px rgba(0, 0, 0, .1);
+            }
+        }
+        .me-i{
+            color: $black;
+            background: $green-700;
+            &:hover{
+                color: $black;
+                background: $green-700;
+                .img-coin{
+                    .starShiney{
+                        animation: brillo 1s ease-in-out infinite;
+                        animation-direction: alternate;
+                        animation-fill-mode: both;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Constancia
+.table-notas{
+    max-width: 67rem;
+    width: 67rem;
+    margin: auto;
+    padding: 0 1rem;
+    thead{
+        border-bottom: 1px solid $gray-400;
+        th{
+            color: $gray-900;
+            font-family: $primary-font;	
+            font-size: $p-font-size;	
+            line-height: 1rem;
+            font-weight: $font-weight-normal;
+            padding: calc(1rem - 8px);
+            text-align: center;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            vertical-align: middle;
+            &:first-child{
+                text-align: left;
+            }
+        }
+    }
+    tbody{
+        tr{
+            color: $blue;
+            cursor: default;
+            td{
+                padding: calc(1rem - 10px) calc(1rem - 8px);
+                &:first-child{
+                    font-family: $primary-font;	
+                    font-size: $h5-font-size;	
+                    font-weight: $font-weight-normal-hard;
+                    line-height: calc(1rem - 2px);
+                    text-align: left;
+                    vertical-align:middle;
+                }
+                &:nth-child(2), &:last-child{
+                    text-align: center;
+                }
+            }
+            &:nth-child(2n){
+                background: $gray-400;
+            }
+        }
+    }
+}
+//extend
+
+%font-table{
+    font-family: $primary-font;	
+    font-size: $font-size-sm;	
+    line-height: 1rem;
+    font-weight: $font-weight-normal;
+}
+
+%star{
+    width: .5rem;
+    height: .5rem;
+    position: absolute;
+    z-index: 2;
+    background: url(../../../assets/img/star.svg);
+}

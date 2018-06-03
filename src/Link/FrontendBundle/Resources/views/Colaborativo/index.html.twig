@@ -1,0 +1,306 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
+    <style>
+        .menu{
+            width: 60%;
+            height: 300px;
+        }
+        body {
+            margin-bottom: 300px;
+        }
+        label.error, label.mensaje-error {
+            color: #f00c0c;
+        }
+        .ui-autocomplete-loading {
+            background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
+        }
+    </style>
+{% endblock %}
+
+{% block clbody %}
+    lesson-body
+{% endblock %}
+
+{% block header %}
+    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <div class="logo d-sm-block d-md-block">
+            <a class="navbar-brand" href="{{ path('_inicio') }}">
+                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+            </a>
+        </div>
+        <div class="wraper-title-lesson d-flex flex-column align-items-center">
+            <h4 class="mt-2 mb-1 color-light-grey" >{{ 'Espacio colaborativo'|trans }}</h4>
+            <h6 class="mt-0 color-light-grey" >{{ programa.nombre }}</h6>
+        </div>
+        <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
+            <div class="d-flex flex-column">
+                <div class="wrapperDdMenu" data-toggle="tooltip" data-placement="bottom" title="{{ 'Configuración del usuario'|trans }}">
+                    <a href="#" class="perfil no-decorate" id="config">
+                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+                        <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                    </a>
+                    <ul class="dropDownMenu">
+                        <li class="mark"></li>
+                        <a href="{{ path('_usuariop') }}">
+                            <li class="opcList">
+                                <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
+                            </li>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#modalCs">
+                            <li class="opcList markOpc">
+                                <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sidemenu %}
+    {{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina_id, 'active': 'espacio' })) }}
+{% endblock %}
+
+{% block bg %}
+    bg-white
+{% endblock %}
+
+{% block body %}
+
+    <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
+    <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditForo') }}">
+    <input type="hidden" id="url_search" name="url_search" value="{{ path('_ajaxSearchForo') }}">
+    <input type="hidden" id="url_detalle" name="url_detalle" value="{{ path('_detalleColaborativo') }}">
+    <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteForo') }}">
+    <input type="hidden" id="titulo_new" name="titulo_new" value="{{ 'Crear nuevo tema'|trans }}">
+    <input type="hidden" id="titulo_edit" name="titulo_edit" value="{{ 'Editar tema'|trans }}">
+
+    <section class="esp_col" id="section-form" style="display:none;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10">
+                    <div class="row mt-3 mb-2 align-items-center justify-content-center">
+                        <div class="col-auto text-center">
+                            <h4 class="titulo" id="titulo"></h4>
+                        </div>
+                    </div>
+                    <form id="form" action="{{ path('_ajaxSaveForo') }}" method="POST">
+                        <input type="hidden" id="foro_id" name="foro_id" value="0">
+                        <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
+                        <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
+                        <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
+                        <div class="row pl-3 align-items-center justify-content-center">
+                            <div class="col-12">
+                                <div class="form-group text-left">
+                                    <label class="mb-2 titulo-form" for="tema"> {{ 'Título'|trans }}: </label>
+                                    <input type="text" class="form-control mb-4" id="tema" name="tema" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pl-3 align-items-center justify-content-center">
+                            <div class="col-6">
+                                <div class="form-group text-left">
+                                    <label class="mb-2 titulo-form" for="fechaPublicacion"> {{ 'Fecha de Publicación'|trans }}: </label>
+                                    <input type="text" class="form-control mb-4 datepicker" id="fechaPublicacion" name="fechaPublicacion" value="">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group text-left">
+                                    <label class="mb-2 titulo-form" for="fechaVencimiento"> {{ 'Fecha de Vencimiento'|trans }}: </label>
+                                    <input type="text" class="form-control mb-4 datepicker" id="fechaVencimiento" name="fechaVencimiento" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pl-3 align-items-center justify-content-center">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <label class="mb-2 titulo-form" for="mensaje"> {{ 'Contenido'|trans }}: </label>
+                                    <textarea rows="3" id="mensaje" name="mensaje" cols="30"></textarea>
+                                    <label id="mensaje-error" class="mensaje-error" for="mensaje" style="display:none;">{{ 'El contenido es requerido.'|trans }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center justify-content-end">
+                            <div class="col-auto text-left">
+                                <button id="cancelar" type="button" class="btn btn-warning">{{ 'Cancelar'|trans }}</button>
+                            </div>
+                            <div class="col-auto text-right">
+                                <button id="publicar" type="button" class="btn btn-primary">{{ 'Publicar'|trans }}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="esp_col" id="section-list">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
+                {% if app.session.get('usuario').tutor %}
+                    <button class="btn btn-primary btn-nw-tema newTopic" data="0">{{ 'Crear nuevo tema'|trans }}</button>
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </div>
+            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4">
+                <input type="search" id="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}">
+                <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <ul class="table-card" id="ul-foros">
+                {% for foro in foros %}
+                    <li class="f-table" id="liForo-{{ foro.id }}">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <a href="{{ path('_detalleColaborativo', { 'foro_id': foro.id, 'subpagina_id': subpagina_id }) }}"><h5 class="titulo_f-table">{{ foro.tema }}</h5></a>
+                            </div>
+                            {% if app.session.get('usuario').tutor %}
+                                <div class="col-auto d-flex text-right">
+                                    {% if app.session.get('usuario').id == foro.usuario_id %}
+                                        <a href="#" class="newTopic" data="{{ foro.id }}" id="aForo-{{ foro.id }}"><span class="material-icons icEditEcT">mode_edit</span></a>
+                                    {% endif %}
+                                    <a href="#" class="deleteTopic" data="{{ foro.id }}" tema="{{ foro.tema }}" data-toggle="modal" data-target="#modalDelete"><span class="material-icons icDeleEcT">delete</span></a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="row align-items-end foo-esp_col">
+                            <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                <span class="name_ft">{{ foro.name_ft }}</span>
+                            </div>
+                            {% if foro.coment_f %}
+                                <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <span class="coment_f-table">{{ 'Hizo un comentario'|trans }}: <span>{{ foro.coment_f_span }}</span></span>
+                                </div>
+                            {% endif %}
+                            {% if foro.resp_ft %}
+                                <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <span class="resp_ft"><i class="material-icons ic-msg">message</i> {{ foro.resp_ft }}</span>
+                                </div>
+                            {% endif %}
+                            <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                <span class="name_ft">{{ 'Fecha de Publicación'|trans }}: {{ foro.publicacion }}</span>
+                            </div>
+                            <div class="col-auto col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                <span class="name_ft">{{ 'Fecha de Vencimiento'|trans }}: {{ foro.vencimiento }}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% else %}
+                    <li id="none_foros" class="f-table">
+                        <div class="row justify-content-between">
+                            <div class="col-8">
+                                <h5 class="titulo_f-table">{{ 'El tutor virtual aún no ha creado un tema de discusión'|trans }}</h5>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <div class="row justify-content-center" style="display:none;" id="wait">
+        <div class="col-auto px-0 py-0">
+            <div class="contenedor">
+                <div class="radar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Tema -->
+    <div class="modal modalCEval" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <input type="hidden" id="foro_delete_id" name="foro_delete_id" value="0">
+        <div class="container-fluid">
+            <div class="row mt-6 justify-content-center align-items-center">
+                <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                    <h4 class="titulo">{{ '¿Estás segur@ de que deseas eliminar este registro?'|trans }}</h4>
+                    <strong id="titleDelete"></strong>
+                </div>
+            </div>
+            <div class="row mt-3 align-items-center justify-content-center">
+                <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                    <button type="button" id="eliminar" class="btn btn-primary btn-Cs btn-modalDelete">{{ 'Eliminar'|trans }}</button>
+                </div>
+            </div>
+            <div class="row mt-3 align-items-end justify-content-center">
+                <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                    <a href="#" class="cancelarCs btn-modalDelete" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script src="{{ asset('front/js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/espacio_colaborativo.js') }}"></script>
+    <script type="text/javascript">
+
+        $('.form-control').focus(function(){
+            $('label.error').hide();
+        });
+
+        $('#publicar').click(function(){
+            var valid = $("#form").valid();
+            if (valid) 
+            {
+                // Validaciones adicionales
+                var editor_data = CKEDITOR.instances.mensaje.getData();
+                var contenido = editor_data.replace(/<[^>]+>/g, '');
+                
+                if (contenido == ""){
+                    $('#mensaje-error').show();
+                }
+                else {
+                    $('#mensaje_content').val(editor_data);
+                    saveForo();
+                }
+            }
+        });
+
+        $("#form").validate({
+            rules: {
+                'tema': {
+                    required: true,
+                    minlength: 10
+                },
+                'fechaPublicacion': {
+                    required: true
+                },
+                'fechaVencimiento': {
+                    required: true
+                }
+            },
+            messages: {
+                'tema': {
+                    required: "{{ 'El título es requerido.'|trans }}",
+                    minlength: "{{ 'El título debe contener al menos 10 caracteres'|trans }}"
+                },
+                'fechaPublicacion': {
+                    required: "{{ 'Debe seleccionar una fecha de publicación.'|trans }}"
+                },
+                'fechaVencimiento': {
+                    required: "{{ 'Debe seleccionar una fecha de vencimiento.'|trans }}"
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

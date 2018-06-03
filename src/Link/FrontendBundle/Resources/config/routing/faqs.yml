@@ -1,0 +1,4 @@
+_faqsf:
+    path:     /faqs
+    defaults: { _controller: LinkFrontendBundle:Faqs:index }
+

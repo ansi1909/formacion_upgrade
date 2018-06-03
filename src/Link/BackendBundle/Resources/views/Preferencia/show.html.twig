@@ -1,0 +1,215 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/colorpicker/css/colorpicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/colorpicker/css/layout.css') }}" type="text/css">
+    <style type="text/css">
+        .photo_img, #figure_logo {
+            margin-left: 1.2rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% set uri = app.request.getbasepath %}
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_preferencias', { 'app_id': app.session.get('app_id') }) }}">
+<br><br>
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_preferencias', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col text-right">
+        <a href="{{ path('_preferencia', { 'empresa_id': preferencia.empresa.id, 'preferencia_id': preferencia.id })}}" class="bttn__bck"><span class="fa fa-pencil"></span><span class="text__bck">{{ 'Editar'|trans }}</span></a>
+        <a href="" class="bttn__bck2"><span class="fa fa-dashboard"></span><span class="text__bck2">{{ 'Vista previa del dashboard'|trans }}</span></a>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Preferencias de la empresa'|trans }} {{ preferencia.empresa.nombre }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Plantilla'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Customización'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Logo'|trans }}</p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+            		<div class="row setup-content" id="det0">	
+            			<div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8">
+                                    <div class="card cardThumb"  id="thumbnails">
+                                        <div class="card-header gradiente">
+                                            <h5 class="card-title">{{ 'Thumbnails de la plantilla'|trans }} {{ preferencia.layout.twig }}</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            {% for thumbnail in thumbnails %}
+                                                {% if loop.first %}
+                                                    <div class="list-unstyled project-list row">
+                                                {% endif %}
+                                                <div class="col-md-8 col-lg-8 col-xl-8">
+                                                    {% set img = thumbnail.url ? uploads~thumbnail.url : asset('img/picture.png') %}
+                                                    <div class="media flex-column">
+                                                        <span class="projectpic"><img src="{{ img }}" alt="Thumbnail"><span class="user-status bg-success"></span></span>
+                                                    </div>
+                                                    <p class="card-text">{{ thumbnail.nombre }}</p>
+                                                </div>
+                                                {% if loop.index is divisibleby(2) %}
+                                                    </div>
+                                                    <br>
+                                                    {% if not loop.last %}
+                                                        <div class="list-unstyled project-list row">
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if loop.last %}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% else %}
+                                                <div class="alert alert-danger" role="alert">
+                                                    <h4 class="alert-heading">{{ 'Thumbnails inexistentes'|trans }}!</h4>
+                                                    <p>{{ 'Esta plantilla no posee thumbnails en la base de datos'|trans }}.</p>
+                                                    <p>{{ 'Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla'|trans }}.</b>.</p>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+                    <div class="row setup-content" id="det1">
+                        <div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Variables de colores que se aplican a la plantilla'|trans }}</h3>
+                                </div>
+                            </div>
+                            <br>
+                            {% for atributo in atributos %}
+                                {% if loop.first %}
+                                    <div class="row">
+                                {% endif %}
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="form-group">
+                                        <input type="hidden" id="atributos_id{{ atributo.id }}" name="atributos_id{{ atributo.id }}" value="{{ atributo.valor }}">
+                                        <label for="atributos_id{{ atributo.id }}" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ atributo.variable }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <div id="customWidget">
+                                                <div id="colorSelector{{ atributo.id }}" class="cs">
+                                                    <div style="background-color: {{ atributo.valor }}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small id="atributoHelp{{ atributo.id }}" class="form-text text-muted">{{ atributo.descripcion }}</small>
+                                    </div>
+                                </div>
+                                {% if loop.index is divisibleby(2) %}
+                                    </div>
+                                    <br>
+                                    {% if not loop.last %}
+                                        <div class="row">
+                                    {% endif %}
+                                {% else %}
+                                    {% if loop.last %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            		<div class="row setup-content" id="det2">
+            			<div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16 col-lg-16 col-md-16">
+                                    <label for="title" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Título en la ventana del navegador' }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <input type="text" id="title" name="title" class="form-control form_sty1" value="{{ preferencia.title }}" readonly="readonly">
+                                        <span class="fa fa-font"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+            				<div class="row">
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <label for="logo" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;Logo</label>
+                                    {% set img = preferencia.logo ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
+                                    {% set imgCss = preferencia.tipoLogo ? preferencia.tipoLogo.css : 'imgLogoHor' %}
+                                    <div id="figure_logo"><img src="{{ img }}" alt="{{ 'Logo de la empresa'|trans }}" class="{{ imgCss }}"></div>
+                                </div>
+                            </div>
+                            {% if preferencia.logo %}
+                                <div class="row">
+                                    <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                        <small id="logoHelp" class="form-text text-muted dimensions">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            {% if preferencia.logoLogin %}
+                                                {{ 'Este logo se mostrará en la página de login'|trans }}
+                                            {% else %}
+                                                {{ 'No se mostrará en la página de login' }}
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <label for="favicon" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;{{ 'Icono'|trans }}</label>
+                                    {% set img = preferencia.favicon ? uploads~preferencia.favicon : asset('img/icono.png') %}
+                                    <div class="photo_img" id="figure_favicon"><img src="{{ img }}" alt="{{ 'Icono de la empresa'|trans }}" width="32px" height="32px"></div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__end" id="list"><span class="text__end">{{ 'Ir al listado'|trans }}</span><span class="fa fa-clipboard"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/colorpicker.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/eye.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('assets/vendor/colorpicker/js/utils.js') }}"></script>
+{% endblock %}

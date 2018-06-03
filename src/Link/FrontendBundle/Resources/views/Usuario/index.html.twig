@@ -1,0 +1,268 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
+    <style>
+        .error {
+            color: #e60f0f;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% set empresa_id = app.session.get('empresa')['id'] %}
+{% set login = app.session.get('usuario')['login'] %}
+{% set nombre = app.session.get('usuario')['nombre'] %}
+{% set apellido = app.session.get('usuario')['apellido'] %}
+{% set correo = app.session.get('usuario')['correo'] %}
+{% set correo_corporativo = app.session.get('usuario')['correo_corporativo'] %}
+{% set fecha_nacimiento = app.session.get('usuario')['fecha_nacimiento'] %}
+{% set fecha_nacimiento_formateada = app.session.get('usuario')['fecha_nacimiento_formateada'] %}
+<input type="hidden" id="url_img" name="url_img" value="{{ path('_ajaxImg') }}">
+
+<section class="card-datos">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
+            <div class="pic-img">
+                <form id="form-upload" method="POST">
+                    <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadFotoUsuario') }}">
+                    <input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
+                    <input type="hidden" id="base_upload" name="base_upload" value="recursos/usuarios/{{ empresa_id }}/">
+                    {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+                    <a class="fileinput-button" data-placement="bottom" title="{{ 'Cambiar imagen'|trans }}">
+                        <img src="{{ img }}" class="img-user-pic" id="perfil">
+                        <input id="fileupload" type="file" name="files[]" multiple>
+                    </a>
+                </form>
+            </div>
+            <span class="error" id="error"></span>
+        </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-5 col-lg-5 col-xl-5">
+            <h2 class="name-titulo text-center">{{ nombre }} {{ apellido }}</h2>
+            <div class="row justify-content-between">
+                <div class="col-6 text-right">
+                    <span class="info_datos">{{ 'Nombre de usuario'|trans }}</span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user">{{ login }}</span>
+                </div>
+            </div>
+            <div class="row justify-content-betwee5">
+                <div class="col-6 text-right">
+                    <span class="info_datos">{{ 'Correo electrónico'|trans }}</span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user" id="label-correo">{{ correo }}</span>
+                </div>
+            </div>
+            <div class="row justify-content-betwee5">
+                <div class="col-6 text-right">
+                    <span class="info_datos">{{ 'Correo adicional'|trans }}</span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user" id="label-correo_corporativo">{{ correo_corporativo }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-right">
+                    <span class="info_datos">{{ 'Fecha de nacimiento'|trans }}</span>
+                </div>
+                <div class="col-6">
+                    <span class="datos_user" id="label-fn">{{ fecha_nacimiento_formateada }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center" >
+            <div class="imgExp-coin">
+                <img class="imgExp" src="{{asset('img/medal.svg')}}" alt="">
+                <div class="starShiney1">
+                </div>
+                <div class="starShiney2">
+                </div>
+                <div class="starShiney3">
+                </div>
+                <div class="starShiney4">
+                </div>
+            </div>
+            <span class="numExp">{{ puntos }}</span>
+            <h3 class="tituloExp">EXP</h3>
+        </div>
+    </div>
+    <div class="row align-items-center justify-content-around mt-12v">
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="{{ path('_misProgramas') }}"><button type="button" class="btn btn-primary">{{ 'Ver mis certificados'|trans }}</button></a>
+        </div>
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">{{ 'Editar perfil'|trans }}</button></a>
+        </div>
+        {#<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="{{ path('_ranking') }}"><button type="button" class="btn btn-primary">{{ 'Ver ranking'|trans }}</button></a>
+        </div>#}
+        <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
+            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">{{ 'Cambiar contraseña'|trans }}</button></a>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Editar perfil-->
+<div class="modal modalEditP" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                    <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                </a>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center mt-4">
+            <div class="col-12">
+                <h4 class="pb-1 title-grey sub-line"> {{ 'Editar perfil'|trans }} </h4>
+            </div>
+        </div>
+        <form id="form" name="form" action="{{ path('_ajaxSavePerfil')}}" method="POST">
+            <div class="row aling-item-center justify-content-center mt-3 mx-auto">
+                <div class="col-8">
+                    <div class="form-group text-left">
+                        <label for="nameUser">{{ 'Usuario'|trans }}</label>
+                        <input type="text" class="form-control mb-4" id="login" name="login" value="{{ login }}" disabled="disabled">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="correo_personal">{{ 'Correo electrónico'|trans }}</label>
+                        <input type="mail" class="form-control mb-1" id="correo_personal" name="correo_personal" value="{{ correo }}">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="correo_corporativo">{{ 'Correo corporativo'|trans }}</label>
+                        <input type="mail" class="form-control mb-4" id="correo_corporativo" name="correo_corporativo" value="{{ correo_corporativo }}">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>
+                        <input type="date" class="form-control mb-4" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" data-date-end-date="-18y">
+                    </div>
+                </div>
+            </div>
+            <div class="row aling-item-center justify-content-center">
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary boton" id="modificar">{{ 'Guardar'|trans }}</button>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="display:none;" id="wait_profile">
+                <div class="col-auto px-0 py-0">
+                    <div class="contenedor">
+                        <div class="radar"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal cambiar contraseña-->
+<div class="modal modalChagePwd" id="modalpwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container-fluid">
+        <div class="row justify-content-end mt-3">
+            <div class="col-auto">
+                <a class="btn_close_modal" data-dismiss="modal" aria-label="Close">
+                    <span class="close material-icons ic-close-white" aria-hidden="true">close</span>
+                </a>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center mt-4">
+            <div class="col-12">
+                <h4 class="pb-1 title-grey sub-line ">{{ 'Cambiar contraseña'|trans }}</h4>
+            </div>
+        </div>
+        <form id="form-clave" action="{{ path('_ajaxClave') }}">
+            <div class="row aling-item-center justify-content-center mt-5">
+                <div class="col-8">
+                    <div class="form-group text-left">
+                        <label for="clave">{{ 'Nueva contraseña'|trans }}</label>
+                        <input type="password" class="form-control mb-1" id="clave" name="clave">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="confirmar">{{ 'Confirmar contraseña'|trans }}</label>
+                        <input type="password" class="form-control mb-1" id="confirmar" name="confirmar">
+                    </div>
+                </div>
+            </div>
+            <div class="row aling-item-center justify-content-center mt-5">
+                <div class="col-auto">
+                    <button type="button" class="btn btn-primary boton" id="cambio">{{ 'Cambiar contraseña'|trans }}</button>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="display:none;" id="wait_password">
+                <div class="col-auto px-0 py-0">
+                    <div class="contenedor">
+                        <div class="radar"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ asset('front/js/acordion.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/usuario.js') }}"></script>
+    <script type="text/javascript">
+        $("#form").validate({
+            rules: {
+                'correo_personal': {
+                    required: true,
+                    email: true
+                },
+                'correo_corporativo': {
+                    email: true
+                },
+                'fecha_nacimiento': {
+                    required: true
+                }
+            },
+            messages: {
+                'correo_personal': {
+                    required: "{{ 'Debe ingresar el correo electrónico.'|trans }}",
+                    email: "{{ 'El correo personal tiene un formato inválido.'|trans }}"
+                },
+                'correo_corporativo': {
+                    email: "{{ 'El correo corporativo tiene un formato inválido.'|trans }}"
+                },
+                'fecha_nacimiento': {
+                    required: "{{ 'Fecha de nacimiento es requerida.'|trans }}"
+                }
+            }
+        });
+
+        $("#form-clave").validate({
+            rules: {
+                'clave': {
+                    required: true
+                },
+                'confirmar': {
+                    equalTo: "#clave"
+                }
+            },
+            messages: {
+                'clave': {
+                    required: "{{ 'La contraseña es requerida'|trans }}"
+                },
+                'confirmar': {
+                    equalTo: "{{ 'Debe coincidir con la contraseña'|trans }}"
+                }
+            }
+        });
+    </script>
+{% endblock %}

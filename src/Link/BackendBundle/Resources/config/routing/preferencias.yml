@@ -1,0 +1,17 @@
+_preferencias:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Preferencia:index }
+
+_preferencia:
+    path:     /edit/{empresa_id}/{preferencia_id}
+    defaults: { _controller: LinkBackendBundle:Preferencia:edit, preferencia_id: 0 }
+
+_showPreferencia:
+    path:     /show/{preferencia_id}
+    defaults: { _controller: LinkBackendBundle:Preferencia:show }
+
+_ajaxUploadLogo:
+    path:     /ajaxUploadLogo
+    defaults: { _controller: LinkBackendBundle:Preferencia:ajaxUploadLogo }
+    requirements:
+        _method: POST

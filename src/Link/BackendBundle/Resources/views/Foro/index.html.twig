@@ -1,0 +1,252 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+{% set uri = app.request.getbasepath %}
+<br><br>
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
+<input type="hidden" id="url_paginas_foro" name="url_paginas_foro" value="{{ path('_ajaxPaginasForo') }}">
+<input type="hidden" id="url_comentarios_foro" name="url_comentarios_foro" value="{{ path ('_ajaxComentariosForo') }}">
+<input type="hidden" id="url_respuestas_comentarios_foro" name="url_respuestas_comentarios_foro" value="{{ path ('_ajaxRespuestasComentariosForo') }}">
+<input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
+{% if usuario_empresa %}
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+{% endif %}
+
+<br>
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Filtrar comentarios del foro'|trans  }}</h5>
+            </div>
+            {% if not usuario_empresa %}
+                <div class="card-block">
+                    <label for="select_empresa_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa'|trans }}</label>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_empresa_id" name="select_empresa_id">
+                                <option value="0"></option>
+                                {% for empresa in empresas %}
+                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                    </div>
+                    <br>
+                    <label for="select_pagina_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Páginas'|trans }}</label>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_pagina_id" name="select_pagina_id">
+                                <option value="0"></option>
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            {% else %}
+                <div class="card-block">
+                    <label for="select_pagina_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Páginas'|trans }}</label>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_pagina_id" name="select_pagina_id">
+                                <option value="0"></option>
+                                {% for pagina in paginas %}
+                                    <option value="{{ pagina.id }}" >{{ pagina.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de comentarios'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+                <div id="list_comentarios">
+                    <table class="table" id="dt">
+                        <thead class="sty__title">
+                            <tr>
+                                <th>{{ 'Mensaje'|trans }}</th>
+                                <th>{{ 'usuario'|trans }}</th>
+                                <th>{{ 'Fecha'|trans }}</th>
+                                <th>{{ 'Acciones'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for comentario in comentarios %}
+                                <tr>
+                                    <td class="respuesta{{ comentario.id }}">{{ comentario.mensaje }}</td>
+                                    <td>{{ comentario.nombreUsuario ~ ' ' ~ comentario.apellidoUsuario }}</td>
+                                    <td>{{ comentario.fecharegistro }}</td>
+                                    <td class="center">
+                                        {% if comentario.usuarioId == usuario.id %}
+                                            <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
+                                        {% endif %}
+                                        <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
+                                        <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm see" data="{{ comentario.id }}"><span class="fa fa-eye"></span></a>
+                                        <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if comentario.delete_disabled == '' %}delete{% endif %} {{ comentario.delete_disabled }}" data="{{ comentario.id }}"><span class="fa fa-trash"></span></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+        <div class="card" id="history_programation">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Respuestas comentario seleccionado'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div id="tbody_history_programation">
+                    <table class="table" id="dtSub">
+                        <thead class="sty__title">
+                            <tr>
+                                <th>{{ 'Mensaje'|trans }}</th>
+                                <th>{{ 'usuario'|trans }}</th>
+                                <th>{{ 'Fecha'|trans }}</th>
+                                <th>{{ 'Acciones'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="loading" style="width:24px;display:none">
+                    <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block formModal %}
+<div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+    <h5 class="modal-title" id="exampleModalLongTitle">{{'Responder comentario'|trans}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" style="color: #fff;">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateRespuestaForo')}}"  method="POST">
+        <input type="hidden" id="foro_id" name="foro_id" value="">
+        <input type="hidden" id="comentario_id" name="comentario_id" value="">
+        <div class="row">
+            <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                <label for="asunto" class="form-control-label">{{ 'Respuesta'|trans }}:</label>
+                <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <textarea type="text" class="form-control form_sty1" rows="4" id="respuesta" name="respuesta" placeholder="{{ 'Respuesta'|trans }}..."></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'Respuesta creada con éxito'|trans }}. 
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/foro.js') }}"></script>
+    <script type="text/javascript">
+
+        $('.add').click(function(){
+            var foro_id = $(this).attr('data');
+            $('#foro_id').val(foro_id);
+            $('#respuesta').val('');
+            $('#comentario_id').val('');
+
+        });
+
+        $('.edit').click(function(){
+            var comentario_id = $(this).attr('data');
+            var respuesta = $('.respuesta' + comentario_id).html();
+            $('#comentario_id').val(comentario_id);
+            $('#respuesta').val(respuesta);
+
+        });
+
+        $('.see').click(function(){
+            var foro_id = $(this).attr('data');
+            var usuario_id = $('#usuario_id').val();
+            $('#div-active-alert').hide();
+            $('#tbody_history_programation').hide();
+            $('#loading').show();
+            $.ajax({
+                type: "GET",
+                url: $('#url_respuestas_comentarios_foro').val(),
+                async: true,
+                data: { foro_id: foro_id, usuario_id: usuario_id },
+                dataType: "json",
+                success: function(data) {
+                    $('#tbody_history_programation').html(data.html);
+                    $('#tbody_history_programation').show();
+                    $('#loading').hide();
+                    segundaTabla();
+                    afterPaginate();
+                    clearTimeout( timerId );
+                },
+                error: function(){
+                    $('#active-error').html($('#error_msg_history').val());
+                    $('#div-active-alert').show();
+                }
+            });
+            
+        });
+
+        $('#aceptar').click(function(){
+                location.reload();
+            });
+
+        $("#form").validate({
+            rules: {
+                'respuesta': {
+                    required: true,
+                }
+            },
+            messages: {
+                'respuesta': {
+                    required: "- {{ 'La respuesta es requerida.'|trans }}",
+                }
+            }
+        });
+
+        </script>
+{% endblock %}

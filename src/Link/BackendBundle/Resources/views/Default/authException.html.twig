@@ -1,0 +1,28 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+	<br><br>
+	<div class="row align-items-center justify-content-between">
+        <div class="col-sm-8 col-md-8 push-2">
+            <h1>{{ 'Error de Excepción'|trans }}</h1>
+            <h3>{{ 'Usted no tiene permiso para acceder a esta ruta'|trans }}.</h3>
+        </div>
+        <div class="col-sm-4 col-md-4 pull-2">
+            <img src="{{ asset('img/cloud-computing.png') }}" alt="" style="width: 200px">
+        </div>
+    </div>
+    <div class="row align-items-center justify-content-between">
+        <div class="col-sm-8 col-md-8 push-4 text-right">
+            <h5>Error 401</h5>
+        </div>
+    </div>
+    <div class="row align-items-center justify-content-between">
+        <div class="col-sm-8 col-md-8 push-2">
+            <ul class="text__info">
+                <li><i class="fa fa-circle"></i><h6>{{ 'Los roles que tienes asignado no tiene autorización para ingresar a este módulo'|trans }}.</h6></li>
+                <li><i class="fa fa-circle"></i><h6>{{ 'Puede cerrar y reiniciar sesión para restablecer los permisos de acceso'|trans }}.</h6></li>
+                <li><i class="fa fa-circle"></i><h6>{{ 'Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo'|trans }}.</h6></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

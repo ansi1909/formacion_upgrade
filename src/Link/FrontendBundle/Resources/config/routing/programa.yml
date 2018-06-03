@@ -1,0 +1,11 @@
+_programa:
+    path:     /programa/{programa_id}
+    defaults: { _controller: LinkFrontendBundle:Programa:programa }
+
+_misProgramas:
+    path:     /misProgramas
+    defaults: { _controller: LinkFrontendBundle:Programa:misProgramas }
+
+_programas:
+    path:     /programas
+    defaults: { _controller: LinkFrontendBundle:Programa:programas }

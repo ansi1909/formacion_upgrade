@@ -37,6 +37,13 @@ class AdminSesion
     private $fechaRequest;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="disponible", type="boolean", nullable=true)
+     */
+    private $disponible;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminUsuario")
@@ -68,7 +75,7 @@ class AdminSesion
     public function setFechaIngreso($fechaIngreso)
     {
         $this->fechaIngreso = $fechaIngreso;
-
+    
         return $this;
     }
 
@@ -92,7 +99,7 @@ class AdminSesion
     public function setFechaRequest($fechaRequest)
     {
         $this->fechaRequest = $fechaRequest;
-
+    
         return $this;
     }
 
@@ -107,6 +114,30 @@ class AdminSesion
     }
 
     /**
+     * Set disponible
+     *
+     * @param boolean $disponible
+     *
+     * @return AdminSesion
+     */
+    public function setDisponible($disponible)
+    {
+        $this->disponible = $disponible;
+    
+        return $this;
+    }
+
+    /**
+     * Get disponible
+     *
+     * @return boolean
+     */
+    public function getDisponible()
+    {
+        return $this->disponible;
+    }
+
+    /**
      * Set usuario
      *
      * @param \Link\ComunBundle\Entity\AdminUsuario $usuario
@@ -116,7 +147,7 @@ class AdminSesion
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 

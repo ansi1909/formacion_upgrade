@@ -1,0 +1,125 @@
+_inicioAdmin:
+    path:     /
+    defaults: { _controller: LinkBackendBundle:Default:index }
+
+_loginAdmin:
+    path:     /login
+    defaults: { _controller: LinkBackendBundle:Default:login }
+
+_authException:
+    path:     /authException
+    defaults: { _controller: LinkBackendBundle:Default:authException }
+
+_ajaxDelete:
+    path:     /ajaxDelete
+    defaults: { _controller: LinkBackendBundle:Default:ajaxDelete }
+    requirements:
+        method: POST
+
+_ajaxActive:
+    path:     /ajaxActive
+    defaults: { _controller: LinkBackendBundle:Default:ajaxActive }
+    requirements:
+        _method: POST
+
+_ajaxOrder:
+    path:     /ajaxOrder
+    defaults: { _controller: LinkBackendBundle:Default:ajaxOrder }
+    requirements:
+        _method: POST
+
+_ajaxQR:
+    path:     /ajaxQR
+    defaults: { _controller: LinkBackendBundle:Default:ajaxQR }
+
+roles:
+    resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
+    prefix: /rol
+
+apps:
+    resource: "@LinkBackendBundle/Resources/config/routing/apps.yml"
+    prefix: /app
+
+empresas:
+    resource: "@LinkBackendBundle/Resources/config/routing/empresas.yml"
+    prefix: /empresa
+
+categorias:
+    resource: "@LinkBackendBundle/Resources/config/routing/categorias.yml"
+    prefix: /categoria
+
+permisos:
+    resource: "@LinkBackendBundle/Resources/config/routing/permisos.yml"
+    prefix: /permiso
+
+niveles:
+    resource: "@LinkBackendBundle/Resources/config/routing/niveles.yml"
+    prefix: /nivel
+
+usuarios:
+    resource: "@LinkBackendBundle/Resources/config/routing/usuarios.yml"
+    prefix: /usuario
+
+paginas:
+    resource: "@LinkBackendBundle/Resources/config/routing/paginas.yml"
+    prefix: /pagina
+
+evaluaciones:
+    resource: "@LinkBackendBundle/Resources/config/routing/evaluaciones.yml"
+    prefix: /evaluacion
+
+faqs:
+    resource: "@LinkBackendBundle/Resources/config/routing/faqs.yml"
+    prefix: /faq
+
+novedades:
+    resource: "@LinkBackendBundle/Resources/config/routing/novedades.yml"
+    prefix: /novedades
+
+notificaciones:
+    resource: "@LinkBackendBundle/Resources/config/routing/notificaciones.yml"
+    prefix: /notificaciones
+
+programados:
+    resource: "@LinkBackendBundle/Resources/config/routing/programados.yml"
+    prefix: /programados
+
+tutorial:
+    resource: "@LinkBackendBundle/Resources/config/routing/tutorial.yml"
+    prefix: /tutorial
+
+certificados:
+    resource: "@LinkBackendBundle/Resources/config/routing/certificados.yml"
+    prefix: /certificados
+
+grupo:
+    resource: "@LinkBackendBundle/Resources/config/routing/grupo.yml"
+    prefix: /grupo
+
+calendario:
+    resource: "@LinkBackendBundle/Resources/config/routing/calendario.yml"
+    prefix: /calendario
+
+preferencias:
+    resource: "@LinkBackendBundle/Resources/config/routing/preferencias.yml"
+    prefix: /preferencias
+
+vista:
+    resource: "@LinkBackendBundle/Resources/config/routing/vista.yml"
+    prefix: /vista
+
+reportes:
+    resource: "@LinkBackendBundle/Resources/config/routing/reportes.yml"
+    prefix: /reportes
+
+muro:
+    resource: "@LinkBackendBundle/Resources/config/routing/muro.yml"
+    prefix: /muro
+
+foro:
+    resource: "@LinkBackendBundle/Resources/config/routing/foro.yml"
+    prefix: /foro
+
+_reordenarAsignacion:
+    path:     /reordenarAsignacion/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Default:reordenarAsignacion }

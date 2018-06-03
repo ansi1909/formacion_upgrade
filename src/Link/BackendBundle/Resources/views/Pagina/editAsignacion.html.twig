@@ -1,0 +1,401 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+
+{% set pagina_id = pagina_empresa.pagina.pagina ? pagina_empresa.pagina.pagina.id : 0 %}
+<form id="form" name="form" action="{{ path('_editAsignacion', { 'pagina_empresa_id': pagina_empresa.id }) }}" method="POST">
+<br><br>
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_showAsignacion', { 'empresa_id': pagina_empresa.empresa.id, 'pagina_id': pagina_id })}}" class="bttn__bck3"><span class="fa fa-clipboard"></span><span class="text__bck3">{{ 'Asignación de página padre'|trans }}</span></a>
+    </div>
+    <div class="col-16 col-sm-16 page-title">
+        <h3>{{ 'Configuración de asignación'|trans }}</h3>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ pagina_empresa.pagina.categoria.nombre }}: {{ pagina_empresa.pagina.nombre }}. {{ 'Empresa'|trans }} {{ pagina_empresa.empresa.nombre }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Acceso'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Periodo'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Evaluación'|trans }}</p>
+                                </a>
+                            </div>
+                            {% if prelaciones|length > 0 %}
+                                <div class="stepwizard-step col">
+                                    <a href="#det3" class="btn btn-secondary pass disabled">
+                                        <span class="btn-round">4</span>
+                                        <p>{{ 'Prelación'|trans }}</p>
+                                    </a>
+                                </div>
+                            {% endif %}
+                		</div>
+                	</div>
+            		<div class="row setup-content" id="det0">	
+            			<div class="col-sm-16">
+            				<div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 1</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="form-group">
+                                        <label for="activo" class="col-4 col-form-label">{{ 'Activo'|trans }}</label>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f_activo" id="activo" name="activo" type="checkbox" {% if pagina_empresa.activo %}checked{% endif %}>
+                                                <label for="f_activo">
+                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small id="activoHelp" class="form-text text-muted">{{ 'Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.'|trans }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="form-group">
+                                        <label for="acceso" class="col-4 col-form-label">{{ 'Acceso'|trans }}</label>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f_acceso" name="acceso" type="checkbox" {% if pagina_empresa.acceso %}checked{% endif %}>
+                                                <label for="f_acceso">
+                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small id="accesoHelp" class="form-text text-muted">{{ 'Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.'|trans }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="form-group">
+                                        <label for="muro" class="col-4 col-form-label">{{ 'Activar muro'|trans }}</label>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f_muro" name="muro" type="checkbox" {% if pagina_empresa.muroActivo %}checked{% endif %}>
+                                                <label for="f_muro">
+                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.'|trans }}</small>
+                                    </div>
+                                </div>
+                                {% if not pagina_empresa.pagina.pagina %}
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <div class="form-group">
+                                            <label for="colaborativo" class="col-6 col-form-label">{{ 'Activar espacio colaborativo'|trans }}</label>
+                                            <div class="col-4">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f_colaborativo" name="colaborativo" type="checkbox" {% if pagina_empresa.colaborativo %}checked{% endif %}>
+                                                    <label for="f_colaborativo">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.'|trans }}.</small>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+            		<div class="row setup-content" id="det1">
+            			<div class="col-sm-16">
+            				<div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 2</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                	<div class="form-group">
+                                		<label for="inicio" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Inicio'|trans }}</label>
+                                        <div class="col-sm-14 col-md-14 col-lg-14">
+                                            {% set fechaInicio = pagina_empresa.fechaInicio ? pagina_empresa.fechaInicio|date('d/m/Y') : '' %}
+                                            <input type="text" class="form-control form_sty1 date_picker" id="fechaInicio" placeholder="DD/MM/YYYY" name="fechaInicio" value="{{ fechaInicio }}" data-date-start-date="-{{ days_ago }}d">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+                                	</div>
+                                </div>
+                                <div class="col-sm-8 col-md-8 col-lg-8">
+                                    <div class="form-group">
+                                        <label for="vencimiento" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Vencimiento'|trans }}</label>
+                                        <div class="col-sm-14 col-md-14 col-lg-14">
+                                            {% set fechaVencimiento = pagina_empresa.fechaVencimiento ? pagina_empresa.fechaVencimiento|date('d/m/Y') : '' %}
+                                            <input type="text" class="form-control form_sty1 date_picker" id="fechaVencimiento" placeholder="DD/MM/YYYY" name="fechaVencimiento" value="{{ fechaVencimiento }}" data-date-start-date="-{{ days_ago }}d">
+                                            <span class="fa fa-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-16 col-md-16 col-lg-16">
+                                    <div class="form-group">
+                                        <label for="apply" class="col-10 col-form-label">{{ 'Aplicar periodo a las sub-páginas'|trans }}</label>
+                                        <div class="col-4">
+                                            <div class="can-toggle demo-rebrand-2 small">
+                                                <input id="f_apply" name="apply" type="checkbox">
+                                                <label for="f_apply">
+                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small id="applyHelp" class="form-text text-muted">{{ 'Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.'|trans }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+            		<div class="row setup-content" id="det2">
+                        <div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
+                                </div>
+                            </div>
+                            <br>
+                            {% if prueba %}
+                                {% if pagina_empresa.puntajeAprueba or pagina_empresa.maxIntentos %}
+                                    {% set ck = 1 %}
+                                {% else %}
+                                    {% set ck = 0 %}
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <div class="form-group">
+                                            <label for="prueba" class="col-2 col-form-label">{{ 'Nombre'|trans }}</label>
+                                            <div class="col-14">
+                                                <input type="text" class="form-control form_sty1" name="prueba" id="prueba" value="{{ prueba.nombre }}" disabled="disabled">
+                                                <span class="fa fa-industry"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <div class="form-group">
+                                            <label for="f_evaluacion" class="col-10 col-form-label">{{ 'Activar evaluación'|trans }}</label>
+                                            <div class="col-4">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f_evaluacion" name="evaluacion" type="checkbox" {% if ck==1 %}checked{% endif %}>
+                                                    <label for="f_evaluacion">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                                        <div class="form-group">
+                                            <label for="puntajeAprueba" class="col-16 col-form-label">{{ 'Puntaje con que se aprueba'|trans }}</label>
+                                            <div class="col-8">
+                                                <input id="puntajeAprueba" type="number" name="puntajeAprueba" value="{{ pagina_empresa.puntajeAprueba }}" class="form-control form_sty1" {% if ck==0 %}disabled="disabled"{% endif %}>
+                                                <span class="fa fa-slack"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                                        <div class="form-group">
+                                            <label for="maxIntentos" class="col-16 col-form-label">{{ 'Cantidad máxima de intentos'|trans }}</label>
+                                            <div class="col-8">
+                                                <input id="maxIntentos" type="integer" name="maxIntentos" value="{{ pagina_empresa.maxIntentos }}" class="form-control form_sty1" {% if ck==0 %}disabled="disabled"{% endif %}>
+                                                <span class="fa fa-slack"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        <div class="alert alert-info" role="alert">
+                                            <p>{{ 'Esta página no tiene evaluación asignada'|trans }}.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    {% if prelaciones|length > 0 %}
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    {% else %}
+                                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if prelaciones|length > 0 %}
+                        <div class="row setup-content" id="det3">
+                            <div class="col-sm-16">
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 4</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <label for="prelacion" class="col-10 col-form-label">{{ 'Contenido que debe ser aprobado previamente'|trans }}</label>
+                                        <div class="col-10">
+                                            <select class="form-control form_sty_select" name="prelacion" id="prelacion">
+                                                <option value=""></option>
+                                                {% for prelacion in prelaciones %}
+                                                    {% set selected = pagina_empresa.prelacion ? pagina_empresa.prelacion.id == prelacion.id ? 'selected="selected"' : '' : '' %}
+                                                    <option value="{{ prelacion.id }}" {{ selected }} >{{ prelacion.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span class="fa fa-file-text-o"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/asignacion.js') }}"></script>
+    <script type="text/javascript">
+        
+        $('#finish').click(function(){
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                notify($('#div-error').html());
+            }
+            else {
+
+                // Validar que la fecha de vencimiento sea mayor que la fecha de inicio
+                var fi_arr = $('#fechaInicio').val().split('/');
+                var fv_arr = $('#fechaVencimiento').val().split('/');
+                
+                var date1 = new Date(fi_arr[2], fi_arr[1], fi_arr[0]);
+                var date2 = new Date(fv_arr[2], fv_arr[1], fv_arr[0]);
+
+                if (date2 < date1) {
+                    $('#div-error ul').html("<li>- {{ 'La fecha de vencimiento no puede ser menor que la fecha de inicio.'|trans }}</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else {
+                    $('#form').submit();
+                }
+
+            }
+        });
+
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'fechaInicio': {
+                    required: true
+                },
+                'fechaVencimiento': {
+                    required: true
+                },
+                'puntajeAprueba': {
+                    required: {
+                        depends: function(element) {
+                            return $("#f_evaluacion").is(":checked");
+                        }
+                    },
+                    number: true,
+                    min: 10,
+                    max: 100
+                },
+                'maxIntentos': {
+                    required: {
+                        depends: function(element) {
+                            return $("#f_evaluacion").is(":checked");
+                        }
+                    },
+                    digits: true,
+                    min: 1
+                }
+            },
+            messages: {
+                'fechaInicio': {
+                    required: "- {{ 'La fecha de inicio es requerida.'|trans }}"
+                },
+                'fechaVencimiento': {
+                    required: "- {{ 'La fecha de vencimiento es requerida.'|trans }}"
+                },
+                'puntajeAprueba': {
+                    required: "- {{ 'El puntaje con que se aprueba es requerido.'|trans }}",
+                    number: "- {{ 'El valor del puntaje con que se aprueba debe ser un valor numérico.'|trans }}",
+                    min: "- {{ 'El valor del puntaje con que se aprueba debe ser mayor o igual a 10.'|trans }}",
+                    min: "- {{ 'El valor del puntaje con que se aprueba no debe sobrepasar a 100.'|trans }}"
+                },
+                'maxIntentos': {
+                    required: "- {{ 'La cantidad máxima de intentos es requerida.'|trans }}",
+                    digits: "- {{ 'La cantidad máxima de intentos debe ser un valor entero.'|trans }}",
+                    min: "- {{ 'La cantidad máxima de intentos debe ser mayor o igual a 1.'|trans }}"
+                },
+            }
+        });
+
+    </script>
+{% endblock %}

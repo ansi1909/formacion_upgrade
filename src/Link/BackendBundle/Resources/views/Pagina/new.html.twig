@@ -1,0 +1,396 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <style>
+        .input-group-addon{padding:0px;}
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .input-group {
+            margin-top: 35px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% set uri = app.request.getbasepath %}
+{{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<input type="hidden" id="deslen" name="deslen" value="0" />
+<input type="hidden" id="deslen2" name="deslen2" value="0" />
+<br><br>
+<input type="hidden" id="photo" name="photo" value="{{ asset('img/picture.png') }}">
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_paginas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Detalles de la página'|trans }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Descripción'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Contenido'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det3" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">4</span>
+                                    <p>{{ 'Archivos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det4" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">5</span>
+                                    <p>{{ 'Estructura'|trans }}</p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+            		<div class="row setup-content" id="det0">	
+            			<div class="col-sm-16">
+            				<div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 1</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-6 col-md-6">
+                                    <label for="nombre" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ form_label(form.nombre) }}</label>
+                                    <div class="col-sm-14 col-md-14 col-lg-14">
+                                        {{ form_widget(form.nombre, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                                        <span class="fa fa-font"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <label for="categoria" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ form_label(form.categoria) }}</label>
+                                    <div class="col-sm-14 col-md-14 col-lg-14">
+                                        {{ form_widget(form.categoria, { 'attr': { 'class': 'form-control form_sty_select' } }) }}
+                                        <span class="fa fa-tags"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <label for="estatusContenido" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.estatusContenido) }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        {{ form_widget(form.estatusContenido, { 'attr': { 'class': 'form-control form_sty_select' } }) }}
+                                        <span class="fa fa-list-ol"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+            		<div class="row setup-content" id="det1">
+            			<div class="col-sm-16">
+            				<div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 2</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-16">
+                                	<div class="form-group">
+                                		<label for="descripcion" class="col-2 col-form-label">{{ form_label(form.descripcion) }}</label>
+                                		<div class="col-16">
+                                            {{ form_widget(form.descripcion, { 'attr': { 'class': 'ckeditor' } }) }}
+                                		</div>
+                                	</div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+            			</div>
+            		</div>
+            		<div class="row setup-content" id="det2">
+                        <div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <div class="form-group">
+                                        <label for="contenido" class="col-2 col-form-label">{{ form_label(form.contenido) }}</label>
+                                        <div class="col-16">
+                                            {{ form_widget(form.contenido, { 'attr': { 'class': 'ckeditor' } }) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det3">   
+                        <div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 4</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    {{ form_label(form.foto) }}
+                                    {% set img = asset('img/picture.png') %}
+                                    <div class="photo_img" id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página'|trans }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
+                                </div>
+                                <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
+                                    <div class="input-group">
+                                        {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly' } }) }}
+                                        <span class="input-group-addon">
+                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_foto&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
+                                                <button type="button" class="btn_addImg">
+                                                    <span class="fa fa-photo"></span>
+                                                </button>
+                                            </a>
+                                        </span>
+                                        <span class="input-group-addon">
+                                            <button id="btn_clear" class="btn_clearImg" type="button">
+                                                <span class="fa fa-times"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-8 col-lg-8 col-md-8">
+                                    <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.pdf) }}</label>
+                                    <div class="col-sm-16 col-md-16 col-lg-16">
+                                        {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF', 'id':'form_pdf' } }) }}
+                                        <span class="fa fa-file-pdf-o"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=form_pdf&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
+                                                <button type="button" class="btn_addImg">
+                                                    <span class="fa fa-file-pdf-o"></span>
+                                                </button>
+                                            </a>
+                                        </span>
+                                        <span class="input-group-addon">
+                                            <button id="btn_clear2" class="btn_clearImg2" type="button">
+                                                <span class="fa fa-times"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 col-md-12">
+                                    <label for="encuesta" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.encuesta) }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        {{ form_widget(form.encuesta, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                                        <span class="fa fa-link"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det4">   
+                        <div class="col-sm-16">
+                            <div class="row">
+                                <div class="col-sm-16">
+                                    <h3 class="mb-2">{{ 'Paso'|trans }} 5</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-6 col-md-6">
+                                    <label for="subpaginas" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Cantidad de sub-páginas'|trans }}</label>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <input type="text" class="form-control form_sty1" name="subpaginas" id="subpaginas" value="0">
+                                        <span class="fa fa-slack"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <label for="categoria_subpaginas" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Categoría de las sub-paginas'|trans }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <select class="form-control form_sty_select" name="categoria_subpaginas" id="categoria_subpaginas">
+                                            <option value=""></option>
+                                            {% for categoria in categorias %}
+                                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="fa fa-tags"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <label for="status_subpaginas" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Estatus de las sub-paginas'|trans }}</label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10">
+                                        <select class="form-control form_sty_select" name="status_subpaginas" id="status_subpaginas">
+                                            {% for s in status %}
+                                                <option value="{{ s.id }}">{{ s.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="fa fa-list-ol"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 text-right" id="final">
+                                    <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/pagina.js') }}"></script>
+    <script type="text/javascript">
+        $("#btn_clear").on("click",function(event) {
+            $("#form_photo").val("");
+            $("#figure").html('<img src="'+$('#photo').val()+'">');
+        });
+
+        $("#btn_clear2").on("click",function(event) {
+            $("#form_pdf").val("");
+        });
+        
+        $('#finish').click(function(){
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                notify($('#div-error').html());
+            }
+            else {
+
+                var deslen = $('#deslen').val();
+                var deslen2 = $('#deslen2').val();
+                error = 0;
+                
+                if (deslen < {{ minlenght_bienvenida }} )
+                {
+                    error = 1;
+                    $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
+                }
+
+                if (deslen2 < {{ minlenght_bienvenida }} && parseInt($('#subpaginas').val()) == 0)
+                {
+                    error = 1;
+                    $('#div-error ul').html("<li>- {{ 'El contenido es requerido.'|trans }}</li>");
+                }
+
+                if (error == 1)
+                {
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else {
+                    $('#form').submit();
+                }
+
+            }
+        });
+
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'form[nombre]': {
+                    required: true,
+                    minlength: 3
+                },
+                'form[categoria]': {
+                    required: true
+                },
+                'deslen': {
+                    required: true,
+                    min: 3
+                },
+                'form[pdf]': {
+                    extension: "pdf"
+                },
+                'subpaginas': {
+                    required: true
+                }
+            },
+            messages: {
+                'form[nombre]': {
+                    required: "- {{ 'El nombre de la página es requerido.'|trans }}",
+                    minlength: "- {{ 'El nombre de la página debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'form[categoria]': {
+                    required: "- {{ 'La categoría es requerida.'|trans }}",
+                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'deslen': {
+                    required: "- {{ 'La descripción es requerida.'|trans }}",
+                    min: "- {{ 'La descripción es requerida.'|trans }}"
+                },
+                'form[pdf]': {
+                    extension: "- {{ 'El material complementario debe ser sólo archivo con extensión pdf.'|trans }}"
+                },
+                'subpaginas': {
+                    required: "- {{ 'La cantidad de sub-páginas es requerida.'|trans }}"
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

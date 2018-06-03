@@ -1,0 +1,257 @@
+{% extends '::admin.html.twig'%}
+{% block body %}
+
+{% set uri = app.request.getbasepath %}
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<input type="hidden" id="deslen" name="deslen" value="0" />
+<br><br>
+<div class="row align-items-center justify-content-start">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="{{ path('_empresas', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
+</div>
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Registrar Empresa'|trans }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Bienvenida'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Interacción'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det3" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">4</span>
+                                    <p>{{ 'Confirmar'|trans }}</p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+                	<form id="form" name="form" action="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="container-fluid p-0" method="POST">
+                		<div class="row setup-content" id="det0">	
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 1</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                	<div class="col-sm-16 col-md-8 col-lg-6">
+                                		<div class="form-group">
+                                            <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
+                                            <div class="col-14">
+                                                <input type="text" class="form-control form_sty1" name="nombre" id="nombre" value="{{ empresa.nombre }}">
+                                                <span class="fa fa-industry"></span>
+                                            </div>	
+                                        </div>
+                                        <div class="form-group">
+                                        	<label for="texto" class="col-2 col-form-label">{{ 'País'|trans }}</label>
+                                        	<div class="col-14">
+	                                        	<select class="form-control form_sty_select" name="pais_id" id="pais_id">
+                                                    <option value=""></option>
+                                                    {% for pais in paises %}
+                                                        {% set selected = empresa.pais.id == pais.id ? 'selected="selected"' : '' %}
+                                                        <option value="{{ pais.id }}" {{ selected }} >{{ pais.nombre|trim }}</option>
+                                                    {% endfor %}
+	                                            </select>
+                                                <span class="fa fa-globe"></span>
+                                            </div>
+                                        </div>
+                                	</div>
+                                	<div class="col-sm-16 col-md-8 col-lg-6">
+                                		<div class="form-group">
+                                			<label for="texto" class="col-2 col-form-label">{{ 'Activo'|trans }}</label>
+                                			<div class="col-4">
+	                                            <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f" id="activo" name="activo" type="checkbox" {% if empresa.activo %}checked{% endif %}>
+	                                                <label for="f">
+	                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+	                                                </label>
+	                                            </div>
+                                        	</div>
+                                		</div>
+                                	</div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                        <div class="row setup-content" id="det1">
+                            <div class="col-sm-16">
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 2</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        <div class="form-group">
+                                            <label for="texto" class="col-2 col-form-label">{{ 'Bienvenida'|trans }}</label>
+                                            <div class="col-16">
+                                                <textarea class="ckeditor" rows="3" id="bienvenida" name="bienvenida" cols="30" rows="10">{{ empresa.bienvenida }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                		<div class="row setup-content" id="det2">
+                			<div class="col-sm-16">
+                				<div class="row">
+	                                <div class="col-sm-16">
+	                                    <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
+	                                </div>
+	                            </div>
+	                            <br>
+	                            <div class="row">
+                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="texto" class="col-4 col-form-label">{{ 'Activar chat'|trans }}</label>
+                                            <div class="col-4">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f2" id="activo2" name="activo2" type="checkbox" {% if empresa.ChatActivo %}checked{% endif %}>
+                                                    <label for="f2">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="texto" class="col-6 col-form-label">{{ 'Activar webinar'|trans }}</label>
+                                            <div class="col-4">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f3" id="activo3" name="activo3" type="checkbox" {% if empresa.webinar %}checked{% endif %}>
+                                                    <label for="f3">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det3">
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 4</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                    	<div class="alert alert-success" role="alert">
+				                            <h4 class="alert-heading">{{ 'Buen trabajo'|trans }}!</h4>
+				                            <p>{{ 'Presiona el botón finalizar para completar'|trans }}.</p>
+				                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                	</form>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script type="text/javascript">
+        $('#finish').click(function(){
+           var valid = $('#form').valid();
+           if(!valid){
+               notify($('#div-error').html());
+           }
+            else{
+                var deslen = $('#deslen').val();
+                if (deslen < {{ minlenght_bienvenida }} )
+                {
+                    $('#div-error ul').html("<li>- {{'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ minlenght_bienvenida }}</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                }
+                else
+                {
+                    $('#form').submit();
+                }
+            }
+        });
+        
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+                'pais_id': {
+                    required: true
+                }
+            },
+            messages: {
+                'nombre': {
+                    required: "- {{ 'El nombre de la empresa es requerido.'|trans }}",
+                    minlength: "- {{ 'El nombre de la empresa debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'pais_id': {
+                    required: "- {{ 'El país es requerido.'|trans }}",
+                }
+            }
+        });
+    </script>
+{% endblock %}

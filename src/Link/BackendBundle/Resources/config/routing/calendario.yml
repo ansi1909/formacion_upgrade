@@ -1,0 +1,19 @@
+_calendario:
+    path:     /calendario/{app_id}
+    defaults: { _controller: LinkBackendBundle:Calendario:index }
+
+_eventos:
+    path:  /eventos/{userID}
+    defaults: { _controller: LinkBackendBundle:Calendario:eventos }
+
+_calendario_update:
+    path:      /ajaxEditarEvento
+    defaults:  { _controller: LinkBackendBundle:Calendario:update }
+    requirements:
+        method: POST
+
+_calendario_edit:
+    path:      /ajaxEditarFechaEvento
+    defaults:  { _controller: LinkBackendBundle:Calendario:editEventDate }
+    requirements:
+        method: POST

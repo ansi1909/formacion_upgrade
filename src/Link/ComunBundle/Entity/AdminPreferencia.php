@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminPreferencia
  *
- * @ORM\Table(name="admin_preferencia", indexes={@ORM\Index(name="preferencia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_2B27D1B8DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_2B27D1B88C22AA1A", columns={"layout_id"})})
+ * @ORM\Table(name="admin_preferencia", indexes={@ORM\Index(name="preferencia_ndx1", columns={"empresa_id"}), @ORM\Index(name="IDX_2B27D1B8DB38439E", columns={"usuario_id"}), @ORM\Index(name="IDX_2B27D1B88C22AA1A", columns={"layout_id"}), @ORM\Index(name="IDX_2B27D1B8EA7635EA", columns={"tipo_logo_id"})})
  * @ORM\Entity
  */
 class AdminPreferencia
@@ -51,6 +51,13 @@ class AdminPreferencia
     private $favicon;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="logo_login", type="boolean", nullable=true)
+     */
+    private $logoLogin;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -80,6 +87,16 @@ class AdminPreferencia
      */
     private $layout;
 
+    /**
+     * @var \Link\ComunBundle\Entity\AdminTipoLogo
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminTipoLogo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipo_logo_id", referencedColumnName="id")
+     * })
+     */
+    private $tipoLogo;
+
 
 
     /**
@@ -102,7 +119,7 @@ class AdminPreferencia
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
@@ -126,7 +143,7 @@ class AdminPreferencia
     public function setCss($css)
     {
         $this->css = $css;
-
+    
         return $this;
     }
 
@@ -150,7 +167,7 @@ class AdminPreferencia
     public function setLogo($logo)
     {
         $this->logo = $logo;
-
+    
         return $this;
     }
 
@@ -174,7 +191,7 @@ class AdminPreferencia
     public function setFavicon($favicon)
     {
         $this->favicon = $favicon;
-
+    
         return $this;
     }
 
@@ -189,6 +206,30 @@ class AdminPreferencia
     }
 
     /**
+     * Set logoLogin
+     *
+     * @param boolean $logoLogin
+     *
+     * @return AdminPreferencia
+     */
+    public function setLogoLogin($logoLogin)
+    {
+        $this->logoLogin = $logoLogin;
+    
+        return $this;
+    }
+
+    /**
+     * Get logoLogin
+     *
+     * @return boolean
+     */
+    public function getLogoLogin()
+    {
+        return $this->logoLogin;
+    }
+
+    /**
      * Set empresa
      *
      * @param \Link\ComunBundle\Entity\AdminEmpresa $empresa
@@ -198,7 +239,7 @@ class AdminPreferencia
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 
@@ -222,7 +263,7 @@ class AdminPreferencia
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -246,7 +287,7 @@ class AdminPreferencia
     public function setLayout(\Link\ComunBundle\Entity\AdminLayout $layout = null)
     {
         $this->layout = $layout;
-
+    
         return $this;
     }
 
@@ -258,5 +299,29 @@ class AdminPreferencia
     public function getLayout()
     {
         return $this->layout;
+    }
+
+    /**
+     * Set tipoLogo
+     *
+     * @param \Link\ComunBundle\Entity\AdminTipoLogo $tipoLogo
+     *
+     * @return AdminPreferencia
+     */
+    public function setTipoLogo(\Link\ComunBundle\Entity\AdminTipoLogo $tipoLogo = null)
+    {
+        $this->tipoLogo = $tipoLogo;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoLogo
+     *
+     * @return \Link\ComunBundle\Entity\AdminTipoLogo
+     */
+    public function getTipoLogo()
+    {
+        return $this->tipoLogo;
     }
 }

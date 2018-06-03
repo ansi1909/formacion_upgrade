@@ -1,0 +1,40 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3 class="center">Registro de roles</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Formulario</h5>
+            </div>
+            <div class="card-block">
+                                <form action="">
+                                    <div class="form-group row justify-content-end">
+                                        <label for="texto" class="col-2 col-form-label">Texto</label>
+                                        <div class="col-10">
+                                            <input type="text" class="form-control form_sty1" id="texto" placeholder="Rol">
+                                            <span class="fa fa-group"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <label for="eTextarea" class="col-2 col-form-label">Campo textarea</label>
+                                        <div class="col-10">
+                                            <textarea class="form-control" id="eTextarea" style="border-radius: 5px;" rows="3"></textarea>
+                                        </div>
+                                    </div>    
+                                    <div class="form-group row justify-content-end">
+                                        <button type="button" class="btn btn-primary" style="border-radius: 5px;">Primary</button>
+                                    </div>                    
+                                    
+                                </form>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- fin Listado -->
+{% endblock %}

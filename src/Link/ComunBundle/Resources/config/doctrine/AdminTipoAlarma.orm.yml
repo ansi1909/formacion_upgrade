@@ -1,0 +1,32 @@
+Link\ComunBundle\Entity\AdminTipoAlarma:
+    type: entity
+    table: admin_tipo_alarma
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        icono:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        css:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

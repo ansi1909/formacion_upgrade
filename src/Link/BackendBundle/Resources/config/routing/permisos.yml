@@ -1,0 +1,13 @@
+_permisos:
+    path:     /permisos/{app_id}
+    defaults: { _controller: LinkBackendBundle:Permiso:index }
+
+_permisosRol:
+    path:     /permisosRol/{rol_id}
+    defaults: { _controller: LinkBackendBundle:Permiso:permisosRol }
+
+_ajaxRolSubAplicaciones:
+    path:     /ajaxRolSubAplicaciones
+    defaults: { _controller: LinkBackendBundle:Permiso:ajaxRolSubAplicaciones }
+    requirements:
+        _method: GET

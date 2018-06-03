@@ -1,0 +1,51 @@
+Link\ComunBundle\Entity\AdminPais:
+    type: entity
+    table: admin_pais
+    id:
+        id:
+            type: string
+            nullable: false
+            length: 3
+            options:
+                fixed: true
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 52
+            options:
+                fixed: true
+        continente:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: true
+        region:
+            type: string
+            nullable: true
+            length: 26
+            options:
+                fixed: true
+        nombreLocal:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: true
+            column: nombre_local
+        capital:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        id2:
+            type: string
+            nullable: true
+            length: 2
+            options:
+                fixed: true
+    lifecycleCallbacks: {  }

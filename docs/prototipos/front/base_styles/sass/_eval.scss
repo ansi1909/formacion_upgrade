@@ -1,0 +1,499 @@
+.num_preg{
+    color: $gray-700;
+    font-family: $primary-font;
+    font-size: 3rem;
+    line-height: 3.5625rem;
+    text-align: center;
+    position: relative;
+    top: -.5rem;
+}
+
+.progress-bar_eval{
+    background: $green;
+}
+
+.enun{
+    display: flex;
+    flex-direction: row;
+    .enun_eval{
+        @extend %enunc;
+    }
+    .img-enun_eval{
+        height: 8rem;
+        width: auto;
+        margin: 0 1rem;
+        border-radius: 1rem;
+    }
+}
+
+.enun_eval{
+        @extend %enunc;
+}
+
+//Estilo para seleccion simple
+
+.opc{
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: 57rem;
+    margin: .5rem 0;
+    cursor: pointer;
+    .opc_letra{
+        height: auto;
+        min-height: 3rem;
+        width: 5rem;
+        background: $lightblue;
+        border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0 auto;
+        padding: 1rem;
+        .opc_l{
+            line-height: $h4-font-size;
+            font-size: $h3-font-size;
+            font-family: $lessons-font;
+            color: $gray-800;
+            text-align: center;
+            position: absolute;
+            transform: translateY(-50%);
+            left: 40%;
+            top: 50%;
+            display: block;
+            margin: auto;
+        }
+    }
+    .opc_resp{
+        position: relative;
+        top: 0;
+        width: 52rem;
+        min-height: 3rem;
+        padding: 1rem .75rem .25rem .75rem;
+        border-top: .125rem solid $gray-400;
+        border-bottom: .125rem solid $gray-400;
+        border-right: .125rem solid $gray-400;
+        border-radius: 0 calc(1rem - 10px) calc(1rem - 10px) 0;
+        .opc_r{
+            color: $gray-800;
+            font-family: $lessons-font;
+            font-size: $font-size-sm;
+            line-height: 1.25rem;
+            font-weight: $font-weight-normal;
+        }
+    }
+    &:hover{
+        .opc_resp{
+            border-top: .125rem solid $lightblue;
+            border-bottom: .125rem solid $lightblue;
+            border-right: .125rem solid $lightblue;
+        }
+    }
+}
+
+.opc_activa{
+    .opc_resp{
+        border: .125rem solid $green !important;
+    }
+    .opc_letra{
+        background: $green;
+    }
+}
+
+
+//Estilo para seleccion simple imagenes
+.elec-resp{
+    .opc_img {
+    width: 16rem;
+    height: 13rem;
+    @extend %op_img;
+    border-radius: calc(1rem - 8px) calc(1rem - 8px) 0 0;
+        .opc_i-3{
+            @extend %op_i;
+            width: 15.65rem;
+            height: 12.8rem;
+        }
+        .opc_i-4{
+            @extend %op_i;
+            width: 18.1vw;
+            height: 37.9vh;
+        }
+    }
+    .resp-opc {
+        width: 16rem;
+        height: auto;
+        @extend %op_img;
+        border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
+        padding: .75rem .75rem .25rem .75rem;
+        position: relative;
+        .resp-opc_i-3{
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: $p-font-size;
+            line-height: calc(1rem + 4px);
+            text-align: center;
+            font-weight: $font-weight-normal;
+        }
+    }
+    &:hover{
+        .opc_img{
+            border: .1875rem solid $lightblue;
+        }
+        .resp-opc{
+            border: .1875rem solid $lightblue;
+        }
+    }
+}
+
+.elec-resp-asig{
+    .opc_img-asig {
+        width: 16rem;
+        height: 13rem;
+        @extend %op_img;
+        border-radius: calc(1rem - 8px) calc(1rem - 8px) 0 0;
+        .opc_i-3{
+            @extend %op_i;
+            width: 15.65rem;
+            height: 12.8rem;
+        }
+        .opc_i-4{
+            @extend %op_i;
+            width: 18.1vw;
+            height: 37.9vh;
+        }
+    }
+    .resp-opc {
+        width: 16rem;
+        height: auto;
+        @extend %op_img;
+        border-radius: 0 0 calc(1rem - 8px) calc(1rem - 8px);
+        padding: calc(1rem - 8px);
+        .resp-opc_i-3{
+            color: $gray-700;
+            font-family: $primary-font;
+            font-size: $p-font-size;
+            line-height: calc(1rem + 4px);
+            font-weight: $font-weight-normal;
+            text-align: center;
+        }
+    }
+    &:hover{
+        .opc_img-asig{
+            border: .1875rem solid $lightblue;
+        }
+        .resp-opc{
+            border: .1875rem solid $lightblue;
+        }
+    }
+}
+
+.opc_activa-img{
+    border: .1875rem solid $green !important;
+}
+
+//Estilos para preguntas de asignacion
+.mgn{
+    height: auto;
+    margin-bottom: 6rem;
+}
+
+.mgn_img-asig{
+    margin: .5rem 0 .5rem 5rem; 
+}
+
+.opc_lado-a{
+    width: 18rem;
+    height: auto;
+    margin: auto;
+    padding: 1rem .75rem .25rem .75rem;
+    position: relative;
+    left: 15rem;
+    @extend %opc_sa;
+    @extend %opc_sac;
+    .opc_ra{
+        @extend %op_asig;
+    }
+}
+
+.opc_img_lado-a{
+    width: 10rem;
+    height: 9rem;
+    border-radius: 1rem;
+    position: absolute;
+    transform: translateY(-50%);
+    left: 22.5%;
+    top: 50%;
+    display: block;
+    margin: auto;
+    border: .125rem solid $gray-400;
+    .img_opc_ra{
+        width: 9.778rem;
+        height: 8.74rem;
+        position: relative;
+        left: 0;
+        top: 0;
+        border-radius: calc(1rem - 2px);
+    }
+    &:hover{
+        border: .125rem solid $green !important;
+    }
+}
+
+.opc_lado-b{
+    width: 18rem;
+    height: auto;
+    margin: auto;
+    padding: 1rem .75rem .25rem .75rem;
+    position: relative;
+    @extend %opc_sb;
+    @extend %opc_sbc;
+    .opc_rb{
+        @extend %op_asig;
+    }
+    &:hover .opc_rb{
+        color: $white;
+    }
+}
+
+//Resultado de evaluaciones
+
+.titulo-resul{
+    color: $blue;
+    font-family: $primary-font;
+    font-size: $h1-font-size;
+    line-height: calc(2rem - 2px);
+    margin-top: 3rem;
+}
+
+.ic-resul{
+    font-size: 5rem;
+    color: $blue;
+    margin-top: calc(2rem - 8px);
+}
+
+.alreves{
+    transform: scaleX(-1) rotate(5deg);
+}
+
+.txt-resul{
+    font-family: $primary-font;
+    font-size: $h3-font-size;
+    line-height: calc(2rem + 1px);
+    margin: 4rem 0 2rem 0;
+}
+
+.mostrar-resul{
+    background: $white;
+    padding-top: calc(3rem - 4px);
+    margin-top: 1.5rem;
+    padding-bottom: 2rem;
+    overflow-x: hidden !important;
+    width: 100%;
+    .calif{
+        @extend %cal-log;
+        left: 6rem;
+        .num{
+            @extend %number;
+        }
+    }
+    .logro{
+        @extend %cal-log;
+        left: -4rem;
+        .num{
+           @extend %number;
+            .unidad{
+                color: $blue;	
+                font-family: $primary-font;	
+                font-size: $h4-font-size;	
+                line-height: calc(2rem - 4px);
+                margin-left: calc(1rem - 8px);
+            }
+        }
+    }
+    .anun-resul{
+        margin: calc(2rem - 8px) 0 1rem 0;
+        color: $gray-650;	
+        font-family: $secondary-font;	
+        font-size: $p-font-size;	
+        line-height: calc(2rem - 8px);
+    }
+    .resp-eval{
+        position: relative;
+        left: 16%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: calc(4rem + 4px);
+        li{
+            list-style-type: none;
+            position: relative;
+            margin: .5rem auto;
+            .preg-aprob{
+                @extend %pregunta;
+                .preg_num-aprob{
+                    @extend %num-preg;
+                    background: $green;
+                }
+                .preg_enun{
+                    @extend %enun-preg;
+                    border-bottom: .125rem solid $green;
+                    border-right: .125rem solid $green;
+                    border-top: .125rem solid $green;
+                }
+            }
+            .preg-reprob{
+                @extend %pregunta;
+                .preg_num-reprob{
+                    @extend %num-preg;
+                    background: $red;
+                    .preg_n{
+                        color: $white !important; 
+                    }
+                }
+                .preg_enun{
+                    @extend %enun-preg;
+                    border-bottom: .125rem solid $red;
+                    border-right: .125rem solid $red;
+                    border-top: .125rem solid $red;
+                }
+            }
+        }
+    }
+}
+
+//Extends
+%enunc{
+    color: $gray-800;
+    font-family: $lessons-font;
+    line-height: $h4-font-size;
+    font-size: $p-font-size;
+    text-align: justify;
+    margin-top: .25rem;
+    font-weight: $font-weight-normal;
+}
+
+%opc_sp{
+    background: $white;
+    border-radius: calc(1rem - 8px);
+    display: inline-block;
+    cursor: pointer;
+    margin: .35rem 0;
+}
+
+%opc_sa, %opc_sb{
+    border-radius: calc(1rem - 8px);
+    display: inline-block;
+    cursor: pointer;
+    margin: .35rem 0;
+    transition: all .25s ease;
+}
+
+%opc_sac{
+    background: $white;
+    border: .125rem solid $gray-400;
+    &:hover{
+        border: .125rem solid $lightblue;
+    }
+}
+
+%opc_sbc{
+    background: $gray-400;
+    border: .125rem solid $gray-400;
+    &:hover{
+        border: .125rem solid $lightblue;
+        background: $lightblue;
+    }
+}
+
+%op_asig{
+    color: $gray-700;
+    font-family: $primary-font;
+    font-size: $h5-font-size;
+    line-height: 1.5rem;
+    text-align: center;
+    font-weight: $font-weight-normal;
+}
+
+%op_img{
+    border: .1875rem solid $gray-400;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+%op_i{
+    border-radius: calc(1rem - 10px);
+}
+
+%cal-log{
+    font-family: $primary-font;
+    font-size: $h3-font-size;
+    line-height: calc(2rem + 6px);
+    margin-right: calc(3rem + 7px);
+    color: $gray-600;
+    position: relative;
+}
+
+%pregunta{
+    width: 44rem;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    cursor: pointer;
+}
+
+%number{
+    color: $blue;	
+    font-family: $primary-font;	
+    font-size: 2rem;	
+    line-height: calc(2rem + 6px);
+    position: relative;
+    left: calc(1rem + 7px);
+    top: .05rem;
+}
+
+%num-preg{
+    width: 6rem;
+    height: auto;
+    border-radius: calc(1rem - 8px) 0 0 calc(1rem - 8px);
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    padding: .5rem;
+    .preg_n{
+        line-height: calc($h2-font-size + 4px);
+        font-size: $h3-font-size;
+        font-family: $primary-font;
+        color: $gray-700;
+        text-align: center;
+        position: absolute;
+        transform: translateY(-50%);
+        left: 35%;
+        top: 55%;
+        display: block;
+        margin: auto;
+        .check{
+            font-size: $h3-font-size;
+        }
+    }
+}
+
+%enun-preg{
+    width: 38rem;
+    height: auto;
+    text-align: justify;
+    padding: .75rem .75rem .5rem .75rem;
+    border-radius: 0 calc(1rem - 8px) calc(1rem - 8px) 0;
+    .preg_e{
+        color: $gray-800;
+        font-family: $lessons-font;
+        font-size: $p-font-size;
+        line-height: 1.25rem;
+        font-weight: $font-weight-normal;
+        position: relative;
+        display: block;
+        left: 0;
+        top: 0;
+        margin: auto;
+    }
+}

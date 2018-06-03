@@ -1,0 +1,43 @@
+_lecciones:
+    path:     /ver/{programa_id}/{subpagina_id}/{puntos}
+    defaults: { _controller: LinkFrontendBundle:Leccion:index, subpagina_id: 0, puntos: 0 }
+
+_finLecciones:
+    path:     /fin/{programa_id}/{subpagina_id}/{puntos}
+    defaults: { _controller: LinkFrontendBundle:Leccion:finLecciones, puntos: 0 }
+
+_ajaxIniciarPagina:
+    path:     /ajaxIniciarPagina
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxIniciarPagina }
+    requirements:
+        _method: POST
+
+_ajaxProcesarPagina:
+    path:     /ajaxProcesarPagina
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxProcesarPagina }
+    requirements:
+        _method: POST
+
+_ajaxEnviarComentario:
+    path:     /ajaxEnviarComentario
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxEnviarComentario }
+    requirements:
+        _method: POST
+
+_ajaxDivResponse:
+    path:     /ajaxDivResponse
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxDivResponse }
+    requirements:
+        _method: GET
+
+_ajaxRefreshMuro:
+    path:     /ajaxRefreshMuro
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxRefreshMuro }
+    requirements:
+        _method: GET
+
+_ajaxMasMuro:
+    path:     /ajaxMasMuro
+    defaults: { _controller: LinkFrontendBundle:Leccion:ajaxMasMuro }
+    requirements:
+        _method: GET

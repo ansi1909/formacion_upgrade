@@ -1,0 +1,159 @@
+#message {
+    // display: none;
+    @include media-breakpoint-down(sm){
+        padding: 3rem .75rem 1rem .75rem !important;
+        width: 31.5rem;
+        h1{
+            font-size: 3.5rem;
+            color: $bluedark;
+        }
+        p{
+            max-width: 80%;
+            color: $gray-700;
+            font-weight: 200;
+        }
+    }
+    @include media-breakpoint-down(xs){
+        padding: 3rem .75rem 1rem .75rem !important;
+        width: 16rem;
+        h1{
+            font-size: 2.25rem;
+            color: $bluedark;
+        }
+        p{
+            max-width: 80%;
+            color: $gray-700;
+            font-weight: 200;
+        }
+    }
+}
+    .for-message {
+        background-color: #fff;
+        // width: 100%;
+        // max-width: 1444px;
+        position: relative;
+        border-radius: 1rem;
+        @include media-breakpoint-down(sm){
+            padding: 3rem .75rem 1rem .75rem !important;
+            width: 31.5rem;
+            h4{
+                text-align: left;
+            }
+        }
+        @include media-breakpoint-down(xs){
+            padding: 3rem .75rem 1rem .75rem !important;
+            width: 16rem;
+            h4{
+                text-align: center;
+            }
+        }
+        h1{
+            font-size: 3.45rem; 
+        }
+        p {
+            max-width: 60%;
+            text-align: justify;
+        }
+    }
+#equis {
+    position: absolute;
+    right: 0;
+    top: 1rem;
+    color: $gray-500;
+    cursor: pointer;
+    transition: .3s;
+
+    &:hover {
+        color: $green;
+    }
+}
+
+.es-message {
+    background-image: url(../../../assets/img/es_actividades.png);
+    background-repeat: no-repeat;
+    background-position: 100% 30px;
+    background-size: 35%;
+    @include media-breakpoint-down(sm){
+        padding: 3rem .75rem 1rem .75rem!important;
+        width: 31.5rem;
+        p{
+            max-width: 80%;
+        }
+    }
+    @include media-breakpoint-down(xs){
+        padding: 3rem .75rem 1rem .75rem!important;
+        width: 16rem;
+        p{
+            max-width: 80%;
+        }
+    }
+    p, h5 {
+        color: $gray-500;
+        font-weight: 200;
+    }
+}
+.well-message {
+
+    // img {
+    //     position: absolute;
+    //     bottom: 0;
+    //     right: 0;
+    // }
+    // background-image: url(../../assets/img/well_hero.png);
+    // background-repeat: no-repeat;
+    // background-position: bottom right;
+    // background-size: 24%;
+}
+
+
+.wrap-move-map {
+    overflow: hidden;
+}
+
+.well-message-prog {
+    p{
+        max-width: 70%;
+        max-height: 900px;
+        opacity: 1;
+        transition:  all 1.5s ease-in-out;
+        margin-top: 2rem;
+    }
+    img{
+        width: 820px;
+        transform: translateX(-6.25%);
+        border-radius: .5rem;
+    }
+}
+
+.avance-message {
+    background-color: #fff;
+    position: relative;
+    border-radius: 16px;
+
+}
+
+p.up {
+    max-height: 0px;
+    transition: all 1s cubic-bezier(0, 1, 0, 1);
+    opacity: 0;
+}
+
+#arrowDown {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    color: $gray-500;
+    cursor: pointer;
+    transition: .4s;
+    font-size: 32px;
+
+    &:hover {
+        color: $green;
+    }
+}
+
+
+.arrow-move {
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+}

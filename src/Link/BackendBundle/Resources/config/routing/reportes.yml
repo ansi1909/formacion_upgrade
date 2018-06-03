@@ -1,0 +1,37 @@
+_participantesEmpresa:
+    path:     /participantesEmpresa/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 1 }
+
+_ajaxListadoParticipantes:
+    path:     /ajaxListadoParticipantes
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxListadoParticipantes }
+    requirements:
+        method: GET
+
+_participantesRegistrados:
+    path:     /participantesRegistrados/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 2 }
+
+_participantesCursando:
+    path:     /participantesCursando/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 3 }
+
+_ajaxProgramasE:
+    path:     /ajaxProgramasE
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxProgramasE }
+    requirements:
+        method: GET
+
+_participantesAprobados:
+    path:     /participantesAprobados/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 4 }
+
+_participantesNoIniciados:
+    path:     /participantesNoIniciados/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 5 }
+
+_excelReporte:
+    path:     /excelReporte/{app_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r:0 }
+    requirements:
+        method: POST

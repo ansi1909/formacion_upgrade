@@ -1,0 +1,143 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
+    <style>
+        .menu{
+            width: 60%;
+            height: 300px;
+        }
+    </style>
+{% endblock %}
+
+{% block clbody %}
+    lesson-body
+{% endblock %}
+
+{% block header %}
+     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <a class="navbar-brand" href="{{ path('_inicio') }}">
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+        </a>
+        <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            <div class=" d-flex flex-column ">
+                <div class="wrapperDdMenu">
+                    <a href="#" class="perfil no-decorate" id="config">
+                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+                        <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                    </a>
+                    <ul class="dropDownMenu">
+                        <li class="mark"></li>
+                        <a href="{{ path('_usuariop') }}">
+                            <li class="opcList">
+                                <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                            </li>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#modalCs">
+                            <li class="opcList markOpc">
+                                <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sidemenu %}
+    {{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina.id, 'active': 'lecciones' })) }}
+{% endblock %}
+
+{% block bg %}
+    bg-white
+{% endblock %}
+
+{% block body %}
+
+    <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
+    <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': continue_button.next_lesson }) }}">
+    <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa.id }) }}">
+
+    <section class="s1_fin-materia">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-6 text-center">
+                {% set articulo = subpagina.categoria != 'Materia' ? 'el'|trans : 'la'|trans %}
+                <p class="text_fin-materia">{{ 'Has completado con éxito'|trans }} {{ articulo~' '~subpagina.categoria }} <strong>{{ subpagina.nombre }}</strong>.</p>
+            </div>
+            <div class="col-4 text-center">
+                <h1 class="titulo_fin-materia">¡{{ 'Excelente'|trans }}!</h1>
+                <span class="material-icons ic-verify">check_circle</span>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-end">
+            <div class="col-auto text-center">
+                <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
+            </div>
+        </div>
+    </section>
+    
+    <section class="s2_fin-materia">
+        {% if continue_button.evaluacion != 0 %}
+            <div class="row align-items-center justify-content-center">
+                <div class="col-8 text-center">
+                    <p class="text_fin-materia">{{ 'Si deseas, puedes tomar la evaluación de'|trans }} {{ continue_button.nombre_pagina }}.</p>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-6 text-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row align-items-center justify-content-center">
+                <div class="col-8 text-center">
+                    <p class="text_fin-materia">¡{{ 'Sigue aprendiendo'|trans }}!</p>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-6 text-center">
+                    <div class="text-center">
+                        {% if continue_button.next_lesson != 0 %}
+                            <button type="button" class="btn btn-warning bttn_fm continuar" id="next"> {{ 'Continuar'|trans }} </button>
+                        {% else %}
+                            <button type="button" class="btn btn-warning bttn_fm continuar" id="programa"> {{ 'Continuar'|trans }} </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+
+    <div class="row justify-content-center" style="display:none;" id="wait">
+        <div class="col-auto px-0 py-0">
+            <div class="contenedor">
+                <div class="radar"></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript">
+        $('.continuar').click(function(){
+            var button = $(this);
+            $('.continuar').hide();
+            $('#wait').show();
+            var id = button.attr('id');
+            window.location.replace($('#url_'+id).val());
+        });
+
+        $( document ).tooltip({
+          track: true
+        });
+    </script>
+{% endblock %}

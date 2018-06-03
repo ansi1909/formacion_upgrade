@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <title>{{ empresa.titulo != '' ? empresa.titulo : 'Sistema Formación'|trans ~ '2.0' }}</title>
+        {% set img = empresa.favicon is not null and empresa.favicon != '' ? uploads~empresa.favicon : asset('img/icono.png') %}
+        <link rel="icon" type="image/x-icon" href="{{ img }}" />
+        <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
+        {% set css = empresa.css is not null and empresa.css != '' ? asset(empresa.css) : asset('front/client_styles/formacion/css/main.css') %}
+        <link rel="stylesheet" href="{{ css }}">
+        <style>
+            .error__style{
+                color: #fd5c63; 
+                margin: 5px 10px 0px 0px; 
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body class="bg-white">
+        <div class="container-fluid">
+            <input type="hidden" id="url_recuperar_correo" name="url_recuperar_correo" value="{{ path('_ajaxCorreo') }}">
+            <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa.id }}">
+            <div class="row">
+                <div class="col-7 col-xl-7 col-lg-7 col-sm-5 col-md-5 d-none d-sm-none login-cover d-md-flex align-content-center align-items-center justify-content-center">
+                    <div class="row  d-flex align-content-center  justify-content-center  ">
+                        <div class="col-7 col-xl-7 col-lg-7 col-md-9 col-sm-9 text-center mb-3">
+                            <h3 class="sloganLogin">{{ 'Experimenta la potencialidad de la capacitación online'|trans }}. </h3>
+                        </div>
+                        <div class="col-12 text-center">
+                            {% set img_logo = logo_login ? uploads~logo_login : asset('front/assets/img/logo_formacion.png') %}
+                            <img class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-7 col-5 col-xl-5 col-lg-5 text-center mx-auto d-lg-flex justify-content-center">
+                    <div class="d-sm-block d-md-none mt-5 mb-6">
+                        <img width="65%" class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
+                    </div>
+                    <div class="col-12 mt-12v">
+                        <h3 class="title-grey mb-md-6 mb-sm-3">{{ 'Iniciar Sesión'|trans }}</h3>
+                        <p class="mb-4">{{ 'Por favor, ingresa tu usuario y contraseña'|trans }}</p>
+                        <form id="form_inicio" name="form_inicio" action="{{ path('_login', { 'empresa_id': empresa.id }) }}" method="POST">
+                            <div class="col-lg-8 col-xl-8 col-8 col-sm-12 col-md-12 mx-auto">
+                                <div class="form-group text-left">
+                                    <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
+                                    <input type="text" class="form-control mb-4" id="usuario" name="usuario" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
+                                </div>
+                                <div class="form-group text-left">
+                                    <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
+                                    <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
+                                    <span class="error error__style">{{ error }}</span>
+                                </div>
+                                <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start">
+                                    <input type="checkbox" id="check_recordar" class="mr-2">
+                                    <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contaseña'|trans }}</label>
+                                    <input type="hidden" id="recordar_datos" name="recordar_datos" value="0">
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-5" id="entrar">{{ 'Entrar'|trans }}</button>
+                            </div>
+                        </form>                      
+                        <div class="row">
+                            <div class="col-12 mb-3 text-center">
+                                <a href="#" class="links" data-toggle="modal" data-target="#modal1">{{ '¿Olvidaste tu contraseña?'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Modal #}
+        <div class="modal modal-recuperacion" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 text-right offset-9">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-12 col-xs-12 col-lg-10 col-xl-10 text-center">
+                        <h4 class="titulo">{{ '¿Olvidaste tu contraseña?'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
+                        <p class="txt-modal">{{ 'No hay problema, te enviaremos un correo con'|trans }}<br/>{{ 'instrucciones para reiniciarla. Ingresa tu correo.'|trans }}</p>
+                    </div>
+                </div>
+                <form id="form_clave" name="form_clave" >
+                    <div class="row mt-3 justify-content-center align-items-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                            <div class="form-group">
+                                <label class="mb-2" for="mail-rec">{{ 'Correo electrónico'|trans }}</label>
+                                <input type="email" class="form-control" name="correo" id="correo" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
+                                <span class="error_ajax error__style"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8">
+                            <div class="form-group text-center">
+                                <button type="button" id="recuperar_clave" class="btn btn-primary btn_rc mx-0">{{ 'Reiniciar contraseña'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" class="close link_ri" data-dismiss="modal">{{ 'Regresar al inicio'|trans }}</a>
+                    </div>
+                </div>
+                <div class="row align-items-end justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <p class="txt-modal txt-modal-footer">{{ 'Si necesitas ayuda escribenos a'|trans }}<br/><strong>{{ email_soporte }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+        <script type="text/javascript">
+
+            $("#form_inicio").validate({
+                rules: {
+                    'usuario': {
+                        required: true
+                    },
+                    'password': {
+                        required: true
+                    }
+                },
+                messages: {
+                    'usuario': {
+                        required: "- {{ 'El usuario es requerido.'|trans }}",
+                    },
+                    'password': {
+                        required: "- {{ 'La contraseña es requerida.'|trans }}",
+                    }
+                }
+            });
+
+            $('#check_recordar').click(function()
+            {
+                if( $('#check_recordar:checked').val() == 'on')
+                    $('#recordar_datos').val(1);
+                else
+                    $('#recordar_datos').val(0);
+               
+            });
+
+            $('#entrar').click(function()
+            {
+                var valid = $('#form_inicio').valid();
+                if(!valid)
+                {
+                    notify($('#div-error').html());
+                }else
+                {
+                    $('#entrar').hide();
+                    $('.error').hide();
+                    $('#form_inicio').submit();
+                }
+            });
+
+            $('.error_ajax').hide();
+            $('.error_ajax').html('');
+
+            $('#recuperar_clave').click(function()
+            {
+                $('#recuperar_clave').hide();
+                recuperar();
+            });
+
+            $('.close').click(function()
+            {
+                $('#correo').val('');
+                $('.error_ajax').html('');
+                $('.error_ajax').hide();
+                $('#recuperar_clave').show();
+            });
+
+            function recuperar()
+            {
+                var url_recuperar_correo = $('#url_recuperar_correo').val();
+                var empresa_id = $('#empresa_id').val();
+                var correo = $('#correo').val();
+                
+                if(empresa_id!="" && correo!="")
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: url_recuperar_correo,
+                        dataType: "json",
+                        data: { correo: correo, empresa_id: empresa_id },
+                        success: function(data){
+                            console.log(data.error);
+                            if(data.ok==0)
+                            {
+                                $('.error_ajax').show();
+                                $('.error_ajax').html(data.error);
+
+                                setTimeout(function(){
+                                    $('.modal-backdrop,#modal1').hide();
+                                    $('.error_ajax').hide();
+                                    $('.error_ajax').html('');                                    
+                                    $('#correo').val('');
+                                    $('#recuperar_clave').show();
+                                }, 1000); // 1 segundos 
+                            }else
+                            {
+                                $('.error_ajax').show();
+                                $('.error_ajax').html(data.error);
+                                $('#recuperar_clave').show();
+                                $('#correo').val('');
+                                setTimeout(function(){
+                                    $('.error_ajax').hide();
+                                    $('.error_ajax').html('');
+                                }, 3000); // 3 segundos 
+
+                            }
+
+                        },
+                        error: function(){
+                            $('#alert-error').html($('#error_msg-edit').val());
+                            $('#div-alert').show();
+                        }
+                    });
+                }else{
+                    $('#correo').val('');
+                }
+            }
+        </script>
+    </body>
+</html>

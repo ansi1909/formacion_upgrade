@@ -1,0 +1,43 @@
+_paginasEvaluacion:
+    path:     /paginas/{app_id}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:index }
+
+_editEvaluacion:
+    path:     /edit/{prueba_id}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:edit, prueba_id: 0 }
+
+_preguntas:
+    path:     /preguntas/{prueba_id}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:preguntas }
+
+_editPregunta:
+    path:     /editPregunta/{prueba_id}/{pregunta_id}/{cantidad}/{total}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:editPregunta, pregunta_id: 0, cantidad: 1, total: 1 }
+
+_opciones:
+    path:     /opciones/{pregunta_id}/{cantidad}/{total}
+    defaults: { _controller: LinkBackendBundle:Evaluacion:opciones }
+
+_ajaxEditOpcion:
+    path:     /ajaxEditOpcion
+    defaults: { _controller: LinkBackendBundle:Evaluacion:ajaxEditOpcion }
+    requirements:
+        _method: GET
+
+_ajaxUpdateOpcion:
+    path:     /ajaxUpdateOpcion
+    defaults: { _controller: LinkBackendBundle:Evaluacion:ajaxUpdateOpcion }
+    requirements:
+        _method: POST
+
+_ajaxCorrecta:
+    path:     /ajaxCorrecta
+    defaults: { _controller: LinkBackendBundle:Evaluacion:ajaxCorrecta }
+    requirements:
+        _method: POST
+
+_ajaxDeleteOpcion:
+    path:     /ajaxDeleteOpcion
+    defaults: { _controller: LinkBackendBundle:Evaluacion:ajaxDeleteOpcion }
+    requirements:
+        method: POST

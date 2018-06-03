@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminEmpresa
  *
- * @ORM\Table(name="admin_empresa")
+ * @ORM\Table(name="admin_empresa", indexes={@ORM\Index(name="IDX_7CEBD8D9C604D5C6", columns={"pais_id"})})
  * @ORM\Entity
  */
 class AdminEmpresa
@@ -78,6 +78,30 @@ class AdminEmpresa
      */
     private $bienvenida;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="chat_activo", type="boolean", nullable=true)
+     */
+    private $chatActivo;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="webinar", type="boolean", nullable=true)
+     */
+    private $webinar;
+
+    /**
+     * @var \Link\ComunBundle\Entity\AdminPais
+     *
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminPais")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
+     * })
+     */
+    private $pais;
+
 
 
     /**
@@ -100,7 +124,7 @@ class AdminEmpresa
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -124,7 +148,7 @@ class AdminEmpresa
     public function setRif($rif)
     {
         $this->rif = $rif;
-
+    
         return $this;
     }
 
@@ -148,7 +172,7 @@ class AdminEmpresa
     public function setCorreoPrincipal($correoPrincipal)
     {
         $this->correoPrincipal = $correoPrincipal;
-
+    
         return $this;
     }
 
@@ -172,7 +196,7 @@ class AdminEmpresa
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
+    
         return $this;
     }
 
@@ -196,7 +220,7 @@ class AdminEmpresa
     public function setTelefonoPrincipal($telefonoPrincipal)
     {
         $this->telefonoPrincipal = $telefonoPrincipal;
-
+    
         return $this;
     }
 
@@ -220,7 +244,7 @@ class AdminEmpresa
     public function setFechaCreacion($fechaCreacion)
     {
         $this->fechaCreacion = $fechaCreacion;
-
+    
         return $this;
     }
 
@@ -244,7 +268,7 @@ class AdminEmpresa
     public function setDireccion($direccion)
     {
         $this->direccion = $direccion;
-
+    
         return $this;
     }
 
@@ -268,7 +292,7 @@ class AdminEmpresa
     public function setBienvenida($bienvenida)
     {
         $this->bienvenida = $bienvenida;
-
+    
         return $this;
     }
 
@@ -280,5 +304,77 @@ class AdminEmpresa
     public function getBienvenida()
     {
         return $this->bienvenida;
+    }
+
+    /**
+     * Set chatActivo
+     *
+     * @param boolean $chatActivo
+     *
+     * @return AdminEmpresa
+     */
+    public function setChatActivo($chatActivo)
+    {
+        $this->chatActivo = $chatActivo;
+    
+        return $this;
+    }
+
+    /**
+     * Get chatActivo
+     *
+     * @return boolean
+     */
+    public function getChatActivo()
+    {
+        return $this->chatActivo;
+    }
+
+    /**
+     * Set webinar
+     *
+     * @param boolean $webinar
+     *
+     * @return AdminEmpresa
+     */
+    public function setWebinar($webinar)
+    {
+        $this->webinar = $webinar;
+    
+        return $this;
+    }
+
+    /**
+     * Get webinar
+     *
+     * @return boolean
+     */
+    public function getWebinar()
+    {
+        return $this->webinar;
+    }
+
+    /**
+     * Set pais
+     *
+     * @param \Link\ComunBundle\Entity\AdminPais $pais
+     *
+     * @return AdminEmpresa
+     */
+    public function setPais(\Link\ComunBundle\Entity\AdminPais $pais = null)
+    {
+        $this->pais = $pais;
+    
+        return $this;
+    }
+
+    /**
+     * Get pais
+     *
+     * @return \Link\ComunBundle\Entity\AdminPais
+     */
+    public function getPais()
+    {
+        return $this->pais;
     }
 }

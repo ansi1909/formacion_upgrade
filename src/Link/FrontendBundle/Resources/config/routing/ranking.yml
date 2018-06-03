@@ -1,0 +1,4 @@
+_ranking:
+    path:     /ranking
+    defaults: { _controller: LinkFrontendBundle:Ranking:index }
+

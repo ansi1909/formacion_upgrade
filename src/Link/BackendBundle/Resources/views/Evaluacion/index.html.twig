@@ -1,0 +1,79 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+<br>
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Configuración de evaluaciones'|trans }}</h3>
+    </div>
+    <div class="col text-right ">
+        <a href="{{ path('_editEvaluacion')}}" class="bttn__nre"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nre">{{ 'Nueva evaluación'|trans }}</span></a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de evaluaciones'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                            <th class="hd__title">{{ 'Página asociada'|trans }}</th>
+                            <th class="hd__title">{{ 'Preguntas'|trans }}</th>
+                            <th class="hd__title">{{ 'Estatus'|trans }}</th>
+                            <th class="hd__title">{{ 'Modificado el'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prueba in pruebas %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>{{ prueba.nombre }}</td>
+                                <td>{{ prueba.pagina }}</td>
+                                <td>
+                                    {% if prueba.preguntas|length > 0 %}
+                                        <div class="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {% for pregunta in prueba.preguntas %}
+                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ pregunta }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'Aún no se han creado las preguntas'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ prueba.status }}</td>
+                                <td>{{ prueba.modificacion }}</td>
+                                <td class="center">
+                                    <a href="{{ path('_editEvaluacion', { 'prueba_id': prueba.id }) }}" title="{{ 'Editar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_preguntas', { 'prueba_id': prueba.id }) }}" title="{{ 'Configurar evaluación'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if prueba.delete_disabled == '' %}delete{% endif %} {{ prueba.delete_disabled }}" data="{{ prueba.id }}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/evaluaciones.js') }}"></script>
+{% endblock %}

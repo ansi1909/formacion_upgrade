@@ -1,0 +1,180 @@
+$(document).ready(function() {
+
+	var subpagina_id = $('#subpagina_id').val();
+
+	$( document ).tooltip({
+      track: true
+    });
+
+	CKEDITOR.replace( 'mensaje',
+	{
+		toolbar : 'MyToolbar'
+	});
+
+	$('#fechaPublicacion').datepicker({
+	    startView: 1,
+	    autoclose: true,
+	    format: 'dd/mm/yyyy',
+	    language: 'es',
+	    startDate: '0d',
+	    clearBtn: true
+	})
+	.on( "changeDate", function(selected) {
+		var startDate = new Date(selected.date.valueOf());
+    	$('#fechaVencimiento').datepicker('setStartDate', startDate);
+    });
+
+	$('#fechaVencimiento').datepicker({
+	    startView: 1,
+	    autoclose: true,
+	    format: 'dd/mm/yyyy',
+	    language: 'es',
+	    startDate: '0d',
+	    clearBtn: true
+	})
+	.on( "changeDate", function(selected) {
+		var endDate = new Date(selected.date.valueOf());
+    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
+	});
+
+	$('#cancelar').click(function(){
+		$('#section-form').hide(1000);
+        $('#section-list').show(1000);
+        $('html, body').animate({
+		    scrollTop: 0
+		},2000);
+	});
+
+	$('.newTopic').each(function(){
+		observeTopic($(this));
+	});
+
+	$(".table-card").paginate({
+        perPage: 10,
+        autoScroll: false,
+        paginatePosition: ['bottom'],
+        useHashLocation: true,
+        onPageClick: function() {
+        	$('html, body').animate({
+			    scrollTop: 0
+			},2000);
+        }
+    });
+
+    $( "#search" ).autocomplete({
+    	source: $('#url_search').val(),
+      	minLength: 3,
+      	select: function( event, ui ) {
+        	//console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
+        	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
+      	}
+    });
+
+    $('.deleteTopic').click(function(){
+    	var foro_id = $(this).attr('data');
+    	var tema = $(this).attr('tema');
+    	$('#foro_delete_id').val(foro_id);
+    	$('#titleDelete').html(tema);
+    });
+
+    $('.cancelarCs').click(function(){
+    	$('#foro_delete_id').val(0);
+    	$('#titleDelete').html('');
+    });
+
+    $('#eliminar').click(function(){
+    	$('.btn-modalDelete').hide();
+    	$.ajax({
+	        type: "POST",
+	        url: $('#url_delete').val(),
+	        async: true,
+	        data: { foro_id: $('#foro_delete_id').val() },
+	        dataType: "json",
+	        success: function(data) {
+	            location.reload();
+	        },
+	        error: function(){
+	            console.log('Error eliminando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
+	            $('.btn-modalDelete').show();
+	        }
+	    });
+    });
+
+});
+
+function observeTopic(newTopic)
+{
+	newTopic.click(function(){
+		var foro_id = $(this).attr('data');
+		$('#foro_id').val(foro_id);
+		$('#mensaje_content').val('');
+		$('#section-list').hide(1000);
+		$('#wait').show(1000);
+		if (foro_id != '0')
+		{
+			$('#titulo').html($('#titulo_edit').val());
+			$.ajax({
+		        type: "GET",
+		        url: $('#url_edit').val(),
+		        async: true,
+		        data: { foro_id: foro_id },
+		        dataType: "json",
+		        success: function(data) {
+		            $('#tema').val(data.tema);
+		            $('#fechaPublicacion').val(data.fechaPublicacion);
+		            $('#fechaVencimiento').val(data.fechaVencimiento);
+		            CKEDITOR.instances.mensaje.setData(data.mensaje);
+		            var startDate = new Date(data.fechaPublicacionF);
+		            startDate.setDate(startDate.getDate() + 1);
+		            var endDate = new Date(data.fechaVencimientoF);
+		            endDate.setDate(endDate.getDate() + 1);
+		            $('#fechaVencimiento').datepicker('setStartDate', startDate);
+			    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
+			    	$('#section-form').show(1000);
+					$('#wait').hide(1000);
+					$('html, body').animate({
+					    scrollTop: ($('#section-form').offset().top-100)
+					},2000);
+		            //clearTimeout( timerId );
+		        },
+		        error: function(){
+		            console.log('Error editando el espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
+		            $('#button-comment').show();
+		        }
+		    });
+		}
+		else {
+			$('#titulo').html($('#titulo_new').val());
+			$('.form-control').val('');
+			CKEDITOR.instances.mensaje.setData('');
+			$('#section-form').show(1000);
+			$('#wait').hide(1000);
+		}
+	});
+
+}
+
+function saveForo()
+{
+	$('label.mensaje-error').hide();
+    $('#publicar').hide();
+    $('#cancelar').hide();
+    $('#wait').show(1000);
+    var foro_id = $('#foro_id').val();
+    $.ajax({
+        type: "POST",
+        url: $('#form').attr('action'),
+        async: true,
+        data: $("#form").serialize(),
+        dataType: "json",
+        success: function(data) {
+            location.reload();
+        },
+        error: function(){
+            console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
+            $('#publicar').show();
+            $('#cancelar').show();
+            $('#wait').hide(1000);
+        }
+    });
+}

@@ -27,7 +27,7 @@ Link\ComunBundle\Entity\CertiPagina:
         nombre:
             type: string
             nullable: true
-            length: 20
+            length: 500
             options:
                 fixed: false
         descripcion:
@@ -55,9 +55,24 @@ Link\ComunBundle\Entity\CertiPagina:
             options:
                 fixed: false
         fechaCreacion:
-            type: date
+            type: datetime
             nullable: true
             column: fecha_creacion
+        fechaModificacion:
+            type: datetime
+            nullable: true
+            column: fecha_modificacion
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        encuesta:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
     manyToOne:
         pagina:
             targetEntity: CertiPagina

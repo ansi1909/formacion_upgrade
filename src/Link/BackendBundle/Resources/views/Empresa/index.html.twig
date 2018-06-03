@@ -1,0 +1,76 @@
+{% extends '::admin.html.twig'%}
+
+{% block body %}
+
+<br>
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Empresas'|trans }}</h3>
+    </div>
+    <div class="col text-right ">
+        <a href="{{ path('_registro')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo registro'|trans }}</span></a>
+    </div>
+</div>
+<div class="row">
+ 	<div class="col-sm-16">
+  		<div class="card">
+  			<div class="card-header gradiente">
+            	<h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
+        	</div>
+        	<div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+         		<table class="table " id="dt">
+          			<thead class="sty__title">
+                    	<tr>
+                        	<th class="hd__title">{{ 'Empresa'|trans }}</th>
+                            <th class="hd__title">{{ 'País'|trans }}</th>
+                        	<th class="hd__title">{{ 'Fecha Creación'|trans }}</th>
+                        	<th class="hd__title">{{ 'Activo'|trans }}</th>
+                        	<th class="hd__title">{{ 'Acciones'|trans }}</th>
+                    	</tr>
+                	</thead>
+                	<tbody>
+                		{% for empresa in empresas %}
+                			<tr class="odd">
+                				<td>{{ empresa.nombre }}</td>
+                				<td>{{ empresa.pais.nombre }}</td>
+                				<td>{{ empresa.fechaCreacion|date("d/m/Y") }}</td>
+                				<td class="center">
+                                    <div class="can-toggle demo-rebrand-2 small">
+                                        <input id="f{{ empresa.id }}" class="cb_activo" type="checkbox" {% if empresa.activo %}checked{% endif %}>
+                                        <label for="f{{ empresa.id }}">
+                                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="center">
+                                    <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if empresa.delete_disabled == '' %}delete{% endif %} {{ empresa.delete_disabled }}" data="{{ empresa.id }}"><span class="fa fa-trash"></span></a>
+                                </td>
+                			</tr>
+                		{% endfor %}
+                	</tbody>
+         		</table>
+        	</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/empresas.js') }}"></script>
+{% endblock %}
+
+

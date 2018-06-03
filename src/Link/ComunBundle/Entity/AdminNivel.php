@@ -61,7 +61,7 @@ class AdminNivel
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -85,7 +85,7 @@ class AdminNivel
     public function setEmpresa(\Link\ComunBundle\Entity\AdminEmpresa $empresa = null)
     {
         $this->empresa = $empresa;
-
+    
         return $this;
     }
 

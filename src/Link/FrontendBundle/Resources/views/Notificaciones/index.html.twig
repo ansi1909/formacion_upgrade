@@ -1,0 +1,48 @@
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block body %}
+    <section class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <h3>{{ 'Notificaciones'|trans }}</h3>
+            </div>
+        </div>
+    </section>
+    <section class="notifySec">
+        <div class="row justify-content-between">
+            <div class="col-12">
+                <div class="filter-group d-flex justify-content-around mb-3">
+                    <ul class="tabs" id="tab">
+                        <li class="activo mt-3">
+                            <span>{{ 'Todas'|trans }}</span>
+                        </li>
+                        <li class="mt-3">
+                            <span>{{ 'Sin leer'|trans }}</span>
+                        </li>
+                        <li class="mt-3">
+                            <span>{{ 'Leidos'|trans }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <ul class="table-card-notify contents">
+                {{ include('LinkFrontendBundle:Notificaciones:listado.html.twig', { 'alarmas': todas }) }}
+            </ul>
+            <ul class="table-card-notify contents">
+                {{ include('LinkFrontendBundle:Notificaciones:listado.html.twig', { 'alarmas': no_leidas }) }}
+            </ul>
+            <ul class="table-card-notify contents">
+                {{ include('LinkFrontendBundle:Notificaciones:listado.html.twig', { 'alarmas': leidas }) }}
+            </ul>
+        </div>    
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('front/js/jquery.tabpager.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/tabsPagNotify.js') }}"></script> 
+{% endblock %}

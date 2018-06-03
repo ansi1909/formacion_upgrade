@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="base_styles/css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="client_styles/formacion/css/main.css">
+        <link rel="stylesheet" href="js/plugins/video.js/video-js.min.css">
+        <link rel="stylesheet" href="js/plugins/video.js/vsg-skin.css">
+        <title>Tutoriales</title>
+    </head>
+    <body>
+
+
+        <!-- HEADER -->
+        <header>
+            <nav class="navbar  justify-content-between py-0 fixed-top bg-white">
+                <a class="navbar-brand" href="#">
+                    <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
+                </a>
+                <div class="navbar-brand d-flex justify-content-center align-items-center">
+                    <div class="d-flex flex-column">
+                        <div class="wrapperDdApps">
+                            <a href="#" id="apps">
+                                <div class="appFun">
+                                    <i class="material-icons mr-3 color-light-grey">apps</i>
+                                </div>
+                            </a>
+                            <span class="markApps"></span>
+                            <div class="dropDownApps">
+                                <div class="row align-items-center justify-content-between px-0 py-0 mx-0 my-1">
+                                    <div class="col-4 px-0 py-0">
+                                        <a href="">
+                                            <div class="opcApps text-center">
+                                                <img class="imgApps" src="assets/img/tutorial.svg" alt="">
+                                                <p class="tituloApps">Tutoriales</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0 py-0">
+                                        <a href="">
+                                            <div class="opcApps text-center">
+                                                <img class="imgApps" src="assets/img/faq.svg" alt="">
+                                                <p class="tituloApps">FAQS</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0 py-0">
+                                        <a href="" data-toggle="modal" data-target="#modalSv">
+                                            <div class="opcApps text-center">
+                                                <img class="imgApps" src="assets/img/soporteVirtual.svg" alt="">
+                                                <p class="tituloApps">Soporte Virtual</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center px-0 py-0 mx-0 mb-1">
+                                    <div class="col-4 px-0 py-0">
+                                        <a href="">
+                                            <div class="opcApps text-center">
+                                                <img class="imgApps" src="assets/img/calendario.svg" alt="">
+                                                <p class="tituloApps">Calendario</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div class="wrapperDdNotify">
+                            <a href="#" id="notify">
+                                <div class="notify">
+                                    <i class="material-icons mr-3 color-light-grey">notifications</i>
+                                    <div class="sonar"></div>
+                                </div>
+                            </a>
+                            <span class="markNotify"></span>
+                            <ul class="dropDownNotify">
+                                <a href="">
+                                    <li class="opcListNotify">
+                                        <div class="anunNotify">
+                                            <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
+                                            <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                        </div>
+                                    </li>
+                                </a>
+                                <a href="">
+                                    <li class="opcListNotify">
+                                        <div class="anunNotify">
+                                            <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
+                                            <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                        </div>
+                                    </li>
+                                </a>
+                                <a href="">
+                                    <li class="opcListNotify">
+                                        <div class="anunNotify">
+                                            <span class="stickerNotify mailSticker"><i class="material-icons icNotify">mail</i></span>
+                                            <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                        </div>
+                                    </li>
+                                </a>
+                                <a href="">
+                                    <li class="opcListNotify">
+                                        <div class="anunNotify">
+                                            <span class="stickerNotify ecSticker"><i class="material-icons icNotify">speaker_notes</i></span>
+                                            <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                        </div>
+                                    </li>
+                                </a>
+                                <a href="">
+                                    <li class="opcListNotify">
+                                        <div class="anunNotify">
+                                            <span class="stickerNotify muroSticker"><i class="material-icons icNotify">insert_comment</i></span>
+                                            <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                        </div>
+                                    </li>
+                                </a>
+                                <a href="">
+                                    <li class="opcListNotify">
+                                        <div class="anunNotify">
+                                            <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
+                                            <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                        </div>
+                                    </li>
+                                </a>
+                                <a href="">
+                                    <li class="opcListNotify opcLastNotify">
+                                        <div class="anunNotify">
+                                            <span class="stickerNotify rcSticker"><i class="material-icons icNotify">question_answer</i></span>
+                                            <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
+                                        </div>
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class=" d-flex flex-column ">
+                        <div class="wrapperDdMenu">
+                            <a href="#" class="perfil no-decorate" id="config">
+                                <img class="img-fluid mx-auto avatar-img" src="assets/img/user.svg" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                            </a>
+                            <ul class="dropDownMenu">
+                                <li class="mark"></li>
+                                <a href="">
+                                    <li class="opcList">
+                                        <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                    </li>
+                                </a>
+                                <a href="" data-toggle="modal" data-target="#modalCs">
+                                    <li class="opcList markOpc">
+                                        <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container-fluid mt-6">
+            <!-- SIDE MENU  -->
+            <nav>
+                <div id="mainSidenav" class="main-sidenav ">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id= "menuArrow" class="arrow mr-2"></i></a>
+                    <a class="d-flex mt-1 mb-3 text-nowrap active" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
+                    <a class="d-flex mb-1 text-nowrap" href="#"> <i class="material-icons mr-2">library_books</i>  Noticias & <br/>novedades </a>
+                    <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs </a>
+                </div>
+            </nav>
+
+            <div id="main" class="">
+                <div class="container">
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <h3 class="titulo_faqs">Tutoriales</h3>
+                        </div>
+                    </div>
+                    <section>
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-10 col-lg-10 col-xl-10 col-md-10 col-sm-10 col-xs-10">
+                                <h4 class="mt-3 pt-3 mb-0 pb-1 title-grey sub-line subtit_Tuto">Cómo navegar por la plataforma</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-4 justify-content-center align-items-center">
+                            <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-xs-9 col-9">
+                                <h5 class="textTuto">En este video, se explica paso a paso la navegación por el contenido de un programa hasta obtener el certificado. </h5>
+                            </div>
+                        </div>
+                        <div class="row mt-4 justify-content-center align-items-center">
+                            <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 col-8">
+                                <video
+                                       id="my-player"
+                                       class="video-js vjs-fluid"
+                                       controls
+                                       preload="auto"
+                                       poster="assets/img/OBDL960.jpg"
+                                       data-setup='{"playbackRates": [1, 1.5, 2], "fluid": true, "controlBar": { "muteToggle": false }}'>
+                                    <source src="https://recursos2puntocero.com/recursos/video/FON_FNF_FORMULARIO.mp4" type="video/mp4"></source>
+                                </video>
+                            </div>
+                        </div>
+                        <div class="row mt-3 justify-content-center align-items-center">
+                            <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 col-8 text-right">
+                                <div class="dlTuto">
+                                    <span class="textTuto">Puedes descargar el tutorial en formato PDF </span>
+                                    <button class="btn btn-primary btn-sm btn-dlt" type="button">Descargar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4 mb-3 justify-content-center align-items-center">
+                            <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-xs-10 col-10 text-justify">
+                                <div class="infoTuto">
+                                    <p class="textInfoTuto">Recuerda que puedes escribir a: <a href="mailto:soporte@formacion2puntocero.com" class="link">soporte@formacion2puntocero.com</a> en caso de tener alguna duda o inconveniente. El equipo de soporte te apoyará para que tu experiencia de aprendizaje culmine exitosamente.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cerrar Sesion-->
+        <div class="modal modalCerrarSesion" id="modalCs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">¿Estás Segur@ que desea cerrar sesión?</h4>
+                    </div>
+                </div>
+                <div class="row mt-4 align-items-center justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <a href="#"><button type="button" class="btn btn-primary btn-Cs">Cerrar Sesión</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" class="cancelarCs" data-dismiss="modal">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Soporte virtual-->
+        <div class="modal modalSopVirtual" id="modalSv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">Soporte virtual</h4>
+                    </div>
+                </div>
+                <div class="row mt-2 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-justify">
+                        <p class="txtModalVs">¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.</p>
+                    </div>
+                </div>
+                <form action="">
+                    <div class="row mt-3 justify-content-center align-items-center">
+                        <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
+                            <div class="form-group">
+                                <label class="mb-1" for="asuntoV">Asunto</label>
+                                <input  type="text" class="form-control" id="asuntoV" aria-describedby="asuntoSupportVitual" placeholder="Escriba su asunto">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1 justify-content-center">
+                        <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
+                            <div class="form-group">
+                                <label class="mb-1" for="msjSv">Mensaje</label>
+                                <textarea class="form-control textAsv" rows="4" id="msjSv" aria-describedby="messageSupportVirtual" placeholder="Escriba su mensaje"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row mt-2 align-items-center justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#"><button type="submit" class="btn btn-primary btnEnv">Enviar</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" class="cerrarSv" data-dismiss="modal">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- JAVASCRIPT -->
+        <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/video.js/video.min.js"></script>
+        <script src="js/custom.js"></script>
+    </body>
+</html>

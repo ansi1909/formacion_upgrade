@@ -1,0 +1,17 @@
+/* mapa de progreso */
+
+.goal {
+	fill: #cfe65c;
+	transition: 1s ;
+	transition-delay: 1s;
+}
+
+.progress-bar {
+	stroke-dasharray:1016 1018;
+	/* stroke-dashoffset:1017; */
+	animation: ani-progress 4s linear 0.2s forwards;
+	}
+
+@keyframes ani-progress {
+	0% { stroke-dashoffset:1017; }
+}

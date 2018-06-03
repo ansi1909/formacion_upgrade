@@ -1,0 +1,120 @@
+{% extends '::admin.html.twig' %}
+
+
+{% block body %}
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+
+
+
+<input type="hidden" id="url_niveles" name="url_niveles" value="{{ path ('_ajaxPaginasNiveles') }}">
+<input type="hidden" id="url_ver" name="url_ver" value="{{ path ('_ajaxNivelPaginas') }}">
+<input type="hidden" id="url_asignarP" name="url_asignarP" value="{{ path ('_ajaxAsignarP') }}">
+
+<br>
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{'Páginas por niveles' | trans}}</h3>
+    </div>
+</div>
+{% if not usuario_empresa %}
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{'Elegir empresa' | trans}}</h5>
+            </div>
+            <div class="card-block">
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                <option value="0"></option>
+                                {% for empresa in empresas %}
+                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                    </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+{% endif %}
+<div class="row">
+    <div class=" col-sm-9 col-md-9 col-lg-9 col-xl-9 col-9" {% if not usuario_empresa %} style="display:none;" {% endif %}  id="div-grupos">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title" >{{ 'Listado de niveles' |trans}} <span id="nombre-p"></span></h5>
+            </div>
+            {% if not usuario_empresa %}
+            <div class="card-block" id="lpe">   
+            </div>
+            {% else %}
+            <div class="card-block">
+                <table class="table" id="">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{'Nombre'|trans }}</th>
+                            <th class="hd__title">{{'Acciones'|trans }}</th>
+                        </tr>
+                    <tbody id="niveles" name="niveles">
+                      {% for nivel in niveles %}
+                        {% set eo = cycle(['odd', 'even'], loop.index) %}
+                        <tr class="{{eo}}">
+                            <td>{{ nivel.nombre }}</td>
+                            <td class="center">
+                                <a href="#subPanel" class="see" id="see" data="{{nivel.id}}" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a> 
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>  
+            </div>
+            {% endif %}  
+        </div>
+    </div>
+    <a id="subPanel"></a>
+    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-7" style="display:none; " id="div-paginas">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Asignar página al nivel'|trans }} <span id="nivelTitle"></span></h5>
+            </div>
+            <div class="card-block" id="paginas">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/paginasNiveles.js') }}"></script>
+    <script type="text/javascript">
+
+        $("#form").validate({
+            rules: {
+                'nombre': {
+                    required: true,
+                    minlength: 3
+                },
+            },
+            messages: {
+                'nombre': {
+                    required: "{{ 'Este campo es requerido.'|trans }}",
+                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                }
+            }
+        });
+
+        
+    </script>
+{% endblock %}

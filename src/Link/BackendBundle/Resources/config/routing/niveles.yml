@@ -1,0 +1,63 @@
+_empresasNiveles:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Nivel:index }
+
+_ajaxUpdateNivel:
+    path:     /ajaxUpdateNivel
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxUpdateNivel }
+    requirements:
+        method: POST
+
+_ajaxTreeNiveles:
+    path:     /ajaxTreeNiveles/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxTreeNiveles, empresa_id: 0 }
+    requirements:
+        method: GET
+
+_niveles:
+    path:     /niveles/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Nivel:niveles }
+
+_uploadNiveles:
+    path:     /uploadNiveles/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Nivel:uploadNiveles }
+
+_ajaxUploadNivel:
+    path:     /ajaxUploadNivel
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxUploadNivel }
+    requirements:
+        method: POST
+
+_ajaxEditNivel:
+    path:     /ajaxEditNivel
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxEditNivel }
+    requirements:
+        method: GET
+
+_ajaxNiveles:
+    path:     /ajaxNiveles
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxNiveles }
+    requirements:
+        method: GET
+
+_paginasNiveles:
+    path:     /paginasNiveles/{app_id}
+    defaults: { _controller: LinkBackendBundle:Nivel:paginasNiveles }
+
+_ajaxPaginasNiveles:
+    path:     /ajaxPaginasNiveles
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxPaginasNiveles }
+    requirements:
+        method: GET
+
+_ajaxNivelPaginas:
+    path:     /ajaxNivelPaginas
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxNivelPaginas }
+    requirements:
+        method: POST
+
+_ajaxAsignarP:
+    path:     /ajaxAsignarP
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxAsignarP }
+    requirements:
+        method: POST

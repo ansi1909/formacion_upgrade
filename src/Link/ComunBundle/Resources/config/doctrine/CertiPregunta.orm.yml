@@ -49,8 +49,21 @@ Link\ComunBundle\Entity\CertiPregunta:
         valor:
             type: decimal
             nullable: true
-            precision: 3
+            precision: 10
             scale: 2
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+        fechaCreacion:
+            type: datetime
+            nullable: true
+            column: fecha_creacion
+        fechaModificacion:
+            type: datetime
+            nullable: true
+            column: fecha_modificacion
     manyToOne:
         prueba:
             targetEntity: CertiPrueba

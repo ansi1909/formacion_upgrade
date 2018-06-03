@@ -1,0 +1,26 @@
+Link\ComunBundle\Entity\AdminTipoLogo:
+    type: entity
+    table: admin_tipo_logo
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+        css:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CertiRespuesta
  *
- * @ORM\Table(name="certi_respuesta", indexes={@ORM\Index(name="IDX_98EB1A4531A5801E", columns={"pregunta_id"}), @ORM\Index(name="IDX_98EB1A455BDBF2F", columns={"opcion_id"}), @ORM\Index(name="IDX_98EB1A45DB38439E", columns={"usuario_id"})})
+ * @ORM\Table(name="certi_respuesta", indexes={@ORM\Index(name="IDX_98EB1A4531A5801E", columns={"pregunta_id"}), @ORM\Index(name="IDX_98EB1A455BDBF2F", columns={"opcion_id"}), @ORM\Index(name="IDX_98EB1A4525A67894", columns={"prueba_log_id"})})
  * @ORM\Entity
  */
 class CertiRespuesta
@@ -30,6 +30,13 @@ class CertiRespuesta
     private $fechaRegistro;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="nro", type="integer", nullable=true)
+     */
+    private $nro;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPregunta
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPregunta")
@@ -50,14 +57,14 @@ class CertiRespuesta
     private $opcion;
 
     /**
-     * @var \Link\ComunBundle\Entity\AdminUsuario
+     * @var \Link\ComunBundle\Entity\CertiPruebaLog
      *
-     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminUsuario")
+     * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPruebaLog")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="prueba_log_id", referencedColumnName="id")
      * })
      */
-    private $usuario;
+    private $pruebaLog;
 
 
 
@@ -81,7 +88,7 @@ class CertiRespuesta
     public function setFechaRegistro($fechaRegistro)
     {
         $this->fechaRegistro = $fechaRegistro;
-
+    
         return $this;
     }
 
@@ -96,6 +103,30 @@ class CertiRespuesta
     }
 
     /**
+     * Set nro
+     *
+     * @param integer $nro
+     *
+     * @return CertiRespuesta
+     */
+    public function setNro($nro)
+    {
+        $this->nro = $nro;
+    
+        return $this;
+    }
+
+    /**
+     * Get nro
+     *
+     * @return integer
+     */
+    public function getNro()
+    {
+        return $this->nro;
+    }
+
+    /**
      * Set pregunta
      *
      * @param \Link\ComunBundle\Entity\CertiPregunta $pregunta
@@ -105,7 +136,7 @@ class CertiRespuesta
     public function setPregunta(\Link\ComunBundle\Entity\CertiPregunta $pregunta = null)
     {
         $this->pregunta = $pregunta;
-
+    
         return $this;
     }
 
@@ -129,7 +160,7 @@ class CertiRespuesta
     public function setOpcion(\Link\ComunBundle\Entity\CertiOpcion $opcion = null)
     {
         $this->opcion = $opcion;
-
+    
         return $this;
     }
 
@@ -144,26 +175,26 @@ class CertiRespuesta
     }
 
     /**
-     * Set usuario
+     * Set pruebaLog
      *
-     * @param \Link\ComunBundle\Entity\AdminUsuario $usuario
+     * @param \Link\ComunBundle\Entity\CertiPruebaLog $pruebaLog
      *
      * @return CertiRespuesta
      */
-    public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
+    public function setPruebaLog(\Link\ComunBundle\Entity\CertiPruebaLog $pruebaLog = null)
     {
-        $this->usuario = $usuario;
-
+        $this->pruebaLog = $pruebaLog;
+    
         return $this;
     }
 
     /**
-     * Get usuario
+     * Get pruebaLog
      *
-     * @return \Link\ComunBundle\Entity\AdminUsuario
+     * @return \Link\ComunBundle\Entity\CertiPruebaLog
      */
-    public function getUsuario()
+    public function getPruebaLog()
     {
-        return $this->usuario;
+        return $this->pruebaLog;
     }
 }

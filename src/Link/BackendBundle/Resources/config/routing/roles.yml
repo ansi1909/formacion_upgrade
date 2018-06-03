@@ -1,0 +1,15 @@
+_roles:
+    path:     /listado/{app_id}
+    defaults: { _controller: LinkBackendBundle:Rol:index }
+
+_ajaxUpdateRol:
+    path:     /ajaxUpdateRol
+    defaults: { _controller: LinkBackendBundle:Rol:ajaxUpdateRol }
+    requirements:
+        method: POST
+
+_ajaxEditRol:
+    path:     /ajaxEditRol
+    defaults: { _controller: LinkBackendBundle:Rol:ajaxEditRol }
+    requirements:
+        method: GET

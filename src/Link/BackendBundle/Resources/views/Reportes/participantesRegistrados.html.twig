@@ -1,0 +1,90 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+{% set encabezado =  'Reporte de participantes registrados por programas'|trans %}
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+
+<br><br>
+<input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
+<input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
+<input type="hidden" id="url_participantesR" name="url_participantesR" value="{{ path ('_ajaxParticipantesR') }}">
+<input type="hidden" id="reporte" name="reporte" value="{{ reporte }}">
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ encabezado }}</h5>
+            </div>
+            <div class="card-block">
+                {% if not usuario_empresa %}
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
+
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                <option value="0"></option>
+                                {% for empresa in empresas %}
+                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        </div>
+                    </div>
+                    <br>
+                {% else %}
+                    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+                {% endif %}
+                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
+                <div class="row">
+                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
+                        </select>
+                        <span class="fa fa-industry"></span>
+                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de participantes'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+                <div id="usuarios">
+                    
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                    </div>
+                </div>
+            </div>
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('js/admin/reportes.js') }}"></script>
+{% endblock %}

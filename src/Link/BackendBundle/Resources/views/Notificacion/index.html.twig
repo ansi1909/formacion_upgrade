@@ -1,0 +1,111 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+{% endblock %}
+
+{% block body %}
+
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+{% set uri = app.request.getbasepath %}
+<br><br>
+<input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
+<input type="hidden" id="url_notificaciones" name="url_notificaciones" value="{{ path ('_ajaxNotificacion') }}">
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_notificacion', { 'app_id': app.session.get('app_id') }) }}">
+{% if usuario_empresa %}
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+{% endif %}
+<div class="col text-right">
+    <a href="{{ path( '_createNotificacion' )}}" class="bttn__nr"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></a>
+</div>
+<br>
+{% if not usuario_empresa %}
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Búsqueda de notificaciones por empresa'|trans  }}</h5>
+            </div>
+            <div class="card-block">
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa'|trans }}</label>
+                <div class="row">
+                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_empresa_id" name="select_empresa_id">
+                            <option value="0"></option>
+                            {% for empresa in empresas %}
+                                <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="fa fa-industry"></span>
+                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row" id="div-active-alert" style="display:none;">
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger" role="alert"> 
+                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        &nbsp;
+                    </div>
+                </div>
+                <div id="list_notificaciones">
+                    <table class="table" id="dt">
+                        <thead class="sty__title">
+                            <tr>
+                                <th>{{ 'Asunto'|trans }}</th>
+                                {% if not usuario_empresa %}
+                                    <th>{{ 'Empresa'|trans }}</th>
+                                {% endif %}
+                                <th>{{ 'Tipo notificación'|trans }}</th>
+                                <th>{{ 'Acciones'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for notificacion in notificaciones %}
+                                <tr>
+                                    <td>{{ notificacion.asunto }}</td>
+                                    {% if not usuario_empresa %}
+                                        <td>{{ notificacion.empresa }}</td>
+                                    {% endif %}
+                                    <td>{{ notificacion.tipo_notificacion }}</td>
+                                    <td class="center">
+                                        <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
+                                        <a href="{{ path('_showNotificacion', { 'notificacion_id': notificacion.id, 'status': 'show' }) }}" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
+                                        <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if notificacion.delete_disabled == '' %}delete{% endif %} {{ notificacion.delete_disabled }}" data="{{ notificacion.id }}"><span class="fa fa-trash"></span></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/notificaciones.js') }}"></script>
+{% endblock %}

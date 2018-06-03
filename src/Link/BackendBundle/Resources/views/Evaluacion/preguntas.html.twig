@@ -1,0 +1,93 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/css/rowReorder.dataTables.min.css') }}" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+<br>
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Configuración de preguntas'|trans }}</h3>
+    </div>
+</div>
+<div class="row align-items-center justify-content-between">
+    <div class="col text-left">
+        <a href="{{ path('_paginasEvaluacion', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck2"><span class="fa fa-list-ol"></span><span class="text__bck2">{{ 'Ir al listado de evaluaciones'|trans }}</span></a>
+    </div>
+    {% if preguntas|length < prueba.cantidadPreguntas %}
+        {% set cantidad = preguntas|length + 1 %}
+        <div class="col text-right">
+            <a href="{{ path('_editPregunta', { 'prueba_id': prueba.id, 'pregunta_id': 0, 'cantidad': cantidad, 'total': prueba.cantidadPreguntas })}}" class="bttn__nre"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nre">{{ 'Nueva pregunta'|trans }}</span></a>
+        </div>
+    {% endif %}
+</div>
+<div class="row">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de preguntas de la evaluación'|trans }} {{ prueba.nombre }}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Orden'|trans }}</th>
+                            <th class="hd__title">Id</th>
+                            <th class="hd__title">{{ 'Enunciado'|trans }}</th>
+                            <th class="hd__title">{{ 'Tipo de pregunta'|trans }}</th>
+                            <th class="hd__title">{{ 'Opciones'|trans }}</th>
+                            <th class="hd__title">{{ 'Estatus'|trans }}</th>
+                            <th class="hd__title">{{ 'Modificado el'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pregunta in preguntas %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>{{ pregunta.orden }}</td>
+                                <td>{{ pregunta.id }}</td>
+                                <td>{{ pregunta.enunciado }}</td>
+                                <td>{{ pregunta.tipo }}</td>
+                                <td>
+                                    {% if pregunta.opciones|length > 0 %}
+                                        <div class="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {% for opcion in pregunta.opciones %}
+                                                    <li data-jstree='{ "icon": "fa fa-angle-double-right" }'>{{ opcion }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'Aún no se han creado las opciones'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ pregunta.status }}</td>
+                                <td>{{ pregunta.modificacion }}</td>
+                                <td class="center">
+                                    <a href="{{ path('_editPregunta', { 'prueba_id': prueba.id, 'pregunta_id': pregunta.id, 'cantidad': preguntas|length, 'total': prueba.cantidadPreguntas })}}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
+                                    <a href="{{ path('_opciones', { 'pregunta_id': pregunta.id, 'cantidad': preguntas|length, 'total': prueba.cantidadPreguntas })}}" title="{{ 'Ir al listado de opciones'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-list-ul"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if pregunta.delete_disabled == '' %}delete{% endif %} {{ pregunta.delete_disabled }}" data="{{ pregunta.id }}"><span class="fa fa-trash"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/datatables/RowReorder-1.2.3/js/dataTables.rowReorder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/preguntas.js') }}"></script>
+{% endblock %}

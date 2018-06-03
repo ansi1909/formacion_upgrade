@@ -39,9 +39,16 @@ class CertiPaginaLog
     /**
      * @var string
      *
-     * @ORM\Column(name="porcentaje_avance", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="porcentaje_avance", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $porcentajeAvance;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="puntos", type="integer", nullable=true)
+     */
+    private $puntos;
 
     /**
      * @var \Link\ComunBundle\Entity\CertiPagina
@@ -95,7 +102,7 @@ class CertiPaginaLog
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-
+    
         return $this;
     }
 
@@ -119,7 +126,7 @@ class CertiPaginaLog
     public function setFechaFin($fechaFin)
     {
         $this->fechaFin = $fechaFin;
-
+    
         return $this;
     }
 
@@ -143,7 +150,7 @@ class CertiPaginaLog
     public function setPorcentajeAvance($porcentajeAvance)
     {
         $this->porcentajeAvance = $porcentajeAvance;
-
+    
         return $this;
     }
 
@@ -158,6 +165,30 @@ class CertiPaginaLog
     }
 
     /**
+     * Set puntos
+     *
+     * @param integer $puntos
+     *
+     * @return CertiPaginaLog
+     */
+    public function setPuntos($puntos)
+    {
+        $this->puntos = $puntos;
+    
+        return $this;
+    }
+
+    /**
+     * Get puntos
+     *
+     * @return integer
+     */
+    public function getPuntos()
+    {
+        return $this->puntos;
+    }
+
+    /**
      * Set pagina
      *
      * @param \Link\ComunBundle\Entity\CertiPagina $pagina
@@ -167,7 +198,7 @@ class CertiPaginaLog
     public function setPagina(\Link\ComunBundle\Entity\CertiPagina $pagina = null)
     {
         $this->pagina = $pagina;
-
+    
         return $this;
     }
 
@@ -191,7 +222,7 @@ class CertiPaginaLog
     public function setUsuario(\Link\ComunBundle\Entity\AdminUsuario $usuario = null)
     {
         $this->usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -215,7 +246,7 @@ class CertiPaginaLog
     public function setEstatusPagina(\Link\ComunBundle\Entity\CertiEstatusPagina $estatusPagina = null)
     {
         $this->estatusPagina = $estatusPagina;
-
+    
         return $this;
     }
 

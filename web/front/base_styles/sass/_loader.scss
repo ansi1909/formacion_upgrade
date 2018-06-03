@@ -1,0 +1,242 @@
+/*.contenedor{
+    display: inline-block;
+    height: 25rem;
+    width: 25rem;
+    float:left;
+    padding: 0;
+    background: $bluedark;
+    position: relative;
+    transition: all .2s ease;
+    border: 3px solid $gray-400;
+    border-radius: 1rem;
+    @include media-breakpoint-down(xl){
+        width: 15rem;
+        height: 15rem;
+    }
+    &:hover{
+        span{
+            bottom: 0px;
+            opacity: 1;
+            transition: all .2s ease;
+            z-index: 2;
+        }
+    }
+    span{
+        color: $white;
+        font-family: $primary-font;
+        font-weight: $font-weight-normal-hard;
+        position: absolute;
+        font-size: $h5-font-size;
+        width: 24.6rem;
+        height: 4rem;
+        text-align: center;
+        bottom: 0px;
+        margin: 0;
+        background-color: rgba(58, 58, 58, .5);
+        opacity: 0;
+        padding: 1rem 0;
+        border-radius: 0 0 .7rem .7rem; 
+        text-transform: uppercase;
+        transition: all .2s ease;
+        @include media-breakpoint-down(xl){
+            width: 14.6rem;
+            height: 3rem;
+            padding: .5rem 0;
+        }
+    }
+    .reloj{
+        border-radius: calc(4rem - 4px);
+        @extend %forma;
+        border: 3px solid $white;
+        &::after{
+            content: "";
+            position: absolute;
+            background-color: $white;
+            top: calc(1rem - 14px);
+            left: 48%;
+            height: calc(2rem + 6px);
+            width: calc(1rem - 12px);
+            border-radius: calc(1rem - 11px);
+            -webkit-transform-origin: 50% 97%;
+            transform-origin: 50% 97%;
+            -webkit-animation: minAgu 2s linear infinite;
+            animation: minAgu 2s linear infinite;
+        }
+        &::before{
+            content: "";
+            position: absolute;
+            background-color: $white;
+            top: calc(1rem - 10px);
+            left: 48%;
+            height: calc(2rem + 3px);
+            width: calc(1rem - 12px);
+            border-radius: calc(1rem - 11px);
+            -webkit-transform-origin: 50% 94%;
+            transform-origin: 50% 94%;
+            -webkit-animation: hrAgu 12s linear infinite;
+            animation: hrAgu 12s linear infinite;
+        }
+    }
+    .relojArena{
+        @extend %forma;
+        border: 3px solid $white;
+        border-radius: 5rem;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        -webkit-animation: rArena 3s ease-in-out infinite;
+        animation: rArena 3s ease-in-out infinite;
+        &::before{
+            top: calc(1rem - 10px);
+            @extend %relojAre;
+            border-width: calc(2rem + 5px) calc(1rem + 6px) 0 calc(1rem + 6px);
+            border-color: $white transparent transparent transparent;
+        }
+        &::after{
+            top: calc(2rem - 1px);
+            @extend %relojAre;
+            border-width: 0 calc(1rem + 6px) calc(2rem + 5px) calc(1rem + 6px);
+            border-color: transparent transparent $white transparent;
+        }
+    }
+    
+    .radarDouble{
+        border-radius: calc(3rem + 2px);
+        background-color: rgba(255, 255, 255, .2);
+        border-width: calc(3rem - 8px);
+        border-style: double;
+        border-color: transparent $white;
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing:border-box;
+        box-sizing:border-box;
+        -webkit-transform-origin:  50% 50%;
+        transform-origin:  50% 50% ;
+        -webkit-animation: rd 2s linear infinite;
+        animation: rd 2s linear infinite;
+    }
+}*/
+
+.radar{
+    position: relative;
+    width: calc(1rem - 11px);
+    height: calc(1rem - 11px);
+    top: 49%;
+    top: -webkit-calc(50% - calc(3rem - 5px));
+    top: calc(50% - calc(1rem - 13.5px));
+    left: 49%;
+    left: -webkit-calc(50% - calc(3rem - 5px));
+    left: calc(50% - calc(1rem - 13.5px));
+    background-color: $blue;
+    border-radius: 50px;
+    &::after{
+        content: "";
+        position: absolute;
+        top: calc(1rem - 13px);
+        right: calc(1rem - 13px);
+        border-bottom: 3px solid $blue;
+        border-left: 3px solid $blue;
+        border-radius: 0 0 0 calc(2rem + 2px);
+        width: calc(2rem - 8px);
+        height: calc(2rem - 8px);
+        background-color: $blue-100;
+        -webkit-transform-origin:  100% 0%;
+        transform-origin:  100% 0% ;
+        -webkit-animation: radar 1.5s linear infinite;
+        animation: radar 1.5s linear infinite;
+    }
+    &::before{
+        content: "";
+        position: absolute;
+        top: calc(-1 * calc(1rem + 6px));
+        right: calc(-1 * calc(1rem + 6px));
+        border-top: 3px solid $blue;
+        border-right: 3px solid $blue;
+        border-radius: 0 calc(2rem + 2px) 0px  0;
+        width: calc(2rem - 8px);
+        height: calc(2rem - 8px);
+        background-color: $blue-100;
+        -webkit-transform-origin:  0% 100%;
+        transform-origin:  0% 100% ;
+        -webkit-animation: radar 1.5s linear infinite;
+        animation: radar 1.5s linear infinite;
+    }
+}
+
+//animation
+
+//reloj
+@-webkit-keyframes minAgu{
+    0%{-webkit-transform:rotate(0deg);}
+    100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes minAgu{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
+@-webkit-keyframes hrAgu{
+    0%{-webkit-transform:rotate(0deg);}
+    100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes hrAgu{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
+//reloj de arena
+@-webkit-keyframes rArena{
+    0%{-webkit-transform:rotate(0deg);}
+    50%{-webkit-transform:rotate(180deg);}
+    100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes rArena{
+    0%{transform:rotate(0deg);}
+    50%{transform:rotate(180deg);}
+    100%{transform:rotate(360deg);}
+}
+
+//radar
+@-webkit-keyframes radar{
+    0%{-webkit-transform:rotate(0deg);}
+    100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes radar{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
+//radar doble
+@-webkit-keyframes rd{
+    0%{-webkit-transform:rotate(0deg);}
+    100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes rd{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
+//Extend
+%relojAre{
+    content: "";
+    position: absolute;
+    left: 1rem;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+%forma{
+    height: 5rem;
+    width: 5rem;
+    position: relative;
+    top: 28%;
+    top: -webkit-calc(50% - calc(3rem - 5px));
+    top: calc(50% - calc(3rem - 5px));
+    left: 35%;
+    left: -webkit-calc(50% - calc(3rem - 5px));
+    left: calc(50% - calc(3rem - 5px));
+}

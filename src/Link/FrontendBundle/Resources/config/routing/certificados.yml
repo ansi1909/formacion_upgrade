@@ -1,0 +1,7 @@
+_generarCertificado:
+    path:     /certificado/{programa_id}
+    defaults: { _controller: LinkFrontendBundle:Certificado:certificado }
+
+_generarNotas:
+    path:     /notas/{programa_id}
+    defaults: { _controller: LinkFrontendBundle:Certificado:notas }

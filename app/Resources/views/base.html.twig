@@ -2,12 +2,330 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <title>
+            {% block title %}
+                {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
+                    {{ app.session.get('empresa').titulo }}
+                {% else %}
+                    {{ 'Sistema Formación'|trans }} 2.0
+                {% endif %}
+            {% endblock %}
+        </title>
+        {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
+        <link rel="icon" type="image/x-icon" href="{{ img }}" />
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
+            {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
+            <link rel="stylesheet" href="{{ css }}">
+            <link href="{{ asset('front/js/plugins/video.js/video-js.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('front/js/plugins/video.js/vsg-skin.css') }}" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('front/js/plugins/mediaelement-4.2.8/build/mediaelementplayer.min.css') }}">
+        {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <body class="{% block clbody %}{% endblock %}">
+
+        {% set uri = app.request.getbasepath %}
+        <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+        <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
+        <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
+        <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
+        <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+
+        
+        {# HEADER #}
+        <header>
+            {% block header %}
+            <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+                <div class="logo d-sm-block d-md-block">
+                    <a class="navbar-brand" href="{{ path('_inicio') }}">
+                        {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+                        <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                    </a>
+                </div>
+                <div class="navbar-brand d-flex justify-content-center align-items-center">
+                    <div class="d-flex flex-column">
+                        <div class="wrapperDdApps">
+                            <a href="#" id="apps">
+                                <div class="appFun">
+                                    <i class="material-icons mr-3 color-light-grey" data-toggle="tooltip" data-placement="bottom" title="Soporte">contact_support</i>
+                                </div>
+                            </a>
+                            <span class="markApps"></span>
+                            <div class="dropDownApps">
+                                <div class="row align-items-center justify-content-between px-0 py-0 mx-0 my-1">
+                                    <div class="col-4 px-0 py-0">
+                                        <a href="{{ path('_indexTutoriales') }} ">
+                                            <div class="opcApps text-center">
+                                                <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                     viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                    <rect x="161.3" y="473.3" class="st0" width="183.6" height="33.7"/>
+                                                    <path class="st0" d="M5,4v447.4h502V4H5z M487,404H19V23h468V404z"/>
+                                                    <path d="M468.2,400H37.8c-8.2,0-14.8-6.6-14.8-14.7V47.7C23,39.6,29.6,33,37.8,33h430.4c8.2,0,14.8,6.6,14.8,14.7v337.6
+                                                             C483,393.4,476.3,400,468.2,400L468.2,400z M32.5,349.1v36.2c0,2.9,2.4,5.3,5.3,5.3h430.4c2.9,0,5.3-2.4,5.3-5.3v-36.2H32.5z
+                                                             M32.5,339.7h441V80.2h-441V339.7z M32.5,70.8h441V47.7c0-2.9-2.4-5.3-5.3-5.3H37.8c-2.9,0-5.3,2.4-5.3,5.3V70.8z M119,380.9
+                                                             c-2.6,0-4.7-2.1-4.7-4.7v-2.4H49.8c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h64.4v-2.6c0-2.6,2.1-4.7,4.7-4.7
+                                                             c2.6,0,4.7,2.1,4.7,4.7v2.6h332.5c2.6,0,4.7,2.1,4.7,4.7c0,2.6-2.1,4.7-4.7,4.7H123.7v2.4C123.7,378.8,121.6,380.9,119,380.9
+                                                             L119,380.9z M452.8,61.3H115.4c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h337.4c2.6,0,4.7,2.1,4.7,4.7
+                                                             C457.6,59.2,455.5,61.3,452.8,61.3L452.8,61.3z M82.4,61.3h-0.5c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h0.5
+                                                             c2.6,0,4.7,2.1,4.7,4.7C87.1,59.2,85,61.3,82.4,61.3L82.4,61.3z M64.4,61.3h-0.5c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h0.5
+                                                             c2.6,0,4.7,2.1,4.7,4.7C69.2,59.2,67,61.3,64.4,61.3L64.4,61.3z M46.5,61.3H46c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7h0.5
+                                                             c2.6,0,4.7,2.1,4.7,4.7C51.2,59.2,49.1,61.3,46.5,61.3L46.5,61.3z M46.5,61.3"/>
+                                                    <path d="M253.6,160.6c-35.3,0-64.1,23.7-64.1,52.9c0,29.2,28.8,52.9,64.1,52.9c35.4,0,64.1-23.7,64.1-52.9
+                                                             C317.7,184.3,288.9,160.6,253.6,160.6z M253.6,259.8c-31,0-56.1-20.8-56.1-46.3c0-25.5,25.2-46.3,56.1-46.3
+                                                             c31,0,56.1,20.8,56.1,46.3C309.7,239,284.5,259.8,253.6,259.8z"/>
+                                                    <path d="M287.7,210.6l-51.3-24.4c-1.2-0.6-2.8-0.6-4,0c-1.2,0.6-2,1.7-2,2.8v48.8c0,1.2,0.8,2.3,2,2.8c0.6,0.3,1.3,0.4,2,0.4
+                                                             c0.7,0,1.4-0.2,2-0.4l51.3-24.4c1.2-0.6,2-1.7,2-2.8C289.7,212.3,288.9,211.2,287.7,210.6z M238.4,232.2v-37.5l39.3,18.7
+                                                             L238.4,232.2z"/>
+                                                </svg>
+                                                <p class="tituloApps">Tutoriales</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0 py-0">
+                                        <a href="{{ path('_faqsf') }}">
+                                            <div class="opcApps text-center">
+                                                <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                     viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                    <g>
+                                                        <path d="M255.5,3C116.1,3,3,116,3,255.3C3,394.9,116.1,508,255.5,508C395,508,508,394.9,508,255.3C508,116,395,3,255.5,3L255.5,3z
+                                                                 M273.5,395.9c-5.9,5.2-12.7,7.8-20.4,7.8c-7.9,0-14.9-2.6-20.8-7.7c-5.9-5.2-8.9-12.4-8.9-21.6c0-8.2,2.9-15.2,8.6-20.8
+                                                                 c5.8-5.6,12.8-8.4,21.1-8.4c8.2,0,15.2,2.8,20.8,8.4c5.6,5.6,8.4,12.5,8.4,20.8C282.3,383.5,279.4,390.6,273.5,395.9L273.5,395.9z
+                                                                 M346.6,214.6c-4.6,8.4-9.9,15.6-16.1,21.6c-6.2,6.1-17.3,16.3-33.4,30.6c-4.4,4-8,7.6-10.7,10.7c-2.6,3.1-4.6,5.8-5.9,8.4
+                                                                 c-1.3,2.6-2.3,5.1-3.1,7.7c-0.7,2.5-1.8,7-3.2,13.4c-2.5,13.5-10.3,20.3-23.3,20.3c-6.8,0-12.5-2.2-17.1-6.6c-4.6-4.5-7-11-7-19.8
+                                                                 c0-11,1.7-20.5,5.1-28.5c3.4-8,7.9-15.1,13.5-21.1c5.6-6.1,13.2-13.3,22.7-21.7c8.4-7.3,14.4-12.8,18.1-16.5
+                                                                 c3.8-3.7,6.9-7.8,9.4-12.4c2.6-4.5,3.8-9.5,3.8-14.9c0-10.4-3.9-19.3-11.6-26.4c-7.8-7.2-17.8-10.8-30.1-10.8
+                                                                 c-14.3,0-24.9,3.6-31.7,10.9c-6.8,7.2-12.5,17.9-17.2,32c-4.5,14.8-12.9,22.1-25.2,22.1c-7.3,0-13.5-2.6-18.5-7.7
+                                                                 c-5-5.2-7.5-10.7-7.5-16.7c0-12.4,3.9-25,11.9-37.7c8-12.8,19.6-23.3,34.8-31.7c15.3-8.4,33.1-12.5,53.4-12.5
+                                                                 c18.9,0,35.6,3.5,50.1,10.5c14.5,7,25.7,16.5,33.6,28.5c7.9,12,11.8,25.1,11.8,39.2C353.4,196.5,351.1,206.2,346.6,214.6
+                                                                 L346.6,214.6z M346.6,214.6"/>
+                                                    </g>
+                                                </svg>
+                                                <p class="tituloApps">FAQS</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0 py-0">
+                                        <a href="" data-toggle="modal" data-target="#modalSv" class="abrir_modal_soporte">
+                                            <div class="opcApps text-center">
+                                                <svg class="imgApps changeApp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                     viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                                    <path d="M496,6H12v432h484V6z M508,453.8V505H3v-51.2h227.2v10.9h50.7v-10.9H508z M255.5,81.8 M483.9,372h-94.2v-17.7
+                                                             c0-21.4-16.2-47.9-36-58.6l-45.5-24.7l-30,71.1l-14.8-46c-3.2,0.7-6.2,1.6-9.5,1.6c-3.1,0-6.3-0.9-9.4-1.6l-15.7,48.4l-30.6-72.7
+                                                             l-44.1,23.9c-19.9,10.7-36.1,37.2-36.1,58.5V372H24V21h460L483.9,372L483.9,372z M166.9,209.8c5.6,24.9,19.3,46.5,38.7,60.6
+                                                             c0.3,4.2,3.1,8.7,7.6,11.3c6.1,3.7,13.1,2.5,15.4-2.5c2.3-5-0.9-12.1-7-15.7c-3.8-2.2-7.7-2.5-10.9-1.3
+                                                             c-16.8-12.1-29.1-30.6-34.6-52c5.6-1.9,9.7-7.9,9.7-14.9v-6.9c7.5,42.9,35.1,82.7,68.1,82.7c33,0,60.6-39.8,68-82.7v6.9
+                                                             c0,8.7,6.2,15.7,13.9,15.7c7.6,0,13.8-7,13.8-15.7v-32.8c0-5.5-2.5-10.4-6.4-13.2c-5.1-51.1-43.2-90.8-89.4-90.8
+                                                             s-84.2,39.8-89.4,90.8c-3.8,2.8-6.4,7.7-6.4,13.2v32.8C158.2,201.8,161.8,207.5,166.9,209.8L166.9,209.8z M254,68.5
+                                                             c40.6,0,74.1,34.1,80.1,78.4c-4.6,0.7-8.4,4-10.5,8.4c-4-43.6-33.6-66.7-69.6-66.7c-35.9,0-65.5,23.1-69.6,66.7
+                                                             c-1.5-3.2-3.8-5.9-6.9-7.3c-0.5-1-1.3-1.8-2.2-2.2c-0.5-0.3-0.9-0.3-1.3-0.3C180.5,101.8,213.9,68.5,254,68.5L254,68.5z M266,402.5
+                                                             c0,6.9-5.4,12.5-12,12.5s-12-5.6-12-12.5s5.4-12.5,12-12.5S266,395.6,266,402.5z M264.2,402.5c0,5.8-4.5,10.5-10.1,10.5
+                                                             s-10.1-4.7-10.1-10.5s4.5-10.5,10.1-10.5S264.2,396.7,264.2,402.5z"/>
+                                                </svg>
+                                                <p class="tituloApps">Soporte Virtual</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
+                    <div class="d-flex flex-column">
+                        <div class="wrapperDdMenu" data-toggle="tooltip" data-placement="bottom" title="{{ 'Configuración del usuario'|trans }}">
+                            <a href="#" class="perfil no-decorate" id="config">
+                                {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+                                <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown" >expand_more</span>
+                            </a>
+                            <ul class="dropDownMenu">
+                                <li class="mark"></li>
+                                <a href="{{ path('_usuariop') }}">
+                                    <li class="opcList">
+                                        <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
+                                    </li>
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#modalCs">
+                                    <li class="opcList markOpc">
+                                        <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            {% endblock %}
+        </header>
+
+        <a data-toggle="modal" data-target="#modalCs2" id="automaticLogout"></a>
+
+        <div class="container-fluid mt-6">
+            
+            {# SIDE MENU #}
+            {% block sidemenu %}
+                <nav>
+                    <div id="mainSidenav" class="main-sidenav ">
+                        <a href="javascript:void(0)" class="justify-content-end text-right" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
+                        <a class="d-flex mt-1 mb-3 text-nowrap modulo" id="dashBoard" href="{{ path('_inicio') }}"> <i class="material-icons mr-2">home</i> Inicio </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="misProg" href="{{ path('_misProgramas') }}"> <i class="material-icons mr-2">bookmark</i> Mi avance </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="proG" href="{{ path('_programas') }}"> <i class="material-icons mr-2">dashboard</i> Plan de estudio </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="biBlio" href="{{ path('_biblioteca')}}"> <i class="material-icons mr-2">import_contacts</i>  Biblioteca </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="calEve" href="{{ path('_calendarioDeEventos') }}"> <i class="material-icons mr-2">event</i>  Calendario </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="notiNove" href="{{ path('_noticias') }}"> <i class="material-icons mr-2">library_books</i>  Noticias & <br> Novedades </a>
+
+                    </div>
+                </nav>
+            {% endblock %}
+
+            <div id="main" class="{% block bg %}{% endblock %}">
+
+                {% block body %}
+                    skbvgflsbvlashbl
+                {% endblock %}
+                
+                <footer class="container footer">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3 text-center">
+                            <img src="{{ asset('front/assets/img/formacion2.0.svg') }}" class="imgForm" alt="">
+                        </div>
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3 text-center">
+                            <a href="https://linkgerencial.com" class="links">Link Gerencial Consultores</a>
+                        </div>
+                        <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3">
+                            <ul class="ayudaForm">
+                                <li>
+                                    <a href="#" class="links">Reportar un problema</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="links">Ayuda</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 text-center">
+                            <span class="cpyR">Copyright &copy; 2018 Formación2.0 Todos los derechos reservados</span>
+                        </div>
+                    </div>
+                </footer>
+                
+            </div>
+
+            {% block comments %}{% endblock %}
+
+        </div>
+
+        <!-- Modal Cerrar Sesion-->
+        <div class="modal modalCerrarSesion" id="modalCs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">{{ '¿Estás segur@ de que deseas cerrar la sesión?'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <a href="{{ path('_logout', { 'ruta': '_login' }) }}"><button type="button" class="btn btn-primary btn-Cs">{{ 'Cerrar sesión'|trans }}</button></a>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <a href="#" class="cancelarCs" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+         {{ include('LinkFrontendBundle:Default:soporteVirtual.html.twig') }}
+         {{ include('LinkFrontendBundle:Default:confirmacionEmail.html.twig') }}
+        
+        <!-- Modal Cierre Automático de Sesion-->
+        <div class="modal modalCerrarSesion" id="modalCs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">{{ 'La sesión se cerrará automáticamente en'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <input type="hidden" id="remaining" name="remaining" value="{{ remaining_time }}">
+                        <input type="hidden" id="remaining_time" name="remaining_time" value="{{ remaining_time }}">
+                        <input type="hidden" id="timer" name="timer" value="">
+                        <input type="hidden" id="sesion_time" name="sesion_time" value="{{ sesion_front_time }}">
+                        <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_login' }) }}">
+                        <h3><span id="seconds">{{ remaining_time }}</span> segundos</h3>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-end justify-content-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                        <button type="button" class="btn btn-primary btn-Cs" id="keepSession" data-dismiss="modal">{{ 'Mantener abierta la sesión'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Notificacion del tipo muro-->
+        <div class="modal modalMuroNotify pb-4" id="modalMn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="container-fluid">
+                <div class="row align-items-end justify-content-end">
+                    <div class="col-auto text-center">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                        <h4 class="titulo">Notificación de muro</h4>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-2 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center py-0" id="padre">
+                        
+                        
+                    </div>
+                </div>
+                <form id="respuesta" method="POST" action="{{ path('_ajaxRespuestaComentario') }}">
+                    <input type="hidden" id="notificaciones_muro_id" name="notificaciones_muro_id" value="">
+                    <div class="row mt-1 justify-content-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-left">
+                            <div class="form-group">
+                                <textarea class="form-control textAsv" rows="4" id="comentario" aria-describedby="messageSupportVirtual" placeholder="Escriba su mensaje"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1 align-items-center justify-content-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                            <a href="#"><button type="button" id="responder" class="btn btn-primary btnEnv">Enviar</button></a>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center" style="display:none;" id="notificaciones_wait">
+                        <div class="col-auto px-0 py-0">
+                            <div class="contenedor">
+                                <div class="radar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% block javascripts %}
+            <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+            <script src="{{ asset('front/js/popper.min.js')}}"></script>
+            <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('js/front/alarmas.js') }}"></script>
+            <script src="{{ asset('front/js/custom.js') }}"></script>
+            <script src="{{ asset('front/js/plugins/video.js/video.min.js') }}"></script>
+            <script src="{{ asset('front/js/plugins/mediaelement-4.2.8/build/mediaelement-and-player.min.js') }}"></script>
+            <script src="{{ asset('front/js/audio.js') }}"></script>
+            <script src="{{ asset('js/front/expireSession.js') }}"></script>
+            <script src="{{ asset('js/front/soporte_virtual.js') }}"></script> 
+            <script src="{{ asset('js/front/tutoriales.js') }}"></script>       
+        {% endblock %}
     </body>
 </html>

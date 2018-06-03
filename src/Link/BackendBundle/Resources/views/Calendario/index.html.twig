@@ -1,0 +1,571 @@
+{% extends '::admin.html.twig'%}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Full calendar css -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fullcalendar/fullcalendar.print.css') }}" type="text/css"  media="print">
+    <link rel="stylesheet" href="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.min.css') }}" type="text/css">
+    <style type="text/css">
+      .fc button{
+        height: 100%;
+      }
+      .fc-toolbar .fc-state-active, .fc-toolbar .ui-state-active {
+        color: #ffffff !important;
+        background: #00558D;
+        background: -moz-linear-gradient(left, #0084db 0%, #00558D 100%);
+        background: -webkit-linear-gradient(left, #0084db 0%, #00558D 100%);
+        background: linear-gradient(to right, #0084db 0%, #00558D 100%);
+        color: black;
+        color: #ffffff;
+        border-bottom: 2px solid #A3C300
+      }
+      .fc-center h2{
+        font-size: 25px;
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+      .wrapper-content{
+        position: inherit !important;
+      }
+      .fc-day-grid-event .fc-content {
+        white-space: normal !important;
+       }
+    </style>
+{% endblock %}
+
+{% block body %}
+{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
+{% set uri = app.request.getbasepath %}
+<br>
+<br>
+<input type="hidden" id="url_eventos" name="url_eventos" value="{{ path('_eventos', { 'userID': usuario.id }) }}">
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+      <div id='calendar'></div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <form id="form" class="form-horizontal" method="POST" action="{{ path( '_calendario_update') }}">
+            {% if usuario_empresa %}
+                <input type="hidden" id="empresa_usuario" name="empresa_usuario" value="{{ empresa_id }}">
+            {% endif %}
+            <input type="hidden" id="usuario" name="usuario" value="{{ usuario.id }}">
+            <input type="hidden" id="evento_id" name="evento_id" value="">
+            <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                <h5 class="modal-title" id="CreateUpdateTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: #fff;">&times;</span>
+                </button>
+            </div>
+          <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Título'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input class="form-control form_sty_sel form_sty_modal" id="title" name="title" style="border-radius: 5px;" placeholder="{{ 'Título'|trans }}">
+                            <span class="fa fa-font"></span>
+                        </div>
+                    </div>
+                    <label id="title-error" class="error" for="title" style="display:none;"></label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha inicio'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="datetime" class="form-control form_sty1 form_datetime" name="start" id="start" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                    <label id="start-error" class="error" for="start" style="display:none;"></label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Fecha fin'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input type="datetime" class="form-control form_sty1 form_datetime" name="end" id="end" style="border-radius: 5px;">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                    </div>
+                    <label id="end-error" class="error" for="end" style="display:none;"></label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Descripción'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <textarea rows="4" class="form-control" id="descripcion" name="descripcion" placeholder="{{ 'Descripción'|trans }}..."></textarea>
+                        </div>
+                    </div>
+                    <label id="descripcion-error" class="error" for="descripcion" style="display:none;"></label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-control-label">{{ 'Lugar'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <input class="form-control form_sty_sel form_sty_modal" id="lugar" name="lugar" style="border-radius: 5px;" placeholder="{{ 'Lugar'|trans }}">
+                            <span class="fa fa-location-arrow"></span>
+                        </div>
+                    </div>
+                    <label id="lugar-error" class="error" for="lugar" style="display:none;"></label>
+                </div>
+                {% if not usuario_empresa %}
+                    <div class="row">
+                        <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <label for="tipo_destino_id" class="form-control-label">{{ 'Empresa'|trans }}:</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                                <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="empresa" name="empresa">
+                                    <option value="0"></option>
+                                    {% for empresa in empresas %}
+                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-industry"></span>
+                                <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                            </div>
+                            <label id="empresa-error" class="error" for="empresa" style="display:none;"></label>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="tipo_destino_id" class="form-control-label">{{ 'Nivel'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 0.5rem; margin-bottom: 0.5rem">
+                            <select class="form_sty_sel form-control form_sty_modal" style="border-radius: 5px" id="nivel" name="nivel">
+                                <option value="0">Todos Los niveles</option>
+                                {% for nivel in niveles %}
+                                    <option value="{{ nivel.id }}" >{{ nivel.nombre }}{% if not usuario_empresa %} - ({{ nivel.empresa.nombre }}){% endif %}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="fa fa-book"></span>
+                            <span class="bttn_d"><img src="/formacion2.0/web/img/down-arrowwht.png" alt=""></span>
+                        </div>
+                        <label id="nivel-error" class="error" for="nivel" style="display:none;"></label>
+                    </div>
+                </div>
+          </div>
+          </form>
+          <div class="modal-header" id="detail-title" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff; display:none;">
+            <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Evento guardado'|trans }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" style="color: #fff;">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="detail" style="display:none;">
+            <div class="alert alert-success" role="alert" id="alert-success"> 
+                <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El evento ha sido guardado con éxito'|trans }}. 
+            </div>
+            <div class="card" id="detail">
+                <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
+                    <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Evento'|trans}}</h4>
+                </div>
+                <div class="card-block">
+                    <div class="container">
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{ 'Título'|trans }}:</h5>
+                                <p id="p-titulo"></p>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{'Fecha inicio'| trans}}</h5>
+                                <p id="p-fechainicio"></p>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{'Fecha fin'| trans}}</h5>
+                                <p id="p-fechafin"></p>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{'Descripción'| trans}}</h5>
+                                <p id="p-descripcion"></p>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{'Lugar'| trans}}</h5>
+                                <p id="p-lugar"></p>
+                            </div>
+                        </div>
+                        <br>
+                        {% if not usuario_empresa %}
+                            <div class="row justify-content-between">
+                                <div class="col-sm-16 col-md-16 show__details">
+                                    <h5>{{'Empresa'| trans}}</h5>
+                                    <p id="p-empresa"></p>
+                                </div>
+                            </div>
+                            <br>
+                        {% endif %}
+                        <div class="row justify-content-between">
+                            <div class="col-sm-16 col-md-16 show__details">
+                                <h5>{{'Nivel'| trans}}</h5>
+                                <p id="p-nivel"></p>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="modal-header" id="title-error" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff; display:none;">
+            <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Evento no guardado'|trans }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" style="color: #fff;">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="detail-error" style="display:none;">
+            <div class="alert alert-danger" role="alert" id="alert-error"> 
+                <strong>{{ 'Error'|trans }}!</strong> {{ 'No se pudo guardar el evento. Inténtalo de nuevo.'|trans }}. 
+            </div>
+          </div>
+          <div class="modal-footer" id="save_create" style="display:none;">
+                <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar_save_create"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
+                <button type="submit" class="bttn__save" id="guardar_save_create"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+          </div>
+          <div class="modal-footer" id="save_update" style="display:none;">
+                <button type="button" class="bttn__cancel" data-dismiss="modal" id="cancelar_save_update"><span class="text__cancel">{{ 'Cancelar'|trans }}</span><span class="fa fa-times"></span></button>
+                <button type="button" class="bttn__cancel" data-dismiss="modal" id="delete_save_update" data=""><span class="text__cancel">{{ 'Eliminar'|trans }}</span><span class="fa fa-trash"></span></button>
+                <button type="submit" class="bttn__save" id="guardar_save_update"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+          </div>
+          <div class="modal-footer" id="save_show" style="display:none;">
+                <button type="button" class="bttn__cancel" data-dismiss="modal" id="delete_save_show" data=""><span class="text__cancel">{{ 'Eliminar'|trans }}</span><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__save" id="aceptar_save_show" style="" data-dismiss="modal"><span class="text__save">{{ 'Aceptar'|trans }}</span><span class="fa fa-check"></span></button>
+          </div>
+          <div class="modal-footer" id="save_show_update" style="display:none;">
+                <button type="button" class="bttn__cancel" data-dismiss="modal" id="delete_save_show_update" data=""><span class="text__cancel">{{ 'Eliminar'|trans }}</span><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__save" id="aceptar_save_show_update"><span class="text__save">{{ 'Aceptar'|trans }}</span><span class="fa fa-check"></span></button>
+          </div>
+          <div class="modal-footer" id="save_error" style="display:none;">
+                <button type="button" class="bttn__save" id="aceptar_save_error"><span class="text__save">{{ 'Aceptar'|trans }}</span><span class="fa fa-check"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/cicular_progress/circle-progress.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/sparklines/jquery.sparkline.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/lib/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/fullcalendar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/fullcalendar/locale/es.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/calendar.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.es.js') }}"></script>
+    <script type="text/javascript">
+       $(document).ready(function() {
+            
+            $("#form").validate({
+                rules: {
+                    'title': {
+                        required: true,
+                    },
+                    'descripcion': {
+                        required: true,
+                    },
+                    'lugar': {
+                        required: true,
+                    },
+                    'nivel': {
+                        required: true,
+                    },
+                    'empresa': {
+                        required: true,
+                    },
+                    'start_date': {
+                        required: true,
+                    },
+                    'end_date': {
+                        required: true,
+                    }
+                },
+                messages: {
+                    'title': {
+                        required: "- {{ 'El título es requerido.'|trans }}",
+                    },
+                    'descripcion': {
+                        required: "- {{ 'La descripción es requerida.'|trans }}",
+                    },
+                    'lugar': {
+                        required: "- {{ 'El lugar es requerido.'|trans }}",
+                    },
+                    'nivel': {
+                        required: "- {{ 'El nivel es requerido'|trans }}",
+                    },
+                    'empresa': {
+                        required: "- {{ 'La empresa es requerida.'|trans }}",
+                    },
+                    'start_date': {
+                        required: "- {{ 'La fecha de inicio es requerida.'|trans }}",
+                    },
+                    'end_date': {
+                        required: "- {{ 'La fecha de fin es requerida.'|trans }}",
+                    }
+                }
+            });
+
+           var date = new Date();
+           var yyyy = date.getFullYear().toString();
+           var mm = (date.getMonth()+1).toString().length == 1 ? "0"+(date.getMonth()+1).toString() : (date.getMonth()+1).toString();
+           var dd  = (date.getDate()).toString().length == 1 ? "0"+(date.getDate()).toString() : (date.getDate()).toString();
+            
+            $('#calendar').fullCalendar({
+                header: {
+                    language: 'es',
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay',
+
+                },
+                defaultDate: yyyy+"-"+mm+"-"+dd,
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end) {
+                    
+                    $('.error').hide();
+                    $('#CreateUpdateTitle').html("{{ 'Crear evento'|trans }}");
+                    $('#Modal #evento_id').val('');
+                    $('#Modal #title').val('');
+                    $('#Modal #descripcion').val('');
+                    $('#Modal #empresa').val('');
+                    $('#Modal #nivel').val('');
+                    $('#Modal #lugar').val('');
+                    $('#Modal #start').val(moment(start).format('DD-MM-YYYY hh:mm a'));
+                    $('#Modal #end').val(moment(end).format('DD-MM-YYYY hh:mm a'));
+                    $('#save_create').show();
+                    $('#detail-title').hide();
+                    $('#detail').hide();
+                    $('#form').show();
+                    $('#save_update').hide();
+                    $('#save_show').hide();
+                    $('#save_show_update').hide();
+                    $('#save_error').hide();
+                    $('#Modal').modal('show');
+                    $('#guardar_save_create').click(function(){
+                        $('#save_create').hide();
+                        saveEvento();
+                    });
+                },
+                eventRender: function(event, element) {
+                    element.bind('click', function() {
+                        var eve_id = event.id;
+                        var comienzo = $.fullCalendar.formatDate(event.start, 'DD-MM-YYYY hh:mm a');
+                        var final = event.end ? $.fullCalendar.formatDate(event.end, 'DD-MM-YYYY hh:mm a') : '';
+                        $('#Modal #delete_save_update').attr("data",eve_id);
+                        $('#CreateUpdateTitle').html("{{ 'Modificar evento'|trans }}");
+                        $('#Modal #evento_id').val(eve_id);
+                        $('#Modal #delete').show();
+                        $('#Modal #title').val(event.title);
+                        $('#Modal #start').val(comienzo);
+                        $('#Modal #end').val(final);
+                        $('#Modal #descripcion').val(event.descripcion);
+                        $('#Modal #empresa').val(event.empresa_id);
+                        $('#Modal #nivel').val(event.nivel_id);
+                        $('#Modal #lugar').val(event.lugar);
+                        $('#save_create').hide();
+                        $('#save_update').show();
+                        $('#detail-title').hide();
+                        $('#detail').hide();
+                        $('#form').show();
+                        $('#save_show').hide();
+                        $('#save_show_update').hide();
+                        $('#save_error').hide();
+                        $('#Modal').modal('show');
+                        $('#guardar_save_update').click(function(){
+                            $('#save_update').hide();
+                            saveEvento();
+                        });
+                    });
+                },
+                eventDrop: function(event, delta, revertFunc) { // si changement de position
+
+                    edit(event);
+
+                },
+                eventResize: function(event,dayDelta,minuteDelta,revertFunc) { // si changement de longueur
+
+                    edit(event);
+
+                },
+                events: "{{ path('_eventos', { 'userID': usuario.id }) }}",
+                timeFormat: 'hh:mm a'
+            });
+            
+            function edit(event){
+                start = event.start.format('DD-MM-YYYY hh:mm a');
+                if(event.end){
+                    end = event.end.format('DD-MM-YYYY hh:mm a');
+                }else{
+                    end = start;
+                }
+                
+                id =  event.id;
+                
+                Event = [];
+                Event[0] = id;
+                Event[1] = start;
+                Event[2] = end;
+                
+                $.ajax({
+                 url: "{{ path( '_calendario_edit') }}",
+                 type: "POST",
+                 data: {Event:Event},
+                 success: function(data) {
+                        if(data.status == 'success'){
+                            $('#Modal #delete_save_show').attr("data",data.id);
+                            $('#p-titulo').html(data.titulo);
+                            $('#p-descripcion').html(data.descripcion);
+                            $('#p-lugar').html(data.lugar);
+                            $('#p-empresa').html(data.empresa);
+                            $('#p-nivel').html(data.nivel);
+                            $('#p-fechainicio').html(data.fechainicio);
+                            $('#p-fechafin').html(data.fechafin);
+                            $('.delete').click(function()
+                            {
+                                var evento_id= $(this).attr('data');
+                                sweetAlertDelete(evento_id, 'AdminEvento');
+                            });
+                            $('#detail').show();
+                            $('#detail-title').show();
+                            $('#save_create').hide();
+                            $('#save_update').hide();
+                            $('#save_show').show();
+                            $('#save_show_update').hide();
+                            $('#save_error').hide();
+                            $('#form').hide();
+                            $('#Modal').modal('show');
+                            
+                            clearTimeout( timerId );
+                        }else{
+                            $('#form').hide();
+                            $('#detail-title').hide();
+                            $('#detail').hide();
+                            $('#title-error').show();
+                            $('#detail-error').show();
+                            $('#save_create').hide();
+                            $('#save_update').hide();
+                            $('#save_show').hide();
+                            $('#save_error').show();
+                            $('#save_show_update').hide();
+                            $('#Modal').modal('show'); 
+                        }
+                    }
+                });
+            }
+
+            function saveEvento()
+            {
+                if ($("#form").valid())
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: $('#form').attr('action'),
+                        async: true,
+                        data: $("#form").serialize(),
+                        dataType: "json",
+                        success: function(data) {
+                            $('#Modal #delete_save_show_update').attr("data",data.id);
+                            $('#p-titulo').html(data.titulo);
+                            $('#p-descripcion').html(data.descripcion);
+                            $('#p-lugar').html(data.lugar);
+                            $('#p-empresa').html(data.empresa);
+                            $('#p-nivel').html(data.nivel);
+                            $('#p-fechainicio').html(data.fechainicio);
+                            $('#p-fechafin').html(data.fechafin);
+                            $('.delete').click(function()
+                            {
+                                var evento_id= $(this).attr('data');
+                                sweetAlertDelete(evento_id, 'AdminEvento');
+                            });
+                            $('#form').hide();
+                            $('#detail-title').show();
+                            $('#detail').show();
+                            $('#save_create').hide();
+                            $('#save_update').hide();
+                            $('#save_show').hide();
+                            $('#save_error').hide();
+                            $('#save_show_update').show();
+                            clearTimeout( timerId );
+                        },
+                        error: function(){
+                            $('#guardar').prop('disabled', false);
+                            $('#ModalShowEditError').modal('show');
+                            $('#form').hide();
+                            $('#detail-title').hide();
+                            $('#detail').hide();
+                            $('#title-error').show();
+                            $('#detail-error').show();
+                            $('#save_create').hide();
+                            $('#save_update').hide();
+                            $('#save_error').show();
+                            $('#save_show').hide();
+                            $('#save_show_update').hide();
+                            $('#Modal').modal('show');
+                        }
+                    });
+                }else{
+                    $('#form').show();
+                    $('#detail-title').hide();
+                    $('#detail').hide();
+                    $('#save_create').show();
+                    $('#save_update').hide();
+                    $('#save_show').hide();
+                    $('#save_show_update').hide();
+                    $('#save_error').hide();
+                }
+            }
+
+            $('#delete_save_update').click(function(){
+                var notificacion_id = $(this).attr('data');
+                sweetAlertDelete(notificacion_id, 'AdminEvento');
+            });
+
+            $('#delete_save_show').click(function(){
+                var notificacion_id = $(this).attr('data');
+                sweetAlertDelete(notificacion_id, 'AdminEvento');
+            });
+
+            $('#delete_save_show_update').click(function(){
+                var notificacion_id = $(this).attr('data');
+                sweetAlertDelete(notificacion_id, 'AdminEvento');
+            });
+
+            $('#aceptar_save_show_update').click(function(){
+                location.reload();
+            });
+
+            $('#aceptar_save_error').click(function(){
+                location.reload();
+            });
+            $('.form_datetime').datetimepicker({
+                language:  'es',
+                todayBtn:  true,
+                autoclose: true,
+                todayHighlight: true,
+                showMeridian: true,
+                format: 'dd-mm-yyyy HH:ii p'
+            });
+        });
+    </script>
+    
+{% endblock %}

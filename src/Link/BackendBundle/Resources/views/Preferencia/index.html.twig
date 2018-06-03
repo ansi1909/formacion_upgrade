@@ -1,0 +1,96 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+<br>
+
+<div class="row align-items-center justify-content-between">
+    <div class="col-12 col-sm-12 page-title">
+        <h3>{{ 'Preferencia de plantillas de las empresas'|trans }}</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-8 col-md-8 col-lg-8">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                            <th class="hd__title">{{ 'País'|trans }}</th>
+                            <th class="hd__title">{{ 'Plantilla'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for empresa in empresas %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            <tr class="{{ eo }}">
+                                <td>{{ empresa.nombre }}</td>
+                                <td>{{ empresa.pais }}</td>
+                                <td>{{ empresa.plantilla }}</td>
+                                <td class="center f_icon">
+                                    <a href="{{ path('_preferencia', { 'empresa_id': empresa.id, 'preferencia_id': empresa.preferencia_id }) }}" title="{{ 'Configurar'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-gears"></span></a>
+                                    <a href="#" title="{{ 'Ver thumbnails'|trans }}" class="btn btn-link btn-sm see" data="{{ empresa.layout_id }}"><span class="fa fa-picture-o"></span></a>
+                                    {% if empresa.preferencia_id %}
+                                        <a href="{{ path('_showPreferencia', { 'preferencia_id': empresa.preferencia_id }) }}" title="{{ 'Mostrar preferencia'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
+                                    {% endif %}
+                                    <a href="" title="{{ 'Vista previa del dashboard'|trans }}" class="btn btn-link btn-sm" target="_blank"><span class="fa fa-dashboard"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 col-8" id="div-thumbs" style="display:none;">
+        {% for layout in layouts %}
+            <div class="card cardThumb"  id="thumbnails-{{ layout.id }}" style="display:none;">
+                <div class="card-header gradiente">
+                    <h5 class="card-title">{{ 'Thumbnails de la plantilla'|trans }} {{ layout.twig }}</h5>
+                </div>
+                <div class="card-block">
+                    {% for thumbnail in layout.thumbnails %}
+                        {% if loop.first %}
+                            <div class="list-unstyled project-list row">
+                        {% endif %}
+                        <div class="col-md-16 col-lg-8 col-xl-8">
+                            {% set img = thumbnail.url ? uploads~thumbnail.url : asset('img/picture.png') %}
+                            <div class="media flex-column">
+                                <span class="projectpic"><img src="{{ img }}" alt="Thumbnail"><span class="user-status bg-success"></span></span>
+                            </div>
+                            <p class="card-text">{{ thumbnail.nombre }}</p>
+                        </div>
+                        {% if loop.index is divisibleby(2) %}
+                            </div>
+                            <br>
+                            {% if not loop.last %}
+                                <div class="list-unstyled project-list row">
+                            {% endif %}
+                        {% else %}
+                            {% if loop.last %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">{{ 'Thumbnails inexistentes'|trans }}!</h4>
+                            <p>{{ 'Esta plantilla no posee thumbnails en la base de datos'|trans }}.</p>
+                            <p>{{ 'Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla'|trans }}.</b>.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/preferencias.js') }}"></script>
+{% endblock %}

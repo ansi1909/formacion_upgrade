@@ -1,0 +1,297 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+    {% set rol = app.session.get('administrador') ? 'true' : 'false' %}
+    <br><br>
+    {% if rol == 'true' %}
+    <div class="admin_dash" >
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="activity-block linkg1">
+                    <div class="media">
+                        <div class="media-body">
+                            <h5>#<span class="spincreament">{{empresas}}</span></h5>
+                            <p>{{'Empresas registradas' |trans}}</p>
+                        </div>
+                        <i class="fa fa-industry"></i>
+                    </div>
+                    <br>
+                    <i class="bg-icon text-center fa fa-pencil"></i>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="activity-block linkg2">
+                    <div class="media">
+                        <div class="media-body">
+                            <h5>#<span class="spincreament">{{activas}}</span></h5>
+                            <p>{{'Empresas activas' |trans}}</p>
+                        </div>
+                        <i class="fa fa-industry"></i> </div>
+                    <br>
+                    <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i> 
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="activity-block danger">
+                    <div class="media">
+                        <div class="media-body">
+                            <h5>#<span class="spincreament">{{inactivas}}</span></h5>
+                            <p>{{'Empresas inactivas' |trans}}</p>
+                        </div>
+                        <i class="fa fa-industry"></i> </div>
+                    <br>
+                    <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i> 
+                </div>
+            </div>
+        </div>
+        <!-- fin bloques de empresas registradas -->
+        <br>
+        <div class="row">
+            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <div class="card-title"><span class="fa fa-industry"></span> {{'Listado de empresas activas' |trans}}</div>
+                    </div>
+                    <div class="card-block">
+                        <table class="table" id="dt">
+                            <thead class="sty__title">
+                                <tr>
+                                    <th class="hd__title text-center">{{'Empresas' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Prog. asociados' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Usuarios reg.' |trans}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for empresaA in empresasA %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                <tr class="{{eo}}">
+                                    <td>{{empresaA.nombre}}</td>
+                                    <td>
+                                        {% if empresaA.tiene > 0 %}
+                                            <div class="tree">
+                                                <ul data-jstree='{ "opened" : true }'>
+                                                    {{ empresaA.programas|raw }}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            {{ 'No tiene sub-páginas'|trans }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center"><span>{{empresaA.usuarios}} <i class="fa fa-user"></i></span></td>
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <div class="card-title"><span class="fa fa-industry"></span> {{'Listado de empresas inactivas' |trans}}</div>
+                    </div>
+                    <div class="card-block">
+                        <table class="table" id="dt2">
+                            <thead class="sty__title">
+                                <tr>
+                                    <th class="hd__title text-center">{{'Empresas' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Prog. asociados' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Usuarios reg.' |trans}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for empresaI in empresasI %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                <tr class="{{eo}}">
+                                    <td>{{empresaI.nombre}}</td>
+                                    <td>
+                                        {% if empresaI.tiene > 0 %}
+                                            <div class="tree">
+                                                <ul data-jstree='{ "opened" : true }'>
+                                                    {{ empresaI.programas|raw }}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            {{ 'No tiene sub-páginas'|trans }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center"><span>{{empresaI.usuarios}} <i class="fa fa-user"></i></span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <div class="card-title">{{'Gráfico del promedio de conexiones' |trans}}</div>
+                    </div>
+                    <div class="card-block">
+                        <div id="morris-bar-chart"></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-start">
+                                <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-end">
+                                <form action="">
+                                    <div class="form row" style="margin-bottom: 0px;">
+                                        <label for="emp_select" class="col-sm-3 col-md-3 col-lg-3 col-xl-3 offset-md-5 offset-sm-5 offset-lg-5 offset-xl-5 col-form-label text-right">{{'Empresa' |trans}}:</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8" style="padding: 0px 15px 0px 0px;">
+                                            <select class="form-control form_sty_sel" id="emp_select" style="border-radius: 5px;">
+                                                <option>Seleccione una empresa</option>
+                                            </select>
+                                            <span class="fa fa-industry"></span>
+                                            <span class="bttn_d"><img src="{{ asset('img/down-arrowwht.png') }}" alt=""></span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="emp_dash">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="activity-block linkg1">
+                    <div class="media">
+                        <div class="media-body">
+                            <h5>#<span class="spincreament">{{total}}</span></h5>
+                            <p>{{'Usuarios registrados' |trans}}</p>
+                        </div>
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <br>
+                    <i class="bg-icon text-center fa fa-pencil"></i>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="activity-block linkg2">
+                    <div class="media">
+                        <div class="media-body">
+                            <h5>#<span class="spincreament">{{activos}}</span></h5>
+                            <p>{{'Usuarios activos' |trans}}</p>
+                        </div>
+                        <i class="fa fa-user"></i> </div>
+                    <br>
+                    <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i> 
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="activity-block danger">
+                    <div class="media">
+                        <div class="media-body">
+                            <h5>#<span class="spincreament">{{inactivos}}</span></h5>
+                            <p>{{'Usuarios inactivos' |trans}}</p>
+                        </div>
+                        <i class="fa fa-user-times"></i> </div>
+                    <br>
+                    <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i> 
+                </div>
+            </div>
+        </div>
+        <!-- fin bloques de empresas registradas -->
+        <br>
+        <div class="row">
+            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <div class="card-title">{{'Listado de programas' |trans}}</div>
+                    </div>
+                    <div class="card-block">
+                        <table class="table" id="dt">
+                            <thead class="sty__title">
+                                <tr>
+                                    <th class="hd__title">{{'Nombre' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Usuarios registrados' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Usuarios cursando' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Usuarios culminados' |trans}}</th>
+                                    <th class="hd__title text-center">{{'Usuarios no iniciados' |trans}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pagina in paginas %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                <tr class="{{eo}}">
+                                    <td>{{pagina.pagina}}</td>
+                                    <td class="text-center"><span>{{pagina.usuariosT}} <i class="fa fa-user"></i></span></td>
+                                    <td class="text-center"><span>{{pagina.usuariosCur}} <i class="fa fa-user"></i></span></td>
+                                    <td class="text-center"><span>{{pagina.usuariosF}} <i class="fa fa-user"></i></span></td>
+                                    <td class="text-center"><span>{{pagina.usuariosN}} <i class="fa fa-user"></i></span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <div class="col-sm-16 col-md-16 text-right">
+                            <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <div class="card-title">{{'Gráfico del promedio de Conexiones' |trans}}</div>
+                    </div>
+                    <div class="card-block">
+                        <div id="morris-bar-chart"></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="col-sm-16 col-md-16 text-right">
+                            <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/vendor/cicular_progress/circle-progress.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendor/sparklines/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/chartjs/Chart.bundle.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendor/chartjs/utils.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendor/spincrement/jquery.spincrement.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/raphael/raphael.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/morrisjs/morris.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/dashboard1_light.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/dashboard.js') }}"></script>
+    <script type="text/javascript">
+        $('#frmt1, #frmt2').jstree({
+            'core' : {
+                'data' : [
+                    {
+                        "text" : "Pensamiento Estrategico",
+                        "state" : { "opened" : true },
+                        "children" : [
+                            {
+                                "text" : "Modulo1",
+                                "state" : { "selected" : true },
+                                "icon" : "jstree-file"
+                            },
+                            { "text" : "Modulo2", "state" : { "disabled" : true } }
+                        ]
+                    }
+                ]
+            }
+        });
+    </script>
+{% endblock %}

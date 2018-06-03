@@ -1,0 +1,48 @@
+{% extends '::'~preferencia.plantilla %}
+
+{% block title %}{{ 'Error de Excepción'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
+    {% set css = preferencia.css is not null and preferencia.css != '' ? asset(preferencia.css) : asset('front/client_styles/formacion/css/main.css') %}
+    <link rel="stylesheet" href="{{ css }}">
+{% endblock %}
+
+{% block header %}
+    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <a class="navbar-brand" href="#">
+            {% set img_logo = preferencia.logo is not null and preferencia.logo != '' ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
+            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+        </a>
+    </nav>
+{% endblock %}
+
+{% block sidemenu %}{% endblock %}
+
+{% block body %}
+    <section class="mt-22v error_except">
+        <div class="row align-content-center">
+            <div class="col-8">
+                <h3 class="titulo-error sub-line">{{ 'Error de Excepción'|trans }}</h3>
+                <h5 class="subtitulo-error">{{ mensaje.principal }}</h5>
+                <ul class="lista-error">
+                    {% for indicacion in mensaje.indicaciones %}
+                        <li class="elem-txt-error">
+                            <p class="text-error">{{ indicacion }}.</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-4 text-center">
+                <img class="img-error" src="{{ asset('front/assets/img/warning%20(1).svg') }}" alt="">
+                <h3 class="titulo-error">Error 404</h3>
+                {{ continuar|raw }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('front/js/custom.js') }}"></script>
+{% endblock %}

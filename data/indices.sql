@@ -1,6 +1,3 @@
-DROP INDEX IF EXISTS rol_usuario_ndx1;
-CREATE INDEX rol_usuario_ndx1 on admin_rol_usuario (rol_id, usuario_id);
-
 DROP INDEX IF EXISTS sesion_ndx1;
 CREATE INDEX sesion_ndx1 on admin_sesion (usuario_id);
 
@@ -44,7 +41,7 @@ DROP INDEX IF EXISTS foro_ndx1;
 CREATE INDEX foro_ndx1 on certi_foro (pagina_id);
 
 DROP INDEX IF EXISTS notificacion_ndx1;
-CREATE INDEX notificacion_ndx1 on admin_notificacion (usuario_id, usuario_tutor_id);
+CREATE INDEX notificacion_ndx1 on admin_notificacion (usuario_id);
 
 DROP INDEX IF EXISTS preferencia_ndx1;
 CREATE INDEX preferencia_ndx1 on admin_preferencia (empresa_id);
