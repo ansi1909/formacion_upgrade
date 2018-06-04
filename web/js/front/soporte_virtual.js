@@ -17,7 +17,7 @@ $(document).ready(function()
 			'mensaje':{'valor':$('#msjSv').val(),'id':'msjSv','error_id':'error_mensaje','error_visible':false}
 		};
 		          
-		///Verificar que los campos esten llenos
+		//Verificar que los campos esten llenos
 		errores.mensaje=campoVacio(campos.mensaje);
 		errores.asunto=campoVacio(campos.asunto);
 		if (campos.correo.valor!=undefined) //si el campo correo se muestra al usuario
@@ -32,6 +32,7 @@ $(document).ready(function()
    		  $('#wait_soporte').show(1000);
 		  enviarCorreo(campos,datosSession);
 		}
+		
 		          
 
 	});
@@ -78,6 +79,7 @@ function campoVacio(campo,correo=false)//verifica si un campo se encuentra vacio
 
 	if (correo) 
 	{
+		console.log('Entro a la existencia de correo ');
 		if (campo.valor.length!=0) //si el correo no esta vacio debemos verificar que sea un email valido
 		{
 			if(!emailValido.test(campo.valor))//si no es valido se muestra el mensaje de error
@@ -88,11 +90,13 @@ function campoVacio(campo,correo=false)//verifica si un campo se encuentra vacio
 			}
 		}
 	}
+		
 	if (campo.valor.length==0) //si el campo esta vacio se muestra el mensaje de error
 	{
-	    $('#'+campo.error_id).show();
-		$error=1;
+		$('#'+campo.error_id).show();
+		error=1;
 	}
+	
 
 	return error;
 }
