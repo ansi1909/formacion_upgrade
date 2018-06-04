@@ -18,7 +18,7 @@ class UsuarioController extends Controller
     	$session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -185,7 +185,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -399,7 +399,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -473,7 +473,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -573,7 +573,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -717,7 +717,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -742,7 +742,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
 
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -1073,7 +1073,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }

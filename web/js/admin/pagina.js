@@ -46,7 +46,7 @@ $(document).ready(function() {
 		}
 	} );
 
-	$('.nextBtn').click(function(){
+	$('.nextBtn, .stepwizard-step').click(function(){
 
 		// Cantidad de caracteres en la descripción
 		var editor_descripcion = CKEDITOR.instances.form_descripcion.getData();

@@ -294,7 +294,7 @@ class LoginController extends Controller
 	        								//$session = new session();
 			                                $session->set('iniFront', true);
 			                                $session->set('sesion_id', $admin_sesion->getId());
-			                                $session->set('code', $f->getLocaleCode());
+			                                $session->set('code', $yml['parameters']['search_locale'] ? $f->getLocaleCode() : 'VE');
 			                                $session->set('usuario', $datosUsuario);
 											$session->set('empresa', $empresa);
 											$session->set('paginas', $paginas);

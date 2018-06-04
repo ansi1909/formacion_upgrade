@@ -200,7 +200,7 @@
                                 <div class="col-sm-8 col-lg-8 col-md-8">
                                     <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.pdf) }}</label>
                                     <div class="col-sm-16 col-md-16 col-lg-16">
-                                        {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF', 'id':'form_pdf' } }) }}
+                                        {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF', 'id':'form_pdf', 'readonly': 'readonly' } }) }}
                                         <span class="fa fa-file-pdf-o"></span>
                                     </div>
                                 </div>
@@ -303,7 +303,7 @@
     <script type="text/javascript" src="{{ asset('js/admin/pagina.js') }}"></script>
     <script type="text/javascript">
         $("#btn_clear").on("click",function(event) {
-            $("#form_photo").val("");
+            $("#form_foto").val("");
             $("#figure").html('<img src="'+$('#photo').val()+'">');
         });
 
@@ -359,6 +359,9 @@
                 'form[categoria]': {
                     required: true
                 },
+                'form[foto]': {
+                    required: {% if not pagina.pagina %}true{% else %}false{% endif %}
+                },
                 'deslen': {
                     required: true,
                     min: 3
@@ -368,6 +371,9 @@
                 },
                 'subpaginas': {
                     required: true
+                },
+                'form[encuesta]': {
+                    url: true
                 }
             },
             messages: {
@@ -376,8 +382,10 @@
                     minlength: "- {{ 'El nombre de la página debe ser mínimo de 3 caracteres.'|trans }}"
                 },
                 'form[categoria]': {
-                    required: "- {{ 'La categoría es requerida.'|trans }}",
-                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'La categoría es requerida.'|trans }}"
+                },
+                'form[foto]': {
+                    required: "- {{ 'La foto principal de la página es requerida'|trans }}."
                 },
                 'deslen': {
                     required: "- {{ 'La descripción es requerida.'|trans }}",
@@ -388,6 +396,9 @@
                 },
                 'subpaginas': {
                     required: "- {{ 'La cantidad de sub-páginas es requerida.'|trans }}"
+                },
+                'form[encuesta]': {
+                    url: "- {{ 'El enlace de la encuesta no un válido URL'|trans }}."
                 }
             }
         });

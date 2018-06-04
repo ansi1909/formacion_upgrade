@@ -200,6 +200,7 @@ El correo no pertenece a un Usuario de la empresa. Contacte al administrador del
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
 El Encabezado es requerido.: El Encabezado es requerido.
 El Encabezado debe ser mínimo de 3 caracteres.: El Encabezado debe ser mínimo de 3 caracteres.
+El enlace de la encuesta no un válido URL: El enlace de la encuesta no un válido URL
 El enunciado debe ser mínimo de 3 caracteres.: El enunciado debe ser mínimo de 3 caracteres.
 El enunciado es requerido.: El enunciado es requerido.
 El evento ha sido guardado con éxito: El evento ha sido guardado con éxito
@@ -406,6 +407,7 @@ La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: La fecha de 
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: La fecha de registro debe ser en formato DD/MM/AAAA y ser válida
 La fecha de vencimiento es requerida.: La fecha de vencimiento es requerida.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
+La foto principal de la página es requerida: La foto principal de la página es requerida
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
