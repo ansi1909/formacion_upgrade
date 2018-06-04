@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="contTutorial">
-                <ul class=" contTutorial cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3 table-card " id="ul-foros">
+                <ul class=" contTutorial cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3 table-card " id="ul-foros" style="width: 100%">
                
                     {% for tutorial in tutoriales %}
                         <li class="col-3 col-md-6 col-sm-6 col-xl-3 col-lg-3" id="">
@@ -43,4 +43,8 @@
             
             
 
+   {% endblock %}
+   {% block javascripts %}
+        {{ parent() }}
+         <script src="{{ asset('front/js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.js') }}"></script>
    {% endblock %}
