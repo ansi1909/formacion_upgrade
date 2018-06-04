@@ -90,12 +90,16 @@ class TutorialController extends Controller
     
     protected function moverArchivo($rutaArchivo,$nameArchivo,$yml,$tutorial_id)
     {
-        if ($rutaArchivo=='') 
+        if ($rutaArchivo=='') //si se encuentra en recursos/tutoriales
         {
-           rename($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$nameArchivo,
+            if($nameArchivo!='')
+            {
+               rename($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$nameArchivo,
                   $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
+            }
+          
         }
-        else
+        else if($rutaArchivo!='')//si se encuentra en recursos/tutoriales/tutorial_id
         {
            copy($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$rutaArchivo.'/'.$nameArchivo,
                 $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
@@ -259,6 +263,41 @@ class TutorialController extends Controller
 
         $return = json_encode($data);
         return new Response($return, 200, array('Content-Type' => 'application/json'));  
+    }
+
+    protected function deleteFilesTutorial($tutorial_id)
+    {
+       $yml=Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml')); 
+       $directorio=$yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id;
+       $archivos=scandir($directorio);
+
+       for ($i=2; $i <count($archivos); $i++) 
+       { 
+          
+          unlink($directorio.'/'.$archivos[$i]);
+       }
+
+       rmdir($directorio);
+       return true;
+    }
+
+    public function ajaxDeleteTutorialAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->request->get('id');
+
+        $ok = 1;
+        $object = $em->getRepository('LinkComunBundle:AdminTutorial')->find($id);
+        $em->remove($object);
+        $em->flush();
+        $this->deleteFilesTutorial($id);
+
+        $return = array('ok' => $ok);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
+
+
     }
 
 

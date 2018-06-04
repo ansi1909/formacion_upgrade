@@ -39,6 +39,9 @@
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
 <input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
 <input type="hidden" id="url_updateTutorial" name="url_updateTutorial" value="{{path( '_ajaxUpdateTutorial') }}">
+<input type="hidden" id="url_deleteTutorial" name="url_deleteTutorial" value="{{path( '_ajaxDeleteTutorial') }}">
+
+
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -169,8 +172,8 @@
         </div>
         <div class="card-footer">
             <div class="col-sm-16 col-md-16 text-right" id="buttons">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__edit edit_footer" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete_fotter" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
@@ -236,7 +239,7 @@
             }
         });
 
-        function sweetAlertDeleteTutorial(id, entity, preg_opt=0)
+        function sweetAlertDeleteTutorial(id,preg_opt=0)
         {
             swal({
                 title: "{{ '¿Desea eliminar el registro?'|trans }}",
@@ -253,9 +256,9 @@
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: preg_opt == 0 ? $('#url_delete').val() : preg_opt,
+                    url: preg_opt == 0 ? $('#url_deleteTutorial').val() : preg_opt,
                     async: true,
-                    data: { id: id, entity: entity },
+                    data: { id: id },
                     dataType: "json",
                     success: function(data) {
                         swal(
@@ -263,9 +266,9 @@
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success'
                         );
-                        setTimeout(function() {
-                            window.table.ajax.reload(null,false);
-                        }, 3000);
+                        
+                        window.table.ajax.reload(null,false);
+                       
                     },
                     error: function(){
                         swal(

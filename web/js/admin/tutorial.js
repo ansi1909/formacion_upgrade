@@ -49,7 +49,6 @@ $(document).ready(function() {
 
 
 	$('#guardar').click(function(){
-		console.log('Tutorial gurdar');
 		saveTutorial();
 	});
 
@@ -125,7 +124,7 @@ $(document).ready(function() {
 
 	$( "#BodyTable, #buttons" ).on( "click",".delete" , function (){
 		var tutorial_id = $(this).attr('data');
-		sweetAlertDeleteTutorial(tutorial_id, 'AdminTutorial');	
+		sweetAlertDeleteTutorial(tutorial_id);	
      });
 });
 
@@ -143,7 +142,6 @@ function responsive_filemanager_callback(field_id){
 
 function saveTutorial()
 {
-    console.log('Save tutorial');
 	$('#div-alert').hide();
 	$('#div-error').hide();
 	if ($("#form").valid())
