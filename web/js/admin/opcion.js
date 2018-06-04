@@ -10,52 +10,13 @@ $(document).ready(function() {
 		'autoSize'	: false
     });
 
+    $('#form').submit(function(e) {
+		e.preventDefault();
+	  	saveOpcion();
+	});
+
 	$('#guardar').click(function(){
-		$('#div-alert').hide();
-		$('#guardar').hide();
-        var valid = $("#form").valid();
-        if (!valid) 
-        {
-            notify($('#div-error').html());
-            $('#guardar').show();
-        }
-        else {
-            var pregunta_opcion_id = $('#pregunta_opcion_id').val()
-			$.ajax({
-				type: "POST",
-				url: $('#form').attr('action'),
-				async: true,
-				data: $("#form").serialize()+'&es_asociacion='+$('#es_asociacion').val(),
-				dataType: "json",
-				success: function(data) {
-					if (pregunta_opcion_id)
-					{
-						$( "#tr-"+pregunta_opcion_id ).html( data.html );
-					}
-					else {
-						$( "#tbody-options" ).append( data.html );
-					}
-					// Si se marca SI, las demás deben marcarse como NO
-					if (data.checked != '' && $('#es_simple').val() == 1)
-					{
-						$('.cb_activo').each(function(){
-							if ($(this).attr('id') != 'f'+data.id)
-							{
-								$(this).prop('checked', false);
-							}
-						});
-					}
-					observe();
-					$( "#cancelar" ).trigger( "click" );
-					clearTimeout( timerId );
-				},
-				error: function(){
-					$('#alert-error').html($('#error_msg-save').val());
-					$('#div-alert').show();
-					$('#guardar').show();
-				}
-			});
-        }
+		saveOpcion();
     });
 
 	$('.new').click(function(){
@@ -73,6 +34,55 @@ $(document).ready(function() {
 	observe();
 
 });
+
+function saveOpcion()
+{
+	$('#div-alert').hide();
+	$('#guardar').hide();
+    var valid = $("#form").valid();
+    if (!valid) 
+    {
+        notify($('#div-error').html());
+        $('#guardar').show();
+    }
+    else {
+        var pregunta_opcion_id = $('#pregunta_opcion_id').val()
+		$.ajax({
+			type: "POST",
+			url: $('#form').attr('action'),
+			async: true,
+			data: $("#form").serialize()+'&es_asociacion='+$('#es_asociacion').val(),
+			dataType: "json",
+			success: function(data) {
+				if (pregunta_opcion_id)
+				{
+					$( "#tr-"+pregunta_opcion_id ).html( data.html );
+				}
+				else {
+					$( "#tbody-options" ).append( data.html );
+				}
+				// Si se marca SI, las demás deben marcarse como NO
+				if (data.checked != '' && $('#es_simple').val() == 1)
+				{
+					$('.cb_activo').each(function(){
+						if ($(this).attr('id') != 'f'+data.id)
+						{
+							$(this).prop('checked', false);
+						}
+					});
+				}
+				observe();
+				$( "#cancelar" ).trigger( "click" );
+				clearTimeout( timerId );
+			},
+			error: function(){
+				$('#alert-error').html($('#error_msg-save').val());
+				$('#div-alert').show();
+				$('#guardar').show();
+			}
+		});
+    }
+}
 
 function observe()
 {

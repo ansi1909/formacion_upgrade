@@ -113,36 +113,42 @@ class PermisoController extends Controller
             
             // Se guardan las aplicaciones seleccionadas
             $aplicaciones = $request->request->get('aplicaciones');
-            
-            // Se buscan las aplicaciones con acceso para eliminar las que no fueron seleccionadas
-            $permisos = $em->getRepository('LinkComunBundle:AdminPermiso')->findByRol($rol_id);
+            $aplicaciones = isset($aplicaciones) ? $aplicaciones : array();
 
-            foreach ($permisos as $permiso)
+            if (count($aplicaciones))
             {
-                if (!in_array($permiso->getAplicacion()->getId(), $aplicaciones))
+
+                // Se buscan las aplicaciones con acceso para eliminar las que no fueron seleccionadas
+                $permisos = $em->getRepository('LinkComunBundle:AdminPermiso')->findByRol($rol_id);
+
+                foreach ($permisos as $permiso)
                 {
-                    $em->remove($permiso);
-                    $em->flush();
+                    if (!in_array($permiso->getAplicacion()->getId(), $aplicaciones))
+                    {
+                        $em->remove($permiso);
+                        $em->flush();
+                    }
                 }
-            }
 
-            // Ordenamos el arreglo de aplicaciones de menor a mayor
-            asort($aplicaciones);
+                // Ordenamos el arreglo de aplicaciones de menor a mayor
+                asort($aplicaciones);
 
-            foreach ($aplicaciones as $aplicacion_id)
-            {
-                
-                $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($aplicacion_id);
-                $permiso = $em->getRepository('LinkComunBundle:AdminPermiso')->findOneBy(array('aplicacion' => $aplicacion_id,
-                                                                                               'rol' => $rol_id));
-                
-                if (!$permiso)
+                foreach ($aplicaciones as $aplicacion_id)
                 {
-                    $permiso = new AdminPermiso();
-                    $permiso->setAplicacion($aplicacion);
-                    $permiso->setRol($rol);
-                    $em->persist($permiso);
-                    $em->flush();
+                    
+                    $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($aplicacion_id);
+                    $permiso = $em->getRepository('LinkComunBundle:AdminPermiso')->findOneBy(array('aplicacion' => $aplicacion_id,
+                                                                                                   'rol' => $rol_id));
+                    
+                    if (!$permiso)
+                    {
+                        $permiso = new AdminPermiso();
+                        $permiso->setAplicacion($aplicacion);
+                        $permiso->setRol($rol);
+                        $em->persist($permiso);
+                        $em->flush();
+                    }
+
                 }
 
             }

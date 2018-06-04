@@ -416,13 +416,6 @@ class DefaultController extends Controller
                     $webinar = $empresa_bd->getWebinar();
                     $chat = $empresa_bd->getChatActivo();
                     $plantilla = $preferencia->getLayout()->getTwig();
-                    if ($preferencia->getTipoLogo())
-                    {
-                        switch ($preferencia->getTipoLogo()->getId())
-                        {
-                            case $yml['parameters']['social']['muro']:
-                        }
-                    }
                 }
                 else {
                     $logo = '';
