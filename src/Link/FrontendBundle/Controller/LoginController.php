@@ -294,7 +294,7 @@ class LoginController extends Controller
 	        								//$session = new session();
 			                                $session->set('iniFront', true);
 			                                $session->set('sesion_id', $admin_sesion->getId());
-			                                $session->set('code', $f->getLocaleCode());
+			                                $session->set('code', $yml['parameters']['search_locale'] ? $f->getLocaleCode() : 'VE');
 			                                $session->set('usuario', $datosUsuario);
 											$session->set('empresa', $empresa);
 											$session->set('paginas', $paginas);
@@ -342,11 +342,10 @@ class LoginController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
-            return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos. Sesión expirada.')));
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
-        
         $f->setRequest($session->get('sesion_id'));
 
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));

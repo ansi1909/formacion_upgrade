@@ -37,7 +37,7 @@
                                     {% if empresa.preferencia_id %}
                                         <a href="{{ path('_showPreferencia', { 'preferencia_id': empresa.preferencia_id }) }}" title="{{ 'Mostrar preferencia'|trans }}" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
                                     {% endif %}
-                                    <a href="" title="{{ 'Vista previa del dashboard'|trans }}" class="btn btn-link btn-sm" target="_blank"><span class="fa fa-dashboard"></span></a>
+                                    <a href="{{ path('_vistaPreviaDashboard', { 'empresa_id': empresa.id }) }}" title="{{ 'Vista previa del dashboard'|trans }}" class="btn btn-link btn-sm" target="_blank"><span class="fa fa-dashboard"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}

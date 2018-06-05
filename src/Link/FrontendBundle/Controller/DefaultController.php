@@ -22,7 +22,7 @@ class DefaultController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
@@ -416,13 +416,6 @@ class DefaultController extends Controller
                     $webinar = $empresa_bd->getWebinar();
                     $chat = $empresa_bd->getChatActivo();
                     $plantilla = $preferencia->getLayout()->getTwig();
-                    if ($preferencia->getTipoLogo())
-                    {
-                        switch ($preferencia->getTipoLogo()->getId())
-                        {
-                            case $yml['parameters']['social']['muro']:
-                        }
-                    }
                 }
                 else {
                     $logo = '';

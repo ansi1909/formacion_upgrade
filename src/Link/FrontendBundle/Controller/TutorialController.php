@@ -16,8 +16,13 @@ class TutorialController extends Controller
        
        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
        $directorioTut=$yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
+       
+       $em = $this->getDoctrine()->getManager();
+       $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
+                                                ORDER BY t.id DESC');
+       $tutoriales = $query->getResult();
 
-       $tutoriales = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->findAll();
+       //$tutoriales = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->findAll();
         
        return $this->render('LinkFrontendBundle:Tutoriales:indexTutorial.html.twig',['tutoriales'=>$tutoriales,'directorio'=>$directorioTut]);
     }
