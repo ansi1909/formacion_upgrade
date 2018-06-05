@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block body %}
-{% set ruta = ' /formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=pdf&rootFolder=recursos/tutorial/ ' %}
+
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_tutorial', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
 <input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
@@ -192,6 +192,9 @@
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/tutorial.js') }}"></script>
     <script type="text/javascript">
 
@@ -268,10 +271,11 @@
                             "{{ 'Eliminado'|trans }}!",
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success'
-                        );
-                        setTimeout(function() {
+
+                            setTimeout(function() {
                             table.ajax.reload(null,false);
-                        }, 3000);
+                        },  3000);
+
                     },
                     error: function(){
                         swal(
