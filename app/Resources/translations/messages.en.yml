@@ -61,6 +61,7 @@ Búsqueda de participantes empresa: Search participants company
 Búsqueda de participantes por empresa: Search participants by company
 Búsqueda de notificaciones empresa: Search notifications company
 Búsqueda de notificaciones por empresa: Search notifications by company
+Calendario: Calendar
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
 Cancelar: Cancel
@@ -200,6 +201,7 @@ El correo no pertenece a un Usuario de la empresa. Contacte al administrador del
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El Encabezado es requerido.: The Header is required
 El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
+El enlace de la encuesta no un válido URL: Poll link is not a valid URL
 El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
 El enunciado es requerido.: Statement is required.
 El evento ha sido guardado con éxito: The event has been saved successfully
@@ -406,6 +408,7 @@ La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: Registration
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: Registration date must be in format DD/MM/YYYY and a valid date
 La fecha de vencimiento es requerida.: Expiration date is required.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
+La foto principal de la página es requerida: Main picture is required
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
 La notificación ha sido almacenada con éxito: Notification has been saved successfully
@@ -451,6 +454,7 @@ Más valorados: Most valued
 Material complementario: Complementary content
 Mensaje: Message
 Mensaje del servidor: Server message
+Mi avance: My progress
 minutos: minutes
 Modificado el: Modified at
 Modificado por: Modified by
@@ -532,6 +536,7 @@ Permisos: Permissions
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
 Permisos por Rol: Permissions by Role
+Plan de estudio: Study planning
 Plantilla: Template
 Por favor, ingresa tu usuario y contraseña: Please, enter your username and password
 Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: It is hereby certified that the above-mentioned participant has completed and approved the corresponding tests
@@ -540,6 +545,7 @@ Preferencia de plantillas de las empresas: Layout preferences of the companies
 Preferencias de usuario: User preferences
 Pregunta: Question
 Preguntas: Questions
+Preguntas frecuentes: Frequent questions
 Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete

@@ -1,44 +1,51 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
 
-        {% block stylesheets %}
-            {{ parent() }}
+    {% block stylesheets %}
+    {{ parent() }}
             
-        {% endblock %}
+    {% endblock %}
 
-        {% block body %}
+   {% block body %}
 
-          <div class="container-fluid">
-                    <div class="row mt-4">
-                        <div class="col-12 text-center">
-                            <h3 class="titulo_faqs">Tutoriales</h3>
-                        </div>
-                    </div>
-                    <div class="contTutorial">
-                            <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
-                                    {% for tutorial in tutoriales %}
-                                           <div class="col-3 col-md-6 col-sm-6 col-xl-3 col-lg-3">
-                                                    <a href="{{ path('_detalleTutoriales')~'/'~tutorial.id }}">
-                                                            <div class="card-anuncio">
-                                                                <div class="card_header">
-                                                                    <img src="{{directorio~tutorial.id~'/'~tutorial.imagen}}" alt="" class="card_img">
-                                                                </div>
-                                                                <div class="card_body">
-                                                                    <h5 class="titulo_anuncio">{{tutorial.nombre}}</h5>
-                                                                </div>
-                                                                <div class="card_footer">
-                                                                    <hr class="separador">
-                                                                    <div class="col-12 col-md-12 col-sm-12 col-xl-12 col-lg-12 text-right">
-                                                                        <span class="fecha_anuncio">{{ tutorial.fecha|date('d/m/Y') }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                    </a>
-                                            </div>
-                                    {% endfor %}
-                            </div>
-                    </div>
-          </div>
+        <div class="container-fluid">
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <h3 class="titulo_faqs">Tutoriales</h3>
+                </div>
+            </div>
+            <div class="contTutorial">
+                <ul class=" contTutorial cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3 table-card " id="ul-foros" style="width: 100%">
+               
+                    {% for tutorial in tutoriales %}
+                        <li class="col-3 col-md-6 col-sm-6 col-xl-3 col-lg-3" id="">
+                            <a href="{{ path('_detalleTutoriales')~'/'~tutorial.id }}">
+                                <div class="card-anuncio">
+                                    <div class="card_header">
+                                        <img src="{{directorio~tutorial.id~'/'~tutorial.imagen}}" alt="" class="card_img">
+                                    </div>
+                                    <div class="card_body">
+                                        <h5 class="titulo_anuncio">{{tutorial.nombre}}</h5>
+                                    </div>
+                                    <div class="card_footer">
+                                        <hr class="separador">
+                                        <div class="col-12 col-md-12 col-sm-12 col-xl-12 col-lg-12 text-right">
+                                            <span class="fecha_anuncio">{{ tutorial.fecha|date('d/m/Y') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                   {% endfor %}
+                </ul>
+                
+            </div>
+        </div>
             
             
 
-        {% endblock %}
+   {% endblock %}
+   {% block javascripts %}
+        {{ parent() }}
+         <script src="{{ asset('front/js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.js') }}"></script>
+         <script src="{{ asset('js/front/tutoriales.js') }}"></script>  
+   {% endblock %}

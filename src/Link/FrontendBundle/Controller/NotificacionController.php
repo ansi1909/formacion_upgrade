@@ -118,9 +118,17 @@ class NotificacionController extends Controller
 
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
         $todas = array();
         $no_leidas = array();
         $leidas = array();
+
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
                                    WHERE a.usuario = :usuario_id 
@@ -130,44 +138,45 @@ class NotificacionController extends Controller
                                           'hoy' => date('Y-m-d 23:59:59')));
         $alarmas = $query->getResult();
 
-            foreach($alarmas as $alarma)
+        foreach($alarmas as $alarma)
+        {
+            $todas[] =array('id'=>$alarma->getId(),
+                            'descripcion'=> $alarma->getDescripcion(),
+                            'css'=> $alarma->getTipoAlarma()->getCss(),
+                            'icono' => $alarma->getTipoAlarma()->getIcono(),
+                            'leido' => $alarma->getLeido(),
+                            'tipo' => $alarma->getTipoAlarma()->getid(),
+                            'entidad' => $alarma->getEntidadId(),
+                            'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+
+            if($alarma->getLeido())
             {
-                $todas[] =array('id'=>$alarma->getId(),
-                                'descripcion'=> $alarma->getDescripcion(),
-                                'css'=> $alarma->getTipoAlarma()->getCss(),
-                                'icono' => $alarma->getTipoAlarma()->getIcono(),
-                                'leido' => $alarma->getLeido(),
-                                'tipo' => $alarma->getTipoAlarma()->getid(),
-                                'entidad' => $alarma->getEntidadId(),
-                                'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+                $leidas[] =array('id' => $alarma->getId(),
+                                 'descripcion' => $alarma->getDescripcion(),
+                                 'css' => $alarma->getTipoAlarma()->getCss(),
+                                 'icono' => $alarma->getTipoAlarma()->getIcono(),
+                                 'leido' => $alarma->getLeido(),
+                                 'tipo' => $alarma->getTipoAlarma()->getid(),
+                                 'entidad' => $alarma->getEntidadId(),
+                                 'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
 
-                if($alarma->getLeido())
-                {
-                    $leidas[] =array('id' => $alarma->getId(),
-                                     'descripcion' => $alarma->getDescripcion(),
-                                     'css' => $alarma->getTipoAlarma()->getCss(),
-                                     'icono' => $alarma->getTipoAlarma()->getIcono(),
-                                     'leido' => $alarma->getLeido(),
-                                     'tipo' => $alarma->getTipoAlarma()->getid(),
-                                     'entidad' => $alarma->getEntidadId(),
-                                     'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
-
-                }
-                else {
-                    $no_leidas[] =array('id' => $alarma->getId(),
-                                        'descripcion' => $alarma->getDescripcion(),
-                                        'css' => $alarma->getTipoAlarma()->getCss(),
-                                        'icono' => $alarma->getTipoAlarma()->getIcono(),
-                                        'leido' => $alarma->getLeido(),
-                                        'tipo' => $alarma->getTipoAlarma()->getid(),
-                                        'entidad' => $alarma->getEntidadId(),
-                                        'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
-                }
             }
+            else {
+                $no_leidas[] =array('id' => $alarma->getId(),
+                                    'descripcion' => $alarma->getDescripcion(),
+                                    'css' => $alarma->getTipoAlarma()->getCss(),
+                                    'icono' => $alarma->getTipoAlarma()->getIcono(),
+                                    'leido' => $alarma->getLeido(),
+                                    'tipo' => $alarma->getTipoAlarma()->getid(),
+                                    'entidad' => $alarma->getEntidadId(),
+                                    'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+            }
+        }
 
-            return $this->render('LinkFrontendBundle:Notificaciones:index.html.twig', array('todas' => $todas,
-                                                                                            'leidas' => $leidas,
-                                                                                            'no_leidas' => $no_leidas));
+        return $this->render('LinkFrontendBundle:Notificaciones:index.html.twig', array('todas' => $todas,
+                                                                                        'leidas' => $leidas,
+                                                                                        'no_leidas' => $no_leidas));
+        
     }
 
     public function ajaxNotiMuroAction(Request $request)

@@ -21,7 +21,7 @@ class ColaborativoController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
@@ -273,7 +273,7 @@ class ColaborativoController extends Controller
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }

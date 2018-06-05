@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/colorpicker/css/layout.css') }}" type="text/css">
     <style type="text/css">
         .photo_img, #figure_logo {
-            margin-left: 1.2rem;
+            margin-left: 5rem;
         }
     </style>
 {% endblock %}
@@ -22,7 +22,7 @@
     </div>
     <div class="col text-right">
         <a href="{{ path('_preferencia', { 'empresa_id': preferencia.empresa.id, 'preferencia_id': preferencia.id })}}" class="bttn__bck"><span class="fa fa-pencil"></span><span class="text__bck">{{ 'Editar'|trans }}</span></a>
-        <a href="" class="bttn__bck2"><span class="fa fa-dashboard"></span><span class="text__bck2">{{ 'Vista previa del dashboard'|trans }}</span></a>
+        <a href="{{ path('_vistaPreviaDashboard', { 'empresa_id': preferencia.empresa.id }) }}" class="bttn__bck2" target="_blank"><span class="fa fa-dashboard"></span><span class="text__bck2">{{ 'Vista previa del dashboard'|trans }}</span></a>
     </div>
 </div>
 <div class="row">

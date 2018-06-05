@@ -22,12 +22,11 @@ class ProgramaController extends Controller
         $session = new Session();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         $f->setRequest($session->get('sesion_id'));
-
 
         $pagina_obj = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
         $usuario_obj = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
@@ -255,7 +254,7 @@ class ProgramaController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
@@ -440,7 +439,7 @@ class ProgramaController extends Controller
         $f = $this->get('funciones');
         $session = new Session();
 
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
