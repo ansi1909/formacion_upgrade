@@ -66,10 +66,10 @@ parameters:
     layout:
         base: 1
     correo_recuperacion:
-        asunto: 'Formación2.0 - Recuperación de usuario y clave.'
+        asunto: 'FormaciÃ³n2.0 - RecuperaciÃ³n de usuario y clave.'
         remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
-        asunto: 'Formación2.0 - Solicitud de soporte virtual. '
+        asunto: 'FormaciÃ³n2.0 - Solicitud de soporte virtual. '
         remitente: 'soporte@formacion2puntocero.com'
         destinatario: 'soporte@formacion2puntocero.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
@@ -87,3 +87,4 @@ parameters:
     tutoriales:
         ruta: 'recursos/tutoriales/'
         default: '/default'
+    search_locale: 0

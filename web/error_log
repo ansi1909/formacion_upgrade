@@ -1,0 +1,2 @@
+[05-Jun-2018 15:18:51 UTC] PHP Warning:  include_once(/home/formac/public_html/aulavirtual/web/../var/bootstrap.php.cache): failed to open stream: No such file or directory in /home/formac/public_html/aulavirtual/web/app.php on line 7
+[05-Jun-2018 15:18:51 UTC] PHP Warning:  include_once(): Failed opening '/home/formac/public_html/aulavirtual/web/../var/bootstrap.php.cache' for inclusion (include_path='.:/opt/cpanel/ea-php56/root/usr/share/pear') in /home/formac/public_html/aulavirtual/web/app.php on line 7
