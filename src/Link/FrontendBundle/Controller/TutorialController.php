@@ -30,8 +30,6 @@ class TutorialController extends Controller
        $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
                                                 ORDER BY t.id DESC');
        $tutoriales = $query->getResult();
-
-       //$tutoriales = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->findAll();
         
        return $this->render('LinkFrontendBundle:Tutoriales:indexTutorial.html.twig',['tutoriales'=>$tutoriales,'directorio'=>$directorioTut]);
     }
