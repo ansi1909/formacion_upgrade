@@ -1949,7 +1949,7 @@ class Functions
                                 $session = new session();
                                 $session->set('iniFront', true);
                                 $session->set('sesion_id', $admin_sesion->getId());
-                                $session->set('code', $this->getLocaleCode());
+                                $session->set('code', $datos['yml']['search_locale'] ? $this->getLocaleCode() : 'VE');
                                 $session->set('usuario', $datosUsuario);
                                 $session->set('empresa', $datos['empresa']);
                                 $session->set('paginas', $paginas);
@@ -2205,7 +2205,7 @@ class Functions
  							$session = new session();
                             $session->set('ini', true);
                             $session->set('sesion_id', $admin_sesion->getId());
-                            $session->set('code', $this->getLocaleCode());
+                            $session->set('code', $datos['yml']['search_locale'] ? $this->getLocaleCode() : 'VE');
                             $session->set('administrador', $administrador);
                             $session->set('usuario', $datosUsuario);
                             $session->set('menu', $menu);

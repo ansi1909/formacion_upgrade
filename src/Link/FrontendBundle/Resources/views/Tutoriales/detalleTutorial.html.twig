@@ -62,13 +62,17 @@
                         </div>
                     </section>
                 </div>
-            </div>
-           
-            
-                
-            
-	        
+            </div>        
     {% endblock %}
-
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('jq/jquery-ui.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
+        <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+         <script src="{{ asset('front/js/plugins/Easy-Any-Content-Pagination-Plugin-jQuery-Paginate-js/src/jquery.paginate.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/front/tutoriales.js') }}"></script>
+    {% endblock %}
 
   

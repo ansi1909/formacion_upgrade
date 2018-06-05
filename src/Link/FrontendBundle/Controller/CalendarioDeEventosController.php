@@ -20,7 +20,7 @@ class CalendarioDeEventosController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
-        if (!$session->get('iniFront'))
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }

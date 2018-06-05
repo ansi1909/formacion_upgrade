@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <div class="input-group">
-                                        {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly', 'id':'form_photo'} }) }}
+                                        {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly'} }) }}
                                         <span class="input-group-addon">
                                             <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_foto&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
                                                 <button type="button" class="btn_addImg">
@@ -195,7 +195,7 @@
                                 <div class="col-sm-8 col-lg-8 col-md-8">
                                     <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.pdf) }}</label>
                                     <div class="col-sm-16 col-md-16 col-lg-16">
-                                        {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF', 'id':'form_pdf' } }) }}
+                                        {{ form_widget(form.pdf, { 'attr': { 'class': 'form-control form_sty1', 'placeholder': 'Sólo archivo en PDF', 'readonly': 'readonly' } }) }}
                                         <span class="fa fa-file-pdf-o"></span>
                                     </div>
                                 </div>
@@ -216,6 +216,18 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if not pagina.pagina %}
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-12 col-md-12">
+                                        <label for="encuesta" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ form_label(form.encuesta) }}</label>
+                                        <div class="col-sm-10 col-md-10 col-lg-10">
+                                            {{ form_widget(form.encuesta, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                                            <span class="fa fa-link"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">
                                     <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
@@ -241,7 +253,7 @@
     <script type="text/javascript" src="{{ asset('js/admin/pagina.js') }}"></script>
     <script type="text/javascript">
         $("#btn_clear").on("click",function(event) {
-            $("#form_photo").val("");
+            $("#form_foto").val("");
             $("#figure").html('<img src="'+$('#photo').val()+'">');
         });
         
@@ -261,11 +273,13 @@
                 var deslen2 = $('#deslen2').val();
                 error = 0;
                 
-                if (deslen < {{ minlenght_bienvenida }} )
-                {
-                    error = 1;
-                    $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
-                }
+                {% if not pagina.pagina %}
+                    if (deslen < {{ minlenght_bienvenida }} )
+                    {
+                        error = 1;
+                        $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
+                    }
+                {% endif %}
 
                 if (deslen2 < {{ minlenght_bienvenida }} )
                 {
@@ -297,9 +311,12 @@
                 'form[categoria]': {
                     required: true
                 },
+                'form[foto]': {
+                    required: {% if not pagina.pagina %}true{% else %}false{% endif %}
+                },
                 'deslen': {
-                    required: true,
-                    min: 3
+                    required: {% if not pagina.pagina %}true{% else %}false{% endif %},
+                    min: {% if not pagina.pagina %}3{% else %}0{% endif %}
                 },
                 'deslen2': {
                     required: true,
@@ -307,6 +324,9 @@
                 },
                 'form[pdf]': {
                     extension: "pdf"
+                },
+                'form[encuesta]': {
+                    url: true
                 }
             },
             messages: {
@@ -315,8 +335,10 @@
                     minlength: "- {{ 'El nombre de la página debe ser mínimo de 3 caracteres.'|trans }}"
                 },
                 'form[categoria]': {
-                    required: "- {{ 'La categoría es requerida.'|trans }}",
-                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'La categoría es requerida.'|trans }}"
+                },
+                'form[foto]': {
+                    required: "- {{ 'La foto principal de la página es requerida'|trans }}."
                 },
                 'deslen': {
                     required: "- {{ 'La descripción es requerida.'|trans }}",
@@ -328,6 +350,9 @@
                 },
                 'form[pdf]': {
                     extension: "- {{ 'El material complementario debe ser sólo archivo con extensión pdf.'|trans }}"
+                },
+                'form[encuesta]': {
+                    url: "- {{ 'El enlace de la encuesta no un válido URL'|trans }}."
                 }
             }
         });
