@@ -98,15 +98,15 @@
             <input type="text" class="form-control form_sty_modal2" id="descripcion" name="descripcion" value="">
             <span class="fa fa-align-justify"></span>
         </div>
-        <div class="form-group ">
+       <div class="form-group ">
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" >
-                <span class="input-group-addon span-filemanager">
-                    <a href="" class="btn iframe-btn" type="button" id='pdf_'>
+                <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
+                <input type="hidden" id="archivo" name="archivo" value="">
+                    <a href="#" class="btn fileinput-button" type="button" id=''>
                         <span class="fa fa-photo"></span>
+
                     </a>
-                </span>
             </div>
         </div>
          <div class="form-group ">
