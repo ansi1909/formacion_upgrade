@@ -30,13 +30,14 @@
     <body class="{% block clbody %}{% endblock %}">
 
         {% set uri = app.request.getbasepath %}
-        <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
-        <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
-        <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
-        <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
-        <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+        {% block hidden %}
+            <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+            <input type="hidden" id="url_alarma" name="url_alarma" value="{{ path('_ajaxNoti') }}">
+            <input type="hidden" id="url_leido" name="url_leido" value="{{ path('_ajaxLeido') }}">
+            <input type="hidden" id="url_NotiMuro" name="url_NotiMuro" value="{{ path('_ajaxNotiMuro') }}">
+            <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+        {% endblock %}
 
-        
         {# HEADER #}
         <header>
             {% block header %}
@@ -82,7 +83,7 @@
                                                              c0.7,0,1.4-0.2,2-0.4l51.3-24.4c1.2-0.6,2-1.7,2-2.8C289.7,212.3,288.9,211.2,287.7,210.6z M238.4,232.2v-37.5l39.3,18.7
                                                              L238.4,232.2z"/>
                                                 </svg>
-                                                <p class="tituloApps">Tutoriales</p>
+                                                <p class="tituloApps">{{ 'Tutoriales'|trans }}</p>
                                             </div>
                                         </a>
                                     </div>
@@ -105,7 +106,7 @@
                                                                  L346.6,214.6z M346.6,214.6"/>
                                                     </g>
                                                 </svg>
-                                                <p class="tituloApps">Preguntas frecuentes</p>
+                                                <p class="tituloApps">{{ 'Preguntas frecuentes'|trans }}</p>
                                             </div>
                                         </a>
                                     </div>
@@ -126,7 +127,7 @@
                                                              c0,6.9-5.4,12.5-12,12.5s-12-5.6-12-12.5s5.4-12.5,12-12.5S266,395.6,266,402.5z M264.2,402.5c0,5.8-4.5,10.5-10.1,10.5
                                                              s-10.1-4.7-10.1-10.5s4.5-10.5,10.1-10.5S264.2,396.7,264.2,402.5z"/>
                                                 </svg>
-                                                <p class="tituloApps">Soporte Virtual</p>
+                                                <p class="tituloApps">{{ 'Soporte virtual'|trans }}</p>
                                             </div>
                                         </a>
                                     </div>
@@ -170,12 +171,12 @@
                 <nav>
                     <div id="mainSidenav" class="main-sidenav ">
                         <a href="javascript:void(0)" class="justify-content-end text-right" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
-                        <a class="d-flex mt-1 mb-3 text-nowrap modulo" id="dashBoard" href="{{ path('_inicio') }}"> <i class="material-icons mr-2">home</i> Inicio </a>
-                        <a class="d-flex mb-3 text-nowrap modulo" id="misProg" href="{{ path('_misProgramas') }}"> <i class="material-icons mr-2">bookmark</i> Mi avance </a>
-                        <a class="d-flex mb-3 text-nowrap modulo" id="proG" href="{{ path('_programas') }}"> <i class="material-icons mr-2">dashboard</i> Plan de estudio </a>
-                        <a class="d-flex mb-3 text-nowrap modulo" id="biBlio" href="{{ path('_biblioteca')}}"> <i class="material-icons mr-2">import_contacts</i>  Biblioteca </a>
-                        <a class="d-flex mb-3 text-nowrap modulo" id="calEve" href="{{ path('_calendarioDeEventos') }}"> <i class="material-icons mr-2">event</i>  Calendario </a>
-                        <a class="d-flex mb-3 text-nowrap modulo" id="notiNove" href="{{ path('_noticias') }}"> <i class="material-icons mr-2">library_books</i>  Noticias & <br> Novedades </a>
+                        <a class="d-flex mt-1 mb-3 text-nowrap modulo" id="dashBoard" href="{{ path('_inicio') }}"> <i class="material-icons mr-2">home</i> {{ 'Inicio'|trans }} </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="misProg" href="{{ path('_misProgramas') }}"> <i class="material-icons mr-2">bookmark</i> {{ 'Mi avance'|trans }} </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="proG" href="{{ path('_programas') }}"> <i class="material-icons mr-2">dashboard</i> {{ 'Plan de estudio'|trans }} </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="biBlio" href="{{ path('_biblioteca')}}"> <i class="material-icons mr-2">import_contacts</i>  {{ 'Biblioteca'|trans }} </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="calEve" href="{{ path('_calendarioDeEventos') }}"> <i class="material-icons mr-2">event</i>  {{ 'Calendario'|trans }} </a>
+                        <a class="d-flex mb-3 text-nowrap modulo" id="notiNove" href="{{ path('_noticias') }}"> <i class="material-icons mr-2">library_books</i>  {{ 'Noticias'|trans }} & <br> {{ 'Novedades'|trans }} </a>
 
                     </div>
                 </nav>
@@ -239,8 +240,8 @@
                 </div>
             </div>
         </div>
-         {{ include('LinkFrontendBundle:Soporte:soporteVirtual.html.twig') }}
-         {{ include('LinkFrontendBundle:Default:confirmacionEmail.html.twig') }}
+        {{ include('LinkFrontendBundle:Soporte:soporteVirtual.html.twig') }}
+        {{ include('LinkFrontendBundle:Default:confirmacionEmail.html.twig') }}
         
         <!-- Modal Cierre Automático de Sesion-->
         <div class="modal modalCerrarSesion" id="modalCs2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -324,7 +325,7 @@
             <script src="{{ asset('front/js/plugins/mediaelement-4.2.8/build/mediaelement-and-player.min.js') }}"></script>
             <script src="{{ asset('front/js/audio.js') }}"></script>
             <script src="{{ asset('js/front/expireSession.js') }}"></script>
-            <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>      
+            <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>
         {% endblock %}
     </body>
 </html>

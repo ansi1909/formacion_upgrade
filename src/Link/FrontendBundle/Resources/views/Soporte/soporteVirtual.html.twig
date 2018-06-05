@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <form id="formularioSoporte">
-                    {% if app.session.get('usuario').correo == '' %}
+                    {% if app.session.get('usuario').correo is defined and app.session.get('usuario').correo == '' %}
                         <div class="row mt-3 justify-content-center align-items-center">
                             <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-left">
                                 <div class="form-group">

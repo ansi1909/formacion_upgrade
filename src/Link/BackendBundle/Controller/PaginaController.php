@@ -25,7 +25,7 @@ class PaginaController extends Controller
     	$session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -59,7 +59,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -87,7 +87,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -188,6 +188,12 @@ class PaginaController extends Controller
                                                                'label' => $this->get('translator')->trans('Estatus')))
             ->getForm();
 
+        if (!$pagina->getPagina())
+        {
+            $form->add('encuesta', TextType::class, array('label' => $this->get('translator')->trans('Enlace de la encuesta'),
+                                                          'required' => false));
+        }
+
         $form->handleRequest($request);
        
         if ($request->getMethod() == 'POST')
@@ -224,7 +230,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -281,7 +287,7 @@ class PaginaController extends Controller
             ->add('pdf', TextType::class, array('label' => $this->get('translator')->trans('Material complementario'),
                                                 'required' => false))
             ->add('encuesta', TextType::class, array('label' => $this->get('translator')->trans('Enlace de la encuesta'),
-                                                'required' => false))
+                                                     'required' => false))
             ->add('estatusContenido', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiEstatusContenido',
                                                                'choice_label' => 'nombre',
                                                                'expanded' => false,
@@ -322,7 +328,8 @@ class PaginaController extends Controller
         
         return $this->render('LinkBackendBundle:Pagina:new.html.twig', array('form' => $form->createView(),
                                                                              'categorias' => $categorias,
-                                                                             'status' => $status));
+                                                                             'status' => $status,
+                                                                             'pagina' => $pagina));
 
     }
 
@@ -409,7 +416,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -562,7 +569,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -677,7 +684,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -763,7 +770,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -900,7 +907,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -1017,7 +1024,7 @@ class PaginaController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
@@ -1097,7 +1104,7 @@ class PaginaController extends Controller
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
       
-        if (!$session->get('ini'))
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
