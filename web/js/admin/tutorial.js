@@ -126,11 +126,8 @@ var urlsHref =
 
 function saveTutorial()
 {
-<<<<<<< HEAD
-	$('#div-alert').hide();
-=======
+
     $('#div-alert').hide();
->>>>>>> 30bd5f082d60815adb4e18b127f87f2a1881bab8
 	$('#div-error').hide();
 	if ($("#form").valid())
 	{

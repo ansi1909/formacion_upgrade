@@ -269,15 +269,9 @@
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success'
                         );
-<<<<<<< HEAD
-                        
-                        window.table.ajax.reload(null,false);
-                       
-=======
                         setTimeout(function() {
                             table.ajax.reload(null,false);
                         }, 3000);
->>>>>>> 30bd5f082d60815adb4e18b127f87f2a1881bab8
                     },
                     error: function(){
                         swal(

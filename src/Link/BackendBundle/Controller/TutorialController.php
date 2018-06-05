@@ -194,7 +194,13 @@ class TutorialController extends Controller
         $em->persist($tutorial);
         $em->flush();
 
-       
+        if (!$tutorial_id)
+        {
+            // Hacer el movimiento de archivos en caso de que sea nuevo tutorial
+            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+            mkdir($dir_uploads.'recursos/tutoriales/'.$tutorial->getId(),0777);
+        }
+  
         $return = array('id' => $tutorial->getId(),
                         'nombre' => $tutorial->getNombre(),
                         'pdf' => substr(strrchr($tutorial->getPdf(), '/'), 1),
@@ -266,8 +272,9 @@ class TutorialController extends Controller
 
     protected function deleteFilesTutorial($tutorial_id)
     {
-       $yml=Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml')); 
-       $directorio=$yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id;
+       
+       $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+       $directorio = $dir_uploads.'recursos/tutoriales/'.$tutorial_id;
        $archivos=scandir($directorio);
 
        for ($i=2; $i <count($archivos); $i++) 
@@ -278,6 +285,7 @@ class TutorialController extends Controller
 
        rmdir($directorio);
        return true;
+
     }
 
     public function ajaxDeleteTutorialAction(Request $request)
