@@ -160,48 +160,47 @@ class TutorialController extends Controller
     
     public function ajaxUpdateTutorialAction(Request $request)
     {
+        
         $session = new Session();
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
-        $tipoArchivo=Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-
-        $datosAjax =
-        [
-            'tutorial_id'=> $request->request->get('tutorial_id'),
-            'nombre' => $request->request->get('nombre'), 
-            'pdf'=>$request->request->get('pdf'),
-            'video'=>$request->request->get('video'), 
-            'imagen'=>$request->request->get('imagen'),
-            'descripcion'=>$request->request->get('descripcion')
-        ];
-
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
-       
-        if ($datosAjax['tutorial_id']) 
-        {
-            $tutorial = $em->getRepository('LinkComunBundle:AdminTutorial')->find($datosAjax['tutorial_id']);
-            $datos=$this->setTutorial($em,$datosAjax,$tutorial,$session);
-            $tutorial=$datos['tutorial'];
-            $rutaTutorial=$yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial->getId();
-            $this->eliminarArchivos($tutorial,$rutaTutorial,$tipoArchivo['parameters']['tipo_archivos']);
 
-        }
-        else
-        {
-             $tutorial = new AdminTutorial();
-             $datos = $this->setTutorial($em,$datosAjax,$tutorial,$session);
-             $tutorial = $datos['tutorial'];
-             $this->carpetaNueva($tutorial, $datos['routePdf'], $datos['routeImagen'],$datos['routeVideo'],$yml);
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
+        $tutorial_id = $request->request->get('tutorial_id');
+        $nombre = $request->request->get('nombre');
+        $pdf = $request->request->get('pdf');
+        $video = $request->request->get('video');
+        $imagen = $request->request->get('imagen');
+        $descripcion = $request->request->get('descripcion');
+
+        if ($tutorial_id)
+        {
+            $tutorial = $em->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
         }
+        else {
+            $tutorial = new AdminTutorial();
+            $tutorial->setFecha(new \DateTime('now'));
+        }
+        
+        $tutorial->setNombre($nombre);
+        $tutorial->setPdf($pdf);
+        $tutorial->setVideo($video);
+        $tutorial->setImagen($imagen);
+        $tutorial->setDescripcion($descripcion);
+        $tutorial->setUsuario($usuario);
+
+        $em->persist($tutorial);
+        $em->flush();
 
        
         $return = array('id' => $tutorial->getId(),
-                        'nombre' =>$tutorial->getNombre(),
-                        'pdf' =>$tutorial->getPdf(),
-                        'video' =>$tutorial->getVideo(),
-                        'imagen'=>$tutorial->getImagen(),
-                        'descripcion'=>$tutorial->getDescripcion());
+                        'nombre' => $tutorial->getNombre(),
+                        'pdf' => substr(strrchr($tutorial->getPdf(), '/'), 1),
+                        'video' => substr(strrchr($tutorial->getVideo(), '/'), 1),
+                        'imagen'=> substr(strrchr($tutorial->getImagen(), '/'), 1),
+                        'descripcion' => $tutorial->getDescripcion());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

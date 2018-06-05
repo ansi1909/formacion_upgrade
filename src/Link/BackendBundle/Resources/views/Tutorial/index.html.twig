@@ -3,8 +3,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -88,7 +86,7 @@
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form"   >
+    <form id="form" name="form" action="{{ path('_ajaxUpdateTutorial') }}" method="POST">
         <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
@@ -162,6 +160,13 @@
                 <br>
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Imagen'|trans }}:</h5>
+                        <p id="p-imagen">https://Loremipsumdolorsitamet.domain/</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
                         <h5>Video:</h5>
                         <p id="p-video">https://Loremipsumdolorsitamet.domain/</p>
                     </div>
@@ -187,8 +192,6 @@
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/tutorial.js') }}"></script>
     <script type="text/javascript">
 
@@ -266,9 +269,15 @@
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success'
                         );
+<<<<<<< HEAD
                         
                         window.table.ajax.reload(null,false);
                        
+=======
+                        setTimeout(function() {
+                            table.ajax.reload(null,false);
+                        }, 3000);
+>>>>>>> 30bd5f082d60815adb4e18b127f87f2a1881bab8
                     },
                     error: function(){
                         swal(
