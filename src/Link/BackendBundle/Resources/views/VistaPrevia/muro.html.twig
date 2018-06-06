@@ -1,0 +1,78 @@
+<div class="comment">
+    <div class="comm-header d-flex align-items-center mb-2">
+        {% set img_user = asset('front/assets/img/user-default.png') %}
+        <img class="img-fluid avatar-img" src="{{ img_user }}" alt="">
+        <div class="wrap-info-user flex-column ml-2">
+            <div class="name text-xs color-dark-grey">Pedro Pérez</div>
+            <div class="date text-xs color-grey">Ayer 11:06</div>
+        </div>
+    </div>
+    <div class="comm-body">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    <div class="comm-footer d-flex justify-content-between align-items-center">
+        <a href="#" class="mr-0 text-sm color-light-grey">
+            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 4
+        </a>
+        <a href="#" class="links text-right text-xs reply_comment">{{ 'Responder'|trans }}</a>
+    </div>
+    {# Respuestas #}
+    <div>
+        <div class="comment replied">
+            <div class="comm-header d-flex align-items-center mb-2">
+                {% set img_user = asset('front/assets/img/user-default.png') %}
+                <img class="img-fluid avatar-img" src="{{ img_user }}" alt="">
+                <div class="wrap-info-user flex-column ml-2">
+                    <div class="name text-xs color-dark-grey">Mark Staton</div>
+                    <div class="date text-xs color-grey">Hoy a las 7:40</div>
+                </div>
+            </div>
+            <div class="comm-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="comm-footer d-flex justify-content-between align-items-center">
+                <a href="#" class="mr-0 text-sm color-light-grey">
+                    <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 1
+                </a>
+            </div>
+        </div>
+        <div class="comment replied">
+            <div class="comm-header d-flex align-items-center mb-2">
+                {% set img_user = asset('front/assets/img/user-default.png') %}
+                <img class="img-fluid avatar-img" src="{{ img_user }}" alt="">
+                <div class="wrap-info-user flex-column ml-2">
+                    <div class="name text-xs color-dark-grey">Peter Wassing</div>
+                    <div class="date text-xs color-grey">Hace 10 minutos</div>
+                </div>
+            </div>
+            <div class="comm-body">
+                <p>That's great.</p>
+            </div>
+            <div class="comm-footer d-flex justify-content-between align-items-center">
+                <a href="#" class="mr-0 text-sm color-light-grey">
+                    <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 0
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="comment">
+    <div class="comm-header d-flex align-items-center mb-2">
+        {% set img_user = asset('front/assets/img/user-default.png') %}
+        <img class="img-fluid avatar-img" src="{{ img_user }}" alt="">
+        <div class="wrap-info-user flex-column ml-2">
+            <div class="name text-xs color-dark-grey">Susana Rengifo</div>
+            <div class="date text-xs color-grey">16/05/2018 15:01</div>
+        </div>
+    </div>
+    <div class="comm-body">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    <div class="comm-footer d-flex justify-content-between align-items-center">
+        <a href="#" class="mr-0 text-sm color-light-grey">
+            <i class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> 2
+        </a>
+        <a href="#" class="links text-right text-xs reply_comment">{{ 'Responder'|trans }}</a>
+    </div>
+</div>
