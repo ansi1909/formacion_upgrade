@@ -101,18 +101,35 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <div class="form-group">
-                                        <label for="muro" class="col-4 col-form-label">{{ 'Activar muro'|trans }}</label>
-                                        <div class="col-4">
-                                            <div class="can-toggle demo-rebrand-2 small">
-                                                <input id="f_muro" name="muro" type="checkbox" {% if pagina_empresa.muroActivo %}checked{% endif %}>
-                                                <label for="f_muro">
-                                                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
-                                                </label>
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-4 col-lg-4">
+                                            <div class="form-group">
+                                                <label for="muro" class="col-16 col-form-label">{{ 'Activar muro'|trans }}</label>
+                                                <div class="col-4">
+                                                    <div class="can-toggle demo-rebrand-2 small">
+                                                        <input id="f_muro" name="muro" type="checkbox" {% if pagina_empresa.muroActivo %}checked{% endif %}>
+                                                        <label for="f_muro">
+                                                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.'|trans }}</small>
+                                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                            <div class="form-group">
+                                                <label for="applyMuro" class="col-16 col-form-label">{{ 'Aplicar activación de muro a las sub-páginas'|trans }}</label>
+                                                <div class="col-4">
+                                                    <div class="can-toggle demo-rebrand-2 small">
+                                                        <input id="f_applyMuro" name="applyMuro" type="checkbox">
+                                                        <label for="f_applyMuro">
+                                                            <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <small id="muroHelp" class="form-text text-muted">{{ 'Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.'|trans }}</small>
                                 </div>
                                 {% if not pagina_empresa.pagina.pagina %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
