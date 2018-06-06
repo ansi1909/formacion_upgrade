@@ -1,33 +1,43 @@
 $(document).ready(function() {
 
-   getAlarma();
-   getNotificaciones();
+    getAlarma();
+    getNotificaciones();
 
-   $('#responder').click(function(){
-        $('#responder').hide();
-        $('#notificaciones_wait').show();
+    $('#comentario').focus(function(){
+        $('.error').hide();
+    });
+
+    $('#responder').click(function(){
         var muro_id = $('#notificaciones_muro_id').val();
-        var mensaje = $('#comentario').val();
-        $.ajax({
-            type: "POST",
-            url: $('#respuesta').attr('action'),
-            async: true,
-            data: {muro_id: muro_id , mensaje: mensaje},
-            dataType: "json",
-            success: function(data) {
-                $('.msjMuroResp').append(data.html);
-                $(".msjMuroResp").animate({ scrollTop: $('.msjMuroResp')[0].scrollHeight}, 1000);
-                $('#comentario').val("");
-                $('#notificaciones_wait').hide();
-                $('#responder').show();
-                observeLike();
-            },
-            error: function(){
-                $('#notificaciones_wait').hide();
-                $('#responder').show();
-                console.log('Error respondiendo un comentario del muro'); // Hay que implementar los mensajes de error para el frontend
-            }
-        });
+        var mensaje = $.trim($('#comentario').val());
+        if (mensaje == '')
+        {
+            $('#muroResponse-error').show();
+        }
+        else {
+            $('#responder').hide();
+            $('#notificaciones_wait').show();
+            $.ajax({
+                type: "POST",
+                url: $('#respuesta').attr('action'),
+                async: true,
+                data: { muro_id: muro_id , mensaje: mensaje },
+                dataType: "json",
+                success: function(data) {
+                    $('.msjMuroResp').append(data.html);
+                    $(".msjMuroResp").animate({ scrollTop: $('.msjMuroResp')[0].scrollHeight}, 1000);
+                    $('#comentario').val("");
+                    $('#notificaciones_wait').hide();
+                    $('#responder').show();
+                    observeLike();
+                },
+                error: function(){
+                    $('#notificaciones_wait').hide();
+                    $('#responder').show();
+                    console.log('Error respondiendo un comentario del muro'); // Hay que implementar los mensajes de error para el frontend
+                }
+            });
+        }
     });
 
 });
@@ -63,7 +73,7 @@ function getAlarma()
     });
 }
 
-function notiMuro(muro_id)
+function notiMuro(muro_id, titulo)
 {
     $.ajax({
         type: "GET",
@@ -72,13 +82,10 @@ function notiMuro(muro_id)
         data: {muro_id: muro_id}, 
         dataType: "json",
         success: function(data) {
+            $('#tituloMuro').html(titulo);
             $('#padre').html(data.html);
             $('#notificaciones_muro_id').val(muro_id);
             observeLike();
-            
-            /*$('html, body').animate({
-                scrollTop: ($('#li_responder').offset().top-500)
-            },1000);*/
             $(".msjMuroResp").animate({ scrollTop: $('.msjMuroResp')[0].scrollHeight}, 1000);
         },
         error: function(){
@@ -100,8 +107,9 @@ function observeMuro()
 {
     $('.click').click(function(){
         var noti_id = $(this).attr('data');
+        var titulo = $(this).attr('titulo');
         var muro_id = $('#muro_id'+noti_id).val();
-        notiMuro(muro_id); 
+        notiMuro(muro_id, titulo); 
     });
 
 }

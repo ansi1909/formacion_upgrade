@@ -87,4 +87,4 @@ parameters:
     tutoriales:
         ruta: 'recursos/tutoriales/'
         default: '/default'
-    search_locale: 0
+    search_locale: 0    
