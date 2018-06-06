@@ -3,6 +3,9 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
+    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -103,8 +106,9 @@
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
                 <input type="hidden" id="archivo" name="archivo" value="">
-                    <a href="#" class="btn fileinput-button" type="button" id=''>
+                    <a href="#" class="btn fileinput-button" type="button" >
                         <span class="fa fa-photo"></span>
+                        <input id="pdf_upload" class="tutorial_upload" type="file" name="files[]" multiple>
                     </a>
             </div>
         </div>
@@ -269,7 +273,7 @@
                         swal(
                             "{{ 'Eliminado'|trans }}!",
                             "{{ 'Su registro ha sido eliminado'|trans }}",
-                            'success'
+                            'success');
 
                             setTimeout(function() {
                             table.ajax.reload(null,false);
