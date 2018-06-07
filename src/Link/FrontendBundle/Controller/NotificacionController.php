@@ -36,7 +36,8 @@ class NotificacionController extends Controller
         {
             
             if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
-                $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().'>
+                $muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($notificacion->getEntidadId());
+                $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().' titulo="'.$this->get('translator')->trans('Muro').': '.$muro->getPagina()->getNombre().'.">
                             <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
 
             }

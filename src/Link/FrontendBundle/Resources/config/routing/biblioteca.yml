@@ -4,11 +4,11 @@ _biblioteca:
 
 _bibliotecaDetalle:
     path:     /bibliotecaDetalle/{biblioteca_id}
-    defaults: { _controller: LinkFrontendBundle:Biblioteca:detalle }
+    defaults: { _controller: LinkFrontendBundle:Biblioteca:detalle, biblioteca_id: 0 }
 
-_buscarBiblioteca:
-    path:     /Biblioteca
-    defaults: { _controller: LinkFrontendBundle:Biblioteca:index }
+_ajaxSearchBiblioteca:
+    path:     /ajaxSearchBiblioteca
+    defaults: { _controller: LinkFrontendBundle:Biblioteca:ajaxSearchBiblioteca }
     requirements:
-        _method: POST
+        _method: GET
 

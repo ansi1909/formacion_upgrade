@@ -1,288 +1,183 @@
-{% extends '::base.html.twig' %}
+{% extends '::'~app.session.get('empresa').plantilla %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
+    <style>
+        .menu{
+            width: 60%;
+            height: 300px;
+        }
+    </style>
+{% endblock %}
+
+{% block clbody %}
+    lesson-body
+{% endblock %}
 
 {% block header %}
-<nav class="navbar  justify-content-between py-0 fixed-top bg-white">
-    <a class="navbar-brand" href="{{ path('_inicio') }}">
-        {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-        <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
-    </a>
-    <div class="navbar-brand d-flex justify-content-center align-items-center">
-        <div class="d-flex flex-column">
-            <div class="wrapperDdApps">
-                <a href="#" id="apps">
-                    <div class="appFun">
-                        <i class="material-icons mr-3 color-light-grey">apps</i>
-                    </div>
-                </a>
-                <span class="markApps"></span>
-                <div class="dropDownApps">
-                    <div class="row align-items-center justify-content-between px-0 py-0 mx-0 my-1">
-                        <div class="col-4 px-0 py-0">
-                            <a href="">
-                                <div class="opcApps text-center">
-                                    <img class="imgApps" src="{{asset('front/assets/img/tutorial.svg')}}" alt="">
-                                    <p class="tituloApps">Tutoriales</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4 px-0 py-0">
-                            <a href="#">
-                                <div class="opcApps text-center">
-                                    <img class="imgApps" src="{{asset('front/assets/img/faq.svg')}}" alt="">
-                                    <p class="tituloApps">FAQS</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4 px-0 py-0">
-                            <a href="" data-toggle="modal" data-target="#modalSv">
-                                <div class="opcApps text-center">
-                                    <img class="imgApps" src="{{asset('front/assets/img/soporteVirtual.svg')}}" alt="">
-                                    <p class="tituloApps">Soporte Virtual</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row align-items-center px-0 py-0 mx-0 mb-1">
-                        <div class="col-4 px-0 py-0">
-                            <a href="#">
-                                <div class="opcApps text-center">
-                                    <img class="imgApps" src="{{asset('front/assets/img/calendario.svg')}}" alt="">
-                                    <p class="tituloApps">Calendario</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
+        <div class="logo d-sm-block d-md-block">
+            <a class="navbar-brand" href="{{ path('_inicio') }}">
+                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+            </a>
         </div>
-        <div class="d-flex flex-column">
-            <div class="wrapperDdNotify">
-                <a href="#" id="notify">
-                    <div class="notify">
-                        <i class="material-icons mr-3 color-light-grey">notifications</i>
-                        <div class="sonar"></div>
-                    </div>
-                </a>
-                <span class="markNotify"></span>
-                <ul class="dropDownNotify">
-                    <a href="">
-                        <li class="opcListNotify">
-                            <div class="anunNotify">
-                                <span class="stickerNotify anunSticker"><i class="material-icons icNotify">volume_down</i></span>
-                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
-                            </div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="opcListNotify">
-                            <div class="anunNotify">
-                                <span class="stickerNotify notiSticker"><i class="material-icons icNotify">library_books</i></span>
-                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
-                            </div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="opcListNotify">
-                            <div class="anunNotify">
-                                <span class="stickerNotify mailSticker"><i class="material-icons icNotify">mail</i></span>
-                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
-                            </div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="opcListNotify">
-                            <div class="anunNotify">
-                                <span class="stickerNotify ecSticker"><i class="material-icons icNotify">speaker_notes</i></span>
-                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
-                            </div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="opcListNotify">
-                            <div class="anunNotify">
-                                <span class="stickerNotify muroSticker"><i class="material-icons icNotify">insert_comment</i></span>
-                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
-                            </div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="opcListNotify">
-                            <div class="anunNotify">
-                                <span class="stickerNotify calenSticker"><i class="material-icons icNotify">event_note</i></span>
-                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
-                            </div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="opcListNotify opcLastNotify">
-                            <div class="anunNotify">
-                                <span class="stickerNotify rcSticker"><i class="material-icons icNotify">question_answer</i></span>
-                                <p class="textNotify text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor...</p>
-                            </div>
-                        </li>
-                    </a>
-                </ul>
-            </div>
+        <div class="wraper-title-lesson d-flex flex-column align-items-center">
+            <h4 class="my-1 color-light-grey" >{{ titulo }}</h4>
+            <h6 class="mt-0 color-light-grey" >{{ subtitulo }}</h6>
         </div>
-        <div class=" d-flex flex-column ">
-            <div class="wrapperDdMenu">
-                <a href="#" class="perfil no-decorate" id="config">
-                    {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
-                    <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
-                </a>
-                <ul class="dropDownMenu">
-                    <li class="mark"></li>
-                    <a href="#">
-                        <li class="opcList">
-                            <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
-                        </li>
-                    </a>
-                    <a href="#" data-toggle="modal" data-target="#modalCs">
-                        <li class="opcList markOpc">
-                            <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
-                        </li>
-                    </a>
-                </ul>
-            </div>
+        <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+            <a id="iconComments" href="javascript:void(0)">
+                <i class="material-icons mx-3 color-light-grey">comment</i>
+            </a>
+            {{ include('LinkBackendBundle:VistaPrevia:notificaciones.html.twig') }}
+            {{ include('LinkBackendBundle:VistaPrevia:configuracion.html.twig') }}
         </div>
-    </div>
-</nav>
+    </nav>
 {% endblock %}
 
 {% block sidemenu %}
-<nav>
-    <div id="mainSidenav" class="main-sidenav ">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
-        <a class="d-flex mt-1 mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">home</i> Dashboard </a>
-        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">bookmark</i> Mis Programas </a>
-        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">dashboard</i> Programas </a>
-        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">book</i>  Biblioteca </a>
-        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">event</i>  Calendario </a>
-        <a class="d-flex mb-3 text-nowrap" href=""> <i class="material-icons mr-2">library_books</i>  Noticias & <br> Novedades </a>
-        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">help</i>  Faqs</a>
-        <a class="d-flex mb-3 text-nowrap" href="#"> <i class="material-icons mr-2">star</i>  Ranking</a>
+    <div id="mainSidenav" class="main-sidenav nav-lesson main-sidenav nav-lesson">
+        
+        <div class="row justify-content-around">
+            <a href="#"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="{{ 'Ir al inicio'|trans }}">home</i></a>
+            <a href="javascript:void(0)" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2" data-toggle="tooltip" data-placement="left" title="Cerrar sidebar"></i></a>
+        </div>
 
+        <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="material-icons rotate-180" data-toggle="tooltip" data-placement="bottom" title="{{ 'Volver al programa'|trans }}">exit_to_app</i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-indice-tab" data-toggle="pill" href="#pills-indice" role="tab" aria-controls="pills-home" aria-selected="true">
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Indice del contenido'|trans }}">view_list</i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-recursos" role="tab" aria-controls="pills-profile" aria-selected="false">
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'Recursos del programa'|trans }}">widgets</i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content menu-lesson" id="pills-tabContent" >
+            <div class="tab-pane fade show active" id="pills-indice" role="tabpanel" aria-labelledby="pills-home-tab">
+                <h5 class="text-center mb-3 mt-1 color-light-grey font-normal ">{{ 'Índice'|trans }}</h5>
+                <ol id="menu_indice">
+                    <li>
+                        <a href="#">Relación entre cambio y liderazgo</a>
+                        <ul class="ul-items">
+                            <li><a href="#">Cambios tecnológicos</a></li>
+                            <li><a href="#">Nuevos paradigmas</a></li>
+                            <li><a href="#">Nuevos modelos</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="">Necesidad de liderazgo</a>
+                        <ul class="ul-items">
+                            <li><a href="#">Tres ámbitos del cambio</a></li>
+                            <li><a href="#">Cambios globales requieren innovacción</a></li>
+                            <li><a href="#">Cambios empresariales requieren liderazgo</a></li>
+                            <li><a href="#">Cambios personales requieren actitud</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="less-disabled" href="">Capacidad de liderazgo</a>
+                        <ul class="ul-items">
+                            <li><a class="lesson-pending less-disabled" href="#">Lider de consecución</a></li>
+                            <li><a class="lesson-pending less-disabled" href="#">Lider integrador</a></li>
+                            <li><a class="lesson-pending less-disabled" href="#">Lider visionario</a></li>
+                            <li><a class="lesson-pending less-disabled"  href="#">Lider 360 grados</a></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="tab-pane fade" id="pills-recursos" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <h5 class="text-center my-3 color-light-grey font-normal ">{{ 'Recursos'|trans }}</h5>
+                <a href="#">{{ 'Espacio colaborativo'|trans }}</a>
+                <a href="#">{{ 'Reportar problema'|trans }}</a>
+            </div>
+        </div>
     </div>
-</nav>
+{% endblock %}
+
+{% block bg %}
+    bg-white
 {% endblock %}
 
 {% block body %}
 
-<div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
-            <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
-            <h5>Bienvenido al programa de </h5>
-            <h1 class="mb-5">{{pagina.nombre}}</h1>
-            {{pagina.contenido|raw}}
-
-        <!-- MAPA DE AVANCE -->
-            <div id="mapAvance" class=" avance-message container py-3 px-6 mb-0 ">
-                <h4 class="mb-4 title-grey">Tu Avance</h4>
-                <img  class="img-fluid" src="assets/img/map_avance.png" alt="">
+    {# CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL CK-EDITOR #}
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
+            <div class="lesson-container container py-6 text-center">
+                <h2>{{ pagina.nombre }}</h2>
+                {% if pagina.foto %}
+                    {% set img = uploads~pagina.foto %}
+                    <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
+                {% endif %}
+                {{ pagina.contenido|raw }}
+                {% if pagina.pdf != '' %}
+                    {% set pdf = uploads~pagina.pdf %}
+                    <div class="row justify-content-center">
+                        <div class="col-auto text-center">
+                            <a href="{{ pdf }}" target="_blank">
+                                <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
+                                <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p></div>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
+            <nav class="container text-center">
+                <div class="btn-primary btn">{{ 'Continuar'|trans }}</div>
+            </nav>
+        </div>
+    </div>
 
+{% endblock %}
+
+{% block comments %}
+
+    <div id="comments" class="px-3 pt-3"  >
+        <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
+        <form class="mt-4 mb-6" id="form-comment">
+            <div class="form-group">
+                <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="340" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
+            </div>
+            <button type="button" name="button" class="btn btn-sm btn-primary float-right">{{ 'Comentar'|trans }}</button>
+        </form>
+        <div class="tab mt-6 d-flex justify-content-around text-xs">
+            <a href="#" class="active-line color-light-grey mt-3 tab_rv" id="mas_recientes">{{ 'Más recientes'|trans }}</a>
+            <a href="#" class="color-light-grey mt-3 tab_rv" id="mas_valorados">{{ 'Más valorados'|trans }} </a>
         </div>
 
-        <!-- MODULOS -->
-        <h4 class="mt-6 pt-4 mb-0 pb-1 title-grey sub-line container ">Módulos</h4>
-
-        <!--CONTENDOR DE LAS CARDS  -->
-        <div class="container d-flex flex-column justify-content-center align-items-center ">
-
-                <!-- CARDS MODULOS HZR -->
-                <div class="card-hrz card-mod">
-                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
-                        <h1>02</h1>
-                    </div>
-                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
-                        <div class="card-hrz-body ">
-                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
-                                <div class="card-mod-less text-sm color-light-grey">
-                                    <ol>
-                                        <li class="my-1 " > Liderazgo para la conducción de personas  </li>
-                                        <li class="my-1 " > Liderazgo para </li>
-                                        <li class="my-1 color-grey" > Liderazgo para la conducción  personas </li>
-                                        <li class="my-1 color-grey" > Liderazgo para l de personas </li>
-                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas</li>
-                                    </ol>
-                                </div>
-                            <div class="progress mt-4 mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">
-                            <div class="percent text-center mt-3">
-                                <h2 class="color-light-grey mb-0 pb-0"> 20% </h2>
-
-                            </div>
-                            <a href="#" class="btn btn-sm btn-continuar mt-6 mb-4"> Continuar </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-hrz card-mod">
-                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
-                        <h1>03</h1>
-                    </div>
-                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
-                        <div class="card-hrz-body ">
-                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
-                                <div class="card-mod-less text-sm color-light-grey">
-                                    <ol>
-                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas  </li>
-                                        <li class="my-1 color-grey" > Liderazgo para </li>
-                                        <li class="my-1 color-grey" > Liderazgo para la conducción  personas </li>
-                                        <li class="my-1 color-grey" > Liderazgo para l de personas </li>
-                                        <li class="my-1 color-grey" > Liderazgo para la conducción de personas</li>
-                                    </ol>
-                                </div>
-                            <div class="progress mt-4 mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="card-hrz-right d-flex flex-column  justify-content-end mx-4 pb-1">
-                            <div class="percent text-center mt-3">
-                                <h2 class="color-light-grey mb-0 pb-0"> 0%</h2>
-                            </div>
-                            <a href="#" class="btn btn-sm btn-primary mt-6 mb-4 px-4"> Iniciar </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-hrz card-mod">
-                    <div class="card-mod-num  mr-xl-3 d-flex justify-content-center align-items-center px-3 py-3 px-md-6 py-md-6">
-                        <h1>01</h1>
-                    </div>
-                    <div class="wraper d-flex flex-wrap flex-row justify-content-center">
-                        <div class="card-hrz-body ">
-                            <h4 class="title-grey my-3 font-weight-normal "> Qué es el liderazgo </h4>
-                                <div class="card-mod-less text-sm color-light-grey">
-                                    <ol>
-                                        <li class="my-1 " > Liderazgo para la conducción de personas  </li>
-                                        <li class="my-1 " > Liderazgo para </li>
-                                        <li class="my-1 " > Liderazgo para la conducción  personas </li>
-                                        <li class="my-1 " > Liderazgo para l de personas </li>
-                                        <li class="my-1 " > Liderazgo para la conducción de personas</li>
-                                    </ol>
-                                </div>
-                            <div class="progress mt-4 mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="card-hrz-right d-flex flex-column  justify-content-top mx-4 pb-1">
-                            <div class="percent text-center mt-5">
-                                <h2 class="color-light-grey mb-0 pb-0"> 100 </h2>
-                                <span class="count mt-0 mb-2 text-xs  color-light-grey ">Calificación</span>
-                            </div>
-                            <div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">
-                                <i class="material-icons badge-aprobado ">check_circle</i>
-                                <span class="text-badge"> Aprobado </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div id="mas_recientes_comments">
+            {% for i in 1..2 %}
+                {{ include('LinkBackendBundle:VistaPrevia:muro.html.twig') }}
+            {% endfor %}
+            <a href="#" class="links text-center d-block more_comments">{{ 'Ver más comentarios'|trans }}</a>
         </div>
+        <div id="mas_valorados_comments" style="display:none;">
+            {{ include('LinkBackendBundle:VistaPrevia:muro.html.twig') }}
+        </div>
+
+    </div>
 
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
+    <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('front/js/popper.min.js')}}"></script>
+    <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('front/js/custom.js') }}"></script>
+    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('front/js/jquery.scrollTo.min.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('front/js/navLecciones.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/vistaPreviaP.js') }}"></script>
 {% endblock %}

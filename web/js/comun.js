@@ -54,7 +54,7 @@ $(document).ready(function() {
         window.location.replace($('#url_'+url).val()+p);
     });
 
-    $('[data-toggle="tooltip"]').tooltip();
+    //$('[data-toggle="tooltip"]').tooltip();
 
     $('.no-check').click(function(event){
         event.preventDefault();
