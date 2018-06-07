@@ -38,67 +38,6 @@ class BibliotecaController extends Controller
         $now = strtotime($hoy->format('d-m-Y'));
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if ($request->getMethod() == 'POST'){
-
-            $buscar = $request->request->get('buscar');
-
-            $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNoticia n
-                                       WHERE n.titulo LIKE :buscar
-                                       AND n.empresa = :empresa_id
-                                       AND n.tipoNoticia = :tipo
-                                       AND n.pdf IS NOT NULL")
-                        ->setParameters(array('buscar'=> '%'.$buscar.'%',
-                                              'empresa_id'=> $empresa_id,
-                                              'tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual']));
-            $busquedas = $query->getResult();
-
-            foreach($busquedas as $busqueda)
-            {
-                $fecha_i = strtotime($busqueda->getFechaPublicacion()->format('d-m-Y'));
-                $fecha_f = strtotime($busqueda->getFechaVencimiento()->format('d-m-Y'));
-                if ($now >= $fecha_i && $now < $fecha_f) 
-                   {
-                    $todos[] =array('id'=>$busqueda->getId(),
-                                    'titulo'=>$busqueda->getTitulo(),
-                                    'tipo'=>$busqueda->getTipoBiblioteca()->getNombre(),
-                                    'tid'=>$busqueda->getTipoBiblioteca()->getId());
-
-                    if ($busqueda->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['video']) 
-                    {
-                        $videos[] =array('id'=>$busqueda->getId(),
-                                         'titulo'=>$busqueda->getTitulo(),
-                                         'tipo'=>$busqueda->getTipoBiblioteca()->getNombre(),
-                                         'tid'=>$busqueda->getTipoBiblioteca()->getId());
-                    }
-                    else if ($busqueda->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['podcast']) {
-                        $podcast[] =array('id'=>$busqueda->getId(),
-                                          'titulo'=>$busqueda->getTitulo(),
-                                          'tipo'=>$busqueda->getTipoBiblioteca()->getNombre(),
-                                          'tid'=>$busqueda->getTipoBiblioteca()->getId());
-                    }
-                    else if ($busqueda->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['articulo']) {
-                        $articulos[] =array('id'=>$busqueda->getId(),
-                                            'titulo'=>$busqueda->getTitulo(),
-                                            'tipo'=>$busqueda->getTipoBiblioteca()->getNombre(),
-                                            'tid'=>$busqueda->getTipoBiblioteca()->getId());
-                    }
-                    else{   
-                        $libros[] =array('id'=>$busqueda->getId(),
-                                         'titulo'=>$busqueda->getTitulo(),
-                                         'tipo'=>$busqueda->getTipoBiblioteca()->getNombre(),
-                                         'tid'=>$busqueda->getTipoBiblioteca()->getId());
-                    }
-                }
-            }
-
-            return $this->render('LinkFrontendBundle:Biblioteca:index.html.twig', array('usuario_id' => $usuario_id,
-                                                                                        'todos' => $todos,
-                                                                                        'videos' => $videos,
-                                                                                        'podcasts' => $podcast,
-                                                                                        'articulos' => $articulos,
-                                                                                        'libros' => $libros));
-        }
-
         $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                    WHERE n.empresa = :empresa_id
                                    AND n.tipoNoticia = :tipo
@@ -253,6 +192,38 @@ class BibliotecaController extends Controller
                                                                                       'videos' => $videos,
                                                                                       'audios' => $audios,
                                                                                       'pdfs' => $pdfs));
+    }
+
+    public function ajaxSearchBibliotecaAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        $term = $request->query->get('term');
+        $bibliotecas = array();
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+           ->from('LinkComunBundle:AdminNoticia', 'n')
+           ->where('n.tipoNoticia = :biblioteca')
+           ->andWhere('LOWER(n.titulo) LIKE :term')
+           ->setParameters(array('biblioteca' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
+                           'term' => '%'.$term.'%'));
+
+        $query = $qb->getQuery();
+        $bibliotecas_bd = $query->getResult();
+
+        foreach ($bibliotecas_bd as $biblioteca)
+        {
+            $bibliotecas[] = array('id' => $biblioteca->getId(),
+                             'label' => $biblioteca->getTitulo(),
+                             'value' => $biblioteca->getTitulo());
+        }
+
+        $return = json_encode($bibliotecas);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
 }

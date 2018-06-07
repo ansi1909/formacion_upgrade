@@ -794,6 +794,7 @@ class PaginaController extends Controller
             $activo = $request->request->get('activo');
             $acceso = $request->request->get('acceso');
             $muro = $request->request->get('muro');
+            $applyMuro = $request->request->get('applyMuro');
             $colaborativo = $request->request->get('colaborativo');
             $fechaInicio = $request->request->get('fechaInicio');
             $fechaVencimiento = $request->request->get('fechaVencimiento');
@@ -834,7 +835,11 @@ class PaginaController extends Controller
 
             // Si apply es true se setean la fecha de inicio y de vencimiento para las sub-páginas
             $onlyDates = $apply ? 1 : 0;
-            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates);
+
+            // Si applyMuro es true se activa el muro para las sub-páginas
+            $onlyMuro = $applyMuro ? 1 : 0;
+
+            $f->asignacionSubPaginas($pagina_empresa, $yml, $onlyDates, $onlyMuro);
 
             return $this->redirectToRoute('_showAsignacion', array('empresa_id' => $pagina_empresa->getEmpresa()->getId(),
                                                                    'pagina_id' => $pagina_empresa->getPagina() ? $pagina_empresa->getPagina()->getId() : 0));

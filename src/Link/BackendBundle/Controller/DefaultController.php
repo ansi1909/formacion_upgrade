@@ -242,22 +242,6 @@ class DefaultController extends Controller
         return $this->render('LinkBackendBundle:Default:authException.html.twig');
     }
 
-    protected function deleteFilesTutorial($tutorial_id)
-    {
-       $yml=Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml')); 
-       $directorio=$yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id;
-       $archivos=scandir($directorio);
-
-       for ($i=2; $i <count($archivos); $i++) 
-       { 
-          
-          unlink($directorio.'/'.$archivos[$i]);
-       }
-
-       rmdir($directorio);
-       return true;
-    }
-
     public function ajaxDeleteAction(Request $request)
     {
 
@@ -271,11 +255,6 @@ class DefaultController extends Controller
         $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
         $em->remove($object);
         $em->flush();
-
-        if ($entity=='AdminTutorial') 
-        {
-            $this->deleteFilesTutorial($id);
-        }
 
         $return = array('ok' => $ok);
 

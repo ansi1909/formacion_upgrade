@@ -3,8 +3,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -34,11 +32,14 @@
 {% endblock %}
 
 {% block body %}
-{% set ruta = ' /formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=pdf&rootFolder=recursos/tutorial/ ' %}
+
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_tutorial', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
 <input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
 <input type="hidden" id="url_updateTutorial" name="url_updateTutorial" value="{{path( '_ajaxUpdateTutorial') }}">
+<input type="hidden" id="url_deleteTutorial" name="url_deleteTutorial" value="{{path( '_ajaxDeleteTutorial') }}">
+
+
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
@@ -85,7 +86,7 @@
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form"   >
+    <form id="form" name="form" action="{{ path('_ajaxUpdateTutorial') }}" method="POST">
         <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
@@ -97,15 +98,15 @@
             <input type="text" class="form-control form_sty_modal2" id="descripcion" name="descripcion" value="">
             <span class="fa fa-align-justify"></span>
         </div>
-        <div class="form-group ">
+       <div class="form-group ">
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" >
-                <span class="input-group-addon span-filemanager">
-                    <a href="" class="btn iframe-btn" type="button" id='pdf_'>
+                <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
+                <input type="hidden" id="archivo" name="archivo" value="">
+                    <a href="#" class="btn fileinput-button" type="button" id=''>
                         <span class="fa fa-photo"></span>
+
                     </a>
-                </span>
             </div>
         </div>
          <div class="form-group ">
@@ -159,6 +160,13 @@
                 <br>
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Imagen'|trans }}:</h5>
+                        <p id="p-imagen">https://Loremipsumdolorsitamet.domain/</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
                         <h5>Video:</h5>
                         <p id="p-video">https://Loremipsumdolorsitamet.domain/</p>
                     </div>
@@ -169,8 +177,8 @@
         </div>
         <div class="card-footer">
             <div class="col-sm-16 col-md-16 text-right" id="buttons">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__edit edit_footer" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete_fotter" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
@@ -184,8 +192,9 @@
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/tutorial.js') }}"></script>
     <script type="text/javascript">
 
@@ -236,7 +245,7 @@
             }
         });
 
-        function sweetAlertDeleteTutorial(id, entity, preg_opt=0)
+        function sweetAlertDeleteTutorial(id,preg_opt=0)
         {
             swal({
                 title: "{{ '¿Desea eliminar el registro?'|trans }}",
@@ -253,19 +262,20 @@
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: preg_opt == 0 ? $('#url_delete').val() : preg_opt,
+                    url: preg_opt == 0 ? $('#url_deleteTutorial').val() : preg_opt,
                     async: true,
-                    data: { id: id, entity: entity },
+                    data: { id: id },
                     dataType: "json",
                     success: function(data) {
                         swal(
                             "{{ 'Eliminado'|trans }}!",
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success'
-                        );
-                        setTimeout(function() {
-                            window.table.ajax.reload(null,false);
-                        }, 3000);
+
+                            setTimeout(function() {
+                            table.ajax.reload(null,false);
+                        },  3000);
+
                     },
                     error: function(){
                         swal(

@@ -1,0 +1,21 @@
+<div class="d-flex flex-column">
+    <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}">
+        <a href="#" class="perfil no-decorate" id="config">
+            {% set img = asset('front/assets/img/user.svg') %}
+            <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown" >expand_more</span>
+        </a>
+        <ul class="dropDownMenu">
+            <li class="mark"></li>
+            <a href="#">
+                <li class="opcList">
+                    <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
+                </li>
+            </a>
+            <a href="#">
+                <li class="opcList markOpc">
+                    <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
+                </li>
+            </a>
+        </ul>
+    </div>
+</div>
