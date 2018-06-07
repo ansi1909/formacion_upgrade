@@ -20,7 +20,7 @@
             }
         </style>
     </head>
-    <body class="bg-white">
+    <body class="bg-white bckLogin">
         <div class="container-fluid">
             <input type="hidden" id="url_recuperar_correo" name="url_recuperar_correo" value="{{ path('_ajaxCorreo') }}">
             <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa.id }}">
@@ -36,34 +36,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7 col-sm-7 col-5 col-xl-5 col-lg-5 text-center mx-auto d-lg-flex justify-content-center">
-                    <div class="d-sm-block d-md-none mt-5 mb-6">
+                <div class="col-md-12 col-sm-12 col-5 col-xl-5 col-lg-5 text-center mx-auto d-lg-flex justify-content-center">
+                    <div class="d-sm-block d-md-none mt-5 mb-6 imgLogin">
                         <img width="65%" class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
                     </div>
-                    <div class="col-12 mt-12v">
-                        <h3 class="title-grey mb-md-6 mb-sm-3">{{ 'Iniciar Sesión'|trans }}</h3>
-                        <p class="mb-4">{{ 'Por favor, ingresa tu usuario y contraseña'|trans }}</p>
+                    <div class="col-12 mt-12v pnlogin">
+                        <h3 class="title-grey titleLogin">{{ 'Iniciar Sesión'|trans }}</h3>
+                        <p class="mb-4 txtLogin">{{ 'Por favor, ingresa tu usuario y contraseña'|trans }}</p>
                         <form id="form_inicio" name="form_inicio" action="{{ path('_login', { 'empresa_id': empresa.id }) }}" method="POST">
                             <div class="col-lg-8 col-xl-8 col-8 col-sm-12 col-md-12 mx-auto">
-                                <div class="form-group text-left">
+                                <div class="form-group text-left userLogin">
                                     <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
                                     <input type="text" class="form-control mb-4" id="usuario" name="usuario" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
                                 </div>
-                                <div class="form-group text-left">
+                                <div class="form-group text-left pwdLogin">
                                     <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
                                     <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
                                     <span class="error error__style">{{ error }}</span>
                                 </div>
-                                <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start">
+                                <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start checkLogin">
                                     <input type="checkbox" id="check_recordar" class="mr-2">
                                     <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contaseña'|trans }}</label>
                                     <input type="hidden" id="recordar_datos" name="recordar_datos" value="0">
                                 </div>
-                                <button type="submit" class="btn btn-primary mb-5" id="entrar">{{ 'Entrar'|trans }}</button>
+                                <button type="submit" class="btn btn-primary mb-5 btnLogin" id="entrar">{{ 'Entrar'|trans }}</button>
                             </div>
                         </form>                      
                         <div class="row">
-                            <div class="col-12 mb-3 text-center">
+                            <div class="col-12 mb-3 text-center recupLogin">
                                 <a href="#" class="links" data-toggle="modal" data-target="#modal1">{{ '¿Olvidaste tu contraseña?'|trans }}</a>
                             </div>
                         </div>

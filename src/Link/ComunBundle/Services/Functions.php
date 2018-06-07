@@ -737,7 +737,7 @@ class Functions
 	}
 
 	// Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
-	public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0)
+	public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0, $onlyMuro = 0)
 	{
 
 		$em = $this->em;
@@ -782,13 +782,17 @@ class Functions
 	            	$subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
 	            	$subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
 	            }
+	            if ($onlyMuro)
+	            {
+	            	$subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
+	            }
             }
             
             $subpagina_empresa->setOrden($orden);
             $em->persist($subpagina_empresa);
             $em->flush();
 			
-			$this->asignacionSubPaginas($subpagina_empresa, $yml, $onlyDates);
+			$this->asignacionSubPaginas($subpagina_empresa, $yml, $onlyDates, $onlyMuro);
 
 		}
 

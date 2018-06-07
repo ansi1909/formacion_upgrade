@@ -3,6 +3,7 @@
 namespace Link\FrontendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Yaml\Yaml;
 
 
@@ -14,15 +15,21 @@ class TutorialController extends Controller
     public function indexAction()
     {
        
+       $session = new Session();
+       $f = $this->get('funciones');
        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
        $directorioTut=$yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
+
+       if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+       
        
        $em = $this->getDoctrine()->getManager();
        $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
                                                 ORDER BY t.id DESC');
        $tutoriales = $query->getResult();
-
-       //$tutoriales = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTutorial')->findAll();
         
        return $this->render('LinkFrontendBundle:Tutoriales:indexTutorial.html.twig',['tutoriales'=>$tutoriales,'directorio'=>$directorioTut]);
     }
