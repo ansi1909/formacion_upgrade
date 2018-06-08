@@ -4,10 +4,10 @@ _noticias:
 
 _noticiaDetalle:
     path:     /noticiasDetalle/{noticia_id}
-    defaults: { _controller: LinkFrontendBundle:Noticias:detalle }
+    defaults: { _controller: LinkFrontendBundle:Noticias:detalle, noticia_id: 0 }
 
-_buscarNoticia:
-    path:     /noticias
-    defaults: { _controller: LinkFrontendBundle:Noticias:index }
+_ajaxSearchNoticia:
+    path:     /ajaxSearchNoticia
+    defaults: { _controller: LinkFrontendBundle:Noticias:ajaxSearchNoticia }
     requirements:
-        _method: POST
+        _method: GET

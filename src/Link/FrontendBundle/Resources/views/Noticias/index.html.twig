@@ -2,24 +2,41 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
+    <style>
+        .menu{
+            width: 60%;
+            height: 300px;
+        }
+        body {
+            margin-bottom: 300px;
+        }
+        label.error, label.mensaje-error {
+            color: #f00c0c;
+        }
+        .ui-autocomplete-loading {
+            background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
+        }
+    </style>
     
 {% endblock %}
 
 {% block body %}
 
+<input type="hidden" id="url_search" name="url_search" value="{{ path('_ajaxSearchNoticia') }}">
+<input type="hidden" id="url_detalle" name="url_detalle" value="{{ path('_noticiaDetalle') }}">
+
 <div class="container-fluid">
     <div class="row mt-4">
         <div class="col-12 text-center">
-            <h3>Noticias y novedades</h3>
+            <h3>{{'Noticias y Novedades'|trans }}</h3>
         </div>
     </div>
     <div class="cont-noticias">
         <div class="row align-item-center justify-content-center mt-5">
             <div class="col-6 col-lg-6 col-xl-6 col-md-8 col-sm-8 col-xs-8">
-                <form id="form" name="form" action="{{ path( '_buscarNoticia')}}"  method="POST">
-                    <input type="search" class="form-control" placeholder="Ingrese lo que desea buscar" id="buscar" name="buscar">
-                    <button type="submit" class="btn-search"><span class="material-icons ic-search">search</span></button>
-                </form>
+                <input type="search" id="search" class="form-control" placeholder="{{ 'Ingrese lo que desea buscar'|trans }}">
+                <button type="button" class="btn-search"><span class="material-icons ic-search">search</span></button>
             </div>
         </div>
         <div class="row">
@@ -144,7 +161,7 @@
                                                         col-xs-5 
                                                         text-right 
                                                         px-0">
-                                                <span class="tipo_anuncio{{noticia.tid}}">{{ noticia.tipo }}</span>
+                                                <span class="tipo_anuncio{{noticia.tid}}">{{ noticia.tipo|trans }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -240,7 +257,8 @@
             $('#notiNove').addClass("active");
         });
     </script>
+    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
     <script src="{{ asset('front/js/jquery.tabpager.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/tabsPag.js') }}"></script> 
-    <script type="text/javascript" src="{{ asset('js/front/programa_inicio.js') }}"></script> 
+    <script type="text/javascript" src="{{ asset('js/front/noticia.js') }}"></script> 
 {% endblock %}
