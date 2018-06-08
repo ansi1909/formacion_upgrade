@@ -41,47 +41,45 @@ class BibliotecaController extends Controller
         $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                    WHERE n.empresa = :empresa_id
                                    AND n.tipoNoticia = :tipo
+                                   AND n.fechaPublicacion <= :hoy
+                                   AND n.fechaVencimiento >= :hoy
                                    AND n.pdf IS NOT NULL')
                     ->setParameters(array('empresa_id' => $empresa_id,
-                                          'tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual']));
+                                          'tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
+                                          'hoy' => date('d-m-Y')));
         $noticias_db = $query->getResult();
 
         foreach($noticias_db as $noticia)
         {
-            $fecha_i = strtotime($noticia->getFechaPublicacion()->format('d-m-Y'));
-            $fecha_f = strtotime($noticia->getFechaVencimiento()->format('d-m-Y'));
-            if ($now >= $fecha_i && $now < $fecha_f) 
-           {
-                $todos[] =array('id'=>$noticia->getId(),
-                                'titulo'=>$noticia->getTitulo(),
-                                'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                'tid'=>$noticia->getTipoBiblioteca()->getId());
+            $todos[] =array('id'=>$noticia->getId(),
+                            'titulo'=>$noticia->getTitulo(),
+                            'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                            'tid'=>$noticia->getTipoBiblioteca()->getId());
 
-                if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['video']) 
-                {
-                    $videos[] =array('id'=>$noticia->getId(),
-                                     'titulo'=>$noticia->getTitulo(),
-                                     'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                     'tid'=>$noticia->getTipoBiblioteca()->getId());
-                }
-                else if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['podcast']) {
-                    $podcast[] =array('id'=>$noticia->getId(),
-                                      'titulo'=>$noticia->getTitulo(),
-                                      'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                      'tid'=>$noticia->getTipoBiblioteca()->getId());
-                }
-                else if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['articulo']) {
-                    $articulos[] =array('id'=>$noticia->getId(),
-                                        'titulo'=>$noticia->getTitulo(),
-                                        'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                        'tid'=>$noticia->getTipoBiblioteca()->getId());
-                }
-                else{   
-                    $libros[] =array('id'=>$noticia->getId(),
-                                     'titulo'=>$noticia->getTitulo(),
-                                     'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
-                                     'tid'=>$noticia->getTipoBiblioteca()->getId());
-                }
+            if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['video']) 
+            {
+                $videos[] =array('id'=>$noticia->getId(),
+                                 'titulo'=>$noticia->getTitulo(),
+                                 'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                 'tid'=>$noticia->getTipoBiblioteca()->getId());
+            }
+            else if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['podcast']) {
+                $podcast[] =array('id'=>$noticia->getId(),
+                                  'titulo'=>$noticia->getTitulo(),
+                                  'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                  'tid'=>$noticia->getTipoBiblioteca()->getId());
+            }
+            else if ($noticia->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['articulo']) {
+                $articulos[] =array('id'=>$noticia->getId(),
+                                    'titulo'=>$noticia->getTitulo(),
+                                    'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                    'tid'=>$noticia->getTipoBiblioteca()->getId());
+            }
+            else{   
+                $libros[] =array('id'=>$noticia->getId(),
+                                 'titulo'=>$noticia->getTitulo(),
+                                 'tipo'=>$noticia->getTipoBiblioteca()->getNombre(),
+                                 'tid'=>$noticia->getTipoBiblioteca()->getId());
             }
         }
 
