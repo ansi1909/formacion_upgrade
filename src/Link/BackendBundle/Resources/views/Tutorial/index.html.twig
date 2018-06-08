@@ -41,6 +41,9 @@
 <input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
 <input type="hidden" id="url_updateTutorial" name="url_updateTutorial" value="{{path( '_ajaxUpdateTutorial') }}">
 <input type="hidden" id="url_deleteTutorial" name="url_deleteTutorial" value="{{path( '_ajaxDeleteTutorial') }}">
+<input type="hidden" id="url_uploadFiles_tutorial" name="url_uploadFiles_tutorial" value="{{path( '_ajaxUploadFileTutorial') }}">
+<input type="hidden" id="url_path_tutoriales" name="url_uploadFiles_tutorial" value="recursos/tutoriales/">
+
 
 
 <br>
@@ -105,35 +108,41 @@
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
-                <input type="hidden" id="archivo" name="archivo" value="">
+                <input type="text" id="pdf_path" name="pdf_path" value="">
                     <a href="#" class="btn fileinput-button" type="button" >
                         <span class="fa fa-photo"></span>
-                        <input id="pdf_upload" class="tutorial_upload" type="file" name="files[]" multiple>
+                        <input id="pdf_upload" type="file" name="files[]" multiple>
                     </a>
             </div>
         </div>
-         <div class="form-group ">
+         
+        
+        <div class="form-group ">
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly">
-                <span class="input-group-addon span-filemanager">
-                    <a href="" class="btn iframe-btn" type="button" id='imagen_'>
-                        <span class="fa fa-photo"></span>
-                    </a>
-                </span>
+                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
+                <input type="text" id="imagen_path" name="imagen_path" value="">
+                <a href="#" class="btn fileinput-button" type="button" >
+                    <span class="fa fa-photo"></span>
+                    <input id="imagen_upload" type="file" name="files[]" multiple>
+                </a>
             </div>
         </div>
-         <div class="form-group ">
+
+       
+        <div class="form-group ">
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly">
-                <span class="input-group-addon span-filemanager">
-                    <a href="" class="btn iframe-btn" type="button" id="video_">
-                        <span class="fa fa-photo"></span>
-                    </a>
-                </span>
+                <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
+                <input type="text" id="video_path" name="video_path" value="">
+                <a href="#" class="btn fileinput-button" type="button" >
+                    <span class="fa fa-photo"></span>
+                    <input id="video_upload" type="file" name="files[]" multiple>
+                </a>
             </div>
         </div>
+
+
     </form>
     <div class="col-sm-16 col-md-16 col-lg-16 alert alert-danger" role="alert" id="div-error" style="display:none;">
         <ul></ul>
@@ -218,7 +227,6 @@
                   extension: "pdf"
                 },
                 'video': {
-                  required: true,
                   extension: "mov|mpeg|m4v|mp4|avi|mpg|wma|flv|webm"
                 },
                 'imagen': {
@@ -239,7 +247,6 @@
                     extension: "- {{ 'Extensiones aceptadas para el campo PDF'|trans }}: pdf."
                 },
                 'video':{
-                    required: "- {{ 'El vídeo es requerido'|trans }}.",
                     extension: "- {{ 'Extensiones aceptadas para vídeo'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm."
                 },
                 'imagen':{

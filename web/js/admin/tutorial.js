@@ -1,5 +1,61 @@
 $(document).ready(function() {
 
+	$('#pdf_upload').fileupload({
+
+		url: $('#url_uploadFiles_tutorial').val(),
+		tutorial_id:$('#tutorial_id').val(),
+        dataType: 'json',
+        done: function (e, data) {
+
+        	var tutorial_id = $('#tutorial_id').val();
+        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
+
+        	$.each(data.result.response.files, function (index, file) 
+        	{
+        		$('#pdf').val(file.name);
+        		$('#pdf_path').val(path+file.name);
+            });
+        }});
+
+	$('#imagen_upload').fileupload({
+
+		url: $('#url_uploadFiles_tutorial').val(),
+		tutorial_id:$('#tutorial_id').val(),
+        dataType: 'json',
+        done: function (e, data) {
+
+        	var tutorial_id = $('#tutorial_id').val();
+        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
+
+        	$.each(data.result.response.files, function (index, file) 
+        	{
+        		$('#imagen').val(file.name);
+        		$('#imagen_path').val(path+file.name);
+            });
+        }});
+
+	$('#video_upload').fileupload({
+
+		url: $('#url_uploadFiles_tutorial').val(),
+        dataType: 'json',
+        autoUpload: true,
+        acceptFileTypes: /(\.|\/)(mp4)$/i,
+        maxFileSize: 40000000, // 40 MB
+        disableVideoPreview: false,
+        done: function (e, data) {
+
+        	var tutorial_id = $('#tutorial_id').val();
+        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
+
+        	$.each(data.result.response.files, function (index, file) 
+        	{
+        		$('#video').val(file.name);
+        		$('#video_path').val(path+file.name);
+            });
+        },
+        fail: function(e,data){console.log('error al subir archivo')}});
+
+
 	$('.form-control').focus(function(){
 		$('#div-alert').hide();
 		$('#div-error').hide();
@@ -38,9 +94,6 @@ $(document).ready(function() {
 	$('#nuevoTutorial').click(function(){
 		document.getElementById("form").reset();
 		$('#guardar').prop('disabled',false);
-		$('#pdf_').attr('href', urlsHref['pdf_']);
-		$('#imagen_').attr('href', urlsHref['imagen_']);
-		$('#video_').attr('href', urlsHref['video_']);
 	});
 
 	$('.iframe-btn').fancybox({	
@@ -78,10 +131,6 @@ $(document).ready(function() {
 				$('#video').val(data.video);
 				$('#imagen').val(data.imagen);
 				$('#descripcion').val(data.descripcion);
-				
-				$('#pdf_').attr('href', urlsHref['pdf_']+'/'+tutorial_id);
-				$('#imagen_').attr('href', urlsHref['imagen_']+'/'+tutorial_id);
-				$('#video_').attr('href', urlsHref['video_']+'/'+tutorial_id);
 			},
 			error: function(){
 				$('alert-error').html($('#error_msg_edit').val());
@@ -117,16 +166,11 @@ var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que co
 	order: [[ 0, "desc" ]]
 } );
 
-var urlsHref =
-{ //href de los input para cargar archivos
-    'pdf_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales',
-    'imagen_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/tutoriales',
-    'video_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=video&rootFolder=recursos/tutoriales'
-};
+
 
 function saveTutorial()
 {
-
+	console.log($("#form").serialize());
     $('#div-alert').hide();
 	$('#div-error').hide();
 	if ($("#form").valid())
@@ -139,6 +183,7 @@ function saveTutorial()
 			data: $("#form").serialize(),
 			dataType: "json",
 			success: function(data) {
+
 				$('#p-nombre').html(data.nombre);
 				$('#p-pdf').html(data.pdf);
 				$('#p-imagen').html(data.pdf);
