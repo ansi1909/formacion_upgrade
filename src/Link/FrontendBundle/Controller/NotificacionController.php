@@ -22,7 +22,7 @@ class NotificacionController extends Controller
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
                                    WHERE a.usuario = :usuario_id 
-                                    AND a.fechaCreacion <= :hoy 
+                                   AND a.fechaCreacion <= :hoy 
                                    ORDER BY a.id DESC')
                     ->setMaxResults(10)
                     ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
