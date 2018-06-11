@@ -170,7 +170,7 @@ var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que co
 
 function saveTutorial()
 {
-	console.log($("#form").serialize());
+	
     $('#div-alert').hide();
 	$('#div-error').hide();
 	if ($("#form").valid())

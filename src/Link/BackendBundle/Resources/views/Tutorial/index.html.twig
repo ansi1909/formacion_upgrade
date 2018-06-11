@@ -108,7 +108,7 @@
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
-                <input type="text" id="pdf_path" name="pdf_path" value="">
+                <input type="hidden" id="pdf_path" name="pdf_path" value="">
                     <a href="#" class="btn fileinput-button" type="button" >
                         <span class="fa fa-photo"></span>
                         <input id="pdf_upload" type="file" name="files[]" multiple>
@@ -121,7 +121,7 @@
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
-                <input type="text" id="imagen_path" name="imagen_path" value="">
+                <input type="hidden" id="imagen_path" name="imagen_path" value="">
                 <a href="#" class="btn fileinput-button" type="button" >
                     <span class="fa fa-photo"></span>
                     <input id="imagen_upload" type="file" name="files[]" multiple>
@@ -134,7 +134,7 @@
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
-                <input type="text" id="video_path" name="video_path" value="">
+                <input type="hidden" id="video_path" name="video_path" value="">
                 <a href="#" class="btn fileinput-button" type="button" >
                     <span class="fa fa-photo"></span>
                     <input id="video_upload" type="file" name="files[]" multiple>
@@ -282,9 +282,9 @@
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success');
 
-                            setTimeout(function() {
+                           
                             table.ajax.reload(null,false);
-                        },  3000);
+                       
 
                     },
                     error: function(){
