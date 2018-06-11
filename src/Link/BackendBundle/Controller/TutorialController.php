@@ -78,6 +78,7 @@ class TutorialController extends Controller
             registrados en la base de datos. Se utiliza al momento de modificar un tutorial, para evitar 
             que queden archivos huerfanos luego de modificar el tutorial.
         */
+            
 
         $archivos = scandir($directorio);
         for ($i=0; $i <count($archivos); $i++) 

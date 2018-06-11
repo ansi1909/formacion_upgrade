@@ -11,12 +11,10 @@ $(document).ready(function() {
         done: function (e, data) {
         	$.each(data.result.response.files, function (index, file) 
         	{
-        		var id=$('#fileUpload').val();
+        		var id = $('#fileUpload').val();
         		$('#'+id).val(file.name);
             });
         }});
-
-	
 
 	$('.form-control').focus(function(){
 		$('#div-alert').hide();
