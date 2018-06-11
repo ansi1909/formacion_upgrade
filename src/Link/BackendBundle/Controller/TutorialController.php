@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminTutorial; 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Translation\TranslatorInterface;
+use Link\ComunBundle\Model\UploadHandler;
 
 
 class TutorialController extends Controller
@@ -87,37 +88,14 @@ class TutorialController extends Controller
 
     }
 
-    
-    protected function moverArchivo($rutaArchivo,$nameArchivo,$yml,$tutorial_id)
+    protected function moverArchivo($pathInicio,$pathTutorial,$nombreArchivo)
     {
-        if ($rutaArchivo=='') //si se encuentra en recursos/tutoriales
+        if ($nombreArchivo!='') 
         {
-            if($nameArchivo!='')
-            {
-               rename($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$nameArchivo,
-                  $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
-            }
-          
-        }
-        else if($rutaArchivo!='')//si se encuentra en recursos/tutoriales/tutorial_id
-        {
-           copy($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$rutaArchivo.'/'.$nameArchivo,
-                $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
+            rename($pathInicio.$nombreArchivo,$pathTutorial.$nombreArchivo);
         }
 
-        return true;
-    }
-
-    protected function carpetaNueva($tutorial,$rutaPdf,$rutaImagen,$rutaVideo,$yml)
-    {
-       
-        mkdir($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial->getId(),0777);
-        $this->moverArchivo($rutaPdf,$tutorial->getPdf(),$yml,$tutorial->getId());
-        $this->moverArchivo($rutaImagen,$tutorial->getImagen(),$yml,$tutorial->getId());
-        $this->moverArchivo($rutaVideo,$tutorial->getVideo(),$yml,$tutorial->getId());
-
-        return true;
-
+        return 0;
     }
 
     protected function eliminarArchivos($tutorial,$rutaTutorial,$tipoArchivo)
@@ -174,6 +152,7 @@ class TutorialController extends Controller
         $video = $request->request->get('video');
         $imagen = $request->request->get('imagen');
         $descripcion = $request->request->get('descripcion');
+       
 
         if ($tutorial_id)
         {
@@ -194,11 +173,16 @@ class TutorialController extends Controller
         $em->persist($tutorial);
         $em->flush();
 
-        if (!$tutorial_id)
+        if (!$tutorial_id)//si es nuevo
         {
             // Hacer el movimiento de archivos en caso de que sea nuevo tutorial
-            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
-            mkdir($dir_uploads.'recursos/tutoriales/'.$tutorial->getId(),0777);
+            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'].'recursos/tutoriales/';
+            mkdir($dir_uploads.$tutorial->getId(),0777);
+            $this->moverArchivo($dir_uploads,$dir_uploads.$tutorial->getId().'/',$tutorial->getPdf());
+            $this->moverArchivo($dir_uploads,$dir_uploads.$tutorial->getId().'/',$tutorial->getImagen());
+            $this->moverArchivo($dir_uploads,$dir_uploads.$tutorial->getId().'/',$tutorial->getVideo());
+
+            
         }
   
         $return = array('id' => $tutorial->getId(),
@@ -307,5 +291,22 @@ class TutorialController extends Controller
 
     }
 
+    public function ajaxUploadFileTutorialAction(Request $request)
+    {
+        $session = new Session();
+        $auxTut=$request->request->get('tutorial_id');
+        $tutorial_id = ($auxTut>0) ? $auxTut.'/' : ''; 
+
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
+        $upload_dir = $dir_uploads.'recursos/tutoriales/'.$tutorial_id;
+        $upload_url = $uploads.'recursos/tutoriales/'.$tutorial_id;
+        $options = array('upload_dir' => $upload_dir,
+                         'upload_url' => $upload_url);
+        $upload_handler = new UploadHandler($options);
+
+        $return = json_encode($upload_handler);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
 
 }
