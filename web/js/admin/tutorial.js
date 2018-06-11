@@ -1,60 +1,22 @@
 $(document).ready(function() {
 
-	$('#pdf_upload').fileupload({
+	$('.uploadFileHref').click(function(){
+	  $('#fileUpload').val($(this).attr('data-etiqueta'));
+	});
+
+	$('.uploadFile').fileupload({
 
 		url: $('#url_uploadFiles_tutorial').val(),
-		tutorial_id:$('#tutorial_id').val(),
         dataType: 'json',
         done: function (e, data) {
-
-        	var tutorial_id = $('#tutorial_id').val();
-        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
-
         	$.each(data.result.response.files, function (index, file) 
         	{
-        		$('#pdf').val(file.name);
-        		$('#pdf_path').val(path+file.name);
+        		var id=$('#fileUpload').val();
+        		$('#'+id).val(file.name);
             });
         }});
 
-	$('#imagen_upload').fileupload({
-
-		url: $('#url_uploadFiles_tutorial').val(),
-		tutorial_id:$('#tutorial_id').val(),
-        dataType: 'json',
-        done: function (e, data) {
-
-        	var tutorial_id = $('#tutorial_id').val();
-        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
-
-        	$.each(data.result.response.files, function (index, file) 
-        	{
-        		$('#imagen').val(file.name);
-        		$('#imagen_path').val(path+file.name);
-            });
-        }});
-
-	$('#video_upload').fileupload({
-
-		url: $('#url_uploadFiles_tutorial').val(),
-        dataType: 'json',
-        autoUpload: true,
-        acceptFileTypes: /(\.|\/)(mp4)$/i,
-        maxFileSize: 40000000, // 40 MB
-        disableVideoPreview: false,
-        done: function (e, data) {
-
-        	var tutorial_id = $('#tutorial_id').val();
-        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
-
-        	$.each(data.result.response.files, function (index, file) 
-        	{
-        		$('#video').val(file.name);
-        		$('#video_path').val(path+file.name);
-            });
-        },
-        fail: function(e,data){console.log('error al subir archivo')}});
-
+	
 
 	$('.form-control').focus(function(){
 		$('#div-alert').hide();

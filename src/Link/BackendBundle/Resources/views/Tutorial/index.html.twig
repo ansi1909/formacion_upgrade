@@ -42,7 +42,7 @@
 <input type="hidden" id="url_updateTutorial" name="url_updateTutorial" value="{{path( '_ajaxUpdateTutorial') }}">
 <input type="hidden" id="url_deleteTutorial" name="url_deleteTutorial" value="{{path( '_ajaxDeleteTutorial') }}">
 <input type="hidden" id="url_uploadFiles_tutorial" name="url_uploadFiles_tutorial" value="{{path( '_ajaxUploadFileTutorial') }}">
-<input type="hidden" id="url_path_tutoriales" name="url_uploadFiles_tutorial" value="recursos/tutoriales/">
+
 
 
 
@@ -92,6 +92,7 @@
     </button>
 </div>
 <div class="modal-body">
+    <input type="hidden" id="fileUpload" value="">
     <form id="form" name="form" action="{{ path('_ajaxUpdateTutorial') }}" method="POST">
         <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
         <div class="form-group">
@@ -108,10 +109,9 @@
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
-                <input type="hidden" id="pdf_path" name="pdf_path" value="">
-                    <a href="#" class="btn fileinput-button" type="button" >
+                    <a href="#" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="pdf" >
                         <span class="fa fa-photo"></span>
-                        <input id="pdf_upload" type="file" name="files[]" multiple>
+                        <input class="uploadFile"  type="file" name="files[]" multiple>
                     </a>
             </div>
         </div>
@@ -121,10 +121,9 @@
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
-                <input type="hidden" id="imagen_path" name="imagen_path" value="">
-                <a href="#" class="btn fileinput-button" type="button" >
+                <a href="#" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="imagen">
                     <span class="fa fa-photo"></span>
-                    <input id="imagen_upload" type="file" name="files[]" multiple>
+                    <input class="uploadFile" type="file" name="files[]" multiple>
                 </a>
             </div>
         </div>
@@ -134,10 +133,9 @@
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
-                <input type="hidden" id="video_path" name="video_path" value="">
-                <a href="#" class="btn fileinput-button" type="button" >
+                <a href="#" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="video" >
                     <span class="fa fa-photo"></span>
-                    <input id="video_upload" type="file" name="files[]" multiple>
+                    <input class="uploadFile" type="file" name="files[]" multiple>
                 </a>
             </div>
         </div>
@@ -227,6 +225,7 @@
                   extension: "pdf"
                 },
                 'video': {
+                  required: true,
                   extension: "mov|mpeg|m4v|mp4|avi|mpg|wma|flv|webm"
                 },
                 'imagen': {
@@ -247,6 +246,7 @@
                     extension: "- {{ 'Extensiones aceptadas para el campo PDF'|trans }}: pdf."
                 },
                 'video':{
+                    required: "- {{ 'Video requerido'|trans }}.",
                     extension: "- {{ 'Extensiones aceptadas para vídeo'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm."
                 },
                 'imagen':{

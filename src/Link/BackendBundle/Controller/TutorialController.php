@@ -74,8 +74,8 @@ class TutorialController extends Controller
     protected function deleteOrphanFilesTutorial($directorio,$objeto)
     {
         /*
-            Elimina los archivos dentro de una carpeta de un tutorial, que no coincidan con los registrados 
-            para ese tutorial en la base de datos. Se utiliza al momento de modificar un tutorial, para evitar 
+            Elimina los archivos dentro de una carpeta de un tutorial, que no se encuentren 
+            registrados en la base de datos. Se utiliza al momento de modificar un tutorial, para evitar 
             que queden archivos huerfanos luego de modificar el tutorial.
         */
 
