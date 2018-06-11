@@ -2552,7 +2552,7 @@ class Functions
 		$em = $this->em;
 
 		$query = $em->createQuery('SELECT COUNT(pe.id) FROM LinkComunBundle:CertiPaginaEmpresa pe 
-		                                        WHERE pe.pagina = :pagina_id')
+		                            WHERE pe.pagina = :pagina_id')
 		            ->setParameter('pagina_id', $pagina_id);
 		
 		return $query->getSingleScalarResult();
