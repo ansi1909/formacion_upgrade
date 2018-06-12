@@ -238,7 +238,7 @@ fecha_modificacion timestamp without time zone,
 CREATE TABLE certi_opcion(
 -- Attributes --
 id serial,
-descripcion varchar(500),
+descripcion text,
 imagen varchar(500),
 prueba_id integer,
 usuario_id integer,
