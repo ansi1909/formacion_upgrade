@@ -45,7 +45,7 @@ class TutorialController extends Controller
             Elimina los archivos dentro del directorio indicado, sin consultar si estan registrados en la 
             base de datos, cuando el argumento: removeDir es true se procede a borrar la carpeta una vez
             se encuentre vacia. Se utiliza cuando se elimina un tutorial del sistema y para limpiar 
-            el directorio : recursos/tutoriales/ luego de realizar una insercion.
+            el directorio : recursos/tutoriales/ luego de realizar una insercion. elimina la carpeta thumbnail
         */
 
         $existe = file_exists($directorio);
@@ -59,6 +59,16 @@ class TutorialController extends Controller
                 if(!is_dir($directorio.'/'.$archivos[$i]) )
                 {
                   unlink($directorio.'/'.$archivos[$i]);
+                }
+                else
+                {
+                    if ($archivos[$i]=='thumbnail') {
+                        $thumbnails=scandir($directorio.'/'.$archivos[$i].'/');
+                        for ($j=2; $j <count($thumbnails) ; $j++) { 
+                            unlink($directorio.'/'.$archivos[$i].'/'.$thumbnails[$j]);
+                        }
+                        rmdir($directorio.'/'.$archivos[$i]);
+                    }
                 }
             }
 
@@ -87,6 +97,18 @@ class TutorialController extends Controller
                 if($objeto->getPdf() != $archivos[$i] && $objeto->getImagen() != $archivos[$i] && $objeto->getVideo() != $archivos[$i])
                 {
                  unlink($directorio.'/'.$archivos[$i]);
+                }
+            }
+            else
+            {
+                 if ($archivos[$i]=='thumbnail') 
+                 {
+                    $thumbnails=scandir($directorio.'/'.$archivos[$i].'/');
+                    for ($j=2; $j <count($thumbnails) ; $j++) 
+                    { 
+                        unlink($directorio.'/'.$archivos[$i].'/'.$thumbnails[$j]);
+                    }
+                        rmdir($directorio.'/'.$archivos[$i]);
                 }
             }
         }

@@ -9,12 +9,32 @@ $(document).ready(function() {
 		url: $('#url_uploadFiles_tutorial').val(),
         dataType: 'json',
         done: function (e, data) {
+        	var id = $('#fileUpload').val();
         	$.each(data.result.response.files, function (index, file) 
         	{
-        		var id = $('#fileUpload').val();
         		$('#'+id).val(file.name);
             });
-        }});
+             //// Mostrando y habilitando botones ///////////////
+             $('#guardar').show();
+	  		 $('#cancelar').show();
+	  		 $('#wait_tutorial').hide();
+
+	  		 $('#href_pdf').prop('disabled',false);
+	  		 $('#href_imagen').prop('disabled',false);
+	  		 $('#href_video').prop('disabled',false);
+        },
+        add: function (e,data ){
+        	 ////// Ocultando y deshabilitando botones /////////
+        	 $('#guardar').hide();
+	  		 $('#cancelar').hide();
+	  		 $('#wait_tutorial').show(1000);
+
+	  		 $('#href_pdf').prop('disabled',true);
+	  		 $('#href_imagen').prop('disabled',true);
+	  		 $('#href_video').prop('disabled',true);
+	  		 data.submit();
+        }
+    });
 
 	$('.form-control').focus(function(){
 		$('#div-alert').hide();
@@ -48,12 +68,25 @@ $(document).ready(function() {
 
 
 	$('#guardar').click(function(){
-		saveTutorial();
+	  if ($("#form").valid())
+		{
+			$('#guardar').hide();
+			$('#cancelar').hide();
+			$('#wait_tutorial').show(1000);
+			saveTutorial();
+		}
+		else{
+			$('#div-error').show();
+		}
 	});
 
 	$('#nuevoTutorial').click(function(){
 		document.getElementById("form").reset();
 		$('#guardar').prop('disabled',false);
+		$('#guardar').show();
+		$('#cancelar').show();
+		$('#wait_tutorial').hide();
+		
 	});
 
 	$('.iframe-btn').fancybox({	
@@ -144,6 +177,16 @@ function saveTutorial()
 			dataType: "json",
 			success: function(data) {
 
+				if($('#tutorial_id').val() != '')//si se edita un tutorial
+				{
+					table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
+				}
+				else
+				{
+					table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
+				}
+
+				$('#wait_tutorial').hide();
 				$('#p-nombre').html(data.nombre);
 				$('#p-pdf').html(data.pdf);
 				$('#p-imagen').html(data.pdf);
@@ -154,16 +197,7 @@ function saveTutorial()
 				$('#alert-success').show();
 				$('#detail').show();
 				$('#aceptar').show();
-				$('#guardar').hide();
-				$('#cancelar').hide();
-				if($('#tutorial_id').val() != '')//si se edita un tutorial
-				{
-					table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
-				}
-				else
-				{
-					table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
-				}
+				
 			},
 			error: function(){
 				$('#alert-error').html($('#error_msg-save').val());
