@@ -135,11 +135,11 @@ class TutorialController extends Controller
             $tutorial->setFecha(new \DateTime('now'));
         }
         
-        $tutorial->setNombre($nombre);
+        $tutorial->setNombre(ucfirst(mb_strtolower(trim($nombre))));
         $tutorial->setPdf($pdf);
         $tutorial->setVideo($video);
         $tutorial->setImagen($imagen);
-        $tutorial->setDescripcion($descripcion);
+        $tutorial->setDescripcion(ucfirst(mb_strtolower(trim($descripcion))));
         $tutorial->setUsuario($usuario);
 
         $em->persist($tutorial);
