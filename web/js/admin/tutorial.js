@@ -1,60 +1,40 @@
 $(document).ready(function() {
 
-	$('#pdf_upload').fileupload({
+	$('.uploadFileHref').click(function(){
+	  $('#fileUpload').val($(this).attr('data-etiqueta'));
+	});
 
-		url: $('#url_uploadFiles_tutorial').val(),
-		tutorial_id:$('#tutorial_id').val(),
-        dataType: 'json',
-        done: function (e, data) {
-
-        	var tutorial_id = $('#tutorial_id').val();
-        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
-
-        	$.each(data.result.response.files, function (index, file) 
-        	{
-        		$('#pdf').val(file.name);
-        		$('#pdf_path').val(path+file.name);
-            });
-        }});
-
-	$('#imagen_upload').fileupload({
-
-		url: $('#url_uploadFiles_tutorial').val(),
-		tutorial_id:$('#tutorial_id').val(),
-        dataType: 'json',
-        done: function (e, data) {
-
-        	var tutorial_id = $('#tutorial_id').val();
-        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
-
-        	$.each(data.result.response.files, function (index, file) 
-        	{
-        		$('#imagen').val(file.name);
-        		$('#imagen_path').val(path+file.name);
-            });
-        }});
-
-	$('#video_upload').fileupload({
+	$('.uploadFile').fileupload({
 
 		url: $('#url_uploadFiles_tutorial').val(),
         dataType: 'json',
-        autoUpload: true,
-        acceptFileTypes: /(\.|\/)(mp4)$/i,
-        maxFileSize: 40000000, // 40 MB
-        disableVideoPreview: false,
         done: function (e, data) {
-
-        	var tutorial_id = $('#tutorial_id').val();
-        	var path = ((tutorial_id>0) ?  $('#url_path_tutoriales').val()+tutorial_id+'/' : $('#url_path_tutoriales').val());
-
+        	var id = $('#fileUpload').val();
         	$.each(data.result.response.files, function (index, file) 
         	{
-        		$('#video').val(file.name);
-        		$('#video_path').val(path+file.name);
+        		$('#'+id).val(file.name);
             });
+             //// Mostrando y habilitando botones ///////////////
+             $('#guardar').show();
+	  		 $('#cancelar').show();
+	  		 $('#wait_tutorial').hide();
+
+	  		 $('#href_pdf').prop('disabled',false);
+	  		 $('#href_imagen').prop('disabled',false);
+	  		 $('#href_video').prop('disabled',false);
         },
-        fail: function(e,data){console.log('error al subir archivo')}});
+        add: function (e,data ){
+        	 ////// Ocultando y deshabilitando botones /////////
+        	 $('#guardar').hide();
+	  		 $('#cancelar').hide();
+	  		 $('#wait_tutorial').show(1000);
 
+	  		 $('#href_pdf').prop('disabled',true);
+	  		 $('#href_imagen').prop('disabled',true);
+	  		 $('#href_video').prop('disabled',true);
+	  		 data.submit();
+        }
+    });
 
 	$('.form-control').focus(function(){
 		$('#div-alert').hide();
@@ -88,12 +68,25 @@ $(document).ready(function() {
 
 
 	$('#guardar').click(function(){
-		saveTutorial();
+	  if ($("#form").valid())
+		{
+			$('#guardar').hide();
+			$('#cancelar').hide();
+			$('#wait_tutorial').show(1000);
+			saveTutorial();
+		}
+		else{
+			$('#div-error').show();
+		}
 	});
 
 	$('#nuevoTutorial').click(function(){
 		document.getElementById("form").reset();
 		$('#guardar').prop('disabled',false);
+		$('#guardar').show();
+		$('#cancelar').show();
+		$('#wait_tutorial').hide();
+		
 	});
 
 	$('.iframe-btn').fancybox({	
@@ -170,7 +163,7 @@ var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que co
 
 function saveTutorial()
 {
-	console.log($("#form").serialize());
+	
     $('#div-alert').hide();
 	$('#div-error').hide();
 	if ($("#form").valid())
@@ -184,6 +177,16 @@ function saveTutorial()
 			dataType: "json",
 			success: function(data) {
 
+				if($('#tutorial_id').val() != '')//si se edita un tutorial
+				{
+					table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
+				}
+				else
+				{
+					table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
+				}
+
+				$('#wait_tutorial').hide();
 				$('#p-nombre').html(data.nombre);
 				$('#p-pdf').html(data.pdf);
 				$('#p-imagen').html(data.pdf);
@@ -194,16 +197,7 @@ function saveTutorial()
 				$('#alert-success').show();
 				$('#detail').show();
 				$('#aceptar').show();
-				$('#guardar').hide();
-				$('#cancelar').hide();
-				if($('#tutorial_id').val() != '')//si se edita un tutorial
-				{
-					table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
-				}
-				else
-				{
-					table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
-				}
+				
 			},
 			error: function(){
 				$('#alert-error').html($('#error_msg-save').val());

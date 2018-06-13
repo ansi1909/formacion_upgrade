@@ -17,13 +17,54 @@ $(document).ready(function() {
     });
 
     $('#guardar').click(function(){
-        duplicarPagina();
+        $('#form').submit();
+        return false;
     });
-
 
     $('#form').submit(function(e) {
         e.preventDefault();
-        duplicarPagina();
+    });
+
+    $('#form').safeform({
+        submit: function(e) {
+            
+            $('#div-alert').hide();
+            if ($("#form").valid())
+            {
+                $('#guardar').prop('disabled', true);
+                $.ajax({
+                    type: "POST",
+                    url: $('#form').attr('action'),
+                    async: true,
+                    data: $("#form").serialize(),
+                    dataType: "json",
+                    success: function(data) {
+                        
+                        $('#guardar').prop('disabled', false);
+                        $('#inserts').html(data.inserts);
+                        treePaginas(data.id);
+                        initModalShow();
+
+                        // manual complete, reenable form ASAP
+                        $('#form').safeform('complete');
+                        return false; // revent real submit
+
+                    },
+                    error: function(){
+                        $('#alert-error').html($('#error_msg-save').val());
+                        $('#div-alert').show();
+                        $('#guardar').prop('disabled', false);
+                        $('#form').safeform('complete');
+                        return false; // revent real submit
+                    }
+                });
+            }
+            else {
+                $('#form').safeform('complete');
+                return false; // revent real submit
+            }
+            
+        }
     });
 
     $('#aceptar').click(function(){
@@ -37,40 +78,6 @@ $(document).ready(function() {
     observe();
 
 });
-
-function duplicarPagina()
-{
-
-    $('#div-alert').hide();
-    if ($("#form").valid())
-    {
-        $('#guardar').prop('disabled', true);
-        $.ajax({
-            type: "POST",
-            url: $('#form').attr('action'),
-            async: true,
-            data: $("#form").serialize(),
-            dataType: "json",
-            success: function(data) {
-                $('#guardar').prop('disabled', false);
-                $('#inserts').html(data.inserts);
-                treePaginas(data.id);
-                $('#form').hide();
-                $('#alert-success').show();
-                $('#detail').show();
-                $('#aceptar').show();
-                $('#guardar').hide();
-                $('#cancelar').hide();
-            },
-            error: function(){
-                $('#alert-error').html($('#error_msg-save').val());
-                $('#div-alert').show();
-                $('#guardar').prop('disabled', false);
-            }
-        });
-    }
-
-}
 
 function treePaginas(pagina_id)
 {
@@ -93,23 +100,17 @@ function observe()
 
     $('.tree').jstree();
 
+    $('.delete').unbind('click');
     $('.delete').click(function(){
         var pagina_id = $(this).attr('data');
         sweetAlertDelete(pagina_id, 'CertiPagina');
     });
 
+    $('.duplicate').unbind('click');
     $('.duplicate').click(function(){
         var pagina_id = $(this).attr('data');
         $('#pagina_id').val(pagina_id);
-        $('#guardar').prop('disabled', false);
-        $('label.error').hide();
-        $('#form').show();
-        $('#alert-success').hide();
-        $('#detail').hide();
-        $('#aceptar').hide();
-        $('#guardar').show();
-        $('#cancelar').show();
-        $('#div-alert').hide();
+        initModalEdit();
         $.ajax({
            type:"GET",
            url: $('#url_edit').val(),

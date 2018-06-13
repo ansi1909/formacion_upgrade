@@ -92,8 +92,14 @@ $(document).ready(function() {
 					error: function(){
 						$('#alert-error').html($('#error_msg-save').val());
 						$('#div-alert').show();
+						$('#form').safeform('complete');
+                        return false; // revent real submit
 					}
 				});
+			}
+			else {
+				$('#form').safeform('complete');
+                return false; // revent real submit
 			}
 			
 		}

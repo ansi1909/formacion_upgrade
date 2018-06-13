@@ -1068,16 +1068,9 @@ class PaginaController extends Controller
         $qb->select('p')
            ->from('LinkComunBundle:CertiPagina', 'p')
            ->andWhere('p.id != :me')
+           ->andWhere('p.pagina IS NULL')
            ->orderBy('p.orden', 'ASC');
         $parametros['me'] = $pagina_id;
-        if ($pagina->getPagina())
-        {
-            $qb->andWhere('p.pagina = :pagina_id');
-            $parametros['pagina_id'] = $pagina->getPagina()->getId();
-        }
-        else {
-            $qb->andWhere('p.pagina IS NULL');
-        }
         $qb->setParameters($parametros);
         $query = $qb->getQuery();
         $pages = $query->getResult();
