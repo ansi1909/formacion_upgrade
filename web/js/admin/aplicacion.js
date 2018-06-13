@@ -107,6 +107,7 @@ $(document).ready(function() {
 function observe()
 {
 
+	$('.edit').unbind('click');
 	$('.edit').click(function(){
 		var app_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
@@ -140,6 +141,7 @@ function observe()
 		});
 	});
 
+	$('.cb_activo').unbind('click');
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
@@ -162,6 +164,7 @@ function observe()
 		});
 	});
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var app_id = $(this).attr('data');
 		sweetAlertDelete(app_id, 'AdminAplicacion');
@@ -221,6 +224,8 @@ function observe()
 }
 
 function afterPaginate(){
+
+	$('.see').unbind('click');
 	$('.see').click(function(){
 		var app_id = $(this).attr('data');
 		$('#div-active-alert').hide();
@@ -248,6 +253,5 @@ function afterPaginate(){
 			}
 		});
 	});
-
 
 }

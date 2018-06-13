@@ -19,9 +19,9 @@ Link\ComunBundle\Entity\CertiOpcion:
                 strategy: SEQUENCE
     fields:
         descripcion:
-            type: string
+            type: text
             nullable: true
-            length: 500
+            length: null
             options:
                 fixed: false
         imagen:

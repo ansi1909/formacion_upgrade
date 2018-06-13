@@ -25,7 +25,7 @@ class CertiOpcion
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=500, nullable=true)
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
      */
     private $descripcion;
 
