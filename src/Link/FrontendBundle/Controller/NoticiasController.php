@@ -36,56 +36,6 @@ class NoticiasController extends Controller
         $noticias = array();
         $novedades = array();
 
-        if ($request->getMethod() == 'POST'){
-
-            $buscar = $request->request->get('buscar');
-
-            $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNoticia n
-                                       WHERE n.titulo LIKE :buscar
-                                       AND n.empresa = :empresa_id")
-                        ->setParameters(array('buscar'=> '%'.$buscar.'%',
-                                              'empresa_id'=> $empresa_id));
-            $busquedas = $query->getResult();
-
-            foreach($busquedas as $busqueda)
-            {
-                $fecha_i = strtotime($busqueda->getFechaPublicacion()->format('d-m-Y'));
-                $fecha_f = strtotime($busqueda->getFechaVencimiento()->format('d-m-Y'));
-                if ($now >= $fecha_i && $now < $fecha_f) 
-               {
-                    $todos[] =array('id'=>$busqueda->getId(),
-                                       'titulo'=>$busqueda->getTitulo(),
-                                       'fecha'=>$busqueda->getFechaPublicacion()->format('d/m/Y'),
-                                       'tipo'=>$busqueda->getTipoNoticia()->getNombre(),
-                                       'imagen'=>$busqueda->getImagen(),
-                                       'tid'=>$busqueda->getTipoNoticia()->getId());
-
-                    if($busqueda->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['noticia'])
-                    {
-                        $noticias[] =array('id'=>$busqueda->getId(),
-                                       'titulo'=>$busqueda->getTitulo(),
-                                       'fecha'=>$busqueda->getFechaPublicacion()->format('d/m/Y'),
-                                       'tipo'=>$busqueda->getTipoNoticia()->getNombre(),
-                                       'imagen'=>$busqueda->getImagen(),
-                                       'tid'=>$busqueda->getTipoNoticia()->getId());
-
-                    }elseif ($busqueda->getTipoNoticia()->getId() == $yml['parameters']['tipo_noticias']['novedad']) 
-                    {
-                        $novedades[] =array('id'=>$busqueda->getId(),
-                                       'titulo'=>$busqueda->getTitulo(),
-                                       'fecha'=>$busqueda->getFechaPublicacion()->format('d/m/Y'),
-                                       'tipo'=>$busqueda->getTipoNoticia()->getNombre(),
-                                       'imagen'=>$busqueda->getImagen(),
-                                       'tid'=>$busqueda->getTipoNoticia()->getId());
-                    }
-                }
-            }
-
-            return $this->render('LinkFrontendBundle:Noticias:index.html.twig', array('usuario_id' => $usuario_id,
-                                                                              'todos' => $todos,
-                                                                              'noticias' => $noticias,
-                                                                              'novedades' => $novedades));
-        }
 
         $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                    WHERE n.empresa = :empresa_id
@@ -172,6 +122,37 @@ class NoticiasController extends Controller
         return $this->render('LinkFrontendBundle:Noticias:detalle.html.twig', array('noticia' => $noticia,
                                                                                     'noticias'=> $noticias));
 
+    }
+
+    public function ajaxSearchNoticiaAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        $term = $request->query->get('term');
+        $noticias = array();
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+           ->from('LinkComunBundle:AdminNoticia', 'n')
+           ->where('n.tipoNoticia != :biblioteca')
+           ->andWhere('LOWER(n.titulo) LIKE :term')
+           ->setParameters(array('biblioteca' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
+                           'term' => '%'.$term.'%'));
+
+        $query = $qb->getQuery();
+        $noticias_db = $query->getResult();
+
+        foreach ($noticias_db as $noticia)
+        {
+            $noticias[] = array('id' => $noticia->getId(),
+                             'label' => $noticia->getTitulo(),
+                             'value' => $noticia->getTitulo());
+        }
+
+        $return = json_encode($noticias);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
 }

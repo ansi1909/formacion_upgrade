@@ -3,6 +3,11 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
+    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">  
+    
+    
     <style>
         .input-group-addon{padding:0px;}
         .input-group .form-control {
@@ -28,6 +33,105 @@
             box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
             font-weight: bold;
         }
+
+
+        .radar {
+          position: relative;
+          width: calc(1rem - 11px);
+          height: calc(1rem - 11px);
+          top: 49%;
+          top: -webkit-calc(50% - calc(3rem - 5px));
+          top: calc(50% - calc(1rem - 13.5px));
+          left: 49%;
+          left: -webkit-calc(50% - calc(3rem - 5px));
+          left: calc(50% - calc(1rem - 13.5px));
+          background-color: #5CAEE6;
+          border-radius: 50px; }
+          .radar::after {
+            content: "";
+            position: absolute;
+            top: calc(1rem - 13px);
+            right: calc(1rem - 13px);
+            border-bottom: 3px solid #5CAEE6;
+            border-left: 3px solid #5CAEE6;
+            border-radius: 0 0 0 calc(2rem + 2px);
+            width: calc(2rem - 8px);
+            height: calc(2rem - 8px);
+            background-color: rgba(92, 174, 230, 0.1);
+            -webkit-transform-origin: 100% 0%;
+            transform-origin: 100% 0%;
+            -webkit-animation: radar 1.5s linear infinite;
+            animation: radar 1.5s linear infinite; }
+          .radar::before {
+            content: "";
+            position: absolute;
+            top: calc(-1 * calc(1rem + 6px));
+            right: calc(-1 * calc(1rem + 6px));
+            border-top: 3px solid #5CAEE6;
+            border-right: 3px solid #5CAEE6;
+            border-radius: 0 calc(2rem + 2px) 0px 0;
+            width: calc(2rem - 8px);
+            height: calc(2rem - 8px);
+            background-color: rgba(92, 174, 230, 0.1);
+            -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+            -webkit-animation: radar 1.5s linear infinite;
+            animation: radar 1.5s linear infinite; }
+
+        @-webkit-keyframes minAgu {
+          0% {
+            -webkit-transform: rotate(0deg); }
+          100% {
+            -webkit-transform: rotate(360deg); } }
+        @keyframes minAgu {
+          0% {
+            transform: rotate(0deg); }
+          100% {
+            transform: rotate(360deg); } }
+        @-webkit-keyframes hrAgu {
+          0% {
+            -webkit-transform: rotate(0deg); }
+          100% {
+            -webkit-transform: rotate(360deg); } }
+        @keyframes hrAgu {
+          0% {
+            transform: rotate(0deg); }
+          100% {
+            transform: rotate(360deg); } }
+        @-webkit-keyframes rArena {
+          0% {
+            -webkit-transform: rotate(0deg); }
+          50% {
+            -webkit-transform: rotate(180deg); }
+          100% {
+            -webkit-transform: rotate(360deg); } }
+        @keyframes rArena {
+          0% {
+            transform: rotate(0deg); }
+          50% {
+            transform: rotate(180deg); }
+          100% {
+            transform: rotate(360deg); } }
+        @-webkit-keyframes radar {
+          0% {
+            -webkit-transform: rotate(0deg); }
+          100% {
+            -webkit-transform: rotate(360deg); } }
+        @keyframes radar {
+          0% {
+            transform: rotate(0deg); }
+          100% {
+            transform: rotate(360deg); } }
+        @-webkit-keyframes rd {
+          0% {
+            -webkit-transform: rotate(0deg); }
+          100% {
+            -webkit-transform: rotate(360deg); } }
+        @keyframes rd {
+          0% {
+            transform: rotate(0deg); }
+          100% {
+            transform: rotate(360deg); } }
     </style>
 {% endblock %}
 
@@ -38,6 +142,9 @@
 <input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
 <input type="hidden" id="url_updateTutorial" name="url_updateTutorial" value="{{path( '_ajaxUpdateTutorial') }}">
 <input type="hidden" id="url_deleteTutorial" name="url_deleteTutorial" value="{{path( '_ajaxDeleteTutorial') }}">
+<input type="hidden" id="url_uploadFiles_tutorial" name="url_uploadFiles_tutorial" value="{{path( '_ajaxUploadFileTutorial') }}">
+
+
 
 
 <br>
@@ -85,7 +192,8 @@
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" id="modal_body">
+    <input type="hidden" id="fileUpload" value="">
     <form id="form" name="form" action="{{ path('_ajaxUpdateTutorial') }}" method="POST">
         <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
         <div class="form-group">
@@ -102,38 +210,48 @@
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
-                <input type="hidden" id="archivo" name="archivo" value="">
-                    <a href="#" class="btn fileinput-button" type="button" id=''>
+                    <a href="#" id="href_pdf" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="pdf" >
                         <span class="fa fa-photo"></span>
-
+                        <input class="uploadFile"  type="file" name="files[]" multiple>
                     </a>
             </div>
         </div>
-         <div class="form-group ">
+         
+        
+        <div class="form-group ">
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly">
-                <span class="input-group-addon span-filemanager">
-                    <a href="" class="btn iframe-btn" type="button" id='imagen_'>
-                        <span class="fa fa-photo"></span>
-                    </a>
-                </span>
+                <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
+                <a href="#" id="href_imagen" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="imagen">
+                    <span class="fa fa-photo"></span>
+                    <input class="uploadFile" type="file" name="files[]" multiple>
+                </a>
             </div>
         </div>
-         <div class="form-group ">
+
+       
+        <div class="form-group ">
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
-                <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly">
-                <span class="input-group-addon span-filemanager">
-                    <a href="" class="btn iframe-btn" type="button" id="video_">
-                        <span class="fa fa-photo"></span>
-                    </a>
-                </span>
+                <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
+                <a href="#" id="href_video" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="video" >
+                    <span class="fa fa-photo"></span>
+                    <input class="uploadFile" type="file" name="files[]" multiple>
+                </a>
             </div>
         </div>
+        <div class="row justify-content-center" style="display:none;" id="wait_tutorial">
+            <div class="col-auto px-0 py-0">
+                <div class="contenedor">
+                    <div class="radar"></div>
+                </div>
+            </div>
+        </div>
+
+
     </form>
     <div class="col-sm-16 col-md-16 col-lg-16 alert alert-danger" role="alert" id="div-error" style="display:none;">
-        <ul></ul>
+        <ul id="error-messages"></ul>
     </div>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
         <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El tutorial ha sido almacenada con éxito'|trans }}. 
@@ -177,8 +295,8 @@
         </div>
         <div class="card-footer">
             <div class="col-sm-16 col-md-16 text-right" id="buttons">
-                <button type="button" class="bttn__edit edit_footer" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim delete_fotter" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__edit edit_footer edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete_fotter delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
@@ -236,7 +354,7 @@
                     extension: "- {{ 'Extensiones aceptadas para el campo PDF'|trans }}: pdf."
                 },
                 'video':{
-                    required: "- {{ 'El vídeo es requerido'|trans }}.",
+                    required: "- {{ 'Video requerido'|trans }}.",
                     extension: "- {{ 'Extensiones aceptadas para vídeo'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm."
                 },
                 'imagen':{
@@ -244,6 +362,14 @@
                 }
             }
         });
+
+        function failedRequest()
+        {
+            swal(""," {{ 'El archivo seleccionado no se cargo correctamente.'| trans }} ","error");
+            showButtons();
+
+            return 0;
+        }
 
         function sweetAlertDeleteTutorial(id,preg_opt=0)
         {
@@ -270,11 +396,11 @@
                         swal(
                             "{{ 'Eliminado'|trans }}!",
                             "{{ 'Su registro ha sido eliminado'|trans }}",
-                            'success'
+                            'success');
 
-                            setTimeout(function() {
+                           
                             table.ajax.reload(null,false);
-                        },  3000);
+                       
 
                     },
                     error: function(){

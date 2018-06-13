@@ -83,6 +83,29 @@ $(document).ready(function() {
                 $('#contenido').val("");
             }
         })
-    })
+    });
 
 });
+
+function initModalShow()
+{
+    $('#form').hide();
+    $('#alert-success').show();
+    $('#detail').show();
+    $('#aceptar').show();
+    $('#guardar').hide();
+    $('#cancelar').hide();
+}
+
+function initModalEdit()
+{
+    $('label.error').hide();
+    $('#form').show();
+    $('#alert-success').hide();
+    $('#detail').hide();
+    $('#aceptar').hide();
+    $('#guardar').show();
+    $('#guardar').prop('disabled', false);
+    $('#cancelar').show();
+    $('#div-alert').hide();
+}

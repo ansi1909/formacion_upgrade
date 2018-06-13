@@ -431,7 +431,13 @@
                 },
                 'video': {
                     extension: "mp4|webm|ogv"
-                }                
+                },
+                'fecha_publicacion': {
+                    required: true
+                },
+                'fecha_vencimiento': {
+                    required: true
+                } 
             },
             messages: {
                 'empresa_id': {
@@ -452,7 +458,13 @@
                 },
                 'video': {
                     extension: "- {{ 'Sólo archivos con extensión .mp4 o .webm o .ogv'|trans }}"
-                }
+                },
+                'fecha_publicacion': {
+                    required: "- {{ 'La fecha de publicación es requerida'}}"
+                },
+                'fecha_vencimiento': {
+                    required: "- {{ 'La fecha de vencimiento es requerida'}}"
+                } 
             }
         });
     </script>

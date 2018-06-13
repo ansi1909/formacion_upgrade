@@ -107,6 +107,7 @@ $(document).ready(function() {
 function observe()
 {
 
+	$('.edit').unbind('click');
 	$('.edit').click(function(){
 		var app_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
@@ -140,6 +141,7 @@ function observe()
 		});
 	});
 
+	$('.cb_activo').unbind('click');
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
@@ -162,6 +164,7 @@ function observe()
 		});
 	});
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var app_id = $(this).attr('data');
 		sweetAlertDelete(app_id, 'AdminAplicacion');
@@ -221,9 +224,13 @@ function observe()
 }
 
 function afterPaginate(){
+
+	$('.see').unbind('click');
 	$('.see').click(function(){
 		var app_id = $(this).attr('data');
 		$('#div-active-alert').hide();
+		$('#div-subapps, .load1').show();
+		$('#cardSub').hide();
 		$.ajax({
 			type: "GET",
 			url: $('#url_subapps').val(),
@@ -231,18 +238,20 @@ function afterPaginate(){
 			data: { app_id: app_id },
 			dataType: "json",
 			success: function(data) {
+				$('.load1').hide();
 				$('#subapp').html(data.html);
 				$('#appTitle').html(data.nombre);
 				$('#div-subapps').show();
+				$('#cardSub').show();
 				observe();
 			},
 			error: function(){
+				$('.load1').hide();
 				$('#active-error').html($('#error_msg-subapps').val());
 				$('#div-active-alert').show();
 				$('#div-subapps').hide();
 			}
 		});
 	});
-
 
 }

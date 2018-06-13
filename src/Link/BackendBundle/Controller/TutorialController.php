@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminTutorial; 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Translation\TranslatorInterface;
+use Link\ComunBundle\Model\UploadHandler;
 
 
 class TutorialController extends Controller
@@ -37,125 +38,96 @@ class TutorialController extends Controller
 
     }
 
-    
 
-    protected function nameArchivo($name)
+    protected function cleanRootDirectory($directorio,$removeDir=false)
     {
+        /*
+            Elimina los archivos dentro del directorio indicado, sin consultar si estan registrados en la 
+            base de datos, cuando el argumento: removeDir es true se procede a borrar la carpeta una vez
+            se encuentre vacia. Se utiliza cuando se elimina un tutorial del sistema y para limpiar 
+            el directorio : recursos/tutoriales/ luego de realizar una insercion. elimina la carpeta thumbnail
+        */
 
-        $aux = explode("/",$name);
-        $longitud = count($aux);
-        $name_ = false;
-        $route = false;
+        $existe = file_exists($directorio);
 
-        if ($longitud==3)//carpeta : recursos/tutoriales
+        if($existe)
         {
-            $name_ = $aux[2];
-            $route = '';
-        }
-        else if($longitud==4)
-        {
-            $name_ = $aux[3];
-            $route = $aux[2].'/';
-        }
-        else if($longitud==1)
-        {
-            $name_ = $name;
-        }
-        
-        return ['name'=>$name_,'route'=>$route];
-    }
-
-    protected function setTutorial($em,$datosAjax,$tutorial,$session)
-    {
-        $pdf_ = $this->nameArchivo($datosAjax['pdf']);
-        $video_ = $this->nameArchivo($datosAjax['video']);
-        $imagen_ = $this->nameArchivo($datosAjax['imagen']);
-        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-
-        $tutorial->setNombre(ucfirst(strtolower($datosAjax['nombre'])));
-        $tutorial->setDescripcion(ucfirst(strtolower($datosAjax['descripcion'])));
-        $tutorial->setPdf($pdf_['name']);
-        $tutorial->setVideo($video_['name']);
-        $tutorial->setImagen($imagen_['name']);
-        $tutorial->setUsuario($usuario);
-        $tutorial->setFecha(new \DateTime('now'));
-        
-        $em->persist($tutorial);
-        $em->flush();
-
-        return ['tutorial'=>$tutorial,'routePdf'=>$pdf_['route'],'routeVideo'=>$video_['route'],'routeImagen'=>$imagen_['route']];
-
-    }
-
-    
-    protected function moverArchivo($rutaArchivo,$nameArchivo,$yml,$tutorial_id)
-    {
-        if ($rutaArchivo=='') //si se encuentra en recursos/tutoriales
-        {
-            if($nameArchivo!='')
-            {
-               rename($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$nameArchivo,
-                  $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
-            }
-          
-        }
-        else if($rutaArchivo!='')//si se encuentra en recursos/tutoriales/tutorial_id
-        {
-           copy($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$rutaArchivo.'/'.$nameArchivo,
-                $yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial_id.'/'.$nameArchivo);
-        }
-
-        return true;
-    }
-
-    protected function carpetaNueva($tutorial,$rutaPdf,$rutaImagen,$rutaVideo,$yml)
-    {
-       
-        mkdir($yml['parameters']['folders']['dir_uploads'].'recursos/tutoriales/'.$tutorial->getId(),0777);
-        $this->moverArchivo($rutaPdf,$tutorial->getPdf(),$yml,$tutorial->getId());
-        $this->moverArchivo($rutaImagen,$tutorial->getImagen(),$yml,$tutorial->getId());
-        $this->moverArchivo($rutaVideo,$tutorial->getVideo(),$yml,$tutorial->getId());
-
-        return true;
-
-    }
-
-    protected function eliminarArchivos($tutorial,$rutaTutorial,$tipoArchivo)
-    {
-        $extensiones['pdf']='pdf';
-        $extensiones['imagen']=explode('-',$tipoArchivo['imagen']);
-        $extensiones['video']=explode('-',$tipoArchivo['video']);
-
-        $archivosDirectorio=scandir($rutaTutorial);
-        for ($i=0; $i <count($archivosDirectorio) ; $i++) 
-        { 
-            $archivo=explode('.',$archivosDirectorio[$i]);
-            if (count($archivo)==2) 
-            {
-                for ($j=0; $j <count($extensiones['imagen']) ; $j++) 
-                { 
-                    if (($archivo[1]==$extensiones['imagen'][$j])&&($tutorial->getImagen()!=$archivosDirectorio[$i])) 
-                    {
-                        unlink($rutaTutorial.'/'.$archivosDirectorio[$i]);
-                    }
-                }
-                for ($k=0; $k <count($extensiones['video']) ; $k++) 
-                { 
-                     if (($archivo[1]==$extensiones['video'][$k]) &&($tutorial->getVideo()!=$archivosDirectorio[$i]))
-                    {
-                        unlink($rutaTutorial.'/'.$archivosDirectorio[$i]);
-                    }
-                }
-
-                if (($archivo[1]=='pdf')&&($tutorial->getPdf()!=$archivosDirectorio[$i]))
+            $archivos = scandir($directorio);
+            
+            for ($i=0; $i <count($archivos) ; $i++) 
+            { 
+                if(!is_dir($directorio.'/'.$archivos[$i]) )
                 {
-                     unlink($rutaTutorial.'/'.$archivosDirectorio[$i]);
+                  unlink($directorio.'/'.$archivos[$i]);
+                }
+                else
+                {
+                    if ($archivos[$i]=='thumbnail') {
+                        $thumbnails=scandir($directorio.'/'.$archivos[$i].'/');
+                        for ($j=2; $j <count($thumbnails) ; $j++) { 
+                            unlink($directorio.'/'.$archivos[$i].'/'.$thumbnails[$j]);
+                        }
+                        rmdir($directorio.'/'.$archivos[$i]);
+                    }
+                }
+            }
+
+
+            if ($removeDir) {
+                rmdir($directorio);
+            }
+        }
+        return 0;
+    }
+
+
+    protected function deleteOrphanFilesTutorial($directorio,$objeto)
+    {
+        /*
+            Elimina los archivos dentro de una carpeta de un tutorial, que no se encuentren 
+            registrados en la base de datos. Se utiliza al momento de modificar un tutorial, para evitar 
+            que queden archivos huerfanos luego de modificar el tutorial.
+        */
+            
+
+        $archivos = scandir($directorio);
+        for ($i=0; $i <count($archivos); $i++) 
+        { 
+            if (!is_dir($directorio.'/'.$archivos[$i])) {
+                if($objeto->getPdf() != $archivos[$i] && $objeto->getImagen() != $archivos[$i] && $objeto->getVideo() != $archivos[$i])
+                {
+                 unlink($directorio.'/'.$archivos[$i]);
+                }
+            }
+            else
+            {
+                 if ($archivos[$i]=='thumbnail') 
+                 {
+                    $thumbnails=scandir($directorio.'/'.$archivos[$i].'/');
+                    for ($j=2; $j <count($thumbnails) ; $j++) 
+                    { 
+                        unlink($directorio.'/'.$archivos[$i].'/'.$thumbnails[$j]);
+                    }
+                        rmdir($directorio.'/'.$archivos[$i]);
                 }
             }
         }
-
-        return true;
+        return 0;
     }
+    
+  
+
+    protected function moverArchivo($pathInicio,$pathTutorial,$nombreArchivo)
+    {
+        if ($nombreArchivo!='') 
+        {
+            rename($pathInicio.$nombreArchivo,$pathTutorial.$nombreArchivo);
+        }
+
+        return 0;
+    }
+
+    
 
     
     public function ajaxUpdateTutorialAction(Request $request)
@@ -163,7 +135,7 @@ class TutorialController extends Controller
         
         $session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'].'recursos/tutoriales';
         $em = $this->getDoctrine()->getManager();
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
@@ -174,6 +146,7 @@ class TutorialController extends Controller
         $video = $request->request->get('video');
         $imagen = $request->request->get('imagen');
         $descripcion = $request->request->get('descripcion');
+       
 
         if ($tutorial_id)
         {
@@ -184,21 +157,29 @@ class TutorialController extends Controller
             $tutorial->setFecha(new \DateTime('now'));
         }
         
-        $tutorial->setNombre($nombre);
+        $tutorial->setNombre(ucfirst(mb_strtolower(trim($nombre))));
         $tutorial->setPdf($pdf);
         $tutorial->setVideo($video);
         $tutorial->setImagen($imagen);
-        $tutorial->setDescripcion($descripcion);
+        $tutorial->setDescripcion(ucfirst(mb_strtolower(trim($descripcion))));
         $tutorial->setUsuario($usuario);
 
         $em->persist($tutorial);
         $em->flush();
 
-        if (!$tutorial_id)
+        if (!$tutorial_id)//si es nuevo
         {
             // Hacer el movimiento de archivos en caso de que sea nuevo tutorial
-            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
-            mkdir($dir_uploads.'recursos/tutoriales/'.$tutorial->getId(),0777);
+            mkdir($dir_uploads.'/'.$tutorial->getId(),0777);
+            $this->moverArchivo($dir_uploads.'/',$dir_uploads.'/'.$tutorial->getId().'/',$tutorial->getPdf());
+            $this->moverArchivo($dir_uploads.'/',$dir_uploads.'/'.$tutorial->getId().'/',$tutorial->getImagen());
+            $this->moverArchivo($dir_uploads.'/',$dir_uploads.'/'.$tutorial->getId().'/',$tutorial->getVideo());
+            $this->cleanRootDirectory($dir_uploads);//elimina los archivos huerfanos       
+        }
+        else{
+
+            $this->deleteOrphanFilesTutorial($dir_uploads.'/'.$tutorial_id,$tutorial);//elimina los archivos huerfanos de la carpeta del tutorial
+
         }
   
         $return = array('id' => $tutorial->getId(),
@@ -270,34 +251,21 @@ class TutorialController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));  
     }
 
-    protected function deleteFilesTutorial($tutorial_id)
-    {
-       
-       $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
-       $directorio = $dir_uploads.'recursos/tutoriales/'.$tutorial_id;
-       $archivos=scandir($directorio);
 
-       for ($i=2; $i <count($archivos); $i++) 
-       { 
-          
-          unlink($directorio.'/'.$archivos[$i]);
-       }
-
-       rmdir($directorio);
-       return true;
-
-    }
+   
 
     public function ajaxDeleteTutorialAction(Request $request)
     {
+        
         $em = $this->getDoctrine()->getManager();
         $id = $request->request->get('id');
+        $directorio = $this->container->getParameter('folders')['dir_uploads'].'/recursos/tutoriales/'.$id;
 
         $ok = 1;
         $object = $em->getRepository('LinkComunBundle:AdminTutorial')->find($id);
         $em->remove($object);
         $em->flush();
-        $this->deleteFilesTutorial($id);
+        $this->cleanRootDirectory($directorio,true);
 
         $return = array('ok' => $ok);
 
@@ -307,5 +275,22 @@ class TutorialController extends Controller
 
     }
 
+    public function ajaxUploadFileTutorialAction(Request $request)
+    {
+        $session = new Session();
+        $auxTut=$request->request->get('tutorial_id');
+        $tutorial_id = ($auxTut>0) ? $auxTut.'/' : ''; 
+
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
+        $upload_dir = $dir_uploads.'recursos/tutoriales/'.$tutorial_id;
+        $upload_url = $uploads.'recursos/tutoriales/'.$tutorial_id;
+        $options = array('upload_dir' => $upload_dir,
+                         'upload_url' => $upload_url);
+        $upload_handler = new UploadHandler($options);
+
+        $return = json_encode($upload_handler);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
 
 }

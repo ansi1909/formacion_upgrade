@@ -23,6 +23,11 @@ _ajaxRefreshTable:
 _ajaxDeleteTutorial:
     path: /_ajaxDeleteTutorial
     defaults: { _controller: LinkBackendBundle:Tutorial:ajaxDeleteTutorial}
+
+
+_ajaxUploadFileTutorial:
+    path: /_ajaxUploadFileTutorial
+    defaults: { _controller: LinkBackendBundle:Tutorial:ajaxUploadFileTutorial}
     
 
 

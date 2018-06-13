@@ -1,5 +1,33 @@
 $(document).ready(function() {
 
+	$('.uploadFileHref').click(function(){
+	  $('#fileUpload').val($(this).attr('data-etiqueta'));  
+	});
+
+
+
+	$('.uploadFile').fileupload({
+		url:$('#url_uploadFiles_tutorial').val(),
+        dataType: 'json',
+        done: function (e, data) {
+        	var id = $('#fileUpload').val();
+        	$.each(data.result.response.files, function (index, file) 
+        	{
+        		$('#'+id).val(file.name);
+            });
+             showButtons();
+             $('#div-error').hide();
+	  		
+        },
+        add: function (e,data ){
+        	 hideButtons();
+	  		 data.submit();
+        },
+        fail: function(e, data){
+        	failedRequest();
+        }
+    });
+
 	$('.form-control').focus(function(){
 		$('#div-alert').hide();
 		$('#div-error').hide();
@@ -32,15 +60,25 @@ $(document).ready(function() {
 
 
 	$('#guardar').click(function(){
-		saveTutorial();
+	  if ($("#form").valid())
+		{
+			$('#guardar').hide();
+			$('#cancelar').hide();
+			$('#wait_tutorial').show(1000);
+			saveTutorial();
+		}
+		else{
+			$('#div-error').show();
+		}
 	});
 
 	$('#nuevoTutorial').click(function(){
 		document.getElementById("form").reset();
 		$('#guardar').prop('disabled',false);
-		$('#pdf_').attr('href', urlsHref['pdf_']);
-		$('#imagen_').attr('href', urlsHref['imagen_']);
-		$('#video_').attr('href', urlsHref['video_']);
+		$('#guardar').show();
+		$('#cancelar').show();
+		$('#wait_tutorial').hide();
+		
 	});
 
 	$('.iframe-btn').fancybox({	
@@ -78,10 +116,6 @@ $(document).ready(function() {
 				$('#video').val(data.video);
 				$('#imagen').val(data.imagen);
 				$('#descripcion').val(data.descripcion);
-				
-				$('#pdf_').attr('href', urlsHref['pdf_']+'/'+tutorial_id);
-				$('#imagen_').attr('href', urlsHref['imagen_']+'/'+tutorial_id);
-				$('#video_').attr('href', urlsHref['video_']+'/'+tutorial_id);
 			},
 			error: function(){
 				$('alert-error').html($('#error_msg_edit').val());
@@ -117,16 +151,36 @@ var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que co
 	order: [[ 0, "desc" ]]
 } );
 
-var urlsHref =
-{ //href de los input para cargar archivos
-    'pdf_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=pdf&rootFolder=recursos/tutoriales',
-    'imagen_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=imagen&rootFolder=recursos/tutoriales',
-    'video_':'/formacion2.0/web/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=video&rootFolder=recursos/tutoriales'
-};
+var elementos = {
+                 'pdf':'El archivo PDF no se cargo correctamente.',
+                 'imagen':'El archivo de Imagen no se cargo correctamente.',
+                 'video':'El archivo de Vídeo no se cargo correctamente.'
+                };
+
+
+function showButtons()
+{
+	$('#guardar').show();
+    $('#cancelar').show();
+    $('#wait_tutorial').hide();
+	$('.uploadFileHref').show();
+
+	return 0;
+}
+
+function hideButtons()
+{
+	$('.uploadFileHref').hide();
+    $('#guardar').hide();
+	$('#cancelar').hide();
+	$('#wait_tutorial').show(1000);
+
+	return 0;
+}
 
 function saveTutorial()
 {
-
+	
     $('#div-alert').hide();
 	$('#div-error').hide();
 	if ($("#form").valid())
@@ -139,6 +193,17 @@ function saveTutorial()
 			data: $("#form").serialize(),
 			dataType: "json",
 			success: function(data) {
+
+				if($('#tutorial_id').val() != '')//si se edita un tutorial
+				{
+					table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
+				}
+				else
+				{
+					table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
+				}
+
+				$('#wait_tutorial').hide();
 				$('#p-nombre').html(data.nombre);
 				$('#p-pdf').html(data.pdf);
 				$('#p-imagen').html(data.pdf);
@@ -149,16 +214,7 @@ function saveTutorial()
 				$('#alert-success').show();
 				$('#detail').show();
 				$('#aceptar').show();
-				$('#guardar').hide();
-				$('#cancelar').hide();
-				if($('#tutorial_id').val() != '')//si se edita un tutorial
-				{
-					table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
-				}
-				else
-				{
-					table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
-				}
+				
 			},
 			error: function(){
 				$('#alert-error').html($('#error_msg-save').val());

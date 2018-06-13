@@ -33,6 +33,8 @@ Aplicar periodo a las sub-páginas: Aplicar periodo a las sub-páginas
 Archivo procesado con éxito: Archivo procesado con éxito
 Archivos: Archivos
 Archivos de este espacio: Archivos de este espacio
+Artículo: Artículo
+Artículos: Artículos
 Asignación de página padre: Asignación de página padre
 Asignación de páginas: Asignación de páginas
 Asignación de páginas de la empresa: Asignación de páginas de la empresa
@@ -76,7 +78,7 @@ Cantidad mínima de caracteres en el Resumen: Cantidad mínima de caracteres en 
 Cantidad mínima de caracteres en el Contenido: Cantidad mínima de caracteres en el Contenido
 Cargando..: Cargando..
 Carga masiva: Carga masiva
-Carga masiva de particpantes de la empresa: Carga masiva de particpantes de la empresa
+Carga masiva de participantes de la empresa: Carga masiva de participantes de la empresa
 Categoría: Categoría
 Categoría de las sub-paginas: Categoría de las sub-paginas
 Categorías: Categorías
@@ -179,6 +181,7 @@ Editar página: Editar página
 Editar perfil: Editar perfil
 Editar tema: Editar tema
 el: el
+El archivo seleccionado no se cargo correctamente.: El archivo seleccionado no se cargo correctamente.
 Elegir empresa: Elegir empresa
 Elija el destino de la página: Elija el destino de la página
 Eliminado: Eliminado
@@ -420,6 +423,8 @@ La sesión se cerrará automáticamente en: La sesión se cerrará automáticame
 Lado: Lado
 Lecciones: Lecciones
 Leidos: Leidos
+Libro: Libro
+Libros: Libros
 Línea: Línea
 Listado de: Listado de
 Listado de Aplicaciones: Listado de Aplicaciones
@@ -496,7 +501,9 @@ Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
+Noticia: Noticia
 Noticias: Noticias
+Noticias y Novedades: Noticias y Novedades
 Notificaciones: Notificaciones
 Novedades: Novedades
 Nueva contraseña: Nueva contraseña
@@ -527,7 +534,7 @@ Panel de acceso: Panel de acceso
 Paso: Paso
 País: País
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
-particpantes: particpantes
+participantes: participantes
 particpante: participante
 Pdf: Pdf
 PDF requerido: PDF requerido
