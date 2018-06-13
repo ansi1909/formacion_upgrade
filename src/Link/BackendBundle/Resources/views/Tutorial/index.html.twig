@@ -192,7 +192,7 @@
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" id="modal_body">
     <input type="hidden" id="fileUpload" value="">
     <form id="form" name="form" action="{{ path('_ajaxUpdateTutorial') }}" method="POST">
         <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
@@ -251,7 +251,7 @@
 
     </form>
     <div class="col-sm-16 col-md-16 col-lg-16 alert alert-danger" role="alert" id="div-error" style="display:none;">
-        <ul></ul>
+        <ul id="error-messages"></ul>
     </div>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
         <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El tutorial ha sido almacenada con éxito'|trans }}. 
@@ -362,6 +362,14 @@
                 }
             }
         });
+
+        function failedRequest()
+        {
+            swal(""," {{ 'El archivo seleccionado no se cargo correctamente.'| trans }} ","error");
+            showButtons();
+
+            return 0;
+        }
 
         function sweetAlertDeleteTutorial(id,preg_opt=0)
         {
