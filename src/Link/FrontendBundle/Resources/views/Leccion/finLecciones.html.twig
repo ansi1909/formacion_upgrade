@@ -65,7 +65,7 @@
         <div class="row align-items-center justify-content-center">
             <div class="col-6 text-center">
                 {% set articulo = subpagina.categoria != 'Materia' ? 'el'|trans : 'la'|trans %}
-                <p class="text_fin-materia">{{ 'Has completado con éxito'|trans }} {{ articulo~' '~subpagina.categoria }} <strong>{{ subpagina.nombre }}</strong>.</p>
+                <p class="text_fin-materia">{{ ' Has completado con éxito los contenidos de '|trans }} {{ articulo~' '~subpagina.categoria }} <strong>{{ subpagina.nombre }}</strong>.</p>
             </div>
             <div class="col-4 text-center">
                 <h1 class="titulo_fin-materia">¡{{ 'Excelente'|trans }}!</h1>

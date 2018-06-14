@@ -303,7 +303,7 @@ Este campo es requerido.: This field is required.
 Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: Dear participant! Post your comments or doubts about any subject related to certification programs.
-Estimado participante, ha expirado el tiempo de duración de la evaluación. Se calcularán los resultados de acuerdo a las respuestas dadas hasta los momentos.: Dear participant, duration time of this test has expired. The results will be calculated with the answers you have given.
+Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora: Dear participant, if you decide to leave the evaluation at this time, you will lose the answers you have marked so far
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Dear participant, if you decide leave the page before finish the evaluation, you will lose all answers
 Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
@@ -351,7 +351,7 @@ Ha ocurrido un error reordenando de este registro: An error ocurred reordering t
 Ha sido publicado el evento: It has been published an event
 ha subido un archivo en el espacio colaborativo de: has uploaded a file into the collaborative space of
 Has aprobado con éxito la evaluación: You have approved successfully the test
-Has completado con éxito: You have completed successfully
+Has completado con éxito los contenidos de: You have successfully completed the contents of
 Has ganado: You win
 Historial de programaciones de: Programation history of
 Hizo un comentario: Made a comment
