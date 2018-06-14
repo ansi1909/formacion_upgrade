@@ -10,12 +10,13 @@
 <input type="hidden" id="porcentaje_avance" name="porcentaje_avance" value="{{ porcentaje_avance }}">
 <div id="message" class="for-message well-message-prog text-center container py-6 px-6 mb-1">
     <i id="arrowDown" class="material-icons mr-2" >keyboard_arrow_down</i>
-    <h5>Bienvenido al programa de </h5>
-    <h1 class="mb-5">{{ pagina.nombre }}</h1>
+    
+    <h5>Bienvenido al {{ pagina.categoria.nombre|lower }} de </h5>
+    <h1 class="mb-5">{{ pagina.nombre}}</h1>
     {{ pagina.contenido|raw }}
     <!-- MAPA DE PROGRESO -->
     <div>
-        <h4 class="color-light-grey my-3 mt-5">Tu progreso en el programa</h4>
+        <h4 class="color-light-grey my-3 mt-5">Tu progreso en el {{ pagina.categoria.nombre|lower }}</h4>
         <!--?xml version="1.0" encoding="UTF-8"?-->
         <svg width="100%" height="300px" viewBox="0 0 1051 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="">
             <defs>

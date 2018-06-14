@@ -151,12 +151,6 @@ var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que co
 	order: [[ 0, "desc" ]]
 } );
 
-var elementos = {
-                 'pdf':'El archivo PDF no se cargo correctamente.',
-                 'imagen':'El archivo de Imagen no se cargo correctamente.',
-                 'video':'El archivo de Vídeo no se cargo correctamente.'
-                };
-
 
 function showButtons()
 {
