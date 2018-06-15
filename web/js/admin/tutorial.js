@@ -1,12 +1,13 @@
 $(document).ready(function() {
 
 	$('.uploadFileHref').click(function(){
-	  $('#fileUpload').val($(this).attr('data-etiqueta'));
+	  $('#fileUpload').val($(this).attr('data-etiqueta'));  
 	});
 
-	$('.uploadFile').fileupload({
 
-		url: $('#url_uploadFiles_tutorial').val(),
+
+	$('.uploadFile').fileupload({
+		url:$('#url_uploadFiles_tutorial').val(),
         dataType: 'json',
         done: function (e, data) {
         	var id = $('#fileUpload').val();
@@ -14,25 +15,16 @@ $(document).ready(function() {
         	{
         		$('#'+id).val(file.name);
             });
-             //// Mostrando y habilitando botones ///////////////
-             $('#guardar').show();
-	  		 $('#cancelar').show();
-	  		 $('#wait_tutorial').hide();
-
-	  		 $('#href_pdf').prop('disabled',false);
-	  		 $('#href_imagen').prop('disabled',false);
-	  		 $('#href_video').prop('disabled',false);
+             showButtons();
+             $('#div-error').hide();
+	  		
         },
         add: function (e,data ){
-        	 ////// Ocultando y deshabilitando botones /////////
-        	 $('#guardar').hide();
-	  		 $('#cancelar').hide();
-	  		 $('#wait_tutorial').show(1000);
-
-	  		 $('#href_pdf').prop('disabled',true);
-	  		 $('#href_imagen').prop('disabled',true);
-	  		 $('#href_video').prop('disabled',true);
+        	 hideButtons();
 	  		 data.submit();
+        },
+        fail: function(e, data){
+        	failedRequest();
         }
     });
 
@@ -160,6 +152,25 @@ var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que co
 } );
 
 
+function showButtons()
+{
+	$('#guardar').show();
+    $('#cancelar').show();
+    $('#wait_tutorial').hide();
+	$('.uploadFileHref').show();
+
+	return 0;
+}
+
+function hideButtons()
+{
+	$('.uploadFileHref').hide();
+    $('#guardar').hide();
+	$('#cancelar').hide();
+	$('#wait_tutorial').show(1000);
+
+	return 0;
+}
 
 function saveTutorial()
 {

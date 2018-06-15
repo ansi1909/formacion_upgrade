@@ -2,7 +2,7 @@
         
     <div class="row justify-content-around">
         <a href="{{ path('_inicio') }}"><i class="material-icons" data-toggle="tooltip" data-placement="top" title="{{ 'Ir al inicio'|trans }}">home</i></a>
-        <a href="javascript:void(0)" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2" data-toggle="tooltip" data-placement="left" title="Cerrar sidebar"></i></a>
+        <a href="javascript:void(0)" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2" data-toggle="tooltip" data-placement="left" title="{{ 'Cerrar Menú'|trans }}"></i></a>
     </div>
 
     <ul class="nav justify-content-around mb-3" id="pills-tab" role="tablist">
@@ -35,7 +35,7 @@
             {% if espacio_colaborativo %}
                 <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}" class="{% if active == 'espacio' %}active{% endif %}">{{ 'Espacio colaborativo'|trans }}</a>
             {% endif %}
-            <a href="">{{ 'Reportar problema'|trans }}</a>
+            <a href=" " data-toggle="modal" data-target="#modalSv" class="links abrir_modal_soporte" >{{ 'Reportar problema'|trans }}</a>
         </div>
     </div>
 </div>
