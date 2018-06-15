@@ -184,9 +184,9 @@ class TutorialController extends Controller
   
         $return = array('id' => $tutorial->getId(),
                         'nombre' => $tutorial->getNombre(),
-                        'pdf' => substr(strrchr($tutorial->getPdf(), '/'), 1),
-                        'video' => substr(strrchr($tutorial->getVideo(), '/'), 1),
-                        'imagen'=> substr(strrchr($tutorial->getImagen(), '/'), 1),
+                        'pdf' => $tutorial->getPdf(),
+                        'video' => $tutorial->getVideo(), 
+                        'imagen'=> $tutorial->getImagen(),
                         'descripcion' => $tutorial->getDescripcion());
 
         $return = json_encode($return);
