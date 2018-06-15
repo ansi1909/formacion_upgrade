@@ -274,7 +274,7 @@
                                                     </a>
                                            </span>
                                            <span class="input-group-addon">
-                                               <button id="btn_clear_pdf" class="btn_clearImg2" type="button">
+                                               <button id="btn_clear_video" class="btn_clearImg2" type="button">
                                                    <span class="fa fa-times"></span>
                                                </button>
                                            </span>
@@ -305,7 +305,7 @@
                                                     </a>
                                            </span>
                                            <span class="input-group-addon">
-                                               <button id="btn_clear_pdf" class="btn_clearImg2" type="button">
+                                               <button id="btn_clear_audio" class="btn_clearImg2" type="button">
                                                    <span class="fa fa-times"></span>
                                                </button>
                                            </span>
@@ -317,7 +317,7 @@
                                 <div class="row" id="recurso3" style="display: {{display3}}">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
-                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                        <div class="col-sm-16 col-md-16 col-lg-16" id="documento">
                                             <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ recurso3 }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
                                             <span class="fa fa-file-pdf-o"></span>
                                         </div>
@@ -379,8 +379,16 @@
             $("#figure").html('<img src="'+$('#photo').val()+'">');
         });
 
+        $("#btn_clear_video").on("click",function(event) {
+            $("#video").val("");
+        });
+
         $("#btn_clear_pdf").on("click",function(event) {
             $("#pdf").val("");
+        });
+
+        $("#btn_clear_audio").on("click",function(event) {
+            $("#audio").val("");
         });
 
         $('#finish').click(function()

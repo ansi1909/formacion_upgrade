@@ -87,7 +87,7 @@ class LeccionController extends Controller
             else {
                 $pagina_id = $programa_id;
             }
-            $titulo = $indexedPages[$programa_id]['categoria'].' '.$indexedPages[$programa_id]['orden'].': '.$indexedPages[$programa_id]['nombre'];
+            $titulo = $indexedPages[$programa_id]['categoria'].': '.$indexedPages[$programa_id]['nombre'];
         }
         else {
             if ($indexedPages[$subpagina_id]['hijos'] > 0 || $indexedPages[$subpagina_id]['sobrinos'] > 0 || $indexedPages[$subpagina_id]['tiene_evaluacion'])
@@ -95,28 +95,28 @@ class LeccionController extends Controller
                 $pagina_id = $indexedPages[$subpagina_id]['id'];
                 if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre'])
                 {
-                    $titulo = $indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria'].' '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['orden'].': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
+                    $titulo = $indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria'].': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
                     $subtitulo = $indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'].' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                 }
                 else {
-                    $titulo = $indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'].' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                    $titulo = $indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                 }
             }
             else {
                 if ($indexedPages[$subpagina_id]['padre'] == $programa_id)
                 {
                     $pagina_id = $programa_id;
-                    $titulo = $indexedPages[$pagina_id]['categoria'].' '.$indexedPages[$pagina_id]['orden'].': '.$indexedPages[$pagina_id]['nombre'];
+                    $titulo = $indexedPages[$pagina_id]['categoria'].': '.$indexedPages[$pagina_id]['nombre'];
                 }
                 else {
                     $pagina_id = $indexedPages[$subpagina_id]['padre'];
                     if ($indexedPages[$indexedPages[$subpagina_id]['padre']]['padre'])
                     {
-                        $titulo = $indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria'].' '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['orden'].': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
+                        $titulo = $indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['categoria'].': '.$indexedPages[$indexedPages[$indexedPages[$subpagina_id]['padre']]['padre']]['nombre'];
                         $subtitulo = $indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'].' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                     }
                     else {
-                        $titulo = $indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'].' '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['orden'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
+                        $titulo = $indexedPages[$indexedPages[$subpagina_id]['padre']]['categoria'].': '.$indexedPages[$indexedPages[$subpagina_id]['padre']]['nombre'];
                     }
                 }
                 $wizard = 1;
