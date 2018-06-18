@@ -137,11 +137,15 @@ class ProgramaController extends Controller
 
                             if(!$leccion_completada){
                                 $visto = 'color-grey';
+                                $titulo_leccion = $sub_subpagina['nombre'];
                                 if($next_pagina == 0){
                                     $next_pagina = $sub_subpagina['id'];
                                 }
                             }else{
                                 $visto = '';
+                                $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
+                                $titulo_leccion = '<a href="'.$enlace.'">'.$sub_subpagina['nombre'].'<a/>';
+
                             }
 
                             // validando si la sub_subpagina esta en evaluacion
@@ -151,8 +155,10 @@ class ProgramaController extends Controller
                                 $evaluacion_programa = $programa_id;
                             }
 
+                            $lis_mods .= '<li class="my-1 '.$visto.' ">'.$titulo_leccion.'</li>';
+
+                           
                             
-                            $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub_subpagina['nombre'].'</li>';
                             
                         }
                     }
