@@ -23,6 +23,7 @@
     <body>
         
         <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa_id }) }}">
+        <input type="hidden" id="url_inicio" name="url_inicio" value="{{ path('_inicio') }}">
         <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa_id, 'subpagina_id': continue_button.next_lesson }) }}">
         <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa_id }) }}">
         
@@ -145,7 +146,7 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-6 text-center">
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary continuar" id="programa"> {{ 'Volver al inicio'|trans }} </button>
+                            <button type="button" class="btn btn-primary continuar" id="inicio"> {{ 'Volver al inicio'|trans }} </button>
                         </div>
                     </div>
                 </div>
