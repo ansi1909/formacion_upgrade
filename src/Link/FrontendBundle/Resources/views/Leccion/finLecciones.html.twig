@@ -72,11 +72,13 @@
                 <span class="material-icons ic-verify">check_circle</span>
             </div>
         </div>
-        <div class="row align-items-center justify-content-end">
-            <div class="col-auto text-center">
-                <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
+        {% if puntos > 0 %}
+            <div class="row align-items-center justify-content-end">
+                <div class="col-auto text-center">
+                    <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </section>
     
     <section class="s2_fin-materia">

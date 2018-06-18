@@ -33,3 +33,4 @@ $('#keepSession').click(function(){
     clearInterval($('#timer').val());
     activarTimeout();
 });
+
