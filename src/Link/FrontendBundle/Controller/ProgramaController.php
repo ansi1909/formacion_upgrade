@@ -151,8 +151,14 @@ class ProgramaController extends Controller
                                 $evaluacion_programa = $programa_id;
                             }
 
+                            $enlace = ($visto=='') ? $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'] : '';
+
+                            $titulo_leccion = ($visto=='') ? '<a href="'.$enlace.'">'.$sub_subpagina['nombre'].'<a/>':$sub_subpagina['nombre'];
+
+                            $lis_mods .= '<li class="my-1 '.$visto.' ">'.$titulo_leccion.'</li>';
+
+                           
                             
-                            $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub_subpagina['nombre'].'</li>';
                             
                         }
                     }
