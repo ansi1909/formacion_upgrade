@@ -295,8 +295,8 @@
         </div>
         <div class="card-footer">
             <div class="col-sm-16 col-md-16 text-right" id="buttons">
-                <button type="button" class="bttn__edit edit_footer edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim delete_fotter delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__edit edit_footer edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data="" ><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete_fotter delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data="" data-ubicacion="2" ><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
@@ -371,7 +371,7 @@
             return 0;
         }
 
-        function sweetAlertDeleteTutorial(id,preg_opt=0)
+        function sweetAlertDeleteTutorial(id,ubicacion,preg_opt=0)
         {
             swal({
                 title: "{{ '¿Desea eliminar el registro?'|trans }}",
@@ -398,7 +398,15 @@
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success');
 
+                            if (ubicacion==2) {
+
+                               $( "#detail-edit" ).attr( "disabled", true);
+                               $( "#detail-delete" ).attr("disabled",true);
+
+                            }
                            
+                            
+
                             table.ajax.reload(null,false);
                     },
                     error: function(){

@@ -25,6 +25,7 @@
             <link href="{{ asset('front/js/plugins/video.js/video-js.min.css') }}" rel="stylesheet">
             <link href="{{ asset('front/js/plugins/video.js/vsg-skin.css') }}" rel="stylesheet">
             <link rel="stylesheet" href="{{ asset('front/js/plugins/mediaelement-4.2.8/build/mediaelementplayer.min.css') }}">
+            <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
             <style type="text/css">
                 .error {
                     color: #e60f0f;
@@ -56,7 +57,7 @@
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
                     <div class="d-flex flex-column">
                         <div class="wrapperDdApps">
-                            <a href="#" id="apps">
+                            <a href="#" id="apps" title="{{ 'Soporte'|trans }}">
                                 <div class="appFun">
                                     <i class="material-icons mr-3 color-light-grey" title="Soporte">contact_support</i>
                                 </div>
@@ -332,6 +333,14 @@
             <script src="{{ asset('front/js/audio.js') }}"></script>
             <script src="{{ asset('js/front/expireSession.js') }}"></script>
             <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>
+            <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $( document ).tooltip({
+                        track: true
+                    });
+                });
+            </script>
         {% endblock %}
     </body>
 </html>

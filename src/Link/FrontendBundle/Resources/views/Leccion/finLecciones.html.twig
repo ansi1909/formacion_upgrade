@@ -19,7 +19,7 @@
      <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <a class="navbar-brand" href="{{ path('_inicio') }}">
             {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-            <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación 2.0">
+            <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
         </a>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             <div class=" d-flex flex-column ">
@@ -72,11 +72,13 @@
                 <span class="material-icons ic-verify">check_circle</span>
             </div>
         </div>
-        <div class="row align-items-center justify-content-end">
-            <div class="col-auto text-center">
-                <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
+        {% if puntos > 0 %}
+            <div class="row align-items-center justify-content-end">
+                <div class="col-auto text-center">
+                    <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </section>
     
     <section class="s2_fin-materia">
