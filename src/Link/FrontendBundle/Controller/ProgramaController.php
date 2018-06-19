@@ -67,9 +67,9 @@ class ProgramaController extends Controller
                 $lis_mods .= '<h1>'.$contador.'</h1>';
                 $lis_mods .= '</div>';
                 $lis_mods .= '<div class="wraper d-flex flex-wrap flex-row justify-content-center">';
-                $lis_mods .= '<div class="card-hrz-body ">';
+                $lis_mods .= ' <div class="card-hrz-body ">';
                 $lis_mods .= '<h4 class="title-grey my-3 font-weight-normal ">'.$subpagina['nombre'].'</h4>';
-                $lis_mods .= '<div class="card-mod-less text-sm color-light-grey">';
+                $lis_mods .= ' <div class="card-mod-less text-sm color-light-grey">';
 
                 $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                     'pagina' => $subpagina['id']));
@@ -147,14 +147,16 @@ class ProgramaController extends Controller
                             //validando si la leccion se vio accedio por primera vez
                             if ($statusPaginaId!=0) {
                                 
-                                $visto = '';
                                 $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
-                                $titulo_leccion = '<a href="'.$enlace.'">'.$sub_subpagina['nombre'].'<a/>';
+                                $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
+                                                     <li class="my-1" >
+                                                        <span class="d-flex">'.$sub_subpagina['nombre'].'</span>
+                                                     </li>
+                                                  <a/>';
                             }
                             else{
 
-                                $visto = 'color-grey';
-                                $titulo_leccion = $sub_subpagina['nombre'];
+                                $titulo_leccion =  '<li class="my-1 color-grey" >'.$sub_subpagina['nombre'].'  </li>';
                             }
 
                             // validando si la sub_subpagina esta en evaluacion
@@ -164,8 +166,7 @@ class ProgramaController extends Controller
                                 $evaluacion_programa = $programa_id;
                             }
                            
-
-                            $lis_mods .= '<li class="my-1 '.$visto.' ">'.$titulo_leccion.'</li>';
+                            $lis_mods .= $titulo_leccion;
 
                            
                             
