@@ -144,13 +144,14 @@ class ProgramaController extends Controller
                                 }
                             }
 
-                            //validando si la leccion se vio accedio por primera vez
+                            //validando si la leccion se vio inicio 
                             if ($statusPaginaId!=0) {
                                 
                                 $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
                                 $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
                                                      <li class="my-1" >
                                                         <span class="d-flex">'.$sub_subpagina['nombre'].'</span>
+                                                         <i class="material-icons d-flex icVc " title="Visualizar lección" >visibility</i>
                                                      </li>
                                                   <a/>';
                             }
