@@ -151,7 +151,7 @@ class ProgramaController extends Controller
                                 $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
                                                      <li class="my-1" >
                                                         <span class="d-flex">'.$sub_subpagina['nombre'].'</span>
-                                                         <i class="material-icons d-flex icVc " title="Visualizar lección" >visibility</i>
+                                                         <i class="material-icons d-flex icVc " title="Ver lección" >visibility</i>
                                                      </li>
                                                   <a/>';
                             }
