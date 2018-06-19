@@ -809,6 +809,8 @@ class UsuarioController extends Controller
                 $highestRow = $objWorksheet->getHighestRow();
                 $highestColumn = $objWorksheet->getHighestColumn();
                 $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+
+                //return new Response($highestRow);
               
                 if ($highestRow < 1)
                 {
@@ -1049,6 +1051,7 @@ class UsuarioController extends Controller
                     }
 
                     $errores['particulares'] = $particulares;
+                    //return new Response(var_dump($errores));
 
                 }
 
