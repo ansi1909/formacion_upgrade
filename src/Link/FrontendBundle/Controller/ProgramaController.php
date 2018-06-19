@@ -73,6 +73,7 @@ class ProgramaController extends Controller
 
                 $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                     'pagina' => $subpagina['id']));
+
                 $next_pagina = 0;
                 $evaluacion_pagina = 0;
                 $evaluacion_programa = 0;
@@ -133,27 +134,36 @@ class ProgramaController extends Controller
                             $leccion_completada = $query->getSingleScalarResult();
 
                             $datos_log_sub = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                                    'pagina' => $sub_subpagina['id']));
+                                                                                                                                    'pagina' => $sub_subpagina['id'])) ;
+                            //Obteniendo el status de la subpagina
+                            $statusPaginaId = ($datos_log_sub) ? $datos_log_sub->getEstatusPagina()->getId():0;
 
                             if(!$leccion_completada){
-                                $visto = 'color-grey';
-                                $titulo_leccion = $sub_subpagina['nombre'];
                                 if($next_pagina == 0){
                                     $next_pagina = $sub_subpagina['id'];
                                 }
-                            }else{
+                            }
+
+                            //validando si la leccion se vio accedio por primera vez
+                            if ($statusPaginaId!=0) {
+                                
                                 $visto = '';
                                 $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
                                 $titulo_leccion = '<a href="'.$enlace.'">'.$sub_subpagina['nombre'].'<a/>';
+                            }
+                            else{
 
+                                $visto = 'color-grey';
+                                $titulo_leccion = $sub_subpagina['nombre'];
                             }
 
                             // validando si la sub_subpagina esta en evaluacion
-                            if($datos_log_sub && $datos_log_sub->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                            if($statusPaginaId == $yml['parameters']['estatus_pagina']['en_evaluacion']){
                                 $avanzar = 2;
                                 $evaluacion_pagina = $sub_subpagina['id'];
                                 $evaluacion_programa = $programa_id;
                             }
+                           
 
                             $lis_mods .= '<li class="my-1 '.$visto.' ">'.$titulo_leccion.'</li>';
 
