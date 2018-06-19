@@ -2483,6 +2483,15 @@ p.up {
       background-color: #DAE1E6;
       outline: 1px solid #FAFAFA;
       border-radius: 1rem; }
+    .card-mod .card-mod-less .icVc {
+      float: right;
+      position: relative;
+      top: -1rem;
+      right: .5rem;
+      font-size: 1.125rem;
+      color: #adb5bd; }
+      .card-mod .card-mod-less .icVc:hover {
+        color: #5CAEE6; }
   .card-mod .card-hrz-body {
     width: 500px; }
     @media (max-width: 767.98px) {

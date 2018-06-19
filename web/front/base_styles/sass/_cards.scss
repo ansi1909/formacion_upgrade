@@ -359,6 +359,17 @@
             outline: 1px solid $gray-100;
             border-radius: 1rem;
         }
+        .icVc{
+            float: right;
+            position: relative;
+            top: -1rem;
+            right: .5rem;
+            font-size: $p-font-size;
+            color: $gray-500;
+            &:hover{
+                color: $blue;
+            }
+        }
     }
 
     .card-hrz-body {

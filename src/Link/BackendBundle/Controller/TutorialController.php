@@ -237,9 +237,9 @@ class TutorialController extends Controller
                         $enlaceVideo = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getVideo().'" target="_blank">'.$tutorial->getVideo().' </a>';
                         $acciones = '
                                       <td class="center" >
-                                         <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'" ><span class="fa fa-pencil"></span> 
+                                         <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'"  ><span class="fa fa-pencil"></span> 
                                          </a>
-                                         <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$delete.''.$delete_disabled.'" data="'.$tutorial->getId().'"><span class="fa fa-trash"></span>
+                                         <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$delete.''.$delete_disabled.'" data="'.$tutorial->getId().'" data-ubicacion="1" ><span class="fa fa-trash"></span>
 
                                          </a>
                                       </td>';
