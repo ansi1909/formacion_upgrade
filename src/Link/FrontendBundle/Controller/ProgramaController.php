@@ -67,12 +67,13 @@ class ProgramaController extends Controller
                 $lis_mods .= '<h1>'.$contador.'</h1>';
                 $lis_mods .= '</div>';
                 $lis_mods .= '<div class="wraper d-flex flex-wrap flex-row justify-content-center">';
-                $lis_mods .= '<div class="card-hrz-body ">';
+                $lis_mods .= ' <div class="card-hrz-body ">';
                 $lis_mods .= '<h4 class="title-grey my-3 font-weight-normal ">'.$subpagina['nombre'].'</h4>';
-                $lis_mods .= '<div class="card-mod-less text-sm color-light-grey">';
+                $lis_mods .= ' <div class="card-mod-less text-sm color-light-grey">';
 
                 $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                     'pagina' => $subpagina['id']));
+
                 $next_pagina = 0;
                 $evaluacion_pagina = 0;
                 $evaluacion_programa = 0;
@@ -133,26 +134,43 @@ class ProgramaController extends Controller
                             $leccion_completada = $query->getSingleScalarResult();
 
                             $datos_log_sub = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                                    'pagina' => $sub_subpagina['id']));
+                                                                                                                                    'pagina' => $sub_subpagina['id'])) ;
+                            //Obteniendo el status de la subpagina
+                            $statusPaginaId = ($datos_log_sub) ? $datos_log_sub->getEstatusPagina()->getId():0;
 
                             if(!$leccion_completada){
-                                $visto = 'color-grey';
                                 if($next_pagina == 0){
                                     $next_pagina = $sub_subpagina['id'];
                                 }
-                            }else{
-                                $visto = '';
+                            }
+
+                            //validando si la leccion se vio inicio 
+                            if ($statusPaginaId!=0) {
+                                
+                                $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
+                                $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
+                                                     <li class="my-1" >
+                                                        <span class="d-flex">'.$sub_subpagina['nombre'].'</span>
+                                                         <i class="material-icons d-flex icVc " title="Ver lección" >visibility</i>
+                                                     </li>
+                                                  <a/>';
+                            }
+                            else{
+
+                                $titulo_leccion =  '<li class="my-1 color-grey" >'.$sub_subpagina['nombre'].'  </li>';
                             }
 
                             // validando si la sub_subpagina esta en evaluacion
-                            if($datos_log_sub && $datos_log_sub->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
+                            if($statusPaginaId == $yml['parameters']['estatus_pagina']['en_evaluacion']){
                                 $avanzar = 2;
                                 $evaluacion_pagina = $sub_subpagina['id'];
                                 $evaluacion_programa = $programa_id;
                             }
+                           
+                            $lis_mods .= $titulo_leccion;
 
+                           
                             
-                            $lis_mods .= '<li class="my-1 '.$visto.' ">'.$sub_subpagina['nombre'].'</li>';
                             
                         }
                     }

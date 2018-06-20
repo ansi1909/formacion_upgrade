@@ -127,7 +127,9 @@ $(document).ready(function() {
 
 	$( "#BodyTable, #buttons" ).on( "click",".delete" , function (){
 		var tutorial_id = $(this).attr('data');
-		sweetAlertDeleteTutorial(tutorial_id);	
+		var ubicacion = $(this).attr('data-ubicacion');
+
+		sweetAlertDeleteTutorial(tutorial_id,ubicacion);	
      });
 });
 
@@ -204,6 +206,8 @@ function saveTutorial()
 				$('#p-video').html(data.video);
 				$( "#detail-edit" ).attr( "data", data.id );
 				$( "#detail-delete" ).attr("data",data.id);
+				$( "#detail-edit" ).attr( "disabled", false);
+				$( "#detail-delete" ).attr("disabled", false);
 				$('#form').hide();
 				$('#alert-success').show();
 				$('#detail').show();

@@ -22,7 +22,7 @@
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
-{% set formato = uri~'/../docs/formatos/BD_Estructura.xlsx' %}
+{% set formato = uri~'/../docs/formatos/participantes.xlsx' %}
 <input type="hidden" id="url_procesar" name="url_procesar" value="{{ path('_procesarParticipantes') }}">
 <br><br>
 <div class="row align-items-center justify-content-between">
