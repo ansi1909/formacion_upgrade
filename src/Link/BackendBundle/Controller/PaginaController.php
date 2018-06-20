@@ -611,11 +611,11 @@ class PaginaController extends Controller
                     $pagina_empresa->setEmpresa($empresa);
                     $pagina_empresa->setPagina($pagina);
                     $date = new \DateTime();
-                    $date->modify('next monday');
-                    $next_monday = $date->format('Y-m-d');
+                    //$date->modify('next monday');
+                    //$next_monday = $date->format('Y-m-d');
                     $date->modify('+1 year');
                     $next_year = $date->format('Y-m-d');
-                    $pagina_empresa->setFechaInicio(new \DateTime($next_monday)); // Fecha de inicio el próximo lunes
+                    $pagina_empresa->setFechaInicio(new \DateTime('now'));
                     $pagina_empresa->setFechaVencimiento(new \DateTime($next_year)); // Fecha de vencimiento un año después
                     $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
                     $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
@@ -955,11 +955,11 @@ class PaginaController extends Controller
                     $pagina_empresa->setEmpresa($empresa);
                     $pagina_empresa->setPagina($p);
                     $date = new \DateTime();
-                    $date->modify('next monday');
-                    $next_monday = $date->format('Y-m-d');
+                    //$date->modify('next monday');
+                    //$next_monday = $date->format('Y-m-d');
                     $date->modify('+1 year');
                     $next_year = $date->format('Y-m-d');
-                    $pagina_empresa->setFechaInicio(new \DateTime($next_monday)); // Fecha de inicio el próximo lunes
+                    $pagina_empresa->setFechaInicio(new \DateTime('now'));
                     $pagina_empresa->setFechaVencimiento(new \DateTime($next_year)); // Fecha de vencimiento un año después
                     $pagina_empresa->setActivo(!in_array($pagina_id, $activaciones) ? false : true);
                     $pagina_empresa->setAcceso(!in_array($pagina_id, $accesos) ? false : true);
