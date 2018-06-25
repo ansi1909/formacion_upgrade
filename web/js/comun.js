@@ -85,6 +85,10 @@ $(document).ready(function() {
         })
     });
 
+    $('.close').click(function(){
+        disableSubmit();
+    });
+
 });
 
 function initModalShow()
@@ -104,8 +108,21 @@ function initModalEdit()
     $('#alert-success').hide();
     $('#detail').hide();
     $('#aceptar').hide();
-    $('#guardar').show();
-    $('#guardar').prop('disabled', false);
     $('#cancelar').show();
     $('#div-alert').hide();
+}
+
+function enableSubmit()
+{
+    $('#guardar').show();
+    $('#guardar').prop('disabled', false);
+    $('.form-control').prop('disabled', false);
+    $('#form').safeform('complete');
+}
+
+function disableSubmit()
+{
+    $('#guardar').hide();
+    $('#guardar').prop('disabled', true);
+    $('.form-control').prop('disabled', true);
 }

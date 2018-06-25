@@ -249,6 +249,9 @@ El título debe ser mínimo de 3 caracteres.: The title must be at least 3 chara
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
 El valor de la pregunta es requerido.: Question weighing is required.
+El valor de las horas académicas debe ser un valor entero: Academic hours must be an integer value
+El valor de las horas académicas es requerido: Academic hours value is required
+El valor de las horas académicas no puede ser cero: Academic hours value can not be zero
 El valor del puntaje con que se aprueba debe ser mayor o igual a 10.: The score with it is approved must be greater or equal than 10.
 El valor del puntaje con que se aprueba debe ser un valor numérico.: The score with it is approved must be a numeric value.
 El valor del puntaje con que se aprueba no debe sobrepasar a 100.: The score value with it is approved must not exceed to 100.
@@ -355,6 +358,7 @@ Has completado con éxito los contenidos de: You have successfully completed the
 Has ganado: You win
 Historial de programaciones de: Programation history of
 Hizo un comentario: Made a comment
+Horas académicas: Academic hours
 Hoy a las: Today at
 Icono: Icon
 Icono de la empresa: Company icon

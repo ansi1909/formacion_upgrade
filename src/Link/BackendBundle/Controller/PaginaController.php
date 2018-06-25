@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Yaml\Yaml;
 
 class PaginaController extends Controller
@@ -191,7 +192,8 @@ class PaginaController extends Controller
         if (!$pagina->getPagina())
         {
             $form->add('encuesta', TextType::class, array('label' => $this->get('translator')->trans('Enlace de la encuesta'),
-                                                          'required' => false));
+                                                          'required' => false))
+                 ->add('horasAcademicas', IntegerType::class, array('label' => $this->get('translator')->trans('Horas académicas')));
         }
 
         $form->handleRequest($request);
@@ -274,6 +276,7 @@ class PaginaController extends Controller
             ->setAction($this->generateUrl('_newPagina'))
             ->setMethod('POST')
             ->add('nombre', TextType::class, array('label' => $this->get('translator')->trans('Nombre')))
+            ->add('horasAcademicas', IntegerType::class, array('label' => $this->get('translator')->trans('Horas académicas')))
             ->add('categoria', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\CertiCategoria',
                                                         'choice_label' => 'nombre',
                                                         'expanded' => false,

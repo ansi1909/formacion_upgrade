@@ -4,11 +4,11 @@ $(document).ready(function() {
 
 	$('.new').click(function(){
 		initModalEdit();
+		enableSubmit();
 		$('#rol_id').val("");
 		$('#rol').val("");
 		$('#descripcion').val("");
 	});
-
 
 	$('#guardar').click(function(){
 		$('#form').submit();
@@ -30,6 +30,7 @@ $(document).ready(function() {
 			data: { rol_id: rol_id },
 			dataType: "json",
 			success: function(data) {
+				enableSubmit();
 				$('#rol_id').val(rol_id);
 				$('#rol').val(data.nombre);
 				$('#descripcion').val(data.descripcion);
@@ -64,6 +65,8 @@ $(document).ready(function() {
 					data: $("#form").serialize(),
 					dataType: "json",
 					success: function(data) {
+						$('.form-control').val('');
+						$('.form-control').prop('disabled', true);
 						$('#p-nombre').html(data.nombre);
 						$('#p-des').html(data.descripcion);
 						console.log('Formulario enviado. Id '+data.id);
@@ -95,6 +98,7 @@ $(document).ready(function() {
 					error: function(){
 						$('#alert-error').html($('#error_msg-save').val());
 						$('#div-alert').show();
+						$('#guardar').prop('disabled', false);
 						$('#form').safeform('complete');
                         return false; // revent real submit
 					}
@@ -107,5 +111,7 @@ $(document).ready(function() {
 			
 		}
 	});
+
+	disableSubmit();
 
 });
