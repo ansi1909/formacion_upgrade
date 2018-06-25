@@ -119,6 +119,7 @@ function observe(){
 
 function editComentario(){
 
+	$('.add').unbind('click');
 	$('.add').click(function(){
         var foro_id = $(this).attr('data');
         $('#foro_id').val(foro_id);
@@ -127,6 +128,7 @@ function editComentario(){
 
     });
 
+	$('.edit').unbind('click');
 	$('.edit').click(function(){
         var comentario_id = $(this).attr('data');
         var respuesta = $('.respuesta' + comentario_id).html();
@@ -135,6 +137,7 @@ function editComentario(){
 
     });
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var comentario_id = $(this).attr('data');
 		sweetAlertDelete(comentario_id, 'CertiForo');
