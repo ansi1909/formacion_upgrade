@@ -4,10 +4,10 @@ $(document).ready(function() {
 
 	$('.new').click(function(){
 		initModalEdit();
+		enableSubmit();
 		$('#categoria_id').val("");
 		$('#categoria').val("");
 	});
-
 
 	$('#guardar').click(function(){
 		$('#form').submit();
@@ -33,6 +33,7 @@ $(document).ready(function() {
 			data: { categoria_id: categoria_id },
 			dataType: "json",
 			success: function(data) {
+				enableSubmit();
 				$('#categoria_id').val(categoria_id);
 				$('#categoria').val(data.nombre);
 			},
@@ -62,6 +63,8 @@ $(document).ready(function() {
 					data: $("#form").serialize(),
 					dataType: "json",
 					success: function(data) {
+						$('.form-control').val('');
+						$('.form-control').prop('disabled', true);
 						$('#p-nombre').html(data.nombre);
 						console.log('Formulario enviado. Id '+data.id);
 						$( "#detail-edit" ).attr( "data", data.id );
@@ -75,6 +78,7 @@ $(document).ready(function() {
 							$( "#detail-delete" ).attr("data",data.id);
 							$( "#detail-delete" ).addClass("delete");
 							$( "#detail-delete" ).show();
+							$('.delete').unbind('click');
 							$('.delete').click(function()
 							{
 								var categoria_id= $(this).attr('data');
@@ -92,6 +96,7 @@ $(document).ready(function() {
 					error: function(){
 						$('#alert-error').html($('#error_msg-save').val());
 						$('#div-alert').show();
+						$('#guardar').prop('disabled', false);
 						$('#form').safeform('complete');
                         return false; // revent real submit
 					}
@@ -104,5 +109,7 @@ $(document).ready(function() {
 			
 		}
 	});
+
+	disableSubmit();
 
 });

@@ -86,6 +86,13 @@ class CertiPagina
     private $encuesta;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="horas_academicas", type="integer", nullable=true)
+     */
+    private $horasAcademicas;
+
+    /**
      * @var \Link\ComunBundle\Entity\CertiPagina
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\CertiPagina")
@@ -351,6 +358,30 @@ class CertiPagina
     public function getEncuesta()
     {
         return $this->encuesta;
+    }
+
+    /**
+     * Set horasAcademicas
+     *
+     * @param integer $horasAcademicas
+     *
+     * @return CertiPagina
+     */
+    public function setHorasAcademicas($horasAcademicas)
+    {
+        $this->horasAcademicas = $horasAcademicas;
+    
+        return $this;
+    }
+
+    /**
+     * Get horasAcademicas
+     *
+     * @return integer
+     */
+    public function getHorasAcademicas()
+    {
+        return $this->horasAcademicas;
     }
 
     /**

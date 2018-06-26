@@ -993,6 +993,21 @@ class Functions
 									$active = ' active';
 									$to_activate = 0;
 								}
+								else {
+									// Recorrer las sub-páginas de la sub-página a ver si se encuentra subpagina_id dentro del conjunto
+									foreach ($subpagina['subpaginas'] as $nieto)
+									{
+										if (count($nieto['subpaginas']))
+										{
+											if (array_key_exists($subpagina_id, $nieto['subpaginas']))
+											{
+												$active = ' active';
+												$to_activate = 0;
+												break;
+											}
+										}
+									}
+								}
 							}
 						}
 					}
@@ -1042,7 +1057,15 @@ class Functions
 					}
 					if ($prelacion_id)
 					{
-						$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
+						if (isset($indexedPages[$prelacion_id]))
+						{
+							$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
+						}
+						else {
+							// La prelación no está dentro del conjunto de indexPages
+							$prelada = $em->getRepository('LinkComunBundle:CertiPagina')->find($prelacion_id);
+							$prelada_por = $this->translator->trans('Prelada por').' '.$prelada->getCategoria()->getNombre().': '.$prelada->getNombre();
+						}
 					}
 					$menu_str .= '<li title="'.$prelada_por.'">
 									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
@@ -1094,7 +1117,15 @@ class Functions
 				}
 				if ($prelacion_id)
 				{
-					$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
+					if (isset($indexedPages[$prelacion_id]))
+					{
+						$prelada_por = $this->translator->trans('Prelada por').' '.$indexedPages[$prelacion_id]['categoria'].': '.$indexedPages[$prelacion_id]['nombre'];
+					}
+					else {
+						// La prelación no está dentro del conjunto de indexPages
+						$prelada = $em->getRepository('LinkComunBundle:CertiPagina')->find($prelacion_id);
+						$prelada_por = $this->translator->trans('Prelada por').' '.$prelada->getCategoria()->getNombre().': '.$prelada->getNombre();
+					}
 				}
 				$menu_str .= '<li title="'.$prelada_por.'">
 								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';

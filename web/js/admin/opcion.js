@@ -12,11 +12,11 @@ $(document).ready(function() {
 
     $('#form').submit(function(e) {
 		e.preventDefault();
-	  	saveOpcion();
 	});
 
 	$('#guardar').click(function(){
-		saveOpcion();
+		$('#form').submit();
+		return false;
     });
 
 	$('.new').click(function(){
@@ -28,61 +28,69 @@ $(document).ready(function() {
 		$('#figure_imagen').html('<img src="'+$('#img_default').val()+'" style="background: transparent; width: 150px; height: auto;">');
 		$('#imagen_enunciado').val("");
 		$('#figure_imagen_enunciado').html('<img src="'+$('#img_default').val()+'" style="background: transparent; width: 150px; height: auto;">');
-		$('#guardar').show();
+		enableSubmit();
 	});
 
 	observe();
 
-});
-
-function saveOpcion()
-{
-	$('#div-alert').hide();
-	$('#guardar').hide();
-    var valid = $("#form").valid();
-    if (!valid) 
-    {
-        notify($('#div-error').html());
-        $('#guardar').show();
-    }
-    else {
-        var pregunta_opcion_id = $('#pregunta_opcion_id').val()
-		$.ajax({
-			type: "POST",
-			url: $('#form').attr('action'),
-			async: true,
-			data: $("#form").serialize()+'&es_asociacion='+$('#es_asociacion').val(),
-			dataType: "json",
-			success: function(data) {
-				if (pregunta_opcion_id)
-				{
-					$( "#tr-"+pregunta_opcion_id ).html( data.html );
-				}
-				else {
-					$( "#tbody-options" ).append( data.html );
-				}
-				// Si se marca SI, las demás deben marcarse como NO
-				if (data.checked != '' && $('#es_simple').val() == 1)
-				{
-					$('.cb_activo').each(function(){
-						if ($(this).attr('id') != 'f'+data.id)
+	$('#form').safeform({
+		submit: function(e) {
+			$('#div-alert').hide();
+			$('#guardar').hide();
+			var valid = $("#form").valid();
+		    if (!valid) 
+		    {
+		        notify($('#div-error').html());
+		        $('#guardar').show();
+		        $('#form').safeform('complete');
+                return false; // revent real submit
+		    }
+		    else {
+		        var pregunta_opcion_id = $('#pregunta_opcion_id').val()
+				$.ajax({
+					type: "POST",
+					url: $('#form').attr('action'),
+					async: true,
+					data: $("#form").serialize()+'&es_asociacion='+$('#es_asociacion').val(),
+					dataType: "json",
+					success: function(data) {
+						$('.form-control').val('');
+						if (pregunta_opcion_id)
 						{
-							$(this).prop('checked', false);
+							$( "#tr-"+pregunta_opcion_id ).html( data.html );
 						}
-					});
-				}
-				observe();
-				$( "#cancelar" ).trigger( "click" );
-				clearTimeout( timerId );
-			},
-			error: function(){
-				$('#alert-error').html($('#error_msg-save').val());
-				$('#div-alert').show();
-				$('#guardar').show();
-			}
-		});
-    }
-}
+						else {
+							$( "#tbody-options" ).append( data.html );
+						}
+						// Si se marca SI, las demás deben marcarse como NO
+						if (data.checked != '' && $('#es_simple').val() == 1)
+						{
+							$('.cb_activo').each(function(){
+								if ($(this).attr('id') != 'f'+data.id)
+								{
+									$(this).prop('checked', false);
+								}
+							});
+						}
+						observe();
+						$( "#cancelar" ).trigger( "click" );
+						clearTimeout( timerId );
+					},
+					error: function(){
+						$('#alert-error').html($('#error_msg-save').val());
+						$('#div-alert').show();
+						$('#guardar').show();
+						$('#form').safeform('complete');
+                        return false; // revent real submit
+					}
+				});
+		    }    
+		}
+	});
+
+	disableSubmit();
+
+});
 
 function observe()
 {
@@ -90,10 +98,10 @@ function observe()
 	var es_asociacion = $('#es_asociacion').val();
 	var elemento_imagen = $('#elemento_imagen').val();
 
+	$('.edit').unbind('click');
 	$('.edit').click(function(){
 		var pregunta_opcion_id = $(this).attr('data');
 		$('#div-alert').hide();
-		$('#guardar').show();
 		$.ajax({
 			type: "GET",
 			url: $('#url_edit').val(),
@@ -101,6 +109,7 @@ function observe()
 			data: { pregunta_opcion_id: pregunta_opcion_id },
 			dataType: "json",
 			success: function(data) {
+				enableSubmit();
 				$('#pregunta_opcion_id').val(pregunta_opcion_id);
 				$('#descripcion').val(data.descripcion);
 				if (elemento_imagen == 1)
@@ -132,6 +141,7 @@ function observe()
 
 	if (es_asociacion == 0)
 	{
+		$('.cb_activo').unbind('click');
 		$('.cb_activo').click(function(){
 			var checked = $(this).is(':checked') ? 1 : 0;
 			var id = $(this).attr('id');
@@ -167,6 +177,7 @@ function observe()
 		});
 	}
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var pregunta_opcion_id = $(this).attr('data');
 		sweetAlertDelete(pregunta_opcion_id, 'CertiPreguntaOpcion', $('#url_delete_opcion').val());

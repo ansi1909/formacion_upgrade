@@ -249,6 +249,9 @@ El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 c
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: El Usuario no pertenece a la empresa. Contacte al administrador del sistema.
 El valor de la pregunta debe ser un valor numérico.: El valor de la pregunta debe ser un valor numérico.
 El valor de la pregunta es requerido.: El valor de la pregunta es requerido.
+El valor de las horas académicas debe ser un valor entero: El valor de las horas académicas debe ser un valor entero
+El valor de las horas académicas es requerido: El valor de las horas académicas es requerido
+El valor de las horas académicas no puede ser cero: El valor de las horas académicas no puede ser cero
 El valor del puntaje con que se aprueba debe ser mayor o igual a 10.: El valor del puntaje con que se aprueba debe ser mayor o igual a 10.
 El valor del puntaje con que se aprueba debe ser un valor numérico.: El valor del puntaje con que se aprueba debe ser un valor numérico.
 El valor del puntaje con que se aprueba no debe sobrepasar a 100.: El valor del puntaje con que se aprueba no debe sobrepasar a 100.
@@ -355,6 +358,7 @@ Has completado con éxito los contenidos de: Has completado con éxito los conte
 Has ganado: Has ganado
 Historial de programaciones de: Historial de programaciones de
 Hizo un comentario: Hizo un comentario
+Horas académicas: Horas académicas
 Hoy a las: Hoy a las
 Icono: Icono
 Icono de la empresa: Icono de la empresa
