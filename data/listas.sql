@@ -83,7 +83,7 @@ INSERT INTO admin_pais (id, nombre, continente, region, nombre_local, capital, i
 -- Name: idcerti_categoria_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_categoria', 'id'), 5, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_categoria', 'id'), 6, false);
 
 --
 -- Data for Name: certi_categoria; Type: TABLE DATA; Schema: public;

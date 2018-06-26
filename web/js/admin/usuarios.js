@@ -48,4 +48,8 @@ $(document).ready(function() {
 		sweetAlertDelete(usuario_id, 'AdminUsuario');
 	});
 
+	$('#buscar').click(function(){
+		$(this).hide();
+	});
+
 });
