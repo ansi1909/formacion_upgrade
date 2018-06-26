@@ -79,14 +79,17 @@
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-sm-6 col-lg-6 col-md-6">
+                                <div class="col-sm-16 col-lg-16 col-md-16">
                                     <label for="nombre" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ form_label(form.nombre) }}</label>
                                     <div class="col-sm-14 col-md-14 col-lg-14">
                                         {{ form_widget(form.nombre, { 'attr': { 'class': 'form-control form_sty1' } }) }}
                                         <span class="fa fa-font"></span>
                                     </div>
                                 </div>
-                                <div class="col-sm-5 col-md-5 col-lg-5">
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
                                     <label for="categoria" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ form_label(form.categoria) }}</label>
                                     <div class="col-sm-14 col-md-14 col-lg-14">
                                         {{ form_widget(form.categoria, { 'attr': { 'class': 'form-control form_sty_select' } }) }}
@@ -100,6 +103,15 @@
                                         <span class="fa fa-list-ol"></span>
                                     </div>
                                 </div>
+                                {% if not pagina.pagina %}
+                                    <div class="col-sm-5 col-lg-5 col-md-5">
+                                        <label for="horasAcademicas" class="col-sm-12 col-md-12 col-lg-12 col-form-label">{{ form_label(form.horasAcademicas) }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            {{ form_widget(form.horasAcademicas, { 'attr': { 'class': 'form-control form_sty1' } }) }}
+                                            <span class="fa fa-clock-o"></span>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="wizard-footer">
                                 <div class="col-sm-16 text-right">
@@ -293,6 +305,7 @@
                     notify($('#div-error').html());
                 }
                 else {
+                    $('#finish').hide();
                     $('#form').submit();
                 }
 
@@ -327,6 +340,11 @@
                 },
                 'form[encuesta]': {
                     url: true
+                },
+                'form[horasAcademicas]': {
+                    required: {% if not pagina.pagina %}true{% else %}false{% endif %},
+                    min: {% if not pagina.pagina %}1{% else %}0{% endif %},
+                    digits: true
                 }
             },
             messages: {
@@ -353,6 +371,11 @@
                 },
                 'form[encuesta]': {
                     url: "- {{ 'El enlace de la encuesta no un válido URL'|trans }}."
+                },
+                'form[horasAcademicas]': {
+                    required: "- {{ 'El valor de las horas académicas es requerido'|trans }}.",
+                    min: "- {{ 'El valor de las horas académicas no puede ser cero'|trans }}.",
+                    digits: "- {{ 'El valor de las horas académicas debe ser un valor entero'|trans }}."
                 }
             }
         });

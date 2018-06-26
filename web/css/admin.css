@@ -22,3 +22,11 @@
 .right-pad {
 	padding-right: 30px !important;
 }
+
+.menu-collapse {
+	cursor: pointer;
+}
+
+.load1 {
+	display: none;
+}

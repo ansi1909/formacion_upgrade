@@ -10,6 +10,7 @@ $(document).ready(function() {
             $('#pagina_padre_error').show();
         }
         else {
+            $('#finish').hide();
             $('#pagina_padre_error').hide();
             $('#form').submit();
         }

@@ -148,16 +148,25 @@ class ProgramaController extends Controller
                             if ($statusPaginaId!=0) {
                                 
                                 $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
+                                // seleccionando el icono que debe mostrarse
+                                if ($statusPaginaId==$yml['parameters']['estatus_pagina']['completada']) {
+                                    $icono=['nombre'=>'replay','tooltit'=>'Repetir Lección'];
+                                }
+                                else{
+                                     $icono=['nombre'=>'visibility','tooltit'=>'Continuar Lección'];
+                                }
+
+                                
                                 $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
                                                      <li class="my-1" >
                                                         <span class="d-flex">'.$sub_subpagina['nombre'].'</span>
-                                                         <i class="material-icons d-flex icVc " title="Ver lección" >visibility</i>
+                                                         <i class="material-icons d-flex icVc " title="'.$icono['tooltit'].'" >'.$icono['nombre'].'</i>
                                                      </li>
                                                   <a/>';
                             }
                             else{
 
-                                $titulo_leccion =  '<li class="my-1 color-grey" >'.$sub_subpagina['nombre'].'  </li>';
+                                $titulo_leccion =  '<li class="mygit-1 color-grey" >'.$sub_subpagina['nombre'].'  </li>';
                             }
 
                             // validando si la sub_subpagina esta en evaluacion

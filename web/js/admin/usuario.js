@@ -44,6 +44,10 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#finish').click(function(){
+		$(this).hide();
+	});
+
 });
 
 function responsive_filemanager_callback(field_id){

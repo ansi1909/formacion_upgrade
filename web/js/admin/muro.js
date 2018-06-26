@@ -119,6 +119,7 @@ function observe(){
 
 function editComentario(){
 
+	$('.add').unbind('click');
 	$('.add').click(function(){
         var muro_id = $(this).attr('data');
         $('#muro_id').val(muro_id);
@@ -127,6 +128,7 @@ function editComentario(){
 
     });
 
+	$('.edit').unbind('click');
 	$('.edit').click(function(){
         var comentario_id = $(this).attr('data');
         var respuesta = $('.respuesta' + comentario_id).html();
@@ -135,6 +137,7 @@ function editComentario(){
 
     });
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var comentario_id = $(this).attr('data');
 		sweetAlertDelete(comentario_id, 'CertiMuro');
@@ -231,9 +234,9 @@ function segundaTabla()
 
 function afterPaginate(){
 
-
 	editComentario();
 
+	$('.see').unbind('click');
     $('.see').click(function(){
         var muro_id = $(this).attr('data');
         var usuario_id = $('#usuario_id').val();
@@ -262,5 +265,4 @@ function afterPaginate(){
         
     });
 
-    editComentario();
 }

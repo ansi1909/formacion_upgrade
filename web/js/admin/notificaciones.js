@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
 	//var root_site = $('#root_site').val();
     $('#select_empresa_id').change(function(){
     	var empresa_id = $(this).val();
@@ -13,22 +12,23 @@ $(document).ready(function() {
     $('.paginate_button').click(function(){
         observe();
     });
+
 	observe();
+	
 });
 
 function observe(){
+
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
-
 		var notificacion_id = $(this).attr('data');
-
 		sweetAlertDelete(notificacion_id, 'AdminNotificacion');
-
 	});
-	var table = $('#dt').DataTable( {
+
+	var table = $('#dt').DataTable({
 		destroy: true,
         rowReorder: true
-
-    } );
+    });
 
     table.on( 'row-reorder', function ( e, diff, edit ) {
         

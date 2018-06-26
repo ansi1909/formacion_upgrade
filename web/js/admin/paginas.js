@@ -39,8 +39,8 @@ $(document).ready(function() {
                     data: $("#form").serialize(),
                     dataType: "json",
                     success: function(data) {
-                        
-                        $('#guardar').prop('disabled', false);
+                        $('.form-control').val('');
+                        $('.form-control').prop('disabled', true);
                         $('#inserts').html(data.inserts);
                         treePaginas(data.id);
                         initModalShow();
@@ -76,6 +76,8 @@ $(document).ready(function() {
     });
 
     observe();
+
+    disableSubmit();
 
 });
 
@@ -118,11 +120,12 @@ function observe()
            data: { pagina_id: pagina_id},
            dataType: "json",
            success: function(data){
-               $('#nombre').val(data.nombre);
+                enableSubmit();
+                $('#nombre').val(data.nombre);
            },
            error: function(){
-               $('#alert-error').html($('#error_msg-edit').val());
-               $('#div-alert').show();
+                $('#alert-error').html($('#error_msg-edit').val());
+                $('#div-alert').show();
            }
         });
     });

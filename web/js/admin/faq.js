@@ -77,6 +77,7 @@ function observe()
 		});
 	});
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var faq_id = $(this).attr('data');
 		sweetAlertDelete(faq_id, 'AdminFaqs');
@@ -112,6 +113,7 @@ function saveFaq()
 						$( "#detail-delete" ).attr("data",data.id);
 						$( "#detail-delete" ).addClass("delete");
 						$( "#detail-delete" ).show();
+						$('.delete').unbind('click');
 						$('.delete').click(function()
 						{
 							var faq_id= $(this).attr('data');
