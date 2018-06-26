@@ -59,7 +59,13 @@ class Functions
     							   'CertiGrupo' => 'empresa',
     							   'CertiPaginaEmpresa' => 'empresa',
     							   'AdminNoticia' => 'empresa',
-    							   'AdminPreferencia' => 'empresa');
+    							   'AdminPreferencia' => 'empresa',
+    							   'CertiCertificado' => 'empresa',
+    							   'AdminEvento' => 'empresa',
+    							   'TmpParticipante' => 'empresa',
+    							   'CertiMuro' => 'empresa',
+    							   'CertiForo' => 'empresa',
+    							   'AdminNotificacion' => 'empresa');
     			break;
     		case 'AdminUsuario':
     			$entidades = array('AdminRolUsuario' => 'usuario',
@@ -68,19 +74,25 @@ class Functions
     							   'CertiPrueba' => 'usuario',
     							   'CertiPregunta' => 'usuario',
     							   'CertiOpcion' => 'usuario',
-    							   'CertiRespuesta' => 'usuario',
     							   'CertiPaginaLog' => 'usuario',
     							   'CertiPruebaLog' => 'usuario',
     							   'AdminNoticia' => 'usuario',
     							   'CertiMuro' => 'usuario',
     							   'CertiForo' => 'usuario',
+    							   'CertiForoArchivo' => 'usuario',
     							   'AdminNotificacion' => 'usuario',
     							   'AdminNotificacionProgramada' => 'usuario',
-    							   'AdminPreferencia' => 'usuario');
+    							   'AdminPreferencia' => 'usuario',
+    							   'AdminTutorial' => 'usuario',
+    							   'AdminEvento' => 'usuario',
+    							   'AdminLike' => 'usuario',
+    							   'AdminAlarma' => 'usuario');
     			break;
             case 'AdminNivel':
                 $entidades = array('AdminUsuario' => 'nivel',
-                                   'CertiNivelPagina' => 'nivel');
+                                   'CertiNivelPagina' => 'nivel',
+                                   'AdminEvento' => 'nivel',
+                                   'TmpParticipante' => 'nivel');
                 break;
             case 'CertiPagina':
                 $entidades = array('CertiPagina' => 'pagina',
@@ -114,8 +126,15 @@ class Functions
                 $entidades = array('CertiMuro' => 'muro');
                 break;
             case 'CertiForo':
-                $entidades = array('CertiForo' => 'foro');
+                $entidades = array('CertiForo' => 'foro',
+                				   'CertiForoArchivo' => 'foro');
                 break;
+            case 'CertiGrupo':
+    			$entidades = array('CertiGrupoPagina' => 'grupo');
+    			break;
+    		case 'CertiCategoria':
+    			$entidades = array('CertiPagina' => 'categoria');
+    			break;
             default:
     			$entidades = array();
     			break;
