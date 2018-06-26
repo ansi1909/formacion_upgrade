@@ -7,6 +7,7 @@ $(document).ready(function() {
 		$('#loading').hide();
 		
 	});
+
 	$('#tipo_destino_id').change(function(){
 		$('#formulario_ajax').html('');
 		$('#loading_form').show();
@@ -37,6 +38,7 @@ $(document).ready(function() {
 
 	observe();
 	segundaTabla();
+
 });
 
 function observe(){
@@ -54,12 +56,10 @@ function observe(){
 
 	});
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
-
 		var notificacion_id = $(this).attr('data');
-
 		sweetAlertDelete(notificacion_id, 'AdminNotificacionProgramada');
-
 	});
 
 	$('#fecha_difusion').datepicker({
@@ -68,6 +68,7 @@ function observe(){
 	    format: 'dd/mm/yyyy',
 	    language: 'es'
 	});
+
 	$('#aceptar').click(function(){
 		window.location.replace($('#url_list').val());
 	});
@@ -148,6 +149,7 @@ function getformularioProgramaciones(tipo_destino_id, notificacion_id){
 
 function editProgramacion(){
 
+	$('.edit_programacion').unbind('click');
 	$('.edit_programacion').click(function(){
 
 		var programacion_id = $(this).attr('data');
@@ -179,10 +181,12 @@ function editProgramacion(){
 
 	});
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var notificacion_id = $(this).attr('data');
 		sweetAlertDelete(notificacion_id, 'AdminNotificacionProgramada');
 	});
+
 }
 
 function saveProgramacion()
@@ -212,6 +216,7 @@ function saveProgramacion()
 						$( "#detail-delete" ).attr("data",data.id);
 						$( "#detail-delete" ).addClass("delete");
 						$( "#detail-delete" ).show();
+						$('.delete').unbind('click');
 						$('.delete').click(function()
 						{
 							var programacion_id= $(this).attr('data');
@@ -282,6 +287,7 @@ function segundaTabla()
 
 function afterPaginate(){
 
+	$('.add').unbind('click');
 	$('.add').click(function(){
 		$('#tipo_destino_id').val('');
 		$('#entidad_id').val('');
@@ -293,6 +299,7 @@ function afterPaginate(){
 
 	});
 
+	$('.see').unbind('click');
 	$('.see').click(function(){
 		var notificacion_id = $(this).attr('data');
 		$('#div-active-alert').hide();
@@ -326,8 +333,10 @@ function afterPaginate(){
 		
 	});
 
+	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var notificacion_id = $(this).attr('data');
 		sweetAlertDelete(notificacion_id, 'AdminNotificacionProgramada');
 	});
+
 }

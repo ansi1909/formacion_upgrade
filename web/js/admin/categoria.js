@@ -78,6 +78,7 @@ $(document).ready(function() {
 							$( "#detail-delete" ).attr("data",data.id);
 							$( "#detail-delete" ).addClass("delete");
 							$( "#detail-delete" ).show();
+							$('.delete').unbind('click');
 							$('.delete').click(function()
 							{
 								var categoria_id= $(this).attr('data');

@@ -1,8 +1,6 @@
-$(document).ready(function() 
-{
+$(document).ready(function() {
     
-    $('.delete').click(function()
-    {
+    $('.delete').click(function(){
         var noticia_id = $(this).attr('data');
         sweetAlertDelete(noticia_id, 'AdminNoticia');
     });
@@ -17,6 +15,7 @@ $(document).ready(function()
 
     activarDataTable();
     paginateScroll();
+    
 });
 
 function paginateScroll() 

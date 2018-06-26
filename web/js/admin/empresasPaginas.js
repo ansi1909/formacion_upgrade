@@ -1,26 +1,9 @@
 $(document).ready(function() {
 
-	$('.see').click(function(){
-		var empresa_id = $(this).attr('data');
-		$('#div-active-alert').hide();
-		$.ajax({
-			type: "GET",
-			url: $('#url_pages').val(),
-			async: true,
-			data: { empresa_id: empresa_id },
-			dataType: "json",
-			success: function(data) {
-				$('#pages').html(data.html);
-				$('#empresaTitle').html(data.empresa);
-				$('#div-pages').show();
-				observe();
-			},
-			error: function(){
-				$('#active-error').html($('#error_msg-pages').val());
-				$('#div-active-alert').show();
-				$('#div-pages').hide();
-			}
-		});
+	afterPaginate();
+
+	$('.paginate_button').click(function(){
+		afterPaginate();
 	});
 
 });
@@ -37,6 +20,7 @@ function observe()
 		}
 	});
 
+	$('.cb_activo').unbind('click');
 	$('.cb_activo').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
@@ -58,6 +42,7 @@ function observe()
 		});
 	});
 
+	$('.cb_acceso').unbind('click');
 	$('.cb_acceso').click(function(){
 		var checked = $(this).is(':checked') ? 1 : 0;
 		var id = $(this).attr('id');
@@ -92,4 +77,33 @@ function treePaginas(pagina_empresa_id)
             }
         }
     });
+}
+
+function afterPaginate()
+{
+	$('.see').unbind('click');
+	$('.see').click(function(){
+		var empresa_id = $(this).attr('data');
+		$('#div-active-alert').hide();
+		$('#div-pages, .load1').show();
+		$.ajax({
+			type: "GET",
+			url: $('#url_pages').val(),
+			async: true,
+			data: { empresa_id: empresa_id },
+			dataType: "json",
+			success: function(data) {
+				$('.load1').hide();
+				$('#pages').html(data.html);
+				$('#empresaTitle').html(data.empresa);
+				$('#div-pages').show();
+				observe();
+			},
+			error: function(){
+				$('#active-error').html($('#error_msg-pages').val());
+				$('#div-active-alert').show();
+				$('#div-pages').hide();
+			}
+		});
+	});
 }

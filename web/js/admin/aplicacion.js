@@ -48,6 +48,7 @@ $(document).ready(function() {
 							$( "#detail-delete" ).attr( "data", data.id );
 							$( "#detail-delete" ).addClass( "delete" );
 							$( "#detail-delete" ).show();
+							$('.delete').unbind('click');
 							$('.delete').click(function(){
 								var app_id = $(this).attr('data');
 								sweetAlertDelete(app_id, 'AdminAplicacion');
