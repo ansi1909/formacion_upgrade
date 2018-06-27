@@ -6,37 +6,27 @@
 {% endblock %}
 
 {% block body %}
-{% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditGrupo') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_grupo', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="url_grupos" name="url_grupos" value="{{ path ('_ajaxEmpresasGrupo') }}">
-<input type="hidden" id="url_GrupoP" name="url_GrupoP" value="{{ path ('_ajaxGrupoPaginas') }}">
-<input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path ('_ajaxDeleteGrupo') }}">
-<input type="hidden" id="url_asignar" name="url_asignar" value="{{ path ('_ajaxAsignar') }}">
+<input type="hidden" id="url_grupos" name="url_grupos" value="{{ path('_ajaxEmpresasGrupo') }}">
+<input type="hidden" id="url_GrupoP" name="url_GrupoP" value="{{ path('_ajaxGrupoPaginas') }}">
+<input type="hidden" id="url_delete_grupos" name="url_delete_grupos" value="{{ path('_ajaxDeleteGrupo') }}">
+<input type="hidden" id="url_asignar" name="url_asignar" value="{{ path('_ajaxAsignar') }}">
 
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>{{'Agrupación de páginas' | trans}}</h3>
+        <h3>{{ 'Agrupación de páginas'|trans}}</h3>
     </div>
-{% if not usuario_empresa %}
-   <div class="col text-right">
-       <button type="button" id="new" class="bttn__nr new ocultar" data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
-   </div>
-{% else %}
-    <div class="col text-right">
-       <button type="button" id="new" class="bttn__nr new " data-toggle="modal" data-target="#formModal" ><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
-   </div>
-{% endif %}
 </div>
-{% if not usuario_empresa %}
-    <input type="hidden" id="app_id" name="app_id" value="{{ app_id }}">
+{% if not usuario.empresa %}
+    <input type="hidden" id="app_id" name="app_id" value="{{ app.session.get('app_id') }}">
     <div class="row">
         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">
                 <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                    <h5 class="card-title">{{'Elegir empresa' | trans}}</h5>
+                    <h5 class="card-title">{{ 'Elegir empresa'|trans }}</h5>
                 </div>
                 <div class="card-block">
                      <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
@@ -45,11 +35,12 @@
                                 <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                     <option value="0"></option>
                                     {% for empresa in empresas %}
-                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                        {% set selected = empresa.id == empresa_id ? 'selected="selected"' : '' %}
+                                        <option value="{{ empresa.id }}" {{ selected }}>{{ empresa.nombre }}</option>
                                     {% endfor %}
                                 </select>
                                 <span class="fa fa-industry"></span>
-                                <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                                <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
                             </div>
                         </div>
                     <br>
@@ -58,20 +49,20 @@
         </div>
     </div>
 {% else %}
-    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+    <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
 {% endif %}
 
 <div class="row">
-    <div class=" col-sm-9 col-md-9 col-lg-9 col-xl-9 col-9" {% if not usuario_empresa %} style="display:none;" {% endif %}  id="div-grupos">
+    <div class=" col-sm-9 col-md-9 col-lg-9 col-xl-9 col-9" {% if not empresa_id %}style="display:none;"{% endif %} id="div-grupos">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
                 <h5 class="card-title" >{{ 'Listado de grupos' |trans}} <span id="nombre-p"></span></h5>
             </div>
-            {% if not usuario_empresa %}
+            {% if not empresa_id %}
                 <div class="card-block" id="lpe">   
                 </div>
             {% else %}
-                <div class="card-block">
+                <div class="card-block" id="lpe">
                     <table class="table" id="dt">
                         <thead class="sty__title">
                             <tr>
@@ -97,7 +88,12 @@
                         </tbody>
                     </table>  
                 </div>
-            {% endif %}  
+            {% endif %}
+            <div id="footerGrupos" class="card-footer" {% if not empresa_id %}style="display:none;"{% endif %}>
+                <div class="col-sm-16 col-md-16 text-right">
+                    <button type="button" id="new" class="bttn__edit new" data-toggle="modal" data-target="#formModal" title="{{ 'Nuevo registro'|trans }}"><span class="fa fa-plus"></span></button>
+                </div>
+            </div>
         </div>
         <div class="load1 load-wrapper" id="loadGrupos">
             <div class="loader">
@@ -128,16 +124,15 @@
 {% block formModal %}
 
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Datos del grupo'|trans}}</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{ 'Datos del grupo'|trans }}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
 </div>
 <div class="modal-body">
-    <form id="form" name="form" action="{{ path( '_ajaxUpdateGrupo')}}"  method="POST">
+    <form id="form" name="form" action="{{ path( '_ajaxUpdateGrupo')}}" method="POST">
         <input type="hidden" id="grupo_id" name="grupo_id" value="">
         <input type="hidden" id="id_empresa" name="id_empresa" value="">
-        <input type="hidden" id="orden" name="orden" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
             <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
@@ -164,8 +159,8 @@
         </div>
         <div class="card-footer">
             <div class="col-sm-16 col-md-16 text-right">
-                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar'|trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
             </div>
         </div>
     </div>
