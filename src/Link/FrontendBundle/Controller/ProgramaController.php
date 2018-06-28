@@ -251,6 +251,9 @@ class ProgramaController extends Controller
                     
                     $lis_mods .= '</div>';
 
+
+
+
                 }
 
                 $lis_mods .= '</div>';
