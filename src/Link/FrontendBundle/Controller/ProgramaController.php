@@ -213,7 +213,7 @@ class ProgramaController extends Controller
 
                     if($datos_certi_pagina->getAcceso()){
                         // aprobado y con acceso de seguir viendo
-                        $boton_continuar = '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm btn-primary mt-4 btnAp px-4"> Ver </a>';
+                        $boton_continuar = '<a href="'. $this->generateUrl('_lecciones', array('programa_id' => $programa_id, 'subpagina_id' => 0)).'" class="btn btn-sm btn-primary mt-3 btnAp px-4"> Ver </a>';
                         $div_class1 = 'card-hrz-right d-flex flex-column justify-content-top mx-3 pb-1';
                         $div_class2 = 'percent text-center mt-3';
                         $span_class = 'count mt-0 text-xs color-light-grey';
@@ -228,8 +228,8 @@ class ProgramaController extends Controller
                     $lis_mods .= '<h2 class="color-light-grey mb-0 pb-0"> '.$porcentaje.' </h2>';
                     $lis_mods .= '<span class="'.$span_class.'">Calificación</span>';
                     $lis_mods .= '</div>';
-                    $lis_mods .= '<div class="badge-wrap-mod mt-4 d-flex flex-column align-items-center">';
-                    $lis_mods .= '<i class="material-icons badge-aprobado ">check_circle</i>';
+                    $lis_mods .= '<div class="badge-wrap-mod mt-3 d-flex flex-column align-items-center">';
+                    $lis_mods .= '<i class="material-icons badge-aprobado text-center">check_circle</i>';
                     $lis_mods .= '<span class="text-badge"> Aprobado </span>';
                     $lis_mods .= '</div>';
                     $lis_mods .= $boton_continuar;

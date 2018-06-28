@@ -426,16 +426,16 @@ class CertificadoController extends Controller
 
         $programa='';
 
-        if($certificado->getTipoCertificado()->getId() == 1)
+        if($certificado->getTipoCertificado()->getId() == 1)//por empresa
         {
             $programa=$certificado->getEmpresa()->getNombre();
         }else
         {
-            if($certificado->getTipoCertificado()->getId() == 2)
+            if($certificado->getTipoCertificado()->getId() == 2)//por pagina
             {
                 $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
                 $programa = $pagina->getNombre();
-            }else
+            }else// por grupo de paginas
             {
                 $grupoPaginas= $em->getRepository('LinkComunBundle:CertiGrupo')->find($certificado->getEntidadId());
                 $programa = $grupoPaginas->getNombre();
