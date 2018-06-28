@@ -70,7 +70,7 @@ class NovedadController extends Controller
 
     }
 
-    public function registroBibliotecaAction($biblioteca_id, Request $request)
+    public function registroBibliotecaAction($noticia_id, Request $request)
     {
 
         $session = new Session();
@@ -109,11 +109,11 @@ class NovedadController extends Controller
                 $usuario_empresa = $usuario->getEmpresa()->getId(); 
         }
 
-        if ($biblioteca_id)
+        if ($noticia_id)
         {
-            $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($biblioteca_id);
-        }else 
-        {
+            $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
+        }
+        else {
             $biblioteca = new AdminNoticia();
             $biblioteca->setFechaRegistro(new \DateTime('now'));
         }
@@ -121,20 +121,10 @@ class NovedadController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
-            if($usuario_empresa != 0)
-            {
-                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
-            }else
-            {
-                $empresa_id = $request->request->get('empresa_id');
-                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-            }
-
-            $tipo_noticia_id = 3;
-            $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($tipo_noticia_id);
-
+            $recurso = '';
+            $empresa_id = $request->request->get('empresa_id');
             $titulo = trim($request->request->get('titulo'));
-            $autor = trim($request->request->get('autor'));
+            $autor = trim($request->request->get('autor')) ? trim($request->request->get('autor')) : '';
             $pdf = trim($request->request->get('pdf'));
             $video = trim($request->request->get('video'));
             $audio = trim($request->request->get('audio'));
@@ -149,23 +139,25 @@ class NovedadController extends Controller
             $publicacion = $fp[2].'-'.$fp[1].'-'.$fp[0];
             $tipo_biblioteca_id = $request->request->get('tipo_biblioteca_id');
             
+            $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $tipoBiblioteca = $em->getRepository('LinkComunBundle:AdminTipoBiblioteca')->find($tipo_biblioteca_id);
+            $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($yml['parameters']['tipo_noticias']['biblioteca_virtual']);
 
             $biblioteca->setUsuario($usuario);
             $biblioteca->setEmpresa($empresa);
             $biblioteca->setTipoNoticia($tipoNoticia);
             $biblioteca->setTipoBiblioteca($tipoBiblioteca);
-            if ($tipoBiblioteca->getId() == '3' || $tipoBiblioteca->getId() == '4') {
-                $biblioteca->setAutor($autor);
-            }
+            $biblioteca->setAutor($autor);
             $biblioteca->setTitulo($titulo);
             $biblioteca->setFechaVencimiento(new \DateTime($vencimiento));
             $biblioteca->setFechaPublicacion(new \DateTime($publicacion));
-            if ($video) {
+            if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['video']) {
                 $recurso = $video;
-            }else if ($audio) {
+            }
+            else if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['podcast']) {
                 $recurso = $audio;
-            }else{
+            }
+            else{
                 $recurso = $pdf;
             }
             $biblioteca->setPdf($recurso);
@@ -174,6 +166,7 @@ class NovedadController extends Controller
             $em->persist($biblioteca);
             $em->flush();
 
+            // Generación de notificaciones a los usuario de la empresa
             $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
                                        WHERE u.activo = :activo 
                                        AND u.empresa = :empresa_id')
@@ -181,10 +174,9 @@ class NovedadController extends Controller
                                               'empresa_id' => $empresa->getId()));
             $usuarios = $query->getResult();
 
-            $descripcion= 'A sido publicado '. $titulo .'en la biblioteca';
-
-            foreach($usuarios as $usuario){
-
+            $descripcion = $this->get('translator')->trans('Ha sido publicado').' '.$titulo.' '.$this->get('translator')->trans('en la biblioteca').'.';
+            
+            foreach ($usuarios as $usuario){
                 $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $biblioteca->getFechaPublicacion());
             }
 

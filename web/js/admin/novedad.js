@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	
 	var root_site = $('#root_site').val();
-	var usuario_empresa = $('#usuario_empresa').val();
+	var usuario_empresa = '/'+$('#usuario_empresa').val();
 
     $('.date_picker').datepicker({
 	    startView: 1,
@@ -56,7 +56,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.nextBtn').click(function(){
+	$('.nextBtn, stepwizard-step').click(function(){
 		// Cantidad de caracteres en el resumen
 		var editor_descripcion = CKEDITOR.instances.resumen.getData();
 		var deslen = document.getElementById("deslen");

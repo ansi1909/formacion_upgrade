@@ -235,6 +235,7 @@ El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
 El puntaje con que se aprueba es requerido.: El puntaje con que se aprueba es requerido.
+El recurso es requerido: El recurso es requerido
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión
@@ -244,6 +245,7 @@ El Tipo de Imagen es requerido.: El Tipo de Imagen es requerido.
 El tipo de noticia es requerido.: El tipo de noticia es requerido.
 El tipo de notificación es requerida.: El tipo de notificación es requerida.
 El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
+El tipo de recurso es requerido: El tipo de recurso es requerido
 El título debe contener al menos 10 caracteres: El título debe contener al menos 10 caracteres
 El título es requerido.: El título es requerido.
 El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
@@ -268,6 +270,7 @@ Empresas activas: Empresas activas
 Empresas inactivas: Empresas inactivas
 Empresas registradas: Empresas registradas
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: En el módulo administrativo de Certificados y Constancias se puede agregar certificados
+en la biblioteca: en la biblioteca
 Encabezado: Encabezado
 Enlace de la encuesta: Enlace de la encuesta
 Enunciado: Enunciado
@@ -352,6 +355,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha 
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
+Ha sido publicado: Ha sido publicado
 Ha sido publicado el evento: Ha sido publicado el evento
 ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el espacio colaborativo de
 Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
