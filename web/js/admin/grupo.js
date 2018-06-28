@@ -12,29 +12,89 @@ $(document).ready(function() {
             getListadoGrupos(empresa_id);
         }
         else {
-            $('#new').addClass("ocultar");
+            $('#footerGrupos').hide();
             $('#div-grupos').hide();
             $('#div-paginas').hide();
         }
     });
 
     $('.new').click(function(){
-        var empresa_id =$('#empresa_id').val();
-        $('label.error').hide();
-        $('#form').show();
-        $('#alert-success').hide();
-        $('#detail').hide();
-        $('#aceptar').hide();
-        $('#guardar').show();
-        $('#cancelar').show();
+        initModalEdit();
+        enableSubmit();
+        var empresa_id = $('#empresa_id').val();
         $('#grupo_id').val("");
         $('#nombre').val("");
         $('#id_empresa').val(empresa_id);
-        $('#div-alert').hide();
     });
 
     $('#guardar').click(function(){
-        saveGrupo();
+        $('#form').submit();
+        return false;
+    });
+
+    $('#form').submit(function(e) {
+        e.preventDefault();
+    });
+
+    $('#form').safeform({
+        submit: function(e) {
+            
+            $('#div-alert').hide();
+            if ($("#form").valid())
+            {
+                $('#guardar').prop('disabled', true);
+                $.ajax({
+                    type: "POST",
+                    url: $('#form').attr('action'),
+                    async: true,
+                    data: $("#form").serialize(),
+                    dataType: "json",
+                    success: function(data) {
+                        $('.form-control').val('');
+                        $('.form-control').prop('disabled', true);
+                        $('#p-nombre').html(data.nombre);
+                        console.log('Formulario enviado. Id '+data.id);
+                        $( "#detail-edit" ).attr( "data", data.id );
+                        if (data.delete_disabled != '') 
+                        {
+                            $("#detail-delete").hide();
+                            $("#detail-delete").removeClass( "delete" );
+                        }
+                        else {
+                            $( "#detail-delete" ).attr("data",data.id);
+                            $( "#detail-delete" ).addClass("delete");
+                            $( "#detail-delete" ).show();
+                            $('.delete').unbind('click');
+                            $('.delete').click(function()
+                            {
+                                var grupo_id = $(this).attr('data');
+                                sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
+                            });
+                        }
+                        
+                        initModalShow();
+                        observeEditDelete();
+
+                        // manual complete, reenable form ASAP
+                        $('#form').safeform('complete');
+                        return false; // revent real submit
+                                
+                    },
+                    error: function(){
+                        $('#alert-error').html($('#error_msg-save').val());
+                        $('#div-alert').show();
+                        $('#guardar').prop('disabled', false);
+                        $('#form').safeform('complete');
+                        return false; // revent real submit
+                    }
+                });
+            }
+            else {
+                $('#form').safeform('complete');
+                return false; // revent real submit
+            }
+            
+        }
     });
 
     observe();
@@ -44,10 +104,18 @@ $(document).ready(function() {
     });
 
     $('#aceptar').click(function(){
-        window.location.replace($('#url_list').val());
+        window.location.replace($('#url_list').val()+'/'+$('#id_empresa').val());
     });
 
-    clearTimeout( timerId );
+    disableSubmit();
+    $('select').prop('disabled', false);
+
+    $('#cancelar').unbind('click');
+    $('.close').unbind('click');
+    $('.close, #cancelar').click(function(){
+        disableSubmit();
+        $('select').prop('disabled', false);
+    });
 
 });
 
@@ -63,8 +131,8 @@ function getListadoGrupos(empresa_id){
             $('.load1').hide();
             $('#lpe').show();
             $('#lpe').html(data.html);
-            $('#new').removeClass("ocultar");
             $('#nombre-p').html(data.empresa);
+            $('#footerGrupos').show();
             observe();
         },
         error: function(){
@@ -73,52 +141,6 @@ function getListadoGrupos(empresa_id){
             $('.load1').hide();
         }
     });
-}
-
-function saveGrupo()
-{
-    $('#div-alert').hide();
-        if ($("#form").valid())
-        {
-            $('#guardar').prop('disabled', true);
-            $.ajax({
-                type: "POST",
-                url: $('#form').attr('action'),
-                async: true,
-                data: $("#form").serialize(),
-                dataType: "json",
-                success: function(data) {
-                    $('#p-nombre').html(data.nombre);
-                    console.log('Formulario enviado. Id '+data.id);
-                    $( "#detail-edit" ).attr( "data", data.id );
-                    if (data.delete_disabled != '') 
-                    {
-                        $("#detail-delete").hide();
-                        $("#detail-delete").removeClass( "delete" );
-                    }
-                    else
-                    {
-                        $( "#detail-delete" ).attr("data",data.id);
-                        $( "#detail-delete" ).addClass("delete");
-                        $( "#detail-delete" ).show();
-                        $('.delete').click(function(){
-                            var grupo_id = $(this).attr('data');
-                            sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
-                        });
-                    }
-                    $('#form').hide();
-                    $('#alert-success').show();
-                    $('#detail').show();
-                    $('#aceptar').show();
-                    $('#guardar').hide();
-                    $('#cancelar').hide();
-                },
-                error: function(){
-                    $('#alert-error').html($('#error_msg-save').val());
-                    $('#div-alert').show();
-                }
-            });
-        }
 }
 
 function observe()
@@ -146,35 +168,6 @@ function observe()
           })
           .mouseout(function() {
             $( '.columorden' ).css( 'cursor','auto' );
-    });
-
-    $('.edit').unbind('click');
-    $('.edit').click(function(){
-        var grupo_id = $(this).attr('data');
-        var url_edit = $('#url_edit').val();
-        initModalEdit();
-        $.ajax({
-            type: "GET",
-            url: url_edit,
-            async: true,
-            data: { grupo_id: grupo_id },
-            dataType: "json",
-            success: function(data) {
-                enableSubmit();
-                $('#grupo_id').val(grupo_id);
-                $('#nombre').val(data.nombre);
-            },
-            error: function(){
-                $('alert-error').html($('#error_msg_edit').val());
-                $('#div-alert').show();
-            }
-        });
-    });
-
-    $('.delete').unbind('click');
-    $('.delete').click(function(){
-        var grupo_id = $(this).attr('data');
-        sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
     });
 
     $('.see').unbind('click');
@@ -205,6 +198,8 @@ function observe()
             }
         });
     });
+
+    observeEditDelete();
 
 }
 
@@ -238,4 +233,39 @@ function observePaginas()
 
 function afterPaginate(){
     observe();
+}
+
+function observeEditDelete()
+{
+
+    $('.edit').unbind('click');
+    $('.edit').click(function(){
+        var grupo_id = $(this).attr('data');
+        var url_edit = $('#url_edit').val();
+        initModalEdit();
+        $.ajax({
+            type: "GET",
+            url: url_edit,
+            async: true,
+            data: { grupo_id: grupo_id },
+            dataType: "json",
+            success: function(data) {
+                enableSubmit();
+                $('#grupo_id').val(grupo_id);
+                $('#id_empresa').val(data.empresa_id);
+                $('#nombre').val(data.nombre);
+            },
+            error: function(){
+                $('alert-error').html($('#error_msg_edit').val());
+                $('#div-alert').show();
+            }
+        });
+    });
+
+    $('.delete').unbind('click');
+    $('.delete').click(function(){
+        var grupo_id = $(this).attr('data');
+        sweetAlertDelete(grupo_id, 'CertiGrupo', $('#url_delete_grupos').val());
+    });
+
 }

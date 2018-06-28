@@ -59,6 +59,9 @@ parameters:
     social:
         muro: 1
         espacio_colaborativo: 2
+    aplicacion:
+        noticias: 17
+        biblioteca: 26
     layout:
         base: 1
     correo_recuperacion:

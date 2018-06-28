@@ -53,11 +53,11 @@ class CertificadoController extends Controller
         {
             foreach ($certificados as $certificado)
             {
-                $certificadodb[]= array('id'=>$certificado->getId(),
-                                    'empresa'=>$certificado->getEmpresa()->getNombre(),
-                                    'tipoCertificado'=>$certificado->getTipoCertificado()->getNombre(),
-                                    'tipoImagenCertificado'=>$certificado->getTipoImagenCertificado()->getNombre(),
-                                    'delete_disabled'=>$f->linkEliminar($certificado->getId(),'CertiCertificado'));
+                $certificadodb[]= array('id' => $certificado->getId(),
+                                        'empresa' => $certificado->getEmpresa()->getNombre(),
+                                        'tipoCertificado' => $certificado->getTipoCertificado()->getNombre(),
+                                        'tipoImagenCertificado' => $certificado->getTipoImagenCertificado()->getNombre(),
+                                        'delete_disabled' => $f->linkEliminar($certificado->getId(),'CertiCertificado'));
             }
         }
 

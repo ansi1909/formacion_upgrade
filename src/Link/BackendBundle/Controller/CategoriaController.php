@@ -52,7 +52,7 @@ class CategoriaController extends Controller
         {
             $categoriasdb[]= array('id'=>$categoria->getId(),
                               'nombre'=>$categoria->getNombre(),
-                              'delete_disabled'=>$f->linkEliminar($categoria->getId(),'Certicategoria0'));
+                              'delete_disabled'=>$f->linkEliminar($categoria->getId(),'CertiCategoria'));
 
         }
 

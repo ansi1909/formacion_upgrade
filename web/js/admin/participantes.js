@@ -29,6 +29,8 @@ $(document).ready(function() {
 });
 
 function getNiveles(empresa_id){
+	$('#div-niveles').hide();
+	$('.img-loader').show();
 	$.ajax({
 		type: "GET",
 		url: $('#url_niveles').val(),
@@ -36,6 +38,8 @@ function getNiveles(empresa_id){
 		data: { empresa_id: empresa_id },
 		dataType: "json",
 		success: function(data) {
+			$('.img-loader').hide();
+			$('#div-niveles').show();
 			$('#nivel_id').html(data.options);
 		},
 		error: function(){
@@ -46,6 +50,8 @@ function getNiveles(empresa_id){
 }
 
 function getListadoParticipantes(empresa_id,nivel_id){
+	$('.load1').show();
+	$('#usuarios').hide();
 	$.ajax({
 		type: "GET",
 		url: $('#url_participantes').val(),
@@ -53,6 +59,8 @@ function getListadoParticipantes(empresa_id,nivel_id){
 		data: { nivel_id: nivel_id, empresa_id: empresa_id },
 		dataType: "json",
 		success: function(data) {
+			$('.load1').hide();
+			$('#usuarios').show();
 			$('#usuarios').html(data.html);
 			applyDataTable();
 			observe();

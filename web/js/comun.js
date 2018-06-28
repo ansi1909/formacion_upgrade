@@ -85,8 +85,12 @@ $(document).ready(function() {
         })
     });
 
-    $('.close').click(function(){
+    $('.close, #cancelar').click(function(){
         disableSubmit();
+    });
+
+    $( document ).tooltip({
+        track: true
     });
 
 });

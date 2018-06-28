@@ -1,9 +1,9 @@
 <?php
 $host="127.0.0.1";
 $port="5432";
-$user="quality";
-$pass="Qf0rm4c10n2.0";
-$dbname="quality_formacion";
+$user="develo";
+$pass="F0rm4c10n2.0";
+$dbname="develo_formacion";
 
 $connect = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$pass");
 
