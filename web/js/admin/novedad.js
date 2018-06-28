@@ -3,37 +3,14 @@ $(document).ready(function() {
 	var root_site = $('#root_site').val();
 	var usuario_empresa = $('#usuario_empresa').val();
 
-/*	$('#datetimepicker6').datepicker();
-	$('#datetimepicker7').datepicker({
-		useCurrent: false
-	});
-
-	$('#datetimepicker6').on("dp.change", function(e) {
-		$('#datetimepicker7').data("datepicker").minDate(e.date);
-	});
-
-	$('#datetimepicker7').on("dp.change", function(e) {
-		$('#datetimepicker6').data("datepicker").maxDate(e.date);
-	});*/
-
-
-    $('#fecha_publicacion').datepicker({
+    $('.date_picker').datepicker({
 	    startView: 1,
 	    autoclose: true,
 	    format: 'dd/mm/yyyy',
 	    language: 'es',
-	    startDate: '-1d',
+	    startDate: '0d',
 	    clearBtn: true
-	});
-
-    $('#fecha_vencimiento').datepicker({
-	    startView: 1,
-	    autoclose: true,
-	    format: 'dd/mm/yyyy',
-	    language: 'es',
-	    clearBtn: true,
-		startDate: '-1d'
-	});  
+	}); 
 
     $('.iframe-btn').fancybox({	
 		'width'		: 900,
@@ -90,6 +67,15 @@ $(document).ready(function() {
 		var deslen2 = document.getElementById("deslen2");
 		deslen2.value = parseInt(editor_contenido.replace(/<[^>]+>/g, '').length);
 	});
+
+	$("#btn_clear").on("click",function(event) {
+        $("#imagen").val("");
+        $("#figure").html('<img src="'+$('#photo').val()+'">');
+    });
+
+    $("#btn_clear2").on("click",function(event) {
+        $("#pdf").val("");
+    });
 
 });
 
