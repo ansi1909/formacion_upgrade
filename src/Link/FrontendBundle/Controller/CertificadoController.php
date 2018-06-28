@@ -83,15 +83,15 @@ class CertificadoController extends Controller
                                                                                                 	'pagina' => $pagina->getId() ));
 
 		        $size =2;
-				$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
+				//$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
 
 		        $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
 
- 				$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
+ 				//$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
 
-		        \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
+		       // \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
 
-		        $ruta ='<img src="'.$directorio.'">';
+		        //$ruta ='<img src="'.$directorio.'">';
 
 				$file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
 
@@ -99,13 +99,15 @@ class CertificadoController extends Controller
 		        {
 		            /*certificado numero 2*/
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
-		            $certificado_pdf->writeHTML('<page title="prueba" pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
-		                                            <div style="font-size:20px;">'.$certificado->getEncabezado().'</div>
+		            $certificado_pdf->writeHTML('<page title="prueba" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
+		                                            <div style="font-size:20px;margin-left:50px">'.$certificado->getEncabezado().'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 		                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
+		                                            <div style="text-align:center;margin-top:40px;font-size:14px;">Fecha Inicio: dd/mm/aa  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin: dd/mm/aa </div>
+		                                            <div style="text-align:center;margin-top:15px;font-size:14px;">Equivalente a: x horas academicas </div>
 		                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
-                                        			<div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+                                        			<div style="margin-top:100px; margin-left:910px; ">'.'$ruta'.'</div>
 		                                        </page>');
 
 		            /*certificado numero 3
@@ -154,7 +156,7 @@ class CertificadoController extends Controller
         	return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         }
         
-        $f->setRequest($session->get('sesion_id'));
+        $f->setRequest($session->get('sesion_id'));	
 
         $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
         $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));

@@ -426,16 +426,16 @@ class CertificadoController extends Controller
 
         $programa='';
 
-        if($certificado->getTipoCertificado()->getId() == 1)
+        if($certificado->getTipoCertificado()->getId() == 1)//por empresa
         {
             $programa=$certificado->getEmpresa()->getNombre();
         }else
         {
-            if($certificado->getTipoCertificado()->getId() == 2)
+            if($certificado->getTipoCertificado()->getId() == 2)//por pagina
             {
                 $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
                 $programa = $pagina->getNombre();
-            }else
+            }else// por grupo de paginas
             {
                 $grupoPaginas= $em->getRepository('LinkComunBundle:CertiGrupo')->find($certificado->getEntidadId());
                 $programa = $grupoPaginas->getNombre();
@@ -450,13 +450,19 @@ class CertificadoController extends Controller
         {
             //fehca del dia de hoy '.date('d/m/Y').' 
             $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
-            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
-                                            <div style="font-size:20px;">'.$certificado->getEncabezado().'</div>
+            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
+                                        <div>
+                                       
+                                            <div style="font-size:24px;margin-left:50px">'.$certificado->getEncabezado().'</div>
                                             <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
                                             <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
                                             <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$programa.'</div>
+                                            <div style="text-align:center;margin-top:40px;font-size:14px;">Fecha Inicio: dd/mm/aa  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin: dd/mm/aa </div>
+                                            <div style="text-align:center;margin-top:15px;font-size:14px;">Equivalente a: x horas academicas </div>
                                             <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
-                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
+                                            <div style="margin-top:100px; margin-left:910px; ">'.$ruta.'</div>
+                                        </div>
+                                       
                                         </page>');
             /*certificado numero 3
             $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(48, 60, 0, 0));
