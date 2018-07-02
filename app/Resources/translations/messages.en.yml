@@ -429,6 +429,7 @@ La notificación ha sido almacenada con éxito: Notification has been saved succ
 La notificación ha sido programada con éxito: Programation has been saved successfully
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
+La respuesta al comentario: The comment response
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lecciones: Lessons
@@ -677,6 +678,7 @@ Todas: All
 Todos: All
 Tomar evaluación: Take test
 Tu calificación: Your score
+Tu comentario: Your comment
 Tu respuesta: Your answer
 Tutoriales: Tutorials
 Últimos 12: Last 12

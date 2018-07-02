@@ -70,7 +70,7 @@ parameters:
     correo_soporte:
         asunto: 'Formación2.0 - Solicitud de soporte virtual. '
         remitente: 'soporte@formacion2puntocero.com'
-        destinatario: 'soporte@formacion2puntocero.com'
+        destinatario: 'josenriquev@gmail.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2
