@@ -235,6 +235,7 @@ El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
+El recurso es requerido: The resource is required
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: Inactive time has reached the maximum time of connection
@@ -244,6 +245,7 @@ El Tipo de Imagen es requerido.: The type of image is required
 El tipo de noticia es requerido.: The type of news is required.
 El tipo de notificación es requerida.: The notification type is required.
 El tipo de pregunta es requerido.: Question type is required.
+El tipo de recurso es requerido: Type of resource is required
 El título debe contener al menos 10 caracteres: Title must have at least 10 characters
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
@@ -268,6 +270,7 @@ Empresas activas: Active companies
 Empresas inactivas: Inactive companies
 Empresas registradas: Registered companies
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: In Admin interface, in module Certificados y Constancias, you can add certificates
+en la biblioteca: in the library
 Encabezado: Header
 Enlace de la encuesta: Poll link
 Enunciado: Statement
@@ -352,6 +355,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An 
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
+Ha sido publicado: It has been published
 Ha sido publicado el evento: It has been published an event
 ha subido un archivo en el espacio colaborativo de: has uploaded a file into the collaborative space of
 Has aprobado con éxito la evaluación: You have approved successfully the test

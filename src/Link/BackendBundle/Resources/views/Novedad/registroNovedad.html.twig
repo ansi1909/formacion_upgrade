@@ -40,7 +40,7 @@
 <input type="hidden" id="deslen2" name="deslen2" value="0" />
 <input type="hidden" id="photo" name="photo" value="{{ asset('img/picture.png') }}">
 {% if usuario_empresa %}
-    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="/{{ usuario_empresa }}" />
+    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa }}" />
 {% else %}    
     <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="" />    
 {% endif %}

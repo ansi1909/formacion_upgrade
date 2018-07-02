@@ -1,7 +1,9 @@
 $(document).ready(function() {
 	
 	var root_site = $('#root_site').val();
-	var usuario_empresa = $('#usuario_empresa').val();
+	var usuario_empresa = '/'+$('#usuario_empresa').val();
+	
+	observe();
 
     $('.iframe-btn').fancybox({	
 		'width'		: 900,
@@ -12,41 +14,19 @@ $(document).ready(function() {
     });
 
     $('#tipo_biblioteca_id').change(function(){
-        var tipo = $(this).val();
-        $('#recurso1').hide();
-        $('#recurso2').hide();
-        $('#recurso3').hide();
-        if (tipo == 1) {
-        	$('#recurso1').show();
-        	$('#ver').hide();
-        }else if (tipo == 2 ) {
-        	$('#recurso2').show();
-        	$('#ver').hide();
-        }else if ( tipo == 3 || tipo == 4) {
-        	$('#recurso3').show();
-        	$('#ver').show();
-        }
+        observe();
     });
 
-    $('#fecha_publicacion').datepicker({
+    $('.date_picker').datepicker({
 	    startView: 1,
 	    autoclose: true,
 	    format: 'dd/mm/yyyy',
 	    language: 'es',
-	    startDate: '-1d',
+	    startDate: '0d',
 	    clearBtn: true
 	});
 
-    $('#fecha_vencimiento').datepicker({
-	    startView: 1,
-	    autoclose: true,
-	    format: 'dd/mm/yyyy',
-	    language: 'es',
-	    clearBtn: true,
-		startDate: '-1d'
-	});
-
-	CKEDITOR.replace( 'contenido', {
+    CKEDITOR.replace( 'contenido', {
 		filebrowserBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
 		filebrowserUploadUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
 		filebrowserImageBrowseUrl : root_site+'/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&editor=ckeditor&rootFolder=recursos/noticias'+usuario_empresa,
@@ -64,12 +44,31 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.nextBtn').click(function(){
+	$('.nextBtn, stepwizard-step').click(function(){
 		// Cantidad de caracteres en el contenido
 		var editor_contenido = CKEDITOR.instances.contenido.getData();
 		var deslen = document.getElementById("deslen");
 		deslen.value = parseInt(editor_contenido.replace(/<[^>]+>/g, '').length);
 	});
+
+	$("form :input").attr("autocomplete", "off");
+        
+    $("#btn_clear_img").on("click",function(event) {
+        $("#imagen").val("");
+        $("#figure").html('<img src="'+$('#photo').val()+'">');
+    });
+
+    $("#btn_clear_video").on("click",function(event) {
+        $("#video").val("");
+    });
+
+    $("#btn_clear_pdf").on("click",function(event) {
+        $("#pdf").val("");
+    });
+
+    $("#btn_clear_audio").on("click",function(event) {
+        $("#audio").val("");
+    });
 
 });
 
@@ -83,8 +82,45 @@ function responsive_filemanager_callback(field_id)
 	console.log('field_id: '+field_id+'. new_image: '+new_image);
 	$('#'+field_id).val(new_image);
 
-	if(field_id=="imagen")
+	if (field_id == "imagen")
 		$('#figure').html('<img src="'+url+'" width="100%">');
 	
 }
 
+function observe()
+{
+
+	var tipo_biblioteca_id = $('#tipo_biblioteca_id').val();
+
+	if (tipo_biblioteca_id != '')
+	{
+		if (tipo_biblioteca_id == 1)
+		{
+			$('#autor').prop('disabled', true);
+			$('#recurso1').show();
+			$('#recurso2').hide();
+			$('#recurso3').hide();
+		}
+		else if (tipo_biblioteca_id == 2)
+		{
+			$('#autor').prop('disabled', true);
+			$('#recurso1').hide();
+			$('#recurso2').show();
+			$('#recurso3').hide();
+		}
+		else if (tipo_biblioteca_id == 3 || tipo_biblioteca_id == 4)
+		{
+			$('#autor').prop('disabled', false);
+			$('#recurso1').hide();
+			$('#recurso2').hide();
+			$('#recurso3').show();
+		}
+	}
+	else {
+		$('#autor').prop('disabled', true);
+		$('#recurso1').hide();
+		$('#recurso2').hide();
+		$('#recurso3').hide();
+	}
+
+}

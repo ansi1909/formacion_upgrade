@@ -480,16 +480,22 @@
         <script type="text/javascript" src="../../web/assets/js/dashboard1_light.js"></script>
         <script>
             $(document).ready(function(){
-                var data ={
+                var data = {
                     type: "horizontalBar",
                     data: {
                         datasets: [{
-                            data: [
-                                
-                            ]
-                        }]
+                            label: 'Reporte conexiones por día y hora',
+                            data: [10, 20, 0, 8, 50, 20, 12, 120],
+                            backgroundColor: ["#fd5c63", "#ff9933", "#ed1c24", "#6a67ce", "#ee4c58", "#8aba56", "#a560e8", "#0084DB"],
+                        }],
+                        labels: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Total"]
+                    },
+                    options: {
+                        responsive: true,
                     }
-                }
+                };
+                var canvas = document.querySelector('.barChart').getContext('2d');
+                window.horizontalBar = new Chart(canvas, data);
                 //Basta con agregar esta linea una vez en el archivo js, verificar si esta antes de agregar!!!
                 $('[data-toggle="tooltip"]').tooltip();
             });
