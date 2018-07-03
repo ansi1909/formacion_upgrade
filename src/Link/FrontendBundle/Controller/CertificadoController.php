@@ -16,6 +16,7 @@ class CertificadoController extends Controller
     {
     	
         $session = new Session();
+        $modulo=2;
         $f = $this->get('funciones');
         
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
@@ -31,6 +32,27 @@ class CertificadoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($programa_id);
+        $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp
+                                   WHERE cp.pagina= :programa_id AND cp.categoria= :categoria ')
+                    ->setParameters(
+                    				array('programa_id' => $programa_id,
+                                          'categoria' => $modulo)
+                    			   );
+
+        $modulos=$query->getResult();
+        $categoria= ($pagina->getCategoria()->getId()==1) ? 'Programa':'Curso';
+
+        $contenidoMod='<div style="font-size:21px;text-align:center"> <h1>Contenido del '.$categoria.': '.$pagina->getNombre().'</h1>';
+        $item=1;
+        
+        foreach ($modulos as $modulo) 
+        {
+        	$contenidoMod.='<h2> * Módulo '.$item.': '.$modulo->getNombre().'</h2>';
+        	$item+=1;
+        }
+        $contenidoMod.='</div>';
+
+
 
 		if($pagina)
 		{
@@ -83,15 +105,15 @@ class CertificadoController extends Controller
                                                                                                 	'pagina' => $pagina->getId() ));
 
 		        $size =2;
-				//$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
+				// //$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
 
-		        $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
+		  //       $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
 
- 				//$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
+ 			// 	$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
 
-		       // \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
+		  //      \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
 
-		        //$ruta ='<img src="'.$directorio.'">';
+		        // $ruta ='<img src="'.$directorio.'">';
 
 				$file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
 
@@ -99,16 +121,21 @@ class CertificadoController extends Controller
 		        {
 		            /*certificado numero 2*/
             		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
-		            $certificado_pdf->writeHTML('<page title="prueba" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
+		            $certificado_pdf->writeHTML('<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
 		                                            <div style="font-size:20px;margin-left:50px">'.$certificado->getEncabezado().'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 		                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
-		                                            <div style="text-align:center;margin-top:40px;font-size:14px;">Fecha Inicio: dd/mm/aa  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin: dd/mm/aa </div>
-		                                            <div style="text-align:center;margin-top:15px;font-size:14px;">Equivalente a: x horas academicas </div>
+		                                            <div style="text-align:center;margin-top:40px;font-size:14px;">Fecha Inicio:'.$pagina_log->getFechaInicio()->format("d/m/y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin:'.$pagina_log->getFechaFin()->format("d/m/y").' </div>
+		                                            <div style="text-align:center;margin-top:15px;font-size:14px;">Equivalente a: '.$pagina->getHorasAcademicas().' hrs. académicas </div>
 		                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
-                                        			<div style="margin-top:100px; margin-left:910px; ">'.'$ruta'.'</div>
+                                        			<div style="margin-top:80px; margin-left:910px; ">'.'$ruta'.'</div>
 		                                        </page>');
+
+
+		            $certificado_pdf->writeHtml('<page title="prueba" pageset="new"  backimgw="90%" backimgx="center">'
+		            								.$contenidoMod.'
+											   	</page>');
 
 		            /*certificado numero 3
 		            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(48, 60, 0, 0));

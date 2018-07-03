@@ -161,12 +161,12 @@ Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empr
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
-Descripción: Descripción;
+Descripción: Descripción
+Descarga el archivo a través del siguiente enlace: Descarga el archivo a través del siguiente enlace
 Descargar: Descargar
 Descargas: Descargas
 Descargar archivo: Descargar archivo
 Descargue material complementario: Descargue material complementario
-Descripción: Descripción
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Destino: Destino
 Detalle de la Biblioteca Virtual:
@@ -429,6 +429,7 @@ La notificación ha sido almacenada con éxito: La notificación ha sido almacen
 La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
+La respuesta al comentario: La respuesta al comentario
 La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
 Lecciones: Lecciones
@@ -453,6 +454,7 @@ Listado de preguntas de la evaluación: Listado de preguntas de la evaluación
 Listado de programas: Listado de programas
 Listado de registros: Listado de registros
 Listado de Roles: Listado de Roles
+Listado de temas: Listado de temas
 Listado de Tipos de Destinos: Listado de Tipos de Destinos
 Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Listado de tutoriales: Listado de tutoriales
@@ -677,6 +679,7 @@ Todas: Todas
 Todos: Todos
 Tomar evaluación: Tomar evaluación
 Tu calificación: Tu calificación
+Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
 Tutoriales: Tutoriales
 Últimos 12: Últimos 12

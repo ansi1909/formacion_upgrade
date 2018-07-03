@@ -1022,6 +1022,10 @@
 .hourMaxCon{
     background: rgba(0, 132, 219, .25) !important;
 }
+
+.noMostrar{
+    display: none !important;
+}
 /*Identificadores*/
 
 /*Animations*/

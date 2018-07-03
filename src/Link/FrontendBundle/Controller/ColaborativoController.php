@@ -409,8 +409,21 @@ class ColaborativoController extends Controller
         // Generación de alarmas
         if ($foro_main->getUsuario()->getId() != $usuario->getId() && $foro_main->getId() == $foro->getForo()->getId())
         {
+
             $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha comentado en el espacio colaborativo de').' '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
             $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion, $foro_main->getUsuario(), $foro_main->getId());
+
+            $correo_tutor = (!$foro_main->getUsuario()->getCorreoPersonal() || $foro_main->getUsuario()->getCorreoPersonal() == '') ? (!$foro_main->getUsuario()->getCorreoCorporativo() || $foro_main->getUsuario()->getCorreoCorporativo() == '') ? 0 : $foro_main->getUsuario()->getCorreoCorporativo() : $foro_main->getUsuario()->getCorreoPersonal();
+            if ($correo_tutor)
+            {
+                $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativo.html.twig',
+                                           'datos' => array('mensaje' => $mensaje),
+                                           'asunto' => 'Formación 2.0: '.$descripcion,
+                                           'remitente' => $this->container->getParameter('mailer_user'),
+                                           'destinatario' => $correo_tutor);
+                $correo = $f->sendEmail($parametros_correo);
+            }
+
         }
 
         // Puntaje obtenido
@@ -648,11 +661,28 @@ class ColaborativoController extends Controller
         $em->persist($foro_archivo);
         $em->flush();
 
+        $archivo_arr = $f->archivoForo($foro_archivo, $session->get('usuario')['id']);
+        $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
+
         // Generación de alarmas
         if ($foro->getUsuario()->getId() != $usuario->getId())
         {
-            $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
-            $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion, $foro->getUsuario(), $foro->getId());
+
+            $descripcion_alarma = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
+            $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion_alarma, $foro->getUsuario(), $foro->getId());
+
+            $correo_tutor = (!$foro->getUsuario()->getCorreoPersonal() || $foro->getUsuario()->getCorreoPersonal() == '') ? (!$foro->getUsuario()->getCorreoCorporativo() || $foro->getUsuario()->getCorreoCorporativo() == '') ? 0 : $foro->getUsuario()->getCorreoCorporativo() : $foro->getUsuario()->getCorreoPersonal();
+            if ($correo_tutor)
+            {
+                $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailArchivo.html.twig',
+                                           'datos' => array('descripcion' => $descripcion,
+                                                            'descarga' => $href),
+                                           'asunto' => 'Formación 2.0: '.$descripcion_alarma,
+                                           'remitente' => $this->container->getParameter('mailer_user'),
+                                           'destinatario' => $correo_tutor);
+                $correo = $f->sendEmail($parametros_correo);
+            }
+
         }
 
         // Puntaje obtenido
@@ -665,9 +695,6 @@ class ColaborativoController extends Controller
             $em->persist($pagina_log);
             $em->flush();
         }
-
-        $archivo_arr = $f->archivoForo($foro_archivo, $session->get('usuario')['id']);
-        $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
 
         $html .= '<li class="element-downloads">
                     <div class="row px-0 d-flex justify-content-between">
