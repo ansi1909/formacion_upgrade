@@ -742,6 +742,8 @@ class Functions
       	$parametros = array();
       	
 		foreach ($usuarios as $usuario) {
+
+		 //Si es una notificacion de bienvenida se anexa al mensaje el link de la pltaforma para el usuario junto a sus credenciales	
 		  if($notificacion->getTipoNotificacion()->getId()===$yml['parameters']['notificacion_programada']['bienvenida'])
 		  {
 		  	 
