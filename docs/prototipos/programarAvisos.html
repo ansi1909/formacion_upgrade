@@ -150,41 +150,91 @@
                             </div>
                             <div class="card-block">
                                 <form action="">
-                                    <div class="col-sm-8 col-md-8 col-8 col-lg-8 col-xl-8">
-                                        <div class="row">
-                                            <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
-                                                <label for="asunto">Asunto</label>
-                                                <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
-                                                    <input type="text" name="asunto" class="form-control form_sty1">
-                                                    <span class="fa fa-font"></span>
+                                    <div class="row">
+                                        <div class="col-sm-8 col-md-8 col-8 col-lg-8 col-xl-8">
+                                            <div class="row">
+                                                <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                    <label for="asunto">Asunto</label>
+                                                    <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                        <input type="text" name="asunto" class="form-control form_sty1">
+                                                        <span class="fa fa-font"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                    <label for="Tdestino">Tipo destino</label>
+                                                    <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                        <select name="Tdestino" id="tdestino" class="form_sty_sel form-control" style="border-radius: 5px">
+                                                            <option value="0">Seleccione el destino</option>
+                                                            <option value="1">Todos</option>
+                                                            <option value="2">Nivel</option>
+                                                            <option value="3">Programa</option>
+                                                            <option value="4">Grupo de participantes</option>
+                                                            <option value="5">Usuarios que no han ingresado</option>
+                                                            <option value="6">Usuarios que no han ingresado a un programa</option>
+                                                            <option value="7">usuarios aprobados</option>
+                                                        </select>
+                                                        <span class="fa fa-cog"></span>
+                                                        <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row fecDif noMostrar">
+                                                <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                    <label for="fdifusion">Seleccione fecha de difusión</label>
+                                                    <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                        <input type="text" name="fdifusion" class="form-control form_sty1" id="fdifusion" value="02/07/2018" data-date-start-date="0d" aria-requered="true" aria-invalid="false">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
-                                                <label for="Tdestino">Tipo destino</label>
-                                                <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
-                                                    <select name="Tdestino" id="tdestino" class="form_sty_sel form-control" style="border-radius: 5px">
-                                                        <option value="0">Seleccione el destino</option>
-                                                        <option value="1">Todos</option>
-                                                        <option value="2">Nivel</option>
-                                                        <option value="3">Programa</option>
-                                                        <option value="4">Grupo de participantes</option>
-                                                        <option value="5">Usuarios que no han ingresado</option>
-                                                        <option value="6">Usuarios que no han ingresado a un programa</option>
-                                                        <option value="7">usuarios aprobados</option>
-                                                    </select>
-                                                    <span class="fa fa-cog"></span>
-                                                    <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
+                                        <div class="col-sm-8 col-md-8 col-8 col-lg-8 col-xl-8">
+                                            <div class="nDif noMostrar">
+                                                <div class="row">
+                                                    <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                        <label for="selNivel">Seleccione el nivel</label>
+                                                        <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                            <select name="selNivel" id="selNivel" class="form_sty_sel form-control" style="border-radius: 5px">
+                                                                <option value="a">-</option>
+                                                                <option value="b">Ventas</option>
+                                                                <option value="c">Lideres</option>
+                                                                <option value="d">Coordinadores</option>
+                                                                <option value="e">Analistas</option>
+                                                            </select>
+                                                            <span class="fa fa-line-chart"></span>
+                                                            <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row fecDif noMostrar">
-                                            <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
-                                                <label for="fdifusion">Seleccione fecha de difusión</label>
-                                                <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
-                                                    <input type="text" name="fdifusion" class="form-control form_sty1" id="fdifusion" value="02/07/2018" data-date-start-date="0d" aria-requered="true" aria-invalid="false">
-                                                    <span class="fa fa-calendar"></span>
+                                            <div class="pDif noMostrar">
+                                                <div class="row">
+                                                    <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                        <label for="selProg">Seleccione el programa</label>
+                                                        <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                            <select name="selProg" id="selProg" class="form_sty_sel form-control" style="border-radius: 5px">
+                                                                <option value="a">-</option>
+                                                                <option value="b">Pensamiento estrategico</option>
+                                                                <option value="c">Creatividad</option>
+                                                                <option value="d">Gestion finaciera</option>
+                                                                <option value="e">Liderazgo</option>
+                                                            </select>
+                                                            <span class="fa fa-book"></span>
+                                                            <span class="bttn_d"><img src="../../web/img/down-arrowwht.png" alt=""></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="gpDif">
+                                                <div class="row">
+                                                    <div class="form-group col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                        <label for="selProg">Seleccione el/los usuarios</label>
+                                                        <div class="col-sm-16 col-md-16 col-16 col-lg-16 col-xl-16">
+                                                            
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

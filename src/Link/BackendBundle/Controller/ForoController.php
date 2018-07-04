@@ -35,6 +35,11 @@ class ForoController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
+
+        $roles=$session->get('usuario')['roles'];
+        $answer_delete= (in_array(3,$roles) || in_array(5,$roles)) ? 1:0;//verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
+        
+
         $usuario_empresa = 0;
         $empresas = array();
         $paginas = array();
@@ -87,7 +92,9 @@ class ForoController extends Controller
                                   'nombreUsuario'=>$coment->getUsuario()->getNombre(),
                                   'apellidoUsuario'=>$coment->getUsuario()->getApellido(),
                                   'fecharegistro'=>$coment->getFechaRegistro()->format("d/m/Y"),
-                                  'delete_disabled'=>$f->linkEliminar($coment->getId(),'CertiForo'));
+                                  'delete_disabled'=>$f->linkEliminar($coment->getId(),'CertiForo'),
+                                  'answer_delete'=>$answer_delete,
+                                 );
 
         }
 
