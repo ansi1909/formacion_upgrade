@@ -736,16 +736,30 @@ class Functions
 
 	}
 
-	public function emailUsuarios($usuarios, $notificacion, $template)
+	public function emailUsuarios($usuarios, $notificacion, $template,$yml)
 	{
 		$controller = 'RecordatoriosCommand';
       	$parametros = array();
+      	
 		foreach ($usuarios as $usuario) {
+		  if($notificacion->getTipoNotificacion()->getId()===$yml['parameters']['notificacion_programada']['bienvenida'])
+		  {
+		  	 
+		  	 $link=$yml['parameters']['notificacion_programada']['Link_plataforma'].$usuario->getEmpresa()->getId();
+		  	 $mensaje=$notificacion->getMensaje().'<br>'.
+		  	 									  '<p><B>Nombre de usuario: </B>'.$usuario->getLogin().'</p><BR>'.
+		  	 									  '<p><B>Contraseña: </B>'.$usuario->getClave().'</p><BR>'.
+		  	 									  '<p><B>Link de acceso a la plataforma: </B><a href="'.$link.'">Formacion2.0</a></p>';
+		  } 
+		  else
+		  {
+		  	$mensaje=$notificacion->getMensaje();
+		  }
           $parametros= array('twig'=>$template,
                              'asunto'=>$notificacion->getAsunto(),
                              'remitente'=>array('webmail@formacion2puntocero.com' => 'Formación2.0'),
                              'destinatario'=>$usuario->getCorreoCorporativo(),
-                             'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
+                             'datos'=>array('mensaje' => $mensaje, 'usuario' => $usuario ));
 
           $this->sendEmail($parametros, $controller);
 
