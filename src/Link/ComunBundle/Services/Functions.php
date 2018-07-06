@@ -59,7 +59,13 @@ class Functions
     							   'CertiGrupo' => 'empresa',
     							   'CertiPaginaEmpresa' => 'empresa',
     							   'AdminNoticia' => 'empresa',
-    							   'AdminPreferencia' => 'empresa');
+    							   'AdminPreferencia' => 'empresa',
+    							   'CertiCertificado' => 'empresa',
+    							   'AdminEvento' => 'empresa',
+    							   'TmpParticipante' => 'empresa',
+    							   'CertiMuro' => 'empresa',
+    							   'CertiForo' => 'empresa',
+    							   'AdminNotificacion' => 'empresa');
     			break;
     		case 'AdminUsuario':
     			$entidades = array('AdminRolUsuario' => 'usuario',
@@ -68,19 +74,25 @@ class Functions
     							   'CertiPrueba' => 'usuario',
     							   'CertiPregunta' => 'usuario',
     							   'CertiOpcion' => 'usuario',
-    							   'CertiRespuesta' => 'usuario',
     							   'CertiPaginaLog' => 'usuario',
     							   'CertiPruebaLog' => 'usuario',
     							   'AdminNoticia' => 'usuario',
     							   'CertiMuro' => 'usuario',
     							   'CertiForo' => 'usuario',
+    							   'CertiForoArchivo' => 'usuario',
     							   'AdminNotificacion' => 'usuario',
     							   'AdminNotificacionProgramada' => 'usuario',
-    							   'AdminPreferencia' => 'usuario');
+    							   'AdminPreferencia' => 'usuario',
+    							   'AdminTutorial' => 'usuario',
+    							   'AdminEvento' => 'usuario',
+    							   'AdminLike' => 'usuario',
+    							   'AdminAlarma' => 'usuario');
     			break;
             case 'AdminNivel':
                 $entidades = array('AdminUsuario' => 'nivel',
-                                   'CertiNivelPagina' => 'nivel');
+                                   'CertiNivelPagina' => 'nivel',
+                                   'AdminEvento' => 'nivel',
+                                   'TmpParticipante' => 'nivel');
                 break;
             case 'CertiPagina':
                 $entidades = array('CertiPagina' => 'pagina',
@@ -114,8 +126,15 @@ class Functions
                 $entidades = array('CertiMuro' => 'muro');
                 break;
             case 'CertiForo':
-                $entidades = array('CertiForo' => 'foro');
+                $entidades = array('CertiForo' => 'foro',
+                				   'CertiForoArchivo' => 'foro');
                 break;
+            case 'CertiGrupo':
+    			$entidades = array('CertiGrupoPagina' => 'grupo');
+    			break;
+    		case 'CertiCategoria':
+    			$entidades = array('CertiPagina' => 'categoria');
+    			break;
             default:
     			$entidades = array();
     			break;
@@ -717,16 +736,32 @@ class Functions
 
 	}
 
-	public function emailUsuarios($usuarios, $notificacion, $template)
+	public function emailUsuarios($usuarios, $notificacion, $template,$yml)
 	{
 		$controller = 'RecordatoriosCommand';
       	$parametros = array();
+      	
 		foreach ($usuarios as $usuario) {
+
+		 //Si es una notificacion de bienvenida se anexa al mensaje el link de la pltaforma para el usuario junto a sus credenciales	
+		  if($notificacion->getTipoNotificacion()->getId()===$yml['parameters']['notificacion_programada']['bienvenida'])
+		  {
+		  	 
+		  	 $link=$yml['parameters']['notificacion_programada']['Link_plataforma'].$usuario->getEmpresa()->getId();
+		  	 $mensaje=$notificacion->getMensaje().'<br>'.
+		  	 									  '<p><B>Nombre de usuario: </B>'.$usuario->getLogin().'</p><BR>'.
+		  	 									  '<p><B>Contraseña: </B>'.$usuario->getClave().'</p><BR>'.
+		  	 									  '<p><B>Link de acceso a la plataforma: </B><a href="'.$link.'">Formacion2.0</a></p>';
+		  } 
+		  else
+		  {
+		  	$mensaje=$notificacion->getMensaje();
+		  }
           $parametros= array('twig'=>$template,
                              'asunto'=>$notificacion->getAsunto(),
                              'remitente'=>array('webmail@formacion2puntocero.com' => 'Formación2.0'),
                              'destinatario'=>$usuario->getCorreoCorporativo(),
-                             'datos'=>array('mensaje' => $notificacion->getMensaje(), 'usuario' => $usuario ));
+                             'datos'=>array('mensaje' => $mensaje, 'usuario' => $usuario ));
 
           $this->sendEmail($parametros, $controller);
 

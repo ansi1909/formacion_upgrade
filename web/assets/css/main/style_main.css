@@ -998,6 +998,34 @@
    }
 /*Fin de acciones*/
 
+/*Reportes*/
+.styleTab{
+    font-size: .6rem;
+}
+
+.styleTab tbody .even{
+    background: rgba(247, 250, 252, .25);
+}
+
+.styleTab tbody .odd{
+    background: rgba(218, 225, 230, .25);
+}
+
+.styleTab thead .totalEnd, .styleTab tbody .totalEnd{
+    background: #e6e6e6;
+}
+
+.dayMaxCon{
+    background: rgba(0, 132, 219, .25) !important;
+}
+
+.hourMaxCon{
+    background: rgba(0, 132, 219, .25) !important;
+}
+
+.noMostrar{
+    display: none !important;
+}
 /*Identificadores*/
 
 /*Animations*/

@@ -3,13 +3,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
-        .input-group-addon{padding:0px;}
-        .input-group .form-control {
-            z-index: 1;
-        }
-        .input-group {
-            margin-top: 35px;
-        }
         .photo_img{
             width: 35rem;
             height: auto;
@@ -35,7 +28,7 @@
 {% endblock %}
 
 {% block body %}
-<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroBiblioteca', { 'biblioteca_id': biblioteca.id }) }}">
+<input type="hidden" id="url_edit" name="url_edit" value="{{ path('_registroBiblioteca', { 'noticia_id': biblioteca.id }) }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_bibliotecas', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="biblioteca_id" name="biblioteca_id" value="biblioteca.id">
 
@@ -199,11 +192,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-
         $('#edit').click(function()
         {
             window.location.replace($('#url_edit').val());
-        });      
-        
+        });
     </script>
 {% endblock %}

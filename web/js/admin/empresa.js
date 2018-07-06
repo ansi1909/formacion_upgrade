@@ -20,7 +20,7 @@ $(document).ready(function() {
 		}
 	} );
 
-	$('.nextBtn').click(function(){
+	$('.nextBtn, stepwizard-step').click(function(){
 
 		// Cantidad de caracteres en la bienvenida
 		var editor_data = CKEDITOR.instances.bienvenida.getData();

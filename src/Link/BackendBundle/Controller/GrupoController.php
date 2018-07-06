@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class GrupoController extends Controller
 {
-   public function indexAction($app_id)
+   public function indexAction($app_id, $empresa_id)
     {
 
     	$session = new Session();
@@ -38,39 +38,35 @@ class GrupoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $usuario_empresa = 0;
-        $gruposdb= array();
-        $empresas = array();
+        $gruposdb = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        $empresa_id = $empresa_id || $usuario->getEmpresa() ? $empresa_id ? $empresa_id : $usuario->getEmpresa()->getId() : 0;
 
-        if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1; 
+        if ($empresa_id) 
+        {
 
-            $query= $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g
+            $query = $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g
                                         WHERE g.empresa = :empresa_id
                                         ORDER BY g.orden ASC')
-                                    ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
-            $grupos=$query->getResult();
+                        ->setParameter('empresa_id', $empresa_id);
+            $grupos = $query->getResult();
 
             foreach ($grupos as $grupo)
             {
-                $gruposdb[]= array('id'=>$grupo->getId(),
-                              'nombre'=>$grupo->getNombre(),
-                              'orden'=>$grupo->getOrden(),
-                              'delete_disabled'=>$f->linkEliminar($grupo->getId(),'CertiGrupo'));
-
+                $gruposdb[] = array('id' => $grupo->getId(),
+                                    'nombre' => $grupo->getNombre(),
+                                    'orden' => $grupo->getOrden(),
+                                    'delete_disabled' => $f->linkEliminar($grupo->getId(),'CertiGrupo'));
             }
-        }
-        else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-        } 
 
+        }
+        
+        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
 
         return $this->render('LinkBackendBundle:Grupo:index.html.twig', array('empresas' => $empresas,
-                                                                                      'usuario_empresa' => $usuario_empresa,
-                                                                                      'usuario' => $usuario,
-                                                                                      'grupos' => $gruposdb,
-                                                                                      'app_id' => $app_id));
+                                                                              'usuario' => $usuario,
+                                                                              'grupos' => $gruposdb,
+                                                                              'empresa_id' => $empresa_id));
 
     }
 
@@ -138,24 +134,22 @@ class GrupoController extends Controller
         $grupo_id = $request->request->get('grupo_id');
         $nombre = $request->request->get('nombre');
         $empresa_id = $request->request->get('id_empresa');
-        $orden = $request->request->get('orden');
-
+        
         if ($grupo_id)
         {
             $grupo = $em->getRepository('LinkComunBundle:CertiGrupo')->find($grupo_id);
         }
         else {
+
             $grupo = new CertiGrupo();
 
             // Establecer el orden, último por defecto
             $qb = $em->createQueryBuilder();
             $qb->select('g')
                ->from('LinkComunBundle:CertiGrupo', 'g')
-               ->orderBy('g.orden', 'DESC');
-            $qb->andWhere('g.empresa = :empresa_id')
+               ->andWhere('g.empresa = :empresa_id')
+               ->orderBy('g.orden', 'DESC')
                ->setParameter('empresa_id', $empresa_id);
-
-
             $query = $qb->getQuery();
             $grupos = $query->getResult();
             
@@ -167,19 +161,20 @@ class GrupoController extends Controller
                 $orden = 1;
             }
 
+            $grupo->setOrden($orden);
+
         }
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         $grupo->setNombre($nombre);
-        $grupo->setOrden($orden);
         $grupo->setEmpresa($empresa);
         $em->persist($grupo);
         $em->flush();
                     
         $return = array('id' => $grupo->getId(),
-                        'nombre' =>$grupo->getNombre(),
-                        'delete_disabled' =>$f->linkEliminar($grupo->getId(),'CertiGrupo'));
+                        'nombre' => $grupo->getNombre(),
+                        'delete_disabled' => $f->linkEliminar($grupo->getId(), 'CertiGrupo'));
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -196,8 +191,7 @@ class GrupoController extends Controller
 
 
         $return = array('nombre' => $grupo->getNombre(),
-                        'empresa_id' => $grupo->getEmpresa()->getId(),
-                        'orden' => $grupo->getOrden());
+                        'empresa_id' => $grupo->getEmpresa()->getId());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -215,13 +209,16 @@ class GrupoController extends Controller
         $ok = 1;
         
         $grupo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupo')->find($id);
+        $empresa_id = $grupo->getEmpresa()->getId();
 
         $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
         $em->remove($object);
         $em->flush();
 
-        $query = $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g WHERE g.empresa = :empresa_id')
-                    ->setParameter('empresa_id', $grupo->getEmpresa()->getId());
+        $query = $em->createQuery('SELECT g FROM LinkComunBundle:CertiGrupo g 
+                                    WHERE g.empresa = :empresa_id
+                                    ORDER BY g.orden ASC')
+                    ->setParameter('empresa_id', $empresa_id);
         $grupos_empresa = $query->getResult();
         $orden = 0;
 

@@ -11,6 +11,7 @@ $(document).ready(function() {
 	$('#procesar').show();
 
 	$('#procesar').click(function(){
+        $(this).hide();
         var file = $('#file').val().split('/').join(',');
 		window.location.replace($('#url_procesar').val()+'/'+$('#empresa_id').val()+'/'+file);
 	});

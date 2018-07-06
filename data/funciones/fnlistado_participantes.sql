@@ -10,6 +10,10 @@ CREATE OR REPLACE FUNCTION fnlistado_participantes(
     ppagina_id integer)
   RETURNS refcursor AS
 $BODY$
+    arr text[];              -- Arreglo con todos los datos del reporte
+    i INTEGER := 0;          -- Contador de arr
+    str text;                -- Cadena para debug
+    rst  record;             -- Cursor para el SELECT de la página
 
 begin
 
@@ -20,7 +24,8 @@ begin
         SELECT u.nombre as nombre, 
                u.apellido as apellido, 
                u.login as login, 
-               u.correo_personal as correo, 
+               u.correo_personal as correo,
+               u.correo_corporativo as correo2,
                u.activo as activo,
                to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
                to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
@@ -38,6 +43,7 @@ begin
                u.apellido as apellido, 
                u.login as login, 
                u.correo_personal as correo, 
+               u.correo_corporativo as correo2,
                u.activo as activo,
                to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
                to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
@@ -149,4 +155,3 @@ $BODY$
   --select * from fnlistado_participantes('re', 3, 1, 0, 1) as resultado; fetch all from re;
   --select * from fnlistado_participantes('re', 4, 1, 0, 1) as resultado; fetch all from re;
   --select * from fnlistado_participantes('re', 5, 1, 0, 1) as resultado; fetch all from re;
-

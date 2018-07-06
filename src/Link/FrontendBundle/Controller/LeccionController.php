@@ -294,6 +294,7 @@ class LeccionController extends Controller
         $muro->setMensaje($mensaje);
         $muro->setPagina($pagina);
         $muro->setUsuario($usuario);
+
         if ($muro_id)
         {
 
@@ -311,7 +312,27 @@ class LeccionController extends Controller
             $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu comentario en el muro de').' '.$pagina->getNombre().'.';
             $f->newAlarm($yml['parameters']['tipo_alarma']['respuesta_muro'], $descripcion, $muro_padre->getUsuario(), $muro_padre->getId());
 
+            // Envío de correo al tutor virtual solo sí el dueño del comentario inicial es de éste y la respuesta es de otro usuario
+            $query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
+                                        WHERE ru.usuario = :usuario_id 
+                                        AND ru.rol = :tutor')
+                        ->setParameters(array('usuario_id' => $muro_padre->getUsuario()->getId(),
+                                              'tutor' => $yml['parameters']['rol']['tutor']));
+            $owner_tutor = $query->getSingleScalarResult();
+            $correo_tutor = (!$muro_padre->getUsuario()->getCorreoPersonal() || $muro_padre->getUsuario()->getCorreoPersonal() == '') ? (!$muro_padre->getUsuario()->getCorreoCorporativo() || $muro_padre->getUsuario()->getCorreoCorporativo() == '') ? 0 : $muro_padre->getUsuario()->getCorreoCorporativo() : $muro_padre->getUsuario()->getCorreoPersonal();
+            if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor)
+            {
+                $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
+                                           'datos' => array('comment' => $muro_padre->getMensaje(),
+                                                            'response' => $mensaje),
+                                           'asunto' => 'Formación 2.0: '.$descripcion,
+                                           'remitente' => $this->container->getParameter('mailer_user'),
+                                           'destinatario' => $correo_tutor);
+                $correo = $f->sendEmail($parametros_correo);
+            }
+
         }
+
         $muro->setEmpresa($empresa);
         $muro->setFechaRegistro(new \DateTime('now'));
         $em->persist($muro);

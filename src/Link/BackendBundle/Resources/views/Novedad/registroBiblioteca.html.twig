@@ -35,12 +35,10 @@
 {% block body %}
 <input type="hidden" id="url_tipo" name="url_tipo" value="{{ path('_ajaxTipo')}}">
 
-
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 {% if usuario_empresa %}
-    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="/{{ usuario_empresa }}" />
-    <input type="hidden" id="si" name="si" value="{{ usuario_empresa }}">
+    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ usuario_empresa }}" />
 {% else %}    
     <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="" />
 {% endif %}
@@ -87,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    <form id="form_biblioteca" name="form_biblioteca" action="{{ path('_registroBiblioteca', { 'biblioteca_id': biblioteca.id }) }}" class="container-fluid p-0" method="POST">
+                    <form id="form" name="form" action="{{ path('_registroBiblioteca', { 'noticia_id': biblioteca.id }) }}" class="container-fluid p-0" method="POST">
                         <div class="row setup-content" id="det0">   
                             <div class="col-sm-16">
                                 <div class="row">
@@ -98,21 +96,21 @@
                                 <br>
                                 <div class="row">
                                     {% if not usuario_empresa %}
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
-                                        <div class="col-14">
-                                            <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
-                                                <option value=""></option>
-                                                {% for empresa in empresas %}
-                                                    {% set selected = biblioteca.id ? biblioteca.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
-                                                    <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <span class="fa fa-industry"></span>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <label for="texto" class="col-2 col-form-label">{{ 'Empresa'|trans }}</label>
+                                            <div class="col-14">
+                                                <select class="form-control form_sty_select" name="empresa_id" id="empresa_id">
+                                                    <option value=""></option>
+                                                    {% for empresa in empresas %}
+                                                        {% set selected = biblioteca.id ? biblioteca.empresa.id == empresa.id ? 'selected="selected"' : '' : '' %}
+                                                        <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre|trim }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <span class="fa fa-industry"></span>
+                                            </div>
                                         </div>
-                                    </div>
                                     {% else %}
-                                        <input type="hidden" id="empresa_id" name="empresa_id" value="0" />
+                                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario_empresa }}" />
                                     {% endif %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-2 col-form-label">{{ 'Título'|trans }}</label>
@@ -121,14 +119,14 @@
                                             <span class="fa fa-font"></span>
                                         </div>
                                     </div>
-                                {% if not usuario_empresa %}                                    
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Publicación'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_publicacion = biblioteca.fechaPublicacion ? biblioteca.fechaPublicacion|date('d/m/Y') : '' %}
-                                            <input type="text" class="form-control form_sty1" name="fecha_publicacion" id="fecha_publicacion" value="{{fecha_publicacion}}" placeholder="DD/MM/YYYY">
+                                            <input type="text" class="form-control form_sty1 date_picker" name="fecha_publicacion" id="fecha_publicacion" value="{{ fecha_publicacion }}" placeholder="DD/MM/YYYY">
                                             <span class="fa fa-calendar"></span>
                                         </div>
                                     </div>
@@ -136,51 +134,40 @@
                                         <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Vencimiento'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_vencimiento = biblioteca.fechaVencimiento ? biblioteca.fechaVencimiento|date('d/m/Y') : '' %}
-                                            <input type="text" class="form-control form_sty1" name="fecha_vencimiento" id="fecha_vencimiento" value="{{fecha_vencimiento}}" placeholder="DD/MM/YYYY">
+                                            <input type="text" class="form-control form_sty1 date_picker" name="fecha_vencimiento" id="fecha_vencimiento" value="{{ fecha_vencimiento }}" placeholder="DD/MM/YYYY">
                                             <span class="fa fa-calendar"></span>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
+                                <br>
                                 <div class="row">
-                                {% endif %}
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-6 col-form-label">{{ 'Tipo de recurso'|trans }}</label>
                                         <div class="col-14">
                                             {% set disabled = biblioteca.tipobiblioteca ? 'disabled' : "" %}
                                             {% if disabled %}
-                                                <input type="hidden" name="tipo_biblioteca_id" value="{{ biblioteca.tipoBiblioteca.id }}">
-                                                <select class="form-control form_sty_select" name="tipo_biblioteca" id="tipo_biblioteca"{{disabled}}>
+                                                <input type="hidden" name="tipo_biblioteca_id" id="tipo_biblioteca_id" value="{{ biblioteca.tipoBiblioteca.id }}">
+                                                <select class="form-control form_sty_select" name="tipo_biblioteca" id="tipo_biblioteca" disabled="disabled">
                                             {% else %}
-                                                <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id"{{disabled}}>
+                                                <select class="form-control form_sty_select" name="tipo_biblioteca_id" id="tipo_biblioteca_id">
                                             {% endif %}
                                                 <option value=""></option>
                                                 {% for tipoBiblioteca in tipoBibliotecas %}
                                                     {% set selected = biblioteca.id ? biblioteca.tipoBiblioteca.id == tipoBiblioteca.id ? 'selected="selected"' : '' : '' %}
-                                                    <option value="{{ tipoBiblioteca.id }}" {{ selected }} >{{ tipoBiblioteca.nombre|trim }}</option>
+                                                    <option value="{{ tipoBiblioteca.id }}" {{ selected }}>{{ tipoBiblioteca.nombre|trim }}</option>
                                                 {% endfor %}
                                             </select>
                                             <span class="fa fa-industry"></span>
                                         </div>
                                     </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8" style="display: none;" id="ver">
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
                                         <label for="texto" class="col-6 col-form-label">{{ 'Autor'|trans }}</label>
                                         <div class="col-14">
-                                            <input type="text" class="form-control form_sty1" name="autor" id="autor" value="">
+                                            <input type="text" class="form-control form_sty1" name="autor" id="autor" value="{{ biblioteca.autor }}">
                                             <span class="fa fa-industry"></span>
                                         </div>
                                     </div>
-                                    {% set tipo = biblioteca.tipobiblioteca ? biblioteca.tipobiblioteca.id : 0 %}
-                                    {% if tipo == 3 or tipo == 4 %}
-                                        <div class="col-sm-8 col-md-8 col-lg-8" id="ver">
-                                            <label for="texto" class="col-6 col-form-label">{{ 'Autor'|trans }}</label>
-                                            <div class="col-14">
-                                                <input type="text" class="form-control form_sty1" name="autor" id="autor" value="{{biblioteca.autor}}">
-                                                <span class="fa fa-user"></span>
-                                            </div>
-                                        </div>
-                                    {% endif %}
                                 </div>
-
                                 <br>
                                 <div class="wizard-footer">
                                     <div class="col-sm-16 text-right">
@@ -250,9 +237,9 @@
                                     </div>
                                 </div>
                                 <br><br>
-                                {% set display = biblioteca.id ? biblioteca.tipobiblioteca.id == 1 ? '': 'none' : 'none' %}
+                                {% set display = biblioteca.id ? biblioteca.tipobiblioteca.id == 1 ? '' : 'none' : 'none' %}
                                 {% set recurso = biblioteca.id ? biblioteca.tipobiblioteca.id == 1 ? biblioteca.pdf : '' : '' %}
-                                <div class="row" id="recurso1" style="display: {{display}}">
+                                <div class="row" id="recurso1" style="display: {{ display }}">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
@@ -281,9 +268,9 @@
                                        </div>
                                     </div>
                                 </div>
-                                {% set display2 = biblioteca.id ? biblioteca.tipobiblioteca.id == 2 ? '': 'none' : 'none' %}
+                                {% set display2 = biblioteca.id ? biblioteca.tipobiblioteca.id == 2 ? '' : 'none' : 'none' %}
                                 {% set recurso2 = biblioteca.id ? biblioteca.tipobiblioteca.id == 2 ? biblioteca.pdf : '' : '' %}
-                                <div class="row" id="recurso2" style="display: {{display2}}">
+                                <div class="row" id="recurso2" style="display: {{ display2 }}">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
@@ -312,9 +299,9 @@
                                        </div>
                                     </div>
                                 </div>
-                                {% set display3 = biblioteca.id ? biblioteca.tipobiblioteca.id == 3 or biblioteca.tipobiblioteca.id == 4 ? '': 'none' : 'none' %}
+                                {% set display3 = biblioteca.id ? biblioteca.tipobiblioteca.id == 3 or biblioteca.tipobiblioteca.id == 4 ? '' : 'none' : 'none' %}
                                 {% set recurso3 = biblioteca.id ? biblioteca.tipobiblioteca.id == 3 or biblioteca.tipobiblioteca.id == 4 ? biblioteca.pdf: '' : '' %}
-                                <div class="row" id="recurso3" style="display: {{display3}}">
+                                <div class="row" id="recurso3" style="display: {{ display3 }}">
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="pdf" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16" id="documento">
@@ -367,56 +354,35 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>    
     <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>  
     <script type="text/javascript" src="{{ asset('js/admin/biblioteca.js') }}"></script>  
     <script type="text/javascript">
 
-        $("form :input").attr("autocomplete", "off");
-        
-        $("#btn_clear_img").on("click",function(event) {
-            $("#imagen").val("");
-            $("#figure").html('<img src="'+$('#photo').val()+'">');
-        });
-
-        $("#btn_clear_video").on("click",function(event) {
-            $("#video").val("");
-        });
-
-        $("#btn_clear_pdf").on("click",function(event) {
-            $("#pdf").val("");
-        });
-
-        $("#btn_clear_audio").on("click",function(event) {
-            $("#audio").val("");
-        });
-
         $('#finish').click(function()
         {
-           var valid = $('#form_biblioteca').valid();
+           var valid = $('#form').valid();
            if(!valid)
            {
                notify($('#div-error').html());
-           }else
-           {
+           }
+           else {
                 var deslen = $('#deslen').val();
                 if (deslen < {{ minlenght_bienvenida }} )
                 {
-                    $('#div-error ul').html("<li>- {{'Cantidad mínima de caracteres en el Contenido'|trans }}: {{ minlenght_bienvenida }}</li>");
+                    $('#div-error ul').html("<li>- {{ 'Cantidad mínima de caracteres en el Contenido'|trans }}: {{ minlenght_bienvenida }}</li>");
                     $('#div-error ul').show();
                     notify($('#div-error').html());
-                }else
-                {
+                }
+                else {
                     if (deslen > {{ minlenght_bienvenida }} )
                     {
-                        $('#finish').attr("disabled", "disabled");
-                        $('#form_biblioteca').submit();
+                        $('#finish').hide();
+                        $('#form').submit();
                     }
                 }
             }
         });
         
-        $("#form_biblioteca").validate({
+        $("#form").validate({
             errorLabelContainer: "#div-error ul",
             wrapper: "li",
             ignore: "",
@@ -428,16 +394,41 @@
                     required: true,
                     minlength: 3
                 },
+                'tipo_biblioteca_id': {
+                    required: true
+                },
+                'autor': {
+                    required: {
+                        depends: function(element) {
+                            return $('#tipo_biblioteca_id').val() == 3 || $('#tipo_biblioteca_id').val() == 4;
+                        }
+                    }
+                },
                 'imagen': {
                     extension: "jpg|png"
                 },
                 'pdf': {
+                    required: {
+                        depends: function(element) {
+                            return $('#tipo_biblioteca_id').val() == 4;
+                        }
+                    },
                     extension: "pdf"
                 },
                 'audio': {
+                    required: {
+                        depends: function(element) {
+                            return $('#tipo_biblioteca_id').val() == 2;
+                        }
+                    },
                     extension: "mp3"
                 },
                 'video': {
+                    required: {
+                        depends: function(element) {
+                            return $('#tipo_biblioteca_id').val() == 1;
+                        }
+                    },
                     extension: "mp4|webm|ogv"
                 },
                 'fecha_publicacion': {
@@ -450,21 +441,30 @@
             messages: {
                 'empresa_id': {
                     required: "- {{ 'La empresa es requerida.'|trans }}"
-                },            
+                },
                 'titulo': {
                     required: "- {{ 'El título es requerido.'|trans }}",
                     minlength: "- {{ 'El título debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'tipo_biblioteca_id': {
+                    required: "- {{ 'El tipo de recurso es requerido'|trans }}."
+                },
+                'autor': {
+                    required: "- {{ 'El autor es requerido.'|trans }}"
                 },
                 'imagen': {
                     extension: "- {{ 'Sólo archivos con extensión .jpg o .png'|trans }}"
                 },
                 'pdf': {
+                    required: "- {{ 'El recurso es requerido'|trans }}.",
                     extension: "- {{ 'Sólo archivos con extensión .pdf'|trans }}"
                 },
                 'audio': {
+                    required: "- {{ 'El recurso es requerido'|trans }}.",
                     extension: "- {{ 'Sólo archivos con extensión .mp3'|trans }}"
                 },
                 'video': {
+                    required: "- {{ 'El recurso es requerido'|trans }}.",
                     extension: "- {{ 'Sólo archivos con extensión .mp4 o .webm o .ogv'|trans }}"
                 },
                 'fecha_publicacion': {
@@ -472,7 +472,7 @@
                 },
                 'fecha_vencimiento': {
                     required: "- {{ 'La fecha de vencimiento es requerida'}}"
-                } 
+                }
             }
         });
     </script>

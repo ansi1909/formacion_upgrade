@@ -1,9 +1,11 @@
 <?php
 $host="127.0.0.1";
 $port="5432";
+
 $user="formac_prodtion";
 $pass="cwzq]=5APucJ";
 $dbname="formac_aulavirtual";
+
 
 $connect = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$pass");
 

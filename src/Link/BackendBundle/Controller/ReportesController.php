@@ -15,7 +15,7 @@ class ReportesController extends Controller
 {
     public function indexAction($app_id,$r,Request $request)
     {
-    	$session = new Session();
+        $session = new Session();
         $f = $this->get('funciones');
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
@@ -24,11 +24,11 @@ class ReportesController extends Controller
         }
         else {
 
-        	$session->set('app_id', $app_id);
-        	if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
-        	{
-        		return $this->redirectToRoute('_authException');
-        	}
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
         }
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
@@ -39,22 +39,25 @@ class ReportesController extends Controller
             $reporte = $request->request->get('reporte');
             $pagina_id = $request->request->get('programa_id');
             $nivel_id = $request->request->get('nivel_id');
-        	$nivel_id = $nivel_id ? $nivel_id : 0;
-        	$pagina_id = $pagina_id ? $pagina_id : 0;
-        	$i = 1;
-        	$query = $em->getConnection()->prepare('SELECT
-	                                                fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
-	                                                resultado; fetch all from re;');
-	        $re = 're';
-	        $query->bindValue(':re', $re, \PDO::PARAM_STR);
-	        $query->bindValue(':preporte', $reporte, \PDO::PARAM_INT);
-	        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-	        $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
-	        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-	        $query->execute();
-	        $r = $query->fetchAll();
+            $nivel_id = $nivel_id ? $nivel_id : 0;
+            $pagina_id = $pagina_id ? $pagina_id : 0;
+            $i = 1;
+            $query = $em->getConnection()->prepare('SELECT
+                                                    fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
+                                                    resultado; fetch all from re;');
+            $re = 're';
+            $query->bindValue(':re', $re, \PDO::PARAM_STR);
+            $query->bindValue(':preporte', $reporte, \PDO::PARAM_INT);
+            $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+            $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
+            $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+            $query->execute();
+            $r = $query->fetchAll();
+            $output->writeln(var_dump($r));
+            $output->writeln('CANTIDAD: '.count($r));
 
-	        // Solicita el servicio de excel
+
+            // Solicita el servicio de excel
             $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
             $phpExcelObject->getProperties()->setCreator("formacion")
@@ -65,28 +68,32 @@ class ReportesController extends Controller
                ->setKeywords("office 2005 openxml php")
                ->setCategory("Reportes");
             foreach ($r as $re) {
-      		    $i++;
-      		    $activo = $re['activo'] ? 'Sí' : 'No';
-       		    $phpExcelObject->setActiveSheetIndex(0)
-       		   				   ->setCellValue('A1', 'Nombre')
+                $i++;
+                $activo = $re['activo'] ? 'Sí' : 'No';
+                $phpExcelObject->setActiveSheetIndex(0)
+                               ->setCellValue('A1', 'Nombre')
                                ->setCellValue('B1', 'Apellido')
                                ->setCellValue('C1', 'Login')
-                               ->setCellValue('D1', 'Correo')
-                               ->setCellValue('E1', 'Activo')
-                               ->setCellValue('F1', 'Fecha de registro')
-                               ->setCellValue('G1', 'Fecha de nacimiento')
-                               ->setCellValue('H1', 'País')
-                               ->setCellValue('I1', 'Nivel')
+                               ->setCellValue('D1', 'Correo Personal')
+                               ->setCellValue('E1', 'Correp Corporativo')
+                               ->setCellValue('F1', 'Activo')
+                               ->setCellValue('G1', 'Fecha de registro')
+                               ->setCellValue('H1', 'Fecha de nacimiento')
+                               ->setCellValue('I1', 'País')
+                               ->setCellValue('J1', 'Nivel')
+                               ->setCellValue('K1', 'Logueado')
                                ->setCellValue('A'.$i, $re['nombre'])
                                ->setCellValue('B'.$i, $re['apellido'])
                                ->setCellValue('C'.$i, $re['login'])
                                ->setCellValue('D'.$i, $re['correo'])
-                               ->setCellValue('E'.$i, $activo)
-                               ->setCellValue('F'.$i, $re['fecha_registro'])
-                               ->setCellValue('G'.$i, $re['fecha_nacimiento'])
-                               ->setCellValue('H'.$i, $re['pais'])
-                               ->setCellValue('I'.$i, $re['nivel']);
-        	}
+                               ->setCellValue('E'.$i, $re['correo2'])
+                               ->setCellValue('F'.$i, $activo)
+                               ->setCellValue('G'.$i, $re['fecha_registro'])
+                               ->setCellValue('H'.$i, $re['fecha_nacimiento'])
+                               ->setCellValue('I'.$i, $re['pais'])
+                               ->setCellValue('J'.$i, $re['nivel'])
+                               ->setCellValue('k'.$i, $re['logueado']);
+            }
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
             // Crea el writer
@@ -111,9 +118,9 @@ class ReportesController extends Controller
             return $response;
 
 
-	            //return new Response('Archivo creado...');
+                //return new Response('Archivo creado...');
 
-        	//return new Response (var_dump($r));
+            //return new Response (var_dump($r));
 
         }
 
@@ -129,14 +136,14 @@ class ReportesController extends Controller
         } 
 
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
-			                                                                                        'usuario_empresa' => $usuario_empresa,
-			                                                                                        'usuario' => $usuario,
-			                                                                                        'reporte'=>$r));	
+                                                                                                    'usuario_empresa' => $usuario_empresa,
+                                                                                                    'usuario' => $usuario,
+                                                                                                    'reporte'=>$r));    
     }
 
     public function ajaxProgramasEAction(Request $request)
     {
-    	$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
 
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe

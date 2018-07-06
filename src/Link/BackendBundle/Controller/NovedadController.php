@@ -20,8 +20,8 @@ class NovedadController extends Controller
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
-        }else 
-        {
+        }
+        else {
             $session->set('app_id', $app_id);
             if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
             {
@@ -32,94 +32,45 @@ class NovedadController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $app_id = $session->get('app_id');
+        $encabezado = $app_id == $yml['parameters']['aplicacion']['biblioteca'] ? $this->get('translator')->trans('Biblioteca virtual') : $this->get('translator')->trans('Noticias y Novedades');
+        $noticias = array();
 
-        //contultamos el nombre de la aplicacion para reutilizarla en la vista
-        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($app_id);
+        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        if($aplicacion->getUrl() == '_bibliotecas')//se consulta la url de bibliotecas
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+           ->from('LinkComunBundle:AdminNoticia', 'n')
+           ->orderBy('n.fechaPublicacion', 'ASC');
+        
+        if ($app_id == $yml['parameters']['aplicacion']['biblioteca'])
         {
-
-            if($aplicacion->getId()==26)//se consulta el tipo de noticias: biblioteca virtual
-            {
-                $tipo_noticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($yml['parameters']['tipo_noticias']['biblioteca_virtual']);
-            }
-
-            $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
-
-            $usuario_empresa = 0;
-            $empresas = array();
-
-            if($session->get('administrador')==true)//si es administrador
-            {
-                $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
-
-                if($app_id==26)//se consulta la informacion del tipo de noticia: biblioteca virtual
-                {
-                    $noticias = $em->getRepository('LinkComunBundle:AdminNoticia')->findBy(array('tipoNoticia' => $tipo_noticia->getId()));
-                }else
-                {
-                    if($aplicacion->getId()==17)//se consulta la informacion del tipo de noticia: noticias y novedades 
-                    {   
-                        $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n 
-                                                   JOIN n.tipoNoticia tn 
-                                                   JOIN n.empresa e 
-                                                   WHERE tn.id < :tipo ORDER BY e.nombre ASC')
-                                    ->setParameters(array('tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'] ));
-                        $noticias = $query->getResult();
-                    }
-                }
-            }else
-            {
-                if ($usuario->getEmpresa()) 
-                    $usuario_empresa = 1; 
-                
-                if($aplicacion->getId()==26)//se la informacion del tipo de noticia: biblioteca virtual
-                {
-                    $noticias = $em->getRepository('LinkComunBundle:AdminNoticia')->findBy(array('tipoNoticia' => $tipo_noticia->getId(),
-                                                                                                 'empresa' => $usuario->getEmpresa()->getId()  ) );
-                }else
-                {
-                    if($aplicacion->getId()==17)//se consulta la informacion del tipo de noticia: noticias y novedades 
-                    {   
-                        $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n 
-                                                   JOIN n.tipoNoticia tn 
-                                                   JOIN n.empresa e 
-                                                   WHERE tn.id < :tipo and e.id= :empresa  ORDER BY e.nombre ASC')
-                                    ->setParameters(array('tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'], 'empresa' => $usuario->getEmpresa()->getId() ));
-                        $noticias = $query->getResult();
-                    }
-                }
-            }
-
-            $noticiadb= array();
-            if($noticias)
-            {
-                foreach ($noticias as $noticia)
-                {
-                    if($aplicacion->getId()==26 )
-                        $tipoBiblioteca = $noticia->getTipoBiblioteca()->getNombre() ;
-                    else
-                        $tipoBiblioteca = Null;
-
-                    $noticiadb[]= array('id'=>$noticia->getId(),
-                                        'empresa'=>$noticia->getEmpresa()->getNombre(),
-                                        'tipoNoticia'=>$noticia->getTipoNoticia()->getNombre(),
-                                        'tipoBiblioteca'=> $tipoBiblioteca,
-                                        'titulo'=>$noticia->getTitulo(),
-                                        'fechaRegistro'=>$noticia->getFechaRegistro(),
-                                        'delete_disabled'=>$f->linkEliminar($noticia->getId(),'AdminNoticia'));
-                }
-            }
-
-            return $this->render('LinkBackendBundle:Novedad:index.html.twig', array('aplicacion' => $aplicacion,
-                                                                                    'noticias' => $noticiadb,
-                                                                                    'usuario_empresa' => $usuario_empresa,
-                                                                                    'empresas' => $empresas,
-                                                                                    'usuario' => $usuario ));
+            $qb->andWhere('n.tipoNoticia = :tipo_noticia_id');
         }
+        else {
+            $qb->andWhere('n.tipoNoticia != :tipo_noticia_id');
+        }
+        $qb->setParameter('tipo_noticia_id', $yml['parameters']['tipo_noticias']['biblioteca_virtual']);
+        $query = $qb->getQuery();
+        $noticiasdb = $query->getResult();
+
+        foreach ($noticiasdb as $noticia)
+        {
+            $noticias[] = array('id' => $noticia->getId(),
+                                'empresa' => $noticia->getEmpresa()->getNombre(),
+                                'tipoNoticia' => $noticia->getTipoNoticia()->getNombre(),
+                                'tipoBiblioteca' => $noticia->getTipoBiblioteca() ? $noticia->getTipoBiblioteca()->getNombre() : '',
+                                'titulo' => $noticia->getTitulo(),
+                                'fechaRegistro' => $noticia->getFechaRegistro()->format('d/m/Y'),
+                                'delete_disabled' => $f->linkEliminar($noticia->getId(),'AdminNoticia'));
+        }
+
+        return $this->render('LinkBackendBundle:Novedad:index.html.twig', array('noticias' => $noticias,
+                                                                                'usuario' => $usuario,
+                                                                                'encabezado' => $encabezado));
+
     }
 
-    public function registroBibliotecaAction($biblioteca_id, Request $request)
+    public function registroBibliotecaAction($noticia_id, Request $request)
     {
 
         $session = new Session();
@@ -140,9 +91,6 @@ class NovedadController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        //contultamos el nombre de la aplicacion para reutilizarla en la vista
-        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
-
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $query = $em->createQuery('SELECT tb FROM LinkComunBundle:AdminTipoBiblioteca tb
@@ -161,11 +109,11 @@ class NovedadController extends Controller
                 $usuario_empresa = $usuario->getEmpresa()->getId(); 
         }
 
-        if ($biblioteca_id)
+        if ($noticia_id)
         {
-            $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($biblioteca_id);
-        }else 
-        {
+            $biblioteca = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
+        }
+        else {
             $biblioteca = new AdminNoticia();
             $biblioteca->setFechaRegistro(new \DateTime('now'));
         }
@@ -173,20 +121,10 @@ class NovedadController extends Controller
         if ($request->getMethod() == 'POST')
         {
 
-            if($usuario_empresa != 0)
-            {
-                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($usuario->getEmpresa()->getId());
-            }else
-            {
-                $empresa_id = $request->request->get('empresa_id');
-                $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-            }
-
-            $tipo_noticia_id = 3;
-            $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($tipo_noticia_id);
-
+            $recurso = '';
+            $empresa_id = $request->request->get('empresa_id');
             $titulo = trim($request->request->get('titulo'));
-            $autor = trim($request->request->get('autor'));
+            $autor = trim($request->request->get('autor')) ? trim($request->request->get('autor')) : '';
             $pdf = trim($request->request->get('pdf'));
             $video = trim($request->request->get('video'));
             $audio = trim($request->request->get('audio'));
@@ -201,23 +139,25 @@ class NovedadController extends Controller
             $publicacion = $fp[2].'-'.$fp[1].'-'.$fp[0];
             $tipo_biblioteca_id = $request->request->get('tipo_biblioteca_id');
             
+            $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
             $tipoBiblioteca = $em->getRepository('LinkComunBundle:AdminTipoBiblioteca')->find($tipo_biblioteca_id);
+            $tipoNoticia = $em->getRepository('LinkComunBundle:AdminTipoNoticia')->find($yml['parameters']['tipo_noticias']['biblioteca_virtual']);
 
             $biblioteca->setUsuario($usuario);
             $biblioteca->setEmpresa($empresa);
             $biblioteca->setTipoNoticia($tipoNoticia);
             $biblioteca->setTipoBiblioteca($tipoBiblioteca);
-            if ($tipoBiblioteca->getId() == '3' || $tipoBiblioteca->getId() == '4') {
-                $biblioteca->setAutor($autor);
-            }
+            $biblioteca->setAutor($autor);
             $biblioteca->setTitulo($titulo);
             $biblioteca->setFechaVencimiento(new \DateTime($vencimiento));
             $biblioteca->setFechaPublicacion(new \DateTime($publicacion));
-            if ($video) {
+            if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['video']) {
                 $recurso = $video;
-            }else if ($audio) {
+            }
+            else if ($tipo_biblioteca_id == $yml['parameters']['tipo_biblioteca']['podcast']) {
                 $recurso = $audio;
-            }else{
+            }
+            else{
                 $recurso = $pdf;
             }
             $biblioteca->setPdf($recurso);
@@ -226,6 +166,7 @@ class NovedadController extends Controller
             $em->persist($biblioteca);
             $em->flush();
 
+            // Generación de notificaciones a los usuario de la empresa
             $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
                                        WHERE u.activo = :activo 
                                        AND u.empresa = :empresa_id')
@@ -233,10 +174,9 @@ class NovedadController extends Controller
                                               'empresa_id' => $empresa->getId()));
             $usuarios = $query->getResult();
 
-            $descripcion= 'A sido publicado '. $titulo .'en la biblioteca';
-
-            foreach($usuarios as $usuario){
-
+            $descripcion = $this->get('translator')->trans('Ha sido publicado').' '.$titulo.' '.$this->get('translator')->trans('en la biblioteca').'.';
+            
+            foreach ($usuarios as $usuario){
                 $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $biblioteca->getFechaPublicacion());
             }
 
@@ -296,23 +236,20 @@ class NovedadController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        //contultamos el nombre de la aplicacion para reutilizarla en la vista
-        $aplicacion = $em->getRepository('LinkComunBundle:AdminAplicacion')->find($session->get('app_id'));
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        //$empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll(array('nombre' => 'ASC'));
+        
         $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e
                                    WHERE e.activo = :activo ORDER BY e.nombre ASC')
                     ->setParameters(array('activo' => true));
         $empresas = $query->getResult();
 
         $query = $em->createQuery('SELECT tn FROM LinkComunBundle:AdminTipoNoticia tn
-                                   WHERE tn.id < :tipo ')
-                    ->setParameters(array('tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'] ));
+                                   WHERE tn.id != :tipo ')
+                    ->setParameter('tipo', $yml['parameters']['tipo_noticias']['biblioteca_virtual']);
         $tipoNoticias = $query->getResult();
 
         $usuario_empresa = 0;
-
         if($session->get('administrador')==false)//si no es administrador
         {
             if ($usuario->getEmpresa()) 
@@ -322,8 +259,8 @@ class NovedadController extends Controller
         if ($noticia_id)
         {
             $noticia = $em->getRepository('LinkComunBundle:AdminNoticia')->find($noticia_id);
-        }else 
-        {
+        }
+        else {
             $noticia = new AdminNoticia();
             $noticia->setFechaRegistro(new \DateTime('now'));
         }
@@ -405,7 +342,7 @@ class NovedadController extends Controller
         return $this->render('LinkBackendBundle:Novedad:registroNovedad.html.twig', array('empresas' => $empresas,
                                                                                           'tipoNoticias' => $tipoNoticias,
                                                                                           'noticia' => $noticia,
-                                                                                          'usuario_empresa' => $usuario_empresa ));
+                                                                                          'usuario_empresa' => $usuario_empresa));
 
     }
 

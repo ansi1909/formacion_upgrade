@@ -7,6 +7,7 @@
 
 {% block body %}
     {% set rol = app.session.get('administrador') ? 'true' : 'false' %}
+    {% set app_id = app.session.get('app_id') %}
     <br><br>
     {% if rol == 'true' %}
     <div class="admin_dash" >
@@ -15,7 +16,7 @@
                 <div class="activity-block linkg1">
                     <div class="media">
                         <div class="media-body">
-                            <h5>#<span class="spincreament">{{empresas}}</span></h5>
+                            <h5>#<span class="spincreament">{{ empresast }}</span></h5>
                             <p>{{'Empresas registradas' |trans}}</p>
                         </div>
                         <i class="fa fa-industry"></i>
@@ -28,7 +29,7 @@
                 <div class="activity-block linkg2">
                     <div class="media">
                         <div class="media-body">
-                            <h5>#<span class="spincreament">{{activas}}</span></h5>
+                            <h5>#<span class="spincreament">{{ activas }}</span></h5>
                             <p>{{'Empresas activas' |trans}}</p>
                         </div>
                         <i class="fa fa-industry"></i> </div>
@@ -40,7 +41,7 @@
                 <div class="activity-block danger">
                     <div class="media">
                         <div class="media-body">
-                            <h5>#<span class="spincreament">{{inactivas}}</span></h5>
+                            <h5>#<span class="spincreament">{{ inactivas }}</span></h5>
                             <p>{{'Empresas inactivas' |trans}}</p>
                         </div>
                         <i class="fa fa-industry"></i> </div>
@@ -58,35 +59,22 @@
                         <div class="card-title"><span class="fa fa-industry"></span> {{'Listado de empresas activas' |trans}}</div>
                     </div>
                     <div class="card-block">
-                        <table class="table" id="dt">
-                            <thead class="sty__title">
-                                <tr>
-                                    <th class="hd__title text-center">{{'Empresas' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Prog. asociados' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Usuarios reg.' |trans}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for empresaA in empresasA %}
-                                {% set eo = cycle(['odd', 'even'], loop.index) %}
-                                <tr class="{{eo}}">
-                                    <td>{{empresaA.nombre}}</td>
-                                    <td>
-                                        {% if empresaA.tiene > 0 %}
-                                            <div class="tree">
-                                                <ul data-jstree='{ "opened" : true }'>
-                                                    {{ empresaA.programas|raw }}
-                                                </ul>
-                                            </div>
-                                        {% else %}
-                                            {{ 'No tiene sub-páginas'|trans }}
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-center"><span>{{empresaA.usuarios}} <i class="fa fa-user"></i></span></td>
-                                </tr>
-                                {%endfor%}
-                            </tbody>
-                        </table>
+                        <div class="card-block">
+                     <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
+                        <div class="row">
+                            <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                    <option value="0"></option>
+                                    {% for empresa in empresasA %}
+                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-industry"></span>
+                                <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
+                            </div>
+                        </div>
+                    <br>
+                </div>
                     </div>
                 </div>
             </div>
@@ -215,6 +203,8 @@
                             <thead class="sty__title">
                                 <tr>
                                     <th class="hd__title">{{'Nombre' |trans}}</th>
+                                    <th class="hd__title">{{'Fecha inicio' |trans}}</th>
+                                    <th class="hd__title">{{'Fecha fin' |trans}}</th>
                                     <th class="hd__title text-center">{{'Usuarios registrados' |trans}}</th>
                                     <th class="hd__title text-center">{{'Usuarios cursando' |trans}}</th>
                                     <th class="hd__title text-center">{{'Usuarios culminados' |trans}}</th>
@@ -225,11 +215,13 @@
                                 {% for pagina in paginas %}
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
                                 <tr class="{{eo}}">
-                                    <td>{{pagina.pagina}}</td>
-                                    <td class="text-center"><span>{{pagina.usuariosT}} <i class="fa fa-user"></i></span></td>
-                                    <td class="text-center"><span>{{pagina.usuariosCur}} <i class="fa fa-user"></i></span></td>
-                                    <td class="text-center"><span>{{pagina.usuariosF}} <i class="fa fa-user"></i></span></td>
-                                    <td class="text-center"><span>{{pagina.usuariosN}} <i class="fa fa-user"></i></span></td>
+                                    <td>{{ pagina.pagina }}</td>
+                                    <td>{{ pagina.fecha_i|date("m/d/Y") }}</td>
+                                    <td>{{ pagina.fecha_f|date("m/d/Y") }}</td>
+                                    <td class="text-center"><a href="{{ path('_participantesRegistrados',{'app_id': 20 }) }}"><span>{{ pagina.usuariosT }} <i class="fa fa-user"></i></span></a></td>
+                                    <td class="text-center"><a href="{{ path('_participantesCursando',{'app_id': 21 }) }}"><span>{{ pagina.usuariosCur }} <i class="fa fa-user"></i></span></a></td>
+                                    <td class="text-center"><a href="{{ path('_participantesAprobados',{'app_id': 22 }) }}"><span>{{ pagina.usuariosF }} <i class="fa fa-user"></i></span></a></td>
+                                    <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34 }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

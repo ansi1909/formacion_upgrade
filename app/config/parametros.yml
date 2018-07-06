@@ -59,15 +59,21 @@ parameters:
     social:
         muro: 1
         espacio_colaborativo: 2
+    aplicacion:
+        noticias: 17
+        biblioteca: 26
     layout:
         base: 1
+    notificacion_programada:
+        bienvenida: 1
+        Link_plataforma: 'http://localhost/formacion2.0/web/app_dev.php/login/'
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
         remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
         asunto: 'Formación2.0 - Solicitud de soporte virtual. '
         remitente: 'soporte@formacion2puntocero.com'
-        destinatario: 'soporte@formacion2puntocero.com'
+        destinatario: 'josenriquev@gmail.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2

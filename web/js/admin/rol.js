@@ -84,7 +84,7 @@ $(document).ready(function() {
 							$('.delete').unbind('click');
 							$('.delete').click(function()
 							{
-								var rol_id= $(this).attr('data');
+								var rol_id = $(this).attr('data');
 								sweetAlertDelete(rol_id, 'AdminRol');
 							});
 						}

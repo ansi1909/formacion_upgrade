@@ -2,7 +2,11 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    
+    <style type="text/css">
+        .img-loader{
+            margin-left: 3em;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -25,31 +29,34 @@
             </div>
             <div class="card-block">
                 {% if not usuario_empresa %}
-                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
+                 <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{ 'Empresa'|trans }}</label>
 
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                             <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                 <option value="0"></option>
                                 {% for empresa in empresas %}
-                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                    <option value="{{ empresa.id }}">{{ empresa.nombre }}</option>
                                 {% endfor %}
                             </select>
                             <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                            <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
                         </div>
                     </div>
                     <br>
                 {% else %}
                     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
                 {% endif %}
-                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Nivel' |trans}}</label>
+                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{ 'Nivel'|trans }}</label>
                 <div class="row">
                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="nivel_id" name="nivel_id">
-                        </select>
-                        <span class="fa fa-industry"></span>
-                        <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                        <div id="div-niveles">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="nivel_id" name="nivel_id">
+                            </select>
+                            <span class="fa fa-industry"></span>
+                            <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
+                        </div>
+                        <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
                     </div>
                 </div>
                 <br>
@@ -78,6 +85,15 @@
                     </div>
                 </div>
                 <div id="usuarios"></div>
+                <div class="load1 load-wrapper">
+                    <div class="loader">
+                        Loading...
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 

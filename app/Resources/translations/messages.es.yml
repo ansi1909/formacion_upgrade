@@ -55,6 +55,7 @@ Aún sin publicar: Aún sin publicar
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Ayer: Ayer
 Biblioteca: Biblioteca
+Biblioteca virtual: Biblioteca virtual
 Bienvenida: Bienvenida
 Bien hecho: Bien hecho
 Buen trabajo: Buen trabajo
@@ -160,12 +161,12 @@ Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empr
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
-Descripción: Descripción;
+Descripción: Descripción
+Descarga el archivo a través del siguiente enlace: Descarga el archivo a través del siguiente enlace
 Descargar: Descargar
 Descargas: Descargas
 Descargar archivo: Descargar archivo
 Descargue material complementario: Descargue material complementario
-Descripción: Descripción
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Destino: Destino
 Detalle de la Biblioteca Virtual:
@@ -234,6 +235,7 @@ El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
 El puntaje con que se aprueba es requerido.: El puntaje con que se aprueba es requerido.
+El recurso es requerido: El recurso es requerido
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión
@@ -243,6 +245,7 @@ El Tipo de Imagen es requerido.: El Tipo de Imagen es requerido.
 El tipo de noticia es requerido.: El tipo de noticia es requerido.
 El tipo de notificación es requerida.: El tipo de notificación es requerida.
 El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
+El tipo de recurso es requerido: El tipo de recurso es requerido
 El título debe contener al menos 10 caracteres: El título debe contener al menos 10 caracteres
 El título es requerido.: El título es requerido.
 El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
@@ -267,6 +270,7 @@ Empresas activas: Empresas activas
 Empresas inactivas: Empresas inactivas
 Empresas registradas: Empresas registradas
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: En el módulo administrativo de Certificados y Constancias se puede agregar certificados
+en la biblioteca: en la biblioteca
 Encabezado: Encabezado
 Enlace de la encuesta: Enlace de la encuesta
 Enunciado: Enunciado
@@ -351,6 +355,7 @@ Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha 
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
+Ha sido publicado: Ha sido publicado
 Ha sido publicado el evento: Ha sido publicado el evento
 ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el espacio colaborativo de
 Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
@@ -424,6 +429,7 @@ La notificación ha sido almacenada con éxito: La notificación ha sido almacen
 La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
+La respuesta al comentario: La respuesta al comentario
 La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
 Lecciones: Lecciones
@@ -446,7 +452,9 @@ Listado de participantes: Listado de participantes
 Listado de preguntas: Listado de preguntas
 Listado de preguntas de la evaluación: Listado de preguntas de la evaluación
 Listado de programas: Listado de programas
+Listado de registros: Listado de registros
 Listado de Roles: Listado de Roles
+Listado de temas: Listado de temas
 Listado de Tipos de Destinos: Listado de Tipos de Destinos
 Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Listado de tutoriales: Listado de tutoriales
@@ -652,6 +660,7 @@ Thumbnails de la plantilla: Thumbnails de la plantilla
 Thumbnails inexistentes: Thumbnails inexistentes
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
 Tiene muro: Tiene muro
+Tipo: Tipo
 Tipo Certificado: Tipo Certificado
 Tipo de Biblioteca: Tipo de Biblioteca
 Tipo de Certificado: Tipo de Certificado
@@ -670,6 +679,7 @@ Todas: Todas
 Todos: Todos
 Tomar evaluación: Tomar evaluación
 Tu calificación: Tu calificación
+Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
 Tutoriales: Tutoriales
 Últimos 12: Últimos 12
