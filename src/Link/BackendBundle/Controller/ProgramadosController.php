@@ -462,7 +462,7 @@ class ProgramadosController extends Controller
 
                 $this->sendNowEmail($programacion->getId());
                 
-                $this->sendNowEmail($programacion->getId());
+                //$this->sendNowEmail($programacion->getId());
                 
             }
             else {
@@ -492,7 +492,7 @@ class ProgramadosController extends Controller
 
                 $this->sendNowEmail($programacion->getId());
                 
-                $this->sendNowEmail($programacion->getId());
+                //$this->sendNowEmail($programacion->getId());
                 
             }
 
@@ -775,7 +775,8 @@ class ProgramadosController extends Controller
                 }
 
                 // llamando a la funcion que recorre lo usuarios y envia el mail
-                $f->emailUsuarios($usuarios, $notificacion, $template);
+                $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+                $f->emailUsuarios($usuarios, $notificacion, $template,$yml);
 
 
                 $programacion->setEnviado(true);

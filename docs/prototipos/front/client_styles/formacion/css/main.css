@@ -1188,6 +1188,9 @@ a:focus, a:active, a:target, a:checked {
     max-width: 55rem;
     text-align: center; }
 
+@media (max-width: 559.98px) {
+  html .eval_header .txt_eval_header {
+    display: none; } }
 .navbar .logo {
   width: 15.625rem;
   text-align: center; }

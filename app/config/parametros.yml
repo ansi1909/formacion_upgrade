@@ -64,6 +64,9 @@ parameters:
         biblioteca: 26
     layout:
         base: 1
+    notificacion_programada:
+        bienvenida: 1
+        Link_plataforma: 'http://localhost/formacion2.0/web/app_dev.php/login/'
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
         remitente: 'soporte@formacion2puntocero.com'

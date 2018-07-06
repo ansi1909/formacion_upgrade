@@ -71,7 +71,8 @@ class DefaultController extends Controller
                             $paginasA .= '</li>'; 
                         }
 
-                        $empresasA[]=array('nombre'=> $empresa->getNombre(),
+                        $empresasA[]=array('id' => $empresa->getId(),
+                                           'nombre'=> $empresa->getNombre(),
                                            'usuarios'=>$usuarios,
                                            'programas'=>$paginasA,
                                            'tiene'=>$tieneA);                        
@@ -115,7 +116,7 @@ class DefaultController extends Controller
                 }
 
 
-                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresas'=>$empresas_a + $empresas_i,
+                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast'=>$empresas_a + $empresas_i,
                                                                                              'activas'=>$empresas_a,
                                                                                              'inactivas'=>$empresas_i,
                                                                                              'empresasA'=>$empresasA,
@@ -215,11 +216,13 @@ class DefaultController extends Controller
 
                     //return new Response (var_dump($usuariosCur));
                     
-                    $paginas[] = array('pagina'=>$pagina->getPagina()->getNombre(),
-                                       'usuariosT'=>$usuariosT,
-                                       'usuariosCur'=>$usuariosCur,
-                                       'usuariosF'=>$usuariosF,
-                                       'usuariosN'=>$usuariosN);
+                    $paginas[] = array('pagina' => $pagina->getPagina()->getNombre(),
+                                       'fecha_i' => $pagina->getFechaInicio(),
+                                       'fecha_f' => $pagina->getFechaVencimiento(),
+                                       'usuariosT' => $usuariosT,
+                                       'usuariosCur' => $usuariosCur,
+                                       'usuariosF' => $usuariosF,
+                                       'usuariosN' => $usuariosN);
                 }
 
                 $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuariosA,
