@@ -19,7 +19,7 @@
         position: relative;
         top: -.1rem;
     }
-
+    
     .txt_eval_header {
         color: $gray-600;
         font-family: $primary-font;
@@ -47,6 +47,16 @@
         padding-top: 1rem;
         max-width: 55rem;
         text-align: center;
+    }
+}
+
+@include media-breakpoint-down(xs){
+    html{
+        .eval_header{
+            .txt_eval_header{
+                display: none;
+            }
+        }
     }
 }
 
