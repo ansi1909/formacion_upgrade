@@ -19,7 +19,6 @@ class ColaborativoController extends Controller
 
     	$session = new Session();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
