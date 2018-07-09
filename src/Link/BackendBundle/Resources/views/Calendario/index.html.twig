@@ -394,7 +394,9 @@
                     $('#Modal').modal('show');
                     $('#guardar_save_create').click(function(){
                         $('#save_create').hide();
-                        saveEvento();
+                        $('#form').submit();
+                        //return false;
+                        //saveEvento();
                     });
                 },
                 eventRender: function(event, element) {
@@ -424,7 +426,9 @@
                         $('#Modal').modal('show');
                         $('#guardar_save_update').click(function(){
                             $('#save_update').hide();
-                            saveEvento();
+                            $('#form').submit();
+                            //return false;
+                            //saveEvento();
                         });
                     });
                 },
@@ -502,68 +506,155 @@
                 });
             }
 
-            function saveEvento()
+            $('#form').submit(function(e) {
+                e.preventDefault();
+            });
+
+            $('#form').safeform({
+                submit: function(e) {
+                    
+                    if ($("#form").valid())
+                    {
+                        $.ajax({
+                            type: "POST",
+                            url: $('#form').attr('action'),
+                            async: true,
+                            data: $("#form").serialize(),
+                            dataType: "json",
+                            success: function(data) {
+                                $('#Modal #delete_save_show_update').attr("data",data.id);
+                                $('#p-titulo').html(data.titulo);
+                                $('#p-descripcion').html(data.descripcion);
+                                $('#p-lugar').html(data.lugar);
+                                $('#p-empresa').html(data.empresa);
+                                $('#p-nivel').html(data.nivel);
+                                $('#p-fechainicio').html(data.fechainicio);
+                                $('#p-fechafin').html(data.fechafin);
+                                $('.delete').click(function()
+                                {
+                                    var evento_id= $(this).attr('data');
+                                    sweetAlertDelete(evento_id, 'AdminEvento');
+                                });
+                                $('#form').hide();
+                                $('#detail-title').show();
+                                $('#detail').show();
+                                $('#save_create').hide();
+                                $('#save_update').hide();
+                                $('#save_show').hide();
+                                $('#save_error').hide();
+                                $('#save_show_update').show();
+                                clearTimeout( timerId );
+                                $('#form').safeform('complete');
+                                return false; // revent real submit
+                            },
+                            error: function(){
+                                $('#guardar').prop('disabled', false);
+                                $('#ModalShowEditError').modal('show');
+                                $('#form').hide();
+                                $('#detail-title').hide();
+                                $('#detail').hide();
+                                $('#title-error').show();
+                                $('#detail-error').show();
+                                $('#save_create').hide();
+                                $('#save_update').hide();
+                                $('#save_error').show();
+                                $('#save_show').hide();
+                                $('#save_show_update').hide();
+                                $('#Modal').modal('show');
+                                $('#form').safeform('complete');
+                                return false; // revent real submit
+                            }
+                        });
+                    }
+                    else {
+                        $('#form').show();
+                        $('#detail-title').hide();
+                        $('#detail').hide();
+                        $('#save_create').show();
+                        $('#save_update').hide();
+                        $('#save_show').hide();
+                        $('#save_show_update').hide();
+                        $('#save_error').hide();
+                    }
+                    
+                }
+            });
+
+            /*function saveEvento()
             {
-                if ($("#form").valid())
-                {
-                    $.ajax({
-                        type: "POST",
-                        url: $('#form').attr('action'),
-                        async: true,
-                        data: $("#form").serialize(),
-                        dataType: "json",
-                        success: function(data) {
-                            $('#Modal #delete_save_show_update').attr("data",data.id);
-                            $('#p-titulo').html(data.titulo);
-                            $('#p-descripcion').html(data.descripcion);
-                            $('#p-lugar').html(data.lugar);
-                            $('#p-empresa').html(data.empresa);
-                            $('#p-nivel').html(data.nivel);
-                            $('#p-fechainicio').html(data.fechainicio);
-                            $('#p-fechafin').html(data.fechafin);
-                            $('.delete').click(function()
-                            {
-                                var evento_id= $(this).attr('data');
-                                sweetAlertDelete(evento_id, 'AdminEvento');
+
+                $('#form').safeform({
+                    submit: function(e) {
+                        
+                        if ($("#form").valid())
+                        {
+                            console.log('validooo');
+                            $.ajax({
+                                type: "POST",
+                                url: $('#form').attr('action'),
+                                async: true,
+                                data: $("#form").serialize(),
+                                dataType: "json",
+                                success: function(data) {
+                                    $('#Modal #delete_save_show_update').attr("data",data.id);
+                                    $('#p-titulo').html(data.titulo);
+                                    $('#p-descripcion').html(data.descripcion);
+                                    $('#p-lugar').html(data.lugar);
+                                    $('#p-empresa').html(data.empresa);
+                                    $('#p-nivel').html(data.nivel);
+                                    $('#p-fechainicio').html(data.fechainicio);
+                                    $('#p-fechafin').html(data.fechafin);
+                                    $('.delete').click(function()
+                                    {
+                                        var evento_id= $(this).attr('data');
+                                        sweetAlertDelete(evento_id, 'AdminEvento');
+                                    });
+                                    $('#form').hide();
+                                    $('#detail-title').show();
+                                    $('#detail').show();
+                                    $('#save_create').hide();
+                                    $('#save_update').hide();
+                                    $('#save_show').hide();
+                                    $('#save_error').hide();
+                                    $('#save_show_update').show();
+                                    clearTimeout( timerId );
+                                    $('#form').safeform('complete');
+                                    return false; // revent real submit
+                                },
+                                error: function(){
+                                    $('#guardar').prop('disabled', false);
+                                    $('#ModalShowEditError').modal('show');
+                                    $('#form').hide();
+                                    $('#detail-title').hide();
+                                    $('#detail').hide();
+                                    $('#title-error').show();
+                                    $('#detail-error').show();
+                                    $('#save_create').hide();
+                                    $('#save_update').hide();
+                                    $('#save_error').show();
+                                    $('#save_show').hide();
+                                    $('#save_show_update').hide();
+                                    $('#Modal').modal('show');
+                                    $('#form').safeform('complete');
+                                    return false; // revent real submit
+                                }
                             });
-                            $('#form').hide();
-                            $('#detail-title').show();
-                            $('#detail').show();
-                            $('#save_create').hide();
-                            $('#save_update').hide();
-                            $('#save_show').hide();
-                            $('#save_error').hide();
-                            $('#save_show_update').show();
-                            clearTimeout( timerId );
-                        },
-                        error: function(){
-                            $('#guardar').prop('disabled', false);
-                            $('#ModalShowEditError').modal('show');
-                            $('#form').hide();
+                        }
+                        else {
+                            $('#form').show();
                             $('#detail-title').hide();
                             $('#detail').hide();
-                            $('#title-error').show();
-                            $('#detail-error').show();
-                            $('#save_create').hide();
+                            $('#save_create').show();
                             $('#save_update').hide();
-                            $('#save_error').show();
                             $('#save_show').hide();
                             $('#save_show_update').hide();
-                            $('#Modal').modal('show');
+                            $('#save_error').hide();
                         }
-                    });
-                }
-                else {
-                    $('#form').show();
-                    $('#detail-title').hide();
-                    $('#detail').hide();
-                    $('#save_create').show();
-                    $('#save_update').hide();
-                    $('#save_show').hide();
-                    $('#save_show_update').hide();
-                    $('#save_error').hide();
-                }
-            }
+                        
+                    }
+                });
+
+            }*/
 
             $('#delete_save_update').click(function(){
                 var notificacion_id = $(this).attr('data');

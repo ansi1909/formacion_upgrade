@@ -18,18 +18,11 @@ use Symfony\Component\Routing\RequestContext;
 
 class UsersCollaborativeCommand extends ContainerAwareCommand
 {
-    private $router;
-
     protected function configure()
     {
         $this->setName('link:espacio-colaborativo')
              ->setDescription('Envía correos y genera alarmas a los participantes al momento de crearse un espacio colaborativo');
     }
-
-    /*public function __construct(RouterInterface $router)
-    {
-        $this->router = $router;
-    }*/
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
