@@ -93,3 +93,10 @@
 OJO: Cuando se instaló el Bundle de html2pdf generó el siguiente warning:
 Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffice/phpspreadsheet instead.
 ---------------------------------------------------------------------------------------------------------
+
+18. Los cron jobs deben programarse bajo las siguientes frecuencia
+	a. php bin/console link:espacio-colaborativo		--> Diariamente a las 01:00
+	b. php bin/console link:evento						--> Diariamente a las 02:00
+	c. php bin/console link:recordatorio-plataforma		--> Diariamente a las 03:00
+	d. php bin/console link:recordatorio-programas		--> Diariamente a las 04:00
+	e. php bin/console link:recordatorio-programados	--> Diariamente a las 05:00

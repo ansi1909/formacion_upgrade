@@ -3,7 +3,7 @@ _calendario:
     defaults: { _controller: LinkBackendBundle:Calendario:index }
 
 _eventos:
-    path:  /eventos/{userID}
+    path:  /eventos
     defaults: { _controller: LinkBackendBundle:Calendario:eventos }
 
 _calendario_update:
