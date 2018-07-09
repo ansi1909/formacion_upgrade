@@ -86,4 +86,6 @@ parameters:
         respuesta_muro: 50
         espacio_colaborativo: 100
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
-    search_locale: 0    
+    search_locale: 0
+    mailer_user: tutorvirtual@formacion2puntocero.com
+    base_url: 'http://localhost/formacion2.0/web/app_dev.php'
