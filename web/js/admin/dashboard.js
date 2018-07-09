@@ -1,4 +1,23 @@
 $(document).ready(function() {
+
+     $('#empresa_id').change(function(){
+        var empresa_id = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: $('#url_ajaxProgramasDash').val(),
+                async: true,
+                data: { empresa_id: empresa_id },
+                dataType: "json",
+                success: function(data) {
+                    $('#hola').html(data);
+                    
+                },
+                error: function(){
+                    $('#active-error').html($('#error_msg-filter').val());
+                    $('#div-active-alert').show();
+                }
+            });
+     });
     
     /*cicular progress sidebar home page */   
      $('.progress_profile').circleProgress({ 

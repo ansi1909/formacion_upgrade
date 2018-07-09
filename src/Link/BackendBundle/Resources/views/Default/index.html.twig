@@ -10,6 +10,7 @@
     {% set app_id = app.session.get('app_id') %}
     <br><br>
     {% if rol == 'true' %}
+    <input type="hidden" id="url_ajaxProgramasDash" name="url_ajaxProgramasDash" value="{{ path('_ajaxProgramasDashboard') }}">
     <div class="admin_dash" >
         <div class="row">
             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
@@ -73,6 +74,8 @@
                                 <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
                             </div>
                         </div>
+                        <br>
+                        <div id="hola"></div>
                     <br>
                 </div>
                     </div>
