@@ -28,15 +28,12 @@ function getListadoNiveles(empresa_id){
 			$('#div-paginas').hide();
 			$('#div-grupos').show();
 			$('#nombre-p').html(data.empresa);
-
-
 			afterPaginate();
-
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
 			$('#div-active-alert').show();
-				}
+		}
 	});
 }
 

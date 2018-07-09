@@ -1,6 +1,6 @@
 <?php
 
-// formacion2.0/src/Link/BackendBundle/Command/UsersScheduledCommand.php
+// formacion2.0/src/Link/BackendBundle/Command/UsersCollaborativeCommand.php
 
 namespace Link\BackendBundle\Command;
 
@@ -14,15 +14,11 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\RequestContext;
 
 class UsersCollaborativeCommand extends ContainerAwareCommand
 {
     private $router;
-
-    public function __construct(RouterInterface $router)
-    {
-        $this->router = $router;
-    }
 
     protected function configure()
     {
@@ -30,12 +26,19 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
              ->setDescription('Envía correos y genera alarmas a los participantes al momento de crearse un espacio colaborativo');
     }
 
+    /*public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }*/
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         $em = $this->getContainer()->get('doctrine')->getManager();
         $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
+        $translator = $this->getContainer()->get('translator');
+        $base = $yml['parameters']['base_url'];
 
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
                                     JOIN f.empresa e 
@@ -63,14 +66,15 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
                                               'pagina_id' => $foro->getPagina()->getId()));
             $nivel_paginas = $query->getResult();
 
-            $descripcion = $foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido().' ha creado un tema en el espacio colaborativo del '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
+            $descripcion = $foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido().' '.$translator->trans('ha creado un tema en el espacio colaborativo del').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
 
             $usuarios_id = array();
             $usuarios_arr = array();
 
             foreach ($nivel_paginas as $np)
             {
-                $usuarios = $em->getRepository('LinkComunBundle:AdminUsuario')->findByNivel($np->getNivel()->getId());
+                $usuarios = $em->getRepository('LinkComunBundle:AdminUsuario')->findBy(array('nivel' => $np->getNivel()->getId(),
+                                                                                             'activo' => true));
                 foreach ($usuarios as $usuario_nivel)
                 {
                     $query = $em->createQuery('SELECT COUNT(ru.id) FROM LinkComunBundle:AdminRolUsuario ru 
@@ -94,9 +98,10 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
                 $correo_participante = (!$usuario_nivel->getCorreoPersonal() || $usuario_nivel->getCorreoPersonal() == '') ? (!$usuario_nivel->getCorreoCorporativo() || $usuario_nivel->getCorreoCorporativo() == '') ? 0 : $usuario_nivel->getCorreoCorporativo() : $usuario_nivel->getCorreoPersonal();
                 if ($correo_participante)
                 {
+                    $ruta = $this->getContainer()->get('router')->generate('_detalleColaborativo', array('foro_id' => $foro->getId()));
                     $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativoParticipantes.html.twig',
                                                'datos' => array('descripcion' => $descripcion,
-                                                                'href' => $this->router->generate('_detalleColaborativo', array('foro_id' => $foro->getId()))),
+                                                                'href' => $base.$ruta),
                                                'asunto' => 'Formación 2.0: Nuevo espacio colaborativo.',
                                                'remitente' => $yml['parameters']['mailer_user'],
                                                'destinatario' => $correo_participante);
@@ -109,49 +114,5 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
 
         }
         
-        
-
-        $fecha = '2018-03-31';
-        $destinatarios = array();
-        $query = $em->getConnection()->prepare('SELECT fnrecordatorios_usuarios(:pfecha) AS resultado;');
-          $query->bindValue(':pfecha', date('Y-m-d'), \PDO::PARAM_STR);
-          $query->execute();
-          $consulta = $query->fetchAll();
-          $output->writeln(var_dump($consulta));
-          $output->writeln('CANTIDAD: '.count($consulta));
-          for ($i = 0; $i < count($consulta); $i++) {
-              $valor = explode('__', $consulta[$i]['resultado']);
-              $_nombre = explode('"', $valor[0]);
-              $nombre = $_nombre[1];
-              $apellido = $valor[1];
-              $correo = $valor[2];
-              $asunto = $valor[3];
-              $mensaje = $valor[4];
-              $_id = explode('"', $valor[5]);
-              $id = $_id[0];
-              $output->writeln('NOMBRE: '.$nombre.' APELLIDO: '.$apellido.' EMAIL: '.$correo.' ASUNTO: '.$asunto.' MENSAJE: '.$mensaje.' ID NOTIFICACION: '.$id[0]);
-              $parametros = array();
-              $parametros= array('twig'=>$template,
-                                 'asunto'=>$asunto,
-                                 'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación2.0'),
-                                 'destinatario'=>$correo,
-                                 'datos'=>array('mensaje' => $mensaje, 'nombre'=> $nombre, 'apellido' => $apellido ));
-
-              $f->sendEmailCommand($parametros);
-
-              $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($id);
-              $programacion->setEnviado(true);
-                    
-              $em->persist($programacion);
-              $em->flush();
-
-                // busco si hay notificaciones hijas de la programación para cambiar a enviado
-              $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
-              foreach ($grupo_programada as $individual) {
-                  $individual->setEnviado(true);
-                  $em->persist($individual);
-                  $em->flush();
-              }
-          }
-      }
+    }
 }
