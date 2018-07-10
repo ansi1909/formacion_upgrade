@@ -369,7 +369,7 @@ class DefaultController extends Controller
                     
                     $html .= '<tr>
                                 <td>'. $pagina->getPagina()->getNombre() .'</td>
-                                <td>'. $pagina->getFechaInicio()->format('d-m-Y G:ia') .'</td>
+                                <td>'. $pagina->getFechaInicio()->format('d-m-Y') .'</td>
                                 <td>'. $pagina->getFechaVencimiento()->format('d-m-Y').'</td>
                                 <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => '20')).'"><span>'. $usuariosT .'<i class="fa fa-user"></i></span></a></td>
                                 <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => '20')).'"><span>'. $usuariosCur .'<i class="fa fa-user"></i></span></a></td>
