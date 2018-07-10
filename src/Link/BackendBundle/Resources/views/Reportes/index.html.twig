@@ -87,6 +87,7 @@
         {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 
         <br><br>
+        <input type="text" id="pagina_selected" name="pagina_selected" value="{{pagina_id}}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">

@@ -217,6 +217,7 @@ class DefaultController extends Controller
                     //return new Response (var_dump($usuariosCur));
                     
                     $paginas[] = array('pagina' => $pagina->getPagina()->getNombre(),
+                                        'id' => $pagina->getPagina() ->getId(),
                                        'fecha_i' => $pagina->getFechaInicio(),
                                        'fecha_f' => $pagina->getFechaVencimiento(),
                                        'usuariosT' => $usuariosT,
