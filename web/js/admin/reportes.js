@@ -181,4 +181,6 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 			$('#div-active-alert').show();
 		}
 	});
+
+	
 }
