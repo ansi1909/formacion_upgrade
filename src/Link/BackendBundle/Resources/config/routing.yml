@@ -32,6 +32,12 @@ _ajaxQR:
     path:     /ajaxQR
     defaults: { _controller: LinkBackendBundle:Default:ajaxQR }
 
+_ajaxProgramasDashboard:
+    path:     /ajaxProgrmasDashboard
+    defaults: { _controller: LinkBackendBundle:Default:ajaxProgramasDashboard }
+    requirements:
+        method: POST
+
 roles:
     resource: "@LinkBackendBundle/Resources/config/routing/roles.yml"
     prefix: /rol

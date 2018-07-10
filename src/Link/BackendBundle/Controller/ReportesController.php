@@ -53,8 +53,6 @@ class ReportesController extends Controller
             $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
             $query->execute();
             $r = $query->fetchAll();
-            $output->writeln(var_dump($r));
-            $output->writeln('CANTIDAD: '.count($r));
 
 
             // Solicita el servicio de excel
@@ -68,8 +66,10 @@ class ReportesController extends Controller
                ->setKeywords("office 2005 openxml php")
                ->setCategory("Reportes");
             foreach ($r as $re) {
+            
                 $i++;
                 $activo = $re['activo'] ? 'Sí' : 'No';
+                $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
                 $phpExcelObject->setActiveSheetIndex(0)
                                ->setCellValue('A1', 'Nombre')
                                ->setCellValue('B1', 'Apellido')
@@ -77,22 +77,30 @@ class ReportesController extends Controller
                                ->setCellValue('D1', 'Correo Personal')
                                ->setCellValue('E1', 'Correp Corporativo')
                                ->setCellValue('F1', 'Activo')
-                               ->setCellValue('G1', 'Fecha de registro')
-                               ->setCellValue('H1', 'Fecha de nacimiento')
-                               ->setCellValue('I1', 'País')
-                               ->setCellValue('J1', 'Nivel')
-                               ->setCellValue('K1', 'Logueado')
+                               ->setCellValue('G1', 'Logueado')
+                               ->setCellValue('H1', 'Fecha de registro')
+                               ->setCellValue('I1', 'Fecha de nacimiento')
+                               ->setCellValue('J1', 'País')
+                               ->setCellValue('K1', 'Nivel')
+                               ->setCellValue('L1', 'campo1')
+                               ->setCellValue('M1', 'campo2')
+                               ->setCellValue('N1', 'campo3')
+                               ->setCellValue('O1', 'campo4')
                                ->setCellValue('A'.$i, $re['nombre'])
                                ->setCellValue('B'.$i, $re['apellido'])
                                ->setCellValue('C'.$i, $re['login'])
                                ->setCellValue('D'.$i, $re['correo'])
                                ->setCellValue('E'.$i, $re['correo2'])
                                ->setCellValue('F'.$i, $activo)
-                               ->setCellValue('G'.$i, $re['fecha_registro'])
-                               ->setCellValue('H'.$i, $re['fecha_nacimiento'])
-                               ->setCellValue('I'.$i, $re['pais'])
-                               ->setCellValue('J'.$i, $re['nivel'])
-                               ->setCellValue('k'.$i, $re['logueado']);
+                               ->setCellValue('G'.$i, $logueado)
+                               ->setCellValue('H'.$i, $re['fecha_registro'])
+                               ->setCellValue('I'.$i, $re['fecha_nacimiento'])
+                               ->setCellValue('J'.$i, $re['pais'])
+                               ->setCellValue('K'.$i, $re['nivel'])
+                               ->setCellValue('L'.$i, $re['campo1'])
+                               ->setCellValue('M'.$i, $re['campo2'])
+                               ->setCellValue('N'.$i, $re['campo3'])
+                               ->setCellValue('O'.$i, $re['campo4']);
             }
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
