@@ -363,6 +363,12 @@
     @include media-breakpoint-down(xl){
         top: 6rem;
     }
+    @include media-breakpoint-down(xs){
+        left: 20%;
+    }
+    @include media-breakpoint-down(xxs){
+        left: 14%;
+    }
     .countDownC { 
         margin:0 auto; 
         width: 17rem; 
@@ -391,6 +397,16 @@
     border-radius: 0 0 .5rem .5rem;
     @include media-breakpoint-down(xl){
         top: 6rem;
+    }
+    @include media-breakpoint-down(sm){
+        left: 40%;
+        transform: translateX(-50px);
+    }
+    @include media-breakpoint-down(xs){
+        left: 33%;
+    }
+    @include media-breakpoint-down(xxs){
+        left: 29%;
     }
     .countDownC { 
         margin:0 auto; 
