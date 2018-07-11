@@ -100,8 +100,8 @@
                     <table class="table" id="dt">
                         <thead class="sty__title">
                             <tr>
-                                <th>{{ 'Mensaje'|trans }}</th>
-                                <th>{{ 'usuario'|trans }}</th>
+                                <th>{{ 'Tema'|trans }}</th>
+                                <th>{{ 'Usuario'|trans }}</th>
                                 <th>{{ 'Fecha'|trans }}</th>
                                 <th>{{ 'Acciones'|trans }}</th>
                             </tr>
@@ -109,7 +109,7 @@
                         <tbody>
                             {% for comentario in comentarios %}
                                 <tr>
-                                    <td class="respuesta{{ comentario.id }}">{{ comentario.mensaje }}</td>
+                                    <td class="respuesta{{ comentario.id }}">{{ comentario.asunto }}</td>
                                     <td>{{ comentario.nombreUsuario ~ ' ' ~ comentario.apellidoUsuario }}</td>
                                     <td>{{ comentario.fecharegistro }}</td>
                                     <td class="center">
