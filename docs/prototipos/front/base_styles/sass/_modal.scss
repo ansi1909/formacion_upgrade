@@ -225,6 +225,14 @@
         border-radius: 50rem;
         color: $gray-700;
         background: linear-gradient(to left, $yellow 0%, $yellow 100%);
+        @include media-breakpoint-down(xs){
+            position: relative;
+            left: -1.5rem;
+        }
+        @include media-breakpoint-down(xxs){
+            font-size: .9rem;
+            left: -1.75rem;
+        }
         &:hover{
             background: linear-gradient(to right, $yellow 0%, $yellow 100%);
             color: $gray-850;
@@ -631,6 +639,14 @@
         height: 28.5rem;
         width: 30.5rem;
     }
+    @include media-breakpoint-down(xs){
+        height: 30rem;
+        width: 20rem;
+    }
+    @include media-breakpoint-down(xxs){
+        height: 30rem;
+        width: 17rem;
+    }
 }
 
 %modal-m{
@@ -662,7 +678,10 @@
         margin: calc(2rem - 4px) auto !important;
     }
     @include media-breakpoint-down(xs){
-        margin: calc(1rem + 4px) auto !important;
+        margin: 5rem auto !important;
+    }
+    @include media-breakpoint-down(xxs){
+        margin: calc(2rem + 4px) auto !important;
     }
     .btn_close_modal{
         position: relative;
@@ -670,6 +689,9 @@
         right: 0;
         border: 0;
         background: transparent;
+        @include media-breakpoint-down(xs){
+            right: -1rem;
+        }
         .ic-close-white{
             height: 1.5rem;
             width: 1.5rem;
@@ -684,6 +706,10 @@
         font-size: $h4-font-size;
         text-align: center;
         line-height: 2.375rem;
+        @include media-breakpoint-down(xxs){
+            font-size: $p-font-size;
+            line-height: 1.5rem;
+        }
     }
 }
 

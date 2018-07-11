@@ -9,12 +9,12 @@ _ajaxListadoParticipantes:
         method: GET
 
 _participantesRegistrados:
-    path:     /participantesRegistrados/{app_id},{r}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 2 }
+    path:     /participantesRegistrados/{app_id},{pagina_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0,r: 2}
 
 _participantesCursando:
-    path:     /participantesCursando/{app_id},{r}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 3 }
+    path:     /participantesCursando/{app_id},{pagina_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0, r: 3 }
 
 _ajaxProgramasE:
     path:     /ajaxProgramasE
@@ -23,12 +23,12 @@ _ajaxProgramasE:
         method: GET
 
 _participantesAprobados:
-    path:     /participantesAprobados/{app_id},{r}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 4 }
+    path:     /participantesAprobados/{app_id},{pagina_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 4 }
 
 _participantesNoIniciados:
-    path:     /participantesNoIniciados/{app_id},{r}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 5 }
+    path:     /participantesNoIniciados/{app_id},{pagina_id},{r}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 5 }
 
 _excelReporte:
     path:     /excelReporte/{app_id},{r}

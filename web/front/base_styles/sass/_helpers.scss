@@ -19,6 +19,15 @@
     }
 }
 
+.mt-xs-15v{
+    @include media-breakpoint-only(sm) {
+        margin-top: 10rem;
+    }
+    @include media-breakpoint-down(xs) {
+        margin-top: 10rem;
+    }
+}
+
 .color-light-grey { color: $gray-500;}
 .color-grey { color: $gray-700; }
 .color-dark-grey { color: $gray-800; }
