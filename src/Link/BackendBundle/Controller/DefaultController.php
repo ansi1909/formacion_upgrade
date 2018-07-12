@@ -217,13 +217,13 @@ class DefaultController extends Controller
                     //return new Response (var_dump($usuariosCur));
                     
                     $paginas[] = array('pagina' => $pagina->getPagina()->getNombre(),
-                                        'id' => $pagina->getPagina() ->getId(),
                                        'fecha_i' => $pagina->getFechaInicio(),
                                        'fecha_f' => $pagina->getFechaVencimiento(),
                                        'usuariosT' => $usuariosT,
                                        'usuariosCur' => $usuariosCur,
                                        'usuariosF' => $usuariosF,
-                                       'usuariosN' => $usuariosN);
+                                       'usuariosN' => $usuariosN,
+                                       'id' => $pagina->getPAgina()->getId());
                 }
 
                 $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuariosA,
@@ -290,7 +290,7 @@ class DefaultController extends Controller
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => '20')).'"><span>'. $usuariosR .'<i class="fa fa-user"></i></span></a></td>
+                                <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => '20', 'pagina_id' => '0', 'empresa_id' => $empresa_id)).'"><span>'. $usuariosR .'<i class="fa fa-user"></i></span></a></td>
                                 <td class="text-center"><span>'. $usuariosA .'<i class="fa fa-user"></i></span></td>
                                 <td class="text-center"><span>'. $usuariosI .'<i class="fa fa-user"></i></span></td>
                             </tr>
@@ -372,10 +372,10 @@ class DefaultController extends Controller
                                 <td>'. $pagina->getPagina()->getNombre() .'</td>
                                 <td>'. $pagina->getFechaInicio()->format('d-m-Y') .'</td>
                                 <td>'. $pagina->getFechaVencimiento()->format('d-m-Y').'</td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => '20')).'"><span>'. $usuariosT .'<i class="fa fa-user"></i></span></a></td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => '20')).'"><span>'. $usuariosCur .'<i class="fa fa-user"></i></span></a></td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => '20')).'"><span>'. $usuariosF .' <i class="fa fa-user"></i></span></a></td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => '20')).'"><span>'. $usuariosN .' <i class="fa fa-user"></i></span></a></td>
+                                <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosT .'<i class="fa fa-user"></i></span></a></td>
+                                <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosCur .'<i class="fa fa-user"></i></span></a></td>
+                                <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosF .' <i class="fa fa-user"></i></span></a></td>
+                                <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosN .' <i class="fa fa-user"></i></span></a></td>
                             </tr>';
                 }
 

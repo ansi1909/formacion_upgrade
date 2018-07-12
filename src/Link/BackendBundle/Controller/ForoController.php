@@ -87,6 +87,7 @@ class ForoController extends Controller
          foreach ($coments as $coment)
         {
             $comentarios[]= array('id'=>$coment->getId(),
+                                  'asunto'=>$coment->getTema(),
                                   'mensaje'=>$coment->getMensaje(),
                                   'usuarioId'=>$coment->getUsuario()->getId(),
                                   'nombreUsuario'=>$coment->getUsuario()->getNombre(),
