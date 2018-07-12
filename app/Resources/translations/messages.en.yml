@@ -374,6 +374,7 @@ Imagen lado: Image side
 Ingrese un correo valido: Enter a valid email
 Indice del contenido: Content index
 Indique el asunto de su mensaje: Indicate the subject of your message
+Indique si el usuario es activo. Valores válidos 0 o 1.: Indicate if the user is active. Valid values 0 or 1.
 Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
@@ -406,6 +407,8 @@ La cantidad máxima de intentos es requerida.: The max number of attempts is req
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
 La clave es requerida.: Password is required.
+La columna Activo debe ser un valor entero: The Active column must be an integer value
+La columna Activo debe tener como valor 0 o 1: The Active column must be 1 or 0
 La contraseña es requerida: Password is required
 La descripción debe ser mínimo de 3 caracteres.: Description must have at least 3 characters.
 La descripción es requerida.: Description is required.

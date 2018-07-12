@@ -40,6 +40,12 @@ _ajaxNiveles:
     requirements:
         method: GET
 
+_ajaxNivelesUsuario:
+    path:     /ajaxNivelesUsuario
+    defaults: { _controller: LinkBackendBundle:Nivel:ajaxNivelesUsuario }
+    requirements:
+        method: GET
+
 _paginasNiveles:
     path:     /paginasNiveles/{app_id}
     defaults: { _controller: LinkBackendBundle:Nivel:paginasNiveles }

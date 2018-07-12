@@ -95,6 +95,9 @@ Link\ComunBundle\Entity\TmpParticipante:
             length: 10
             options:
                 fixed: false
+        activo:
+            type: boolean
+            nullable: true
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
