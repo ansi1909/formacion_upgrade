@@ -105,15 +105,15 @@ class CertificadoController extends Controller
                                                                                                 	'pagina' => $pagina->getId() ));
 
 		        $size =2;
-				// //$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
+				$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
 
-		  //       $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
+		        $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
 
- 			// 	$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
+ 				$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
 
-		  //      \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
+		       \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
 
-		        // $ruta ='<img src="'.$directorio.'">';
+		        $ruta ='<img src="'.$directorio.'">';
 
 				$file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
 
@@ -129,7 +129,7 @@ class CertificadoController extends Controller
 		                                            <div style="text-align:center;margin-top:40px;font-size:14px;">Fecha Inicio:'.$pagina_log->getFechaInicio()->format("d/m/y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin:'.$pagina_log->getFechaFin()->format("d/m/y").' </div>
 		                                            <div style="text-align:center;margin-top:15px;font-size:14px;">Equivalente a: '.$pagina->getHorasAcademicas().' hrs. académicas </div>
 		                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
-                                        			<div style="margin-top:80px; margin-left:910px; ">'.'$ruta'.'</div>
+                                        			<div style="margin-top:80px; margin-left:910px; ">'.$ruta.'</div>
 		                                        </page>');
 
 
