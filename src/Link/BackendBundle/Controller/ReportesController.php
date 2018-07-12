@@ -13,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class ReportesController extends Controller
 {
-    public function indexAction($app_id,$r,Request $request)
+    public function indexAction($app_id,$r,$pagina_id,Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -146,13 +146,15 @@ class ReportesController extends Controller
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
                                                                                                     'usuario_empresa' => $usuario_empresa,
                                                                                                     'usuario' => $usuario,
-                                                                                                    'reporte'=>$r));    
+                                                                                                    'reporte'=>$r,
+                                                                                                    'pagina_id'=>$pagina_id));    
     }
 
     public function ajaxProgramasEAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
+        $pagina_id = $request->query->get('pagina_previa');
 
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
@@ -164,7 +166,15 @@ class ReportesController extends Controller
         $options = '<option value=""></option>';
         foreach ($paginas as $pagina)
         {
-            $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().'</option>';
+            if ($pagina->getPagina()->getId() == $pagina_id) 
+            {
+                $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getNombre().'</option>';
+            }
+            else
+            {
+                 $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().'</option>';
+            }
+           
         }
         
         $return = array('options' => $options);
@@ -238,4 +248,6 @@ class ReportesController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
+
+    
 }

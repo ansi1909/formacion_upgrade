@@ -6,6 +6,20 @@
     text-align: center;
     position: relative;
     top: -.5rem;
+    @include media-breakpoint-down(sm){
+        top: 1rem;
+        left: .8rem;
+        font-size: $h4-font-size;
+        line-height: 1rem;
+        font-weight: $font-weight-medium;
+    }
+    @include media-breakpoint-down(xs){
+        top: .9rem;
+        left: .8rem;
+        font-size: 1rem;
+        line-height: 1rem;
+        font-weight: $font-weight-medium;
+    }
 }
 
 .progress-bar_eval{
@@ -39,6 +53,21 @@
     width: 57rem;
     margin: .5rem 0;
     cursor: pointer;
+    @include media-breakpoint-down(sm){
+        max-width: 32.5rem;
+        position: relative;
+        left: -20%;
+    }
+    @include media-breakpoint-down(xs){
+        width: 21.5rem;
+        position: relative;
+        left: -24%;
+    }
+    @include media-breakpoint-down(xxs){
+        width: 18rem;
+        position: relative;
+        left: -24%;
+    }
     .opc_letra{
         height: auto;
         min-height: 3rem;
@@ -62,6 +91,12 @@
             top: 50%;
             display: block;
             margin: auto;
+            @include media-breakpoint-down(sm){
+                font-size: $h4-font-size;
+            }
+            @include media-breakpoint-down(xs){
+                font-size: $p-font-size;
+            }
         }
     }
     .opc_resp{
@@ -80,6 +115,10 @@
             font-size: $font-size-sm;
             line-height: 1.25rem;
             font-weight: $font-weight-normal;
+            @include media-breakpoint-down(xs){
+                font-size: $font-size-xs;
+                line-height: 1rem;
+            }
         }
     }
     &:hover{
@@ -369,6 +408,22 @@
     text-align: justify;
     margin-top: .25rem;
     font-weight: $font-weight-normal;
+    @include media-breakpoint-down(sm){
+        position: relative;
+        left: -2.5rem;
+        top: .5rem;
+    }
+    @include media-breakpoint-down(xs){
+        position: relative;
+        left: -1.75rem;
+        top: .5rem;
+    }
+    @include media-breakpoint-down(xxs){
+        font-size: $font-size-sm;
+        position: relative;
+        left: -1.5rem;
+        top: 1rem;
+    }
 }
 
 %opc_sp{
