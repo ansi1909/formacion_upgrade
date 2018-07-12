@@ -331,8 +331,8 @@ Fecha fin: End date
 Fecha inicio: Start date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
-Fecha de Publicación: Fecha de Publicación
-Fecha de Vencimiento: Fecha de Vencimiento
+Fecha de Publicación: Publication date
+Fecha de Vencimiento: Due date
 Fecha Difusión: Dissemination Date
 FELICIDADES: CONGRATULATIONS
 Fila: Row
@@ -658,6 +658,7 @@ Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0: You can also request the upload of this certificate through the Content Manager of Formación 2.0 team
+Tema: Theme
 Teléfono de contacto: Contact Number
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails

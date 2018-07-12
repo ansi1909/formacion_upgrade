@@ -8,6 +8,7 @@
         {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
         <br><br>
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{pagina_id}}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{empresa_dashboard}}">
         <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
         <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
@@ -27,7 +28,8 @@
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                         <option value="0"></option>
                                         {% for empresa in empresas %}
-                                            <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                            {% set select = empresa.id == empresa_dashboard ? 'selected' : " "  %}
+                                                <option value="{{ empresa.id }}" {{select}} >{{ empresa.nombre }}</option>
                                         {% endfor %}
                                     </select>
                                     <span class="fa fa-industry"></span>
@@ -89,6 +91,7 @@
 
         <br><br>
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{pagina_id}}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{empresa_dashboard}}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
@@ -108,7 +111,8 @@
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                         <option value="0"></option>
                                         {% for empresa in empresas %}
-                                            <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                            {% set select = empresa.id == empresa_dashboard ? 'selected' : " "  %}
+                                                <option value="{{ empresa.id }}" {{select}} >{{ empresa.nombre }}</option>
                                         {% endfor %}
                                     </select>
                                     <span class="fa fa-industry"></span>
@@ -171,6 +175,7 @@
 
         <br><br>
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{pagina_id}}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{empresa_dashboard}}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
@@ -190,7 +195,8 @@
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                         <option value="0"></option>
                                         {% for empresa in empresas %}
-                                            <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                           {% set select = empresa.id == empresa_dashboard ? 'selected' : " "  %}
+                                                <option value="{{ empresa.id }}" {{select}} >{{ empresa.nombre }}</option>
                                         {% endfor %}
                                     </select>
                                     <span class="fa fa-industry"></span>
@@ -253,6 +259,7 @@
 
         <br><br>
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{pagina_id}}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{empresa_dashboard}}">
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
@@ -272,7 +279,8 @@
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                         <option value="0"></option>
                                         {% for empresa in empresas %}
-                                            <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                        {% set select = empresa.id == empresa_dashboard ? 'selected' : " "  %}
+                                            <option value="{{ empresa.id }}" {{select}} >{{ empresa.nombre }}</option>
                                         {% endfor %}
                                     </select>
                                     <span class="fa fa-industry"></span>
@@ -335,6 +343,7 @@
 
     <br><br>
     <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{pagina_id}}">
+    <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{empresa_dashboard}}">
     <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
     <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
     <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
@@ -354,7 +363,8 @@
                                 <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                     <option value="0"></option>
                                     {% for empresa in empresas %}
-                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                       {% set select = empresa.id == empresa_dashboard ? 'selected' : " "  %}
+                                            <option value="{{ empresa.id }}" {{select}} >{{ empresa.nombre }}</option>
                                     {% endfor %}
                                 </select>
                                 <span class="fa fa-industry"></span>

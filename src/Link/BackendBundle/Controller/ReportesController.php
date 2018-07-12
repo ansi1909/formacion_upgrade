@@ -13,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class ReportesController extends Controller
 {
-    public function indexAction($app_id,$r,$pagina_id,Request $request)
+    public function indexAction($app_id,$r,$pagina_id,$empresa_id,Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -147,7 +147,8 @@ class ReportesController extends Controller
                                                                                                     'usuario_empresa' => $usuario_empresa,
                                                                                                     'usuario' => $usuario,
                                                                                                     'reporte'=>$r,
-                                                                                                    'pagina_id'=>$pagina_id));    
+                                                                                                    'pagina_id'=>$pagina_id,
+                                                                                                    'empresa_dashboard'=>$empresa_id));    
     }
 
     public function ajaxProgramasEAction(Request $request)
@@ -168,11 +169,11 @@ class ReportesController extends Controller
         {
             if ($pagina->getPagina()->getId() == $pagina_id) 
             {
-                $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getNombre().'</option>';
+                $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getNombre().'  </option>';
             }
             else
             {
-                 $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().'</option>';
+                 $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().' </option>';
             }
            
         }

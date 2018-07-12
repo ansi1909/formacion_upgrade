@@ -38,9 +38,10 @@ class UsuarioController extends Controller
         {
             $puntos = $puntos + $paginalog->getPuntos();
         }
+        $fechaNacimiento= ($usuario->getFechaNacimiento())? $usuario->getFechaNacimiento()->format('d/m/Y'):'';
 
         return $this->render('LinkFrontendBundle:Usuario:index.html.twig', array('usuario' => $usuario,
-                                                                                 'fecha' => $usuario->getFechaNacimiento()->format('Y-m-d'),
+                                                                                 'fecha' => $fechaNacimiento,
                                                                                  'puntos' => $puntos));
 
     }
