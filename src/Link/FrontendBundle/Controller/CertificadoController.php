@@ -105,15 +105,15 @@ class CertificadoController extends Controller
                                                                                                 	'pagina' => $pagina->getId() ));
 
 		        $size =2;
-				// //$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
+				$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
 
-		  //       $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
+		        $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
 
- 			// 	$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
+ 				$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
 
-		  //      \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
+		       \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
 
-		        // $ruta ='<img src="'.$directorio.'">';
+		        $ruta ='<img src="'.$directorio.'">';
 
 				$file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
 

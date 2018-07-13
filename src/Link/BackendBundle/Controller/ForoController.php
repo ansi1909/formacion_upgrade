@@ -98,7 +98,7 @@ class ForoController extends Controller
                                  );
 
         }
-
+        /*return new Response(var_dump($comentarios));*/
 
         return $this->render('LinkBackendBundle:Foro:index.html.twig', array('empresas' => $empresas,
                                                                              'paginas' => $paginas,

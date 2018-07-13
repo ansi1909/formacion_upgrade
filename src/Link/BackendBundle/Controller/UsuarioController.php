@@ -1038,6 +1038,29 @@ class UsuarioController extends Controller
                             }
                         }
 
+                        // Activo
+                        $col++;
+                        $col_name = 'O';
+                        $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+                        $activo = trim($cell->getValue());
+                        if ($activo === null || $activo == '')
+                        {
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('Indique si el usuario es activo. Valores válidos 0 o 1.');
+                        }
+                        else {
+                            $hay_data++;
+                            if ($cell->getDataType() != 'n')
+                            {
+                                $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La columna Activo debe ser un valor entero').'.';
+                            }
+                            else {
+                                if (!($activo == 0 || $activo == 1))
+                                {
+                                    $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La columna Activo debe tener como valor 0 o 1').'.';
+                                }
+                            }
+                        }
+
                         /*if (array_key_exists($this->get('translator')->trans('Línea').' '.$row, $particulares)) 
                         {
                             // Si existen errores en esta fila, se anexan al conjunto del arreglo de errores
@@ -1234,7 +1257,7 @@ class UsuarioController extends Controller
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $campo4);
 
             // Nivel
-            $col = $col++;
+            $col++;
             $col_name = 'N';
             $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
             $nivel = trim($cell->getValue());
@@ -1265,11 +1288,19 @@ class UsuarioController extends Controller
             }
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $nivel_id);
 
-            // Las últimas 2 columnas son para la empresa_id y transaccion
+            // Activo
+            $col++;
             $col_name = 'O';
+            $cell = $objWorksheet->getCellByColumnAndRow($col, $row);
+            $activo = trim($cell->getValue());
+            $activo = $activo ? 1 : 0;
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $activo);
+
+            // Las últimas 2 columnas son para la empresa_id y transaccion
+            $col_name = 'P';
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $empresa_id);
 
-            $col_name = 'P';
+            $col_name = 'Q';
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue($col_name.$r, $transaccion);
 
         }

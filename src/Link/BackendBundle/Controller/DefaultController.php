@@ -255,7 +255,7 @@ class DefaultController extends Controller
                             ->setParameter('empresa_id', $empresa_id);
                 $paginas_db = $query->getResult();
 
-                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
+                $query = $em->createQuery('SELECT  u FROM LinkComunBundle:AdminUsuario u
                                            WHERE u.empresa = :empresa_id')
                             ->setParameter('empresa_id', $empresa_id);
                 $usuarios_db = $query->getResult();
@@ -263,9 +263,13 @@ class DefaultController extends Controller
                 $usuariosA = 0;
                 $usuariosI = 0;
 
+               // return new Response (var_dump($usuarios_db));
+
                 foreach ($usuarios_db as $usuario)
                 {
-                    if ($usuario->getActivo() == 'true') 
+                    $logueado = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId()));
+
+                    if ($logueado) 
                     {
                         $usuariosA++;
                     }

@@ -374,6 +374,7 @@ Imagen lado: Imagen lado
 Ingrese un correo valido: Ingrese un correo valido
 Indice del contenido: Indice del contenido
 Indique el asunto de su mensaje: Indique el asunto de su mensaje
+Indique si el usuario es activo. Valores válidos 0 o 1.: Indique si el usuario es activo. Valores válidos 0 o 1.
 Ingrese el mensaje que desea enviar: Ingrese el mensaje que desea enviar
 Ingresa tu usuario: Ingresa tu usuario
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa
@@ -406,6 +407,8 @@ La cantidad máxima de intentos es requerida.: La cantidad máxima de intentos e
 La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
 La clave es requerida.: La clave es requerida.
+La columna Activo debe ser un valor entero: La columna Activo debe ser un valor entero
+La columna Activo debe tener como valor 0 o 1: La columna Activo debe tener como valor 0 o 1
 La contraseña es requerida: La contraseña es requerida
 La descripción debe ser mínimo de 3 caracteres.: La descripción debe ser mínimo de 3 caracteres.
 La descripción es requerida.: La descripción es requerida.

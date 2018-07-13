@@ -202,6 +202,31 @@ class NivelController extends Controller
         
     }
 
+    public function ajaxNivelesUsuarioAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        
+        $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
+                                                                                             array('nombre' => 'ASC'));
+
+        $options = '<option value=""></option>';
+        foreach ($niveles as $nivel)
+        {
+            $nivel_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByNivel($nivel->getId());
+            if ($nivel_usuario)
+            {
+                $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+            }
+        }
+        
+        $return = array('options' => $options);
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
     public function uploadNivelesAction($empresa_id, Request $request)
     {
         
