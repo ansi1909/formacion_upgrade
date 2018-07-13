@@ -113,6 +113,7 @@ Confirmar contraseña: Confirmar contraseña
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla
 Contacte al Administrador del Sistema para mayor información: Contacte al Administrador del Sistema para mayor información
 Constancia de Notas: Constancia de Notas
+Consultar: Consultar
 Contenido: Contenido
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Continuar: Continuar
@@ -155,6 +156,8 @@ Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe escribir su respuesta: Debe escribir su respuesta
 Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
+Debe seleccionar la fecha inicial: Debe seleccionar la fecha inicial
+Debe seleccionar la fecha final: Debe seleccionar la fecha final
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar la página destino: Debe seleccionar la página destino
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
@@ -167,6 +170,7 @@ Descargar: Descargar
 Descargas: Descargas
 Descargar archivo: Descargar archivo
 Descargue material complementario: Descargue material complementario
+Desde: Desde
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Destino: Destino
 Detalle: Detalle
@@ -340,6 +344,7 @@ filtrado de un total de: filtrado de un total de
 Filtrar comentarios del foro: Filtrar comentarios del foro
 Filtrar comentarios del muro: Filtrar comentarios del muro
 Filtrar usuarios: Filtrar usuarios
+Filtro: Filtro
 Fin del programa: Fin del programa
 Finalizar: Finalizar
 Finalizar Evaluación: Finalizar Evaluación
@@ -352,6 +357,7 @@ Gráfico del promedio de conexiones: Grafico del promedio de conexiones
 Guardar: Guardar
 ha comentado en el espacio colaborativo de: ha comentado en el espacio colaborativo de
 ha creado un tema en el espacio colaborativo del: ha creado un tema en el espacio colaborativo del
+Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
@@ -362,9 +368,12 @@ ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el e
 Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
 Has completado con éxito los contenidos de: Has completado con éxito los contenidos de
 Has ganado: Has ganado
+Hasta: Hasta
 Historial de programaciones de: Historial de programaciones de
 Hizo un comentario: Hizo un comentario
 Horas académicas: Horas académicas
+Horas de conexión: Horas de conexión
+Horas de conexión por empresa: Horas de conexión por empresa
 Hoy a las: Hoy a las
 Icono: Icono
 Icono de la empresa: Icono de la empresa
@@ -426,6 +435,7 @@ La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: La fecha de 
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: La fecha de registro debe ser en formato DD/MM/AAAA y ser válida
 La fecha de vencimiento es requerida.: La fecha de vencimiento es requerida.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
+La fecha final debe ser mayor que la fecha inicial: La fecha final debe ser mayor que la fecha inicial
 La foto principal de la página es requerida: La foto principal de la página es requerida
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.

@@ -34,10 +34,17 @@ class ReportesJEController extends Controller
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
 
-        // Lógica inicial de la pantalla de este reporte
-        $datos = 'Foo';
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        return $this->render('LinkBackendBundle:Reportes:horasConexion.html.twig', array('datos' => $datos));
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:horasConexion.html.twig', array('usuario' => $usuario,
+                                                                                         'empresas' => $empresas));
 
     }
 
