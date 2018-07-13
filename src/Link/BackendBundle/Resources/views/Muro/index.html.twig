@@ -116,9 +116,17 @@
                                         {% if comentario.usuarioId == usuario.id %}
                                             <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
                                         {% endif %}
-                                        <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm add {% if comentario.answer_delete==0 %} disabled {% endif %}" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
+                                        {% if comentario.answer_delete==0 %}
+                                              <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm add " data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus" ></span></a>
+                                        {% endif %}
+
                                         <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm see" data="{{ comentario.id }}"><span class="fa fa-eye"></span></a>
-                                        <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if comentario.answer_delete==0 %}disabled{% elseif comentario.answer_delete==1 %}{% if comentario.delete_disabled == '' %}delete{% endif %} {{ comentario.delete_disabled }}" data="{{ comentario.id }}"><span class="fa fa-trash"></span></a>
+
+                                         {% if comentario.answer_delete!=0 %}
+                                             <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if comentario.delete_disabled == '' %}delete{% endif %} {{ comentario.delete_disabled }}" data="{{ comentario.id }}"><span class="fa fa-trash"></span></a>
+                                         {% endif %}
+
+                                       
                                     </td>
                                 </tr>
                             {% endfor %}

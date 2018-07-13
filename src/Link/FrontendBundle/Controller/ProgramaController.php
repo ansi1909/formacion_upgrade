@@ -447,6 +447,7 @@ class ProgramaController extends Controller
                                               'continuar'=>$continuar);
                 
             }
+            //return new Response(var_dump($programas_aprobados));
         }else{
             $completado = 0;
         }
@@ -564,8 +565,12 @@ class ProgramaController extends Controller
                                             'class_finaliza'=>$class_finaliza,
                                             'tiene_subpaginas'=>$tiene_subpaginas,
                                             'continuar'=>$continuar);
+
+           
             
         }
+       /* return new Response(var_dump($programas_disponibles));*/
+
 
         return $this->render('LinkFrontendBundle:Programa:programas.html.twig', array('grupos' => $grupos,
                                                                                       'programas_disponibles' => $programas_disponibles));
