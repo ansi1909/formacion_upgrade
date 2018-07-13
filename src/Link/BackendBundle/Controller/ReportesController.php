@@ -250,5 +250,61 @@ class ReportesController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
+    public function interaccionColaborativoAction($app_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+
+        // Lógica inicial de la pantalla de este reporte
+        $datos = 'Foo';
+
+        return $this->render('LinkBackendBundle:Reportes:interaccionColaborativo.html.twig', array('datos' => $datos));
+
+    }
+
+    public function interaccionMuroAction($app_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+
+        // Lógica inicial de la pantalla de este reporte
+        $datos = 'Foo';
+
+        return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('datos' => $datos));
+
+    }
+
     
 }

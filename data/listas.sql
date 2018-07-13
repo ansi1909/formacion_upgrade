@@ -183,7 +183,7 @@ INSERT INTO admin_tipo_biblioteca (id, nombre) VALUES (4, 'Libro');
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 36, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 43, false);
 
 --
 -- Data for Name: admin_aplicacion; Type: TABLE DATA; Schema: public;
@@ -224,6 +224,13 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (33, 'Preferencias de plantillas', '_preferencias', 'fa-desktop', TRUE, 9, 10);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (34, 'Participantes no iniciados en programas','_participantesNoIniciados','fa-th-list', TRUE, 18, 5);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (35, 'Monitoreo del espacio colaborativo', '_filtroForo', 'fa-th-list', TRUE, 9, 12);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (36, 'Resumen general de registros', '_resumenRegistros', 'fa-bar-chart-o', TRUE, 18, 6);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (37, 'Horas de conexión', '_horasConexion', 'fa-clock-o', TRUE, 18, 7);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (38, 'Conexiones por usuario', '_conexionesUsuario', 'fa-sign-in', TRUE, 18, 8);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (39, 'Avance en programas', '_avanceProgramas', 'fa-tachometer', TRUE, 18, 9);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (40, 'Evaluaciones por módulo', '_evaluacionesModulo', 'fa-certificate', TRUE, 18, 10);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (41, 'Interacción en el espacio colaborativo', '_interaccionColaborativo', 'fa-code-fork', TRUE, 18, 11);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (42, 'Interacción en los muros', '_interaccionMuro', 'fa-comments', TRUE, 18, 12);
 
 
 ------------------------------------------------------------------------------------------------------------------------
