@@ -57,27 +57,28 @@
             <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                 <div class="card">
                     <div class="card-header gradiente">
-                        <div class="card-title"><span class="fa fa-industry"></span> {{'Listado de empresas activas' |trans}}</div>
+                        <div class="card-title"><span class="fa fa-industry"></span> {{' Resumen general por empresa.' |trans}}</div>
                     </div>
                     <div class="card-block">
                         <div class="card-block">
-                     <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
-                        <div class="row">
-                            <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                    <option value="0"></option>
-                                    {% for empresa in empresasA %}
-                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                                <span class="fa fa-industry"></span>
-                                <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
-                            </div>
+                             <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
+                                <div class="row">
+                                    <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                                        <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                            <option value="0"></option>
+                                            {% for empresa in empresasA %}
+                                                <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="fa fa-industry"></span>
+                                        <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
+                                    </div>
+                                </div>
+                                <br>
+                                <div id="listado_programas_empresa">
+                                    
+                                </div>
                         </div>
-                        <br>
-                        <div id="hola"></div>
-                    <br>
-                </div>
                     </div>
                 </div>
             </div>

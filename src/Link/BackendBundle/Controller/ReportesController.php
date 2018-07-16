@@ -306,5 +306,100 @@ class ReportesController extends Controller
 
     }
 
+    public function reporteGeneralAction($app_id, $empresa_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+        $usuarios_activos=0;
+        $usuarios_inactivos=0;
+        $usuarios_registrados=0;
+        $i= 1;
+
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnreporte_general(:re, :pempresa_id) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->execute();
+        $r = $query->fetchAll();
+
+
+         // Solicita el servicio de excel
+            $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+
+            $phpExcelObject->getProperties()->setCreator("formacion")
+               ->setLastModifiedBy($session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'])
+               ->setTitle("Listado de participantes")
+               ->setSubject("Listado de participantes")
+               ->setDescription("Listado de participantes")
+               ->setKeywords("office 2005 openxml php")
+               ->setCategory("Reportes");
+            foreach ($r as $re) {
+                $i++;
+                if ($re['logueado'] > 0) {
+                    $usuarios_activos++;
+                }else{
+                    $usuarios_inactivos++;
+                }
+               
+            }
+            $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+             $phpExcelObject->setActiveSheetIndex(0)
+                               ->setCellValue('A1', 'Usuarios registrados')
+                               ->setCellValue('B1', 'Usuarios activos')
+                               ->setCellValue('C1', 'Usuarios inactivos')
+                               ->setCellValue('A2', $usuarios_registrados)
+                               ->setCellValue('B2', $usuarios_activos)
+                               ->setCellValue('C2', $usuarios_inactivos)
+                               ->setCellValue('A5', 'Programas')
+                               ->setCellValue('B5', 'Fecha inicio')
+                               ->setCellValue('C5', 'Fecha fin')
+                               ->setCellValue('D5', 'Usuarios registrados')
+                               ->setCellValue('E5', 'Usuarios cursando')
+                               ->setCellValue('F5', 'Usuarios finalizado')
+                               ->setCellValue('G5', 'Usuarios no iniciados');
+            $phpExcelObject->getActiveSheet()->setTitle('Participantes');
+
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
+            //$writer->setUseBOM(true);
+            //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+            //$writer->save($this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/data.csv');
+            
+            // Envia la respuesta del controlador
+            $response = $this->get('phpexcel')->createStreamedResponse($writer);
+            // Agrega los headers requeridos
+            $dispositionHeader = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                'ListadoDeParticipantes.xlsx'
+            );
+
+            $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+            $response->headers->set('Pragma', 'public');
+            $response->headers->set('Cache-Control', 'maxage=1');
+            $response->headers->set('Content-Disposition', $dispositionHeader);
+
+            return $response;
+
+
+    }
+
     
 }
