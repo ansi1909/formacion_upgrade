@@ -32,6 +32,28 @@ _participantesNoIniciados:
 
 _excelReporte:
     path:     /excelReporte/{app_id},{pagina_id},{r},{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r:0, empresa_id: 0, pagina_id: 0}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 0, empresa_id: 0, pagina_id: 0}
     requirements:
         method: POST
+
+_excelReporteGeneral:
+    path:     /excelReporteGeneral/{app_id},{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:reporteGeneral}
+    requirements:
+        method: POST
+
+_interaccionColaborativo:
+    path:     /interaccionColaborativo/{app_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:interaccionColaborativo }
+
+_interaccionMuro:
+    path:     /interaccionMuro/{app_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:interaccionMuro }
+
+reportesJE:
+    resource: "@LinkBackendBundle/Resources/config/routing/reportesJE.yml"
+    prefix: /reportesJE
+
+reportesJT:
+    resource: "@LinkBackendBundle/Resources/config/routing/reportesJT.yml"
+    prefix: /reportesJT

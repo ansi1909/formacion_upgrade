@@ -1,0 +1,17 @@
+_horasConexion:
+    path:     /horasConexion/{app_id}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:horasConexion }
+
+_ajaxHorasConexion:
+    path:     /ajaxHorasConexion
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxHorasConexion }
+    requirements:
+        _method: POST
+
+_evaluacionesModulo:
+    path:     /evaluacionesModulo/{app_id}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:evaluacionesModulo }
+
+_resumenRegistros:
+    path:     /resumenRegistros/{app_id}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:resumenRegistros }

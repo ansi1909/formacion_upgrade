@@ -113,6 +113,7 @@ Confirmar contraseña: Confirmar contraseña
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla
 Contacte al Administrador del Sistema para mayor información: Contacte al Administrador del Sistema para mayor información
 Constancia de Notas: Constancia de Notas
+Consultar: Consultar
 Contenido: Contenido
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Continuar: Continuar
@@ -155,6 +156,8 @@ Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe escribir su respuesta: Debe escribir su respuesta
 Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
+Debe seleccionar la fecha inicial: Debe seleccionar la fecha inicial
+Debe seleccionar la fecha final: Debe seleccionar la fecha final
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar la página destino: Debe seleccionar la página destino
 Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
@@ -167,6 +170,7 @@ Descargar: Descargar
 Descargas: Descargas
 Descargar archivo: Descargar archivo
 Descargue material complementario: Descargue material complementario
+Desde: Desde
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Destino: Destino
 Detalle: Detalle
@@ -174,8 +178,10 @@ Detalle de la Biblioteca Virtual:
 Detalle de la Noticia y Novedad: Detalle de la Noticia y Novedad
 Detalles de la página: Detalles de la página
 Detalle del Certificado y Constancia: Detalle del Certificado y Constancia
+Día/Hora: Día/Hora
 Dimensiones recomendadas: Dimensiones recomendadas
 Diseño: Diseño
+Domingo: Domingo
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
 Editar asignación: Editar asignación
@@ -340,6 +346,7 @@ filtrado de un total de: filtrado de un total de
 Filtrar comentarios del foro: Filtrar comentarios del foro
 Filtrar comentarios del muro: Filtrar comentarios del muro
 Filtrar usuarios: Filtrar usuarios
+Filtro: Filtro
 Fin del programa: Fin del programa
 Finalizar: Finalizar
 Finalizar Evaluación: Finalizar Evaluación
@@ -352,6 +359,7 @@ Gráfico del promedio de conexiones: Grafico del promedio de conexiones
 Guardar: Guardar
 ha comentado en el espacio colaborativo de: ha comentado en el espacio colaborativo de
 ha creado un tema en el espacio colaborativo del: ha creado un tema en el espacio colaborativo del
+Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
@@ -362,9 +370,12 @@ ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el e
 Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
 Has completado con éxito los contenidos de: Has completado con éxito los contenidos de
 Has ganado: Has ganado
+Hasta: Hasta
 Historial de programaciones de: Historial de programaciones de
 Hizo un comentario: Hizo un comentario
 Horas académicas: Horas académicas
+Horas de conexión: Horas de conexión
+Horas de conexión por empresa: Horas de conexión por empresa
 Hoy a las: Hoy a las
 Icono: Icono
 Icono de la empresa: Icono de la empresa
@@ -391,6 +402,7 @@ Ir al listado: Ir al listado
 Ir al listado de evaluaciones: Ir al listado de evaluaciones
 Ir al listado de opciones: Ir al listado de opciones
 Ir al listado de preguntas: Ir al listado de preguntas
+Jueves: Jueves
 la: la
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: La cantidad de preguntas a mostrar debe ser mayor o igual a 1.
@@ -426,6 +438,7 @@ La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: La fecha de 
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: La fecha de registro debe ser en formato DD/MM/AAAA y ser válida
 La fecha de vencimiento es requerida.: La fecha de vencimiento es requerida.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: La fecha de vencimiento no puede ser menor que la fecha de inicio.
+La fecha final debe ser mayor que la fecha inicial: La fecha final debe ser mayor que la fecha inicial
 La foto principal de la página es requerida: La foto principal de la página es requerida
 La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
@@ -471,13 +484,16 @@ Los roles que tiene el usuario no son permitidos para ingresar al sistema.: Los 
 Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.: Los roles que tiene el usuario no son permitidos para ingresar a la aplicación.
 Los roles que tienes asignado no tiene autorización para ingresar a este módulo: Los roles que tienes asignado no tiene autorización para ingresar a este módulo
 Lugar: Lugar
+Lunes: Lunes
 Mantener abierta la sesión: Mantener abierta la sesión
+Martes: Martes
 Más recientes: Más recientes
 Más valorados: Más valorados
 Material complementario: Material complementario
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
 Mi avance: Mi avance
+Miércoles: Miércoles
 minutos: minutos
 Modificado el: Modificado el
 Modificado por: Modificado por
@@ -619,6 +635,7 @@ Rol: Rol
 Roles: Roles
 Roles asignados: Roles asignados
 Roles a seleccionar: Roles a seleccionar
+Sábado: Sábado
 Salir: Salir
 Salir de la evaluación: Salir de la evaluación
 se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione: se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione
@@ -723,6 +740,7 @@ Ver ranking: Ver ranking
 Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails
+Viernes: Viernes
 Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver

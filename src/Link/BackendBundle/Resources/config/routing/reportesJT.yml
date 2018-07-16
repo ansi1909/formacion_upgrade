@@ -1,0 +1,7 @@
+_conexionesUsuario:
+    path:     /conexionesUsuario/{app_id}
+    defaults: { _controller: LinkBackendBundle:ReportesJT:conexionesUsuario }
+
+_avanceProgramas:
+    path:     /avanceProgramas/{app_id}
+    defaults: { _controller: LinkBackendBundle:ReportesJT:avanceProgramas }
