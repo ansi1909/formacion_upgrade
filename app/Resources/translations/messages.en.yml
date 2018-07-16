@@ -113,6 +113,7 @@ Confirmar contraseña: Confirm password
 Contacte al Administrador del Sistema para agregar thumbnails para esta plantilla: Contact to System Administrator to add thumbnails to this template
 Contacte al Administrador del Sistema para mayor información: Contact to System Administrator for further information
 Constancia de Notas: Proof of Notes
+Consultar: Search
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
@@ -155,6 +156,8 @@ Debe coincidir con la contraseña: It must be equal to password
 Debe escribir su respuesta: You must write your response
 Debe ingresar el correo electrónico.: You must enter the email.
 Debe seleccionar al menos un rol.: You must select at least one role.
+Debe seleccionar la fecha inicial: You must select the initial date
+Debe seleccionar la fecha final: You must select the final date
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar la página destino: You must select the destination page
 Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
@@ -167,6 +170,7 @@ Descargar: Download
 Descargas: Downloads
 Descargar archivo: Download file
 Descargue material complementario: Download complementary content
+Desde: Since
 ¿Desea eliminar el registro?: Are you sure to delete this item?
 Destino: Destination
 Detalle: Detail
@@ -340,6 +344,7 @@ filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
 Filtrar comentarios del muro: Filter wall comments
 Filtrar usuarios: Filter users
+Filtro: Filter
 Fin del programa: End of the program
 Finalizar: Finish
 Finalizar Evaluación: Finish Test
@@ -352,6 +357,7 @@ Gráfico del promedio de conexiones: Connections average graph
 Guardar: Save
 ha comentado en el espacio colaborativo de: has commented into the collaborative space of
 ha creado un tema en el espacio colaborativo del: has created a topic into collaborative space of
+Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: An error ocurred into query processing. Contact your system administrator.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
@@ -362,9 +368,12 @@ ha subido un archivo en el espacio colaborativo de: has uploaded a file into the
 Has aprobado con éxito la evaluación: You have approved successfully the test
 Has completado con éxito los contenidos de: You have successfully completed the contents of
 Has ganado: You win
+Hasta: Until
 Historial de programaciones de: Programation history of
 Hizo un comentario: Made a comment
 Horas académicas: Academic hours
+Horas de conexión: Conection hours
+Horas de conexión por empresa: Conection hours per company
 Hoy a las: Today at
 Icono: Icon
 Icono de la empresa: Company icon
@@ -426,6 +435,7 @@ La fecha de registro debe ser del tipo texto en formato DD/MM/AAAA: Registration
 La fecha de registro debe ser en formato DD/MM/AAAA y ser válida: Registration date must be in format DD/MM/YYYY and a valid date
 La fecha de vencimiento es requerida.: Expiration date is required.
 La fecha de vencimiento no puede ser menor que la fecha de inicio.: Expiration date must be later than start date.
+La fecha final debe ser mayor que la fecha inicial: Finish date must be greater or equal than initial date
 La foto principal de la página es requerida: Main picture is required
 La imagen es requerida.: Image is required.
 La imagen lado A es requerida.: Side A image is required.
