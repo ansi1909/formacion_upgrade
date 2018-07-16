@@ -9,7 +9,7 @@ $(document).ready(function() {
                 data: { empresa_id: empresa_id },
                 dataType: "json",
                 success: function(data) {
-                    $('#hola').html(data);
+                    $('#listado_programas_empresa').html(data);
                     
                 },
                 error: function(){

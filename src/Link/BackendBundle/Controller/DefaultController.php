@@ -384,7 +384,15 @@ class DefaultController extends Controller
                 }
 
                 $html .= ' </tbody>
-                        </table>';
+                        </table>
+
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-start">
+                                   <a href="'.$this->generateUrl('_excelReporteGeneral', array('app_id' => '20', 'empresa_id' => $empresa_id )).'"> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                                </div>
+                            </div>
+                        </div>';
 
 
         $return = json_encode($html);
