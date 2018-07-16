@@ -35,7 +35,9 @@ $(document).ready(function() {
 				data: $("#form").serialize(),
 				dataType: "json",
 				success: function(data) {
-					$('#resultado').html(data.resultado);
+					$('.load1').hide();
+		        	$('#search').show();
+					mostrarReporte(data);
 					$('#form').safeform('complete');
 					return false;
 				},
