@@ -58,10 +58,15 @@ class ReportesJEController extends Controller
         $hasta = $request->request->get('hasta');
 
         list($d, $m, $a) = explode("/", $desde);
-        $desde = "$a-$m-$d";
+        $desde = "$a-$m-$d 00:00:00";
 
         list($d, $m, $a) = explode("/", $hasta);
-        $hasta = "$a-$m-$d";
+        $hasta = "$a-$m-$d 23:59:59";
+
+        // Acumuladores
+        $mayor = 0;
+        $celda_mayor = array();
+        $total = 0;
 
         // ESTRUCTURA de $conexiones:
         // $conexiones[0][0] => Día/Hora
@@ -108,6 +113,12 @@ class ReportesJEController extends Controller
 
         $conexiones[0][25] = 'Total';
 
+        // Columna de Total con valor cero
+        for ($f=1; $f<=8; $f++)
+        {
+            $conexiones[$f][25] = 0;
+        }
+
         for ($c=0; $c<=24; $c++)
         {
             if ($c==0)
@@ -144,11 +155,62 @@ class ReportesJEController extends Controller
                 }
             }
             else {
+
+                $h = $c-1;
+                $hora1 = $h<=9 ? '0'.$h.':00:00' : $h.':00:00';
+                $hora2 = $h<=9 ? '0'.$h.':59:59' : $h.':59:59';
+
                 // Cálculos desde la función de BD
+                $query = $em->getConnection()->prepare('SELECT
+                                                        fnhoras_conexion(:pempresa_id, :pdesde, :phasta, :phora1, :phora2) as
+                                                        resultado;');
+                $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+                $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
+                $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
+                $query->bindValue(':phora1', $hora1, \PDO::PARAM_STR);
+                $query->bindValue(':phora2', $hora2, \PDO::PARAM_STR);
+                $query->execute();
+                $r = $query->fetchAll();
+
+                // La respuesta viene formada por las cantidades de registros por día de semana separado por __
+                $r_arr = explode("__", $r[0]['resultado']);
+                $f = 0;
+                $total_hora = 0;
+                
+                foreach ($r_arr as $r)
+                {
+
+                    $f++;
+                    $conexiones[$f][$c] = $r;
+                    $total_hora += $r;
+                    $total += $r;
+                    $conexiones[$f][25] = $conexiones[$f][25] + $r;
+
+                    if ($r >= $mayor)
+                    {
+                        if ($r == $mayor)
+                        {
+                            // Varias celdas mayor
+                            $celda_mayor[] = $f.'_'.$c;
+                        }
+                        else {
+                            // Nueva celda mayor
+                            $celda_mayor = array($f.'_'.$c);
+                        }
+                        $mayor = $r;
+                    }
+
+                }
+                $conexiones[8][$c] = $total_hora;
+
             }
         }
+
+        // Total de totales
+        $conexiones[8][25] = $total;
         
-        $return = array('conexiones' => $conexiones);
+        $return = array('conexiones' => $conexiones,
+                        'celda_mayor' => $celda_mayor);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
