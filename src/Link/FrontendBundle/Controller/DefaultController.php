@@ -129,6 +129,7 @@ class DefaultController extends Controller
                 }elseif ($porcentaje_finalizacion <= 30) {
                     $class_finaliza = 'alertTimeDanger';
                 }
+                
 
                 $actividad_reciente[]= array('id'=>$id,
                                              'padre_id'=>$padre_id,
