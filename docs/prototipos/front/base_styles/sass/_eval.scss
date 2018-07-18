@@ -6,6 +6,7 @@
     text-align: center;
     position: relative;
     top: -.5rem;
+    right: 1rem;
     @include media-breakpoint-down(sm){
         top: 1rem;
         left: .8rem;
@@ -20,6 +21,11 @@
         line-height: 1rem;
         font-weight: $font-weight-medium;
     }
+}
+
+.progUb{
+    position: relative;
+    right: 2.5rem;
 }
 
 .progress-bar_eval{
@@ -51,6 +57,9 @@
     flex-direction: row;
     height: auto;
     width: 57rem;
+    transform: translateX(-50%);
+    position: relative;
+    left: 46.5%;
     margin: .5rem 0;
     cursor: pointer;
     @include media-breakpoint-down(sm){
@@ -404,7 +413,7 @@
     color: $gray-800;
     font-family: $lessons-font;
     line-height: $h4-font-size;
-    font-size: $p-font-size;
+    font-size: 1.1rem;
     text-align: justify;
     margin-top: .25rem;
     font-weight: $font-weight-normal;

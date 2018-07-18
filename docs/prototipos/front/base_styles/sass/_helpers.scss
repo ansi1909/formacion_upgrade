@@ -12,6 +12,10 @@
     }
 }
 
+.mt-18v{
+    margin-top: 7rem;   
+}
+
 .mt-12v{
     margin-top: 12vh;
     @include media-breakpoint-down(sm) {

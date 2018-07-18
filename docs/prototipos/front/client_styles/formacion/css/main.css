@@ -10,6 +10,9 @@
     .mt-22v {
       margin-top: 0; } }
 
+.mt-18v {
+  margin-top: 7rem; }
+
 .mt-12v {
   margin-top: 12vh; }
   @media (max-width: 767.98px) {
@@ -1204,11 +1207,12 @@ a:focus, a:active, a:target, a:checked {
 
 .eval_header {
   height: 6rem !important;
-  padding: 1rem !important; }
+  padding: 1rem !important;
+  position: absolute; }
   .eval_header .exit_eval {
     cursor: pointer;
     position: relative;
-    top: -.1rem; }
+    top: .4rem; }
   .eval_header .txt_eval_header {
     color: #AAAFB3;
     font-family: "Roboto";
@@ -1965,14 +1969,14 @@ a.active {
   overflow: hidden; }
 
 .well-message-prog p {
-  max-width: 70%;
+  max-width: 90%;
   max-height: 900px;
   opacity: 1;
   transition: all 1.5s ease-in-out;
   margin-top: 1rem; }
 .well-message-prog img {
   width: 820px;
-  transform: translateX(-6.25%);
+  transform: translateX(3.75%);
   border-radius: .5rem; }
 
 .avance-message {
@@ -3303,7 +3307,8 @@ p.up {
   line-height: 3.5625rem;
   text-align: center;
   position: relative;
-  top: -.5rem; }
+  top: -.5rem;
+  right: 1rem; }
   @media (max-width: 767.98px) {
     .num_preg {
       top: 1rem;
@@ -3318,6 +3323,10 @@ p.up {
       font-size: 1rem;
       line-height: 1rem;
       font-weight: 700; } }
+
+.progUb {
+  position: relative;
+  right: 2.5rem; }
 
 .progress-bar_eval {
   background: #CFE65C; }
@@ -3336,6 +3345,9 @@ p.up {
   flex-direction: row;
   height: auto;
   width: 57rem;
+  transform: translateX(-50%);
+  position: relative;
+  left: 46.5%;
   margin: .5rem 0;
   cursor: pointer; }
   @media (max-width: 767.98px) {
@@ -3588,7 +3600,7 @@ p.up {
   color: #5C6266;
   font-family: "Open Sans";
   line-height: 1.5rem;
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   text-align: justify;
   margin-top: .25rem;
   font-weight: 400; }

@@ -13,11 +13,12 @@
 
 .eval_header{
     height: 6rem !important; 
-    padding: 1rem !important; 
+    padding: 1rem !important;
+    position: absolute;
     .exit_eval {
         cursor: pointer;
         position: relative;
-        top: -.1rem;
+        top: .4rem;
     }
     
     .txt_eval_header {
