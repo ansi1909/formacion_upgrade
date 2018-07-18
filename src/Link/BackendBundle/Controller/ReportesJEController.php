@@ -51,16 +51,20 @@ class ReportesJEController extends Controller
     public function ajaxHorasConexionAction(Request $request)
     {
         
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $fn = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
-        $desde = $request->request->get('desde');
-        $hasta = $request->request->get('hasta');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
+        $pdf = $request->request->get('pdf');
 
-        list($d, $m, $a) = explode("/", $desde);
+        list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
 
-        list($d, $m, $a) = explode("/", $hasta);
+        list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
 
         // Acumuladores
@@ -188,7 +192,7 @@ class ReportesJEController extends Controller
 
                     if ($r >= $mayor)
                     {
-                        if ($r == $mayor)
+                        if ($r == $mayor && $mayor > 0)
                         {
                             // Varias celdas mayor
                             $celda_mayor[] = $f.'_'.$c;
@@ -208,9 +212,63 @@ class ReportesJEController extends Controller
 
         // Total de totales
         $conexiones[8][25] = $total;
+
+        if ($excel)
+        {
+
+            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            // Encabezado
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+
+            // Primera columna
+            for ($f=0; $f<=8; $f++)
+            {
+                $r = $f+3;
+                $objWorksheet->setCellValue('A'.$r, $conexiones[$f][0]);
+            }
+
+            // Data calculada
+            for ($f=1; $f<=8; $f++)
+            {
+                $row = $f+3;
+                for ($c=1; $c<=25; $c++)
+                {
+                    $col = $columnNames[$c];
+                    $objWorksheet->setCellValue($col.$row, $conexiones[$f][$c]);
+                }
+            }
+
+            // Resaltar las celdas mayores
+            foreach ($celda_mayor as $cm)
+            {
+                $m = explode("_", $cm);
+                $col = $columnNames[$m[1]];
+                $row = $m[0]+3;
+                $objPHPExcel->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+            }
+
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.xls';
+            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+            $writer->save($xls);
+
+            $archivo = $this->container->getParameter('folders')['uploads'].$path;
+
+        }
+        else {
+            $archivo = '';
+        }
         
         $return = array('conexiones' => $conexiones,
-                        'celda_mayor' => $celda_mayor);
+                        'celda_mayor' => $celda_mayor,
+                        'archivo' => $archivo);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
