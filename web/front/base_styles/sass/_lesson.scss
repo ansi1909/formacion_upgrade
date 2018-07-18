@@ -11,8 +11,8 @@
     p {
         font-family: $lessons-font;
         font-size: 1.1rem;
-        line-height: 1.6;
-        color: #7b7b7b;
+        line-height: 1.75rem;
+        color: $black-300;
         width: 75%;
         font-weight: 200;
         text-align: justify;
@@ -23,8 +23,10 @@
     ul, ol {
         display: inline-block;
         text-align: left;
-        color: grey;
-        line-height: 2rem;
+        font-family: $lessons-font;
+        font-size: 1.1rem;
+        color: $black-300;
+        line-height: 1rem;
         width: 75%;
 
         li{
