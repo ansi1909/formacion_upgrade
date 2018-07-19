@@ -32,7 +32,7 @@ $(document).ready(function() {
 				type: "POST",
 				url: $('#form').attr('action'),
 				async: true,
-				data: $("#form").serialize(),
+				data: $("#form").serialize()+'&excel=0&pdf=0',
 				dataType: "json",
 				success: function(data) {
 					$('.load1').hide();

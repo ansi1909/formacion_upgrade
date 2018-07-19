@@ -329,7 +329,7 @@ class ReportesController extends Controller
         $usuarios_activos=0;
         $usuarios_inactivos=0;
         $usuarios_registrados=0;
-        $i= 1;
+        $i= 5;
 
         $query = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general(:re, :pempresa_id) as
@@ -339,6 +339,25 @@ class ReportesController extends Controller
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
         $query->execute();
         $r = $query->fetchAll();
+
+        foreach ($r as $re) {
+                
+                if ($re['logueado'] > 0) {
+                    $usuarios_activos++;
+                }else{
+                    $usuarios_inactivos++;
+                }
+               
+            }
+
+        $query2 = $em->getConnection()->prepare('SELECT
+                                                fnreporte_general2(:re, :pempresa_id) as
+                                                resultado; fetch all from re;');
+        $re1 = 're';
+        $query2->bindValue(':re', $re1, \PDO::PARAM_STR);
+        $query2->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query2->execute();
+        $r1 = $query2->fetchAll();
 
 
          // Solicita el servicio de excel
@@ -351,30 +370,64 @@ class ReportesController extends Controller
                ->setDescription("Listado de participantes")
                ->setKeywords("office 2005 openxml php")
                ->setCategory("Reportes");
-            foreach ($r as $re) {
-                $i++;
-                if ($re['logueado'] > 0) {
-                    $usuarios_activos++;
-                }else{
-                    $usuarios_inactivos++;
-                }
-               
-            }
+            
+            //return new Response (var_dump($r1));
             $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
-             $phpExcelObject->setActiveSheetIndex(0)
-                               ->setCellValue('A1', 'Usuarios registrados')
-                               ->setCellValue('B1', 'Usuarios activos')
-                               ->setCellValue('C1', 'Usuarios inactivos')
-                               ->setCellValue('A2', $usuarios_registrados)
-                               ->setCellValue('B2', $usuarios_activos)
-                               ->setCellValue('C2', $usuarios_inactivos)
-                               ->setCellValue('A5', 'Programas')
-                               ->setCellValue('B5', 'Fecha inicio')
-                               ->setCellValue('C5', 'Fecha fin')
-                               ->setCellValue('D5', 'Usuarios registrados')
-                               ->setCellValue('E5', 'Usuarios cursando')
-                               ->setCellValue('F5', 'Usuarios finalizado')
-                               ->setCellValue('G5', 'Usuarios no iniciados');
+             foreach ($r1 as $r2) {
+                 $i++;
+                 $query3 = $em->getConnection()->prepare('SELECT
+                                                         fnreporte_general3(:re, :pempresa_id, :ppagina_id) as
+                                                         resultado; fetch all from re;');
+                 $re2 = 're';
+                 $query3->bindValue(':re', $re2, \PDO::PARAM_STR);
+                 $query3->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+                 $query3->bindValue(':ppagina_id', $r2['id'], \PDO::PARAM_INT);
+                 $query3->execute();
+                 $r3 = $query3->fetchAll();
+
+                 foreach ($r3 as $r4) {
+                    $usuarios_c = $r4['usuarios'];
+                 }
+
+                 $query4 = $em->getConnection()->prepare('SELECT
+                                                         fnreporte_general4(:re, :pempresa_id, :ppagina_id) as
+                                                         resultado; fetch all from re;');
+                 $re3 = 're';
+                 $query4->bindValue(':re', $re3, \PDO::PARAM_STR);
+                 $query4->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+                 $query4->bindValue(':ppagina_id', $r2['id'], \PDO::PARAM_INT);
+                 $query4->execute();
+                 $r4 = $query4->fetchAll();
+
+                 foreach ($r4 as $r5) {
+                    $usuarios_f = $r5['usuarios'];
+                 }
+                 $usuarios_r = $r2['usuarios'];
+                 $usuarios_n = $usuarios_r - ($usuarios_f + $usuarios_c);
+                 
+
+                 $phpExcelObject->setActiveSheetIndex(0)
+                                   ->setCellValue('A1', 'Usuarios registrados')
+                                   ->setCellValue('B1', 'Usuarios activos')
+                                   ->setCellValue('C1', 'Usuarios inactivos')
+                                   ->setCellValue('A2', $usuarios_registrados)
+                                   ->setCellValue('B2', $usuarios_activos)
+                                   ->setCellValue('C2', $usuarios_inactivos)
+                                   ->setCellValue('A5', 'Programas')
+                                   ->setCellValue('B5', 'Fecha inicio')
+                                   ->setCellValue('C5', 'Fecha fin')
+                                   ->setCellValue('D5', 'Usuarios registrados')
+                                   ->setCellValue('E5', 'Usuarios cursando')
+                                   ->setCellValue('F5', 'Usuarios finalizado')
+                                   ->setCellValue('G5', 'Usuarios no iniciados')
+                                   ->setCellValue('A'.$i, $r2['programa'])
+                                   ->setCellValue('B'.$i, $r2['fecha_inicio'])
+                                   ->setCellValue('C'.$i, $r2['fecha_fin'])
+                                   ->setCellValue('D'.$i, $r2['usuarios'])
+                                   ->setCellValue('E'.$i, $usuarios_c)
+                                   ->setCellValue('F'.$i, $usuarios_f)
+                                   ->setCellValue('G'.$i, $usuarios_n);
+            }
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
             // Crea el writer

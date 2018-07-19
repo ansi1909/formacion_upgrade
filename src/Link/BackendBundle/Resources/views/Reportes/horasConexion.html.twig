@@ -15,7 +15,7 @@
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ encabezado }}</h5>
+                <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Desde'|trans }}: <span id="label_desde"></span> / {{ 'Hasta'|trans }}: <span id="label_hasta"></span>.</span></h5>
             </div>
             <div class="card-block">
                 <div class="row" id="div-active-alert" style="display:none;">
@@ -31,7 +31,65 @@
                         &nbsp;
                     </div>
                 </div>
-                <div id="resultado"></div>
+                <div id="resultado" style="display:none;">
+                    <table class="table styleTab">
+                        <thead>
+                            <tr>
+                                {% for i in 0..25 %}
+                                    {% if loop.last %}
+                                        <th id="celda_0_{{ i }}" class="totalEnd">&nbsp;</th>
+                                    {% else %}
+                                        <th id="celda_0_{{ i }}">&nbsp;</th>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for f in 1..8 %}
+                                {% if loop.last %}
+                                    {% set eo = 'totalEnd' %}
+                                {% else %}
+                                    {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                {% endif %}
+                                <tr id="f{{ f }}" class="{{ eo }}">
+                                    {% for c in 0..25 %}
+                                        {% if loop.last %}
+                                            <td id="celda_{{ f }}_{{ c }}" class="totalEnd">&nbsp;</td>
+                                        {% else %}
+                                            <td id="celda_{{ f }}_{{ c }}">&nbsp;</th>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="card-footer">
+                        <div class="col-sm-16 col-md-16 text-right">
+                            <button id="excel" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} Excel"><span class="fa fa-file-excel-o"></span></button>
+                            <a id="excel-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} Excel"><span class="fa fa-download"></span></button></a>
+                            <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center" id="grafico" style="display:none;">
+                    <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <h6 class="card-title">{{ 'Gráfica'|trans }}</h6>
+                            </div>
+                            <div class="card-block">
+                                <div class="canvasCont">
+                                    <canvas class="barChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-16 col-md-16 text-right">
+                                    <button id="pdf" type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="load1 load-wrapper">
                     <div class="loader">
                         Loading...
@@ -49,6 +107,9 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/utils.js') }}"></script>
     {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
     <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/reportes/horasConexion.js') }}"></script>
