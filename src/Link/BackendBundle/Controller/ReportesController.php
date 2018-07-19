@@ -144,11 +144,11 @@ class ReportesController extends Controller
         } 
 
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
-                                                                                                    'usuario_empresa' => $usuario_empresa,
-                                                                                                    'usuario' => $usuario,
-                                                                                                    'reporte'=>$r,
-                                                                                                    'pagina_id'=>$pagina_id,
-                                                                                                    'empresa_dashboard'=>$empresa_id));    
+                                                                                 'usuario_empresa' => $usuario_empresa,
+                                                                                 'usuario' => $usuario,
+                                                                                 'reporte'=>$r,
+                                                                                 'pagina_id'=>$pagina_id,
+                                                                                 'empresa_dashboard'=>$empresa_id));    
     }
 
     public function ajaxProgramasEAction(Request $request)
@@ -298,12 +298,84 @@ class ReportesController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
+        $reporte = 6;
+        $pagina_id = 0;
 
         // Lógica inicial de la pantalla de este reporte
-        $datos = 'Foo';
+        $usuario_empresa = 0;
+        $empresas = array();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
-        return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('datos' => $datos));
+        if ($usuario->getEmpresa()) {
+            $usuario_empresa = 1; 
+        }
+        else {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        } 
 
+        return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('empresas' => $empresas,
+                                                                                           'usuario_empresa' => $usuario_empresa,
+                                                                                           'usuario' => $usuario,
+                                                                                           'reporte' => $reporte,
+                                                                                           'pagina_id'=>$pagina_id));
+
+    }
+
+    public function ajaxLeccionesEAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        $pagina_id = $request->query->get('pagina_id');
+        $options = '<option value=""></option>';
+
+        $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                   JOIN pe.pagina p
+                                   WHERE pe.empresa = :empresa_id
+                                   AND p.pagina = :pagina_id
+                                   AND p.categoria = 2')
+                    ->setParameters(array('empresa_id' => $empresa_id , 'pagina_id' => $pagina_id));
+        $modulos = $query->getResult();
+
+        //return new Response (var_dump($modulos));
+
+        foreach ( $modulos as $modulo){
+
+            $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                       JOIN pe.pagina p
+                                       WHERE pe.empresa = :empresa_id
+                                       AND p.pagina = :materia_id
+                                       AND p.categoria = 3')
+                        ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $modulo->getPagina()->getId()));
+            $materias = $query->getResult();
+
+            foreach ( $materias as $materia){
+
+                $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                           JOIN pe.pagina p
+                                           WHERE pe.empresa = :empresa_id
+                                           AND p.pagina = :materia_id
+                                           AND p.categoria = 4')
+                            ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $materia->getPagina()->getId()));
+                $lecciones = $query->getResult();
+
+
+
+                foreach ($lecciones as $leccion)
+                {
+                    $options .= '<option value="'.$leccion->getPagina()->getId().'">'.$leccion->getPagina()->getNombre().' </option>'; 
+                }
+
+             }
+
+         }
+
+         
+
+        
+        $return = array('options' => $options);
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function reporteGeneralAction($app_id, $empresa_id, Request $request)
