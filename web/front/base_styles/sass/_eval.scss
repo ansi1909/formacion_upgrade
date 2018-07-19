@@ -313,38 +313,28 @@
     margin-top: 3rem;
 }
 
-.ic-resul{
-    font-size: 5rem;
-    color: $blue;
-    margin-top: calc(2rem - 8px);
-}
-
-.alreves{
-    transform: scaleX(-1) rotate(5deg);
-}
-
 .txt-resul{
     font-family: $primary-font;
-    font-size: $h3-font-size;
+    font-size: $h4-font-size;
     line-height: calc(2rem + 1px);
-    margin: 4rem 0 2rem 0;
+    margin: 2rem 0 1rem 0;
+}
+
+.calif{
+    @extend %cal-log;
+    left: 0rem;
+    .num{
+        @extend %number;
+    }
 }
 
 .mostrar-resul{
     background: $white;
-    padding-top: calc(3rem - 4px);
     margin-top: 1.5rem;
     padding-bottom: 2rem;
     overflow-x: hidden !important;
     width: 100%;
-    .calif{
-        @extend %cal-log;
-        left: 6rem;
-        .num{
-            @extend %number;
-        }
-    }
-    .logro{
+    /*.logro{
         @extend %cal-log;
         left: -4rem;
         .num{
@@ -357,13 +347,13 @@
                 margin-left: calc(1rem - 8px);
             }
         }
-    }
+    }*/
     .anun-resul{
-        margin: calc(2rem - 8px) 0 1rem 0;
-        color: $gray-650;	
+        margin: 1rem auto;
+        color: $gray-700;	
         font-family: $secondary-font;	
-        font-size: $p-font-size;	
-        line-height: calc(2rem - 8px);
+        font-size: $h3-font-size;
+        font-weight: $font-weight-normal;
     }
     .resp-eval{
         position: relative;
@@ -493,8 +483,9 @@
     font-size: $h3-font-size;
     line-height: calc(2rem + 6px);
     margin-right: calc(3rem + 7px);
-    color: $gray-600;
+    color: $gray-700;
     position: relative;
+    font-weight: $font-weight-normal;
 }
 
 %pregunta{
