@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class ReportesJEController extends Controller
 {
@@ -67,151 +68,9 @@ class ReportesJEController extends Controller
         list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
 
-        // Acumuladores
-        $mayor = 0;
-        $celda_mayor = array();
-        $total = 0;
-
-        // ESTRUCTURA de $conexiones:
-        // $conexiones[0][0] => Día/Hora
-        // $conexiones[0][1] => Etiqueta 00:00
-        // $conexiones[0][2] => Etiqueta 01:00
-        // ...
-        // $conexiones[0][24] => Etiqueta 23:00
-        // $conexiones[0][25] => Etiqueta Total
-        // $conexiones[1][0] => Etiqueta Domingo
-        // $conexiones[1][1] => Domingo a las 00:00
-        // $conexiones[1][2] => Domingo a las 01:00
-        // ...
-        // $conexiones[1][24] => Domingo a las 23:00
-        // $conexiones[1][25] => Total Domingo
-        // $conexiones[2][0] => Etiqueta Lunes
-        // $conexiones[2][1] => Lunes a las 00:00
-        // $conexiones[2][2] => Lunes a las 01:00
-        // ...
-        // $conexiones[2][24] => Lunes a las 23:00
-        // $conexiones[2][25] => Total Lunes
-        // ...
-        // $conexiones[7][0] => Etiqueta Sábado
-        // $conexiones[7][1] => Sábado a las 00:00
-        // $conexiones[7][2] => Sábado a las 01:00
-        // ...
-        // $conexiones[7][24] => Sábado a las 23:00
-        // $conexiones[7][25] => Total Sábado
-        // $conexiones[8][0] => Etiqueta Total
-        // $conexiones[8][1] => Total a las 00:00
-        // $conexiones[8][2] => Total a las 01:00
-        // ...
-        // $conexiones[8][24] => Total a las 23:00
-        // $conexiones[8][25] => Total de totales
-        $conexiones[0][0] = $this->get('translator')->trans('Día/Hora');
-
-        // Etiquetas de horas
-        $c = 1;
-        for ($h=0; $h<24; $h++)
-        {
-            $hora = $h<=9 ? '0'.$h : $h;
-            $conexiones[0][$c] = $hora.':00';
-            $c++;
-        }
-
-        $conexiones[0][25] = 'Total';
-
-        // Columna de Total con valor cero
-        for ($f=1; $f<=8; $f++)
-        {
-            $conexiones[$f][25] = 0;
-        }
-
-        for ($c=0; $c<=24; $c++)
-        {
-            if ($c==0)
-            {
-                for ($f=1; $f<=8; $f++)
-                {
-                    switch ($f)
-                    {
-                        case 1:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Domingo');
-                            break;
-                        case 2:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Lunes');
-                            break;
-                        case 3:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Martes');
-                            break;
-                        case 4:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Miércoles');
-                            break;
-                        case 5:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Jueves');
-                            break;
-                        case 6:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Viernes');
-                            break;
-                        case 7:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Sábado');
-                            break;
-                        case 8:
-                            $conexiones[$f][$c] = 'Total';
-                            break;
-                    }
-                }
-            }
-            else {
-
-                $h = $c-1;
-                $hora1 = $h<=9 ? '0'.$h.':00:00' : $h.':00:00';
-                $hora2 = $h<=9 ? '0'.$h.':59:59' : $h.':59:59';
-
-                // Cálculos desde la función de BD
-                $query = $em->getConnection()->prepare('SELECT
-                                                        fnhoras_conexion(:pempresa_id, :pdesde, :phasta, :phora1, :phora2) as
-                                                        resultado;');
-                $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-                $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
-                $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
-                $query->bindValue(':phora1', $hora1, \PDO::PARAM_STR);
-                $query->bindValue(':phora2', $hora2, \PDO::PARAM_STR);
-                $query->execute();
-                $r = $query->fetchAll();
-
-                // La respuesta viene formada por las cantidades de registros por día de semana separado por __
-                $r_arr = explode("__", $r[0]['resultado']);
-                $f = 0;
-                $total_hora = 0;
-                
-                foreach ($r_arr as $r)
-                {
-
-                    $f++;
-                    $conexiones[$f][$c] = $r;
-                    $total_hora += $r;
-                    $total += $r;
-                    $conexiones[$f][25] = $conexiones[$f][25] + $r;
-
-                    if ($r >= $mayor)
-                    {
-                        if ($r == $mayor && $mayor > 0)
-                        {
-                            // Varias celdas mayor
-                            $celda_mayor[] = $f.'_'.$c;
-                        }
-                        else {
-                            // Nueva celda mayor
-                            $celda_mayor = array($f.'_'.$c);
-                        }
-                        $mayor = $r;
-                    }
-
-                }
-                $conexiones[8][$c] = $total_hora;
-
-            }
-        }
-
-        // Total de totales
-        $conexiones[8][25] = $total;
+        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        $conexiones = $reporte['conexiones'];
+        $celda_mayor = $reporte['celda_mayor'];
 
         if ($excel)
         {
@@ -268,11 +127,48 @@ class ReportesJEController extends Controller
         
         $return = array('conexiones' => $conexiones,
                         'celda_mayor' => $celda_mayor,
-                        'archivo' => $archivo);
+                        'archivo' => $archivo,
+                        'desdef' => $desde,
+                        'hastaf' => $hasta);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function pdfHorasConexionAction($empresa_id, $desde, $hasta, $img, Request $request)
+    {
+        
+        $fn = $this->get('funciones');
+        $src = str_replace("___", "/", $img);
+
+        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        $conexiones = $reporte['conexiones'];
+        $celda_mayor = $reporte['celda_mayor'];
+
+        $tabla = $this->renderView('LinkBackendBundle:Reportes:horasConexionTabla.html.twig', array('conexiones' => $conexiones,
+                                                                                                    'celda_mayor' => $celda_mayor));
+        $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
+        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
+        $header_footer = '<page_header> 
+                                 <img src="'.$logo.'" width="200" height="50">
+                            </page_header>
+                            <page_footer>
+                                <table style="width: 100%; border: solid 1px black;">
+                                    <tr>
+                                        <td style="text-align: left;    width: 50%">Generado el '.date('d/m/Y H:i a').'</td>
+                                        <td style="text-align: right;    width: 50%">Página [[page_cu]]/[[page_nb]]</td>
+                                    </tr>
+                                </table>
+                            </page_footer>';
+        $pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(5, 5, 5, 8));
+        $pdf->pdf->SetDisplayMode('fullpage');
+        $pdf->writeHtml('<page>'.$header_footer.$tabla.'</page>');
+        $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
+
+        //Generamos el PDF
+        $pdf->output('horas_conexion.pdf');
+
     }
 
     

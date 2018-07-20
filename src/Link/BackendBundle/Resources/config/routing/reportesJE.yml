@@ -8,6 +8,10 @@ _ajaxHorasConexion:
     requirements:
         _method: POST
 
+_pdfHorasConexion:
+    path:     /pdfHorasConexion/{empresa_id}/{desde}/{hasta}/{img}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfHorasConexion, empresa_id: 0, desde: '', hasta: '', img: '' }
+
 _evaluacionesModulo:
     path:     /evaluacionesModulo/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJE:evaluacionesModulo }

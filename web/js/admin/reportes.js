@@ -152,6 +152,33 @@ $(document).ready(function() {
 						getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte);
 					});
 				}
+				else if (reporte == '6') 
+				{
+					if (empresa_id != '0'){
+						getProgramas(empresa_id,pagina_previa);
+						$('#programa_id').change(function(){
+							$('#div-active-alert').hide();
+		    				var empresa_id = $('#empresa_id').val();
+		    				var pagina_id = $(this).val();
+							getLecciones(empresa_id,pagina_id);
+						});
+					}
+
+					$('#empresa_id').change(function(){
+						$('#div-active-alert').hide();
+	    				var empresa_id = $(this).val();
+						getProgramas(empresa_id,pagina_id);
+					});
+
+					$('#programa_id').change(function(){
+						$('#div-active-alert').hide();
+	    				var empresa_id = $('#empresa_id').val();
+	    				var pagina_id = $(this).val();
+						getLecciones(empresa_id,pagina_id);
+					});
+
+					
+				}
 });
 
 function getNiveles(empresa_id){
@@ -163,6 +190,24 @@ function getNiveles(empresa_id){
 		dataType: "json",
 		success: function(data) {
 			$('#nivel_id').html(data.options);
+			$('#excel').show();
+		},
+		error: function(){
+			$('#active-error').html($('#error_msg-filter').val());
+			$('#div-active-alert').show();
+		}
+	});
+}
+
+function getLecciones(empresa_id,pagina_id){
+	$.ajax({
+		type: "GET",
+		url: $('#url_lecciones').val(),
+		async: true,
+		data: { empresa_id: empresa_id, pagina_id: pagina_id },
+		dataType: "json",
+		success: function(data) {
+			$('#leccion_id').html(data.options);
 			$('#excel').show();
 		},
 		error: function(){

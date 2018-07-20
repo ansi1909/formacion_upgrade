@@ -33,6 +33,11 @@ $(document).ready(function() {
 		});
     });
 
+    $("#pdf").click(function(){
+    	window.open($('#url_pdf').val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val()+'/'+$('#graph').val(), '_blank');
+    	//window.location.replace($('#url_pdf').val()+'');
+    });
+
 });
 
 function mostrarReporte(data)
@@ -91,10 +96,28 @@ function mostrarReporte(data)
             legend: {
                 display: false
             }
-        }
+        },
+        plugins: [{
+		    afterRender: function () {
+		      	renderIntoImage();
+		    }
+		}]
     };
     var canvas = document.querySelector('.barChart').getContext('2d');
     window.horizontalBar = new Chart(canvas, datos);
    	$('#grafico').show();
+   	$('#desdef').val(data.desdef);
+   	$('#hastaf').val(data.hastaf);
 
+}
+
+const renderIntoImage = () => {
+  	const canvas = document.getElementById('myChart');
+  	var img = new Image();
+  	img.src = canvas.toDataURL();
+  	src_slash = img.src;
+  	console.log(src_slash);
+  	var src = src_slash.replace(/\//g, '___');
+  	console.log(src);
+  	$('#graph').val(src);
 }

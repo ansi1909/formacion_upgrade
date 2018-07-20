@@ -304,9 +304,9 @@ class DefaultController extends Controller
                     <table class="table" id="dt">
                         <thead class="sty__title">
                             <tr>
-                                <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                                <th class="hd__title">'.$this->get('translator')->trans('Fecha Inicio').'</th>
-                                <th class="hd__title">'.$this->get('translator')->trans('Fecha Fin').'</th>
+                                <th class="hd__title text-center">'.$this->get('translator')->trans('Nombre').'</th>
+                                <th class="hd__title text-center">'.$this->get('translator')->trans('Fecha Inicio').'</th>
+                                <th class="hd__title text-center">'.$this->get('translator')->trans('Fecha Fin').'</th>
                                 <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
                                 <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios cursando').'</th>
                                 <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminado').'</th>
@@ -373,9 +373,9 @@ class DefaultController extends Controller
                     //return new Response (var_dump($usuariosCur));
                     
                     $html .= '<tr>
-                                <td>'. $pagina->getPagina()->getNombre() .'</td>
-                                <td>'. $pagina->getFechaInicio()->format('d-m-Y') .'</td>
-                                <td>'. $pagina->getFechaVencimiento()->format('d-m-Y').'</td>
+                                <td class="text-center">'. $pagina->getPagina()->getNombre() .'</td>
+                                <td class="text-center">'. $pagina->getFechaInicio()->format('d-m-Y') .'</td>
+                                <td class="text-center">'. $pagina->getFechaVencimiento()->format('d-m-Y').'</td>
                                 <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosT .'<i class="fa fa-user"></i></span></a></td>
                                 <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosCur .'<i class="fa fa-user"></i></span></a></td>
                                 <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosF .' <i class="fa fa-user"></i></span></a></td>
