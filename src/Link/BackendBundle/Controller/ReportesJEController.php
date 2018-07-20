@@ -136,19 +136,37 @@ class ReportesJEController extends Controller
         
     }
 
-    public function pdfHorasConexionAction($empresa_id, $desde, $hasta, $img, Request $request)
+    public function pdfHorasConexionAction(Request $request)
     {
         
-        $fn = $this->get('funciones');
-        $src = str_replace("___", "/", $img);
+        $f = $this->get('funciones');
+        /*$src = str_replace("___", "/", $img);
 
         $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
         $conexiones = $reporte['conexiones'];
         $celda_mayor = $reporte['celda_mayor'];
 
+        $filas_mayor = array();
+        $columnas_mayor = array();
+
+        foreach ($celda_mayor as $cm)
+        {
+            $cm_arr = explode("_", $cm);
+            $filas_mayor[] = $cm_arr[0];
+            $columnas_mayor[] = $cm_arr[1];
+        }
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
         $tabla = $this->renderView('LinkBackendBundle:Reportes:horasConexionTabla.html.twig', array('conexiones' => $conexiones,
-                                                                                                    'celda_mayor' => $celda_mayor));
+                                                                                                    'filas_mayor' => $filas_mayor,
+                                                                                                    'columnas_mayor' => $columnas_mayor,
+                                                                                                    'empresa' => $empresa,
+                                                                                                    'desde' => $desde,
+                                                                                                    'hasta' => $hasta));
+
         $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
+
         $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
         $header_footer = '<page_header> 
                                  <img src="'.$logo.'" width="200" height="50">
@@ -167,7 +185,28 @@ class ReportesJEController extends Controller
         $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
 
         //Generamos el PDF
-        $pdf->output('horas_conexion.pdf');
+        $pdf->output('horas_conexion.pdf');*/
+
+        $bin_data = $request->request->get('bin_data');
+        
+        $data = str_replace(' ', '+', $bin_data);
+        $data = base64_decode($data);
+        $fileName = date('ymdhis').'.png';
+        /*$im = imagecreatefromstring($data);
+
+        if ($im !== false) {
+            // Save image in the specified location
+            imagepng($im, $fileName);
+            imagedestroy($im);
+        }
+        else {
+            $fileName = 'An error occurred.';
+        }*/
+
+        $return = array('fileName' => $fileName);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 

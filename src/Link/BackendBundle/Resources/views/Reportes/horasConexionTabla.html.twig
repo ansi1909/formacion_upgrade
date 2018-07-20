@@ -3,7 +3,7 @@
 {% block body %}
     <div class="card">
         <div class="card-header gradiente">
-            <h5 class="card-title">Tabla XXX</h5>
+            <h5 class="card-title">{{ 'Horas de conexión de la empresa'|trans }} {{ empresa.nombre }}. {{ 'Desde'|trans }}: {{ desde }} / {{ 'Hasta'|trans }}: {{ hasta }}</h5>
         </div>
         <div class="card-block">
             <table class="table styleTab" align="center">
@@ -11,9 +11,9 @@
                     <tr>
                         {% for i in 0..25 %}
                             {% if loop.last %}
-                                <th id="celda_0_{{ i }}" class="totalEnd">0</th>
+                                <th class="totalEnd">{{ conexiones[0][i] }}</th>
                             {% else %}
-                                <th id="celda_0_{{ i }}" class="hourMaxCon">0</th>
+                                <th class="hourMaxCon{% if i in columnas_mayor %} hourMaxCon{% endif %}">0</th>
                             {% endif %}
                         {% endfor %}
                     </tr>
@@ -23,14 +23,19 @@
                         {% if loop.last %}
                             {% set eo = 'totalEnd' %}
                         {% else %}
-                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            {% if f in filas_mayor %}
+                                {% set eo = 'dayMaxCon' %}
+                            {% else %}
+                                {% set eo = cycle(['odd', 'even'], loop.index) %}
+                            {% endif %}
                         {% endif %}
-                        <tr id="f{{ f }}" class="{{ eo }}">
+                        <tr class="{{ eo }}">
                             {% for c in 0..25 %}
+                                {% set class_mayor = (c in columnas_mayor) ? 'hourMaxCon' : '' %}
                                 {% if loop.last %}
-                                    <td id="celda_{{ f }}_{{ c }}" class="totalEnd">XX</td>
+                                    <td class="totalEnd {{ class_mayor }}">{{ conexiones[f][c] }}</td>
                                 {% else %}
-                                    <td id="celda_{{ f }}_{{ c }}">YY</td>
+                                    <td class="{{ class_mayor }}">{{ conexiones[f][c] }}</td>
                                 {% endif %}
                             {% endfor %}
                         </tr>

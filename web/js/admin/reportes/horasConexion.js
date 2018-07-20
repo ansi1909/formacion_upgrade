@@ -35,7 +35,6 @@ $(document).ready(function() {
 
     $("#pdf").click(function(){
     	window.open($('#url_pdf').val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val()+'/'+$('#graph').val(), '_blank');
-    	//window.location.replace($('#url_pdf').val()+'');
     });
 
 });
@@ -57,12 +56,12 @@ function mostrarReporte(data)
 		for (var c = 0; c <= 25; c++)
 		{
 			$('#celda_'+f+'_'+c).html(data.conexiones[f][c]);
-			if (f > 0 && c == 25)
+			if (f > 0 && f != 8 && c == 25)
 			{
 				totales.push(data.conexiones[f][c]);
 			}
 		}
-		if (f > 0)
+		if (f > 0 && f != 8)
 		{
 			etiquetas.push(data.conexiones[f][0]);
 		}
@@ -114,10 +113,27 @@ function mostrarReporte(data)
 const renderIntoImage = () => {
   	const canvas = document.getElementById('myChart');
   	var img = new Image();
-  	img.src = canvas.toDataURL();
-  	src_slash = img.src;
-  	console.log(src_slash);
+  	img.src = canvas.toDataURL("image/png");
+  	src_img = img.src;
+  	src_img = src_img.replace('data:image/png;base64,', '');
+	var data = "bin_data="+src_img;
+	$.ajax({
+		type: "POST",
+		url: $('#url_pdf').val(),
+		async: true,
+		data: data,
+		dataType: "json",
+		success: function(response) {
+			console.log(response)
+		},
+		error: function(){
+			$('#div-error-server').html($('#error-msg').val());
+			notify($('#div-error-server').html());
+		}
+	});
+  	/*console.log(src_slash);
   	var src = src_slash.replace(/\//g, '___');
   	console.log(src);
-  	$('#graph').val(src);
+  	$('#graph').val(src);*/
+
 }
