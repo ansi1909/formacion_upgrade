@@ -56,7 +56,7 @@
                                         {% if loop.last %}
                                             <td id="celda_{{ f }}_{{ c }}" class="totalEnd">&nbsp;</td>
                                         {% else %}
-                                            <td id="celda_{{ f }}_{{ c }}">&nbsp;</th>
+                                            <td id="celda_{{ f }}_{{ c }}">&nbsp;</td>
                                         {% endif %}
                                     {% endfor %}
                                 </tr>
@@ -79,11 +79,15 @@
                             </div>
                             <div class="card-block">
                                 <div class="canvasCont">
-                                    <canvas class="barChart"></canvas>
+                                    <canvas class="barChart" id="myChart"></canvas>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <div class="col-sm-16 col-md-16 text-right">
+                                    <input type="hidden" id="url_pdf" name="url_pdf" value="{{ path ('_pdfHorasConexion') }}">
+                                    <input type="hidden" id="desdef" name="desdef" value="">
+                                    <input type="hidden" id="hastaf" name="hastaf" value="">
+                                    <input type="hidden" id="graph" name="graph" value="">
                                     <button id="pdf" type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button>
                                 </div>
                             </div>
