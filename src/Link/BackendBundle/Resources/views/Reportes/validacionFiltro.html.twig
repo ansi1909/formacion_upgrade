@@ -1,0 +1,42 @@
+<script type="text/javascript">
+    jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+        var value_arr = value.split('/');
+        value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+        var params_value = $(params).val();
+        value_arr = params_value.split('/');
+        params_value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) >= new Date(params_value);
+        }
+        return isNaN(value) && isNaN(params_value) || (Number(value) >= Number(params_value));
+    },"- {{ 'La fecha final debe ser mayor que la fecha inicial'|trans }}.");
+    $("#form").validate({
+        errorLabelContainer: "#div-error ul",
+        wrapper: "li",
+        ignore: "",
+        rules: {
+            'empresa_id': {
+                required: true
+            },
+            'desde': {
+                required: true
+            },
+            'hasta': {
+                required: true,
+                greaterThan: "#desde"
+            }
+        },
+        messages: {
+            'empresa_id': {
+                required: "- {{ 'La empresa es requerida.'|trans }}"
+            },
+            'desde': {
+                required: "- {{ 'Debe seleccionar la fecha inicial'|trans }}."
+            },
+            'hasta': {
+                required: "- {{ 'Debe seleccionar la fecha final'|trans }}.",
+                greaterThan: "- {{ 'La fecha final debe ser mayor que la fecha inicial'|trans }}."
+            }
+        }
+    });
+</script>

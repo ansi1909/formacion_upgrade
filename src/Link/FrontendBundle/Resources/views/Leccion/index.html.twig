@@ -138,7 +138,7 @@
             {% for subpagina in lecciones.subpaginas %}
                 <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}">
                     <div class="lesson-container container py-6 text-center">
-                        <h2 class="color-dark-grey">{{ subpagina.nombre }}</h2>
+                        <h2>{{ subpagina.nombre }}</h2>
                         {% if subpagina.foto %}
                             {% set img = uploads~subpagina.foto %}
                             <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
@@ -147,7 +147,7 @@
                         {% if subpagina.pdf != '' %}
                             {% set pdf = uploads~subpagina.pdf %}
                             <div class="row justify-content-center">
-                                <div class="col-auto text-center">
+                                <div class="col-auto text-center mt-4">
                                     <a href="{{ pdf }}" target="_blank">
                                         <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
                                         <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p></div>

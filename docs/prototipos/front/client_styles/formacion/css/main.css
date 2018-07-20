@@ -10,6 +10,9 @@
     .mt-22v {
       margin-top: 0; } }
 
+.mt-18v {
+  margin-top: 7rem; }
+
 .mt-12v {
   margin-top: 12vh; }
   @media (max-width: 767.98px) {
@@ -127,7 +130,7 @@ h5, .h5 {
 p {
   font-family: "Open Sans";
   font-size: 1.125rem;
-  color: #797D80;
+  color: #383838;
   font-weight: 300; }
 
 label {
@@ -310,6 +313,29 @@ input.form-control:focus {
     position: relative;
     top: .5rem;
     left: 0; }
+
+.btnRepeatEval {
+  margin-top: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  height: 6rem;
+  width: 6rem;
+  box-shadow: 3px 3px 15px rgba(56, 56, 56, 0.5);
+  transition: all .25s ease-out; }
+  .btnRepeatEval .ic-resul {
+    font-size: 5rem;
+    color: #5CAEE6;
+    padding: .5rem;
+    transition: all .25s ease-out; }
+  .btnRepeatEval .alreves {
+    transform: scaleX(-1) rotate(5deg);
+    transition: all .5s ease-out; }
+  .btnRepeatEval:hover {
+    background: #FFDC60; }
+    .btnRepeatEval:hover .ic-resul {
+      color: #797D80; }
+    .btnRepeatEval:hover .alreves {
+      transform: scaleX(-1) rotate(360deg); }
 
 .bttn_fm {
   font-family: "Roboto";
@@ -1204,11 +1230,12 @@ a:focus, a:active, a:target, a:checked {
 
 .eval_header {
   height: 6rem !important;
-  padding: 1rem !important; }
+  padding: 1rem !important;
+  position: absolute; }
   .eval_header .exit_eval {
     cursor: pointer;
     position: relative;
-    top: -.1rem; }
+    top: .4rem; }
   .eval_header .txt_eval_header {
     color: #AAAFB3;
     font-family: "Roboto";
@@ -1927,7 +1954,7 @@ a.active {
   .for-message h1 {
     font-size: 3.45rem; }
   .for-message p {
-    max-width: 60%;
+    max-width: 85%;
     text-align: justify; }
 
 #equis {
@@ -1965,14 +1992,14 @@ a.active {
   overflow: hidden; }
 
 .well-message-prog p {
-  max-width: 70%;
+  max-width: 90%;
   max-height: 900px;
   opacity: 1;
   transition: all 1.5s ease-in-out;
-  margin-top: 2rem; }
+  margin-top: 1rem; }
 .well-message-prog img {
   width: 820px;
-  transform: translateX(-6.25%);
+  transform: translateX(3.75%);
   border-radius: .5rem; }
 
 .avance-message {
@@ -2005,17 +2032,19 @@ p.up {
 .lesson-container p {
   font-family: "Open Sans";
   font-size: 1.1rem;
-  line-height: 1.6;
-  color: #7b7b7b;
+  line-height: 1.75rem;
+  color: #383838;
   width: 75%;
   font-weight: 200;
   text-align: justify;
-  margin: 1.6rem auto; }
+  margin: 1rem auto; }
 .lesson-container ul, .lesson-container ol {
   display: inline-block;
   text-align: left;
-  color: grey;
-  line-height: 2rem;
+  font-family: "Open Sans";
+  font-size: 1.1rem;
+  color: #383838;
+  line-height: 1rem;
   width: 75%; }
   .lesson-container ul li, .lesson-container ol li {
     margin-bottom: 1rem; }
@@ -2156,13 +2185,13 @@ p.up {
     color: #CFE65C;
     font-size: 6rem;
     opacity: 0.8;
-    margin: 1rem auto; }
+    margin: 1rem auto .5rem auto; }
   .s1_fin-materia .text_fin-materia {
     color: #9B9B9B;
     font-family: "Roboto";
     font-size: 1.5rem;
     line-height: calc(2rem + 1px);
-    margin: 2rem 0; }
+    margin: 1rem 0; }
   .s1_fin-materia .logro {
     font-family: "Roboto";
     font-size: 1.5rem;
@@ -3301,7 +3330,8 @@ p.up {
   line-height: 3.5625rem;
   text-align: center;
   position: relative;
-  top: -.5rem; }
+  top: -.5rem;
+  right: 1rem; }
   @media (max-width: 767.98px) {
     .num_preg {
       top: 1rem;
@@ -3316,6 +3346,10 @@ p.up {
       font-size: 1rem;
       line-height: 1rem;
       font-weight: 700; } }
+
+.progUb {
+  position: relative;
+  right: 2.5rem; }
 
 .progress-bar_eval {
   background: #CFE65C; }
@@ -3334,6 +3368,9 @@ p.up {
   flex-direction: row;
   height: auto;
   width: 57rem;
+  transform: translateX(-50%);
+  position: relative;
+  left: 46.5%;
   margin: .5rem 0;
   cursor: pointer; }
   @media (max-width: 767.98px) {
@@ -3520,43 +3557,41 @@ p.up {
   line-height: calc(2rem - 2px);
   margin-top: 3rem; }
 
-.ic-resul {
-  font-size: 5rem;
-  color: #5CAEE6;
-  margin-top: calc(2rem - 8px); }
-
-.alreves {
-  transform: scaleX(-1) rotate(5deg); }
-
 .txt-resul {
   font-family: "Roboto";
-  font-size: 2rem;
+  font-size: 1.5rem;
   line-height: calc(2rem + 1px);
-  margin: 4rem 0 2rem 0; }
+  margin: 2rem 0 1rem 0; }
+
+.calif {
+  left: 0rem; }
 
 .mostrar-resul {
   background: #fff;
-  padding-top: calc(3rem - 4px);
   margin-top: 1.5rem;
   padding-bottom: 2rem;
   overflow-x: hidden !important;
-  width: 100%; }
-  .mostrar-resul .calif {
-    left: 6rem; }
-  .mostrar-resul .logro {
-    left: -4rem; }
-    .mostrar-resul .logro .num .unidad {
-      color: #5CAEE6;
-      font-family: "Roboto";
-      font-size: 1.5rem;
-      line-height: calc(2rem - 4px);
-      margin-left: calc(1rem - 8px); }
+  width: 100%;
+  /*.logro{
+      @extend %cal-log;
+      left: -4rem;
+      .num{
+         @extend %number;
+          .unidad{
+              color: $blue;	
+              font-family: $primary-font;	
+              font-size: $h4-font-size;	
+              line-height: calc(2rem - 4px);
+              margin-left: calc(1rem - 8px);
+          }
+      }
+  }*/ }
   .mostrar-resul .anun-resul {
-    margin: calc(2rem - 8px) 0 1rem 0;
-    color: #9B9B9B;
+    margin: 1rem auto;
+    color: #797D80;
     font-family: "Open Sans";
-    font-size: 1.125rem;
-    line-height: calc(2rem - 8px); }
+    font-size: 2rem;
+    font-weight: 400; }
   .mostrar-resul .resp-eval {
     position: relative;
     left: 16%;
@@ -3586,7 +3621,7 @@ p.up {
   color: #5C6266;
   font-family: "Open Sans";
   line-height: 1.5rem;
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   text-align: justify;
   margin-top: .25rem;
   font-weight: 400; }
@@ -3644,13 +3679,14 @@ p.up {
 .elec-resp .opc_img .opc_i-3, .elec-resp .opc_img .opc_i-4, .elec-resp-asig .opc_img-asig .opc_i-3, .elec-resp-asig .opc_img-asig .opc_i-4 {
   border-radius: calc(1rem - 10px); }
 
-.mostrar-resul .calif, .mostrar-resul .logro {
+.calif {
   font-family: "Roboto";
   font-size: 2rem;
   line-height: calc(2rem + 6px);
   margin-right: calc(3rem + 7px);
-  color: #AAAFB3;
-  position: relative; }
+  color: #797D80;
+  position: relative;
+  font-weight: 400; }
 
 .mostrar-resul .resp-eval li .preg-aprob, .mostrar-resul .resp-eval li .preg-reprob {
   width: 44rem;
@@ -3659,7 +3695,7 @@ p.up {
   margin: 0;
   cursor: pointer; }
 
-.mostrar-resul .calif .num, .mostrar-resul .logro .num {
+.calif .num {
   color: #5CAEE6;
   font-family: "Roboto";
   font-size: 2rem;

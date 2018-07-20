@@ -144,11 +144,11 @@ class ReportesController extends Controller
         } 
 
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
-                                                                                                    'usuario_empresa' => $usuario_empresa,
-                                                                                                    'usuario' => $usuario,
-                                                                                                    'reporte'=>$r,
-                                                                                                    'pagina_id'=>$pagina_id,
-                                                                                                    'empresa_dashboard'=>$empresa_id));    
+                                                                                 'usuario_empresa' => $usuario_empresa,
+                                                                                 'usuario' => $usuario,
+                                                                                 'reporte'=>$r,
+                                                                                 'pagina_id'=>$pagina_id,
+                                                                                 'empresa_dashboard'=>$empresa_id));    
     }
 
     public function ajaxProgramasEAction(Request $request)
@@ -298,12 +298,84 @@ class ReportesController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
+        $reporte = 6;
+        $pagina_id = 0;
 
         // Lógica inicial de la pantalla de este reporte
-        $datos = 'Foo';
+        $usuario_empresa = 0;
+        $empresas = array();
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
-        return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('datos' => $datos));
+        if ($usuario->getEmpresa()) {
+            $usuario_empresa = 1; 
+        }
+        else {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        } 
 
+        return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('empresas' => $empresas,
+                                                                                           'usuario_empresa' => $usuario_empresa,
+                                                                                           'usuario' => $usuario,
+                                                                                           'reporte' => $reporte,
+                                                                                           'pagina_id'=>$pagina_id));
+
+    }
+
+    public function ajaxLeccionesEAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        $pagina_id = $request->query->get('pagina_id');
+        $options = '<option value=""></option>';
+
+        $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                   JOIN pe.pagina p
+                                   WHERE pe.empresa = :empresa_id
+                                   AND p.pagina = :pagina_id
+                                   AND p.categoria = 2')
+                    ->setParameters(array('empresa_id' => $empresa_id , 'pagina_id' => $pagina_id));
+        $modulos = $query->getResult();
+
+        //return new Response (var_dump($modulos));
+
+        foreach ( $modulos as $modulo){
+
+            $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                       JOIN pe.pagina p
+                                       WHERE pe.empresa = :empresa_id
+                                       AND p.pagina = :materia_id
+                                       AND p.categoria = 3')
+                        ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $modulo->getPagina()->getId()));
+            $materias = $query->getResult();
+
+            foreach ( $materias as $materia){
+
+                $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                           JOIN pe.pagina p
+                                           WHERE pe.empresa = :empresa_id
+                                           AND p.pagina = :materia_id
+                                           AND p.categoria = 4')
+                            ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $materia->getPagina()->getId()));
+                $lecciones = $query->getResult();
+
+
+
+                foreach ($lecciones as $leccion)
+                {
+                    $options .= '<option value="'.$leccion->getPagina()->getId().'">'.$leccion->getPagina()->getNombre().' </option>'; 
+                }
+
+             }
+
+         }
+
+         
+
+        
+        $return = array('options' => $options);
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function reporteGeneralAction($app_id, $empresa_id, Request $request)
@@ -329,7 +401,7 @@ class ReportesController extends Controller
         $usuarios_activos=0;
         $usuarios_inactivos=0;
         $usuarios_registrados=0;
-        $i= 1;
+        $i= 5;
 
         $query = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general(:re, :pempresa_id) as
@@ -339,6 +411,25 @@ class ReportesController extends Controller
         $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
         $query->execute();
         $r = $query->fetchAll();
+
+        foreach ($r as $re) {
+                
+                if ($re['logueado'] > 0) {
+                    $usuarios_activos++;
+                }else{
+                    $usuarios_inactivos++;
+                }
+               
+            }
+
+        $query2 = $em->getConnection()->prepare('SELECT
+                                                fnreporte_general2(:re, :pempresa_id) as
+                                                resultado; fetch all from re;');
+        $re1 = 're';
+        $query2->bindValue(':re', $re1, \PDO::PARAM_STR);
+        $query2->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query2->execute();
+        $r1 = $query2->fetchAll();
 
 
          // Solicita el servicio de excel
@@ -351,30 +442,64 @@ class ReportesController extends Controller
                ->setDescription("Listado de participantes")
                ->setKeywords("office 2005 openxml php")
                ->setCategory("Reportes");
-            foreach ($r as $re) {
-                $i++;
-                if ($re['logueado'] > 0) {
-                    $usuarios_activos++;
-                }else{
-                    $usuarios_inactivos++;
-                }
-               
-            }
+            
+            //return new Response (var_dump($r1));
             $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
-             $phpExcelObject->setActiveSheetIndex(0)
-                               ->setCellValue('A1', 'Usuarios registrados')
-                               ->setCellValue('B1', 'Usuarios activos')
-                               ->setCellValue('C1', 'Usuarios inactivos')
-                               ->setCellValue('A2', $usuarios_registrados)
-                               ->setCellValue('B2', $usuarios_activos)
-                               ->setCellValue('C2', $usuarios_inactivos)
-                               ->setCellValue('A5', 'Programas')
-                               ->setCellValue('B5', 'Fecha inicio')
-                               ->setCellValue('C5', 'Fecha fin')
-                               ->setCellValue('D5', 'Usuarios registrados')
-                               ->setCellValue('E5', 'Usuarios cursando')
-                               ->setCellValue('F5', 'Usuarios finalizado')
-                               ->setCellValue('G5', 'Usuarios no iniciados');
+             foreach ($r1 as $r2) {
+                 $i++;
+                 $query3 = $em->getConnection()->prepare('SELECT
+                                                         fnreporte_general3(:re, :pempresa_id, :ppagina_id) as
+                                                         resultado; fetch all from re;');
+                 $re2 = 're';
+                 $query3->bindValue(':re', $re2, \PDO::PARAM_STR);
+                 $query3->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+                 $query3->bindValue(':ppagina_id', $r2['id'], \PDO::PARAM_INT);
+                 $query3->execute();
+                 $r3 = $query3->fetchAll();
+
+                 foreach ($r3 as $r4) {
+                    $usuarios_c = $r4['usuarios'];
+                 }
+
+                 $query4 = $em->getConnection()->prepare('SELECT
+                                                         fnreporte_general4(:re, :pempresa_id, :ppagina_id) as
+                                                         resultado; fetch all from re;');
+                 $re3 = 're';
+                 $query4->bindValue(':re', $re3, \PDO::PARAM_STR);
+                 $query4->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+                 $query4->bindValue(':ppagina_id', $r2['id'], \PDO::PARAM_INT);
+                 $query4->execute();
+                 $r4 = $query4->fetchAll();
+
+                 foreach ($r4 as $r5) {
+                    $usuarios_f = $r5['usuarios'];
+                 }
+                 $usuarios_r = $r2['usuarios'];
+                 $usuarios_n = $usuarios_r - ($usuarios_f + $usuarios_c);
+                 
+
+                 $phpExcelObject->setActiveSheetIndex(0)
+                                   ->setCellValue('A1', 'Usuarios registrados')
+                                   ->setCellValue('B1', 'Usuarios activos')
+                                   ->setCellValue('C1', 'Usuarios inactivos')
+                                   ->setCellValue('A2', $usuarios_registrados)
+                                   ->setCellValue('B2', $usuarios_activos)
+                                   ->setCellValue('C2', $usuarios_inactivos)
+                                   ->setCellValue('A5', 'Programas')
+                                   ->setCellValue('B5', 'Fecha inicio')
+                                   ->setCellValue('C5', 'Fecha fin')
+                                   ->setCellValue('D5', 'Usuarios registrados')
+                                   ->setCellValue('E5', 'Usuarios cursando')
+                                   ->setCellValue('F5', 'Usuarios finalizado')
+                                   ->setCellValue('G5', 'Usuarios no iniciados')
+                                   ->setCellValue('A'.$i, $r2['programa'])
+                                   ->setCellValue('B'.$i, $r2['fecha_inicio'])
+                                   ->setCellValue('C'.$i, $r2['fecha_fin'])
+                                   ->setCellValue('D'.$i, $r2['usuarios'])
+                                   ->setCellValue('E'.$i, $usuarios_c)
+                                   ->setCellValue('F'.$i, $usuarios_f)
+                                   ->setCellValue('G'.$i, $usuarios_n);
+            }
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
             // Crea el writer

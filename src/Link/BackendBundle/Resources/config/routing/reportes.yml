@@ -22,6 +22,12 @@ _ajaxProgramasE:
     requirements:
         method: GET
 
+_ajaxLeccionesE:
+    path:     /ajaxLeccionesE
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxLeccionesE }
+    requirements:
+        method: GET
+
 _participantesAprobados:
     path:     /participantesAprobados/{app_id},{pagina_id},{r},{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 4, empresa_id: 0 }

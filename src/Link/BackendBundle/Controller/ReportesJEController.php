@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class ReportesJEController extends Controller
 {
@@ -51,108 +52,123 @@ class ReportesJEController extends Controller
     public function ajaxHorasConexionAction(Request $request)
     {
         
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $fn = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
-        $desde = $request->request->get('desde');
-        $hasta = $request->request->get('hasta');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
+        $pdf = $request->request->get('pdf');
 
-        list($d, $m, $a) = explode("/", $desde);
-        $desde = "$a-$m-$d";
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
 
-        list($d, $m, $a) = explode("/", $hasta);
-        $hasta = "$a-$m-$d";
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
 
-        // ESTRUCTURA de $conexiones:
-        // $conexiones[0][0] => Día/Hora
-        // $conexiones[0][1] => Etiqueta 00:00
-        // $conexiones[0][2] => Etiqueta 01:00
-        // ...
-        // $conexiones[0][24] => Etiqueta 23:00
-        // $conexiones[0][25] => Etiqueta Total
-        // $conexiones[1][0] => Etiqueta Domingo
-        // $conexiones[1][1] => Domingo a las 00:00
-        // $conexiones[1][2] => Domingo a las 01:00
-        // ...
-        // $conexiones[1][24] => Domingo a las 23:00
-        // $conexiones[1][25] => Total Domingo
-        // $conexiones[2][0] => Etiqueta Lunes
-        // $conexiones[2][1] => Lunes a las 00:00
-        // $conexiones[2][2] => Lunes a las 01:00
-        // ...
-        // $conexiones[2][24] => Lunes a las 23:00
-        // $conexiones[2][25] => Total Lunes
-        // ...
-        // $conexiones[7][0] => Etiqueta Sábado
-        // $conexiones[7][1] => Sábado a las 00:00
-        // $conexiones[7][2] => Sábado a las 01:00
-        // ...
-        // $conexiones[7][24] => Sábado a las 23:00
-        // $conexiones[7][25] => Total Sábado
-        // $conexiones[8][0] => Etiqueta Total
-        // $conexiones[8][1] => Total a las 00:00
-        // $conexiones[8][2] => Total a las 01:00
-        // ...
-        // $conexiones[8][24] => Total a las 23:00
-        // $conexiones[8][25] => Total de totales
-        $conexiones[0][0] = $this->get('translator')->trans('Día/Hora');
+        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        $conexiones = $reporte['conexiones'];
+        $celda_mayor = $reporte['celda_mayor'];
 
-        // Etiquetas de horas
-        $c = 1;
-        for ($h=0; $h<24; $h++)
+        if ($excel)
         {
-            $hora = $h<=9 ? '0'.$h : $h;
-            $conexiones[0][$c] = $hora.':00';
-            $c++;
-        }
 
-        $conexiones[0][25] = 'Total';
+            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-        for ($c=0; $c<=24; $c++)
-        {
-            if ($c==0)
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            // Encabezado
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+
+            // Primera columna
+            for ($f=0; $f<=8; $f++)
             {
-                for ($f=1; $f<=8; $f++)
+                $r = $f+3;
+                $objWorksheet->setCellValue('A'.$r, $conexiones[$f][0]);
+            }
+
+            // Data calculada
+            for ($f=1; $f<=8; $f++)
+            {
+                $row = $f+3;
+                for ($c=1; $c<=25; $c++)
                 {
-                    switch ($f)
-                    {
-                        case 1:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Domingo');
-                            break;
-                        case 2:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Lunes');
-                            break;
-                        case 3:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Martes');
-                            break;
-                        case 4:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Miércoles');
-                            break;
-                        case 5:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Jueves');
-                            break;
-                        case 6:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Viernes');
-                            break;
-                        case 7:
-                            $conexiones[$f][$c] = $this->get('translator')->trans('Sábado');
-                            break;
-                        case 8:
-                            $conexiones[$f][$c] = 'Total';
-                            break;
-                    }
+                    $col = $columnNames[$c];
+                    $objWorksheet->setCellValue($col.$row, $conexiones[$f][$c]);
                 }
             }
-            else {
-                // Cálculos desde la función de BD
+
+            // Resaltar las celdas mayores
+            foreach ($celda_mayor as $cm)
+            {
+                $m = explode("_", $cm);
+                $col = $columnNames[$m[1]];
+                $row = $m[0]+3;
+                $objPHPExcel->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
             }
+
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.xls';
+            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+            $writer->save($xls);
+
+            $archivo = $this->container->getParameter('folders')['uploads'].$path;
+
+        }
+        else {
+            $archivo = '';
         }
         
-        $return = array('conexiones' => $conexiones);
+        $return = array('conexiones' => $conexiones,
+                        'celda_mayor' => $celda_mayor,
+                        'archivo' => $archivo,
+                        'desdef' => $desde,
+                        'hastaf' => $hasta);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function pdfHorasConexionAction($empresa_id, $desde, $hasta, $img, Request $request)
+    {
+        
+        $fn = $this->get('funciones');
+        $src = str_replace("___", "/", $img);
+
+        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        $conexiones = $reporte['conexiones'];
+        $celda_mayor = $reporte['celda_mayor'];
+
+        $tabla = $this->renderView('LinkBackendBundle:Reportes:horasConexionTabla.html.twig', array('conexiones' => $conexiones,
+                                                                                                    'celda_mayor' => $celda_mayor));
+        $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
+        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
+        $header_footer = '<page_header> 
+                                 <img src="'.$logo.'" width="200" height="50">
+                            </page_header>
+                            <page_footer>
+                                <table style="width: 100%; border: solid 1px black;">
+                                    <tr>
+                                        <td style="text-align: left;    width: 50%">Generado el '.date('d/m/Y H:i a').'</td>
+                                        <td style="text-align: right;    width: 50%">Página [[page_cu]]/[[page_nb]]</td>
+                                    </tr>
+                                </table>
+                            </page_footer>';
+        $pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(5, 5, 5, 8));
+        $pdf->pdf->SetDisplayMode('fullpage');
+        $pdf->writeHtml('<page>'.$header_footer.$tabla.'</page>');
+        $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
+
+        //Generamos el PDF
+        $pdf->output('horas_conexion.pdf');
+
     }
 
     

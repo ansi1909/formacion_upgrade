@@ -1,86 +1,44 @@
-SELECT * FROM admin_sesion WHERE CAST(fecha_ingreso AS TIME) BETWEEN '14:00' and '14:30' ORDER BY id;
--- 11,18,22,34,38,43,44,45,46
+-- Function: fnhoras_conexion(integer, timestamp, timestamp, time, time)
 
-SELECT * FROM admin_sesion WHERE fecha_ingreso BETWEEN '2018-05-01 00:00:00' AND '2018-05-10 23:59:59'
-                ORDER BY id;
--- 20 al 36
+-- DROP FUNCTION fnhoras_conexion(integer, timestamp, timestamp, time, time);
 
-SELECT * FROM admin_sesion WHERE CAST(fecha_ingreso AS TIME) BETWEEN '14:00' and '14:30'
-                AND fecha_ingreso BETWEEN '2018-05-01 00:00:00' AND '2018-05-10 23:59:59'
-                ORDER BY id;
--- 22 => 02/05 (miercoles)
--- 34 => 08/05 (martes)
-
-SELECT * FROM admin_sesion WHERE CAST(fecha_ingreso AS TIME) BETWEEN '14:00' and '14:30'
-                AND fecha_ingreso BETWEEN '2018-05-01 00:00:00' AND '2018-05-10 23:59:59'
-                AND date_part('dow', fecha_ingreso) = 2 
-                ORDER BY id;
--- 34 (martes)
-
-select date_part('dow', now());
-
-
-
-
-
--- Function: fnduplicar_pagina(integer, text, integer, timestamp)
-
--- DROP FUNCTION fnduplicar_pagina(integer, text, integer, timestamp);
-
-CREATE OR REPLACE FUNCTION fnduplicar_pagina(ppagina_id integer,
-    pnombre text,
-    pusuario_id integer,
-    pfecha timestamp)
-  --RETURNS SETOF text AS
+CREATE OR REPLACE FUNCTION fnhoras_conexion(pempresa_id integer,
+    pdesde timestamp,
+    phasta timestamp,
+    phora1 time,
+    phora2 time)
   RETURNS text AS
 $BODY$
 declare
-    arr text[];              -- Arreglo con toda la estructura de la página y sub-páginas
-    sub_arr text[];          -- Arreglo con la estructura de las sub-páginas
-    i INTEGER := 0;          -- Contador de arr
-    str text;                -- Cadena para debug
+    i integer;      -- Iterador de los días de la semana (0 = Domingo)
+    str text;           -- Cadena para debug
     rst  record;             -- Cursor para el SELECT de la página
-    newid integer;           -- Nuevo ID retornado del INSERT de certi_pagina
+    c integer;          -- Cantidad de registros del query
     neworden integer;        -- Nuevo orden que tendrá la página duplicada
 begin
 
-    FOR rst IN 
+    FOR i IN 0..6 LOOP
 
-         SELECT * FROM certi_pagina WHERE id = ppagina_id ORDER BY orden ASC LOOP
-         str = rst.id || '__' || rst.nombre || '__' || CASE WHEN rst.pagina_id Is Null THEN 0 ELSE rst.pagina_id END || '__' || pfecha || '__' || rst.orden;
-         arr[i] = str; -- Agregando el elemento padre al arreglo
+    SELECT COUNT(s.id) INTO c FROM admin_sesion s INNER JOIN admin_usuario u ON s.usuario_id = u.id 
+        WHERE u.empresa_id = pempresa_id 
+            AND CAST(fecha_ingreso AS TIME) BETWEEN phora1 and phora2 
+            AND fecha_ingreso BETWEEN pdesde AND phasta 
+            AND date_part('dow', fecha_ingreso) = i;
 
-         -- Buscar el orden para el nuevo registro
-         If rst.pagina_id is Null Then
-         SELECT MAX(orden::integer) INTO neworden FROM certi_pagina WHERE pagina_id IS NULL;
-         Else
-             SELECT MAX(orden::integer) INTO neworden FROM certi_pagina WHERE pagina_id = rst.pagina_id;
-         End If;
-         neworden = neworden+1;
+    If i = 0 Then 
+      str = c;
+    Else 
+      str = str || '__' || c;
+    End If;
 
-         -- Inserción de la nueva página padre
-         INSERT INTO certi_pagina (nombre, pagina_id, categoria_id, descripcion, contenido, foto, pdf, fecha_creacion, fecha_modificacion, estatus_contenido_id, usuario_id, orden) VALUES 
-                                  (pnombre, rst.pagina_id, rst.categoria_id, rst.descripcion, rst.contenido, rst.foto, rst.pdf, pfecha, pfecha, rst.estatus_contenido_id, pusuario_id, neworden) 
-                     RETURNING id INTO newid;
-         raise notice 'NEWID: %', newid;
-
-         -- Llamada a la función que duplica las sub-páginas
-         SELECT fnduplicar_subpagina( rst.id::integer, pusuario_id::integer, pfecha::timestamp, newid::integer) INTO sub_arr;
-         arr = arr || sub_arr; -- Unión del sub_arr con arr
-
-         i = array_upper(arr, 1)+1; -- Siguiente iteración a partir del último índice del arreglo fusionado
+        raise notice 'Return: %', str;
          
-     END LOOP;
+    END LOOP;
    
-    /*FOR i IN 0..array_upper(arr, 1) LOOP
-        RETURN NEXT arr[i];
-    END LOOP;*/
-    -- Retorna la cantidad de registros insertados más el nuevo id de la página padre
-    str = array_upper(arr, 1)+1 || '__' || newid;
-    RETURN str;
+    return str;
 
 end;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
-  --select * from fnduplicar_pagina(24, 'Copia de tertulias', 1, '2018-01-23 13:58:02') as resultado;
+  --select * from fnhoras_conexion(2, '2018-05-10 00:00:00', '2018-05-30 23:59:59', '08:00:00', '08:59:59');

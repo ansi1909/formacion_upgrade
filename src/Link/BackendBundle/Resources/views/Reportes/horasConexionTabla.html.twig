@@ -1,0 +1,42 @@
+{% extends '::pdf.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header gradiente">
+            <h5 class="card-title">Tabla XXX</h5>
+        </div>
+        <div class="card-block">
+            <table class="table styleTab" align="center">
+                <thead>
+                    <tr>
+                        {% for i in 0..25 %}
+                            {% if loop.last %}
+                                <th id="celda_0_{{ i }}" class="totalEnd">0</th>
+                            {% else %}
+                                <th id="celda_0_{{ i }}" class="hourMaxCon">0</th>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in 1..8 %}
+                        {% if loop.last %}
+                            {% set eo = 'totalEnd' %}
+                        {% else %}
+                            {% set eo = cycle(['odd', 'even'], loop.index) %}
+                        {% endif %}
+                        <tr id="f{{ f }}" class="{{ eo }}">
+                            {% for c in 0..25 %}
+                                {% if loop.last %}
+                                    <td id="celda_{{ f }}_{{ c }}" class="totalEnd">XX</td>
+                                {% else %}
+                                    <td id="celda_{{ f }}_{{ c }}">YY</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
