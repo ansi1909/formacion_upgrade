@@ -413,14 +413,13 @@ class ReportesController extends Controller
         $r = $query->fetchAll();
 
         foreach ($r as $re) {
-                
-                if ($re['logueado'] > 0) {
-                    $usuarios_activos++;
-                }else{
-                    $usuarios_inactivos++;
-                }
-               
+            if ($re['logueado'] > 0) {
+                $usuarios_activos++;
+            }else{
+                $usuarios_inactivos++;
             }
+           
+        }
 
         $query2 = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general2(:re, :pempresa_id) as
