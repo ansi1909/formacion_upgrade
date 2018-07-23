@@ -33,8 +33,10 @@ $(document).ready(function() {
 		});
     });
 
-    $("#pdf").click(function(){
-    	window.open($('#url_pdf').val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val()+'/'+$('#graph').val(), '_blank');
+    $('#pdf').click(function(){
+    	$('#pdf').hide();
+    	$('#pdf-loader').show();
+    	renderIntoImage();
     });
 
 });
@@ -95,15 +97,11 @@ function mostrarReporte(data)
             legend: {
                 display: false
             }
-        },
-        plugins: [{
-		    afterRender: function () {
-		      	renderIntoImage();
-		    }
-		}]
+        }
     };
     var canvas = document.querySelector('.barChart').getContext('2d');
     window.horizontalBar = new Chart(canvas, datos);
+   	
    	$('#grafico').show();
    	$('#desdef').val(data.desdef);
    	$('#hastaf').val(data.hastaf);
@@ -111,29 +109,30 @@ function mostrarReporte(data)
 }
 
 const renderIntoImage = () => {
+
+	// Función que transforma el gráfico en imagen
   	const canvas = document.getElementById('myChart');
-  	var img = new Image();
-  	img.src = canvas.toDataURL("image/png");
-  	src_img = img.src;
-  	src_img = src_img.replace('data:image/png;base64,', '');
-	var data = "bin_data="+src_img;
+  	var src_img = getImgFromCanvas(canvas);
+  	
+  	// Se almacena la imagen en el servidor
 	$.ajax({
 		type: "POST",
-		url: $('#url_pdf').val(),
+		url: $('#url_img').val(),
 		async: true,
-		data: data,
+		data: "bin_data="+src_img,
 		dataType: "json",
 		success: function(response) {
-			console.log(response)
+			$('#pdf-loader').hide();
+			var href = $("#pdf-link").attr("href")+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val();
+        	$("#pdf-link").attr("href", href);
+        	$('#pdf-link').show();
 		},
 		error: function(){
 			$('#div-error-server').html($('#error-msg').val());
 			notify($('#div-error-server').html());
+			$('.descargable').hide();
+			$('.generable').show();
 		}
 	});
-  	/*console.log(src_slash);
-  	var src = src_slash.replace(/\//g, '___');
-  	console.log(src);
-  	$('#graph').val(src);*/
 
 }

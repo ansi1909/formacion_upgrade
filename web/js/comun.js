@@ -130,3 +130,44 @@ function disableSubmit()
     $('#guardar').prop('disabled', true);
     $('.form-control').prop('disabled', true);
 }
+
+// Función que transforma el gráfico en imagen
+function getImgFromCanvas(canvas)
+{
+
+    var w = canvas.width;
+    var h = canvas.height;
+    var backgroundColor = '#FFFFFF';
+    
+    //get the current ImageData for the canvas.
+    var context = canvas.getContext("2d");
+    var data_img = context.getImageData(0, 0, w, h);
+    
+    //store the current globalCompositeOperation
+    var compositeOperation = context.globalCompositeOperation;
+
+    //set to draw behind current content
+    context.globalCompositeOperation = "destination-over";
+
+    //set background color
+    context.fillStyle = backgroundColor;
+
+    //draw background / rect on entire canvas
+    context.fillRect(0,0,w,h);
+
+    var imageData = canvas.toDataURL("image/png");
+
+    //clear the canvas
+    context.clearRect (0,0,w,h);
+
+    //restore it with original / cached ImageData
+    context.putImageData(data_img, 0,0);        
+
+    //reset the globalCompositeOperation to what it was
+    context.globalCompositeOperation = compositeOperation;
+
+    src_img = imageData.replace('data:image/png;base64,', '');
+
+    return src_img;
+
+}

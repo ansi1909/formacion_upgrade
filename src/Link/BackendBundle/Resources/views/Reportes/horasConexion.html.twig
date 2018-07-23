@@ -11,6 +11,10 @@
 {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas }) }}
 
 {# Sección de resultados del reporte #}
+<input type="hidden" id="url_img" name="url_img" value="{{ path ('_ajaxSaveImgHorasConexion') }}">
+<input type="hidden" id="desdef" name="desdef" value="">
+<input type="hidden" id="hastaf" name="hastaf" value="">
+<input type="hidden" id="graph" name="graph" value="">
 <div class="row" id="reporte" style="display:none;">
     <div class="col-sm-16">
         <div class="card">
@@ -84,11 +88,9 @@
                             </div>
                             <div class="card-footer">
                                 <div class="col-sm-16 col-md-16 text-right">
-                                    <input type="hidden" id="url_pdf" name="url_pdf" value="{{ path ('_pdfHorasConexion') }}">
-                                    <input type="hidden" id="desdef" name="desdef" value="">
-                                    <input type="hidden" id="hastaf" name="hastaf" value="">
-                                    <input type="hidden" id="graph" name="graph" value="">
-                                    <button id="pdf" type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button>
+                                    <button id="pdf" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} PDF"><span class="fa fa-file-pdf-o"></span></button>
+                                    <a id="pdf-link" class="descargable" href="{{ path('_pdfHorasConexion') }}" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} PDF"><span class="fa fa-download"></span></button></a>
+                                    <img id="pdf-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
                                 </div>
                             </div>
                         </div>

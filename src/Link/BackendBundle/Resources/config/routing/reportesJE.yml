@@ -8,11 +8,15 @@ _ajaxHorasConexion:
     requirements:
         _method: POST
 
-_pdfHorasConexion:
-    path:     /pdfHorasConexion
-    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfHorasConexion }
+_ajaxSaveImgHorasConexion:
+    path:     /ajaxSaveImgHorasConexion
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxSaveImgHorasConexion }
     requirements:
         _method: POST
+
+_pdfHorasConexion:
+    path:     /pdfHorasConexion/{empresa_id}/{desde}/{hasta}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfHorasConexion, empresa_id: 0, desde: 0, hasta: 0 }
 
 _evaluacionesModulo:
     path:     /evaluacionesModulo/{app_id}

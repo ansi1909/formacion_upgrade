@@ -136,18 +136,56 @@ class ReportesJEController extends Controller
         
     }
 
-    public function pdfHorasConexionAction(Request $request)
+    public function ajaxSaveImgHorasConexionAction(Request $request)
+    {
+        
+        $session = new Session();
+        
+        $bin_data = $request->request->get('bin_data');
+        
+        $data = str_replace(' ', '+', $bin_data);
+        $data = base64_decode($data);
+        $im = imagecreatefromstring($data);
+        
+        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
+        $fileName = $this->container->getParameter('folders')['dir_uploads'].$path;
+
+        if ($im !== false) {
+            // Save image in the specified location
+            imagepng($im, $fileName);
+            imagedestroy($im);
+        }
+        else {
+            $fileName = 'An error occurred.';
+        }
+
+        $return = array('fileName' => $fileName);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function pdfHorasConexionAction($empresa_id, $desde, $hasta, Request $request)
     {
         
         $f = $this->get('funciones');
-        /*$src = str_replace("___", "/", $img);
-
-        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        $session = new Session();
+        
+        $reporte = $f->horasConexion($empresa_id, $desde, $hasta);
         $conexiones = $reporte['conexiones'];
         $celda_mayor = $reporte['celda_mayor'];
 
         $filas_mayor = array();
         $columnas_mayor = array();
+
+        $desde_arr = explode(" ", $desde);
+        list($a, $m, $d) = explode("-", $desde_arr[0]);
+        $desde = "$d/$m/$a";
+
+        $hasta_arr = explode(" ", $hasta);
+        list($a, $m, $d) = explode("-", $hasta_arr[0]);
+        $hasta = "$d/$m/$a";
 
         foreach ($celda_mayor as $cm)
         {
@@ -164,6 +202,9 @@ class ReportesJEController extends Controller
                                                                                                     'empresa' => $empresa,
                                                                                                     'desde' => $desde,
                                                                                                     'hasta' => $hasta));
+
+        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
+        $src = $this->container->getParameter('folders')['dir_uploads'].$path;
 
         $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
 
@@ -185,30 +226,11 @@ class ReportesJEController extends Controller
         $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
 
         //Generamos el PDF
-        $pdf->output('horas_conexion.pdf');*/
-
-        $bin_data = $request->request->get('bin_data');
-        
-        $data = str_replace(' ', '+', $bin_data);
-        $data = base64_decode($data);
-        $fileName = date('ymdhis').'.png';
-        /*$im = imagecreatefromstring($data);
-
-        if ($im !== false) {
-            // Save image in the specified location
-            imagepng($im, $fileName);
-            imagedestroy($im);
-        }
-        else {
-            $fileName = 'An error occurred.';
-        }*/
-
-        $return = array('fileName' => $fileName);
-
-        $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        $pdf->output('horas_conexion.pdf');
 
     }
 
     
 }
+
+// Manos de piedra: 34:57, 37:45
