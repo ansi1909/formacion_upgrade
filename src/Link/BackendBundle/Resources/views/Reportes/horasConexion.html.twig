@@ -8,7 +8,9 @@
 {% block body %}
 {% set encabezado = usuario.empresa ? 'Horas de conexión'|trans : 'Horas de conexión por empresa'|trans %}
 
-{{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas }) }}
+<form id="form" name="form" action="{{ path ('_ajaxHorasConexion') }}" method="POST">
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 0 }) }}
+</form>
 
 {# Sección de resultados del reporte #}
 <input type="hidden" id="url_img" name="url_img" value="{{ path ('_ajaxSaveImgHorasConexion') }}">
@@ -22,19 +24,6 @@
                 <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Desde'|trans }}: <span id="label_desde"></span> / {{ 'Hasta'|trans }}: <span id="label_hasta"></span>.</span></h5>
             </div>
             <div class="card-block">
-                <div class="row" id="div-active-alert" style="display:none;">
-                    <div class="col-sm-2">
-                        &nbsp;
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="alert alert-danger" role="alert"> 
-                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        &nbsp;
-                    </div>
-                </div>
                 <div id="resultado" style="display:none;">
                     <table class="table styleTab">
                         <thead>

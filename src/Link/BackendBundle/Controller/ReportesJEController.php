@@ -54,13 +54,12 @@ class ReportesJEController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $fn = $this->get('funciones');
+        $rs = $this->get('reportes');
         
         $empresa_id = $request->request->get('empresa_id');
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
-        $pdf = $request->request->get('pdf');
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
@@ -68,7 +67,7 @@ class ReportesJEController extends Controller
         list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
 
-        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta);
         $conexiones = $reporte['conexiones'];
         $celda_mayor = $reporte['celda_mayor'];
 
@@ -169,10 +168,10 @@ class ReportesJEController extends Controller
     public function pdfHorasConexionAction($empresa_id, $desde, $hasta, Request $request)
     {
         
-        $f = $this->get('funciones');
+        $rs = $this->get('reportes');
         $session = new Session();
         
-        $reporte = $f->horasConexion($empresa_id, $desde, $hasta);
+        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta);
         $conexiones = $reporte['conexiones'];
         $celda_mayor = $reporte['celda_mayor'];
 
@@ -228,6 +227,128 @@ class ReportesJEController extends Controller
         //Generamos el PDF
         $pdf->output('horas_conexion.pdf');
 
+    }
+
+    public function evaluacionesModuloAction($app_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:evaluacionesModulo.html.twig', array('usuario' => $usuario,
+                                                                                              'empresas' => $empresas));
+
+    }
+
+    public function ajaxEvaluacionesModuloAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
+
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
+
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
+
+        $reporte = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
+        $conexiones = $reporte['conexiones'];
+        $celda_mayor = $reporte['celda_mayor'];
+
+        if ($excel)
+        {
+
+            /*$empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            // Encabezado
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+
+            // Primera columna
+            for ($f=0; $f<=8; $f++)
+            {
+                $r = $f+3;
+                $objWorksheet->setCellValue('A'.$r, $conexiones[$f][0]);
+            }
+
+            // Data calculada
+            for ($f=1; $f<=8; $f++)
+            {
+                $row = $f+3;
+                for ($c=1; $c<=25; $c++)
+                {
+                    $col = $columnNames[$c];
+                    $objWorksheet->setCellValue($col.$row, $conexiones[$f][$c]);
+                }
+            }
+
+            // Resaltar las celdas mayores
+            foreach ($celda_mayor as $cm)
+            {
+                $m = explode("_", $cm);
+                $col = $columnNames[$m[1]];
+                $row = $m[0]+3;
+                $objPHPExcel->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+            }
+
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.xls';
+            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+            $writer->save($xls);
+
+            $archivo = $this->container->getParameter('folders')['uploads'].$path;*/
+
+        }
+        else {
+            $archivo = '';
+        }
+        
+        $return = array('conexiones' => $conexiones,
+                        'celda_mayor' => $celda_mayor,
+                        'archivo' => $archivo,
+                        'desdef' => $desde,
+                        'hastaf' => $hasta);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
     

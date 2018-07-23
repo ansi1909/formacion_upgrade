@@ -22,6 +22,12 @@ _evaluacionesModulo:
     path:     /evaluacionesModulo/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJE:evaluacionesModulo }
 
+_ajaxEvaluacionesModulo:
+    path:     /ajaxEvaluacionesModulo
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxEvaluacionesModulo }
+    requirements:
+        _method: POST
+
 _resumenRegistros:
     path:     /resumenRegistros/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJE:resumenRegistros }
