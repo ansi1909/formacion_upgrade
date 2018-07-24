@@ -8,13 +8,25 @@ _ajaxHorasConexion:
     requirements:
         _method: POST
 
+_ajaxSaveImgHorasConexion:
+    path:     /ajaxSaveImgHorasConexion
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxSaveImgHorasConexion }
+    requirements:
+        _method: POST
+
 _pdfHorasConexion:
-    path:     /pdfHorasConexion/{empresa_id}/{desde}/{hasta}/{img}
-    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfHorasConexion, empresa_id: 0, desde: '', hasta: '', img: '' }
+    path:     /pdfHorasConexion/{empresa_id}/{desde}/{hasta}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfHorasConexion, empresa_id: 0, desde: 0, hasta: 0 }
 
 _evaluacionesModulo:
     path:     /evaluacionesModulo/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJE:evaluacionesModulo }
+
+_ajaxEvaluacionesModulo:
+    path:     /ajaxEvaluacionesModulo
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxEvaluacionesModulo }
+    requirements:
+        _method: POST
 
 _resumenRegistros:
     path:     /resumenRegistros/{app_id}

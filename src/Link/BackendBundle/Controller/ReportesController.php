@@ -413,14 +413,13 @@ class ReportesController extends Controller
         $r = $query->fetchAll();
 
         foreach ($r as $re) {
-                
-                if ($re['logueado'] > 0) {
-                    $usuarios_activos++;
-                }else{
-                    $usuarios_inactivos++;
-                }
-               
+            if ($re['logueado'] > 0) {
+                $usuarios_activos++;
+            }else{
+                $usuarios_inactivos++;
             }
+           
+        }
 
         $query2 = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general2(:re, :pempresa_id) as
@@ -524,6 +523,32 @@ class ReportesController extends Controller
             return $response;
 
 
+    }
+
+    public function ajaxFiltroProgramasAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        
+        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                    JOIN pe.pagina p 
+                                    WHERE pe.empresa = :empresa_id
+                                    AND p.pagina IS NULL 
+                                    ORDER BY pe.orden')
+                    ->setParameter('empresa_id', $empresa_id);
+        $paginas = $query->getResult();
+
+        $options = '<option value=""></option>';
+        foreach ($paginas as $pagina)
+        {
+            $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().'</option>';
+        }
+        
+        $return = array('options' => $options);
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
     

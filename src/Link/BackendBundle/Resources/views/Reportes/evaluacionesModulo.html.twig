@@ -1,0 +1,52 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <style type="text/css">
+        .styleTab th {
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+{% set encabezado = 'Evaluaciones por módulo'|trans %}
+
+<form id="form" name="form" action="{{ path ('_ajaxEvaluacionesModulo') }}" method="POST">
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 }) }}
+</form>
+
+{# Sección de resultados del reporte #}
+<input type="hidden" id="desdef" name="desdef" value="">
+<input type="hidden" id="hastaf" name="hastaf" value="">
+<div class="row" id="reporte" style="display:none;">
+    <div class="col-sm-16">
+        <div class="card">
+            <div class="card-header gradiente">
+                <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Desde'|trans }}: <span id="label_desde"></span> / {{ 'Hasta'|trans }}: <span id="label_hasta"></span>.</span></h5>
+            </div>
+            <div class="card-block">
+                <div id="resultado" style="display:none;">
+                </div>
+                <div class="load1 load-wrapper">
+                    <div class="loader">
+                        Loading...
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/evaluacionesModulo.js') }}"></script>
+{% endblock %}

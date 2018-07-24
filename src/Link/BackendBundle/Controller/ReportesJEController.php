@@ -54,13 +54,12 @@ class ReportesJEController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $fn = $this->get('funciones');
+        $rs = $this->get('reportes');
         
         $empresa_id = $request->request->get('empresa_id');
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
-        $pdf = $request->request->get('pdf');
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
@@ -68,7 +67,7 @@ class ReportesJEController extends Controller
         list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
 
-        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta);
         $conexiones = $reporte['conexiones'];
         $celda_mayor = $reporte['celda_mayor'];
 
@@ -136,19 +135,78 @@ class ReportesJEController extends Controller
         
     }
 
-    public function pdfHorasConexionAction($empresa_id, $desde, $hasta, $img, Request $request)
+    public function ajaxSaveImgHorasConexionAction(Request $request)
     {
         
-        $fn = $this->get('funciones');
-        $src = str_replace("___", "/", $img);
+        $session = new Session();
+        
+        $bin_data = $request->request->get('bin_data');
+        
+        $data = str_replace(' ', '+', $bin_data);
+        $data = base64_decode($data);
+        $im = imagecreatefromstring($data);
+        
+        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
+        $fileName = $this->container->getParameter('folders')['dir_uploads'].$path;
 
-        $reporte = $fn->horasConexion($empresa_id, $desde, $hasta);
+        if ($im !== false) {
+            // Save image in the specified location
+            imagepng($im, $fileName);
+            imagedestroy($im);
+        }
+        else {
+            $fileName = 'An error occurred.';
+        }
+
+        $return = array('fileName' => $fileName);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function pdfHorasConexionAction($empresa_id, $desde, $hasta, Request $request)
+    {
+        
+        $rs = $this->get('reportes');
+        $session = new Session();
+        
+        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta);
         $conexiones = $reporte['conexiones'];
         $celda_mayor = $reporte['celda_mayor'];
 
+        $filas_mayor = array();
+        $columnas_mayor = array();
+
+        $desde_arr = explode(" ", $desde);
+        list($a, $m, $d) = explode("-", $desde_arr[0]);
+        $desde = "$d/$m/$a";
+
+        $hasta_arr = explode(" ", $hasta);
+        list($a, $m, $d) = explode("-", $hasta_arr[0]);
+        $hasta = "$d/$m/$a";
+
+        foreach ($celda_mayor as $cm)
+        {
+            $cm_arr = explode("_", $cm);
+            $filas_mayor[] = $cm_arr[0];
+            $columnas_mayor[] = $cm_arr[1];
+        }
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
         $tabla = $this->renderView('LinkBackendBundle:Reportes:horasConexionTabla.html.twig', array('conexiones' => $conexiones,
-                                                                                                    'celda_mayor' => $celda_mayor));
+                                                                                                    'filas_mayor' => $filas_mayor,
+                                                                                                    'columnas_mayor' => $columnas_mayor,
+                                                                                                    'empresa' => $empresa,
+                                                                                                    'desde' => $desde,
+                                                                                                    'hasta' => $hasta));
+
+        $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
+        $src = $this->container->getParameter('folders')['dir_uploads'].$path;
+
         $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
+
         $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
         $header_footer = '<page_header> 
                                  <img src="'.$logo.'" width="200" height="50">
@@ -171,5 +229,185 @@ class ReportesJEController extends Controller
 
     }
 
+    public function evaluacionesModuloAction($app_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:evaluacionesModulo.html.twig', array('usuario' => $usuario,
+                                                                                              'empresas' => $empresas));
+
+    }
+
+    public function ajaxEvaluacionesModuloAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
+
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
+
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
+
+        if ($excel)
+        {
+
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/evaluacionesModulo.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            // Encabezado
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Evaluaciones por módulo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+            $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+
+            if (!count($listado))
+            {
+                $objWorksheet->mergeCells('A5:S5');
+                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+            }
+            else {
+
+                $row = 5;
+                $i = 0;
+                $styleThinBlackBorderOutline = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('argb' => 'FF000000'),
+                        ),
+                    ),
+                );
+                $font_size = 11;
+                $font = 'Arial';
+                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+
+                foreach ($listado as $participante)
+                {
+
+                    $limit_iterations = count($participante['evaluaciones'])-1;
+                    $limit_row = $row+$limit_iterations;
+
+                    // Estilizar las celdas antes de un posible merge
+                    for ($f=$row; $f<=$limit_row; $f++)
+                    {
+                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
+                    }
+
+                    if ($limit_iterations > 0)
+                    {
+                        // Merge de las celdas
+                        for ($c=0; $c<=13; $c++)
+                        {
+                            $col = $columnNames[$c];
+                            $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
+                        }
+                    }
+
+                    // Datos de las columnas comunes
+                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                    $objWorksheet->setCellValue('G'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
+                    $objWorksheet->setCellValue('M'.$row, $participante['fecha_inicio_programa']);
+                    $objWorksheet->setCellValue('N'.$row, $participante['hora_inicio_programa']);
+
+                    // Datos de las evaluaciones
+                    foreach ($participante['evaluaciones'] as $evaluacion)
+                    {
+                        $objWorksheet->setCellValue('O'.$row, $evaluacion['evaluacion']);
+                        $objWorksheet->setCellValue('P'.$row, $evaluacion['estado']);
+                        $objWorksheet->setCellValue('Q'.$row, $evaluacion['nota']);
+                        $objWorksheet->setCellValue('R'.$row, $evaluacion['fecha_inicio_prueba']);
+                        $objWorksheet->setCellValue('S'.$row, $evaluacion['hora_inicio_prueba']);
+                        $row++;
+                    }
+
+                }
+
+            }
+
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $path = 'recursos/reportes/evaluacionesModulo'.$session->get('sesion_id').'.xls';
+            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+            $writer->save($xls);
+
+            $archivo = $this->container->getParameter('folders')['uploads'].$path;
+            $html = '';
+
+        }
+        else {
+
+            $archivo = '';
+            $html = $this->renderView('LinkBackendBundle:Reportes:evaluacionesModuloTabla.html.twig', array('listado' => $listado,
+                                                                                                            'empresa' => $empresa->getNombre(),
+                                                                                                            'programa' => $pagina->getNombre()));
+
+        }
+        
+        $return = array('archivo' => $archivo,
+                        'html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
     
 }
+
+// Manos de piedra: 34:57, 37:45

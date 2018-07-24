@@ -63,3 +63,9 @@ reportesJE:
 reportesJT:
     resource: "@LinkBackendBundle/Resources/config/routing/reportesJT.yml"
     prefix: /reportesJT
+
+_ajaxFiltroProgramas:
+    path:     /ajaxFiltroProgramas
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxFiltroProgramas }
+    requirements:
+        method: GET

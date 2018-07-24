@@ -1,0 +1,57 @@
+<table class="table styleTab">
+    <thead>
+        <tr>
+            <td colspan="4"><b>{{ 'Empresa'|trans }}:</b> {{ empresa }}</td>
+            <td colspan="5"><b>{{ 'Programa'|trans }}:</b> {{ programa }}</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>{{ 'Usuario'|trans }}</th>
+            <th>{{ 'Nombre'|trans }}</th>
+            <th>{{ 'Correo'|trans }}</th>
+            <th>{{ 'Nivel'|trans }}</th>
+            <th>{{ 'Inicio del programa'|trans }}</th>
+            <th>{{ 'Evaluación'|trans }}</th>
+            <th>{{ 'Estado'|trans }}</th>
+            <th>{{ 'Nota'|trans }}</th>
+            <th>{{ 'Inicio de la evaluación'|trans }}</th>
+        </tr>
+        {% for participante in listado %}
+            {% set eo = cycle(['odd', 'even'], loop.index) %}
+            {% set limit_iterations = participante.evaluaciones|length - 1 %}
+            <tr class="{{ eo }}">
+                <td rowspan="{{ participante.evaluaciones|length }}">{{ participante.login }}</td>
+                <td rowspan="{{ participante.evaluaciones|length }}">{{ participante.nombre }} {{ participante.apellido }}</td>
+                <td rowspan="{{ participante.evaluaciones|length }}">{{ participante.correo }}</td>
+                <td rowspan="{{ participante.evaluaciones|length }}">{{ participante.nivel }}</td>
+                <td rowspan="{{ participante.evaluaciones|length }}">{{ participante.fecha_inicio_programa }} {{ participante.hora_inicio_programa }}</td>
+                <td>{{ participante.evaluaciones[0].evaluacion }}</td>
+                <td>{{ participante.evaluaciones[0].estado }}</td>
+                <td>{{ participante.evaluaciones[0].nota }}</td>
+                <td>{{ participante.evaluaciones[0].fecha_inicio_prueba }} {{ participante.evaluaciones[0].hora_inicio_prueba }}</td>
+            </tr>
+            {% if limit_iterations > 0 %}
+                {% for i in 1..limit_iterations %}
+                    <tr class="{{ eo }}">
+                        <td>{{ participante.evaluaciones[i].evaluacion }}</td>
+                        <td>{{ participante.evaluaciones[i].estado }}</td>
+                        <td>{{ participante.evaluaciones[i].nota }}</td>
+                        <td>{{ participante.evaluaciones[i].fecha_inicio_prueba }} {{ participante.evaluaciones[i].hora_inicio_prueba }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <tr>
+                <td colspan="9">{{ 'No existen registros para esta consulta'|trans }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="card-footer">
+    <div class="col-sm-16 col-md-16 text-right">
+        <button id="excel" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} Excel"><span class="fa fa-file-excel-o"></span></button>
+        <a id="excel-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} Excel"><span class="fa fa-download"></span></button></a>
+        <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+    </div>
+</div>

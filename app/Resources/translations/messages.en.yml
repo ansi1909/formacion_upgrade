@@ -88,6 +88,7 @@ Cerrar Menú: Close Menu
 Cerrar panel: Close panel
 Cerrar sesión: Log out
 Certificado inexistente para este contenido: No certificate for this content
+Código: Code
 Código del empleado repetido: Employee code repeated
 Columna: Column
 Comentar: Comment
@@ -241,6 +242,7 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must ha
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
+El programa es requerido: Program is required
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
 El recurso es requerido: The resource is required
 El rol ha sido almacenada con éxito: The rol has been stored successfully
@@ -310,6 +312,7 @@ Esta plantilla no posee thumbnails en la base de datos: This template does not h
 ¿Estás segur@ de que deseas cerrar la sesión?: Are you sure of loging out?
 ¿Estás segur@ de que deseas eliminar este registro?: Are you sure of deleting this item?
 ¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
+Estado: Status
 Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
 este archivo descargable: this downloadable file
@@ -323,6 +326,7 @@ Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
+Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
 Excelente: Excelent
@@ -365,6 +369,7 @@ Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrad
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
+Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: An error ocurred getting the programs. Contact your system administrator.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
 Ha sido publicado: It has been published
 Ha sido publicado el evento: It has been published an event
@@ -396,6 +401,7 @@ Ingrese lo que desea buscar: Enter what you want to search
 Inicia el: Starts at
 Iniciar Sesión: Log in
 Inicio: Begin
+Inicio de la evaluación: Evaluation start
 Inicio del programa: Program start
 instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
 Interacción: Interaction
@@ -516,6 +522,7 @@ no existe: does not exit
 No existe destino al que se pueda mover la página: There is not destination in which the page can be moved
 No existe evaluación para esta página: There is not test for this page
 No existen páginas: There are no pages
+No existen registros para esta consulta: No records for this query
 No hay problema, te enviaremos un correo con: No problem, we send you an email with
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
@@ -537,6 +544,7 @@ Nombre de usuario: Username
 Nombre para esta página: Name for this page
 Nombre requerido: Name required
 Nombres deben ser solo alfabéticos: Names must be alphabetical
+Nota: Score
 Noticia: News
 Noticias: News
 Noticias y Novedades: News and Novelties

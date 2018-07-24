@@ -88,6 +88,7 @@ Cerrar Menú: Cerrar Menú
 Cerrar panel: Cerrar panel
 Cerrar sesión: Cerrar sesión
 Certificado inexistente para este contenido: Certificado inexistente para este contenido
+Código: Código
 Código del empleado repetido: Código del empleado repetido
 Columna: Columna
 Comentar: Comentar
@@ -241,6 +242,7 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario d
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
+El programa es requerido: El programa es requerido
 El puntaje con que se aprueba es requerido.: El puntaje con que se aprueba es requerido.
 El recurso es requerido: El recurso es requerido
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
@@ -310,6 +312,7 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
 ¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
+Estado: Estado
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
 este archivo descargable: este archivo descargable
@@ -323,6 +326,7 @@ Estos son los resultados que has obtenido: Estos son los resultados que has obte
 Estructura: Estructura
 Evaluación: Evaluación
 Evaluación activa: Evaluación activa
+Evaluaciones por módulo: Evaluaciones por módulo
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
 Excelente: Excelente
@@ -365,6 +369,7 @@ Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrad
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
+Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
 Ha sido publicado: Ha sido publicado
 Ha sido publicado el evento: Ha sido publicado el evento
@@ -396,6 +401,7 @@ Ingrese lo que desea buscar: Ingrese lo que desea buscar
 Inicia el: Inicia el
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
+Inicio de la evaluación: Inicio de la evaluación
 Inicio del programa: Inicio del programa
 instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
 Interacción: Interacción
@@ -516,6 +522,7 @@ no existe: no existe
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
 No existen páginas: No existen páginas
+No existen registros para esta consulta: No existen registros para esta consulta
 No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
@@ -537,6 +544,7 @@ Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
+Nota: Nota
 Noticia: Noticia
 Noticias: Noticias
 Noticias y Novedades: Noticias y Novedades
