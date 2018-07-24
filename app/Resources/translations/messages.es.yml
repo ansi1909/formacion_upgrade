@@ -88,6 +88,7 @@ Cerrar Menú: Cerrar Menú
 Cerrar panel: Cerrar panel
 Cerrar sesión: Cerrar sesión
 Certificado inexistente para este contenido: Certificado inexistente para este contenido
+Código: Código
 Código del empleado repetido: Código del empleado repetido
 Columna: Columna
 Comentar: Comentar
@@ -311,6 +312,7 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
 ¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
+Estado: Estado
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
 este archivo descargable: este archivo descargable
@@ -399,6 +401,7 @@ Ingrese lo que desea buscar: Ingrese lo que desea buscar
 Inicia el: Inicia el
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
+Inicio de la evaluación: Inicio de la evaluación
 Inicio del programa: Inicio del programa
 instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
 Interacción: Interacción
@@ -519,6 +522,7 @@ no existe: no existe
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
 No existen páginas: No existen páginas
+No existen registros para esta consulta: No existen registros para esta consulta
 No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
@@ -540,6 +544,7 @@ Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
+Nota: Nota
 Noticia: Noticia
 Noticias: Noticias
 Noticias y Novedades: Noticias y Novedades

@@ -283,68 +283,124 @@ class ReportesJEController extends Controller
         list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
 
-        $reporte = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
-        $conexiones = $reporte['conexiones'];
-        $celda_mayor = $reporte['celda_mayor'];
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
 
         if ($excel)
         {
 
-            /*$empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-
-            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/evaluacionesModulo.xlsx';
             $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
             $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Evaluaciones por módulo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+            $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
 
-            // Primera columna
-            for ($f=0; $f<=8; $f++)
+            if (!count($listado))
             {
-                $r = $f+3;
-                $objWorksheet->setCellValue('A'.$r, $conexiones[$f][0]);
+                $objWorksheet->mergeCells('A5:S5');
+                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
             }
+            else {
 
-            // Data calculada
-            for ($f=1; $f<=8; $f++)
-            {
-                $row = $f+3;
-                for ($c=1; $c<=25; $c++)
+                $row = 5;
+                $i = 0;
+                $styleThinBlackBorderOutline = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('argb' => 'FF000000'),
+                        ),
+                    ),
+                );
+                $font_size = 11;
+                $font = 'Arial';
+                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+
+                foreach ($listado as $participante)
                 {
-                    $col = $columnNames[$c];
-                    $objWorksheet->setCellValue($col.$row, $conexiones[$f][$c]);
-                }
-            }
 
-            // Resaltar las celdas mayores
-            foreach ($celda_mayor as $cm)
-            {
-                $m = explode("_", $cm);
-                $col = $columnNames[$m[1]];
-                $row = $m[0]+3;
-                $objPHPExcel->getActiveSheet()->getStyle($col.$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('8FC9F0');
+                    $limit_iterations = count($participante['evaluaciones'])-1;
+                    $limit_row = $row+$limit_iterations;
+
+                    // Estilizar las celdas antes de un posible merge
+                    for ($f=$row; $f<=$limit_row; $f++)
+                    {
+                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
+                    }
+
+                    if ($limit_iterations > 0)
+                    {
+                        // Merge de las celdas
+                        for ($c=0; $c<=13; $c++)
+                        {
+                            $col = $columnNames[$c];
+                            $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
+                        }
+                    }
+
+                    // Datos de las columnas comunes
+                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                    $objWorksheet->setCellValue('G'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
+                    $objWorksheet->setCellValue('M'.$row, $participante['fecha_inicio_programa']);
+                    $objWorksheet->setCellValue('N'.$row, $participante['hora_inicio_programa']);
+
+                    // Datos de las evaluaciones
+                    foreach ($participante['evaluaciones'] as $evaluacion)
+                    {
+                        $objWorksheet->setCellValue('O'.$row, $evaluacion['evaluacion']);
+                        $objWorksheet->setCellValue('P'.$row, $evaluacion['estado']);
+                        $objWorksheet->setCellValue('Q'.$row, $evaluacion['nota']);
+                        $objWorksheet->setCellValue('R'.$row, $evaluacion['fecha_inicio_prueba']);
+                        $objWorksheet->setCellValue('S'.$row, $evaluacion['hora_inicio_prueba']);
+                        $row++;
+                    }
+
+                }
+
             }
 
             // Crea el writer
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/evaluacionesModulo'.$session->get('sesion_id').'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
-            $archivo = $this->container->getParameter('folders')['uploads'].$path;*/
+            $archivo = $this->container->getParameter('folders')['uploads'].$path;
+            $html = '';
 
         }
         else {
+
             $archivo = '';
+            $html = $this->renderView('LinkBackendBundle:Reportes:evaluacionesModuloTabla.html.twig', array('listado' => $listado,
+                                                                                                            'empresa' => $empresa->getNombre(),
+                                                                                                            'programa' => $pagina->getNombre()));
+
         }
         
-        $return = array('conexiones' => $conexiones,
-                        'celda_mayor' => $celda_mayor,
-                        'archivo' => $archivo,
-                        'desdef' => $desde,
-                        'hastaf' => $hasta);
+        $return = array('archivo' => $archivo,
+                        'html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

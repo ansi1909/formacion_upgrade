@@ -3,6 +3,11 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <style type="text/css">
+        .styleTab th {
+            font-weight: bold;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
