@@ -223,7 +223,7 @@ class ReportesController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                         </tr>
                     </thead>
-                    <tbody>';
+                    <tbody style="font-size: .7rem;">';
         
         foreach ($r as $ru)
         {
