@@ -33,11 +33,23 @@ class ReportesJTController extends Controller
         }
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
 
         // Lógica inicial de la pantalla de este reporte
-        $datos = 'Foo';
+        //$datos = 'Foo';
 
-        return $this->render('LinkBackendBundle:Reportes:conexionesUsuario.html.twig', array('datos' => $datos));
+        return $this->render('LinkBackendBundle:Reportes:conexionesUsuario.html.twig', array(
+                                                                                                'usuario' => $usuario,
+                                                                                                'empresas' => $empresas));
 
     }
 
@@ -68,5 +80,7 @@ class ReportesJTController extends Controller
         return $this->render('LinkBackendBundle:Reportes:avanceProgramas.html.twig', array('datos' => $datos));
 
     }
+
+   
 
 }
