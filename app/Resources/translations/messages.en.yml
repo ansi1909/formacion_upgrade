@@ -96,6 +96,7 @@ Comentarios: Comments
 Competencia debe ser un valor entero: Competition must be an integer value
 Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
 Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
+Conexiones por usuario: Connections per user
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for

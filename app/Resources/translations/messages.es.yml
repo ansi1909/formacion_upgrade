@@ -97,6 +97,7 @@ Competencia debe ser un valor entero: Competencia debe ser un valor entero
 Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
 Conceder: Conceder
+Conexiones por usuario: Conexiones por usuario
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
 Configuración de asignación: Configuración de asignación
