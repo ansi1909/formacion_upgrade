@@ -12,9 +12,7 @@ $BODY$
 declare
     i integer;      -- Iterador de los días de la semana (0 = Domingo)
     str text;           -- Cadena para debug
-    rst  record;             -- Cursor para el SELECT de la página
     c integer;          -- Cantidad de registros del query
-    neworden integer;        -- Nuevo orden que tendrá la página duplicada
 begin
 
     FOR i IN 0..6 LOOP

@@ -1,88 +1,172 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+{% endblock %}
+
 {% block body %}
 
-    {% set encabezado = usuario_empresa ? 'Reporte de participantes de'|trans~' '~usuario.empresa.nombre : 'Reporte de participantes por empresa'|trans %}
-    {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
-    <br><br>
-    <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
-    <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
-    <input type="hidden" id="url_lecciones" name="url_lecciones" value="{{ path ('_ajaxLeccionesE') }}">
-    <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
-    <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{pagina_id}}">
-    <input type="hidden" id="reporte" name="reporte" value="{{ reporte }}"
+{% set encabezado = usuario.empresa ? 'Interacción en los muros'|trans : 'Interacción en los muros por empresa'|trans %}
+<br><br>
+<form id="form" name="form" action="{{ path ('_ajaxInteraccionMuro') }}" method="POST">
+    <input type="hidden" id="url_auto" name="url_auto" value="{{ path ('_interaccionMuro', { 'app_id': app.session.get('app_id') }) }}">
+    <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.'|trans }}">
+    <input type="hidden" id="error-msg-paginas" name="error-msg-paginas" value="{{ 'Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.'|trans }}">
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+        <ul></ul>
+    </div>
+    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-server" style="display:none;">
+    </div>
+    <div class="row align-items-center justify-content-between">
+        <div class="col-12 col-sm-12 offset-sm-5 offset-md-5 offset-lg-5 page-title">
+            <h3>{{ encabezado }}</h3>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-sm-2 offset-md-2 offset-lg-2">
             <div class="card">
                 <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                    <h5 class="card-title">{{ encabezado }}</h5>
+                    <h5 class="card-title">{{ 'Filtro'|trans }}</h5>
                 </div>
                 <div class="card-block">
-                    {% if not usuario_empresa %}
-                     <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
-
+                    {% if not usuario.empresa %}
                         <div class="row">
-                            <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                    <option value="0"></option>
-                                    {% for empresa in empresas %}
-                                        <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                                <span class="fa fa-industry"></span>
-                                <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                <label for="empresa_id" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Empresa'|trans }}</label>
+                                <div class="col-sm-16 col-md-16 col-lg-16">
+                                    <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                        <option value=""></option>
+                                        {% for empresa in empresas %}
+                                            {% set selected = empresa.id == empresa_id ? 'selected' : '' %}
+                                            <option value="{{ empresa.id }}" {{ selected }}>{{ empresa.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="fa fa-industry"></span>
+                                    <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
+                                </div>
                             </div>
                         </div>
                         <br>
                     {% else %}
-                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
                     {% endif %}
-                    <div id="lecciones_id"></div>
+                    <div class="row">
+                        <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                           <h5>{{ 'Páginas'|trans }}</h5>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-2 pnl__tree">
+                                    {% if paginas|length %}
+                                        {% if paginas.tiene > 0 %}
+                                            <div class="tree">
+                                                <ul data-jstree='{ "opened" : true }'>
+                                                    {{ paginas.str|raw }}
+                                                </ul>
+                                            </div>
+                                        {% else %}
+                                            {{ 'No existen páginas'|trans }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ 'Seleccione la empresa para mostrar las páginas asignadas'|trans }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label for="pg_sel" class="col-16 col-form-label">{{ 'Página seleccionada'|trans }}</label>
+                                <div class="col-14">
+                                    <input type="text" class="form-control" id="pagina_str" name="pagina_str" readonly="readonly" value="">
+                                    <input type="hidden" id="pagina_id" name="pagina_id" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <br>
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label for="desde" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Desde'|trans }}</label>
+                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                <input type="text" class="form-control form_sty1 datePicker" id="desde" name="desde" placeholder="DD/MM/YYYY" data-date-end-date="0d" value="{{ desde }}">
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label for="hasta" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Hasta'|trans }}</label>
+                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                <input type="text" class="form-control form_sty1 datePicker" id="hasta" name="hasta" placeholder="DD/MM/YYYY" data-date-end-date="0d" value="{{ hasta }}">
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="button" id="search" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Consultar'|trans }}"><span class="fa fa-search"></span></button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-16">
-            <div class="card">
-                <div class="card-header gradiente">
-                    <h5 class="card-title">{{ 'Listado de participantes'|trans }}</h5>
-                </div>
-                <div class="card-block">
-                    <div class="row" id="div-active-alert" style="display:none;">
-                        <div class="col-sm-2">
-                            &nbsp;
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="alert alert-danger" role="alert"> 
-                                <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            &nbsp;
-                        </div>
-                    </div>
-                    <div id="usuarios">
-                        
-                    </div>
-                    <div class="card-footer">
-                        <div class="col-sm-16 col-md-16 text-right">
-                            <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
-                        </div>
-                    </div>
-                </div>
-
-    
-
+</form>
 
 {% endblock %}
-
 
 
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
-    <script type="text/javascript" src="{{ asset('js/admin/reportes.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/interaccionMuro.js') }}"></script>
+    <script type="text/javascript">
+        jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+            var value_arr = value.split('/');
+            value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+            var params_value = $(params).val();
+            value_arr = params_value.split('/');
+            params_value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return new Date(value) >= new Date(params_value);
+            }
+            return isNaN(value) && isNaN(params_value) || (Number(value) >= Number(params_value));
+        },"- {{ 'La fecha final debe ser mayor que la fecha inicial'|trans }}.");
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'empresa_id': {
+                    required: true
+                },
+                'desde': {
+                    required: true
+                },
+                'hasta': {
+                    required: true,
+                    greaterThan: "#desde"
+                },
+                'pagina_id': {
+                    required: true
+                }
+            },
+            messages: {
+                'empresa_id': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
+                },
+                'desde': {
+                    required: "- {{ 'Debe seleccionar la fecha inicial'|trans }}."
+                },
+                'hasta': {
+                    required: "- {{ 'Debe seleccionar la fecha final'|trans }}.",
+                    greaterThan: "- {{ 'La fecha final debe ser mayor que la fecha inicial'|trans }}."
+                },
+                'pagina_id': {
+                    required: "- {{ 'La página es requerida'|trans }}."
+                }
+            }
+        });
+    </script>
 {% endblock %}

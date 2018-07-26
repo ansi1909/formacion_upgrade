@@ -277,11 +277,12 @@ class ReportesController extends Controller
 
     }
 
-    public function interaccionMuroAction($app_id, Request $request)
+    public function interaccionMuroAction($app_id, $empresa_id, $desde, $hasta, Request $request)
     {
         
         $session = new Session();
         $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -296,80 +297,65 @@ class ReportesController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-        $em = $this->getDoctrine()->getManager();
-        $reporte = 6;
-        $pagina_id = 0;
 
-        // Lógica inicial de la pantalla de este reporte
-        $usuario_empresa = 0;
+        
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
         $empresas = array();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
-
-        if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1; 
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
         }
         else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-        } 
-
-        return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('empresas' => $empresas,
-                                                                                           'usuario_empresa' => $usuario_empresa,
-                                                                                           'usuario' => $usuario,
-                                                                                           'reporte' => $reporte,
-                                                                                           'pagina_id'=>$pagina_id));
-
-    }
-
-    public function ajaxLeccionesEAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $session = new Session();
-        $f = $this->get('funciones');
-        $empresa_id = $request->query->get('empresa_id');
-        $paginas = array();
-        $tiene = 0;
-        $str = '';
-        $paginas_asociadas = array();
-
-        $query = $em->createQuery("SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe JOIN pe.pagina p
-                                    WHERE p.pagina IS NULL
-                                    AND pe.empresa = :empresa_id 
-                                    ORDER BY p.id ASC")
-                    ->setParameter('empresa_id', $empresa_id);
-        $pages = $query->getResult();
-
-        foreach ($pages as $page)
-        {
-            $tiene++;
-            $check = in_array($page->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
-            $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().$check;
-            $subPaginas = $f->subPaginas($page->getId(), $paginas_asociadas);
-            if ($subPaginas['tiene'] > 0)
-            {
-                $str .= '<ul>';
-                $str .= $subPaginas['return'];
-                $str .= '</ul>';
-            }
-            $str .= '</li>';
+            $empresa_id = $usuario->getEmpresa()->getId();
         }
 
-        $paginas = array('tiene' => $tiene,
-                         'str' => $str);
+        $paginas = array();
 
-        //return new response( var_dump($paginas));
-        
-        
-        $return = json_encode($paginas);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        if ($empresa_id)
+        {
+
+            $str = '';
+            $tiene = 0;
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        JOIN pe.pagina p
+                                        WHERE p.pagina IS NULL
+                                        AND pe.empresa = :empresa_id 
+                                        ORDER BY p.id ASC")
+                        ->setParameter('empresa_id', $empresa_id);
+            $pages = $query->getResult();
+
+            foreach ($pages as $page)
+            {
+                $tiene++;
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
+                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
+                if ($subPaginas['tiene'] > 0)
+                {
+                    $str .= '<ul>';
+                    $str .= $subPaginas['return'];
+                    $str .= '</ul>';
+                }
+                $str .= '</li>';
+            }
+
+            $paginas = array('tiene' => $tiene,
+                             'str' => $str);
+
+        }
+
+        $desde = $desde ? str_replace('-', '/', $desde) : '';
+        $hasta = $hasta ? str_replace('-', '/', $hasta) : '';
+
+        return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('empresas' => $empresas,
+                                                                                           'usuario' => $usuario,
+                                                                                           'paginas' => $paginas,
+                                                                                           'empresa_id' => $empresa_id,
+                                                                                           'desde' => $desde,
+                                                                                           'hasta' => $hasta));
+
     }
-
-  /* public function ajaxListadoMuroAction(Request $request)
-    {
-
-
-        
-
-    }*/
 
     public function reporteGeneralAction($app_id, $empresa_id, Request $request)
     {

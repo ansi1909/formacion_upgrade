@@ -407,6 +407,41 @@ class ReportesJEController extends Controller
         
     }
 
+    public function resumenRegistrosAction($app_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:resumenRegistros.html.twig', array('usuario' => $usuario,
+                                                                                            'empresas' => $empresas));
+
+    }
+
     
 }
 
