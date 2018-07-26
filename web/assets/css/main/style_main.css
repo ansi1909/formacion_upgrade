@@ -1043,6 +1043,14 @@
     right: 3rem;
 }
 
+.icProf{
+    margin-right: .5rem;
+    font-size: 1.1rem !important;
+    position: relative;
+    top: -.1rem;
+    text-align: right;
+}
+
 .nameProfile{
     font-size: 1.2rem;
     font-weight: bold;
@@ -1051,8 +1059,22 @@
 
 .nameProfile > p{
     font-weight: normal;
+    margin-left: 1.75rem;
 }
 
+.datoProf{
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 2rem;
+}
+
+.datoProf > p{
+    font-weight: normal;
+}
+
+.datoProf > span{
+    font-weight: normal;
+}
 /*Animations*/
 
     @keyframes sonar {
