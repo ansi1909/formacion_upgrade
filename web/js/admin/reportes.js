@@ -177,7 +177,12 @@ $(document).ready(function() {
 						getLecciones(empresa_id,pagina_id);
 					});
 
-					
+					$('#leccion_id').change(function(){
+						$('#div-active-alert').hide();
+	    				var empresa_id = $('#empresa_id').val();
+	    				var leccion_id = $(this).val();
+						getgetListadoMuro(empresa_id,leccion_id);
+					});
 				}
 });
 
@@ -252,6 +257,4 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 			$('#div-active-alert').show();
 		}
 	});
-
-	
 }

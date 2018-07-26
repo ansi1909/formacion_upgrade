@@ -189,7 +189,6 @@ class ReportesController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $empresa_id = $request->query->get('empresa_id');
         $nivel_id = $request->query->get('nivel_id');
@@ -368,15 +367,19 @@ class ReportesController extends Controller
              }
 
          }
-
-         
-
         
         $return = array('options' => $options);
         
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
+
+   /* public function ajaxListadoMuroAction(Request $request)
+    {
+
+        
+
+    }*/
 
     public function reporteGeneralAction($app_id, $empresa_id, Request $request)
     {
