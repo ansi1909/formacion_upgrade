@@ -37,24 +37,7 @@
                     {% else %}
                         <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
                     {% endif %}
-                    <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'programas' |trans}}</label>
-                    <div class="row">
-                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
-                            </select>
-                            <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                        </div>
-                    </div>
-                    <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Lección' |trans}}</label>
-                    <div class="row">
-                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="leccion_id" name="leccion_id">
-                            </select>
-                            <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                        </div>
-                    </div>
+                    <div id="lecciones_id"></div>
                     <br>
                 </div>
             </div>

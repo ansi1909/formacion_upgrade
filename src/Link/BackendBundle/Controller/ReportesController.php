@@ -323,59 +323,49 @@ class ReportesController extends Controller
     public function ajaxLeccionesEAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+        $f = $this->get('funciones');
         $empresa_id = $request->query->get('empresa_id');
-        $pagina_id = $request->query->get('pagina_id');
-        $options = '<option value=""></option>';
+        $paginas = array();
+        $tiene = 0;
+        $str = '';
+        $paginas_asociadas = array();
 
-        $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                   JOIN pe.pagina p
-                                   WHERE pe.empresa = :empresa_id
-                                   AND p.pagina = :pagina_id
-                                   AND p.categoria = 2')
-                    ->setParameters(array('empresa_id' => $empresa_id , 'pagina_id' => $pagina_id));
-        $modulos = $query->getResult();
+        $query = $em->createQuery("SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe JOIN pe.pagina p
+                                    WHERE p.pagina IS NULL
+                                    AND pe.empresa = :empresa_id 
+                                    ORDER BY p.id ASC")
+                    ->setParameter('empresa_id', $empresa_id);
+        $pages = $query->getResult();
 
-        //return new Response (var_dump($modulos));
+        foreach ($pages as $page)
+        {
+            $tiene++;
+            $check = in_array($page->getId(), $paginas_asociadas) ? ' <span class="fa fa-check"></span>' : '';
+            $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().$check;
+            $subPaginas = $f->subPaginas($page->getId(), $paginas_asociadas);
+            if ($subPaginas['tiene'] > 0)
+            {
+                $str .= '<ul>';
+                $str .= $subPaginas['return'];
+                $str .= '</ul>';
+            }
+            $str .= '</li>';
+        }
 
-        foreach ( $modulos as $modulo){
+        $paginas = array('tiene' => $tiene,
+                         'str' => $str);
 
-            $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                       JOIN pe.pagina p
-                                       WHERE pe.empresa = :empresa_id
-                                       AND p.pagina = :materia_id
-                                       AND p.categoria = 3')
-                        ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $modulo->getPagina()->getId()));
-            $materias = $query->getResult();
-
-            foreach ( $materias as $materia){
-
-                $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                           JOIN pe.pagina p
-                                           WHERE pe.empresa = :empresa_id
-                                           AND p.pagina = :materia_id
-                                           AND p.categoria = 4')
-                            ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $materia->getPagina()->getId()));
-                $lecciones = $query->getResult();
-
-
-
-                foreach ($lecciones as $leccion)
-                {
-                    $options .= '<option value="'.$leccion->getPagina()->getId().'">'.$leccion->getPagina()->getNombre().' </option>'; 
-                }
-
-             }
-
-         }
+        //return new response( var_dump($paginas));
         
-        $return = array('options' => $options);
         
-        $return = json_encode($return);
+        $return = json_encode($paginas);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-   /* public function ajaxListadoMuroAction(Request $request)
+  /* public function ajaxListadoMuroAction(Request $request)
     {
+
 
         
 

@@ -1,6 +1,8 @@
 <?php
 
 namespace Link\ComunBundle\Services;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -143,6 +145,7 @@ class Reportes
                 $r = $query->fetchAll();
 
                 // La respuesta viene formada por las cantidades de registros por día de semana separado por __
+
                 $r_arr = explode("__", $r[0]['resultado']);
                 $f = 0;
                 $total_hora = 0;
