@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block body %}
-{% set encabezado = usuario.empresa ? 'Horas de conexión'|trans : 'Horas de conexión por empresa'|trans %}
+{% set encabezado = 'Conexiones por usuario'|trans %}
 
-<form id="form" name="form" action="{{ path ('_ajaxHorasConexion') }}" method="POST">
+<form id="form" name="form" action="{{ path ('_ajaxConexionesUsuario') }}" method="POST">
     {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 0 }) }}
 </form>
 

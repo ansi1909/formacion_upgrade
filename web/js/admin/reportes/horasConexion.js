@@ -7,6 +7,7 @@ $(document).ready(function() {
     	$('.descargable').hide();
     	$('.generable').show();
     	$('#resultado').hide();
+    	resetCanvas('myChart', 'barChart', 'canvasCont');
     	$('#grafico').hide();
     });
 
@@ -123,7 +124,7 @@ const renderIntoImage = () => {
 		dataType: "json",
 		success: function(response) {
 			$('#pdf-loader').hide();
-			var href = $("#pdf-link").attr("href")+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val();
+			var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val();
         	$("#pdf-link").attr("href", href);
         	$('#pdf-link').show();
 		},

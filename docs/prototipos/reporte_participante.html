@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/main/reset.css">
+        <link rel="stylesheet" href="../../web/assets/css/main/style_main.css">
+
+        <!-- Fontawesome iconos CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap4alpha/css/bootstrap.css" type="text/css">
+
+        <!-- DataTables Responsive CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/dataTables.bootstrap4.css">
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/responsive.dataTables.min.css">
+
+        <!-- Adminux CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/light_adminux.css">
+        <link rel="stylesheet" href="../../web/css/admin.css">
+
+    </head>
+    <body class="rounded">
+        <!-- Cabecera del area de trabajo-->
+        <header class="navbar-fixed">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
+                <div class="sidebar-left">
+                    <a href="#" class="navbar-brand">
+                        <img src="../../web/img/Logo%20formacion%202.0_vectores.png" alt="Formación 2.0">
+                    </a>
+                    <button class="btn btn-link icon-header mr-sm-2 pull-right menu-collapse"><span class="fa fa-bars"></span></button>
+                </div>
+                <div class="d-flex mr-auto"> &nbsp;</div>
+                <ul class="navbar-nav content-right">
+                    <li class="v-devider"></li>
+                    <li class="nav-item active">
+                        <button class="btn btn-link icon-header bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-envelope-o ico_1"></span>
+                            <span class="badge-number bg-success"></span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link icon-header badgeCircle bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-bell-o ico_1"></span>
+                            <span class="badge-number bg-danger"></span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="sidebar-right pull-right">
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="userpic">
+                                    <img src="../../web/img/1034.png" alt="Usuario"></span> 
+                                <span class="text">Usuario</span>
+                            </button>
+                            <div class="dropdown-menu"> 
+                                <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
+                                <a class="dropdown-item" href="#"><span class="fa fa-pie-chart"> Estadísticas</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><span class="fa fa-cog"> Configuración</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-link icon-header bttn1">
+                                <span class="fa fa-sign-out ico_1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- fin de Cabecera del area de trabajo-->
+        <!-- Sidebar del area de trabajo-->
+        <div class="sidebar-left">
+            <div class="user-menu-items">
+                <div class="list-unstyled btn-group rec_user">
+                    <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="message_userpic">
+                            <img src="../../web/img/1034.png" alt="Usuario" class="d-flex mr-3">
+                        </span>
+                        <span class="media-body info_user">
+                            <span class="mt-0 mb-1 us1">Usuario</span>
+                            <span class="us1">Empresa1</span>    
+                        </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item"><span class="fa fa-user space_icon"></span> Perfil</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-envelope"></span> Correo</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-bar-chart"></span> Estadística</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item"><span class="fa fa-cog space_icon"></span> Configuración</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <ul class="nav flex-column in" id="side-menu">
+                <li class="title-nav">MENU</li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-building"></span> Administrar Empresas <i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-industry"></i> Empresas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-briefcase"></i> Empresas Asociadas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-users"></i> División Funcional</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-badge"></i> Cargo</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-card"></i> Nivel</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-certificate"></span> Administrar Certificados<i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-server"></i> Programas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"></i> Módulos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-folder-open"></i> Materias</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file"></i> Recursos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file-text"></i> Evaluaciones</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <br><br>
+        <div class="wrapper-content">
+            <div class="container">
+                <!-- Listado -->
+                <div class="row justify-content-center">
+                    <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <h6 class="card-title">Listado de participantes</h6>
+                            </div>
+                            <div class="card-block">
+                                <table class="table" id="dt">
+                                    <thead class="sty__title">
+                                        <tr>
+                                            <th class="hd__title">Nombre</th>
+                                            <th class="hd__title">Apellido</th>
+                                            <th class="hd__title">Login</th>
+                                            <th class="hd__title">Correo</th>
+                                            <th class="hd__title">Activo</th>
+                                            <th class="hd__title">Fecha de registro</th>
+                                            <th class="hd__title">Fecha de nacimiento</th>
+                                            <th class="hd__title">País</th>
+                                            <th class="hd__title">Nivel</th>
+                                            <th class="hd__title">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-size: .7rem;">
+                                        <tr class="odd">
+                                            <td>Alnahir</td>
+                                            <td>Alvarez</td>
+                                            <td>aalvarez</td>
+                                            <td>alnahir07@hotmail.com</td>
+                                            <td>Sí</td>
+                                            <td>09/02/2018 05:22 pm</td>
+                                            <td>29/07/1999</td>
+                                            <td>VEN</td>
+                                            <td>Ventas</td>
+                                            <td class="text-center"><a href="#"><span class="fa fa-eye" style="font-size: .9rem"></span></a></td>
+                                        </tr>
+                                        <tr class="even ">
+                                            <td>Andreina</td>
+                                            <td>Rodriguez</td>
+                                            <td>arodriguez</td>
+                                            <td>arodriguez@hotmail.com</td>
+                                            <td>Sí</td>
+                                            <td>09/02/2018 05:22 pm</td>
+                                            <td>29/07/1999</td>
+                                            <td>VEN</td>
+                                            <td>Ventas</td>
+                                            <td class="text-center"><a href="#" data-toggle="modal" data-target="#pmodal"><span class="fa fa-eye" style="font-size: .9rem"></span></a></td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-16 col-md-16 text-right">
+                                    <button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="descargar"><span class="fa fa-download"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="pmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Datos de participante</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="color: #fff;">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row justify-content-between">
+                                <div class="col-4 mt-2">
+                                    <div class="imgUser">
+                                        <img src="../../web/img/1034.png" class="imgPerfil" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-4 mt-2">
+                                    <span class="nameProfile"><i class="fa fa-id-badge"></i> Nombre y apellido: <p>Ansise Segovia</p></span>
+                                    <span class="nameProfile">Empresa: <p>Diplomado Link Gerencial</p></span>
+                                    <span class="nameProfile">Estatus de usuario: <p>Activo</p></span>
+                                </div>
+                                <div class="col-4 mt-2">
+                                    <span class="nameProfile">Nombre de usuario: <p>asegovia</p></span>
+                                    <span class="nameProfile">Empresa Asociada <p>Diplomado Link Gerencial</p></span>
+                                </div>
+                                <div class="col-4 mt-2">
+                                    <span class="nameProfile">Correo electronico: <p>ansi79@gmail.com</p></span>
+                                    <span class="nameProfile">Cargo: <p>Unico</p></span>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- fin sidebar del area de trabajo-->
+        <!-- Jquery, Tether and Bootstrap JS. -->
+        <script src="../../web/assets/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/tether.min.js"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> 
+        <script src="../../web/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- DataTables JavaScript -->
+        <script src="../../web/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.bootstrap4.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.responsive.min.js"></script> 
+
+        <!-- Charts.js JavaScript -->
+        <script src="../../web/assets/vendor/chart.js/Chart.bundle.min.js"></script>
+        <script src="../../web/assets/vendor/chart.js/Chart.js"></script>
+        <script src="../../web/assets/vendor/chart.js/utils.js"></script>
+        <!-- custome template js -->
+        <script src="../../web/assets/js/adminux.js" type="text/javascript"></script>
+        <script type="text/javascript" src="../../web/assets/js/dashboard1_light.js"></script>
+        <script>
+            $(document).ready(function(){
+                //Basta con agregar esta linea una vez en el archivo js, verificar si esta antes de agregar!!!
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#dt').DataTable({
+                    responsive: true,
+                    pageLength:10,
+                    sPaginationType: "full_numbers",
+                    oLanguage: {
+                        oPaginate: {
+                            sFirst: "<<",
+                            sPrevious: "<",
+                            sNext: ">", 
+                            sLast: ">>" 
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
