@@ -457,7 +457,7 @@ class ReportesController extends Controller
                     $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
 
                     // Datos de los mensajes
-                    foreach ($participante['muro'] as $muro)
+                    foreach ($participante['muros'] as $muro)
                     {
                         $objWorksheet->setCellValue('M'.$row, $muro['fecha_mensaje']);
                         $objWorksheet->setCellValue('N'.$row, $muro['mensaje']);

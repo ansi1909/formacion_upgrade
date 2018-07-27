@@ -378,7 +378,7 @@ class Reportes
 
             if ($i == count($rs))
             {
-                $participante['muro'] = $muro;
+                $participante['muros'] = $muro;
                 $listado[] = $participante;
             }
 
