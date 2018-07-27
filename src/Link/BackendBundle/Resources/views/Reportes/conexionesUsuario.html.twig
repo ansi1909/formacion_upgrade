@@ -26,37 +26,7 @@
             </div>
             <div class="card-block">
                 <div id="resultado" style="display:none;">
-                    <table class="table styleTab">
-                        <thead>
-                            <tr>
-                                {% for i in 0..25 %}
-                                    {% if loop.last %}
-                                        <th id="celda_0_{{ i }}" class="totalEnd">&nbsp;</th>
-                                    {% else %}
-                                        <th id="celda_0_{{ i }}">&nbsp;</th>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for f in 1..8 %}
-                                {% if loop.last %}
-                                    {% set eo = 'totalEnd' %}
-                                {% else %}
-                                    {% set eo = cycle(['odd', 'even'], loop.index) %}
-                                {% endif %}
-                                <tr id="f{{ f }}" class="{{ eo }}">
-                                    {% for c in 0..25 %}
-                                        {% if loop.last %}
-                                            <td id="celda_{{ f }}_{{ c }}" class="totalEnd">&nbsp;</td>
-                                        {% else %}
-                                            <td id="celda_{{ f }}_{{ c }}">&nbsp;</td>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    
                     <div class="card-footer">
                         <div class="col-sm-16 col-md-16 text-right">
                             <button id="excel" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} Excel"><span class="fa fa-file-excel-o"></span></button>
@@ -98,7 +68,7 @@
 {% endblock %}
 
 
-{% block javascripts %}
+{% block javascripts %}+
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
@@ -107,6 +77,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/utils.js') }}"></script>
     {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/conexionesUsuario.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/reportes/horasConexion.js') }}"></script>
+    
 {% endblock %}

@@ -81,6 +81,51 @@ class ReportesJTController extends Controller
 
     }
 
+    public function ajaxConexionesUsuarioAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        
+        $empresa_id = $request->request->get('empresa_id');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
+
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
+
+
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
+
+
+        $registros = $rs->conexionesUsuario($empresa_id,$desde,$hasta);//
+
+
+        $archivo = '';
+        $html = $this->renderView('LinkBackendBundle:Reportes:conexionesUsuarioTable.html.twig', 
+                                array('listado' => $registros,
+                                      'empresa' => 'Empresa',
+                                      'programa' => 'Programa'));
+                                                                                              
+
+        $return = array('archivo' => $archivo,
+                        'html' => $html);
+
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+        //generar el reporte
+        
+        // $reporte = $rs->conexionesUsuario($empresa_id, 
+        //return new Response(var_dump($auxiliar));
+        // return new Response(var_dump($reporte));
+        // $rs->horasConexion($empresa_id, $desde ,$hasta);
+
+    }
+
    
 
 }
