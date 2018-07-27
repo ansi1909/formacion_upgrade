@@ -12,7 +12,7 @@
 <form id="form" name="form" action="{{ path ('_ajaxResumenRegistros') }}" method="POST">
     <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.'|trans }}">
     <input type="hidden" id="error-msg-paginas" name="error-msg-paginas" value="{{ 'Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.'|trans }}">
-    <input type="hidden" id="filtro_programas" name="filtro_programas" value="{{ filtro_programas }}">
+    <input type="hidden" id="filtro_programas" name="filtro_programas" value="1">
     <input type="hidden" id="url_programas" name="url_programas" value="{{ path ('_ajaxFiltroProgramas') }}">
     <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
         <ul></ul>
@@ -274,6 +274,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/utils.js') }}"></script>
+    {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
     <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/reportes/resumenRegistros.js') }}"></script>
 {% endblock %}

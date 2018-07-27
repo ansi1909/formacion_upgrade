@@ -31,3 +31,19 @@ _ajaxEvaluacionesModulo:
 _resumenRegistros:
     path:     /resumenRegistros/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJE:resumenRegistros }
+
+_ajaxResumenRegistros:
+    path:     /ajaxResumenRegistros
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxResumenRegistros }
+    requirements:
+        _method: POST
+
+_ajaxSaveImgResumenRegistros:
+    path:     /ajaxSaveImgResumenRegistros
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxSaveImgResumenRegistros }
+    requirements:
+        _method: POST
+
+_pdfResumenRegistros:
+    path:     /pdfResumenRegistros/{empresa_id}/{pagina_id}/{desde}/{hasta}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfResumenRegistros, empresa_id: 0, pagina_id: 0, desde: 0, hasta: 0 }
