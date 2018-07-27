@@ -1075,6 +1075,14 @@
 .datoProf > span{
     font-weight: normal;
 }
+
+.evalMod{
+    background: rgba(213, 255, 0, .5);
+}
+
+.evalMat{
+    background: rgba(0, 123, 205, .3);
+}
 /*Animations*/
 
     @keyframes sonar {
