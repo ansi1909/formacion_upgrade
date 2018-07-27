@@ -52,7 +52,7 @@ _interaccionMuro:
 
 _ajaxInteraccionMuro:
     path:     /ajaxInteraccionMuro
-    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxInteraccionMuro }
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxInteraccionMuro }
     requirements:
         _method: POST
 

@@ -292,4 +292,99 @@ class Reportes
         return $listado;
 
 	}
+
+    // Mensajes de muro por participantes en una pagina
+    public function interaccionMuro($empresa_id, $pagina_id, $desde, $hasta){
+
+
+        $em = $this->em;
+        
+        // Cálculos desde la función de BD
+        $query = $em->getConnection()->prepare('SELECT
+                                                fninteraccion_muro(:re, :pempresa_id, :ppagina_id, :pdesde, :phasta) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
+        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
+        $query->execute();
+        $rs = $query->fetchAll();
+
+        $listado = array();
+        $login = '';
+        $i = 0;
+
+        foreach ($rs as $r)
+        {
+
+            $i++;
+
+            if ($i == 1)
+            {
+                $participante = array('codigo' => $r['codigo'],
+                                      'login' => $r['login'],
+                                      'nombre' => $r['nombre'],
+                                      'apellido' => $r['apellido'],
+                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                      'empresa' => $r['empresa'],
+                                      'pais' => $r['pais'],
+                                      'nivel' => $r['nivel'],
+                                      'fecha_registro' => $r['fecha_registro'],
+                                      'campo1' => $r['campo1'],
+                                      'campo2' => $r['campo2'],
+                                      'campo3' => $r['campo3'],
+                                      'campo4' => $r['campo4']);
+                $muro = array();
+                $muro[] = array('mensaje' => $r['mensaje'],
+                                'fecha_mensaje' => $r['fecha_mensaje']);
+            }
+
+            if ($r['login'] != $login)
+            {
+
+                $login = $r['login'];
+
+                if ($i > 1)
+                {
+                    $participante['evaluaciones'] = $evaluaciones;
+                    $listado[] = $participante;
+                    $participante = array('codigo' => $r['codigo'],
+                                          'login' => $r['login'],
+                                          'nombre' => $r['nombre'],
+                                          'apellido' => $r['apellido'],
+                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                          'empresa' => $r['empresa'],
+                                          'pais' => $r['pais'],
+                                          'nivel' => $r['nivel'],
+                                          'fecha_registro' => $r['fecha_registro'],
+                                          'campo1' => $r['campo1'],
+                                          'campo2' => $r['campo2'],
+                                          'campo3' => $r['campo3'],
+                                          'campo4' => $r['campo4'],
+                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
+                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
+                    $muro = array();
+                    $muro[] = array('mensaje' => $r['mensaje'],
+                                    'fecha_mensaje' => $r['fecha_mensaje']);
+                }
+
+            }
+            else {
+                $muro[] = array('mensaje' => $r['mensaje'],
+                                    'fecha_mensaje' => $r['fecha_mensaje']);
+            }
+
+            if ($i == count($rs))
+            {
+                $participante['muro'] = $muro;
+                $listado[] = $participante;
+            }
+
+        }
+
+        return $listado;
+
+    }
 }

@@ -2,7 +2,6 @@
 <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.'|trans }}">
 <input type="hidden" id="error-msg-paginas" name="error-msg-paginas" value="{{ 'Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.'|trans }}">
 <input type="hidden" id="filtro_programas" name="filtro_programas" value="{{ filtro_programas }}">
-<input type="hidden" id="filtro_lecciones" name="filtro_lecciones" value="{{ filtro_lecciones }}">
 <input type="hidden" id="url_programas" name="url_programas" value="{{ path ('_ajaxFiltroProgramas') }}">
 <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
     <ul></ul>
@@ -52,40 +51,6 @@
                                 <span class="fa fa-file-text-o"></span>
                                 <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
                                 <img id="pagina-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                {% endif %}
-                {% if filtro_lecciones %}
-                    <div class="row">
-                        <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                           <h5>{{ 'Páginas'|trans }}</h5>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-2 pnl__tree">
-                                    {% if paginas|length %}
-                                        {% if paginas.tiene > 0 %}
-                                            <div class="tree">
-                                                <ul data-jstree='{ "opened" : true }'>
-                                                    {{ paginas.str|raw }}
-                                                </ul>
-                                            </div>
-                                        {% else %}
-                                            {{ 'No existen páginas'|trans }}
-                                        {% endif %}
-                                    {% else %}
-                                        {{ 'Seleccione la empresa para mostrar las páginas asignadas'|trans }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                            <div class="form-group">
-                                <label for="pg_sel" class="col-16 col-form-label">{{ 'Página seleccionada'|trans }}</label>
-                                <div class="col-14">
-                                    <input type="text" class="form-control" id="pagina_str" name="pagina_str" readonly="readonly" value="">
-                                    <input type="hidden" id="pagina_id" name="pagina_id" value="">
-                                </div>
                             </div>
                         </div>
                     </div>
