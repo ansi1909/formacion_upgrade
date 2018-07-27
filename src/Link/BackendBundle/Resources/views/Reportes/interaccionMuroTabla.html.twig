@@ -14,18 +14,18 @@
         </tr>
         {% for participante in listado %}
             {% set eo = cycle(['odd', 'even'], loop.index) %}
-            {% set limit_iterations = participante.muro|length - 1 %}
+            {% set limit_iterations = participante.muros|length - 1 %}
             <tr class="{{ eo }}">
-                <td rowspan="{{ participante.muro|length }}">{{ participante.login }}</td>
-                <td rowspan="{{ participante.muro|length }}">{{ participante.nombre }} {{ participante.apellido }}</td>
-                <td>{{ participante.muro[0].fecha_mensaje }}</td>
-                <td>{{ participante.muro[0].mensaje }}</td>
+                <td rowspan="{{ participante.muros|length }}">{{ participante.login }}</td>
+                <td rowspan="{{ participante.muros|length }}">{{ participante.nombre }} {{ participante.apellido }}</td>
+                <td>{{ participante.muros[0].fecha_mensaje }}</td>
+                <td>{{ participante.muros[0].mensaje }}</td>
             </tr>
             {% if limit_iterations > 0 %}
                 {% for i in 1..limit_iterations %}
                     <tr class="{{ eo }}">
-                        <td>{{ participante.muro[i].fecha_mensaje }}</td>
-                        <td>{{ participante.muro[i].mensaje }}</td>
+                        <td>{{ participante.muros[i].fecha_mensaje }}</td>
+                        <td>{{ participante.muros[i].mensaje }}</td>
                     </tr>
                 {% endfor %}
             {% endif %}

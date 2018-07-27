@@ -418,7 +418,7 @@ class ReportesController extends Controller
                 foreach ($listado as $participante)
                 {
 
-                    $limit_iterations = count($participante['muro'])-1;
+                    $limit_iterations = count($participante['muros'])-1;
                     $limit_row = $row+$limit_iterations;
 
                     // Estilizar las celdas antes de un posible merge
@@ -435,7 +435,7 @@ class ReportesController extends Controller
                     if ($limit_iterations > 0)
                     {
                         // Merge de las celdas
-                        for ($c=0; $c<=13; $c++)
+                        for ($c=0; $c<=11; $c++)
                         {
                             $col = $columnNames[$c];
                             $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
@@ -456,13 +456,17 @@ class ReportesController extends Controller
                     $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                     $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
 
+                    //return new response(var_dump($participante['muros']));
+
                     // Datos de los mensajes
-                    foreach ($participante['muros'] as $muro)
+                    foreach ($participante['muros'] as $m)
                     {
-                        $objWorksheet->setCellValue('M'.$row, $muro['fecha_mensaje']);
-                        $objWorksheet->setCellValue('N'.$row, $muro['mensaje']);
+                        $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
+                        $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
                         $row++;
+
                     }
+                    //return new response(var_dump($row));
 
                 }
 
