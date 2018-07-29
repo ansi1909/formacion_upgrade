@@ -387,4 +387,73 @@ class Reportes
         return $listado;
 
     }
+
+    // Cálculo del reporte Resumen General de Registros
+	public function resumenRegistros($empresa_id, $pagina_id, $week_before, $now)
+	{
+
+		$em = $this->em;
+		$resultados = array();
+
+		// CÁLCULOS DE LOS VALORES DE LA SEMANA ANTERIOR
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnresumen_general(:pempresa_id, :ppagina_id, :pweek_before) as
+                                                resultado;');
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pweek_before', $week_before, \PDO::PARAM_STR);
+        $query->execute();
+        $r = $query->fetchAll();
+
+        // La respuesta viene formada por las cantidades de registros por día de semana separado por __
+        $r_arr = explode("__", $r[0]['resultado']);
+        $resultados['week_before_activos'] = (int) $r_arr[0];
+        $resultados['week_before_inactivos'] = (int) $r_arr[1];
+        $resultados['week_before_no_iniciados'] = (int) $r_arr[2];
+        $resultados['week_before_en_curso'] = (int) $r_arr[3];
+        $resultados['week_before_aprobados'] = (int) $r_arr[4];
+        $resultados['week_before_total1'] = $resultados['week_before_activos'] + $resultados['week_before_inactivos'];
+        $resultados['week_before_total2'] = $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
+        $resultados['week_before_total3'] = $resultados['week_before_inactivos'] + $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
+        
+        $week_before_inactivos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_inactivos']/$resultados['week_before_total1'])*100 : '-';
+        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 1, ',', '.') : $week_before_inactivos_pct;
+        
+        $week_before_activos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_activos']/$resultados['week_before_total1'])*100 : '-';
+        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 1, ',', '.') : $week_before_activos_pct;
+
+        $resultados['week_before_total1_pct'] = $resultados['week_before_total1'] != 0 ? 100 : '-';
+
+        // CÁLCULOS DE LOS VALORES DE LA FECHA SELECCIONADA
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnresumen_general(:pempresa_id, :ppagina_id, :pnow) as
+                                                resultado;');
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pnow', $now, \PDO::PARAM_STR);
+        $query->execute();
+        $r = $query->fetchAll();
+
+        // La respuesta viene formada por las cantidades de registros por día de semana separado por __
+        $r_arr = explode("__", $r[0]['resultado']);
+        $resultados['now_activos'] = (int) $r_arr[0];
+        $resultados['now_inactivos'] = (int) $r_arr[1];
+        $resultados['now_no_iniciados'] = (int) $r_arr[2];
+        $resultados['now_en_curso'] = (int) $r_arr[3];
+        $resultados['now_aprobados'] = (int) $r_arr[4];
+        $resultados['now_total1'] = $resultados['now_activos'] + $resultados['now_inactivos'];
+        $resultados['now_total2'] = $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
+        $resultados['now_total3'] = $resultados['now_inactivos'] + $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
+        
+        $now_inactivos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_inactivos']/$resultados['now_total1'])*100 : '-';
+        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 1, ',', '.') : $now_inactivos_pct;
+        
+        $now_activos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_activos']/$resultados['now_total1'])*100 : '-';
+        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 1, ',', '.') : $now_activos_pct;
+
+        $resultados['now_total1_pct'] = $resultados['now_total1'] != 0 ? 100 : '-';
+
+		return $resultados;
+
+	}
 }

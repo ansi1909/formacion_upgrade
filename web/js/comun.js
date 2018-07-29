@@ -176,5 +176,5 @@ function getImgFromCanvas(canvas)
 function resetCanvas(canvas_id, canvas_class, container)
 {
     $('#'+canvas_id).remove();
-    $('.'+container).html('<canvas class="'+canvas_class+'" id="'+canvas_id+'"><canvas>');
+    $(container).html('<canvas class="'+canvas_class+'" id="'+canvas_id+'"><canvas>');
 }

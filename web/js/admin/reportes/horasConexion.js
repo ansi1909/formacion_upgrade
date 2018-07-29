@@ -7,7 +7,7 @@ $(document).ready(function() {
     	$('.descargable').hide();
     	$('.generable').show();
     	$('#resultado').hide();
-    	resetCanvas('myChart', 'barChart', 'canvasCont');
+    	resetCanvas('myChart', 'barChart', '.canvasCont');
     	$('#grafico').hide();
     });
 

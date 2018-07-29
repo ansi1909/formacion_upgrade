@@ -26,7 +26,9 @@ begin
     INNER JOIN certi_prueba pr ON prl.prueba_id = pr.id 
     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
     INNER JOIN (admin_empresa e INNER JOIN admin_pais c ON e.pais_id = c.id) ON u.empresa_id = e.id 
-    WHERE u.empresa_id = pempresa_id AND prl.fecha_inicio BETWEEN pdesde AND phasta 
+    WHERE u.empresa_id = pempresa_id 
+    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+    AND prl.fecha_inicio BETWEEN pdesde AND phasta 
     AND pr.pagina_id IN (SELECT p.id FROM certi_pagina p WHERE p.pagina_id = ppagina_id)
     ORDER BY u.codigo ASC, u.login ASC, prl.id ASC;
     

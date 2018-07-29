@@ -15,7 +15,7 @@ begin
 
     OPEN resultado FOR 
 
-    SELECT u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.correo_personal AS correo_personal, 
+    SELECT u.id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.correo_personal AS correo_personal, 
         u.correo_corporativo AS correo_corporativo, e.nombre AS empresa, c.nombre AS pais, n.nombre AS nivel, 
         TO_CHAR(u.fecha_registro, 'DD/MM/YYYY') AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
         (SELECT COUNT(pl.id) AS modulos FROM certi_pagina_log pl INNER JOIN certi_pagina p ON pl.pagina_id = p.id 
@@ -32,6 +32,7 @@ begin
         ), 
         (SELECT ROUND(AVG(prl.nota)::numeric,2) AS promedio FROM certi_prueba_log prl INNER JOIN certi_prueba pr ON prl.prueba_id = pr.id 
         WHERE prl.estado != 'EN CURSO' 
+        AND prl.usuario_id = u.id 
         AND prl.fecha_inicio BETWEEN pdesde AND phasta 
         AND pr.pagina_id IN 
         (SELECT pl.pagina_id FROM certi_pagina_log pl INNER JOIN certi_pagina p ON pl.pagina_id = p.id 
@@ -50,7 +51,8 @@ begin
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
         ),
         (SELECT TO_CHAR(pl.fecha_fin, 'DD/MM/YYYY') AS fecha_fin_programa FROM certi_pagina_log pl 
-            WHERE pl.usuario_id = u.id AND pl.pagina_id = ppagina_id 
+            WHERE pl.usuario_id = u.id 
+            AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
         ), 
         (SELECT TO_CHAR(pl.fecha_fin, 'HH:MI AM') AS hora_fin_programa FROM certi_pagina_log pl 

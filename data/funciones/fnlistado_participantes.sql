@@ -36,6 +36,7 @@ begin
         FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id
         LEFT JOIN admin_sesion a ON u.id = a.usuario_id
         WHERE u.empresa_id = pempresa_id 
+        AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
         GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
 
     ElsIf pnivel_id > 0 AND ppagina_id = 0 Then 
@@ -61,6 +62,7 @@ begin
         FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id
         LEFT JOIN admin_sesion a ON u.id = a.usuario_id
         WHERE u.empresa_id = pempresa_id AND u.nivel_id = pnivel_id 
+        AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
         GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
 
     ElsIf pnivel_id = 0 AND ppagina_id > 0 Then 
@@ -91,6 +93,7 @@ begin
             ON u.nivel_id = n.id 
             LEFT JOIN admin_sesion a ON u.id = a.usuario_id
             WHERE u.empresa_id = pempresa_id AND pe.pagina_id = ppagina_id 
+            AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
 
     ElsIf preporte = 3 Then 
@@ -116,9 +119,10 @@ begin
             FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id 
             LEFT JOIN admin_sesion a ON u.id = a.usuario_id
             WHERE u.empresa_id = pempresa_id 
-                AND u.id IN 
+            AND u.id IN 
                 (SELECT pl.usuario_id FROM certi_pagina_log pl 
-                    WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id != 3 )
+                    WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id != 3 ) 
+            AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
 
     ElsIf preporte = 4 Then
@@ -143,9 +147,10 @@ begin
             FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id 
             LEFT JOIN admin_sesion a ON u.id = a.usuario_id
             WHERE u.empresa_id = pempresa_id 
-                AND u.id IN 
+            AND u.id IN 
                 (SELECT pl.usuario_id FROM certi_pagina_log pl 
-                    WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 )
+                    WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 ) 
+            AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
 
 
@@ -175,10 +180,11 @@ begin
                                  ON u.nivel_id = n.id 
             LEFT JOIN admin_sesion a ON u.id = a.usuario_id
             WHERE u.empresa_id = pempresa_id 
-                AND NOT EXISTS 
+            AND NOT EXISTS 
                 (SELECT * FROM certi_pagina_log pl 
-                    WHERE  pl.usuario_id = u.id AND pl.pagina_id = ppagina_id )
-                AND pe.pagina_id = ppagina_id
+                    WHERE  pl.usuario_id = u.id AND pl.pagina_id = ppagina_id ) 
+            AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+            AND pe.pagina_id = ppagina_id
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
 
 

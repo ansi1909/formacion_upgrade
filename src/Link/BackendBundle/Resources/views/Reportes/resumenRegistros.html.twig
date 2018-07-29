@@ -2,7 +2,51 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.min.css') }}" type="text/css">
+    <style type="text/css">
+        .table td, .table th {
+            vertical-align: middle !important;
+            text-align: center;
+            border-top: 1px solid #000000 !important;
+        }
+        .estado {
+            background-color: #d9edf7 !important;
+            font-weight: bold;
+        }
+        th.bg-warning {
+            background-color: #ed7d31 !important;
+        }
+        td.bg-warning {
+            background-color: #f8cbad !important;
+        }
+        th.bg-info {
+            background-color: #0070c0 !important;
+        }
+        td.bg-info {
+            background-color: #bdd7ee !important;
+        }
+        h6 {
+            font-weight: bold !important;
+        }
+        .rojo {
+            background-color: #ff0000 !important;
+        }
+        .amarillo {
+            background-color: #ffff00 !important;
+        }
+        .verde_claro {
+            background-color: #92d050 !important;
+        }
+        .verde {
+            background-color: #00b050 !important;
+        }
+        .total {
+            background-color: #dff0d8 !important;
+        }
+        .leyenda {
+            margin-top: -15px;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -66,10 +110,10 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-sm-8 col-md-8 col-lg-8">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
                             <label for="desde" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha'|trans }}</label>
                             <div class="col-sm-14 col-md-14 col-lg-14">
-                                <input type="text" class="form-control form_sty1 datePicker" id="fecha" name="fecha" placeholder="DD/MM/YYYY" data-date-end-date="0d">
+                                <input type="text" class="form-control form_sty1 form_datetime" id="desde" name="desde" placeholder="DD/MM/YYYY" data-date-end-date="0d">
                                 <span class="fa fa-calendar"></span>
                             </div>
                         </div>
@@ -103,7 +147,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th rowspan="2">{{ 'Estado'|trans }}</th>
+                                        <th rowspan="2" align="left" class="estado">{{ 'Estado'|trans }}</th>
                                         <th class="week_before bg-warning text-white" colspan="2">&nbsp;</th>
                                         <th class="now bg-info text-white" colspan="2">&nbsp;</th>
                                     </tr>
@@ -116,124 +160,120 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ 'Inactivos'|trans }}</td>
+                                        <td style="text-align:left;">{{ 'Inactivos'|trans }}</td>
                                         <td class="bg-warning week_before_inactivos">0</td>
                                         <td id="week_before_inactivos_pct" class="bg-warning">0</td>
                                         <td class="bg-info now_inactivos">0</td>
                                         <td id="now_inactivos_pct" class="bg-info">0</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ 'Activos'|trans }}</td>
+                                        <td style="text-align:left;">{{ 'Activos'|trans }}</td>
                                         <td class="bg-warning week_before_activos">0</td>
                                         <td id="week_before_activos_pct" class="bg-warning">0</td>
                                         <td class="bg-info now_activos">0</td>
                                         <td id="now_activos_pct" class="bg-info">0</td>
                                     </tr>
                                     <tr>
-                                        <th>Total</th>
+                                        <th style="text-align:left;" class="total">Total</th>
                                         <td class="bg-warning week_before_total1">0</td>
                                         <td id="week_before_total1_pct" class="bg-warning">0</td>
                                         <td class="bg-info now_total1">0</td>
-                                        <td id="now_total_pct" class="bg-info">0</td>
+                                        <td id="now_total1_pct" class="bg-info">0</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <p>
-                                <small>{{ 'Activos' }}:{{ 'Participantes que se han logeado al menos una vez en el sistema'|trans }}.</small>
-                            </p>
-                            <p>
+                            <div class="leyenda">
+                                <small>{{ 'Activos' }}:{{ 'Participantes que se han logeado al menos una vez en el sistema'|trans }}.</small><br>
                                 <small>{{ 'Inactivos' }}:{{ 'Participantes registrados y nunca han entrado sistema'|trans }}.</small>
-                            </p>
+                            </div>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <div class="canvasCont">
+                            <div class="canvasCont" id="canvasCont1">
                                 <canvas class="barChart" id="chart1"></canvas>
                             </div>
                         </div>
                     </div>
+                    <br><br>
                     <div class="row justify-content-center reporte" style="display:none;">
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
                             <h6>{{ 'Resumen de registros de participantes en'|trans }} <span id="label_programa"></span></h6>
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>{{ 'Estado'|trans }}</th>
+                                        <th style="text-align:left;">{{ 'Estado'|trans }}</th>
                                         <th class="week_before bg-warning text-white">&nbsp;</th>
                                         <th class="now bg-info text-white">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ 'No iniciados'|trans }}</td>
+                                        <td style="text-align:left;">{{ 'No iniciados'|trans }}</td>
                                         <td class="bg-warning week_before_no_iniciados">0</td>
                                         <td class="bg-info now_no_iniciados">0</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ 'En curso'|trans }}</td>
+                                        <td style="text-align:left;">{{ 'En curso'|trans }}</td>
                                         <td class="bg-warning week_before_en_curso">0</td>
                                         <td class="bg-info now_en_curso">0</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ 'Aprobados'|trans }}</td>
+                                        <td style="text-align:left;">{{ 'Aprobados'|trans }}</td>
                                         <td class="bg-warning week_before_aprobados">0</td>
                                         <td class="bg-info now_aprobados">0</td>
                                     </tr>
                                     <tr>
-                                        <th>Total {{ 'Activos'|trans }}</th>
+                                        <th style="text-align:left;" class="total">Total {{ 'Activos'|trans }}</th>
                                         <td id="week_before_total2" class="bg-warning">0</td>
                                         <td id="now_total2" class="bg-info">0</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <p>
-                                <small>{{ 'No iniciados' }}:{{ 'Participantes que han sido asignados al programa y no han visto alguna de sus lecciones'|trans }}.</small>
-                            </p>
-                            <p>
-                                <small>{{ 'En curso' }}:{{ 'Participantes que han visto al menos una lección del programa'|trans }}.</small>
-                            </p>
-                            <p>
+                            <div class="leyenda">
+                                <small>{{ 'No iniciados' }}:{{ 'Participantes que han sido asignados al programa y no han visto alguna de sus lecciones'|trans }}.</small><br>
+                                <small>{{ 'En curso' }}:{{ 'Participantes que han visto al menos una lección del programa'|trans }}.</small><br>
                                 <small>{{ 'Aprobados' }}:{{ 'Participantes que han aprobado el programa'|trans }}.</small>
-                            </p>
+                            </div>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <div class="canvasCont">
+                            <div class="canvasCont" id="canvasCont2">
                                 <canvas class="barChart" id="chart2"></canvas>
                             </div>
                         </div>
                     </div>
+                    <br><br>
                     <div class="row justify-content-center reporte" style="display:none;">
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>{{ 'Estado'|trans }}</th>
-                                        <th class="week_before bg-warning text-white">&nbsp;</th>
-                                        <th class="now bg-info text-white">&nbsp;</th>
+                                        <th style="text-align:left;" class="estado">{{ 'Estado'|trans }}</th>
+                                        <th class="week_before estado">&nbsp;</th>
+                                        <th class="now estado">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="bg-danger">{{ 'Inactivos'|trans }}</td>
-                                        <td class="bg-danger week_before_inactivos">0</td>
-                                        <td class="bg-danger now_inactivos">0</td>
+                                        <td class="rojo text-white" style="text-align:left;">{{ 'Inactivos'|trans }}</td>
+                                        <td class="rojo text-white week_before_inactivos">0</td>
+                                        <td class="rojo text-white now_inactivos">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-warning">{{ 'No iniciados'|trans }}</td>
-                                        <td class="bg-warning week_before_no_iniciados">0</td>
-                                        <td class="bg-warning now_no_iniciados">0</td>
+                                        <td class="amarillo" style="text-align:left;">{{ 'No iniciados'|trans }}</td>
+                                        <td class="amarillo week_before_no_iniciados">0</td>
+                                        <td class="amarillo now_no_iniciados">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-info">{{ 'En curso'|trans }}</td>
-                                        <td class="bg-info week_before_en_curso">0</td>
-                                        <td class="bg-info now_en_curso">0</td>
+                                        <td class="verde_claro" style="text-align:left;">{{ 'En curso'|trans }}</td>
+                                        <td class="verde_claro week_before_en_curso">0</td>
+                                        <td class="verde_claro now_en_curso">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-success">{{ 'Aprobados'|trans }}</td>
-                                        <td class="bg-success week_before_aprobados">0</td>
-                                        <td class="bg-success now_aprobados">0</td>
+                                        <td class="verde" style="text-align:left;">{{ 'Aprobados'|trans }}</td>
+                                        <td class="verde week_before_aprobados">0</td>
+                                        <td class="verde now_aprobados">0</td>
                                     </tr>
-                                    <tr>
-                                        <th>Total</th>
+                                    <tr class="total">
+                                        <th style="text-align:left;">Total</th>
                                         <th id="week_before_total3">0</th>
                                         <th id="now_total3">0</th>
                                     </tr>
@@ -241,7 +281,7 @@
                             </table>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <div class="canvasCont">
+                            <div class="canvasCont" id="canvasCont3">
                                 <canvas class="barChart" id="chart3"></canvas>
                             </div>
                         </div>
@@ -274,6 +314,8 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/utils.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.es.js') }}"></script>
     {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
     <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/reportes/resumenRegistros.js') }}"></script>
