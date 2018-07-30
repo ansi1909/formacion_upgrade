@@ -56,6 +56,12 @@ _ajaxInteraccionMuro:
     requirements:
         _method: POST
 
+_ajaxInteraccionColaborativo:
+    path:     /ajaxInteraccionColaborativo
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxInteraccionColaborativo }
+    requirements:
+        _method: POST
+
 reportesJE:
     resource: "@LinkBackendBundle/Resources/config/routing/reportesJE.yml"
     prefix: /reportesJE
@@ -67,5 +73,11 @@ reportesJT:
 _ajaxFiltroProgramas:
     path:     /ajaxFiltroProgramas
     defaults: { _controller: LinkBackendBundle:Reportes:ajaxFiltroProgramas }
+    requirements:
+        method: GET
+
+_ajaxFiltroTemas:
+    path:     /ajaxFiltroTemas
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxFiltroTemas }
     requirements:
         method: GET

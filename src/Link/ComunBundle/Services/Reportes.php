@@ -348,7 +348,7 @@ class Reportes
 
                 if ($i > 1)
                 {
-                    $participante['evaluaciones'] = $evaluaciones;
+                    $participante['muros'] = $muro;
                     $listado[] = $participante;
                     $participante = array('codigo' => $r['codigo'],
                                           'login' => $r['login'],
@@ -373,12 +373,108 @@ class Reportes
             }
             else {
                 $muro[] = array('mensaje' => $r['mensaje'],
-                                    'fecha_mensaje' => $r['fecha_mensaje']);
+                                'fecha_mensaje' => $r['fecha_mensaje']);
             }
 
             if ($i == count($rs))
             {
                 $participante['muros'] = $muro;
+                $listado[] = $participante;
+            }
+
+        }
+
+        return $listado;
+
+    }
+
+    // Mensajes de espacio colaborativo por participantes en una pagina
+    public function interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta){
+
+
+        $em = $this->em;
+        
+        // Cálculos desde la función de BD
+        $query = $em->getConnection()->prepare('SELECT
+                                                fninteraccion_espacio_colaborativo(:re, :pempresa_id, :ppagina_id, :pforo_id, :pdesde, :phasta) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pforo_id', $tema_id, \PDO::PARAM_INT);
+        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
+        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
+        $query->execute();
+        $rs = $query->fetchAll();
+
+        $listado = array();
+        $login = '';
+        $i = 0;
+
+        foreach ($rs as $r)
+        {
+
+            $i++;
+
+            if ($i == 1)
+            {
+                $participante = array('codigo' => $r['codigo'],
+                                      'login' => $r['login'],
+                                      'nombre' => $r['nombre'],
+                                      'apellido' => $r['apellido'],
+                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                      'empresa' => $r['empresa'],
+                                      'pais' => $r['pais'],
+                                      'nivel' => $r['nivel'],
+                                      'fecha_registro' => $r['fecha_registro'],
+                                      'campo1' => $r['campo1'],
+                                      'campo2' => $r['campo2'],
+                                      'campo3' => $r['campo3'],
+                                      'campo4' => $r['campo4']);
+                $foro = array();
+                $foro[] = array('mensaje' => $r['mensaje'],
+                                'fecha_mensaje' => $r['fecha_mensaje']);
+            }
+
+            if ($r['login'] != $login)
+            {
+
+                $login = $r['login'];
+
+                if ($i > 1)
+                {
+                    $participante['foro'] = $foro;
+                    $listado[] = $participante;
+                    $participante = array('codigo' => $r['codigo'],
+                                          'login' => $r['login'],
+                                          'nombre' => $r['nombre'],
+                                          'apellido' => $r['apellido'],
+                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                          'empresa' => $r['empresa'],
+                                          'pais' => $r['pais'],
+                                          'nivel' => $r['nivel'],
+                                          'fecha_registro' => $r['fecha_registro'],
+                                          'campo1' => $r['campo1'],
+                                          'campo2' => $r['campo2'],
+                                          'campo3' => $r['campo3'],
+                                          'campo4' => $r['campo4'],
+                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
+                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
+                    $foro = array();
+                    $foro[] = array('mensaje' => $r['mensaje'],
+                                    'fecha_mensaje' => $r['fecha_mensaje']);
+                }
+
+            }
+            else {
+                $foro[] = array('mensaje' => $r['mensaje'],
+                                'fecha_mensaje' => $r['fecha_mensaje']);
+            }
+
+            if ($i == count($rs))
+            {
+                $participante['foro'] = $foro;
                 $listado[] = $participante;
             }
 

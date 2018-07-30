@@ -137,9 +137,12 @@ class DefaultController extends Controller
                             ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
                 $paginas_db = $query->getResult();
 
-                $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u
-                                           WHERE u.empresa = :empresa_id')
-                            ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
+                $query = $em->createQuery('SELECT  ru FROM LinkComunBundle:AdminRolUsuario ru
+                                           JOIN ru.usuario u
+                                           WHERE u.empresa = :empresa_id
+                                           AND ru.rol = :rol')
+                            ->setParameters(array('empresa_id' => $usuarioS->getEmpresa()->getId(),
+                                                  'rol' => '2'));
                 $usuarios_db = $query->getResult();
 
                 $usuariosA = 0;
@@ -147,7 +150,7 @@ class DefaultController extends Controller
 
                 foreach ($usuarios_db as $usuario)
                 {
-                    if ($usuario->getActivo() == 'true') 
+                    if ($usuario->getUsuario()->getActivo() == 'true') 
                     {
                         $usuariosA++;
                     }
@@ -176,9 +179,12 @@ class DefaultController extends Controller
                         $nivel_id = $np->getNivel()->getId();
                         $pagina_id = $np->getPaginaEmpresa()->getPagina()->getId();
 
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
-                                                   WHERE u.nivel = :nivel_id')
-                                    ->setParameter('nivel_id', $nivel_id);
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
+                                                   JOIN ru.usuario u 
+                                                   WHERE u.nivel = :nivel_id
+                                                   AND ru.rol = :rol')
+                                    ->setParameters(array('nivel_id' => $nivel_id,
+                                                          'rol' => '2'));
                         $usuarios = $query->getSingleScalarResult();
                       
                         $usuariosT = $usuariosT + $usuarios;
@@ -255,9 +261,12 @@ class DefaultController extends Controller
                             ->setParameter('empresa_id', $empresa_id);
                 $paginas_db = $query->getResult();
 
-                $query = $em->createQuery('SELECT  u FROM LinkComunBundle:AdminUsuario u
-                                           WHERE u.empresa = :empresa_id')
-                            ->setParameter('empresa_id', $empresa_id);
+                $query = $em->createQuery('SELECT  ru FROM LinkComunBundle:AdminRolUsuario ru
+                                           JOIN ru.usuario u
+                                           WHERE u.empresa = :empresa_id
+                                           AND ru.rol = :rol')
+                            ->setParameters(array('empresa_id' => $empresa_id,
+                                                  'rol' => '2'));
                 $usuarios_db = $query->getResult();
 
                 $usuariosA = 0;
@@ -332,9 +341,12 @@ class DefaultController extends Controller
                         $nivel_id = $np->getNivel()->getId();
                         $pagina_id = $np->getPaginaEmpresa()->getPagina()->getId();
 
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
-                                                   WHERE u.nivel = :nivel_id')
-                                    ->setParameter('nivel_id', $nivel_id);
+                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
+                                                   JOIN ru.usuario u 
+                                                   WHERE u.nivel = :nivel_id
+                                                   AND ru.rol = :rol')
+                                    ->setParameters(array('nivel_id' => $nivel_id,
+                                                          'rol' => '2'));
                         $usuarios = $query->getSingleScalarResult();
                       
                         $usuariosT = $usuariosT + $usuarios;
