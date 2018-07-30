@@ -68,30 +68,31 @@ function mostrarReporte(data)
 	$('#label_programa').html(data.programa);
 
 	$('.reporte').show();
+	console.log(data.reporte['now_inactivos_pct']);
+	console.log(data.reporte['now_activos_pct']);
 
-	/*var datos = {
-        type: "horizontalBar",
+	var datos1 = {
+        type: "pie",
         data: {
             datasets: [{
-                label: '',
-                data: totales,
-                backgroundColor: ["#fd5c63", "#ff9933", "#ed1c24", "#6a67ce", "#ee4c58", "#8aba56", "#a560e8", "#0084DB"],
+                label: 'Estatus de Participantes al '+data.now,
+                data: [
+                	data.reporte['now_inactivos_pct'],
+                	data.reporte['now_activos_pct']
+                ],
+                backgroundColor: ["#0070c0", "#ed7d31"],
             }],
-            labels: etiquetas
+            labels: ['Inactivos', 'Activos']
         },
         options: {
-            responsive: true,
-            legend: {
-                display: false
-            }
+            responsive: true
         }
     };
-    var canvas = document.querySelector('.barChart').getContext('2d');
-    window.horizontalBar = new Chart(canvas, datos);
+    var canvas1 = document.querySelector('#chart1').getContext('2d');
+    window.pie1 = new Chart(canvas1, datos1);
    	
-   	$('#grafico').show();
-   	$('#desdef').val(data.desdef);
-   	$('#hastaf').val(data.hastaf);*/
+   	//$('#desdef').val(data.desdef);
+   	//$('#hastaf').val(data.hastaf);
 
 }
 
