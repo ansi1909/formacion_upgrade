@@ -407,6 +407,100 @@ class ReportesJEController extends Controller
         
     }
 
+    public function resumenRegistrosAction($app_id, Request $request)
+    {
+        
+        $session = new Session();
+        $f = $this->get('funciones');
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+
+            $session->set('app_id', $app_id);
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:resumenRegistros.html.twig', array('usuario' => $usuario,
+                                                                                            'empresas' => $empresas));
+
+    }
+
+    public function ajaxResumenRegistrosAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $desde = $request->request->get('desde');
+        $excel = $request->request->get('excel');
+
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $desde_arr = explode(" ", $desde);
+        list($d, $m, $a) = explode("/", $desde_arr[0]);
+        $time = explode(":", $desde_arr[1]);
+        $h = (int) $time[0];
+        $min = $time[1];
+        if ($desde_arr[2] == 'pm')
+        {
+            if ($h != 12)
+            {
+                // Se le suman 12 horas
+                $h += 12;
+            }
+        }
+        else {
+            if ($h == 12)
+            {
+                // Es la hora 0
+                $h = '00';
+            }
+            elseif ($h < 10) {
+                // Valor en dos caracteres
+                $h = '0'.$h;
+            }
+        }
+        $now = "$a-$m-$d $h:$min:59";
+
+        $datetime = new \DateTime($now);
+        $datetime->modify('-7 day');
+        $week_before = $datetime->format("Y-m-d H:i:s");
+
+        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $week_before, $now);
+
+        
+        $return = array('reporte' => $reporte,
+                        'week_before' => $this->get('translator')->trans('Al').' '.$datetime->format("d/m/Y h:i a"),
+                        'now' => $this->get('translator')->trans('Al').' '.$desde,
+                        'week_beforef' => $week_before,
+                        'nowf' => $now,
+                        'programa' => $pagina->getNombre());
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
     
 }
 

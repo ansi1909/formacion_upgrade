@@ -1,6 +1,8 @@
 <?php
 
 namespace Link\ComunBundle\Services;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -143,6 +145,7 @@ class Reportes
                 $r = $query->fetchAll();
 
                 // La respuesta viene formada por las cantidades de registros por día de semana separado por __
+
                 $r_arr = explode("__", $r[0]['resultado']);
                 $f = 0;
                 $total_hora = 0;
@@ -287,6 +290,170 @@ class Reportes
         }
 
         return $listado;
+
+	}
+
+    // Mensajes de muro por participantes en una pagina
+    public function interaccionMuro($empresa_id, $pagina_id, $desde, $hasta){
+
+
+        $em = $this->em;
+        
+        // Cálculos desde la función de BD
+        $query = $em->getConnection()->prepare('SELECT
+                                                fninteraccion_muro(:re, :pempresa_id, :ppagina_id, :pdesde, :phasta) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
+        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
+        $query->execute();
+        $rs = $query->fetchAll();
+
+        $listado = array();
+        $login = '';
+        $i = 0;
+
+        foreach ($rs as $r)
+        {
+
+            $i++;
+
+            if ($i == 1)
+            {
+                $participante = array('codigo' => $r['codigo'],
+                                      'login' => $r['login'],
+                                      'nombre' => $r['nombre'],
+                                      'apellido' => $r['apellido'],
+                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                      'empresa' => $r['empresa'],
+                                      'pais' => $r['pais'],
+                                      'nivel' => $r['nivel'],
+                                      'fecha_registro' => $r['fecha_registro'],
+                                      'campo1' => $r['campo1'],
+                                      'campo2' => $r['campo2'],
+                                      'campo3' => $r['campo3'],
+                                      'campo4' => $r['campo4']);
+                $muro = array();
+                $muro[] = array('mensaje' => $r['mensaje'],
+                                'fecha_mensaje' => $r['fecha_mensaje']);
+            }
+
+            if ($r['login'] != $login)
+            {
+
+                $login = $r['login'];
+
+                if ($i > 1)
+                {
+                    $participante['evaluaciones'] = $evaluaciones;
+                    $listado[] = $participante;
+                    $participante = array('codigo' => $r['codigo'],
+                                          'login' => $r['login'],
+                                          'nombre' => $r['nombre'],
+                                          'apellido' => $r['apellido'],
+                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                          'empresa' => $r['empresa'],
+                                          'pais' => $r['pais'],
+                                          'nivel' => $r['nivel'],
+                                          'fecha_registro' => $r['fecha_registro'],
+                                          'campo1' => $r['campo1'],
+                                          'campo2' => $r['campo2'],
+                                          'campo3' => $r['campo3'],
+                                          'campo4' => $r['campo4'],
+                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
+                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
+                    $muro = array();
+                    $muro[] = array('mensaje' => $r['mensaje'],
+                                    'fecha_mensaje' => $r['fecha_mensaje']);
+                }
+
+            }
+            else {
+                $muro[] = array('mensaje' => $r['mensaje'],
+                                    'fecha_mensaje' => $r['fecha_mensaje']);
+            }
+
+            if ($i == count($rs))
+            {
+                $participante['muros'] = $muro;
+                $listado[] = $participante;
+            }
+
+        }
+
+        return $listado;
+
+    }
+
+    // Cálculo del reporte Resumen General de Registros
+	public function resumenRegistros($empresa_id, $pagina_id, $week_before, $now)
+	{
+
+		$em = $this->em;
+		$resultados = array();
+
+		// CÁLCULOS DE LOS VALORES DE LA SEMANA ANTERIOR
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnresumen_general(:pempresa_id, :ppagina_id, :pweek_before) as
+                                                resultado;');
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pweek_before', $week_before, \PDO::PARAM_STR);
+        $query->execute();
+        $r = $query->fetchAll();
+
+        // La respuesta viene formada por las cantidades de registros por día de semana separado por __
+        $r_arr = explode("__", $r[0]['resultado']);
+        $resultados['week_before_activos'] = (int) $r_arr[0];
+        $resultados['week_before_inactivos'] = (int) $r_arr[1];
+        $resultados['week_before_no_iniciados'] = (int) $r_arr[2];
+        $resultados['week_before_en_curso'] = (int) $r_arr[3];
+        $resultados['week_before_aprobados'] = (int) $r_arr[4];
+        $resultados['week_before_total1'] = $resultados['week_before_activos'] + $resultados['week_before_inactivos'];
+        $resultados['week_before_total2'] = $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
+        $resultados['week_before_total3'] = $resultados['week_before_inactivos'] + $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
+        
+        $week_before_inactivos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_inactivos']/$resultados['week_before_total1'])*100 : '-';
+        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 1, ',', '.') : $week_before_inactivos_pct;
+        
+        $week_before_activos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_activos']/$resultados['week_before_total1'])*100 : '-';
+        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 1, ',', '.') : $week_before_activos_pct;
+
+        $resultados['week_before_total1_pct'] = $resultados['week_before_total1'] != 0 ? 100 : '-';
+
+        // CÁLCULOS DE LOS VALORES DE LA FECHA SELECCIONADA
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnresumen_general(:pempresa_id, :ppagina_id, :pnow) as
+                                                resultado;');
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pnow', $now, \PDO::PARAM_STR);
+        $query->execute();
+        $r = $query->fetchAll();
+
+        // La respuesta viene formada por las cantidades de registros por día de semana separado por __
+        $r_arr = explode("__", $r[0]['resultado']);
+        $resultados['now_activos'] = (int) $r_arr[0];
+        $resultados['now_inactivos'] = (int) $r_arr[1];
+        $resultados['now_no_iniciados'] = (int) $r_arr[2];
+        $resultados['now_en_curso'] = (int) $r_arr[3];
+        $resultados['now_aprobados'] = (int) $r_arr[4];
+        $resultados['now_total1'] = $resultados['now_activos'] + $resultados['now_inactivos'];
+        $resultados['now_total2'] = $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
+        $resultados['now_total3'] = $resultados['now_inactivos'] + $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
+        
+        $now_inactivos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_inactivos']/$resultados['now_total1'])*100 : '-';
+        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 1, ',', '.') : $now_inactivos_pct;
+        
+        $now_activos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_activos']/$resultados['now_total1'])*100 : '-';
+        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 1, ',', '.') : $now_activos_pct;
+
+        $resultados['now_total1_pct'] = $resultados['now_total1'] != 0 ? 100 : '-';
+
+		return $resultados;
 
 	}
 }

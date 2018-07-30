@@ -1,5 +1,5 @@
 _participantesEmpresa:
-    path:     /participantesEmpresa/{app_id},{r},{empresa_id}
+    path:     /participantesEmpresa/{app_id}/{r}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, r: 1,pagina_id: 0, empresa_id: 0 }
 
 _ajaxListadoParticipantes:
@@ -9,11 +9,11 @@ _ajaxListadoParticipantes:
         method: GET
 
 _participantesRegistrados:
-    path:     /participantesRegistrados/{app_id},{pagina_id},{r},{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0,r: 2, empresa_id: 0}
+    path:     /participantesRegistrados/{app_id}/{pagina_id}/{r}/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0, r: 2, empresa_id: 0}
 
 _participantesCursando:
-    path:     /participantesCursando/{app_id},{pagina_id},{r},{empresa_id}
+    path:     /participantesCursando/{app_id}/{pagina_id}/{r}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0, r: 3, empresa_id: 0 }
 
 _ajaxProgramasE:
@@ -22,28 +22,22 @@ _ajaxProgramasE:
     requirements:
         method: GET
 
-_ajaxLeccionesE:
-    path:     /ajaxLeccionesE
-    defaults: { _controller: LinkBackendBundle:Reportes:ajaxLeccionesE }
-    requirements:
-        method: GET
-
 _participantesAprobados:
-    path:     /participantesAprobados/{app_id},{pagina_id},{r},{empresa_id}
+    path:     /participantesAprobados/{app_id}/{pagina_id}/{r}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 4, empresa_id: 0 }
 
 _participantesNoIniciados:
-    path:     /participantesNoIniciados/{app_id},{pagina_id},{r},{empresa_id}
+    path:     /participantesNoIniciados/{app_id}/{pagina_id}/{r}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 5, empresa_id: 0 }
 
 _excelReporte:
-    path:     /excelReporte/{app_id},{pagina_id},{r},{empresa_id}
+    path:     /excelReporte/{app_id}/{pagina_id}/{r}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, r: 0, empresa_id: 0, pagina_id: 0}
     requirements:
         method: POST
 
 _excelReporteGeneral:
-    path:     /excelReporteGeneral/{app_id},{empresa_id}
+    path:     /excelReporteGeneral/{app_id}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:reporteGeneral}
     requirements:
         method: POST
@@ -53,8 +47,14 @@ _interaccionColaborativo:
     defaults: { _controller: LinkBackendBundle:Reportes:interaccionColaborativo }
 
 _interaccionMuro:
-    path:     /interaccionMuro/{app_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:interaccionMuro }
+    path:     /interaccionMuro/{app_id}/{empresa_id}/{desde}/{hasta}
+    defaults: { _controller: LinkBackendBundle:Reportes:interaccionMuro, empresa_id: 0, desde: 0, hasta: 0 }
+
+_ajaxInteraccionMuro:
+    path:     /ajaxInteraccionMuro
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxInteraccionMuro }
+    requirements:
+        _method: POST
 
 reportesJE:
     resource: "@LinkBackendBundle/Resources/config/routing/reportesJE.yml"

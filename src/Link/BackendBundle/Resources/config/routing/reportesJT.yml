@@ -8,6 +8,6 @@ _avanceProgramas:
     defaults: { _controller: LinkBackendBundle:ReportesJT:avanceProgramas }
 
 
-__ajaxConexionesUsuario: 
-    path:    /ajaxConexionesUsuario/{empresa_id}
+_ajaxConexionesUsuario: 
+    path:    /ajaxConexionesUsuario
     defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxConexionesUsuario }

@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var filtro_programas = $('#filtro_programas').val();
-
+	
 	if (filtro_programas == '1')
 	{
 		$('#empresa_id').change(function(){

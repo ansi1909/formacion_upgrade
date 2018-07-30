@@ -1,0 +1,43 @@
+<table class="table styleTab">
+    <thead>
+        <tr>
+           <!--  <td colspan="4"><b>{{ 'Empresa'|trans }}:</b> {{ empresa }}</td>
+            <td colspan="5"><b>{{ 'Programa'|trans }}:</b> {{ programa }}</td> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>{{ 'Codigo'|trans }}</th>
+            <th>{{ 'Usuario'|trans }}</th>
+            <th>{{ 'Nombre'|trans }}</th>
+            <th>{{ 'Correo'|trans }}</th>
+            <th>{{ 'Nivel'|trans }}</th>
+            <th>{{ 'Fecha registro' }}</th>
+            <th>{{ 'Cantidad de conexiones' }}</th>
+            <th>{{ 'Promedio de conexiones' }}</th>
+           
+        </tr>
+        {% for participante in listado %}
+            {% set eo = cycle(['odd', 'even'], loop.index) %}
+            
+            <tr class="{{ eo }}">
+                <td rowspan="">{{ participante.codigo}}</td>
+                <td rowspan="">{{ participante.login }}</td>
+                <td rowspan="">{{ participante.nombre }} {{ participante.apellido }}</td>
+                <td rowspan="">{{ participante.correo_corporativo }}</td>
+                <td rowspan="">{{ participante.nivel }}</td>
+                <td rowspan="">{{ participante.fecha_registro }}</td>
+                <td rowspan="">{{ participante.visitas }}</td>
+                <td rowspan="">{{ participante.promedio }}</td>
+            </tr>
+       
+        {% endfor %}
+    </tbody>
+</table>
+<div class="card-footer">
+    <div class="col-sm-16 col-md-16 text-right">
+        <button id="excel" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} Excel"><span class="fa fa-file-excel-o"></span></button>
+        <a id="excel-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} Excel"><span class="fa fa-download"></span></button></a>
+        <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+    </div>
+</div>

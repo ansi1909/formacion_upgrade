@@ -11,6 +11,7 @@ Activar para ordenar la columna de manera ascendente: Activar para ordenar la co
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activar webinar: Activar webinar
 Activo: Activo
+Activos: Activos
 Advertencia: Advertencia
 Agregar: Agregar
 Agregar categoría: Agregar categoría
@@ -20,6 +21,7 @@ Agregar sub-página: Agregar sub-página
 Agrupación de páginas: Agrupación de páginas
 Ahora: Ahora
 al: al
+Al: Al
 Al loggearse se restablecerán los datos para una nueva sesión: Al loggearse se restablecerán los datos para una nueva sesión
 Anterior: Anterior
 Anterior pregunta: Anterior pregunta
@@ -30,6 +32,7 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Aplicar periodo a las sub-páginas: Aplicar periodo a las sub-páginas
+Aprobados: Aprobados
 Archivo procesado con éxito: Archivo procesado con éxito
 Archivos: Archivos
 Archivos de este espacio: Archivos de este espacio
@@ -279,6 +282,7 @@ Empresas: Empresas
 Empresas activas: Empresas activas
 Empresas inactivas: Empresas inactivas
 Empresas registradas: Empresas registradas
+En curso: En curso
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: En el módulo administrativo de Certificados y Constancias se puede agregar certificados
 en la biblioteca: en la biblioteca
 Encabezado: Encabezado
@@ -316,6 +320,7 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 Estado: Estado
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
+Estatus de los participantes: Estatus de los participantes
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
@@ -390,6 +395,7 @@ Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen lado: Imagen lado
+Inactivos: Inactivos
 Índice: Índice
 Ingrese un correo valido: Ingrese un correo valido
 Indice del contenido: Indice del contenido
@@ -406,6 +412,8 @@ Inicio de la evaluación: Inicio de la evaluación
 Inicio del programa: Inicio del programa
 instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
 Interacción: Interacción
+Interacción en los muros: Interacción en los muros
+Interacción en los muros por empresa: Interacción en los muros por empresa
 Ir a detalles de la página: Ir a detalles de la página
 Ir al inicio: Ir al inicio
 Ir al listado: Ir al listado
@@ -454,6 +462,7 @@ La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
 La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
+La página es requerida: La página es requerida
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 La respuesta al comentario: La respuesta al comentario
@@ -527,6 +536,7 @@ No existen registros para esta consulta: No existen registros para esta consulta
 No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
+No iniciados: No iniciados
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se mostrará en la página de login: No se mostrará en la página de login
@@ -582,6 +592,11 @@ Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para env
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
 participantes: participantes
 particpante: participante
+Participantes que han aprobado el programa: Participantes que han aprobado el programa
+Participantes que han sido asignados al programa y no han visto alguna de sus lecciones: Participantes que han sido asignados al programa y no han visto alguna de sus lecciones
+Participantes que han visto al menos una lección del programa: Participantes que han visto al menos una lección del programa
+Participantes que se han logeado al menos una vez en el sistema: Participantes que se han logeado al menos una vez en el sistema
+Participantes registrados y nunca han entrado sistema: Participantes registrados y nunca han entrado sistema
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil Empresarial: Perfil Empresarial
@@ -592,6 +607,7 @@ Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
 Plan de estudio: Plan de estudio
 Plantilla: Plantilla
+Porcentaje: Porcentaje
 Por favor, ingresa tu usuario y contraseña: Por favor, ingresa tu usuario y contraseña
 Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a
 Preferencias de la empresa: Preferencias de la empresa
@@ -643,6 +659,9 @@ Respuestas comentario seleccionado: Respuestas comentario seleccionado
 Resultado del archivo procesado: Resultado del archivo procesado
 Resultados: Resultados
 Resumen: Resumen
+Resumen de registros de participantes en: Resumen de registros de participantes en
+Resumen general de registros: Resumen general de registros
+Resumen general de registros por empresa: Resumen general de registros por empresa
 Rol: Rol
 Roles: Roles
 Roles asignados: Roles asignados
@@ -657,6 +676,7 @@ Seleccione el/los usuarios: Seleccione el/los usuarios
 Seleccione el nivel: Seleccione el nivel
 Seleccione el programa: Seleccione el programa
 Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostrar los niveles
+Seleccione la empresa para mostrar las páginas asignadas: Seleccione la empresa para mostrar las páginas asignadas
 Seleccione fecha difusión: Seleccione fecha difusión
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio

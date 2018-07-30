@@ -22,7 +22,10 @@ begin
     (admin_usuario u INNER JOIN (admin_empresa e INNER JOIN admin_pais c ON e.pais_id = c.id) ON u.empresa_id = e.id
              INNER JOIN admin_nivel n ON u.nivel_id = n.id) 
      ON s.usuario_id = u.id 
-    WHERE s.disponible = false AND u.empresa_id = pempresa_id AND s.fecha_ingreso BETWEEN pdesde AND phasta 
+    WHERE s.disponible = false 
+    AND u.empresa_id = pempresa_id 
+    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+    AND s.fecha_ingreso BETWEEN pdesde AND phasta 
     GROUP BY u.id, e.nombre, c.nombre, n.nombre
     ORDER BY u.login ASC;
     
