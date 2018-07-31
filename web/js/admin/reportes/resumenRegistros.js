@@ -68,14 +68,12 @@ function mostrarReporte(data)
 	$('#label_programa').html(data.programa);
 
 	$('.reporte').show();
-	console.log(data.reporte['now_inactivos_pct']);
-	console.log(data.reporte['now_activos_pct']);
 
+	// Gráfico 1
 	var datos1 = {
         type: "pie",
         data: {
             datasets: [{
-                label: 'Estatus de Participantes al '+data.now,
                 data: [
                 	data.reporte['now_inactivos_pct'],
                 	data.reporte['now_activos_pct']
@@ -85,11 +83,160 @@ function mostrarReporte(data)
             labels: ['Inactivos', 'Activos']
         },
         options: {
-            responsive: true
+            responsive: true,
+            legend: {
+            	display: true,
+            	position: 'right'
+            },
+            title: {
+            	display: true,
+            	text: 'Estatus de Participantes '+data.now,
+            	position: 'top',
+            	fontSize: 14
+            },
+            tooltips: {
+	            callbacks: {
+	                label: function(tooltipItem, data1) {
+	                	var label = data1.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '0';
+	                    if (label) {
+	                        label += '%';
+	                    }
+	                    return label;
+	                }
+	            }
+	        },
+	        pieceLabel: {
+	          render: 'percentage',
+	          fontColor: ['white', 'white']
+	        }
         }
     };
     var canvas1 = document.querySelector('#chart1').getContext('2d');
     window.pie1 = new Chart(canvas1, datos1);
+
+    // Gráfico 2
+	var datos2 = {
+        type: "pie",
+        data: {
+            datasets: [{
+                data: [
+                	data.reporte['now_no_iniciados'],
+                	data.reporte['now_en_curso'],
+                	data.reporte['now_aprobados']
+                ],
+                backgroundColor: ["#ed7d31", "#ffc000", "#92d050"],
+            }],
+            labels: ['No iniciados', 'En curso', 'Aprobados']
+        },
+        options: {
+            responsive: true,
+            legend: {
+            	display: true,
+            	position: 'right'
+            },
+            title: {
+            	display: true,
+            	text: 'Avance de Participantes en '+data.programa+' '+data.now,
+            	position: 'top',
+            	fontSize: 14
+            },
+            tooltips: {
+	            callbacks: {
+	                label: function(tooltipItem, data1) {
+	                	var label = data1.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '0';
+	                    return label;
+	                }
+	            }
+	        },
+	        pieceLabel: {
+	          render: 'percentage',
+	          fontColor: ['white', '#000000', 'white']
+	        }
+        }
+    };
+    var canvas2 = document.querySelector('#chart2').getContext('2d');
+    window.pie2 = new Chart(canvas2, datos2);
+
+    // Gráfico 3
+	var datos3 = {
+        type: "horizontalBar",
+        data: {
+        	labels: ['Inactivos', 'No iniciados', 'En curso', 'Aprobados'],
+            datasets: [{
+            	label: data.week_before,
+            	backgroundColor: '#f8cbad',
+            	borderColor: '#ed7d31',
+            	borderWidth: 1,
+                data: [
+                	data.reporte['week_before_inactivos'],
+                	data.reporte['week_before_no_iniciados'],
+                	data.reporte['week_before_en_curso'],
+                	data.reporte['week_before_aprobados']
+                ]
+            }, 
+            {
+            	label: data.now,
+            	backgroundColor: '#bdd7ee',
+            	borderColor: '#0070c0',
+            	borderWidth: 1,
+                data: [
+                	data.reporte['now_inactivos'],
+                	data.reporte['now_no_iniciados'],
+                	data.reporte['now_en_curso'],
+                	data.reporte['now_aprobados']
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+            	display: true,
+            	text: 'Estatus de los participantes',
+            	position: 'top',
+            	fontSize: 14
+            },
+            animation: {
+	            duration: 500,
+	            easing: "easeOutQuart",
+	            onComplete: function () {
+	                var ctx = this.chart.ctx;
+	                ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+	                ctx.textAlign = 'center';
+	                ctx.textBaseline = 'bottom';
+
+	                this.data.datasets.forEach(function (dataset) {
+	                    for (var i = 0; i < dataset.data.length; i++) {
+	                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+	                            scale_max = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
+	                        ctx.fillStyle = '#444';
+	                        var y_pos = model.y + 7;
+	                        var x_pos = model.x - 15;
+	                        // Make sure data value does not get overflown and hidden
+	                        // when the bar's value is too close to max value of scale
+	                        // Note: The y value is reverse, it counts from top down
+	                        if ((scale_max - model.y) / scale_max >= 0.93){
+	                            y_pos = model.y + 20;
+	                        }
+	                        if (dataset.data[i] < 1)
+	                        {
+	                        	x_pos = model.x + 5;
+	                        }
+	                        ctx.fillText(dataset.data[i], x_pos, y_pos);
+	                    }
+	                });               
+	            }
+	        },
+	        scales: {
+		        xAxes: [{
+		            ticks: {
+		                beginAtZero: true
+		            }
+		        }]
+		    }
+        }
+    };
+    var canvas3 = document.querySelector('#chart3').getContext('2d');
+    window.pie3 = new Chart(canvas3, datos3);
    	
    	//$('#desdef').val(data.desdef);
    	//$('#hastaf').val(data.hastaf);
