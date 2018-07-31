@@ -238,36 +238,41 @@ function mostrarReporte(data)
     var canvas3 = document.querySelector('#chart3').getContext('2d');
     window.pie3 = new Chart(canvas3, datos3);
    	
-   	//$('#desdef').val(data.desdef);
-   	//$('#hastaf').val(data.hastaf);
+   	$('#nowf').val(data.nowf);
 
 }
 
 const renderIntoImage = () => {
 
 	// Función que transforma el gráfico en imagen
-  	const canvas = document.getElementById('myChart');
-  	var src_img = getImgFromCanvas(canvas);
-  	
-  	// Se almacena la imagen en el servidor
-	$.ajax({
-		type: "POST",
-		url: $('#url_img').val(),
-		async: true,
-		data: "bin_data="+src_img,
-		dataType: "json",
-		success: function(response) {
-			$('#pdf-loader').hide();
-			var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val();
-        	$("#pdf-link").attr("href", href);
-        	$('#pdf-link').show();
-		},
-		error: function(){
-			$('#div-error-server').html($('#error-msg').val());
-			notify($('#div-error-server').html());
-			$('.descargable').hide();
-			$('.generable').show();
-		}
-	});
+	for (var i=1; i<=3; i++)
+	{
+
+
+		const canvas = document.getElementById('chart'+i);
+	  	var src_img = getImgFromCanvas(canvas);
+	  	
+	  	// Se almacena la imagen en el servidor
+		$.ajax({
+			type: "POST",
+			url: $('#url_img').val(),
+			async: true,
+			data: "bin_data="+src_img+"&chart="+i,
+			dataType: "json",
+			success: function(response) {
+				$('#pdf-loader').hide();
+				var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#nowf').val();
+	        	$("#pdf-link").attr("href", href);
+	        	$('#pdf-link').show();
+			},
+			error: function(){
+				$('#div-error-server').html($('#error-msg').val());
+				notify($('#div-error-server').html());
+				$('.descargable').hide();
+				$('.generable').show();
+			}
+		});
+
+	}
 
 }

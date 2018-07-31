@@ -501,6 +501,37 @@ class ReportesJEController extends Controller
         
     }
 
+    public function ajaxSaveImgResumenRegistrosAction(Request $request)
+    {
+        
+        $session = new Session();
+        
+        $bin_data = $request->request->get('bin_data');
+        $chart = $request->request->get('chart');
+        
+        $data = str_replace(' ', '+', $bin_data);
+        $data = base64_decode($data);
+        $im = imagecreatefromstring($data);
+        
+        $path = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_'.$chart.'.png';
+        $fileName = $this->container->getParameter('folders')['dir_uploads'].$path;
+
+        if ($im !== false) {
+            // Save image in the specified location
+            imagepng($im, $fileName);
+            imagedestroy($im);
+        }
+        else {
+            $fileName = 'An error occurred.';
+        }
+
+        $return = array('fileName' => $fileName);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
     
 }
 
