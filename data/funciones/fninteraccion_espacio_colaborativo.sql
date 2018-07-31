@@ -26,7 +26,7 @@ begin
     (admin_empresa e INNER JOIN admin_pais p ON e.pais_id = p.id) 
        ON u.empresa_id = e.id ) 
       ON f.usuario_id = u.id
-      WHERE f.empresa_id = pempresa_id AND f.pagina_id = ppagina_id AND f.fecha_registro BETWEEN '22/01/2018' AND '27/07/2018'
+      WHERE f.empresa_id = pempresa_id AND f.pagina_id = ppagina_id AND f.fecha_registro BETWEEN pdesde AND phasta
       AND f.foro_id = pforo_id
       ORDER BY u.login ASC, f.fecha_registro ASC;
     

@@ -11,10 +11,10 @@
 {% endblock %}
 
 {% block body %}
-{% set encabezado = 'Evaluaciones por módulo'|trans %}
+{% set encabezado = 'Espacio colaborativo'|trans %}
 
-<form id="form" name="form" action="{{ path ('_ajaxEvaluacionesModulo') }}" method="POST">
-    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 }) }}
+<form id="form" name="form" action="{{ path ('_ajaxInteraccionColaborativo') }}" method="POST">
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1, 'filtro_tema': 1 }) }}
 </form>
 
 {# Sección de resultados del reporte #}
@@ -48,5 +48,5 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
     {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
     <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/reportes/evaluacionesModulo.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/interaccionColaborativo.js') }}"></script>
 {% endblock %}

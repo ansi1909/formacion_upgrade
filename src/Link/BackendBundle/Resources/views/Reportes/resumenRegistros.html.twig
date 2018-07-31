@@ -46,6 +46,9 @@
         .leyenda {
             margin-top: -15px;
         }
+        .text-black {
+            color: #000;
+        }
     </style>
 {% endblock %}
 
@@ -183,8 +186,8 @@
                                 </tbody>
                             </table>
                             <div class="leyenda">
-                                <small>{{ 'Activos' }}:{{ 'Participantes que se han logeado al menos una vez en el sistema'|trans }}.</small><br>
-                                <small>{{ 'Inactivos' }}:{{ 'Participantes registrados y nunca han entrado sistema'|trans }}.</small>
+                                <small><b>{{ 'Activos' }}:</b>{{ 'Participantes que se han logeado al menos una vez en el sistema'|trans }}.</small><br>
+                                <small><b>{{ 'Inactivos' }}:</b>{{ 'Participantes registrados y nunca han entrado sistema'|trans }}.</small>
                             </div>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
@@ -229,9 +232,9 @@
                                 </tbody>
                             </table>
                             <div class="leyenda">
-                                <small>{{ 'No iniciados' }}:{{ 'Participantes que han sido asignados al programa y no han visto alguna de sus lecciones'|trans }}.</small><br>
-                                <small>{{ 'En curso' }}:{{ 'Participantes que han visto al menos una lección del programa'|trans }}.</small><br>
-                                <small>{{ 'Aprobados' }}:{{ 'Participantes que han aprobado el programa'|trans }}.</small>
+                                <small><b>{{ 'No iniciados' }}:</b>{{ 'Participantes que han sido asignados al programa y no han visto alguna de sus lecciones'|trans }}.</small><br>
+                                <small><b>{{ 'En curso' }}:</b>{{ 'Participantes que han visto al menos una lección del programa'|trans }}.</small><br>
+                                <small><b>{{ 'Aprobados' }}:</b>{{ 'Participantes que han aprobado el programa'|trans }}.</small>
                             </div>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
@@ -258,19 +261,19 @@
                                         <td class="rojo text-white now_inactivos">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="amarillo" style="text-align:left;">{{ 'No iniciados'|trans }}</td>
-                                        <td class="amarillo week_before_no_iniciados">0</td>
-                                        <td class="amarillo now_no_iniciados">0</td>
+                                        <td class="amarillo text-black" style="text-align:left;">{{ 'No iniciados'|trans }}</td>
+                                        <td class="amarillo text-black week_before_no_iniciados">0</td>
+                                        <td class="amarillo text-black now_no_iniciados">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="verde_claro" style="text-align:left;">{{ 'En curso'|trans }}</td>
-                                        <td class="verde_claro week_before_en_curso">0</td>
-                                        <td class="verde_claro now_en_curso">0</td>
+                                        <td class="verde_claro text-black" style="text-align:left;">{{ 'En curso'|trans }}</td>
+                                        <td class="verde_claro text-black week_before_en_curso">0</td>
+                                        <td class="verde_claro text-black now_en_curso">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="verde" style="text-align:left;">{{ 'Aprobados'|trans }}</td>
-                                        <td class="verde week_before_aprobados">0</td>
-                                        <td class="verde now_aprobados">0</td>
+                                        <td class="verde text-black" style="text-align:left;">{{ 'Aprobados'|trans }}</td>
+                                        <td class="verde text-black week_before_aprobados">0</td>
+                                        <td class="verde text-black now_aprobados">0</td>
                                     </tr>
                                     <tr class="total">
                                         <th style="text-align:left;">Total</th>
@@ -314,6 +317,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/utils.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/Chart.PieceLabel.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/datetimepicker/bootstrap-datetimepicker.es.js') }}"></script>
     {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
