@@ -47,6 +47,25 @@ class Reportes
         return $rs;
     }
 
+    public function avanceProgramas($pempresa_id, $ppagina_id, $pdesde, $phasta)
+    {
+        $em = $this->em;
+
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnavance_programa(:re, :pempresa_id,:ppagina_id ,:pdesde, :phasta) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $pempresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':pempresa_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pdesde', $pdesde, \PDO::PARAM_STR);
+        $query->bindValue(':phasta', $phasta, \PDO::PARAM_STR);
+        $query->execute();
+        $rs = $query->fetchAll();
+        
+        return $rs;
+    }
+
 	// Cálculo del reporte Horas de Conexión por Empresa en un período determinado
 	public function horasConexion($empresa_id, $desde, $hasta)
 	{
