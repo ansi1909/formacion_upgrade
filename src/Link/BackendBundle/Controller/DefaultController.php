@@ -229,7 +229,7 @@ class DefaultController extends Controller
                                        'usuariosCur' => $usuariosCur,
                                        'usuariosF' => $usuariosF,
                                        'usuariosN' => $usuariosN,
-                                       'id' => $pagina->getPAgina()->getId());
+                                       'id' => $pagina->getPagina()->getId());
                 }
 
                 $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuariosA,

@@ -687,7 +687,7 @@ class ReportesController extends Controller
             }else{
                 $usuarios_inactivos++;
             }
-           
+           $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
         }
 
         $query2 = $em->getConnection()->prepare('SELECT
@@ -713,6 +713,7 @@ class ReportesController extends Controller
             
                 foreach($r1 as $r )
                 {
+                 $i++;
                  $phpExcelObject->setActiveSheetIndex(0)
                                    ->setCellValue('A1', 'Usuarios registrados')
                                    ->setCellValue('B1', 'Usuarios activos')
@@ -731,9 +732,9 @@ class ReportesController extends Controller
                                    ->setCellValue('B'.$i, $r['fecha_inicio'])
                                    ->setCellValue('C'.$i, $r['fecha_vencimiento'])
                                    ->setCellValue('D'.$i, $r['registrados'])
-                                   ->setCellValue('E'.$i, $r['registrados'])
-                                   ->setCellValue('F'.$i, $r['registrados'])
-                                   ->setCellValue('G'.$i, $r['registrados']);
+                                   ->setCellValue('E'.$i, $r['cursando'])
+                                   ->setCellValue('F'.$i, $r['culminado'])
+                                   ->setCellValue('G'.$i, $r['no_iniciados']);
                 }
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
