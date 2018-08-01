@@ -110,9 +110,9 @@ class ReportesJTController extends Controller
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
-        $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
+        $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
     }
-    
+
 
     public function ajaxConexionesUsuarioAction(Request $request)
     {
