@@ -1,34 +1,33 @@
 <table class="table styleTab">
     <thead>
         <tr>
-           <!--  <td colspan="4"><b>{{ 'Empresa'|trans }}:</b> {{ empresa }}</td>
-            <td colspan="5"><b>{{ 'Programa'|trans }}:</b> {{ programa }}</td> -->
+            <td colspan="8"><b>{{ 'Empresa'|trans }}:</b> {{ empresa }}</td>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th>{{ 'Codigo'|trans }}</th>
+        <tr style="font-weight: bold;">
+            <th>{{ 'Código'|trans }}</th>
             <th>{{ 'Usuario'|trans }}</th>
             <th>{{ 'Nombre'|trans }}</th>
             <th>{{ 'Correo'|trans }}</th>
             <th>{{ 'Nivel'|trans }}</th>
-            <th>{{ 'Fecha registro' }}</th>
-            <th>{{ 'Cantidad de conexiones' }}</th>
-            <th>{{ 'Promedio de conexiones' }}</th>
+            <th>{{ 'Fecha de registro'|trans }}</th>
+            <th>{{ 'Cantidad de conexiones'|trans}}</th>
+            <th>{{ 'Promedio de conexiones'|trans }}</th>
            
         </tr>
         {% for participante in listado %}
-            {% set eo = cycle(['odd', 'even'], loop.index) %}
+             {% set eo = cycle(['odd', 'even'], loop.index) %}
             
-            <tr class="{{ eo }}">
-                <td rowspan="">{{ participante.codigo}}</td>
-                <td rowspan="">{{ participante.login }}</td>
-                <td rowspan="">{{ participante.nombre }} {{ participante.apellido }}</td>
-                <td rowspan="">{{ participante.correo_corporativo }}</td>
-                <td rowspan="">{{ participante.nivel }}</td>
-                <td rowspan="">{{ participante.fecha_registro }}</td>
-                <td rowspan="">{{ participante.visitas }}</td>
-                <td rowspan="">{{ participante.promedio }}</td>
+            <tr class="{{ eo }}" >
+                <td>{{ participante.codigo}}</td>
+                <td>{{ participante.login }}</td>
+                <td>{{ participante.nombre }} {{ participante.apellido }}</td>
+                <td>{{ participante.correo_corporativo }}</td>
+                <td>{{ participante.nivel }}</td>
+                <td>{{ participante.fecha_registro }}</td>
+                <td>{{ participante.visitas }}</td>
+                <td>{{ participante.promedio }}</td>
             </tr>
        
         {% endfor %}

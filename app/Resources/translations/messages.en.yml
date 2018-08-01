@@ -72,6 +72,7 @@ Calendario: Calendar
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
 Cancelar: Cancel
+Cantidad de conexiones: Number of connections
 Cantidad de filas: Number of rows
 Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
@@ -350,6 +351,7 @@ Fecha inicio: Start date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
 Fecha de Publicación: Publication date
+Fecha de registro: Registration date
 Fecha de Vencimiento: Due date
 Fecha Difusión: Dissemination Date
 FELICIDADES: CONGRATULATIONS
@@ -627,6 +629,7 @@ Procesar: Process
 Programa: Program
 Programas: Programs
 Prog. asociados: Associated Prog.
+Promedio de conexiones: Average connections
 Publicar: Publish
 Puede acceder a este espacio a través del siguiente enlace: You can access through following link
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions

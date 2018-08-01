@@ -29,6 +29,24 @@ class Reportes
         $this->translator = $container->get('translator');
 	}
 
+    public function conexionesUsuario($pempresa_id,$pdesde,$phasta)
+    {
+        $em = $this->em;
+
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnconexion_usuario(:re, :pempresa_id, :pdesde, :phasta) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $pempresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':pdesde', $pdesde, \PDO::PARAM_STR);
+        $query->bindValue(':phasta', $phasta, \PDO::PARAM_STR);
+        $query->execute();
+        $rs = $query->fetchAll();
+        
+        return $rs;
+    }
+
 	// Cálculo del reporte Horas de Conexión por Empresa en un período determinado
 	public function horasConexion($empresa_id, $desde, $hasta)
 	{
@@ -348,7 +366,7 @@ class Reportes
 
                 if ($i > 1)
                 {
-                    $participante['muros'] = $muro;
+                    $participante['evaluaciones'] = $evaluaciones;
                     $listado[] = $participante;
                     $participante = array('codigo' => $r['codigo'],
                                           'login' => $r['login'],
@@ -373,108 +391,12 @@ class Reportes
             }
             else {
                 $muro[] = array('mensaje' => $r['mensaje'],
-                                'fecha_mensaje' => $r['fecha_mensaje']);
+                                    'fecha_mensaje' => $r['fecha_mensaje']);
             }
 
             if ($i == count($rs))
             {
                 $participante['muros'] = $muro;
-                $listado[] = $participante;
-            }
-
-        }
-
-        return $listado;
-
-    }
-
-    // Mensajes de espacio colaborativo por participantes en una pagina
-    public function interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta){
-
-
-        $em = $this->em;
-        
-        // Cálculos desde la función de BD
-        $query = $em->getConnection()->prepare('SELECT
-                                                fninteraccion_espacio_colaborativo(:re, :pempresa_id, :ppagina_id, :pforo_id, :pdesde, :phasta) as
-                                                resultado; fetch all from re;');
-        $re = 're';
-        $query->bindValue(':re', $re, \PDO::PARAM_STR);
-        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-        $query->bindValue(':pforo_id', $tema_id, \PDO::PARAM_INT);
-        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
-        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
-        $query->execute();
-        $rs = $query->fetchAll();
-
-        $listado = array();
-        $login = '';
-        $i = 0;
-
-        foreach ($rs as $r)
-        {
-
-            $i++;
-
-            if ($i == 1)
-            {
-                $participante = array('codigo' => $r['codigo'],
-                                      'login' => $r['login'],
-                                      'nombre' => $r['nombre'],
-                                      'apellido' => $r['apellido'],
-                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                      'empresa' => $r['empresa'],
-                                      'pais' => $r['pais'],
-                                      'nivel' => $r['nivel'],
-                                      'fecha_registro' => $r['fecha_registro'],
-                                      'campo1' => $r['campo1'],
-                                      'campo2' => $r['campo2'],
-                                      'campo3' => $r['campo3'],
-                                      'campo4' => $r['campo4']);
-                $foro = array();
-                $foro[] = array('mensaje' => $r['mensaje'],
-                                'fecha_mensaje' => $r['fecha_mensaje']);
-            }
-
-            if ($r['login'] != $login)
-            {
-
-                $login = $r['login'];
-
-                if ($i > 1)
-                {
-                    $participante['foro'] = $foro;
-                    $listado[] = $participante;
-                    $participante = array('codigo' => $r['codigo'],
-                                          'login' => $r['login'],
-                                          'nombre' => $r['nombre'],
-                                          'apellido' => $r['apellido'],
-                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                          'empresa' => $r['empresa'],
-                                          'pais' => $r['pais'],
-                                          'nivel' => $r['nivel'],
-                                          'fecha_registro' => $r['fecha_registro'],
-                                          'campo1' => $r['campo1'],
-                                          'campo2' => $r['campo2'],
-                                          'campo3' => $r['campo3'],
-                                          'campo4' => $r['campo4'],
-                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
-                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
-                    $foro = array();
-                    $foro[] = array('mensaje' => $r['mensaje'],
-                                    'fecha_mensaje' => $r['fecha_mensaje']);
-                }
-
-            }
-            else {
-                $foro[] = array('mensaje' => $r['mensaje'],
-                                'fecha_mensaje' => $r['fecha_mensaje']);
-            }
-
-            if ($i == count($rs))
-            {
-                $participante['foro'] = $foro;
                 $listado[] = $participante;
             }
 
@@ -513,10 +435,10 @@ class Reportes
         $resultados['week_before_total3'] = $resultados['week_before_inactivos'] + $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
         
         $week_before_inactivos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_inactivos']/$resultados['week_before_total1'])*100 : '-';
-        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 0) : $week_before_inactivos_pct;
+        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 1, ',', '.') : $week_before_inactivos_pct;
         
         $week_before_activos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_activos']/$resultados['week_before_total1'])*100 : '-';
-        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 0) : $week_before_activos_pct;
+        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 1, ',', '.') : $week_before_activos_pct;
 
         $resultados['week_before_total1_pct'] = $resultados['week_before_total1'] != 0 ? 100 : '-';
 
@@ -542,10 +464,10 @@ class Reportes
         $resultados['now_total3'] = $resultados['now_inactivos'] + $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
         
         $now_inactivos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_inactivos']/$resultados['now_total1'])*100 : '-';
-        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 0) : $now_inactivos_pct;
+        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 1, ',', '.') : $now_inactivos_pct;
         
         $now_activos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_activos']/$resultados['now_total1'])*100 : '-';
-        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 0) : $now_activos_pct;
+        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 1, ',', '.') : $now_activos_pct;
 
         $resultados['now_total1_pct'] = $resultados['now_total1'] != 0 ? 100 : '-';
 

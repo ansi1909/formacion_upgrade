@@ -100,12 +100,12 @@ class ReportesJTController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        //$pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+       
 
         $listado = $rs->conexionesUsuario($empresa_id,$desde,$hasta);//
 
-        //return new response(var_dump($listado));
-        if($excel) //cuando es excel , hay que provar que hace
+      
+        if($excel==1) 
         {
            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/conexionesUsuarios.xlsx';
            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
@@ -148,6 +148,7 @@ class ReportesJTController extends Controller
                         $objWorksheet->getStyle("A$f:N$f")->getFont()->setName($font); // Tipo de letra
                         $objWorksheet->getStyle("A$f:N$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                         $objWorksheet->getStyle("A$f:N$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:N$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
                 
@@ -155,7 +156,7 @@ class ReportesJTController extends Controller
                 {
 
 
-                    // Datos de las columnas comunes
+                    // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $participante['login']);
                     $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
@@ -171,16 +172,7 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('M'.$row, $participante['promedio']);
                     $objWorksheet->setCellValue('N'.$row, $participante['visitas']);
 
-                    // Datos de las evaluaciones
-                    // foreach ($participante['evaluaciones'] as $evaluacion)
-                    // {
-                    //     $objWorksheet->setCellValue('O'.$row, $evaluacion['evaluacion']);
-                    //     $objWorksheet->setCellValue('P'.$row, $evaluacion['estado']);
-                    //     $objWorksheet->setCellValue('Q'.$row, $evaluacion['nota']);
-                    //     $objWorksheet->setCellValue('R'.$row, $evaluacion['fecha_inicio_prueba']);
-                    //     $objWorksheet->setCellValue('S'.$row, $evaluacion['hora_inicio_prueba']);
-                    //     $row++;
-                    // }
+                  
                     $row++;
                 }
             }
@@ -192,16 +184,16 @@ class ReportesJTController extends Controller
             $archivo = $this->container->getParameter('folders')['uploads'].$path;
             $html = '';
 
-           //return new response(var_dump($fileWithPath));
+           
         }
-        else//cuando no es excel, funciona
+        else
         {
 
         $archivo = '';
         $html = $this->renderView('LinkBackendBundle:Reportes:conexionesUsuarioTable.html.twig', 
-                                array('listado' => $registros,
-                                      'empresa' => 'Empresa',
-                                      'programa' => 'Programa'));
+                                array('listado' => $listado,
+                                      'empresa' => $empresa->getNombre()
+                                      ));
         }
 
 
@@ -214,12 +206,6 @@ class ReportesJTController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
-        //generar el reporte
-        
-        // $reporte = $rs->conexionesUsuario($empresa_id, 
-        //return new Response(var_dump($auxiliar));
-        // return new Response(var_dump($reporte));
-        // $rs->horasConexion($empresa_id, $desde ,$hasta);
 
     }
 
