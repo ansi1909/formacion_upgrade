@@ -532,6 +532,62 @@ class ReportesJEController extends Controller
 
     }
 
+    public function pdfResumenRegistrosAction($empresa_id, $pagina_id, $now, Request $request)
+    {
+        
+        $rs = $this->get('reportes');
+        $session = new Session();
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $datetime = new \DateTime($now);
+        $desde = $datetime->format("d/m/Y h:i a");
+        $datetime->modify('-7 day');
+        $week_before = $datetime->format("Y-m-d H:i:s");
+
+        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $week_before, $now);
+
+        $path1 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_1.png';
+        $src1 = $this->container->getParameter('folders')['dir_uploads'].$path1;
+
+        $path2 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_2.png';
+        $src2 = $this->container->getParameter('folders')['dir_uploads'].$path2;
+
+        $path3 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_3.png';
+        $src3 = $this->container->getParameter('folders')['dir_uploads'].$path3;
+
+        $html = $this->renderView('LinkBackendBundle:Reportes:pdfResumenRegistros.html.twig', array('reporte' => $reporte,
+                                                                                                    'week_before' => $this->get('translator')->trans('Al').' '.$datetime->format("d/m/Y h:i a"),
+                                                                                                    'now' => $this->get('translator')->trans('Al').' '.$desde,
+                                                                                                    'programa' => $pagina->getNombre(),
+                                                                                                    'empresa' => $empresa->getNombre(),
+                                                                                                    'src' => array('src1' => $src1,
+                                                                                                                   'src2' => $src2,
+                                                                                                                   'src3' => $src3)));
+
+        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
+        $header_footer = '<page_header> 
+                                 <img src="'.$logo.'" width="200" height="50">
+                            </page_header>
+                            <page_footer>
+                                <table style="width: 100%; border: solid 1px black;">
+                                    <tr>
+                                        <td style="text-align: left;    width: 50%">Generado el '.date('d/m/Y H:i a').'</td>
+                                        <td style="text-align: right;    width: 50%">Página [[page_cu]]/[[page_nb]]</td>
+                                    </tr>
+                                </table>
+                            </page_footer>';
+        $pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 5, 5, 8));
+        $pdf->pdf->SetDisplayMode('fullpage');
+        $pdf->writeHtml('<page>'.$header_footer.$html.'</page>');
+        //$pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
+
+        //Generamos el PDF
+        $pdf->output('resumen_registros.pdf');
+
+    }
+
     
 }
 

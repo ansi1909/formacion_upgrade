@@ -261,7 +261,7 @@ const renderIntoImage = () => {
 			dataType: "json",
 			success: function(response) {
 				$('#pdf-loader').hide();
-				var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#nowf').val();
+				var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#pagina_id').val()+'/'+$('#nowf').val();
 	        	$("#pdf-link").attr("href", href);
 	        	$('#pdf-link').show();
 			},

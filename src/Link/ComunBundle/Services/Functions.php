@@ -736,7 +736,7 @@ class Functions
 
 	}
 
-	public function emailUsuarios($usuarios, $notificacion, $template,$yml)
+	public function emailUsuarios($usuarios, $notificacion, $template, $yml, $link)
 	{
 		$controller = 'RecordatoriosCommand';
       	$parametros = array();
@@ -744,10 +744,10 @@ class Functions
 		foreach ($usuarios as $usuario) {
 
 		 //Si es una notificacion de bienvenida se anexa al mensaje el link de la pltaforma para el usuario junto a sus credenciales	
-		  if($notificacion->getTipoNotificacion()->getId()===$yml['parameters']['notificacion_programada']['bienvenida'])
+		  if($notificacion->getTipoNotificacion()->getId() === $yml['parameters']['notificacion_programada']['bienvenida'])
 		  {
 		  	 
-		  	 $link=$yml['parameters']['notificacion_programada']['Link_plataforma'].$usuario->getEmpresa()->getId();
+		  	 $link = $link.$usuario->getEmpresa()->getId();
 		  	 $mensaje=$notificacion->getMensaje().'<br>'.
 		  	 									  '<p><B>Nombre de usuario: </B>'.$usuario->getLogin().'</p><BR>'.
 		  	 									  '<p><B>Contraseña: </B>'.$usuario->getClave().'</p><BR>'.

@@ -30,7 +30,8 @@ class UsersEventoCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
-        $base = $yml['parameters']['base_url'];
+        $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
+        $base = $yml2['parameters']['base_url'];
         $tomorrow_start = date('Y-m-d', strtotime('tomorrow')).' 00:00:00';
         $tomorrow_end = date('Y-m-d', strtotime('tomorrow')).' 23:59:59';
 

@@ -45,5 +45,5 @@ _ajaxSaveImgResumenRegistros:
         _method: POST
 
 _pdfResumenRegistros:
-    path:     /pdfResumenRegistros/{empresa_id}/{pagina_id}/{desde}/{hasta}
-    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfResumenRegistros, empresa_id: 0, pagina_id: 0, desde: 0, hasta: 0 }
+    path:     /pdfResumenRegistros/{empresa_id}/{pagina_id}/{now}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfResumenRegistros, empresa_id: 0, pagina_id: 0, now: 0 }
