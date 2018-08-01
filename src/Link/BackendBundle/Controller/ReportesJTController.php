@@ -56,7 +56,7 @@ class ReportesJTController extends Controller
     public function avanceProgramasAction($app_id, Request $request)
     {
         
-        $session = new Session();
+         $session = new Session();
         $f = $this->get('funciones');
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
@@ -74,12 +74,45 @@ class ReportesJTController extends Controller
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
 
-        // Lógica inicial de la pantalla de este reporte
-        $datos = 'Foo';
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        return $this->render('LinkBackendBundle:Reportes:avanceProgramas.html.twig', array('datos' => $datos));
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:avanceProgramas.html.twig', array(
+                                                                                            'usuario' => $usuario,
+                                                                                            'empresas' => $empresas));
 
     }
+
+    public function ajaxAvanceProgramas(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
+
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
+
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+        $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
+    }
+    
 
     public function ajaxConexionesUsuarioAction(Request $request)
     {
