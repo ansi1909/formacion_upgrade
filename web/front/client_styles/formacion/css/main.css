@@ -32,6 +32,10 @@
 .color-grey {
   color: #797D80; }
 
+.color-dark-black {
+  color: #383838;
+  font-weight: 400; }
+
 .color-dark-grey {
   color: #5C6266; }
 
@@ -1955,7 +1959,9 @@ a.active {
     font-size: 3.45rem; }
   .for-message p {
     max-width: 85%;
-    text-align: justify; }
+    text-align: justify;
+    margin: .5rem 0;
+    line-height: 1.4rem; }
 
 #equis {
   position: absolute;
@@ -1996,7 +2002,7 @@ a.active {
   max-height: 900px;
   opacity: 1;
   transition: all 1.5s ease-in-out;
-  margin-top: 1rem; }
+  line-height: 1.4rem; }
 .well-message-prog img {
   width: 820px;
   transform: translateX(3.75%);
@@ -2032,12 +2038,12 @@ p.up {
 .lesson-container p {
   font-family: "Open Sans";
   font-size: 1.1rem;
-  line-height: 1.75rem;
+  line-height: 1.4rem;
   color: #383838;
   width: 75%;
   font-weight: 200;
   text-align: justify;
-  margin: 1rem auto; }
+  margin: .5rem auto; }
 .lesson-container ul, .lesson-container ol {
   display: inline-block;
   text-align: left;
@@ -2065,7 +2071,8 @@ p.up {
 .lesson-container img {
   border-radius: 1rem;
   width: 100% !important;
-  height: auto; }
+  height: auto;
+  margin: .5rem auto; }
 .lesson-container .audio-player img {
   width: 100%;
   border-radius: 1rem 1rem 0 0; }
@@ -2729,7 +2736,7 @@ p.up {
     line-height: calc(3rem - 6px);
     position: relative;
     left: calc(-1 * calc(2rem + 4px));
-    color: #797D80; }
+    color: #383838; }
   .card-datos .numExp {
     display: block;
     color: #5CAEE6;
@@ -3111,7 +3118,7 @@ p.up {
     border-bottom: 0px; }
 
 .card-datos .info_datos, .card-datos .datos_user {
-  color: #AAAFB3;
+  color: #5C6266;
   font-family: "Roboto";
   font-size: 1rem;
   line-height: calc(1rem + 3px);
