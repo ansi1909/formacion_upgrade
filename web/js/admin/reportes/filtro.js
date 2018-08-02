@@ -1,5 +1,80 @@
 $(document).ready(function() {
 
+	var filtro_programas = $('#filtro_programas').val();
+	var filtro_tema = $('#filtro_tema').val();
+	
+	if (filtro_programas == '1')
+	{
+		$('#empresa_id').change(function(){
+			$('#pagina_id').hide();
+			$('#pagina-loader').show();
+			$('#reporte').hide();
+			$.ajax({
+				type: "GET",
+				url: $("#url_programas").val(),
+				async: true,
+				data: { empresa_id: $("#empresa_id").val() },
+				dataType: "json",
+				success: function(data) {
+					$('#pagina_id').html(data.options);
+					$('#pagina_id').show();
+					$('#pagina-loader').hide();
+				},
+				error: function(){
+					$('#div-error-server').html($('#error-msg-paginas').val());
+					notify($('#div-error-server').html());
+				}
+			});
+		});
+	}
+
+	if (filtro_tema == '1')
+	{
+		$('#empresa_id').change(function(){
+			$('#pagina_id').hide();
+			$('#pagina-loader').show();
+			$('#reporte').hide();
+			$.ajax({
+				type: "GET",
+				url: $("#url_programas").val(),
+				async: true,
+				data: { empresa_id: $("#empresa_id").val() },
+				dataType: "json",
+				success: function(data) {
+					$('#pagina_id').html(data.options);
+					$('#pagina_id').show();
+					$('#pagina-loader').hide();
+				},
+				error: function(){
+					$('#div-error-server').html($('#error-msg-paginas').val());
+					notify($('#div-error-server').html());
+				}
+			});
+		});
+
+		$('#pagina_id').change(function(){
+			$('#tema_id').hide();
+			$('#tema-loader').show();
+			$('#reporte').hide();
+			$.ajax({
+				type: "GET",
+				url: $("#url_temas").val(),
+				async: true,
+				data: { empresa_id: $("#empresa_id").val() , pagina_id: $("#pagina_id").val() },
+				dataType: "json",
+				success: function(data) {
+					$('#tema_id').html(data.options);
+					$('#tema_id').show();
+					$('#tema-loader').hide();
+				},
+				error: function(){
+					$('#div-error-server').html($('#error-msg-paginas').val());
+					notify($('#div-error-server').html());
+				}
+			});
+		});
+	}
+
     $('.datePicker').datepicker({
 	    startView: 1,
 	    autoclose: true,
@@ -32,7 +107,7 @@ $(document).ready(function() {
 				type: "POST",
 				url: $('#form').attr('action'),
 				async: true,
-				data: $("#form").serialize()+'&excel=0&pdf=0',
+				data: $("#form").serialize()+'&excel=0',
 				dataType: "json",
 				success: function(data) {
 					$('.load1').hide();

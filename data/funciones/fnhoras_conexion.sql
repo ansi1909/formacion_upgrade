@@ -12,15 +12,14 @@ $BODY$
 declare
     i integer;      -- Iterador de los días de la semana (0 = Domingo)
     str text;           -- Cadena para debug
-    rst  record;             -- Cursor para el SELECT de la página
     c integer;          -- Cantidad de registros del query
-    neworden integer;        -- Nuevo orden que tendrá la página duplicada
 begin
 
     FOR i IN 0..6 LOOP
 
     SELECT COUNT(s.id) INTO c FROM admin_sesion s INNER JOIN admin_usuario u ON s.usuario_id = u.id 
         WHERE u.empresa_id = pempresa_id 
+            AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND CAST(fecha_ingreso AS TIME) BETWEEN phora1 and phora2 
             AND fecha_ingreso BETWEEN pdesde AND phasta 
             AND date_part('dow', fecha_ingreso) = i;

@@ -1028,6 +1028,61 @@
 }
 /*Identificadores*/
 
+.imgUser{
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 5px 7px 30px -5px #383838;
+    position: relative;
+    left: 10%;
+}
+
+.imgUser > .imgPerfil{
+    position: relative;
+    right: 3rem;
+}
+
+.icProf{
+    margin-right: .5rem;
+    font-size: 1.1rem !important;
+    position: relative;
+    top: -.1rem;
+    text-align: right;
+}
+
+.nameProfile{
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 2rem;
+}
+
+.nameProfile > p{
+    font-weight: normal;
+    margin-left: 1.75rem;
+}
+
+.datoProf{
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 2rem;
+}
+
+.datoProf > p{
+    font-weight: normal;
+}
+
+.datoProf > span{
+    font-weight: normal;
+}
+
+.evalMod{
+    background: rgba(213, 255, 0, .5);
+}
+
+.evalMat{
+    background: rgba(0, 123, 205, .3);
+}
 /*Animations*/
 
     @keyframes sonar {

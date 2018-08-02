@@ -2,6 +2,16 @@ _conexionesUsuario:
     path:     /conexionesUsuario/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJT:conexionesUsuario }
 
+
 _avanceProgramas:
     path:     /avanceProgramas/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJT:avanceProgramas }
+
+
+_ajaxConexionesUsuario: 
+    path:    /ajaxConexionesUsuario
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxConexionesUsuario }
+
+_ajaxAvanceProgramas:
+    path:   /ajaxAvanceProgramas
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxAvanceProgramas}

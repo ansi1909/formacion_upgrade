@@ -776,7 +776,8 @@ class ProgramadosController extends Controller
 
                 // llamando a la funcion que recorre lo usuarios y envia el mail
                 $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-                $f->emailUsuarios($usuarios, $notificacion, $template,$yml);
+                $link = $this->container->getParameter('link_plataforma');
+                $f->emailUsuarios($usuarios, $notificacion, $template, $yml, $link);
 
 
                 $programacion->setEnviado(true);

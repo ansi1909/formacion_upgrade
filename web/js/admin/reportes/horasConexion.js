@@ -7,6 +7,7 @@ $(document).ready(function() {
     	$('.descargable').hide();
     	$('.generable').show();
     	$('#resultado').hide();
+    	resetCanvas('myChart', 'barChart', '.canvasCont');
     	$('#grafico').hide();
     });
 
@@ -17,7 +18,7 @@ $(document).ready(function() {
 			type: "POST",
 			url: $('#form').attr('action'),
 			async: true,
-			data: $("#form").serialize()+'&excel=1&pdf=0',
+			data: $("#form").serialize()+'&excel=1',
 			dataType: "json",
 			success: function(data) {
 				$('#excel-loader').hide();
@@ -33,9 +34,10 @@ $(document).ready(function() {
 		});
     });
 
-    $("#pdf").click(function(){
-    	window.open($('#url_pdf').val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val()+'/'+$('#graph').val(), '_blank');
-    	//window.location.replace($('#url_pdf').val()+'');
+    $('#pdf').click(function(){
+    	$('#pdf').hide();
+    	$('#pdf-loader').show();
+    	renderIntoImage();
     });
 
 });
@@ -57,12 +59,12 @@ function mostrarReporte(data)
 		for (var c = 0; c <= 25; c++)
 		{
 			$('#celda_'+f+'_'+c).html(data.conexiones[f][c]);
-			if (f > 0 && c == 25)
+			if (f > 0 && f != 8 && c == 25)
 			{
 				totales.push(data.conexiones[f][c]);
 			}
 		}
-		if (f > 0)
+		if (f > 0 && f != 8)
 		{
 			etiquetas.push(data.conexiones[f][0]);
 		}
@@ -96,15 +98,11 @@ function mostrarReporte(data)
             legend: {
                 display: false
             }
-        },
-        plugins: [{
-		    afterRender: function () {
-		      	renderIntoImage();
-		    }
-		}]
+        }
     };
     var canvas = document.querySelector('.barChart').getContext('2d');
     window.horizontalBar = new Chart(canvas, datos);
+   	
    	$('#grafico').show();
    	$('#desdef').val(data.desdef);
    	$('#hastaf').val(data.hastaf);
@@ -112,12 +110,30 @@ function mostrarReporte(data)
 }
 
 const renderIntoImage = () => {
+
+	// Función que transforma el gráfico en imagen
   	const canvas = document.getElementById('myChart');
-  	var img = new Image();
-  	img.src = canvas.toDataURL();
-  	src_slash = img.src;
-  	console.log(src_slash);
-  	var src = src_slash.replace(/\//g, '___');
-  	console.log(src);
-  	$('#graph').val(src);
+  	var src_img = getImgFromCanvas(canvas);
+  	
+  	// Se almacena la imagen en el servidor
+	$.ajax({
+		type: "POST",
+		url: $('#url_img').val(),
+		async: true,
+		data: "bin_data="+src_img,
+		dataType: "json",
+		success: function(response) {
+			$('#pdf-loader').hide();
+			var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#desdef').val()+'/'+$('#hastaf').val();
+        	$("#pdf-link").attr("href", href);
+        	$('#pdf-link').show();
+		},
+		error: function(){
+			$('#div-error-server').html($('#error-msg').val());
+			notify($('#div-error-server').html());
+			$('.descargable').hide();
+			$('.generable').show();
+		}
+	});
+
 }

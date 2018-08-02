@@ -11,6 +11,7 @@ Activar para ordenar la columna de manera ascendente: Activar para ordenar la co
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activar webinar: Activar webinar
 Activo: Activo
+Activos: Activos
 Advertencia: Advertencia
 Agregar: Agregar
 Agregar categoría: Agregar categoría
@@ -20,6 +21,7 @@ Agregar sub-página: Agregar sub-página
 Agrupación de páginas: Agrupación de páginas
 Ahora: Ahora
 al: al
+Al: Al
 Al loggearse se restablecerán los datos para una nueva sesión: Al loggearse se restablecerán los datos para una nueva sesión
 Anterior: Anterior
 Anterior pregunta: Anterior pregunta
@@ -30,6 +32,7 @@ Aplicación: Aplicación
 Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Aplicar periodo a las sub-páginas: Aplicar periodo a las sub-páginas
+Aprobados: Aprobados
 Archivo procesado con éxito: Archivo procesado con éxito
 Archivos: Archivos
 Archivos de este espacio: Archivos de este espacio
@@ -48,12 +51,14 @@ Asignar página al nivel: Asignar página al nivel
 Asunto: Asunto
 Atrás: Atrás
 Autor: Autor
+Avance en programas: Avance en programas
 Aún no ha respondido las preguntas: Aún no ha respondido las preguntas
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aún sin publicar: Aún sin publicar
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Ayer: Ayer
+Ayuda: Ayuda
 Biblioteca: Biblioteca
 Biblioteca virtual: Biblioteca virtual
 Bienvenida: Bienvenida
@@ -68,6 +73,7 @@ Calendario: Calendario
 Cambiar contraseña: Cambiar contraseña
 Cambiar imagen: Cambiar imagen
 Cancelar: Cancelar
+Cantidad de conexiones: Cantidad de conexiones 
 Cantidad de filas: Cantidad de filas
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
@@ -88,6 +94,7 @@ Cerrar Menú: Cerrar Menú
 Cerrar panel: Cerrar panel
 Cerrar sesión: Cerrar sesión
 Certificado inexistente para este contenido: Certificado inexistente para este contenido
+Código: Código
 Código del empleado repetido: Código del empleado repetido
 Columna: Columna
 Comentar: Comentar
@@ -96,6 +103,7 @@ Competencia debe ser un valor entero: Competencia debe ser un valor entero
 Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
 Conceder: Conceder
+Conexiones por usuario: Conexiones por usuario
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
 Configuración de asignación: Configuración de asignación
@@ -128,6 +136,7 @@ Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
+Correo secundario: Correo Secundario
 Creado el: Creado el
 Crear evento: Crear evento
 Crear nuevo tema: Crear nuevo tema
@@ -241,6 +250,7 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario d
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
+El programa es requerido: El programa es requerido
 El puntaje con que se aprueba es requerido.: El puntaje con que se aprueba es requerido.
 El recurso es requerido: El recurso es requerido
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
@@ -276,6 +286,7 @@ Empresas: Empresas
 Empresas activas: Empresas activas
 Empresas inactivas: Empresas inactivas
 Empresas registradas: Empresas registradas
+En curso: En curso
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: En el módulo administrativo de Certificados y Constancias se puede agregar certificados
 en la biblioteca: en la biblioteca
 Encabezado: Encabezado
@@ -310,8 +321,10 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
 ¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
+Estado: Estado
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
+Estatus de los participantes: Estatus de los participantes
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
@@ -323,6 +336,7 @@ Estos son los resultados que has obtenido: Estos son los resultados que has obte
 Estructura: Estructura
 Evaluación: Evaluación
 Evaluación activa: Evaluación activa
+Evaluaciones por módulo: Evaluaciones por módulo
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
 Excelente: Excelente
@@ -338,6 +352,7 @@ Fecha inicio: Fecha inicio
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
 Fecha de Publicación: Fecha de Publicación
+Fecha de registro: Fecha de registro
 Fecha de Vencimiento: Fecha de Vencimiento
 Fecha Difusión: Fecha Difusión
 FELICIDADES: FELICIDADES
@@ -365,6 +380,7 @@ Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrad
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
+Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
 Ha sido publicado: Ha sido publicado
 Ha sido publicado el evento: Ha sido publicado el evento
@@ -375,6 +391,8 @@ Has ganado: Has ganado
 Hasta: Hasta
 Historial de programaciones de: Historial de programaciones de
 Hizo un comentario: Hizo un comentario
+Hora inicio: Start Time
+Hora fin: End time
 Horas académicas: Horas académicas
 Horas de conexión: Horas de conexión
 Horas de conexión de la empresa: Horas de conexión de la empresa
@@ -384,6 +402,7 @@ Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen lado: Imagen lado
+Inactivos: Inactivos
 Índice: Índice
 Ingrese un correo valido: Ingrese un correo valido
 Indice del contenido: Indice del contenido
@@ -396,9 +415,12 @@ Ingrese lo que desea buscar: Ingrese lo que desea buscar
 Inicia el: Inicia el
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
+Inicio de la evaluación: Inicio de la evaluación
 Inicio del programa: Inicio del programa
 instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
 Interacción: Interacción
+Interacción en los muros: Interacción en los muros
+Interacción en los muros por empresa: Interacción en los muros por empresa
 Ir a detalles de la página: Ir a detalles de la página
 Ir al inicio: Ir al inicio
 Ir al listado: Ir al listado
@@ -447,6 +469,7 @@ La imagen es requerida.: La imagen es requerida.
 La imagen lado A es requerida.: La imagen lado A es requerida.
 La notificación ha sido almacenada con éxito: La notificación ha sido almacenada con éxito
 La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
+La página es requerida: La página es requerida
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 La respuesta al comentario: La respuesta al comentario
@@ -493,6 +516,7 @@ Martes: Martes
 Más recientes: Más recientes
 Más valorados: Más valorados
 Material complementario: Material complementario
+Materias vistas: Materias vistas
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
 Mi avance: Mi avance
@@ -502,6 +526,7 @@ Modificado el: Modificado el
 Modificado por: Modificado por
 Modificar evento: Modificar evento
 Módulos: Módulos
+Módulos vistos: Módulos vistos
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
 Mostrar preferencia: Mostrar preferencia
@@ -516,9 +541,11 @@ no existe: no existe
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
 No existen páginas: No existen páginas
+No existen registros para esta consulta: No existen registros para esta consulta
 No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
+No iniciados: No iniciados
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se mostrará en la página de login: No se mostrará en la página de login
@@ -537,6 +564,7 @@ Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
+Nota: Nota
 Noticia: Noticia
 Noticias: Noticias
 Noticias y Novedades: Noticias y Novedades
@@ -573,8 +601,14 @@ Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para env
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
 participantes: participantes
 particpante: participante
+Participantes que han aprobado el programa: Participantes que han aprobado el programa
+Participantes que han sido asignados al programa y no han visto alguna de sus lecciones: Participantes que han sido asignados al programa y no han visto alguna de sus lecciones
+Participantes que han visto al menos una lección del programa: Participantes que han visto al menos una lección del programa
+Participantes que se han logeado al menos una vez en el sistema: Participantes que se han logeado al menos una vez en el sistema
+Participantes registrados y nunca han entrado sistema: Participantes registrados y nunca han entrado sistema
 Pdf: Pdf
 PDF requerido: PDF requerido
+Perfil de usuario: Perfil de usuario
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
 Permisos: Permisos
@@ -583,6 +617,7 @@ Permisos de Acceso para el rol: Permisos de Acceso para el rol
 Permisos por Rol: Permisos por Rol
 Plan de estudio: Plan de estudio
 Plantilla: Plantilla
+Porcentaje: Porcentaje
 Por favor, ingresa tu usuario y contraseña: Por favor, ingresa tu usuario y contraseña
 Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a: Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a
 Preferencias de la empresa: Preferencias de la empresa
@@ -599,6 +634,8 @@ Procesar: Procesar
 Programa: Programa
 Programas: Programas
 Prog. asociados: Prog. asociados
+Promedio evaluación módulo: Promedio evaluación módulo
+Promedio de conexiones: Promedio de conexiones
 Publicar: Publicar
 Puede acceder a este espacio a través del siguiente enlace: Puede acceder a este espacio a través del siguiente enlace
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
@@ -634,6 +671,9 @@ Respuestas comentario seleccionado: Respuestas comentario seleccionado
 Resultado del archivo procesado: Resultado del archivo procesado
 Resultados: Resultados
 Resumen: Resumen
+Resumen de registros de participantes en: Resumen de registros de participantes en
+Resumen general de registros: Resumen general de registros
+Resumen general de registros por empresa: Resumen general de registros por empresa
 Rol: Rol
 Roles: Roles
 Roles asignados: Roles asignados
@@ -648,6 +688,7 @@ Seleccione el/los usuarios: Seleccione el/los usuarios
 Seleccione el nivel: Seleccione el nivel
 Seleccione el programa: Seleccione el programa
 Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostrar los niveles
+Seleccione la empresa para mostrar las páginas asignadas: Seleccione la empresa para mostrar las páginas asignadas
 Seleccione fecha difusión: Seleccione fecha difusión
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio

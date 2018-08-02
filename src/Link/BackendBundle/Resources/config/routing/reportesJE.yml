@@ -8,14 +8,42 @@ _ajaxHorasConexion:
     requirements:
         _method: POST
 
+_ajaxSaveImgHorasConexion:
+    path:     /ajaxSaveImgHorasConexion
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxSaveImgHorasConexion }
+    requirements:
+        _method: POST
+
 _pdfHorasConexion:
-    path:     /pdfHorasConexion/{empresa_id}/{desde}/{hasta}/{img}
-    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfHorasConexion, empresa_id: 0, desde: '', hasta: '', img: '' }
+    path:     /pdfHorasConexion/{empresa_id}/{desde}/{hasta}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfHorasConexion, empresa_id: 0, desde: 0, hasta: 0 }
 
 _evaluacionesModulo:
     path:     /evaluacionesModulo/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJE:evaluacionesModulo }
 
+_ajaxEvaluacionesModulo:
+    path:     /ajaxEvaluacionesModulo
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxEvaluacionesModulo }
+    requirements:
+        _method: POST
+
 _resumenRegistros:
     path:     /resumenRegistros/{app_id}
     defaults: { _controller: LinkBackendBundle:ReportesJE:resumenRegistros }
+
+_ajaxResumenRegistros:
+    path:     /ajaxResumenRegistros
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxResumenRegistros }
+    requirements:
+        _method: POST
+
+_ajaxSaveImgResumenRegistros:
+    path:     /ajaxSaveImgResumenRegistros
+    defaults: { _controller: LinkBackendBundle:ReportesJE:ajaxSaveImgResumenRegistros }
+    requirements:
+        _method: POST
+
+_pdfResumenRegistros:
+    path:     /pdfResumenRegistros/{empresa_id}/{pagina_id}/{now}
+    defaults: { _controller: LinkBackendBundle:ReportesJE:pdfResumenRegistros, empresa_id: 0, pagina_id: 0, now: 0 }

@@ -13,26 +13,42 @@ begin
 
     -- Para el reporte 1
     OPEN resultado FOR 
-       SELECT count(a.id) as logueado, 
-               u.nombre as nombre, 
-               u.apellido as apellido, 
-               u.login as login, 
-               u.correo_personal as correo,
-               u.correo_corporativo as correo2,
-               u.activo as activo,
-               to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-               to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
-               u.pais_id as pais, 
-               n.nombre as nivel,
-               u.campo1 as campo1,
-               u.campo2 as campo2,
-               u.campo3 as campo3,
-               u.campo4 as campo4,
-               u.id as id
-        FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id
-        LEFT JOIN admin_sesion a ON u.id = a.usuario_id
-        WHERE u.empresa_id = pempresa_id 
-        GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
+       SELECT p.nombre as nombre, pe.fecha_inicio as fecha_inicio, pe.fecha_vencimiento as fecha_vencimiento, 
+    (SELECT COUNT(u.id) AS registrados FROM admin_usuario u INNER JOIN 
+        (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
+    ON u.nivel_id = n.id 
+    WHERE np.pagina_empresa_id = pe.id
+    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.usuario_id = u.id
+                AND ru.rol_id = 2)),
+    (SELECT COUNT(u.id) AS cursando FROM admin_usuario u INNER JOIN 
+        (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
+    ON u.nivel_id = n.id 
+    WHERE np.pagina_empresa_id = pe.id
+        AND p.id IN (SELECT pl.pagina_id FROM certi_pagina_log pl WHERE pl.usuario_id = u.id
+                AND pl.estatus_pagina_id != 3)
+        AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.usuario_id = u.id
+                AND ru.rol_id = 2)
+    ),
+    (SELECT COUNT(u.id) AS culminado FROM admin_usuario u INNER JOIN 
+        (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
+    ON u.nivel_id = n.id 
+    WHERE np.pagina_empresa_id = pe.id
+        AND p.id IN (SELECT pl.pagina_id FROM certi_pagina_log pl WHERE pl.usuario_id = u.id
+                AND pl.estatus_pagina_id = 3)
+        AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.usuario_id = u.id
+                AND ru.rol_id = 2)
+    ),
+    (SELECT COUNT(u.id) AS no_iniciados FROM admin_usuario u INNER JOIN 
+        (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
+    ON u.nivel_id = n.id 
+    WHERE np.pagina_empresa_id = pe.id
+        AND p.id NOT IN (SELECT pl.pagina_id FROM certi_pagina_log pl WHERE pl.usuario_id = u.id)
+        AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.usuario_id = u.id
+                AND ru.rol_id = 2)
+    )
+    FROM certi_pagina_empresa pe INNER JOIN certi_pagina p ON pe.pagina_id = p.id 
+    WHERE p.pagina_id IS NULL
+        AND pe.empresa_id = 1;
 
    
     

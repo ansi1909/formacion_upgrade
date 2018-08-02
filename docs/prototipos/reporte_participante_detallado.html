@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/main/reset.css">
+        <link rel="stylesheet" href="../../web/assets/css/main/style_main.css">
+
+        <!-- Fontawesome iconos CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/bootstrap4alpha/css/bootstrap.css" type="text/css">
+
+        <!-- DataTables Responsive CSS -->
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/dataTables.bootstrap4.css">
+        <link rel="stylesheet" href="../../web/assets/vendor/datatables/css/responsive.dataTables.min.css">
+
+        <!-- Adminux CSS -->
+        <link rel="stylesheet" href="../../web/assets/css/light_adminux.css">
+        <link rel="stylesheet" href="../../web/css/admin.css">
+
+    </head>
+    <body class="rounded">
+        <!-- Cabecera del area de trabajo-->
+        <header class="navbar-fixed">
+            <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
+                <div class="sidebar-left">
+                    <a href="#" class="navbar-brand">
+                        <img src="../../web/img/Logo%20formacion%202.0_vectores.png" alt="Formación 2.0">
+                    </a>
+                    <button class="btn btn-link icon-header mr-sm-2 pull-right menu-collapse"><span class="fa fa-bars"></span></button>
+                </div>
+                <div class="d-flex mr-auto"> &nbsp;</div>
+                <ul class="navbar-nav content-right">
+                    <li class="v-devider"></li>
+                    <li class="nav-item active">
+                        <button class="btn btn-link icon-header bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-envelope-o ico_1"></span>
+                            <span class="badge-number bg-success"></span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link icon-header badgeCircle bttn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-bell-o ico_1"></span>
+                            <span class="badge-number bg-danger"></span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="sidebar-right pull-right">
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <button class="btn-link btn userprofile bttn_user"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="userpic">
+                                    <img src="../../web/img/1034.png" alt="Usuario"></span> 
+                                <span class="text">Usuario</span>
+                            </button>
+                            <div class="dropdown-menu"> 
+                                <a class="dropdown-item" href="#"><span class="fa fa-user"> &nbsp;Perfil</span></a>
+                                <a class="dropdown-item" href="#"><span class="fa fa-pie-chart"> Estadísticas</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><span class="fa fa-cog"> Configuración</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="btn btn-link icon-header bttn1">
+                                <span class="fa fa-sign-out ico_1"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- fin de Cabecera del area de trabajo-->
+        <!-- Sidebar del area de trabajo-->
+        <div class="sidebar-left">
+            <div class="user-menu-items">
+                <div class="list-unstyled btn-group rec_user">
+                    <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="message_userpic">
+                            <img src="../../web/img/1034.png" alt="Usuario" class="d-flex mr-3">
+                        </span>
+                        <span class="media-body info_user">
+                            <span class="mt-0 mb-1 us1">Usuario</span>
+                            <span class="us1">Empresa1</span>    
+                        </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item"><span class="fa fa-user space_icon"></span> Perfil</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-envelope"></span> Correo</a>
+                        <a href="#" class="dropdown-item"><span class="fa fa-bar-chart"></span> Estadística</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item"><span class="fa fa-cog space_icon"></span> Configuración</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <ul class="nav flex-column in" id="side-menu">
+                <li class="title-nav">MENU</li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-building"></span> Administrar Empresas <i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-industry"></i> Empresas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-briefcase"></i> Empresas Asociadas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-users"></i> División Funcional</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-badge"></i> Cargo</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-id-card"></i> Nivel</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:(0)" class="menudropdown nav-link"> 
+                        <span class="fa fa-certificate"></span> Administrar Certificados<i class="fa fa-chevron-circle-down"></i>
+                    </a>
+                    <ul class="nav flex-column nav-second-level">
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-server"></i> Programas</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"></i> Módulos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-folder-open"></i> Materias</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file"></i> Recursos</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-file-text"></i> Evaluaciones</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <br><br>
+        <div class="wrapper-content">
+            <div class="container">
+                <!-- Listado -->
+                <div class="row justify-content-center">
+                    <div class="col-16 col-lg-16 col-xl-16 col-md-16 col-sm-16">
+                        <div class="card">
+                            <div class="card-header gradiente">
+                                <h6 class="card-title">Datos del participante</h6>
+                            </div>
+                            <div class="card-block">
+                                <div class="row justify-content-between">
+                                    <div class="col-4">
+                                        <div class="imgUser">
+                                            <img src="../../web/img/1034.png" class="imgPerfil" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <i class="fa fa-id-card icProf"></i><span class="nameProfile">Nombre y apellido:<p>Ansise Segovia</p></span>
+                                        <i class="fa fa-building icProf"></i><span class="nameProfile">Empresa:<p>Diplomado Link Gerencial</p></span>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <i class="fa fa-user-circle icProf"></i><span class="nameProfile">Nombre de usuario:<p>asegovia</p></span>
+                                        <i class="fa fa-cubes icProf"></i><span class="nameProfile">Nivel:<p>Ventas</p></span>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <i class="fa fa-envelope icProf"></i><span class="nameProfile">Correo electronico:<p>ansi79@gmail.com</p></span>
+                                        <i class="fa fa-check icProf"></i><span class="nameProfile">Estatus de usuario:<p>Activo</p></span>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-between mt-4">
+                                    <div class="col-8">
+                                        <h3>Ingreso al sistema:</h3>
+                                        <hr>
+                                        <div class="row justify-content-between">
+                                            <div class="col-8">
+                                                <span class="datoProf">Fecha del primer ingreso: <p>Mar 24, 2015</p></span>
+                                            </div>
+                                            <div class="col-8">
+                                                <span class="datoProf">Fecha del ultimo ingreso: <p>Jul 6, 2018</p></span>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-8">
+                                                <span class="datoProf">Cantidad de ingresos: <p>400</p></span>
+                                            </div>
+                                            <div class="col-8">
+                                                <span class="datoProf">Promedio de conexión: <p>00:16:47.5925(HH:MM:SS)</p></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <h3>Estatus de programas asignados:</h3>
+                                        <hr>
+                                        <div class="row justify-content-between">
+                                            <div class="col-8">
+                                                <span class="datoProf">Programas no iniciados: <span>0</span></span>
+                                            </div>
+                                            <div class="col-8">
+                                                <span class="datoProf">Programas en curso: <span>6</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-8">
+                                                <span class="datoProf">Programas finalizados: <span>2</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="row justify-content-between">
+                   <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
+                       <div class="card">
+                           <div class="card-header gradiente">
+                               <h6 class="card-title">Programas asignados</h6>
+                           </div>
+                           <div class="card-block">
+                               <table class="table" id="dt1">
+                                   <thead class="sty__title">
+                                       <tr>
+                                           <th class="hd__title">Programa</th>
+                                           <th class="hd__title">Fecha inicio</th>
+                                           <th class="hd__title">Fecha fin</th>
+                                           <th class="hd__title">Estatus</th>
+                                           <th class="hd__title">Accion</th>
+                                       </tr>
+                                   </thead>
+                                   <tbody style="font-size: .7rem;">
+                                       <tr class="odd">
+                                           <td>Comunicación</td>
+                                           <td>Sep 8, 2015</td>
+                                           <td></td>
+                                           <td>En curso</td>
+                                           <td class="text-center"><a href="#" data-toggle="tooltip" data-placement="right" title="Ver detalle"><span class="fa fa-eye" style="font-size: .9rem"></span></a></td>
+                                       </tr>
+                                       <tr class="even ">
+                                           <td>Liderazgo</td>
+                                           <td>Mar 24, 2015</td>
+                                           <td>Jul 18, 2015</td>
+                                           <td>Aprobado</td>
+                                           <td class="text-center"><a href="#" data-toggle="tooltip" data-placement="right" title="Ver detalle"><span class="fa fa-eye" style="font-size: .9rem"></span></a></td>
+                                       </tr>
+                                   </tbody>
+                               </table>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
+                       <div class="card">
+                           <div class="card-header gradiente">
+                               <h6 class="card-title">Nombre del programa</h6>
+                           </div>
+                           <div class="card-block">
+                                <div class="row justify-content-between">
+                                    <div class="col-5">
+                                        <span class="datoProf">Modulos vistos: <span>2</span></span>
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="datoProf">Materias vistas: <span>5</span></span>
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="datoProf">Lecciones vistas: <span>19</span></span>
+                                    </div>
+                                </div>
+                               <div class="row mt-3 justify-content-center">
+                                   <div class="col-16">
+                                       <h4>Listado de evaluaciones</h4>
+                                       <hr>
+                                       <table class="table">
+                                           <thead class="sty__title">
+                                               <tr>
+                                                   <th class="hd__title">Evaluación</th>
+                                                   <th class="hd__title">Notas</th>
+                                               </tr>
+                                           </thead>
+                                           <tbody style="font-size: .7rem;">
+                                               <tr class="evalMod">
+                                                   <td>Modulo 1: Autoregulación</td>
+                                                   <td>75</td>
+                                               </tr>
+                                               <tr class="evalMat">
+                                                   <td>Materia 1: Autoconciencia</td>
+                                                   <td>100</td>
+                                               </tr>
+                                               <tr class="evalMat">
+                                                   <td>Materia 2: Motivación</td>
+                                                   <td>100</td>
+                                               </tr>
+                                               <tr class="evalMod">
+                                                   <td>Modulo 2: Empatía</td>
+                                                   <td>100</td>
+                                               </tr>
+                                               <tr class="evalMat">
+                                                   <td>Materia 1: Habilidades sociales</td>
+                                                   <td>75</td>
+                                               </tr>
+                                           </tbody>
+                                       </table>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+        <!-- fin sidebar del area de trabajo-->
+        <!-- Jquery, Tether and Bootstrap JS. -->
+        <script src="../../web/assets/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/tether.min.js"></script>
+        <script src="../../web/assets/vendor/bootstrap4alpha/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> 
+        <script src="../../web/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- DataTables JavaScript -->
+        <script src="../../web/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.bootstrap4.js"></script>
+        <script src="../../web/assets/vendor/datatables/js/dataTables.responsive.min.js"></script> 
+
+        <!-- Charts.js JavaScript -->
+        <script src="../../web/assets/vendor/chart.js/Chart.bundle.min.js"></script>
+        <script src="../../web/assets/vendor/chart.js/Chart.js"></script>
+        <script src="../../web/assets/vendor/chart.js/utils.js"></script>
+        
+        <!-- custome template js -->
+        <script src="../../web/assets/js/adminux.js" type="text/javascript"></script>
+        <script type="text/javascript" src="../../web/assets/js/dashboard1_light.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#dt1').DataTable({
+                    responsive: true,
+                    pageLength:10,
+                    sPaginationType: "full_numbers",
+                    oLanguage: {
+                        oPaginate: {
+                            sFirst: "<<",
+                            sPrevious: "<",
+                            sNext: ">", 
+                            sLast: ">>" 
+                        }
+                    }
+                });
+                $('#dt2').DataTable({
+                    responsive: true,
+                    pageLength:10,
+                    sPaginationType: "full_numbers",
+                    oLanguage: {
+                        oPaginate: {
+                            sFirst: "<<",
+                            sPrevious: "<",
+                            sNext: ">", 
+                            sLast: ">>" 
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

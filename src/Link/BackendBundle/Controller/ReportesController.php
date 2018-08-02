@@ -189,7 +189,6 @@ class ReportesController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $empresa_id = $request->query->get('empresa_id');
         $nivel_id = $request->query->get('nivel_id');
@@ -223,7 +222,7 @@ class ReportesController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                         </tr>
                     </thead>
-                    <tbody>';
+                    <tbody style="font-size: .7rem;">';
         
         foreach ($r as $ru)
         {
@@ -271,18 +270,170 @@ class ReportesController extends Controller
         $f->setRequest($session->get('sesion_id'));
         $em = $this->getDoctrine()->getManager();
 
-        // Lógica inicial de la pantalla de este reporte
-        $datos = 'Foo';
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-        return $this->render('LinkBackendBundle:Reportes:interaccionColaborativo.html.twig', array('datos' => $datos));
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:interaccionColaborativo.html.twig', array('usuario' => $usuario,
+                                                                                                   'empresas' => $empresas));
 
     }
 
-    public function interaccionMuroAction($app_id, Request $request)
+    public function ajaxInteraccionColaborativoAction(Request $request)
+    {
+        
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $tema_id = $request->request->get('tema_id');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
+
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
+
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
+
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        $tema = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($tema_id);
+
+        $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta);
+
+        //return new response(var_dump($listado));
+
+        if ($excel)
+        {
+
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionColaborativo.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            // Encabezado
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+            $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'. '.$this->get('translator')->trans('Tema').': '.$tema->getTema().'.');
+
+            if (!count($listado))
+            {
+                $objWorksheet->mergeCells('A5:S5');
+                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+            }
+            else {
+
+                $row = 5;
+                $i = 0;
+                $styleThinBlackBorderOutline = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('argb' => 'FF000000'),
+                        ),
+                    ),
+                );
+                $font_size = 11;
+                $font = 'Arial';
+                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+
+                foreach ($listado as $participante)
+                {
+
+                    $limit_iterations = count($participante['foro'])-1;
+                    $limit_row = $row+$limit_iterations;
+
+                    // Estilizar las celdas antes de un posible merge
+                    for ($f=$row; $f<=$limit_row; $f++)
+                    {
+                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
+                    }
+
+                    if ($limit_iterations > 0)
+                    {
+                        // Merge de las celdas
+                        for ($c=0; $c<=11; $c++)
+                        {
+                            $col = $columnNames[$c];
+                            $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
+                        }
+                    }
+
+                    // Datos de las columnas comunes
+                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                    $objWorksheet->setCellValue('G'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
+
+                    //return new response(var_dump($participante['muros']));
+
+                    // Datos de los mensajes
+                    foreach ($participante['foro'] as $m)
+                    {
+                        $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
+                        $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
+                        $row++;
+
+                    }
+                    //return new response(var_dump($row));
+
+                }
+
+            }
+
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $path = 'recursos/reportes/interaccionColaborativo'.$session->get('sesion_id').'.xls';
+            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+            $writer->save($xls);
+
+            $archivo = $this->container->getParameter('folders')['uploads'].$path;
+            $html = '';
+        }
+        else{
+
+            $archivo = '';
+            $html = $this->renderView('LinkBackendBundle:Reportes:interaccionColaborativoTabla.html.twig', array('listado' => $listado,
+                                                                                                                 'empresa' => $empresa->getNombre(),
+                                                                                                                 'programa' => $pagina->getNombre(),
+                                                                                                                 'tema' => $tema->getTema()));
+        }
+        
+        $return = array('archivo' => $archivo,
+                        'html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));    
+    }
+
+    public function interaccionMuroAction($app_id, $empresa_id, $desde, $hasta, Request $request)
     {
         
         $session = new Session();
         $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -297,85 +448,203 @@ class ReportesController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-        $em = $this->getDoctrine()->getManager();
-        $reporte = 6;
-        $pagina_id = 0;
 
-        // Lógica inicial de la pantalla de este reporte
-        $usuario_empresa = 0;
+        
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
         $empresas = array();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
-
-        if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1; 
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
         }
         else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-        } 
+            $empresa_id = $usuario->getEmpresa()->getId();
+        }
+
+        $paginas = array();
+
+        if ($empresa_id)
+        {
+
+            $str = '';
+            $tiene = 0;
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        JOIN pe.pagina p
+                                        WHERE p.pagina IS NULL
+                                        AND pe.empresa = :empresa_id 
+                                        ORDER BY p.id ASC")
+                        ->setParameter('empresa_id', $empresa_id);
+            $pages = $query->getResult();
+
+            foreach ($pages as $page)
+            {
+                $tiene++;
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
+                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
+                if ($subPaginas['tiene'] > 0)
+                {
+                    $str .= '<ul>';
+                    $str .= $subPaginas['return'];
+                    $str .= '</ul>';
+                }
+                $str .= '</li>';
+            }
+
+            $paginas = array('tiene' => $tiene,
+                             'str' => $str);
+
+        }
+
+        $desde = $desde ? str_replace('-', '/', $desde) : '';
+        $hasta = $hasta ? str_replace('-', '/', $hasta) : '';
 
         return $this->render('LinkBackendBundle:Reportes:interaccionMuro.html.twig', array('empresas' => $empresas,
-                                                                                           'usuario_empresa' => $usuario_empresa,
                                                                                            'usuario' => $usuario,
-                                                                                           'reporte' => $reporte,
-                                                                                           'pagina_id'=>$pagina_id));
+                                                                                           'paginas' => $paginas,
+                                                                                           'empresa_id' => $empresa_id,
+                                                                                           'desde' => $desde,
+                                                                                           'hasta' => $hasta));
 
     }
 
-    public function ajaxLeccionesEAction(Request $request)
+    public function ajaxInteraccionMuroAction(Request $request)
     {
+        
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $empresa_id = $request->query->get('empresa_id');
-        $pagina_id = $request->query->get('pagina_id');
-        $options = '<option value=""></option>';
+        $rs = $this->get('reportes');
+        
+        $empresa_id = $request->request->get('empresa_id');
+        $pagina_id = $request->request->get('pagina_id');
+        $desdef = $request->request->get('desde');
+        $hastaf = $request->request->get('hasta');
+        $excel = $request->request->get('excel');
 
-        $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                   JOIN pe.pagina p
-                                   WHERE pe.empresa = :empresa_id
-                                   AND p.pagina = :pagina_id
-                                   AND p.categoria = 2')
-                    ->setParameters(array('empresa_id' => $empresa_id , 'pagina_id' => $pagina_id));
-        $modulos = $query->getResult();
+        list($d, $m, $a) = explode("/", $desdef);
+        $desde = "$a-$m-$d 00:00:00";
 
-        //return new Response (var_dump($modulos));
+        list($d, $m, $a) = explode("/", $hastaf);
+        $hasta = "$a-$m-$d 23:59:59";
 
-        foreach ( $modulos as $modulo){
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
-            $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                       JOIN pe.pagina p
-                                       WHERE pe.empresa = :empresa_id
-                                       AND p.pagina = :materia_id
-                                       AND p.categoria = 3')
-                        ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $modulo->getPagina()->getId()));
-            $materias = $query->getResult();
+        $listado = $rs->interaccionMuro($empresa_id, $pagina_id, $desde, $hasta);
 
-            foreach ( $materias as $materia){
+        if ($excel)
+        {
 
-                $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                           JOIN pe.pagina p
-                                           WHERE pe.empresa = :empresa_id
-                                           AND p.pagina = :materia_id
-                                           AND p.categoria = 4')
-                            ->setParameters(array('empresa_id' => $empresa_id , 'materia_id' => $materia->getPagina()->getId()));
-                $lecciones = $query->getResult();
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionMuro.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
+            // Encabezado
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+            $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
 
+            if (!count($listado))
+            {
+                $objWorksheet->mergeCells('A5:S5');
+                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+            }
+            else {
 
-                foreach ($lecciones as $leccion)
+                $row = 5;
+                $i = 0;
+                $styleThinBlackBorderOutline = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('argb' => 'FF000000'),
+                        ),
+                    ),
+                );
+                $font_size = 11;
+                $font = 'Arial';
+                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+
+                foreach ($listado as $participante)
                 {
-                    $options .= '<option value="'.$leccion->getPagina()->getId().'">'.$leccion->getPagina()->getNombre().' </option>'; 
+
+                    $limit_iterations = count($participante['muros'])-1;
+                    $limit_row = $row+$limit_iterations;
+
+                    // Estilizar las celdas antes de un posible merge
+                    for ($f=$row; $f<=$limit_row; $f++)
+                    {
+                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
+                    }
+
+                    if ($limit_iterations > 0)
+                    {
+                        // Merge de las celdas
+                        for ($c=0; $c<=11; $c++)
+                        {
+                            $col = $columnNames[$c];
+                            $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
+                        }
+                    }
+
+                    // Datos de las columnas comunes
+                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                    $objWorksheet->setCellValue('G'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
+
+                    //return new response(var_dump($participante['muros']));
+
+                    // Datos de los mensajes
+                    foreach ($participante['muros'] as $m)
+                    {
+                        $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
+                        $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
+                        $row++;
+
+                    }
+                    //return new response(var_dump($row));
+
                 }
 
-             }
+            }
 
-         }
+            // Crea el writer
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $path = 'recursos/reportes/interaccionMuro'.$session->get('sesion_id').'.xls';
+            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+            $writer->save($xls);
 
-         
+            $archivo = $this->container->getParameter('folders')['uploads'].$path;
+            $html = '';
+        }
+        else{
 
+            $archivo = '';
+            $html = $this->renderView('LinkBackendBundle:Reportes:interaccionMuroTabla.html.twig', array('listado' => $listado,
+                                                                                                         'empresa' => $empresa->getNombre(),
+                                                                                                         'programa' => $pagina->getNombre()));
+        }
         
-        $return = array('options' => $options);
-        
+        $return = array('archivo' => $archivo,
+                        'html' => $html);
+
         $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        return new Response($return, 200, array('Content-Type' => 'application/json'));    
     }
 
     public function reporteGeneralAction($app_id, $empresa_id, Request $request)
@@ -404,7 +673,7 @@ class ReportesController extends Controller
         $i= 5;
 
         $query = $em->getConnection()->prepare('SELECT
-                                                fnreporte_general(:re, :pempresa_id) as
+                                                fnreporte_general2(:re, :pempresa_id) as
                                                 resultado; fetch all from re;');
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
@@ -413,17 +682,16 @@ class ReportesController extends Controller
         $r = $query->fetchAll();
 
         foreach ($r as $re) {
-                
-                if ($re['logueado'] > 0) {
-                    $usuarios_activos++;
-                }else{
-                    $usuarios_inactivos++;
-                }
-               
+            if ($re['logueado'] > 0) {
+                $usuarios_activos++;
+            }else{
+                $usuarios_inactivos++;
             }
+           $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+        }
 
         $query2 = $em->getConnection()->prepare('SELECT
-                                                fnreporte_general2(:re, :pempresa_id) as
+                                                fnreporte_general(:re, :pempresa_id) as
                                                 resultado; fetch all from re;');
         $re1 = 're';
         $query2->bindValue(':re', $re1, \PDO::PARAM_STR);
@@ -443,41 +711,9 @@ class ReportesController extends Controller
                ->setKeywords("office 2005 openxml php")
                ->setCategory("Reportes");
             
-            //return new Response (var_dump($r1));
-            $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
-             foreach ($r1 as $r2) {
+                foreach($r1 as $r )
+                {
                  $i++;
-                 $query3 = $em->getConnection()->prepare('SELECT
-                                                         fnreporte_general3(:re, :pempresa_id, :ppagina_id) as
-                                                         resultado; fetch all from re;');
-                 $re2 = 're';
-                 $query3->bindValue(':re', $re2, \PDO::PARAM_STR);
-                 $query3->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-                 $query3->bindValue(':ppagina_id', $r2['id'], \PDO::PARAM_INT);
-                 $query3->execute();
-                 $r3 = $query3->fetchAll();
-
-                 foreach ($r3 as $r4) {
-                    $usuarios_c = $r4['usuarios'];
-                 }
-
-                 $query4 = $em->getConnection()->prepare('SELECT
-                                                         fnreporte_general4(:re, :pempresa_id, :ppagina_id) as
-                                                         resultado; fetch all from re;');
-                 $re3 = 're';
-                 $query4->bindValue(':re', $re3, \PDO::PARAM_STR);
-                 $query4->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-                 $query4->bindValue(':ppagina_id', $r2['id'], \PDO::PARAM_INT);
-                 $query4->execute();
-                 $r4 = $query4->fetchAll();
-
-                 foreach ($r4 as $r5) {
-                    $usuarios_f = $r5['usuarios'];
-                 }
-                 $usuarios_r = $r2['usuarios'];
-                 $usuarios_n = $usuarios_r - ($usuarios_f + $usuarios_c);
-                 
-
                  $phpExcelObject->setActiveSheetIndex(0)
                                    ->setCellValue('A1', 'Usuarios registrados')
                                    ->setCellValue('B1', 'Usuarios activos')
@@ -492,14 +728,14 @@ class ReportesController extends Controller
                                    ->setCellValue('E5', 'Usuarios cursando')
                                    ->setCellValue('F5', 'Usuarios finalizado')
                                    ->setCellValue('G5', 'Usuarios no iniciados')
-                                   ->setCellValue('A'.$i, $r2['programa'])
-                                   ->setCellValue('B'.$i, $r2['fecha_inicio'])
-                                   ->setCellValue('C'.$i, $r2['fecha_fin'])
-                                   ->setCellValue('D'.$i, $r2['usuarios'])
-                                   ->setCellValue('E'.$i, $usuarios_c)
-                                   ->setCellValue('F'.$i, $usuarios_f)
-                                   ->setCellValue('G'.$i, $usuarios_n);
-            }
+                                   ->setCellValue('A'.$i, $r['nombre'])
+                                   ->setCellValue('B'.$i, $r['fecha_inicio'])
+                                   ->setCellValue('C'.$i, $r['fecha_vencimiento'])
+                                   ->setCellValue('D'.$i, $r['registrados'])
+                                   ->setCellValue('E'.$i, $r['cursando'])
+                                   ->setCellValue('F'.$i, $r['culminado'])
+                                   ->setCellValue('G'.$i, $r['no_iniciados']);
+                }
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 
             // Crea el writer
@@ -526,5 +762,57 @@ class ReportesController extends Controller
 
     }
 
+    public function ajaxFiltroProgramasAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        
+        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                    JOIN pe.pagina p 
+                                    WHERE pe.empresa = :empresa_id
+                                    AND p.pagina IS NULL 
+                                    ORDER BY pe.orden')
+                    ->setParameter('empresa_id', $empresa_id);
+        $paginas = $query->getResult();
+
+        $options = '<option value=""></option>';
+        foreach ($paginas as $pagina)
+        {
+            $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().'</option>';
+        }
+        
+        $return = array('options' => $options);
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function ajaxFiltroTemasAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        $pagina_id = $request->query->get('pagina_id');
+        
+        $query = $em->createQuery('SELECT f FROM LinkComunBundle:CertiForo f  
+                                    WHERE f.empresa = :empresa_id
+                                    AND f.foro IS NULL 
+                                    AND f.pagina = :pagina_id')
+                    ->setParameters(array('empresa_id' => $empresa_id,
+                                          'pagina_id' => $pagina_id));
+        $temas = $query->getResult();
+
+        $options = '<option value=""></option>';
+        foreach ($temas as $tema)
+        {
+            $options .= '<option value="'.$tema->getId().'">'.$tema->getTema().'</option>';
+        }
+        
+        $return = array('options' => $options);
+        
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
     
 }

@@ -35,7 +35,7 @@ class BibliotecaController extends Controller
         $articulos = array();
         $libros = array();
         $hoy = new \DateTime();
-        $now = strtotime($hoy->format('d-m-Y'));
+        $now = strtotime($hoy->format('Y-m-d'));
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
@@ -46,7 +46,7 @@ class BibliotecaController extends Controller
                                    AND n.pdf IS NOT NULL')
                     ->setParameters(array('empresa_id' => $empresa_id,
                                           'tipo' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
-                                          'hoy' => date('d-m-Y')));
+                                          'hoy' => date('Y-m-d')));
         $noticias_db = $query->getResult();
 
         foreach($noticias_db as $noticia)

@@ -1,0 +1,49 @@
+<table class="table styleTab">
+    <thead>
+        <tr>
+            <td colspan="4"><b>{{ 'Empresa'|trans }}:</b> {{ empresa }}</td>
+            <td colspan="5"><b>{{ 'Programa'|trans }}:</b> {{ programa }}</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>{{ 'Usuario'|trans }}</th>
+            <th>{{ 'Nombre'|trans }}</th>
+            <th>{{ 'Correo'|trans }}</th>
+            <th>{{ 'Nivel'|trans }}</th>
+            <th>{{ 'Módulos vistos'|trans }}</th>
+            <th>{{ 'Materias vistas'|trans }}</th>
+            <th>{{ 'Promedio evaluación módulo'|trans }}</th>
+            <th>{{ 'Fecha inicio'|trans }}</th>
+            <th>{{ 'Hora inicio'|trans }}</th>
+            <th>{{ 'Fecha fin'|trans }}</th>
+            <th>{{ 'Hora fin'|trans }}</th>
+
+        </tr>
+        {% for participante in listado %}
+            {% set eo = cycle(['odd', 'even'], loop.index) %}
+            
+            <tr class="{{ eo }}">
+                <td>{{ participante.login }}</td>
+                <td>{{ participante.nombre }} {{ participante.apellido }}</td>
+                <td>{{ participante.correo_corporativo }}</td>
+                <td>{{ participante.nivel }}</td>
+                <td>{{ participante.modulos}}</td>
+                <td>{{ participantes.materias }}</td>
+                <td>{{ participante.promedio}}</td>
+                <td>{{ participante.fecha_inicio_programa}}</td>
+                <td>{{ participante.hora_inicio_programa }}</td>
+                <td>{{ participante.fecha_fin_programa }}</td>
+                <td>{{ participante.hora_fin_programa }}</td>
+            </tr>
+           
+        {% endfor %}
+    </tbody>
+</table>
+<div class="card-footer">
+    <div class="col-sm-16 col-md-16 text-right">
+        <button id="excel" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} Excel"><span class="fa fa-file-excel-o"></span></button>
+        <a id="excel-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} Excel"><span class="fa fa-download"></span></button></a>
+        <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+    </div>
+</div>
