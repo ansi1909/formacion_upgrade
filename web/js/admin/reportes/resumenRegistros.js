@@ -69,6 +69,9 @@ function mostrarReporte(data)
 
 	$('.reporte').show();
 
+    var now_inactivos_pct = data.reporte['now_inactivos_pct'] != '-' ? data.reporte['now_inactivos_pct'] : 0;
+    var now_activos_pct = data.reporte['now_activos_pct'] != '-' ? data.reporte['now_activos_pct'] : 0;
+
 	// Gráfico 1
 	var datos1 = {
         type: "pie",

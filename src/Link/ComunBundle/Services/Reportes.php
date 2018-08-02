@@ -550,10 +550,10 @@ class Reportes
         $resultados['week_before_total3'] = $resultados['week_before_inactivos'] + $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
         
         $week_before_inactivos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_inactivos']/$resultados['week_before_total1'])*100 : '-';
-        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 1, ',', '.') : $week_before_inactivos_pct;
+        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 0) : $week_before_inactivos_pct;
         
         $week_before_activos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_activos']/$resultados['week_before_total1'])*100 : '-';
-        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 1, ',', '.') : $week_before_activos_pct;
+        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 0) : $week_before_activos_pct;
 
         $resultados['week_before_total1_pct'] = $resultados['week_before_total1'] != 0 ? 100 : '-';
 
@@ -579,10 +579,10 @@ class Reportes
         $resultados['now_total3'] = $resultados['now_inactivos'] + $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
         
         $now_inactivos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_inactivos']/$resultados['now_total1'])*100 : '-';
-        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 1, ',', '.') : $now_inactivos_pct;
+        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 0) : $now_inactivos_pct;
         
         $now_activos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_activos']/$resultados['now_total1'])*100 : '-';
-        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 1, ',', '.') : $now_activos_pct;
+        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 0) : $now_activos_pct;
 
         $resultados['now_total1_pct'] = $resultados['now_total1'] != 0 ? 100 : '-';
 
