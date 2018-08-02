@@ -26,7 +26,7 @@
 
 <section class="card-datos">
     <div class="row align-items-center justify-content-center">
-        <div class="col-xs-3 col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
+        <div class="col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
             <div class="pic-img">
                 <form id="form-upload" method="POST">
                     <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadFotoUsuario') }}">
@@ -41,7 +41,7 @@
             </div>
             <span class="error" id="error"></span>
         </div>
-        <div class="col-xs-5 col-sm-5 col-md-5 col-5 col-lg-5 col-xl-5">
+        <div class="col-sm-7 col-md-7 col-7 col-lg-7 col-xl-7">
             <h2 class="name-titulo text-center">{{ nombre }} {{ apellido }}</h2>
             <div class="row justify-content-between">
                 <div class="col-6 text-right">
@@ -53,7 +53,7 @@
             </div>
             <div class="row justify-content-betwee5">
                 <div class="col-6 text-right">
-                    <span class="info_datos">{{ 'Correo electrónico'|trans }}</span>
+                    <span class="info_datos">{{ 'Correo corporativo'|trans }}</span>
                 </div>
                 <div class="col-6">
                     <span class="datos_user" id="label-correo">{{ correo }}</span>
@@ -61,7 +61,7 @@
             </div>
             <div class="row justify-content-betwee5">
                 <div class="col-6 text-right">
-                    <span class="info_datos">{{ 'Correo adicional'|trans }}</span>
+                    <span class="info_datos">{{ 'Correo secundario'|trans }}</span>
                 </div>
                 <div class="col-6">
                     <span class="datos_user" id="label-correo_corporativo">{{ correo_corporativo }}</span>
@@ -76,7 +76,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center" >
+        <!--<div class="col-xs-4 col-sm-4 col-md-4 col-4 col-lg-4 col-xl-4 text-center" >
             <div class="imgExp-coin">
                 <img class="imgExp" src="{{asset('img/medal.svg')}}" alt="">
                 <div class="starShiney1">
@@ -90,7 +90,7 @@
             </div>
             <span class="numExp">{{ puntos }}</span>
             <h3 class="tituloExp">EXP</h3>
-        </div>
+        </div>-->
     </div>
     <div class="row align-items-center justify-content-around mt-12v">
         <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
@@ -125,17 +125,17 @@
         </div>
         <form id="form" name="form" action="{{ path('_ajaxSavePerfil')}}" method="POST">
             <div class="row aling-item-center justify-content-center mt-3 mx-auto">
-                <div class="col-8">
+                <div class="col-10">
                     <div class="form-group text-left">
                         <label for="nameUser">{{ 'Usuario'|trans }}</label>
                         <input type="text" class="form-control mb-4" id="login" name="login" value="{{ login }}" disabled="disabled">
                     </div>
                     <div class="form-group text-left">
-                        <label for="correo_personal">{{ 'Correo electrónico'|trans }}</label>
+                        <label for="correo_personal">{{ 'Correo corporativo'|trans }}</label>
                         <input type="mail" class="form-control mb-1" id="correo_personal" name="correo_personal" value="{{ correo }}">
                     </div>
                     <div class="form-group text-left">
-                        <label for="correo_corporativo">{{ 'Correo corporativo'|trans }}</label>
+                        <label for="correo_corporativo">{{ 'Correo secundario'|trans }}</label>
                         <input type="mail" class="form-control mb-4" id="correo_corporativo" name="correo_corporativo" value="{{ correo_corporativo }}">
                     </div>
                     <div class="form-group text-left">
@@ -177,7 +177,7 @@
         </div>
         <form id="form-clave" action="{{ path('_ajaxClave') }}">
             <div class="row aling-item-center justify-content-center mt-5">
-                <div class="col-8">
+                <div class="col-10">
                     <div class="form-group text-left">
                         <label for="clave">{{ 'Nueva contraseña'|trans }}</label>
                         <input type="password" class="form-control mb-1" id="clave" name="clave">

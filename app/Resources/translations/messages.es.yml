@@ -51,12 +51,14 @@ Asignar página al nivel: Asignar página al nivel
 Asunto: Asunto
 Atrás: Atrás
 Autor: Autor
+Avance en programas: Avance en programas
 Aún no ha respondido las preguntas: Aún no ha respondido las preguntas
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aún sin publicar: Aún sin publicar
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Ayer: Ayer
+Ayuda: Ayuda
 Biblioteca: Biblioteca
 Biblioteca virtual: Biblioteca virtual
 Bienvenida: Bienvenida
@@ -71,6 +73,7 @@ Calendario: Calendario
 Cambiar contraseña: Cambiar contraseña
 Cambiar imagen: Cambiar imagen
 Cancelar: Cancelar
+Cantidad de conexiones: Cantidad de conexiones 
 Cantidad de filas: Cantidad de filas
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
@@ -133,6 +136,7 @@ Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
+Correo secundario: Correo Secundario
 Creado el: Creado el
 Crear evento: Crear evento
 Crear nuevo tema: Crear nuevo tema
@@ -348,6 +352,7 @@ Fecha inicio: Fecha inicio
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
 Fecha de Publicación: Fecha de Publicación
+Fecha de registro: Fecha de registro
 Fecha de Vencimiento: Fecha de Vencimiento
 Fecha Difusión: Fecha Difusión
 FELICIDADES: FELICIDADES
@@ -386,6 +391,8 @@ Has ganado: Has ganado
 Hasta: Hasta
 Historial de programaciones de: Historial de programaciones de
 Hizo un comentario: Hizo un comentario
+Hora inicio: Start Time
+Hora fin: End time
 Horas académicas: Horas académicas
 Horas de conexión: Horas de conexión
 Horas de conexión de la empresa: Horas de conexión de la empresa
@@ -509,6 +516,7 @@ Martes: Martes
 Más recientes: Más recientes
 Más valorados: Más valorados
 Material complementario: Material complementario
+Materias vistas: Materias vistas
 Mensaje: Mensaje
 Mensaje del servidor: Mensaje del servidor
 Mi avance: Mi avance
@@ -518,6 +526,7 @@ Modificado el: Modificado el
 Modificado por: Modificado por
 Modificar evento: Modificar evento
 Módulos: Módulos
+Módulos vistos: Módulos vistos
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
 Mostrar preferencia: Mostrar preferencia
@@ -599,6 +608,7 @@ Participantes que se han logeado al menos una vez en el sistema: Participantes q
 Participantes registrados y nunca han entrado sistema: Participantes registrados y nunca han entrado sistema
 Pdf: Pdf
 PDF requerido: PDF requerido
+Perfil de usuario: Perfil de usuario
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
 Permisos: Permisos
@@ -624,6 +634,8 @@ Procesar: Procesar
 Programa: Programa
 Programas: Programas
 Prog. asociados: Prog. asociados
+Promedio evaluación módulo: Promedio evaluación módulo
+Promedio de conexiones: Promedio de conexiones
 Publicar: Publicar
 Puede acceder a este espacio a través del siguiente enlace: Puede acceder a este espacio a través del siguiente enlace
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso

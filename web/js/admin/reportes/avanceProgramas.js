@@ -1,32 +1,35 @@
 jQuery(document).ready(function($) {
 	
-	
-    $('#search').click(function(){
+	$('#search').click(function(){
     	$('#label_filtro').hide();
     	$('.descargable').hide();
     	$('.generable').show();
     	$('#resultado').hide();
     });
+  
 	
 });
 
 function mostrarReporte(data)
 {
-		console.log(data);
-		$('#label_desde').html($('#desde').val());
-		$('#label_hasta').html($('#hasta').val());
-		$('#label_filtro').show();
-		$('#resultado').html(data.html);
-		$('#resultado').show();
-		observe();
+	$('#label_desde').html($('#desde').val());
+	$('#label_hasta').html($('#hasta').val());
+	$('#label_filtro').show();
+	$('#resultado').html(data.html);
+	$('#resultado').show();
+	observe();
+
+	console.log(data);
+
 }
+
 
 function observe()
 {
 	$('#excel').click(function(){
     	$('#excel').hide();
     	$('#excel-loader').show();
-    	$.ajax({/*------------------------------ peticion para gegerar excel -------------*/
+    	$.ajax({
 			type: "POST",
 			url: $('#form').attr('action'),
 			async: true,

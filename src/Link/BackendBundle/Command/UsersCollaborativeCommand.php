@@ -30,8 +30,9 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
+        $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
         $translator = $this->getContainer()->get('translator');
-        $base = $yml['parameters']['base_url'];
+        $base = $yml2['parameters']['base_url'];
 
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
                                     JOIN f.empresa e 

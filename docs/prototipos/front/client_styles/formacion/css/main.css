@@ -2729,7 +2729,7 @@ p.up {
     line-height: calc(3rem - 6px);
     position: relative;
     left: calc(-1 * calc(2rem + 4px));
-    color: #797D80; }
+    color: #383838; }
   .card-datos .numExp {
     display: block;
     color: #5CAEE6;
@@ -3111,7 +3111,7 @@ p.up {
     border-bottom: 0px; }
 
 .card-datos .info_datos, .card-datos .datos_user {
-  color: #AAAFB3;
+  color: #5C6266;
   font-family: "Roboto";
   font-size: 1rem;
   line-height: calc(1rem + 3px);

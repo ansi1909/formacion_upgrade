@@ -66,7 +66,6 @@ parameters:
         base: 1
     notificacion_programada:
         bienvenida: 1
-        Link_plataforma: 'http://localhost/formacion2.0/web/app_dev.php/login/'
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
         remitente: 'soporte@formacion2puntocero.com'
@@ -88,4 +87,3 @@ parameters:
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
     search_locale: 0
     mailer_user: tutorvirtual@formacion2puntocero.com
-    base_url: 'http://localhost/formacion2.0/web/app_dev.php'

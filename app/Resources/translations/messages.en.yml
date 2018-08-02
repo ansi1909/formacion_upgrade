@@ -51,12 +51,14 @@ Asignar página al nivel: Assign page to level
 Asunto: Subject
 Atrás: Back
 Autor: Author
+Avance en programas: Advance in programs
 Aún no ha respondido las preguntas: You have not already answered the questions
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aún sin publicar: Not yet published
 Aviso de cierre de sesión: Notice of session closure
 Ayer: Yesterday
+Ayuda: Help
 Biblioteca: Library
 Biblioteca virtual: Virtual library
 Bienvenida: Welcome
@@ -71,6 +73,7 @@ Calendario: Calendar
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
 Cancelar: Cancel
+Cantidad de conexiones: Number of connections
 Cantidad de filas: Number of rows
 Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
@@ -133,6 +136,7 @@ Correo electrónico repetido: Email repeated
 Correo electrónico requerido: Email required
 Correo corporativo: Company email
 Correo personal: Personal email
+Correo secundario: Secondary email
 Creado el: Created at
 Crear evento: Create event
 Crear nuevo tema: Create new subject
@@ -348,6 +352,7 @@ Fecha inicio: Start date
 Fecha de nacimiento: Birthday
 Fecha de nacimiento es requerida.: Birthday is required.
 Fecha de Publicación: Publication date
+Fecha de registro: Registration date
 Fecha de Vencimiento: Due date
 Fecha Difusión: Dissemination Date
 FELICIDADES: CONGRATULATIONS
@@ -386,6 +391,8 @@ Has ganado: You win
 Hasta: Until
 Historial de programaciones de: Programation history of
 Hizo un comentario: Made a comment
+Hora inicio: Start Time
+Hora fin: End time
 Horas académicas: Academic hours
 Horas de conexión: Conection hours
 Horas de conexión de la empresa: Connection hours of the company
@@ -509,6 +516,7 @@ Martes: Tuesday
 Más recientes: Most recent
 Más valorados: Most valued
 Material complementario: Complementary content
+Materias vistas: Matter seen
 Mensaje: Message
 Mensaje del servidor: Server message
 Mi avance: My progress
@@ -518,6 +526,7 @@ Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
 Módulos: Modules
+Módulos vistos: Modules seen
 Mostrando registros del: Showing items of
 Mostrar: Show
 Mostrar preferencia: Show preference
@@ -599,6 +608,7 @@ Participantes que se han logeado al menos una vez en el sistema: Participants wh
 Participantes registrados y nunca han entrado sistema: Registered participants and have never entered system
 Pdf: Pdf
 PDF requerido: PDF is required
+Perfil de usuario: User profile
 Perfil Empresarial: Company Profile
 Periodo: Period
 Permisos: Permissions
@@ -624,6 +634,8 @@ Procesar: Process
 Programa: Program
 Programas: Programs
 Prog. asociados: Associated Prog.
+Promedio de conexiones: Average connections
+Promedio evaluación módulo: Average evaluation module
 Publicar: Publish
 Puede acceder a este espacio a través del siguiente enlace: You can access through following link
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: You can sign out and restart session to reset your access permissions
