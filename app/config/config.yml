@@ -48,11 +48,14 @@ twig:
         #uploads: 'http://develop.formacion2puntocero.com/uploads/'
         #uploads: 'http://quality.formacion2puntocero.com/uploads/'
         uploads: 'https://www.formacion2puntocero.com/uploads/'
-        sesion_time: 1000000
+        sesion_time: 6000000
         sesion_front_time: 6000000
         remaining_time: 10
         tipo_elemento_imagen: 2
         email_soporte: soporte@formacion2puntocero.com
+        global_app:
+            noticias: 17
+            biblioteca: 26
 
 # Doctrine Configuration
 doctrine:
