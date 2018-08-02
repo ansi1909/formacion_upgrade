@@ -14,4 +14,4 @@ _ajaxConexionesUsuario:
 
 _ajaxAvanceProgramas:
     path:   /ajaxAvanceProgramas
-    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxAvanceProgramas}
+    defaults: { _controller:  LinkBackendBundle:ReportesJT:ajaxAvanceProgramas }

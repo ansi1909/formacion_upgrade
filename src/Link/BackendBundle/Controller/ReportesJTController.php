@@ -89,7 +89,7 @@ class ReportesJTController extends Controller
 
     }
 
-    public function ajaxAvanceProgramas(Request $request)
+    public function ajaxAvanceProgramasAction(Request $request)
     {
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
@@ -178,11 +178,11 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
                     $objWorksheet->setCellValue('M'.$row, $participante['modulos']);
                     $objWorksheet->setCellValue('N'.$row, $participante['materias']);
-                    $objWorksheet->setCellValue('J'.$row, $participante['promedio']);
-                    $objWorksheet->setCellValue('K'.$row, $participante['fecha_inicio_programa']);
-                    $objWorksheet->setCellValue('L'.$row, $participante['hora_inicio_programa']);
-                    $objWorksheet->setCellValue('M'.$row, $participante['fecha_fin_programa']);
-                    $objWorksheet->setCellValue('N'.$row, $participante['hora_fin_programa']);
+                    $objWorksheet->setCellValue('O'.$row, $participante['promedio']);
+                    $objWorksheet->setCellValue('P'.$row, $participante['fecha_inicio_programa']);
+                    $objWorksheet->setCellValue('Q'.$row, $participante['hora_inicio_programa']);
+                    $objWorksheet->setCellValue('R'.$row, $participante['fecha_fin_programa']);
+                    $objWorksheet->setCellValue('S'.$row, $participante['hora_fin_programa']);
 
                   
                     $row++;
@@ -204,7 +204,8 @@ class ReportesJTController extends Controller
         $archivo = '';
         $html = $this->renderView('LinkBackendBundle:Reportes:avanceProgramasTabla.html.twig', 
                                 array('listado' => $listado,
-                                      'empresa' => $empresa->getNombre()
+                                      'empresa' => $empresa->getNombre(),
+                                      'programa' => $pagina->getNombre()
                                       ));
         }
 
