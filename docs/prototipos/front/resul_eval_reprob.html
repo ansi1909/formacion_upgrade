@@ -16,13 +16,9 @@
         <!-- HEADER -->
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
-                <div class="navbar-brand d-flex justify-content-center align-items-center " href="#">
-                    <i class="material-icons mr-3 color-light-grey rotate-180 exit_eval">exit_to_app</i>
-                    <span class="txt_eval_header">Salir de la evaluación</span>
-                </div>
-                <div class="navbar-brand justify-content-center align-items-center " href="#">
-                    <h2 class="titulo_eval pl-5">Evaluación</h2>
-                    <h5 class="sub_titulo_eval pl-5">Nombre del módulo</h5>
+                <div class="navbar-brand justify-content-center align-items-center ml-4" href="#">
+                    <h2 class="titulo_eval px-auto text-left">Evaluación</h2>
+                    <h5 class="sub_titulo_eval px-auto text-left">Nombre del módulo</h5>
                 </div>
                 <a class="navbar-brand" href="#">
                     <img class="img-fluid py-1" src="assets/img/logo_formacion.png" width= "200" alt="logo formación 2.0">
@@ -36,27 +32,27 @@
                     <div class="col-10 mt-3 text-center">
                         <h1 class="titulo-resul">Sigue intentándolo</h1>
                         <a href="#">
-                           <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves">replay</span></button>
+                           <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves" data-toogle="tooltip" title="repetir evaluación">replay</span></button>
                         </a>
                     </div>
                 </div>
                 <div class="row align-items-center justify-content-center">
                     <div class="col-10 text-center">
-                        <p class="txt-resul">No haz alcanzado la calificacion para la aprobacion del modulo</p>
+                        <p class="txt-resul">No haz alcanzado la calificación para la aprobación del módulo</p>
                     </div>
                 </div>
                 <div class="row align-items-center justify-content-center">
                     <div class="col-10 text-center">
-                        <span class="calif">Tu calificacion: <span class="num"> 49/100 </span></span>
+                        <span class="calif">Tu calificación: <span class="num"> 49/100 </span></span>
                     </div>
                 </div>
                 <div class="row mt-3 align-items-center justify-content-center">
                     <div class="col-10 text-center">
-                        <button type="submit" class="btn btn-primary"> Continuar </button>
+                        <button type="submit" class="btn btn-continuar"> Volver al programa </button>
                     </div>
                 </div>
             </section>
-            <section class="mostrar-resul">
+            <!--<section class="mostrar-resul">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-5 text-center">
                         
@@ -153,12 +149,13 @@
                         </ul>
                     </div>
                 </div>
-            </section>
+            </section>-->
         </div>
 
 
         <!-- JAVASCRIPT -->
         <script src="js/jquery-3.3.1.min.js" ></script>
+        <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/custom.js"></script>
     </body>
