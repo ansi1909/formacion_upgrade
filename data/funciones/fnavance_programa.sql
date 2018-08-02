@@ -23,13 +23,13 @@ begin
             AND pl.usuario_id = u.id 
             AND p.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
-        ), 
+        ) as modulos, 
         (SELECT COUNT(pl.id) AS materias FROM certi_pagina_log pl INNER JOIN certi_pagina p ON pl.pagina_id = p.id 
             WHERE pl.estatus_pagina_id = 3 
             AND pl.usuario_id = u.id 
             AND p.pagina_id IN (SELECT p2.id FROM certi_pagina p2 WHERE p2.pagina_id = ppagina_id) 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
-        ), 
+        ) as materias, 
         (SELECT ROUND(AVG(prl.nota)::numeric,2) AS promedio FROM certi_prueba_log prl INNER JOIN certi_prueba pr ON prl.prueba_id = pr.id 
         WHERE prl.estado != 'EN CURSO' 
         AND prl.usuario_id = u.id 
@@ -39,27 +39,27 @@ begin
             WHERE pl.usuario_id = u.id 
             AND p.pagina_id = ppagina_id
         )
-    ),
+    ) as promedio,
         (SELECT TO_CHAR(pl.fecha_inicio, 'DD/MM/YYYY') AS fecha_inicio_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
-        ), 
+        ) as fecha_inicio_programa, 
         (SELECT TO_CHAR(pl.fecha_inicio, 'HH:MI AM') AS hora_inicio_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
-        ),
+        )as hora_inicio_programa,
         (SELECT TO_CHAR(pl.fecha_fin, 'DD/MM/YYYY') AS fecha_fin_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
-        ), 
+        ) as fecha_fin_programa, 
         (SELECT TO_CHAR(pl.fecha_fin, 'HH:MI AM') AS hora_fin_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
-        )
+        ) as hora_fin_programa
     FROM admin_usuario u INNER JOIN (admin_empresa e INNER JOIN admin_pais c ON e.pais_id = c.id) ON u.empresa_id = e.id 
     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
     WHERE u.empresa_id = pempresa_id 

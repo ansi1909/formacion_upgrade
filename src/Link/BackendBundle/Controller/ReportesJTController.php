@@ -111,6 +111,7 @@ class ReportesJTController extends Controller
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
+        return new response(var_dump($listado));
 
         if($excel==1) 
         {
