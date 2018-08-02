@@ -189,7 +189,7 @@ class ReportesJTController extends Controller
                 }
             }
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/conexionesUsuario'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/avanceProgramas'.$session->get('sesion_id').'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
