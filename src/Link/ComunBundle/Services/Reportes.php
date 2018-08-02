@@ -57,7 +57,7 @@ class Reportes
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
         $query->bindValue(':pempresa_id', $pempresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':pempresa_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $ppagina_id, \PDO::PARAM_INT);
         $query->bindValue(':pdesde', $pdesde, \PDO::PARAM_STR);
         $query->bindValue(':phasta', $phasta, \PDO::PARAM_STR);
         $query->execute();
