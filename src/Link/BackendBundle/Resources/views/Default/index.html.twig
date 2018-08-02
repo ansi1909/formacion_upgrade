@@ -120,37 +120,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="card">
-                    <div class="card-header gradiente">
-                        <div class="card-title">{{'Gráfico del promedio de conexiones' |trans}}</div>
-                    </div>
-                    <div class="card-block">
-                        <div id="morris-bar-chart"></div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-start">
-                                <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
-                            </div>
-                            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-end">
-                                <form action="">
-                                    <div class="form row" style="margin-bottom: 0px;">
-                                        <label for="emp_select" class="col-sm-3 col-md-3 col-lg-3 col-xl-3 offset-md-5 offset-sm-5 offset-lg-5 offset-xl-5 col-form-label text-right">{{'Empresa' |trans}}:</label>
-                                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8" style="padding: 0px 15px 0px 0px;">
-                                            <select class="form-control form_sty_sel" id="emp_select" style="border-radius: 5px;">
-                                                <option>Seleccione una empresa</option>
-                                            </select>
-                                            <span class="fa fa-industry"></span>
-                                            <span class="bttn_d"><img src="{{ asset('img/down-arrowwht.png') }}" alt=""></span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     {% else %}
@@ -231,26 +200,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="card-footer">
-                        <div class="col-sm-16 col-md-16 text-right">
-                            <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="card">
-                    <div class="card-header gradiente">
-                        <div class="card-title">{{'Gráfico del promedio de Conexiones' |trans}}</div>
-                    </div>
-                    <div class="card-block">
-                        <div id="morris-bar-chart"></div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="col-sm-16 col-md-16 text-right">
-                            <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -266,8 +215,6 @@
     <script src="{{ asset('assets/vendor/chartjs/utils.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/vendor/spincrement/jquery.spincrement.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/raphael/raphael.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/morrisjs/morris.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/dashboard1_light.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/dashboard.js') }}"></script>
     <script type="text/javascript">

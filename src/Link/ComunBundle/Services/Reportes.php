@@ -385,7 +385,7 @@ class Reportes
 
                 if ($i > 1)
                 {
-                    $participante['evaluaciones'] = $evaluaciones;
+                    $participante['muros'] = $muro;
                     $listado[] = $participante;
                     $participante = array('codigo' => $r['codigo'],
                                           'login' => $r['login'],
@@ -495,9 +495,7 @@ class Reportes
                                           'campo1' => $r['campo1'],
                                           'campo2' => $r['campo2'],
                                           'campo3' => $r['campo3'],
-                                          'campo4' => $r['campo4'],
-                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
-                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
+                                          'campo4' => $r['campo4']);
                     $foro = array();
                     $foro[] = array('mensaje' => $r['mensaje'],
                                     'fecha_mensaje' => $r['fecha_mensaje']);
