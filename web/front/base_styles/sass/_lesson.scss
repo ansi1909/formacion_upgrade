@@ -11,12 +11,12 @@
     p {
         font-family: $lessons-font;
         font-size: 1.1rem;
-        line-height: 1.75rem;
+        line-height: 1.4rem;
         color: $black-300;
         width: 75%;
         font-weight: 200;
         text-align: justify;
-        margin: 1rem auto;
+        margin: .5rem auto;
 
     }
 
@@ -59,6 +59,7 @@
         border-radius: 1rem;
         width: 100% !important;
         height: auto;
+        margin: .5rem auto;
     }
     .audio-player{
         img{

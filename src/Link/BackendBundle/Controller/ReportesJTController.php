@@ -111,6 +111,7 @@ class ReportesJTController extends Controller
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
+        return new response(var_dump($listado));
 
         if($excel==1) 
         {
@@ -189,7 +190,7 @@ class ReportesJTController extends Controller
                 }
             }
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/conexionesUsuario'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/avanceProgramas'.$session->get('sesion_id').'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
