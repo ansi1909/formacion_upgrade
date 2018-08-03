@@ -24,9 +24,6 @@
         <!-- jstree CSS -->
         <link rel="stylesheet" href="../../web/assets/vendor/jstree/dist/themes/default/style.css" type="text/css">
         
-        <!-- Morris Charts CSS -->
-        <link href="../../web/assets/vendor/morrisjs/morris.css" rel="stylesheet">
-        
         <!-- Adminux CSS -->
         <link rel="stylesheet" href="../../web/assets/css/light_adminux.css">
         <link rel="stylesheet" href="../../web/css/admin.css">
@@ -266,18 +263,6 @@
                            </div>
                        </div>
                     </div>
-                    <div class="col-md-16 col-sm-16 col-lg-16 col-xl-16">
-                        <div class="card">
-                            <div class="card-header gradiente">
-                                <div class="card-title">Grafico del promedio de Conexiones</div>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-bar-chart"></div>
-                            </div>
-                            <div class="card-footer">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -313,11 +298,7 @@
         <script src="../../web/assets/vendor/datatables/js/dataTables.responsive.min.js"></script>
         
         <!--jstree js--> 
-        <script type="text/javascript" src="../../web/assets/vendor/jstree/dist/jstree.min.js"></script> 
-        
-        <!-- Morris Charts JavaScript -->
-        <script src="../../web/assets/vendor/raphael/raphael.js"></script>  
-        <script src="../../web/assets/vendor/morrisjs/morris.min.js"></script> 
+        <script type="text/javascript" src="../../web/assets/vendor/jstree/dist/jstree.min.js"></script>  
         
         <!-- custome template js -->
         <script src="../../web/assets/js/adminux.js" type="text/javascript"></script>
@@ -357,27 +338,6 @@
                             }
                         ]
                     }
-                });
-            });
-        </script>
-        <script type="text/javascript">
-            $(function(){
-                Morris.Bar({
-                    element: 'morris-bar-chart',
-                    data: [
-                        { y: 'Lun', a: 5, b: 10 },
-                        { y: 'Mar', a: 12,  b: 15 },
-                        { y: 'Mie', a: 3,  b: 9 },
-                        { y: 'Jue', a: 10,  b: 4 },
-                        { y: 'Vie', a: 5,  b: 7 },
-                        { y: 'Sab', a: 2,  b: 4 },
-                        { y: 'Dom', a: 10, b: 16 }
-                    ],
-                    resize: true,
-                    xkey: 'y',
-                    ykeys: ['a', 'b'],
-                    labels: ['Promedio de conexion por participante', 'Total de horas de conexion diarias'],
-                    barColors: ["#03A9F4", "#8BC34A", "#FFC107", "#F44336"]
                 });
             });
         </script>

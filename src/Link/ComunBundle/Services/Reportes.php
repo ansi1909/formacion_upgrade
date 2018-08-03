@@ -57,7 +57,7 @@ class Reportes
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
         $query->bindValue(':pempresa_id', $pempresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':pempresa_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $ppagina_id, \PDO::PARAM_INT);
         $query->bindValue(':pdesde', $pdesde, \PDO::PARAM_STR);
         $query->bindValue(':phasta', $phasta, \PDO::PARAM_STR);
         $query->execute();
@@ -385,7 +385,7 @@ class Reportes
 
                 if ($i > 1)
                 {
-                    $participante['evaluaciones'] = $evaluaciones;
+                    $participante['muros'] = $muro;
                     $listado[] = $participante;
                     $participante = array('codigo' => $r['codigo'],
                                           'login' => $r['login'],
@@ -495,9 +495,7 @@ class Reportes
                                           'campo1' => $r['campo1'],
                                           'campo2' => $r['campo2'],
                                           'campo3' => $r['campo3'],
-                                          'campo4' => $r['campo4'],
-                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
-                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
+                                          'campo4' => $r['campo4']);
                     $foro = array();
                     $foro[] = array('mensaje' => $r['mensaje'],
                                     'fecha_mensaje' => $r['fecha_mensaje']);
@@ -550,10 +548,10 @@ class Reportes
         $resultados['week_before_total3'] = $resultados['week_before_inactivos'] + $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
         
         $week_before_inactivos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_inactivos']/$resultados['week_before_total1'])*100 : '-';
-        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 1, ',', '.') : $week_before_inactivos_pct;
+        $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 0) : $week_before_inactivos_pct;
         
         $week_before_activos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_activos']/$resultados['week_before_total1'])*100 : '-';
-        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 1, ',', '.') : $week_before_activos_pct;
+        $resultados['week_before_activos_pct'] = $week_before_activos_pct != '-' ? number_format($week_before_activos_pct, 0) : $week_before_activos_pct;
 
         $resultados['week_before_total1_pct'] = $resultados['week_before_total1'] != 0 ? 100 : '-';
 
@@ -579,10 +577,10 @@ class Reportes
         $resultados['now_total3'] = $resultados['now_inactivos'] + $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
         
         $now_inactivos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_inactivos']/$resultados['now_total1'])*100 : '-';
-        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 1, ',', '.') : $now_inactivos_pct;
+        $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 0) : $now_inactivos_pct;
         
         $now_activos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_activos']/$resultados['now_total1'])*100 : '-';
-        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 1, ',', '.') : $now_activos_pct;
+        $resultados['now_activos_pct'] = $now_activos_pct != '-' ? number_format($now_activos_pct, 0) : $now_activos_pct;
 
         $resultados['now_total1_pct'] = $resultados['now_total1'] != 0 ? 100 : '-';
 
