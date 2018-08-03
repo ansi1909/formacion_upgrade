@@ -27,7 +27,6 @@ begin
     ON m.usuario_id = u.id
     WHERE m.empresa_id = pempresa_id 
     AND m.pagina_id = ppagina_id 
-    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
     AND m.fecha_registro BETWEEN pdesde AND phasta
     ORDER BY u.login ASC, m.fecha_registro ASC;
     
