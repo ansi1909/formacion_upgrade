@@ -111,8 +111,7 @@ class ReportesJTController extends Controller
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
-        return new response(var_dump($listado));
-
+        
         if($excel==1) 
         {
            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceProgramas.xlsx';
