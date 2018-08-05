@@ -99,6 +99,7 @@ Código del empleado repetido: Código del empleado repetido
 Columna: Columna
 Comentar: Comentar
 Comentarios: Comentarios
+Comparativo hasta el: Comparativo hasta el
 Competencia debe ser un valor entero: Competencia debe ser un valor entero
 Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
@@ -324,7 +325,7 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 Estado: Estado
 Estatus: Estatus
 Estatus de las sub-paginas: Estatus de las sub-paginas
-Estatus de los participantes: Estatus de los participantes
+Estatus de los participantes de la empresa: Estatus de los participantes de la empresa
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
@@ -601,11 +602,13 @@ Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para env
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
 participantes: participantes
 particpante: participante
-Participantes que han aprobado el programa: Participantes que han aprobado el programa
-Participantes que han sido asignados al programa y no han visto alguna de sus lecciones: Participantes que han sido asignados al programa y no han visto alguna de sus lecciones
-Participantes que han visto al menos una lección del programa: Participantes que han visto al menos una lección del programa
-Participantes que se han logeado al menos una vez en el sistema: Participantes que se han logeado al menos una vez en el sistema
-Participantes registrados y nunca han entrado sistema: Participantes registrados y nunca han entrado sistema
+Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma
+Participantes que han aprobado el último módulo del programa o curso: Participantes que han aprobado el último módulo del programa o curso
+Participantes que han ingresado al programa o curso asignado: Participantes que han ingresado al programa o curso asignado
+Participantes que se han logueado al menos una vez en la plataforma: Participantes que se han logueado al menos una vez en la plataforma
+Participantes que si bien están activos en la plataforma, no han ingresado al contenido del programa o curso: Participantes que si bien están activos en la plataforma, no han han ingresado al contenido del programa o curso
+Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma
+Participantes registrados en el programa que se han logueado al menos una vez en la plataforma: Participantes registrados en el programa que se han logueado al menos una vez en la plataforma
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
@@ -671,7 +674,7 @@ Respuestas comentario seleccionado: Respuestas comentario seleccionado
 Resultado del archivo procesado: Resultado del archivo procesado
 Resultados: Resultados
 Resumen: Resumen
-Resumen de registros de participantes en: Resumen de registros de participantes en
+Resumen de registros de participantes en el: Resumen de registros de participantes en el
 Resumen general de registros: Resumen general de registros
 Resumen general de registros por empresa: Resumen general de registros por empresa
 Rol: Rol
@@ -791,6 +794,7 @@ Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver
 Volver al programa: Volver al programa
 Volver al inicio: Volver al inicio
+y el: y el
 y finaliza el: y finaliza el
 Yo: Yo
 ¿Olvidaste tu contraseña?: ¿Olvidaste tu contraseña?

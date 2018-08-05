@@ -8,8 +8,6 @@ $(document).ready(function() {
 	{
 
 		$('#empresa_id').change(function(){
-			$('#pagina_id').hide();
-			$('#pagina-loader').show();
 			$('#reporte').hide();
 			selectProgramas();
 		});
@@ -25,8 +23,6 @@ $(document).ready(function() {
 	{
 
 		$('#empresa_id').change(function(){
-			$('#pagina_id').hide();
-			$('#pagina-loader').show();
 			$('#reporte').hide();
 			selectProgramas();
 			observePagina();
@@ -98,6 +94,8 @@ $(document).ready(function() {
 
 function selectProgramas()
 {
+	$('#pagina_id').hide();
+	$('#pagina-loader').show();
 	$.ajax({
 		type: "GET",
 		url: $("#url_programas").val(),

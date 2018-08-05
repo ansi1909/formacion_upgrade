@@ -442,8 +442,10 @@ class ReportesJEController extends Controller
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desde = $request->request->get('desde');
+        $hasta = $request->request->get('hasta');
         $excel = $request->request->get('excel');
 
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $desde_arr = explode(" ", $desde);
@@ -470,21 +472,43 @@ class ReportesJEController extends Controller
                 $h = '0'.$h;
             }
         }
-        $now = "$a-$m-$d $h:$min:59";
+        $desdef = "$a-$m-$d $h:$min:59";
 
-        $datetime = new \DateTime($now);
-        $datetime->modify('-7 day');
-        $week_before = $datetime->format("Y-m-d H:i:s");
+        $hasta_arr = explode(" ", $hasta);
+        list($d, $m, $a) = explode("/", $hasta_arr[0]);
+        $time = explode(":", $hasta_arr[1]);
+        $h = (int) $time[0];
+        $min = $time[1];
+        if ($hasta_arr[2] == 'pm')
+        {
+            if ($h != 12)
+            {
+                // Se le suman 12 horas
+                $h += 12;
+            }
+        }
+        else {
+            if ($h == 12)
+            {
+                // Es la hora 0
+                $h = '00';
+            }
+            elseif ($h < 10) {
+                // Valor en dos caracteres
+                $h = '0'.$h;
+            }
+        }
+        $hastaf = "$a-$m-$d $h:$min:59";
 
-        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $week_before, $now);
-
+        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf);
         
         $return = array('reporte' => $reporte,
-                        'week_before' => $this->get('translator')->trans('Al').' '.$datetime->format("d/m/Y h:i a"),
-                        'now' => $this->get('translator')->trans('Al').' '.$desde,
-                        'week_beforef' => $week_before,
-                        'nowf' => $now,
-                        'programa' => $pagina->getNombre());
+                        'week_before' => $this->get('translator')->trans('Al').' '.$desde,
+                        'now' => $this->get('translator')->trans('Al').' '.$hasta,
+                        'week_beforef' => $desdef,
+                        'nowf' => $hastaf,
+                        'empresa' => $empresa->getNombre(),
+                        'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -522,7 +546,7 @@ class ReportesJEController extends Controller
 
     }
 
-    public function pdfResumenRegistrosAction($empresa_id, $pagina_id, $now, Request $request)
+    public function pdfResumenRegistrosAction($empresa_id, $pagina_id, $desdef, $hastaf, Request $request)
     {
         
         $rs = $this->get('reportes');
@@ -531,12 +555,13 @@ class ReportesJEController extends Controller
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
-        $datetime = new \DateTime($now);
+        $datetime = new \DateTime($desdef);
         $desde = $datetime->format("d/m/Y h:i a");
-        $datetime->modify('-7 day');
-        $week_before = $datetime->format("Y-m-d H:i:s");
+        
+        $datetime = new \DateTime($hastaf);
+        $hasta = $datetime->format("d/m/Y h:i a");
 
-        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $week_before, $now);
+        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf);
 
         $path1 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_1.png';
         $src1 = $this->container->getParameter('folders')['dir_uploads'].$path1;
@@ -547,14 +572,24 @@ class ReportesJEController extends Controller
         $path3 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_3.png';
         $src3 = $this->container->getParameter('folders')['dir_uploads'].$path3;
 
-        $html = $this->renderView('LinkBackendBundle:Reportes:pdfResumenRegistros.html.twig', array('reporte' => $reporte,
-                                                                                                    'week_before' => $this->get('translator')->trans('Al').' '.$datetime->format("d/m/Y h:i a"),
-                                                                                                    'now' => $this->get('translator')->trans('Al').' '.$desde,
-                                                                                                    'programa' => $pagina->getNombre(),
-                                                                                                    'empresa' => $empresa->getNombre(),
-                                                                                                    'src' => array('src1' => $src1,
-                                                                                                                   'src2' => $src2,
-                                                                                                                   'src3' => $src3)));
+        $path4 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_4.png';
+        $src4 = $this->container->getParameter('folders')['dir_uploads'].$path4;
+
+        $html1 = $this->renderView('LinkBackendBundle:Reportes:pdfResumenRegistrosPage1.html.twig', array('reporte' => $reporte,
+                                                                                                          'week_before' => $this->get('translator')->trans('Al').' '.$desde,
+                                                                                                          'now' => $this->get('translator')->trans('Al').' '.$hasta,
+                                                                                                          'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
+                                                                                                          'empresa' => $empresa->getNombre(),
+                                                                                                          'src' => array('src1' => $src1,
+                                                                                                                         'src2' => $src2)));
+
+        $html2 = $this->renderView('LinkBackendBundle:Reportes:pdfResumenRegistrosPage2.html.twig', array('reporte' => $reporte,
+                                                                                                          'week_before' => $this->get('translator')->trans('Al').' '.$desde,
+                                                                                                          'now' => $this->get('translator')->trans('Al').' '.$hasta,
+                                                                                                          'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
+                                                                                                          'empresa' => $empresa->getNombre(),
+                                                                                                          'src' => array('src3' => $src3,
+                                                                                                                         'src4' => $src4)));
 
         $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
         $header_footer = '<page_header> 
@@ -570,8 +605,8 @@ class ReportesJEController extends Controller
                             </page_footer>';
         $pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 5, 5, 8));
         $pdf->pdf->SetDisplayMode('fullpage');
-        $pdf->writeHtml('<page>'.$header_footer.$html.'</page>');
-        //$pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
+        $pdf->writeHtml('<page>'.$header_footer.$html1.'</page>');
+        $pdf->writeHtml('<page pageset="old">'.$html2.'</page>');
 
         //Generamos el PDF
         $pdf->output('resumen_registros.pdf');
@@ -580,5 +615,3 @@ class ReportesJEController extends Controller
 
     
 }
-
-// Manos de piedra: 34:57, 37:45
