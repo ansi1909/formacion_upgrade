@@ -56,12 +56,21 @@ function mostrarReporte(data)
 	// Mostrar las cantidades
 	for (var f = 0; f <= 8; f++)
 	{
+		if (jQuery.inArray(f, data.filas_mayores) !== -1)
+		{
+			$('#f'+f).addClass('dayMaxCon');
+			$('#celda_'+f+'_25').addClass('hourMaxCon');
+		}
 		for (var c = 0; c <= 25; c++)
 		{
 			$('#celda_'+f+'_'+c).html(data.conexiones[f][c]);
 			if (f > 0 && f != 8 && c == 25)
 			{
 				totales.push(data.conexiones[f][c]);
+			}
+			if (jQuery.inArray(c, data.columnas_mayores) !== -1)
+			{
+				$('#celda_'+f+'_'+c).addClass('hourMaxCon');
 			}
 		}
 		if (f > 0 && f != 8)
@@ -70,26 +79,15 @@ function mostrarReporte(data)
 		}
 	}
 
-	// Resaltar los mayores
-	for (var i = 0; i < data.celda_mayor.length; i++)
-	{
-		var celda_mayor = data.celda_mayor[i];
-		var mayor = celda_mayor.split('_');
-		$('#f'+mayor[0]).addClass('dayMaxCon');
-		for (var f = 0; f <= 8; f++)
-		{
-			$('#celda_'+f+'_'+mayor[1]).addClass('hourMaxCon');
-		}
-		$('#celda_'+mayor[0]+'_25').addClass('hourMaxCon');
-	}
-
 	var datos = {
         type: "horizontalBar",
         data: {
             datasets: [{
                 label: '',
                 data: totales,
-                backgroundColor: ["#fd5c63", "#ff9933", "#ed1c24", "#6a67ce", "#ee4c58", "#8aba56", "#a560e8", "#0084DB"],
+                backgroundColor: ["#f9b1b4", "#f9ba7a", "#6fa8f2", "#9e9cd1", "#f7e894", "#abbc98", "#cbb0e5"],
+                borderColor: ['#fd5c63', '#ff9933', '#1a67cc', '#6a67ce', '#d8bc1e', '#8aba56', '#a560e8'],
+                borderWidth: 1
             }],
             labels: etiquetas
         },
@@ -97,7 +95,45 @@ function mostrarReporte(data)
             responsive: true,
             legend: {
                 display: false
-            }
+            },
+            animation: {
+	            duration: 500,
+	            easing: "easeOutQuart",
+	            onComplete: function () {
+	                var ctx = this.chart.ctx;
+	                ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+	                ctx.textAlign = 'center';
+	                ctx.textBaseline = 'bottom';
+
+	                this.data.datasets.forEach(function (dataset) {
+	                    for (var i = 0; i < dataset.data.length; i++) {
+	                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+	                            scale_max = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
+	                        ctx.fillStyle = '#444';
+	                        var y_pos = model.y + 7;
+	                        var x_pos = model.x - 15;
+	                        // Make sure data value does not get overflown and hidden
+	                        // when the bar's value is too close to max value of scale
+	                        // Note: The y value is reverse, it counts from top down
+	                        if ((scale_max - model.y) / scale_max >= 0.93){
+	                            y_pos = model.y + 20;
+	                        }
+	                        if (dataset.data[i] < 1)
+	                        {
+	                        	x_pos = model.x + 5;
+	                        }
+	                        ctx.fillText(dataset.data[i], x_pos, y_pos);
+	                    }
+	                });               
+	            }
+	        },
+	        scales: {
+		        xAxes: [{
+		            ticks: {
+		                beginAtZero: true
+		            }
+		        }]
+		    }
         }
     };
     var canvas = document.querySelector('.barChart').getContext('2d');

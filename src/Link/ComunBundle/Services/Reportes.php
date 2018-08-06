@@ -73,8 +73,10 @@ class Reportes
 		$em = $this->em;
 		
 		// Acumuladores
-        $mayor = 0;
-        $celda_mayor = array();
+        $columna_mayor = 0;
+        $fila_mayor = 0;
+        $columnas_mayores = array();
+        $filas_mayores = array();
         $total = 0;
 
         // ESTRUCTURA de $conexiones:
@@ -196,23 +198,41 @@ class Reportes
                     $total += $r;
                     $conexiones[$f][25] = $conexiones[$f][25] + $r;
 
-                    if ($r >= $mayor)
-                    {
-                        if ($r == $mayor && $mayor > 0)
-                        {
-                            // Varias celdas mayor
-                            $celda_mayor[] = $f.'_'.$c;
-                        }
-                        else {
-                            // Nueva celda mayor
-                            $celda_mayor = array($f.'_'.$c);
-                        }
-                        $mayor = $r;
-                    }
-
                 }
                 $conexiones[8][$c] = $total_hora;
 
+                if ($total_hora >= $columna_mayor)
+                {
+                	if ($total_hora == $columna_mayor && $columna_mayor > 0)
+                	{
+                		// Varias columnas mayores
+                		$columnas_mayores[] = $c;
+                	}
+                	else {
+                		// Nueva columna mayor
+                		$columnas_mayores = array($c);
+                	}
+                	$columna_mayor = $total_hora;
+                }
+
+            }
+        }
+
+        // Determinar las filas mayores
+        for ($f=1; $f<=7; $f++)
+        {
+        	if ($conexiones[$f][25] >= $fila_mayor)
+            {
+            	if ($conexiones[$f][25] == $fila_mayor && $fila_mayor > 0)
+            	{
+            		// Varias filas mayores
+            		$filas_mayores[] = $f;
+            	}
+            	else {
+            		// Nueva fila mayor
+            		$filas_mayores = array($f);
+            	}
+            	$fila_mayor = $conexiones[$f][25];
             }
         }
 
@@ -220,7 +240,8 @@ class Reportes
         $conexiones[8][25] = $total;
 
         return array('conexiones' => $conexiones,
-        			 'celda_mayor' => $celda_mayor);
+        			 'columnas_mayores' => $columnas_mayores,
+        			 'filas_mayores' => $filas_mayores);
 
 	}
 
