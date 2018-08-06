@@ -40,31 +40,30 @@ $(document).ready(function() {
 		if ( reporte == '2')
 		{
 			if (empresa_id != '0'){
-				getProgramas(empresa_id,pagina_previa);
-				if (pagina_previa!=0) 
-				{
-					getListadoParticipantes(empresa_id, nivel_id, pagina_previa, reporte);
+					getProgramas(empresa_id,pagina_previa);
+					if (pagina_previa!=0) 
+					{
+						getListadoParticipantes(empresa_id, nivel_id, pagina_previa, reporte);
+					}
 				}
-				
-			}
 
-			if (empresa_previa != '0') {
-				getProgramas(empresa_previa,pagina_previa);
-				getListadoParticipantes(empresa_previa, nivel_id, pagina_previa, reporte);
-			}
+				if (empresa_previa != '0') {
+					getProgramas(empresa_previa,pagina_previa);
+					getListadoParticipantes(empresa_previa, nivel_id, pagina_previa, reporte);
+				}
 
-			$('#empresa_id').change(function(){
-				$('#div-active-alert').hide();
-		    	var empresa_id = $(this).val();
-				getProgramas(empresa_id,pagina_id);
-			});
+				$('#empresa_id').change(function(){
+					$('#div-active-alert').hide();
+		    		var empresa_id = $(this).val();
+					getProgramas(empresa_id,pagina_id);
+				});
 
-			$('#programa_id').change(function(){
-				$('#div-active-alert').hide();
-				var pagina_id = $(this).val();
-				var empresa_id = $('#empresa_id').val();
-				getListadoParticipantes(empresa_id, nivel_id, pagina_id, readyeporte);
-			});
+				$('#programa_id').change(function(){
+					$('#div-active-alert').hide();
+					var pagina_id = $(this).val();
+					var empresa_id = $('#empresa_id').val();
+					getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte);
+				});
 		}
 		else
 			if ( reporte == '3')
