@@ -99,6 +99,7 @@ Código del empleado repetido: Employee code repeated
 Columna: Column
 Comentar: Comment
 Comentarios: Comments
+Comparativo hasta el: Comparative until
 Competencia debe ser un valor entero: Competition must be an integer value
 Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
 Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
@@ -324,7 +325,7 @@ Esta plantilla no posee thumbnails en la base de datos: This template does not h
 Estado: Status
 Estatus: Status
 Estatus de las sub-paginas: Sub-pages status
-Estatus de los participantes: Participants status
+Estatus de los participantes de la empresa: Participants status of the company
 este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
 Este logo se mostrará en la página de login: This logo will be shown in login page
@@ -601,11 +602,13 @@ Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send 
 Para ver el detalle del evento puede entrar al siguiente enlace: To see the detail of the event you can enter the following link
 participantes: participants
 participante: participant
-Participantes que han aprobado el programa: Participants who have approved the program
-Participantes que han sido asignados al programa y no han visto alguna de sus lecciones: Participants who have been assigned to the program and have not yet seen some of its lessons
-Participantes que han visto al menos una lección del programa: Participants who have seen at least one lesson of the program
-Participantes que se han logeado al menos una vez en el sistema: Participants who have logged in the system at least once
-Participantes registrados y nunca han entrado sistema: Registered participants and have never entered system
+Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participants who, although they have username and password, have never logged on the platform
+Participantes que han aprobado el último módulo del programa o curso: Participants who have approved the last module of the program or course
+Participantes que han ingresado al programa o curso asignado: Participants who have entered the assigned program or course
+Participantes que se han logueado al menos una vez en la plataforma: Participants who have logged in the system at least once
+Participantes que si bien están activos en la plataforma, no han ingresado al contenido del programa o curso: Participants who, although active on the platform, have not entered the content of the program o course
+Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma: Registered participants into the program who, although they have username and password, have never logged on the platform
+Participantes registrados en el programa que se han logueado al menos una vez en la plataforma: Registered participants into the program who have logged on the platform at least once
 Pdf: Pdf
 PDF requerido: PDF is required
 Perfil de usuario: User profile
@@ -671,7 +674,7 @@ Respuestas comentario seleccionado: Answers selected comment
 Resultado del archivo procesado: Result of the processed file
 Resultados: Results
 Resumen: Summary
-Resumen de registros de participantes en: Summary of records of participants in
+Resumen de registros de participantes en el: Summary of records of participants in the
 Resumen general de registros: General summary of records
 Resumen general de registros por empresa: General summary of records per company
 Rol: Role
@@ -727,6 +730,7 @@ Teléfono de contacto: Contact Number
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails
 Tiempo de duración de la evaluación: Duration of the test
+Tiempo de conexion acumulado: Accumulated connection time
 Tiene muro: Has wall
 Tipo: Type
 Tipo Certificado: Type Certificate
@@ -790,6 +794,7 @@ Vista previa del dashboard: Dashboard preview
 Volver: Back
 Volver al programa: Back to program page
 Volver al inicio: Back to home
+y el: and
 y finaliza el: and ends at
 Yo: Me
 ¿Olvidaste tu contraseña?: Did you forget your password?

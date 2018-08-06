@@ -1,15 +1,72 @@
 <script type="text/javascript">
     jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+        
         var value_arr = value.split('/');
-        value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+        if (value_arr[2].length > 4)
+        {
+            var value_year_arr = value_arr[2].split(' ');
+            var value_year = value_year_arr[0];
+            var value_time = value_year_arr[1];
+            var value_ap = value_year_arr[2];
+            var value_time_arr = value_time.split(':');
+            var value_hour = parseInt(value_time_arr[0]);
+            var value_minute = value_time_arr[1];
+            if (value_ap == 'pm')
+            {
+                if (value_hour < 10)
+                {
+                    value_hour = parseInt(value_hour)+parseInt(12);
+                }
+            }
+            else {
+                if (value_hour == 12)
+                {
+                    value_hour = '00';
+                }
+            }
+            value = value_year+'-'+value_arr[1]+'-'+value_arr[0]+' '+value_hour+':'+value_minute;
+        }
+        else {
+            value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+        }
+        
         var params_value = $(params).val();
         value_arr = params_value.split('/');
-        params_value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+        if (value_arr[2].length > 4)
+        {
+            var value_year_arr = value_arr[2].split(' ');
+            var value_year = value_year_arr[0];
+            var value_time = value_year_arr[1];
+            var value_ap = value_year_arr[2];
+            var value_time_arr = value_time.split(':');
+            var value_hour = parseInt(value_time_arr[0]);
+            var value_minute = value_time_arr[1];
+            if (value_ap == 'pm')
+            {
+                if (value_hour < 10)
+                {
+                    value_hour = parseInt(value_hour)+parseInt(12);
+                }
+            }
+            else {
+                if (value_hour == 12)
+                {
+                    value_hour = '00';
+                }
+            }
+            params_value = value_year+'-'+value_arr[1]+'-'+value_arr[0]+' '+value_hour+':'+value_minute;
+        }
+        else {
+            params_value = value_arr[2]+'-'+value_arr[1]+'-'+value_arr[0];
+        }
+        
         if (!/Invalid|NaN/.test(new Date(value))) {
             return new Date(value) >= new Date(params_value);
         }
         return isNaN(value) && isNaN(params_value) || (Number(value) >= Number(params_value));
+
     },"- {{ 'La fecha final debe ser mayor que la fecha inicial'|trans }}.");
+
     $("#form").validate({
         errorLabelContainer: "#div-error ul",
         wrapper: "li",

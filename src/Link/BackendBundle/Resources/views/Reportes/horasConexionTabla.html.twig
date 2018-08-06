@@ -13,7 +13,7 @@
                             {% if loop.last %}
                                 <th class="totalEnd">{{ conexiones[0][i] }}</th>
                             {% else %}
-                                <th class="{% if i in columnas_mayor %} hourMaxCon{% endif %}">{{ conexiones[0][i] }}</th>
+                                <th class="{% if i in columnas_mayores %} hourMaxCon{% endif %}">{{ conexiones[0][i] }}</th>
                             {% endif %}
                         {% endfor %}
                     </tr>
@@ -23,7 +23,7 @@
                         {% if loop.last %}
                             {% set eo = 'totalEnd' %}
                         {% else %}
-                            {% if f in filas_mayor %}
+                            {% if f in filas_mayores %}
                                 {% set eo = 'dayMaxCon' %}
                             {% else %}
                                 {% set eo = cycle(['odd', 'even'], loop.index) %}
@@ -31,7 +31,7 @@
                         {% endif %}
                         <tr class="{{ eo }}">
                             {% for c in 0..25 %}
-                                {% set class_mayor = (c in columnas_mayor) ? 'hourMaxCon' : '' %}
+                                {% set class_mayor = (c in columnas_mayores) ? 'hourMaxCon' : '' %}
                                 {% if loop.last %}
                                     <td class="totalEnd {{ class_mayor }}">{{ conexiones[f][c] }}</td>
                                 {% else %}
