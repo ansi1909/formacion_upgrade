@@ -55,98 +55,79 @@
 {% block body %}
 {% set encabezado = usuario.empresa ? 'Resumen general de registros'|trans : 'Resumen general de registros por empresa'|trans %}
 
-<br><br>
 <form id="form" name="form" action="{{ path ('_ajaxResumenRegistros') }}" method="POST">
-    <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.'|trans }}">
-    <input type="hidden" id="error-msg-paginas" name="error-msg-paginas" value="{{ 'Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.'|trans }}">
-    <input type="hidden" id="filtro_programas" name="filtro_programas" value="1">
-    <input type="hidden" id="url_programas" name="url_programas" value="{{ path ('_ajaxFiltroProgramas') }}">
-    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
-        <ul></ul>
-    </div>
-    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-server" style="display:none;">
-    </div>
-    <div class="row align-items-center justify-content-between">
-        <div class="col-12 col-sm-12 offset-sm-5 offset-md-5 offset-lg-5 page-title">
-            <h3>{{ encabezado }}</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 offset-sm-5 offset-md-5 offset-lg-5">
-            <div class="card">
-                <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                    <h5 class="card-title">{{ 'Filtro'|trans }}</h5>
-                </div>
-                <div class="card-block">
-                    {% if not usuario.empresa %}
-                        <div class="row">
-                            <div class="col-sm-16 col-md-16 col-lg-16">
-                                <label for="empresa_id" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Empresa'|trans }}</label>
-                                <div class="col-sm-16 col-md-16 col-lg-16">
-                                    <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                        <option value=""></option>
-                                        {% for empresa in empresas %}
-                                            <option value="{{ empresa.id }}">{{ empresa.nombre }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <span class="fa fa-industry"></span>
-                                    <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                    {% else %}
-                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
-                    {% endif %}
-                    <div class="row">
-                        <div class="col-sm-16 col-md-16 col-lg-16">
-                            <label for="empresa_id" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Programa'|trans }}</label>
-                            <div class="col-sm-16 col-md-16 col-lg-16">
-                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="pagina_id" name="pagina_id">
-                                    <option value=""></option>
-                                </select>
-                                <span class="fa fa-file-text-o"></span>
-                                <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png') }}"></span>
-                                <img id="pagina-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            <label for="desde" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha'|trans }}</label>
-                            <div class="col-sm-14 col-md-14 col-lg-14">
-                                <input type="text" class="form-control form_sty1 form_datetime" id="desde" name="desde" placeholder="DD/MM/YYYY" data-date-end-date="0d">
-                                <span class="fa fa-calendar"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="col-sm-16 col-md-16 text-right">
-                        <button type="button" id="search" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Consultar'|trans }}"><span class="fa fa-search"></span></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 }) }}
 </form>
 
 {# Sección de resultados del reporte #}
 <input type="hidden" id="url_img" name="url_img" value="{{ path ('_ajaxSaveImgResumenRegistros') }}">
 <input type="hidden" id="url_pdf" name="url_pdf" value="{{ path('_pdfResumenRegistros') }}">
+<input type="hidden" id="week_beforef" name="week_beforef" value="">
 <input type="hidden" id="nowf" name="nowf" value="">
 <div class="row" id="reporte" style="display:none;">
     <div class="col-sm-16">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Hasta'|trans }}: <span id="label_fecha"></span>.</span></h5>
+                <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Comparativo hasta el'|trans }} <span id="label_desde"></span> {{ 'y el' }}  <span id="label_hasta"></span>.</span></h5>
             </div>
             <div class="card-block">
                 <div id="resultado" style="display:none;">
                     <div class="row justify-content-center reporte" style="display:none;">
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <h6>{{ 'Estatus de los participantes'|trans }}</h6>
+                            <h6>{{ 'Estatus de los participantes de la empresa'|trans }} <span id="label_empresa"></span></h6>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" align="left" class="estado">{{ 'Estado'|trans }}</th>
+                                        <th class="week_before bg-warning text-white" colspan="2">&nbsp;</th>
+                                        <th class="now bg-info text-white" colspan="2">&nbsp;</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-warning text-white">{{ 'Cantidad'|trans }}</th>
+                                        <th class="bg-warning text-white">%</th>
+                                        <th class="bg-info text-white">{{ 'Cantidad'|trans }}</th>
+                                        <th class="bg-info text-white">(%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align:left;">{{ 'Inactivos'|trans }}</td>
+                                        <td class="bg-warning" id="desde_inactivos">0</td>
+                                        <td id="desde_inactivos_pct" class="bg-warning">0</td>
+                                        <td class="bg-info" id="hasta_inactivos">0</td>
+                                        <td id="hasta_inactivos_pct" class="bg-info">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">{{ 'Activos'|trans }}</td>
+                                        <td class="bg-warning" id="desde_activos">0</td>
+                                        <td id="desde_activos_pct" class="bg-warning">0</td>
+                                        <td class="bg-info" id="hasta_activos">0</td>
+                                        <td id="hasta_activos_pct" class="bg-info">0</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:left;" class="total">Total</th>
+                                        <td class="bg-warning" id="desde_total">0</td>
+                                        <td id="desde_total_pct" class="bg-warning">0</td>
+                                        <td class="bg-info" id="hasta_total">0</td>
+                                        <td id="hasta_total_pct" class="bg-info">0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="leyenda">
+                                <small><b>{{ 'Activos' }}:</b> {{ 'Participantes que se han logueado al menos una vez en la plataforma'|trans }}.</small><br>
+                                <small><b>{{ 'Inactivos' }}:</b> {{ 'Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma'|trans }}.</small>
+                            </div>
+                        </div>
+                        <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
+                            <div class="canvasCont" id="canvasCont1">
+                                <canvas class="barChart" id="chart1"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row justify-content-center reporte" style="display:none;">
+                        <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
+                            <h6>{{ 'Resumen de registros de participantes del'|trans }} <span class="label_programa"></span></h6>
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -186,20 +167,20 @@
                                 </tbody>
                             </table>
                             <div class="leyenda">
-                                <small><b>{{ 'Activos' }}:</b>{{ 'Participantes que se han logeado al menos una vez en el sistema'|trans }}.</small><br>
-                                <small><b>{{ 'Inactivos' }}:</b>{{ 'Participantes registrados y nunca han entrado sistema'|trans }}.</small>
+                                <small><b>{{ 'Activos' }}:</b> {{ 'Participantes registrados en el programa que se han logueado al menos una vez en la plataforma'|trans }}.</small><br>
+                                <small><b>{{ 'Inactivos' }}:</b> {{ 'Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma'|trans }}.</small>
                             </div>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <div class="canvasCont" id="canvasCont1">
-                                <canvas class="barChart" id="chart1"></canvas>
+                            <div class="canvasCont" id="canvasCont2">
+                                <canvas class="barChart" id="chart2"></canvas>
                             </div>
                         </div>
                     </div>
                     <br><br>
                     <div class="row justify-content-center reporte" style="display:none;">
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <h6>{{ 'Resumen de registros de participantes en'|trans }} <span id="label_programa"></span></h6>
+                            <h6>{{ 'Resumen de registros de participantes en el'|trans }} <span class="label_programa"></span></h6>
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -232,14 +213,14 @@
                                 </tbody>
                             </table>
                             <div class="leyenda">
-                                <small><b>{{ 'No iniciados' }}:</b>{{ 'Participantes que han sido asignados al programa y no han visto alguna de sus lecciones'|trans }}.</small><br>
-                                <small><b>{{ 'En curso' }}:</b>{{ 'Participantes que han visto al menos una lección del programa'|trans }}.</small><br>
-                                <small><b>{{ 'Aprobados' }}:</b>{{ 'Participantes que han aprobado el programa'|trans }}.</small>
+                                <small><b>{{ 'No iniciados' }}:</b> {{ 'Participantes que si bien están activos en la plataforma, no han ingresado al contenido del programa o curso'|trans }}.</small><br>
+                                <small><b>{{ 'En curso' }}:</b> {{ 'Participantes que han ingresado al programa o curso asignado'|trans }}.</small><br>
+                                <small><b>{{ 'Aprobados' }}:</b> {{ 'Participantes que han aprobado el último módulo del programa o curso'|trans }}.</small>
                             </div>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <div class="canvasCont" id="canvasCont2">
-                                <canvas class="barChart" id="chart2"></canvas>
+                            <div class="canvasCont" id="canvasCont3">
+                                <canvas class="barChart" id="chart3"></canvas>
                             </div>
                         </div>
                     </div>
@@ -284,8 +265,8 @@
                             </table>
                         </div>
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8">
-                            <div class="canvasCont" id="canvasCont3">
-                                <canvas class="barChart" id="chart3"></canvas>
+                            <div class="canvasCont" id="canvasCont4">
+                                <canvas class="barChart" id="chart4"></canvas>
                             </div>
                         </div>
                     </div>

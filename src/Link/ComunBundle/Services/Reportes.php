@@ -538,15 +538,26 @@ class Reportes
 
         // La respuesta viene formada por las cantidades de registros por día de semana separado por __
         $r_arr = explode("__", $r[0]['resultado']);
+        $resultados['desde_activos'] = (int) $r_arr[5];
+        $resultados['desde_inactivos'] = (int) $r_arr[6];
         $resultados['week_before_activos'] = (int) $r_arr[0];
         $resultados['week_before_inactivos'] = (int) $r_arr[1];
         $resultados['week_before_no_iniciados'] = (int) $r_arr[2];
         $resultados['week_before_en_curso'] = (int) $r_arr[3];
         $resultados['week_before_aprobados'] = (int) $r_arr[4];
+        $resultados['desde_total'] = $resultados['desde_activos'] + $resultados['desde_inactivos'];
         $resultados['week_before_total1'] = $resultados['week_before_activos'] + $resultados['week_before_inactivos'];
         $resultados['week_before_total2'] = $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
         $resultados['week_before_total3'] = $resultados['week_before_inactivos'] + $resultados['week_before_no_iniciados'] + $resultados['week_before_en_curso'] + $resultados['week_before_aprobados'];
         
+        $desde_inactivos_pct = $resultados['desde_total'] != 0 ? ($resultados['desde_inactivos']/$resultados['desde_total'])*100 : '-';
+        $resultados['desde_inactivos_pct'] = $desde_inactivos_pct != '-' ? number_format($desde_inactivos_pct, 0) : $desde_inactivos_pct;
+
+        $desde_activos_pct = $resultados['desde_total'] != 0 ? ($resultados['desde_activos']/$resultados['desde_total'])*100 : '-';
+        $resultados['desde_activos_pct'] = $desde_activos_pct != '-' ? number_format($desde_activos_pct, 0) : $desde_activos_pct;
+
+        $resultados['desde_total_pct'] = $resultados['desde_total'] != 0 ? 100 : '-';
+
         $week_before_inactivos_pct = $resultados['week_before_total1'] != 0 ? ($resultados['week_before_inactivos']/$resultados['week_before_total1'])*100 : '-';
         $resultados['week_before_inactivos_pct'] = $week_before_inactivos_pct != '-' ? number_format($week_before_inactivos_pct, 0) : $week_before_inactivos_pct;
         
@@ -567,14 +578,25 @@ class Reportes
 
         // La respuesta viene formada por las cantidades de registros por día de semana separado por __
         $r_arr = explode("__", $r[0]['resultado']);
+        $resultados['hasta_activos'] = (int) $r_arr[5];
+        $resultados['hasta_inactivos'] = (int) $r_arr[6];
         $resultados['now_activos'] = (int) $r_arr[0];
         $resultados['now_inactivos'] = (int) $r_arr[1];
         $resultados['now_no_iniciados'] = (int) $r_arr[2];
         $resultados['now_en_curso'] = (int) $r_arr[3];
         $resultados['now_aprobados'] = (int) $r_arr[4];
+        $resultados['hasta_total'] = $resultados['hasta_activos'] + $resultados['hasta_inactivos'];
         $resultados['now_total1'] = $resultados['now_activos'] + $resultados['now_inactivos'];
         $resultados['now_total2'] = $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
         $resultados['now_total3'] = $resultados['now_inactivos'] + $resultados['now_no_iniciados'] + $resultados['now_en_curso'] + $resultados['now_aprobados'];
+
+        $hasta_inactivos_pct = $resultados['hasta_total'] != 0 ? ($resultados['hasta_inactivos']/$resultados['hasta_total'])*100 : '-';
+        $resultados['hasta_inactivos_pct'] = $hasta_inactivos_pct != '-' ? number_format($hasta_inactivos_pct, 0) : $hasta_inactivos_pct;
+
+        $hasta_activos_pct = $resultados['hasta_total'] != 0 ? ($resultados['hasta_activos']/$resultados['hasta_total'])*100 : '-';
+        $resultados['hasta_activos_pct'] = $hasta_activos_pct != '-' ? number_format($hasta_activos_pct, 0) : $hasta_activos_pct;
+
+        $resultados['hasta_total_pct'] = $resultados['hasta_total'] != 0 ? 100 : '-';
         
         $now_inactivos_pct = $resultados['now_total1'] != 0 ? ($resultados['now_inactivos']/$resultados['now_total1'])*100 : '-';
         $resultados['now_inactivos_pct'] = $now_inactivos_pct != '-' ? number_format($now_inactivos_pct, 0) : $now_inactivos_pct;

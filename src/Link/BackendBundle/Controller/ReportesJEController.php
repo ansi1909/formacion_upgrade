@@ -270,12 +270,12 @@ class ReportesJEController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fn = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
-        $excel = $request->request->get('excel');
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
@@ -288,119 +288,109 @@ class ReportesJEController extends Controller
 
         $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
 
-        if ($excel)
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/evaluacionesModulo.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+        // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Evaluaciones por módulo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+
+        if (!count($listado))
         {
+            $objWorksheet->mergeCells('A5:S5');
+            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+        }
+        else {
 
-            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/evaluacionesModulo.xlsx';
-            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-
-            // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Evaluaciones por módulo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
-            $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
-
-            if (!count($listado))
-            {
-                $objWorksheet->mergeCells('A5:S5');
-                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
-            }
-            else {
-
-                $row = 5;
-                $i = 0;
-                $styleThinBlackBorderOutline = array(
-                    'borders' => array(
-                        'allborders' => array(
-                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                            'color' => array('argb' => 'FF000000'),
-                        ),
+            $row = 5;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
                     ),
-                );
-                $font_size = 11;
-                $font = 'Arial';
-                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
-                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                ),
+            );
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
 
-                foreach ($listado as $participante)
+            foreach ($listado as $participante)
+            {
+
+                $limit_iterations = count($participante['evaluaciones'])-1;
+                $limit_row = $row+$limit_iterations;
+
+                // Estilizar las celdas antes de un posible merge
+                for ($f=$row; $f<=$limit_row; $f++)
                 {
+                    $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
+                }
 
-                    $limit_iterations = count($participante['evaluaciones'])-1;
-                    $limit_row = $row+$limit_iterations;
-
-                    // Estilizar las celdas antes de un posible merge
-                    for ($f=$row; $f<=$limit_row; $f++)
+                if ($limit_iterations > 0)
+                {
+                    // Merge de las celdas
+                    for ($c=0; $c<=13; $c++)
                     {
-                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
+                        $col = $columnNames[$c];
+                        $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
                     }
+                }
 
-                    if ($limit_iterations > 0)
-                    {
-                        // Merge de las celdas
-                        for ($c=0; $c<=13; $c++)
-                        {
-                            $col = $columnNames[$c];
-                            $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
-                        }
-                    }
+                // Datos de las columnas comunes
+                $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('G'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('M'.$row, $participante['fecha_inicio_programa']);
+                $objWorksheet->setCellValue('N'.$row, $participante['hora_inicio_programa']);
 
-                    // Datos de las columnas comunes
-                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
-                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
-                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
-                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                    $objWorksheet->setCellValue('F'.$row, $participante['correo']);
-                    $objWorksheet->setCellValue('G'.$row, $participante['pais']);
-                    $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
-                    $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
-                    $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
-                    $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
-                    $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                    $objWorksheet->setCellValue('M'.$row, $participante['fecha_inicio_programa']);
-                    $objWorksheet->setCellValue('N'.$row, $participante['hora_inicio_programa']);
-
-                    // Datos de las evaluaciones
-                    foreach ($participante['evaluaciones'] as $evaluacion)
-                    {
-                        $objWorksheet->setCellValue('O'.$row, $evaluacion['evaluacion']);
-                        $objWorksheet->setCellValue('P'.$row, $evaluacion['estado']);
-                        $objWorksheet->setCellValue('Q'.$row, $evaluacion['nota']);
-                        $objWorksheet->setCellValue('R'.$row, $evaluacion['fecha_inicio_prueba']);
-                        $objWorksheet->setCellValue('S'.$row, $evaluacion['hora_inicio_prueba']);
-                        $row++;
-                    }
-
+                // Datos de las evaluaciones
+                foreach ($participante['evaluaciones'] as $evaluacion)
+                {
+                    $objWorksheet->setCellValue('O'.$row, $evaluacion['evaluacion']);
+                    $objWorksheet->setCellValue('P'.$row, $evaluacion['estado']);
+                    $objWorksheet->setCellValue('Q'.$row, $evaluacion['nota']);
+                    $objWorksheet->setCellValue('R'.$row, $evaluacion['fecha_inicio_prueba']);
+                    $objWorksheet->setCellValue('S'.$row, $evaluacion['hora_inicio_prueba']);
+                    $row++;
                 }
 
             }
 
-            // Crea el writer
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/evaluacionesModulo'.$session->get('sesion_id').'.xls';
-            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
-            $writer->save($xls);
-
-            $archivo = $this->container->getParameter('folders')['uploads'].$path;
-            $html = '';
-
         }
-        else {
 
-            $archivo = '';
-            $html = $this->renderView('LinkBackendBundle:Reportes:evaluacionesModuloTabla.html.twig', array('listado' => $listado,
-                                                                                                            'empresa' => $empresa->getNombre(),
-                                                                                                            'programa' => $pagina->getNombre()));
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+        $path = 'recursos/reportes/evaluacionesModulo'.$session->get('sesion_id').'.xls';
+        $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+        $writer->save($xls);
 
-        }
+        $archivo = $this->container->getParameter('folders')['uploads'].$path;
+        $document_name = 'evaluacionesModulo'.$session->get('sesion_id').'.xls';
+        $bytes = filesize($xls);
+        $document_size = $fn->fileSizeConvert($bytes);
         
         $return = array('archivo' => $archivo,
-                        'html' => $html);
+                        'document_name' => $document_name,
+                        'document_size' => $document_size);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -452,8 +442,10 @@ class ReportesJEController extends Controller
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desde = $request->request->get('desde');
+        $hasta = $request->request->get('hasta');
         $excel = $request->request->get('excel');
 
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $desde_arr = explode(" ", $desde);
@@ -480,21 +472,43 @@ class ReportesJEController extends Controller
                 $h = '0'.$h;
             }
         }
-        $now = "$a-$m-$d $h:$min:59";
+        $desdef = "$a-$m-$d $h:$min:59";
 
-        $datetime = new \DateTime($now);
-        $datetime->modify('-7 day');
-        $week_before = $datetime->format("Y-m-d H:i:s");
+        $hasta_arr = explode(" ", $hasta);
+        list($d, $m, $a) = explode("/", $hasta_arr[0]);
+        $time = explode(":", $hasta_arr[1]);
+        $h = (int) $time[0];
+        $min = $time[1];
+        if ($hasta_arr[2] == 'pm')
+        {
+            if ($h != 12)
+            {
+                // Se le suman 12 horas
+                $h += 12;
+            }
+        }
+        else {
+            if ($h == 12)
+            {
+                // Es la hora 0
+                $h = '00';
+            }
+            elseif ($h < 10) {
+                // Valor en dos caracteres
+                $h = '0'.$h;
+            }
+        }
+        $hastaf = "$a-$m-$d $h:$min:59";
 
-        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $week_before, $now);
-
+        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf);
         
         $return = array('reporte' => $reporte,
-                        'week_before' => $this->get('translator')->trans('Al').' '.$datetime->format("d/m/Y h:i a"),
-                        'now' => $this->get('translator')->trans('Al').' '.$desde,
-                        'week_beforef' => $week_before,
-                        'nowf' => $now,
-                        'programa' => $pagina->getNombre());
+                        'week_before' => $this->get('translator')->trans('Al').' '.$desde,
+                        'now' => $this->get('translator')->trans('Al').' '.$hasta,
+                        'week_beforef' => $desdef,
+                        'nowf' => $hastaf,
+                        'empresa' => $empresa->getNombre(),
+                        'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -532,7 +546,7 @@ class ReportesJEController extends Controller
 
     }
 
-    public function pdfResumenRegistrosAction($empresa_id, $pagina_id, $now, Request $request)
+    public function pdfResumenRegistrosAction($empresa_id, $pagina_id, $desdef, $hastaf, Request $request)
     {
         
         $rs = $this->get('reportes');
@@ -541,12 +555,13 @@ class ReportesJEController extends Controller
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
-        $datetime = new \DateTime($now);
+        $datetime = new \DateTime($desdef);
         $desde = $datetime->format("d/m/Y h:i a");
-        $datetime->modify('-7 day');
-        $week_before = $datetime->format("Y-m-d H:i:s");
+        
+        $datetime = new \DateTime($hastaf);
+        $hasta = $datetime->format("d/m/Y h:i a");
 
-        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $week_before, $now);
+        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf);
 
         $path1 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_1.png';
         $src1 = $this->container->getParameter('folders')['dir_uploads'].$path1;
@@ -557,14 +572,24 @@ class ReportesJEController extends Controller
         $path3 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_3.png';
         $src3 = $this->container->getParameter('folders')['dir_uploads'].$path3;
 
-        $html = $this->renderView('LinkBackendBundle:Reportes:pdfResumenRegistros.html.twig', array('reporte' => $reporte,
-                                                                                                    'week_before' => $this->get('translator')->trans('Al').' '.$datetime->format("d/m/Y h:i a"),
-                                                                                                    'now' => $this->get('translator')->trans('Al').' '.$desde,
-                                                                                                    'programa' => $pagina->getNombre(),
-                                                                                                    'empresa' => $empresa->getNombre(),
-                                                                                                    'src' => array('src1' => $src1,
-                                                                                                                   'src2' => $src2,
-                                                                                                                   'src3' => $src3)));
+        $path4 = 'recursos/reportes/resumenRegistros'.$session->get('sesion_id').'_4.png';
+        $src4 = $this->container->getParameter('folders')['dir_uploads'].$path4;
+
+        $html1 = $this->renderView('LinkBackendBundle:Reportes:pdfResumenRegistrosPage1.html.twig', array('reporte' => $reporte,
+                                                                                                          'week_before' => $this->get('translator')->trans('Al').' '.$desde,
+                                                                                                          'now' => $this->get('translator')->trans('Al').' '.$hasta,
+                                                                                                          'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
+                                                                                                          'empresa' => $empresa->getNombre(),
+                                                                                                          'src' => array('src1' => $src1,
+                                                                                                                         'src2' => $src2)));
+
+        $html2 = $this->renderView('LinkBackendBundle:Reportes:pdfResumenRegistrosPage2.html.twig', array('reporte' => $reporte,
+                                                                                                          'week_before' => $this->get('translator')->trans('Al').' '.$desde,
+                                                                                                          'now' => $this->get('translator')->trans('Al').' '.$hasta,
+                                                                                                          'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
+                                                                                                          'empresa' => $empresa->getNombre(),
+                                                                                                          'src' => array('src3' => $src3,
+                                                                                                                         'src4' => $src4)));
 
         $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
         $header_footer = '<page_header> 
@@ -580,8 +605,8 @@ class ReportesJEController extends Controller
                             </page_footer>';
         $pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 5, 5, 8));
         $pdf->pdf->SetDisplayMode('fullpage');
-        $pdf->writeHtml('<page>'.$header_footer.$html.'</page>');
-        //$pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
+        $pdf->writeHtml('<page>'.$header_footer.$html1.'</page>');
+        $pdf->writeHtml('<page pageset="old">'.$html2.'</page>');
 
         //Generamos el PDF
         $pdf->output('resumen_registros.pdf');
@@ -590,5 +615,3 @@ class ReportesJEController extends Controller
 
     
 }
-
-// Manos de piedra: 34:57, 37:45

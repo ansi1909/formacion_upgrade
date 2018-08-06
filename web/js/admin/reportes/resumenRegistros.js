@@ -21,6 +21,14 @@ $(document).ready(function() {
     	renderIntoImage();
     });
 
+    // Suprimir el datePicker para transformarlo en dateTimePicker
+    $('.datePicker').datepicker("destroy");
+    $('.datePicker').each(function(){
+        var input = $(this);
+        input.removeClass('datePicker');
+        input.addClass('form_datetime');
+    });
+
     $('.form_datetime').datetimepicker({
         language:  'es',
         todayBtn:  true,
@@ -35,51 +43,119 @@ $(document).ready(function() {
 
 function mostrarReporte(data)
 {
-	$('#label_fecha').html($('#desde').val());
+	$('#label_desde').html($('#desde').val());
+    $('#label_hasta').html($('#hasta').val());
 	$('#label_filtro').show();
 	$('#resultado').show();
 	
 	console.log(data);
 	
+    $('#label_empresa').html(data.empresa);
+    $('.label_programa').html(data.programa);
 	$('.week_before').html(data.week_before);
 	$('.now').html(data.now);
+
+    $('#desde_inactivos').html(data.reporte['desde_inactivos']);
+    $('#desde_inactivos_pct').html(data.reporte['desde_inactivos_pct']);
+    $('#hasta_inactivos').html(data.reporte['hasta_inactivos']);
+    $('#hasta_inactivos_pct').html(data.reporte['hasta_inactivos_pct']);
+
+    $('#desde_activos').html(data.reporte['desde_activos']);
+    $('#desde_activos_pct').html(data.reporte['desde_activos_pct']);
+    $('#hasta_activos').html(data.reporte['hasta_activos']);
+    $('#hasta_activos_pct').html(data.reporte['hasta_activos_pct']);
+
+    $('#desde_total').html(data.reporte['desde_total']);
+    $('#desde_total_pct').html(data.reporte['desde_total_pct']);
+    $('#hasta_total').html(data.reporte['hasta_total']);
+    $('#hasta_total_pct').html(data.reporte['hasta_total_pct']);
+
 	$('.week_before_inactivos').html(data.reporte['week_before_inactivos']);
 	$('#week_before_inactivos_pct').html(data.reporte['week_before_inactivos_pct']);
 	$('.now_inactivos').html(data.reporte['now_inactivos']);
 	$('#now_inactivos_pct').html(data.reporte['now_inactivos_pct']);
+
 	$('.week_before_activos').html(data.reporte['week_before_activos']);
 	$('#week_before_activos_pct').html(data.reporte['week_before_activos_pct']);
 	$('.now_activos').html(data.reporte['now_activos']);
 	$('#now_activos_pct').html(data.reporte['now_activos_pct']);
+
 	$('.week_before_total1').html(data.reporte['week_before_total1']);
 	$('#week_before_total1_pct').html(data.reporte['week_before_total1_pct']);
 	$('.now_total1').html(data.reporte['now_total1']);
 	$('#now_total1_pct').html(data.reporte['now_total1_pct']);
+
 	$('.week_before_no_iniciados').html(data.reporte['week_before_no_iniciados']);
 	$('.now_no_iniciados').html(data.reporte['now_no_iniciados']);
 	$('.week_before_en_curso').html(data.reporte['week_before_en_curso']);
 	$('.now_en_curso').html(data.reporte['now_en_curso']);
 	$('.week_before_aprobados').html(data.reporte['week_before_aprobados']);
 	$('.now_aprobados').html(data.reporte['now_aprobados']);
+
 	$('#week_before_total2').html(data.reporte['week_before_total2']);
 	$('#now_total2').html(data.reporte['now_total2']);
 	$('#week_before_total3').html(data.reporte['week_before_total3']);
 	$('#now_total3').html(data.reporte['now_total3']);
-	$('#label_programa').html(data.programa);
 
 	$('.reporte').show();
 
-    var now_inactivos_pct = data.reporte['now_inactivos_pct'] != '-' ? data.reporte['now_inactivos_pct'] : 0;
-    var now_activos_pct = data.reporte['now_activos_pct'] != '-' ? data.reporte['now_activos_pct'] : 0;
-
-	// Gráfico 1
-	var datos1 = {
+    // Gráfico 1
+    var hasta_inactivos_pct = data.reporte['hasta_inactivos_pct'] != '-' ? data.reporte['hasta_inactivos_pct'] : 0;
+    var hasta_activos_pct = data.reporte['hasta_activos_pct'] != '-' ? data.reporte['hasta_activos_pct'] : 0;
+    var datos1 = {
         type: "pie",
         data: {
             datasets: [{
                 data: [
-                	data.reporte['now_inactivos_pct'],
-                	data.reporte['now_activos_pct']
+                    hasta_inactivos_pct,
+                    hasta_activos_pct
+                ],
+                backgroundColor: ["#0070c0", "#ed7d31"],
+            }],
+            labels: ['Inactivos', 'Activos']
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'right'
+            },
+            title: {
+                display: true,
+                text: 'Estatus de los participantes de la empresa '+data.empresa+' '+data.now,
+                position: 'top',
+                fontSize: 14
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data1) {
+                        var label = data1.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '0';
+                        if (label) {
+                            label += '%';
+                        }
+                        return label;
+                    }
+                }
+            },
+            pieceLabel: {
+              render: 'percentage',
+              fontColor: ['white', 'white']
+            }
+        }
+    };
+    var canvas1 = document.querySelector('#chart1').getContext('2d');
+    window.pie1 = new Chart(canvas1, datos1);
+
+	// Gráfico 2
+    var now_inactivos_pct = data.reporte['now_inactivos_pct'] != '-' ? data.reporte['now_inactivos_pct'] : 0;
+    var now_activos_pct = data.reporte['now_activos_pct'] != '-' ? data.reporte['now_activos_pct'] : 0;
+	var datos2 = {
+        type: "pie",
+        data: {
+            datasets: [{
+                data: [
+                	now_inactivos_pct,
+                	now_activos_pct
                 ],
                 backgroundColor: ["#0070c0", "#ed7d31"],
             }],
@@ -93,14 +169,14 @@ function mostrarReporte(data)
             },
             title: {
             	display: true,
-            	text: 'Estatus de Participantes '+data.now,
+            	text: 'Resumen de registros de participantes del '+data.programa+' '+data.now,
             	position: 'top',
             	fontSize: 14
             },
             tooltips: {
 	            callbacks: {
-	                label: function(tooltipItem, data1) {
-	                	var label = data1.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '0';
+	                label: function(tooltipItem, data2) {
+	                	var label = data2.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '0';
 	                    if (label) {
 	                        label += '%';
 	                    }
@@ -114,11 +190,11 @@ function mostrarReporte(data)
 	        }
         }
     };
-    var canvas1 = document.querySelector('#chart1').getContext('2d');
-    window.pie1 = new Chart(canvas1, datos1);
+    var canvas2 = document.querySelector('#chart2').getContext('2d');
+    window.pie2 = new Chart(canvas2, datos2);
 
-    // Gráfico 2
-	var datos2 = {
+    // Gráfico 3
+	var datos3 = {
         type: "pie",
         data: {
             datasets: [{
@@ -145,8 +221,8 @@ function mostrarReporte(data)
             },
             tooltips: {
 	            callbacks: {
-	                label: function(tooltipItem, data1) {
-	                	var label = data1.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '0';
+	                label: function(tooltipItem, data3) {
+	                	var label = data3.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '0';
 	                    return label;
 	                }
 	            }
@@ -157,11 +233,11 @@ function mostrarReporte(data)
 	        }
         }
     };
-    var canvas2 = document.querySelector('#chart2').getContext('2d');
-    window.pie2 = new Chart(canvas2, datos2);
+    var canvas3 = document.querySelector('#chart3').getContext('2d');
+    window.pie3 = new Chart(canvas3, datos3);
 
-    // Gráfico 3
-	var datos3 = {
+    // Gráfico 4
+	var datos4 = {
         type: "horizontalBar",
         data: {
         	labels: ['Inactivos', 'No iniciados', 'En curso', 'Aprobados'],
@@ -194,7 +270,7 @@ function mostrarReporte(data)
             responsive: true,
             title: {
             	display: true,
-            	text: 'Estatus de los participantes',
+            	text: 'Estatus de los participantes de la empresa '+data.empresa,
             	position: 'top',
             	fontSize: 14
             },
@@ -238,9 +314,10 @@ function mostrarReporte(data)
 		    }
         }
     };
-    var canvas3 = document.querySelector('#chart3').getContext('2d');
-    window.pie3 = new Chart(canvas3, datos3);
+    var canvas4 = document.querySelector('#chart4').getContext('2d');
+    window.pie4 = new Chart(canvas4, datos4);
    	
+    $('#week_beforef').val(data.week_beforef);
    	$('#nowf').val(data.nowf);
 
 }
@@ -248,7 +325,7 @@ function mostrarReporte(data)
 const renderIntoImage = () => {
 
 	// Función que transforma el gráfico en imagen
-	for (var i=1; i<=3; i++)
+	for (var i=1; i<=4; i++)
 	{
 
 
@@ -264,7 +341,7 @@ const renderIntoImage = () => {
 			dataType: "json",
 			success: function(response) {
 				$('#pdf-loader').hide();
-				var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#pagina_id').val()+'/'+$('#nowf').val();
+				var href = $("#url_pdf").val()+'/'+$('#empresa_id').val()+'/'+$('#pagina_id').val()+'/'+$('#week_beforef').val()+'/'+$('#nowf').val();
 	        	$("#pdf-link").attr("href", href);
 	        	$('#pdf-link').show();
 			},
