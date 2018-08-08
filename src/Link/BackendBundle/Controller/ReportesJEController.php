@@ -497,6 +497,9 @@ class ReportesJEController extends Controller
         $hastaf = "$a-$m-$d $h:$min:59";
 
         $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf);
+
+        $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
+                                                                                                    'empresa' => $empresa_id));
         
         $return = array('reporte' => $reporte,
                         'week_before' => $this->get('translator')->trans('Al').' '.$desde,
@@ -504,7 +507,9 @@ class ReportesJEController extends Controller
                         'week_beforef' => $desdef,
                         'nowf' => $hastaf,
                         'empresa' => $empresa->getNombre(),
-                        'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre());
+                        'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
+                        'fecha_inicio' => $pagina_empresa->getFechaInicio()->format('d/m/Y'),
+                        'fecha_vencimiento' => $pagina_empresa->getFechaVencimiento()->format('d/m/Y'));
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

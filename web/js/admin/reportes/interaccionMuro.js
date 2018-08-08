@@ -77,36 +77,19 @@ function mostrarReporte(data)
 	$('#label_desde').html($('#desde').val());
 	$('#label_hasta').html($('#hasta').val());
 	$('#label_filtro').show();
-	$('#resultado').html(data.html);
+	$('#archivo').val(data.archivo);
+	$('#document_name').html(data.document_name);
+	$('#document_size').html(data.document_size);
 	$('#resultado').show();
-	observe();
+	observeArchivo();
 	
 	console.log(data);
 
 }
 
-function observe()
+function observeArchivo()
 {
-	$('#excel').click(function(){
-    	$('#excel').hide();
-    	$('#excel-loader').show();
-    	$.ajax({
-			type: "POST",
-			url: $('#form').attr('action'),
-			async: true,
-			data: $("#form").serialize()+'&excel=1',
-			dataType: "json",
-			success: function(data) {
-				$('#excel-loader').hide();
-	        	$("#excel-link").attr("href", data.archivo);
-	        	$('#excel-link').show();
-			},
-			error: function(){
-				$('#div-error-server').html($('#error-msg').val());
-				notify($('#div-error-server').html());
-				$('.descargable').hide();
-    			$('.generable').show();
-			}
-		});
+	$('#resultado').click(function(){
+    	window.open($('#archivo').val(), '_blank');
     });
 }

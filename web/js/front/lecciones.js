@@ -11,6 +11,9 @@ $(document).ready(function() {
 	$('.circle-nav').click(function(){
 
 		var circle_nav = $(this);
+		$('video').trigger('pause');
+		$('audio').trigger('pause');
+
 		// Se suprime el css circle-less-viendo
 		if (circle_nav.attr('id') != $('#tab_activo').val())
 		{

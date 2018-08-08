@@ -49,8 +49,6 @@ class PaginaController extends Controller
 
         $paginas = $f->paginas($pages);
 
-        //return new Response(var_dump($paginas));
-
         return $this->render('LinkBackendBundle:Pagina:index.html.twig', array('paginas' => $paginas));
 
     }
@@ -392,7 +390,7 @@ class PaginaController extends Controller
         $nombre = $request->request->get('nombre');
 
         // Llamada a la función de BD que duplica la página
-        $query = $em->getConnection()->prepare('SELECT
+        /*$query = $em->getConnection()->prepare('SELECT
                                                 fnduplicar_pagina(:ppagina_id, :pnombre, :pusuario_id, :pfecha) as
                                                 resultado;');
         $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
@@ -403,10 +401,12 @@ class PaginaController extends Controller
         $r = $query->fetchAll();
 
         // La respuesta viene formada por Inserts__newIdPaginaPadre
-        $r_arr = explode("__", $r[0]['resultado']);
+        $r_arr = explode("__", $r[0]['resultado']);*/
+
+        $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id']);
         
-        $return = array('id' => $r_arr[1],
-                        'inserts' => $r_arr[0]);
+        /*$return = array('id' => $r_arr[1],
+                        'inserts' => $r_arr[0]);*/
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

@@ -1907,6 +1907,11 @@ a.active {
       color: #AAAFB3; }
       .nav-lesson .ul-items li span a {
         display: inline-block; }
+  .nav-lesson .ulItemsAprob {
+    list-style: none; }
+    .nav-lesson .ulItemsAprob::before li {
+      color: #CFE65C;
+      content: url; }
 
 .nav-lesson #pills-tabContent {
   transition: all .5s ease;

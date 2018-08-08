@@ -202,11 +202,58 @@ class ReportesJTController extends Controller
         {
 
         $archivo = '';
-        $html = $this->renderView('LinkBackendBundle:Reportes:avanceProgramasTabla.html.twig', 
-                                array('listado' => $listado,
-                                      'empresa' => $empresa->getNombre(),
-                                      'programa' => $pagina->getNombre()
-                                      ));
+        // $html = $this->renderView('LinkBackendBundle:Reportes:avanceProgramasTabla.html.twig', 
+        //                         array('listado' => $listado,
+        //                               'empresa' => $empresa->getNombre(),
+        //                               'programa' => $pagina->getNombre()
+        //                               ));
+
+
+                  $html = '<table class="table" id="avanceProgramasTable">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Código').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Hora inicio').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Hora fin').'</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: .7rem;">';
+        
+        foreach ($listado as $registro)
+        {
+           
+            $html .= '<tr>
+                        <td>'.$registro['codigo'].'</td>
+                        <td>'.$registro['login'].'</td>
+                        <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
+                        <td>'.$registro['correo_corporativo'].'</td>
+                        <td>'.$registro['nivel'].'</td>
+                        <td>'.$registro['fecha_registro'].'</td>
+                        <td>'.$registro['modulos'].'</td>
+                        <td>'.$registro['materias'].'</td>
+                        <td>'.$registro['promedio'].'</td>
+                        <td>'.$registro['fecha_inicio_programa'].'</td>
+                        <td>'.$registro['hora_inicio_programa'].'</td>
+                        <td>'.$registro['fecha_fin_programa'].'</td>
+                        <td>'.$registro['hora_fin_programa'].'</td>
+                    </tr>';
+        }
+
+        $html .= '</tbody>
+                </table>';
+        $archivo = '';
         }
 
 
@@ -331,11 +378,45 @@ class ReportesJTController extends Controller
         else
         {
 
+                // $archivo = '';
+                // $html = $this->renderView('LinkBackendBundle:Reportes:conexionesUsuarioTable.html.twig', 
+                //                         array('listado' => $listado,
+                //                               'empresa' => $empresa->getNombre()
+                //                               ));
+
+                  $html = '<table class="table" id="conexionesUsuarioTable">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Código').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Cantidad de conexiones').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Tiempo de conexion acumulado').'</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: .7rem;">';
+        
+        foreach ($listado as $registro)
+        {
+           
+            $html .= '<tr>
+                        <td>'.$registro['codigo'].'</td>
+                        <td>'.$registro['login'].'</td>
+                        <td>'.$registro['nombre'].'</td>
+                        <td>'.$registro['correo_corporativo'].'</td>
+                        <td>'.$registro['nivel'].'</td>
+                        <td>'.$registro['fecha_registro'].'</td>
+                        <td>'.$registro['visitas'].'</td>
+                        <td>'.$registro['promedio'].'</td>
+                    </tr>';
+        }
+
+        $html .= '</tbody>
+                </table>';
         $archivo = '';
-        $html = $this->renderView('LinkBackendBundle:Reportes:conexionesUsuarioTable.html.twig', 
-                                array('listado' => $listado,
-                                      'empresa' => $empresa->getNombre()
-                                      ));
         }
 
 

@@ -130,111 +130,53 @@ class DefaultController extends Controller
 
                 $usuarioS = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
-                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                           JOIN pe.pagina p
-                                           WHERE pe.empresa = :empresa_id
-                                           AND p.pagina IS NULL')
-                            ->setParameter('empresa_id', $usuarioS->getEmpresa()->getId());
-                $paginas_db = $query->getResult();
+                $usuarios_activos=0;
+                $usuarios_inactivos=0;
+                $usuarios_registrados=0;
 
-                $query = $em->createQuery('SELECT  ru FROM LinkComunBundle:AdminRolUsuario ru
-                                           JOIN ru.usuario u
-                                           WHERE u.empresa = :empresa_id
-                                           AND ru.rol = :rol')
-                            ->setParameters(array('empresa_id' => $usuarioS->getEmpresa()->getId(),
-                                                  'rol' => '2'));
-                $usuarios_db = $query->getResult();
+                $query = $em->getConnection()->prepare('SELECT
+                                                fnreporte_general2(:re, :pempresa_id) as
+                                                resultado; fetch all from re;');
+                $re = 're';
+                $query->bindValue(':re', $re, \PDO::PARAM_STR);
+                $query->bindValue(':pempresa_id', $usuarioS->getEmpresa()->getId(), \PDO::PARAM_INT);
+                $query->execute();
+                $r = $query->fetchAll();
 
-                $usuariosA = 0;
-                $usuariosI = 0;
-
-                foreach ($usuarios_db as $usuario)
-                {
-                    if ($usuario->getUsuario()->getActivo() == 'true') 
-                    {
-                        $usuariosA++;
+                foreach ($r as $re) {
+                    if ($re['logueado'] > 0) {
+                        $usuarios_activos++;
+                    }else{
+                        $usuarios_inactivos++;
                     }
-                    else
-                    {
-                        $usuariosI++;
-                    }
+                   $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
                 }
 
-                $paginas = array();
-                
-                foreach($paginas_db as $pagina)
-                {
-                    $usuariosT =0;
-                    $usuariosCur =0;
-                    $usuariosF =0;
-                    $usuariosN =0;
-            
-                    $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
-                                               WHERE np.paginaEmpresa = :pe_id')
-                                ->setParameter('pe_id', $pagina->getId());
-                    $nivel_pagina = $query->getResult();
+                $query2 = $em->getConnection()->prepare('SELECT
+                                                        fnreporte_general(:re, :pempresa_id) as
+                                                        resultado; fetch all from re;');
+                $re1 = 're';
+                $query2->bindValue(':re', $re1, \PDO::PARAM_STR);
+                $query2->bindValue(':pempresa_id', $usuarioS->getEmpresa()->getId(), \PDO::PARAM_INT);
+                $query2->execute();
+                $r1 = $query2->fetchAll();
 
-                    foreach ($nivel_pagina as $np)
-                    {
-                        $nivel_id = $np->getNivel()->getId();
-                        $pagina_id = $np->getPaginaEmpresa()->getPagina()->getId();
+                foreach($r1 as $r )
+                {   
+                    $paginas[] = array('pagina' => $r['nombre'],
+                                       'fecha_i' => $r['fecha_inicio'],
+                                       'fecha_f' => $r['fecha_vencimiento'],
+                                       'usuariosT' => $r['registrados'],
+                                       'usuariosCur' => $r['cursando'],
+                                       'usuariosF' => $r['culminado'],
+                                       'usuariosN' => $r['no_iniciados'],
+                                       'usuariosA' => $r['activos'],
+                                       'id' => $r['id']);
+                }                      
 
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
-                                                   JOIN ru.usuario u 
-                                                   WHERE u.nivel = :nivel_id
-                                                   AND ru.rol = :rol')
-                                    ->setParameters(array('nivel_id' => $nivel_id,
-                                                          'rol' => '2'));
-                        $usuarios = $query->getSingleScalarResult();
-                      
-                        $usuariosT = $usuariosT + $usuarios;
-                      
-
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
-                                                   JOIN pl.usuario u
-                                                   WHERE u.nivel = :nivel_id
-                                                   AND pl.pagina = :pagina_id
-                                                   AND pl.estatusPagina IN ( 1 , 2 )')
-                                    ->setParameters(array('nivel_id'=> $nivel_id,
-                                                          'pagina_id'=> $pagina_id));
-
-                        $cursando = $query->getSingleScalarResult();
-
-                        $usuariosCur=$usuariosCur+$cursando;
-                       
-
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
-                                                   JOIN pl.usuario u
-                                                   WHERE u.nivel = :nivel_id
-                                                   AND pl.pagina = :pagina_id
-                                                   AND pl.estatusPagina = :culminado')
-                                    ->setParameters(array('nivel_id'=> $nivel_id,
-                                                          'pagina_id'=> $pagina_id,
-                                                          'culminado'=> 3));
-
-                        $culminado = $query->getSingleScalarResult();
-
-                        $usuariosF = $usuariosF + $culminado;
-                       
-                    }
-
-                        $usuariosN = $usuariosT - ($usuariosCur + $usuariosF);
-
-                    //return new Response (var_dump($usuariosCur));
-                    
-                    $paginas[] = array('pagina' => $pagina->getPagina()->getNombre(),
-                                       'fecha_i' => $pagina->getFechaInicio(),
-                                       'fecha_f' => $pagina->getFechaVencimiento(),
-                                       'usuariosT' => $usuariosT,
-                                       'usuariosCur' => $usuariosCur,
-                                       'usuariosF' => $usuariosF,
-                                       'usuariosN' => $usuariosN,
-                                       'id' => $pagina->getPagina()->getId());
-                }
-
-                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuariosA,
-                                                                                             'inactivos'=> $usuariosI,
-                                                                                             'total'=> $usuariosA + $usuariosI,
+                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuarios_activos,
+                                                                                             'inactivos'=> $usuarios_inactivos,
+                                                                                             'total'=> $usuarios_registrados,
                                                                                              'paginas'=>$paginas));
 
                 return $response;
@@ -252,159 +194,97 @@ class DefaultController extends Controller
 
         $empresa_id = $request->request->get('empresa_id');
 
-        
+        $usuarios_activos=0;
+        $usuarios_inactivos=0;
+        $usuarios_registrados=0;
 
-        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                           JOIN pe.pagina p
-                                           WHERE pe.empresa = :empresa_id
-                                           AND p.pagina IS NULL')
-                            ->setParameter('empresa_id', $empresa_id);
-                $paginas_db = $query->getResult();
+        $query = $em->getConnection()->prepare('SELECT
+                                        fnreporte_general2(:re, :pempresa_id) as
+                                        resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->execute();
+        $r = $query->fetchAll();
 
-                $query = $em->createQuery('SELECT  ru FROM LinkComunBundle:AdminRolUsuario ru
-                                           JOIN ru.usuario u
-                                           WHERE u.empresa = :empresa_id
-                                           AND ru.rol = :rol')
-                            ->setParameters(array('empresa_id' => $empresa_id,
-                                                  'rol' => '2'));
-                $usuarios_db = $query->getResult();
+        foreach ($r as $re) 
+        {
+            if ($re['logueado'] > 0) {
+                $usuarios_activos++;
+            }else{
+                $usuarios_inactivos++;
+            }
+           $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+        }
 
-                $usuariosA = 0;
-                $usuariosI = 0;
+               
 
-               // return new Response (var_dump($usuarios_db));
+        $html = '
+            <table class="table" id="dt">
+                <thead class="sty__title">
+                    <tr>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios inactivos').'</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => '20', 'pagina_id' => '0', 'empresa_id' => $empresa_id)).'"><span>'. $usuarios_registrados .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><span>'. $usuarios_activos .'<i class="fa fa-user"></i></span></td>
+                        <td class="text-center"><span>'. $usuarios_inactivos .'<i class="fa fa-user"></i></span></td>
+                    </tr>
+                </tbody>
+            </table>
 
-                foreach ($usuarios_db as $usuario)
-                {
-                    $logueado = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId()));
-
-                    if ($logueado) 
-                    {
-                        $usuariosA++;
-                    }
-                    else
-                    {
-                        $usuariosI++;
-                    }
-                }
-
-                $usuariosR = $usuariosA + $usuariosI;
-
-                $paginas = array();
-
-                $html = '
-                    <table class="table" id="dt">
-                        <thead class="sty__title">
-                            <tr>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios inactivos').'</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => '20', 'pagina_id' => '0', 'empresa_id' => $empresa_id)).'"><span>'. $usuariosR .'<i class="fa fa-user"></i></span></a></td>
-                                <td class="text-center"><span>'. $usuariosA .'<i class="fa fa-user"></i></span></td>
-                                <td class="text-center"><span>'. $usuariosI .'<i class="fa fa-user"></i></span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table class="table" id="dt">
-                        <thead class="sty__title">
-                            <tr>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Nombre').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Fecha Inicio').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Fecha Fin').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios cursando').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminado').'</th>
-                                <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios no iniciados').'</th>
-                            </tr>
-                        </thead>
-                        <tbody>';
+            <table class="table" id="dt">
+                <thead class="sty__title">
+                    <tr>
+                        <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Fecha Inicio').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Fecha Fin').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios no iniciados').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios cursando').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminado').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
+                    </tr>
+                </thead>
+                <tbody>';
                 
-                foreach($paginas_db as $pagina)
-                {
-                    $usuariosT =0;
-                    $usuariosCur =0;
-                    $usuariosF =0;
-                    $usuariosN =0;
-            
-                    $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
-                                               WHERE np.paginaEmpresa = :pe_id')
-                                ->setParameter('pe_id', $pagina->getId());
-                    $nivel_pagina = $query->getResult();
+        $query2 = $em->getConnection()->prepare('SELECT
+                                                fnreporte_general(:re, :pempresa_id) as
+                                                resultado; fetch all from re;');
+        $re1 = 're';
+        $query2->bindValue(':re', $re1, \PDO::PARAM_STR);
+        $query2->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query2->execute();
+        $r1 = $query2->fetchAll();
+                  
+        foreach($r1 as $r )
+        {  
+            $html .= '<tr>
+                        <td >'. $r['nombre'] .'</td>
+                        <td >'. $r['fecha_inicio'] .'</td>
+                        <td >'. $r['fecha_vencimiento'].'</td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['cursando'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['culminado'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="#"><span>'. $r['activos'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['registrados'] .'<i class="fa fa-user"></i></span></a></td>
+                      </tr>';
+        }
 
-                    foreach ($nivel_pagina as $np)
-                    {
-                        $nivel_id = $np->getNivel()->getId();
-                        $pagina_id = $np->getPaginaEmpresa()->getPagina()->getId();
+        $html .= ' </tbody>
+                </table>
 
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminRolUsuario ru
-                                                   JOIN ru.usuario u 
-                                                   WHERE u.nivel = :nivel_id
-                                                   AND ru.rol = :rol')
-                                    ->setParameters(array('nivel_id' => $nivel_id,
-                                                          'rol' => '2'));
-                        $usuarios = $query->getSingleScalarResult();
-                      
-                        $usuariosT = $usuariosT + $usuarios;
-                      
-
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
-                                                   JOIN pl.usuario u
-                                                   WHERE u.nivel = :nivel_id
-                                                   AND pl.pagina = :pagina_id
-                                                   AND pl.estatusPagina IN ( 1 , 2 )')
-                                    ->setParameters(array('nivel_id'=> $nivel_id,
-                                                          'pagina_id'=> $pagina_id));
-
-                        $cursando = $query->getSingleScalarResult();
-
-                        $usuariosCur=$usuariosCur+$cursando;
-                       
-
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:CertiPaginaLog pl
-                                                   JOIN pl.usuario u
-                                                   WHERE u.nivel = :nivel_id
-                                                   AND pl.pagina = :pagina_id
-                                                   AND pl.estatusPagina = :culminado')
-                                    ->setParameters(array('nivel_id'=> $nivel_id,
-                                                          'pagina_id'=> $pagina_id,
-                                                          'culminado'=> 3));
-
-                        $culminado = $query->getSingleScalarResult();
-
-                        $usuariosF = $usuariosF + $culminado;
-                       
-                    }
-
-                        $usuariosN = $usuariosT - ($usuariosCur + $usuariosF);
-
-                    //return new Response (var_dump($usuariosCur));
-                    
-                    $html .= '<tr>
-                                <td class="text-center">'. $pagina->getPagina()->getNombre() .'</td>
-                                <td class="text-center">'. $pagina->getFechaInicio()->format('d-m-Y') .'</td>
-                                <td class="text-center">'. $pagina->getFechaVencimiento()->format('d-m-Y').'</td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosT .'<i class="fa fa-user"></i></span></a></td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosCur .'<i class="fa fa-user"></i></span></a></td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosF .' <i class="fa fa-user"></i></span></a></td>
-                                <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => '20', 'pagina_id' => $pagina->getPagina()->getId(), 'empresa_id' => $empresa_id )).'"><span>'. $usuariosN .' <i class="fa fa-user"></i></span></a></td>
-                            </tr>';
-                }
-
-                $html .= ' </tbody>
-                        </table>
-
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-start">
-                                   <a href="'.$this->generateUrl('_excelReporteGeneral', array('app_id' => '20', 'empresa_id' => $empresa_id )).'"> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
-                                </div>
-                            </div>
-                        </div>';
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-start">
+                           <a href="'.$this->generateUrl('_excelReporteGeneral', array('app_id' => '20', 'empresa_id' => $empresa_id )).'"> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                        </div>
+                    </div>
+                </div>';
 
 
         $return = json_encode($html);
