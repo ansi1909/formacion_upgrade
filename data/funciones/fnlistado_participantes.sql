@@ -17,7 +17,8 @@ begin
 
     -- Para el reporte 1
     OPEN resultado FOR 
-       SELECT count(a.id) as logueado, 
+       SELECT count(a.id) as logueado,
+               u.codigo as codigo,
                u.nombre as nombre, 
                u.apellido as apellido, 
                u.login as login, 
@@ -43,7 +44,8 @@ begin
 
     -- Para el reporte 1
     OPEN resultado FOR 
-       SELECT count(a.id) as logueado, 
+       SELECT count(a.id) as logueado,
+               u.codigo as codigo, 
                u.nombre as nombre, 
                u.apellido as apellido, 
                u.login as login, 
@@ -70,7 +72,8 @@ begin
     If preporte = 2 Then 
     
         OPEN resultado FOR 
-            SELECT count(a.id) as logueado, 
+            SELECT count(a.id) as logueado,
+               u.codigo as codigo, 
                u.nombre as nombre, 
                u.apellido as apellido, 
                u.login as login, 
@@ -101,6 +104,7 @@ begin
         OPEN resultado FOR 
             SELECT 
                count(a.id) as logueado,
+               u.codigo as codigo,
                u.nombre as nombre, 
                u.apellido as apellido, 
                u.login as login, 
@@ -128,7 +132,8 @@ begin
     ElsIf preporte = 4 Then
 
    OPEN resultado FOR 
-            SELECT count(a.id) as logueado, 
+            SELECT count(a.id) as logueado,
+               u.codigo as codigo, 
                u.nombre as nombre, 
                u.apellido as apellido, 
                u.login as login, 
@@ -157,7 +162,8 @@ begin
     ElsIf preporte = 5 Then
 
   OPEN resultado FOR 
-             SELECT count(a.id) as logueado, 
+             SELECT count(a.id) as logueado,
+               u.codigo as codigo, 
                u.nombre as nombre, 
                u.apellido as apellido, 
                u.login as login, 

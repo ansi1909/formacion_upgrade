@@ -370,79 +370,7 @@ class Reportes
         $query->execute();
         $rs = $query->fetchAll();
 
-        $listado = array();
-        $login = '';
-        $i = 0;
-
-        foreach ($rs as $r)
-        {
-
-            $i++;
-
-            if ($i == 1)
-            {
-                $participante = array('codigo' => $r['codigo'],
-                                      'login' => $r['login'],
-                                      'nombre' => $r['nombre'],
-                                      'apellido' => $r['apellido'],
-                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                      'empresa' => $r['empresa'],
-                                      'pais' => $r['pais'],
-                                      'nivel' => $r['nivel'],
-                                      'fecha_registro' => $r['fecha_registro'],
-                                      'campo1' => $r['campo1'],
-                                      'campo2' => $r['campo2'],
-                                      'campo3' => $r['campo3'],
-                                      'campo4' => $r['campo4']);
-                $muro = array();
-                $muro[] = array('mensaje' => $r['mensaje'],
-                                'fecha_mensaje' => $r['fecha_mensaje']);
-            }
-
-            if ($r['login'] != $login)
-            {
-
-                $login = $r['login'];
-
-                if ($i > 1)
-                {
-                    $participante['muros'] = $muro;
-                    $listado[] = $participante;
-                    $participante = array('codigo' => $r['codigo'],
-                                          'login' => $r['login'],
-                                          'nombre' => $r['nombre'],
-                                          'apellido' => $r['apellido'],
-                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                          'empresa' => $r['empresa'],
-                                          'pais' => $r['pais'],
-                                          'nivel' => $r['nivel'],
-                                          'fecha_registro' => $r['fecha_registro'],
-                                          'campo1' => $r['campo1'],
-                                          'campo2' => $r['campo2'],
-                                          'campo3' => $r['campo3'],
-                                          'campo4' => $r['campo4'],
-                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
-                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
-                    $muro = array();
-                    $muro[] = array('mensaje' => $r['mensaje'],
-                                    'fecha_mensaje' => $r['fecha_mensaje']);
-                }
-
-            }
-            else {
-                $muro[] = array('mensaje' => $r['mensaje'],
-                                    'fecha_mensaje' => $r['fecha_mensaje']);
-            }
-
-            if ($i == count($rs))
-            {
-                $participante['muros'] = $muro;
-                $listado[] = $participante;
-            }
-
-        }
-
-        return $listado;
+        return $rs;
 
     }
 
@@ -466,77 +394,9 @@ class Reportes
         $query->execute();
         $rs = $query->fetchAll();
 
-        $listado = array();
-        $login = '';
-        $i = 0;
+        
 
-        foreach ($rs as $r)
-        {
-
-            $i++;
-
-            if ($i == 1)
-            {
-                $participante = array('codigo' => $r['codigo'],
-                                      'login' => $r['login'],
-                                      'nombre' => $r['nombre'],
-                                      'apellido' => $r['apellido'],
-                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                      'empresa' => $r['empresa'],
-                                      'pais' => $r['pais'],
-                                      'nivel' => $r['nivel'],
-                                      'fecha_registro' => $r['fecha_registro'],
-                                      'campo1' => $r['campo1'],
-                                      'campo2' => $r['campo2'],
-                                      'campo3' => $r['campo3'],
-                                      'campo4' => $r['campo4']);
-                $foro = array();
-                $foro[] = array('mensaje' => $r['mensaje'],
-                                'fecha_mensaje' => $r['fecha_mensaje']);
-            }
-
-            if ($r['login'] != $login)
-            {
-
-                $login = $r['login'];
-
-                if ($i > 1)
-                {
-                    $participante['foro'] = $foro;
-                    $listado[] = $participante;
-                    $participante = array('codigo' => $r['codigo'],
-                                          'login' => $r['login'],
-                                          'nombre' => $r['nombre'],
-                                          'apellido' => $r['apellido'],
-                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                          'empresa' => $r['empresa'],
-                                          'pais' => $r['pais'],
-                                          'nivel' => $r['nivel'],
-                                          'fecha_registro' => $r['fecha_registro'],
-                                          'campo1' => $r['campo1'],
-                                          'campo2' => $r['campo2'],
-                                          'campo3' => $r['campo3'],
-                                          'campo4' => $r['campo4']);
-                    $foro = array();
-                    $foro[] = array('mensaje' => $r['mensaje'],
-                                    'fecha_mensaje' => $r['fecha_mensaje']);
-                }
-
-            }
-            else {
-                $foro[] = array('mensaje' => $r['mensaje'],
-                                'fecha_mensaje' => $r['fecha_mensaje']);
-            }
-
-            if ($i == count($rs))
-            {
-                $participante['foro'] = $foro;
-                $listado[] = $participante;
-            }
-
-        }
-
-        return $listado;
+        return $rs;
 
     }
 
