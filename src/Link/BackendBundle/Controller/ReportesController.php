@@ -68,7 +68,7 @@ class ReportesController extends Controller
             foreach ($r as $re) {
             
                 $i++;
-                $activo = $re['activo'] ? 'Sí' : 'No';
+                $activo = $re['activo'] = "TRUE" ? '1' : '0';
                 $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
                 $phpExcelObject->setActiveSheetIndex(0)
                                ->setCellValue('A1', 'Nombre')
@@ -217,7 +217,6 @@ class ReportesController extends Controller
                             <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Fecha de nacimiento').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('País').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                         </tr>
@@ -226,7 +225,7 @@ class ReportesController extends Controller
         
         foreach ($r as $ru)
         {
-            $activo = $ru['activo'] ? $this->get('translator')->trans('Sí') : 'No';
+            $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
             $html .= '<tr>
                         <td>'.$ru['nombre'].'</td>
                         <td>'.$ru['apellido'].'</td>
@@ -234,7 +233,6 @@ class ReportesController extends Controller
                         <td>'.$ru['correo'].'</td>
                         <td>'.$activo.'</td>
                         <td>'.$ru['fecha_registro'].'</td>
-                        <td>'.$ru['fecha_nacimiento'].'</td>
                         <td>'.$ru['pais'].'</td>
                         <td>'.$ru['nivel'].'</td>
                     </tr>';
@@ -290,6 +288,7 @@ class ReportesController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fn = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
@@ -312,120 +311,112 @@ class ReportesController extends Controller
 
         //return new response(var_dump($listado));
 
-        if ($excel)
+
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionColaborativo.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+        // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'. '.$this->get('translator')->trans('Tema').': '.$tema->getTema().'.');
+
+        if (!count($listado))
         {
+            $objWorksheet->mergeCells('A5:S5');
+            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+        }
+        else {
 
-            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionColaborativo.xlsx';
-            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-
-            // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
-            $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'. '.$this->get('translator')->trans('Tema').': '.$tema->getTema().'.');
-
-            if (!count($listado))
-            {
-                $objWorksheet->mergeCells('A5:S5');
-                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
-            }
-            else {
-
-                $row = 5;
-                $i = 0;
-                $styleThinBlackBorderOutline = array(
-                    'borders' => array(
-                        'allborders' => array(
-                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                            'color' => array('argb' => 'FF000000'),
-                        ),
+            $row = 5;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
                     ),
-                );
-                $font_size = 11;
-                $font = 'Arial';
-                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
-                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                ),
+            );
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
 
-                foreach ($listado as $participante)
+            foreach ($listado as $participante)
+            {
+
+                $limit_iterations = count($participante['foro'])-1;
+                $limit_row = $row+$limit_iterations;
+
+                // Estilizar las celdas antes de un posible merge
+                for ($f=$row; $f<=$limit_row; $f++)
                 {
-
-                    $limit_iterations = count($participante['foro'])-1;
-                    $limit_row = $row+$limit_iterations;
-
-                    // Estilizar las celdas antes de un posible merge
-                    for ($f=$row; $f<=$limit_row; $f++)
-                    {
-                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
-                    }
-
-                    if ($limit_iterations > 0)
-                    {
-                        // Merge de las celdas
-                        for ($c=0; $c<=11; $c++)
-                        {
-                            $col = $columnNames[$c];
-                            $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
-                        }
-                    }
-
-                    // Datos de las columnas comunes
-                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
-                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
-                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
-                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                    $objWorksheet->setCellValue('F'.$row, $participante['correo']);
-                    $objWorksheet->setCellValue('G'.$row, $participante['pais']);
-                    $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
-                    $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
-                    $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
-                    $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
-                    $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-
-                    //return new response(var_dump($participante['muros']));
-
-                    // Datos de los mensajes
-                    foreach ($participante['foro'] as $m)
-                    {
-                        $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
-                        $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
-                        $row++;
-
-                    }
-                    //return new response(var_dump($row));
-
+                    $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
 
+                if ($limit_iterations > 0)
+                {
+                    // Merge de las celdas
+                    for ($c=0; $c<=11; $c++)
+                    {
+                        $col = $columnNames[$c];
+                        $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
+                    }
+                }
+
+                // Datos de las columnas comunes
+                $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('G'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
+
+                //return new response(var_dump($participante['muros']));
+
+                // Datos de los mensajes
+                foreach ($participante['foro'] as $m)
+                {
+                    $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
+                    $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
+                    $row++;
+
+                }
+                //return new response(var_dump($row));
+
             }
 
-            // Crea el writer
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/interaccionColaborativo'.$session->get('sesion_id').'.xls';
-            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
-            $writer->save($xls);
-
-            $archivo = $this->container->getParameter('folders')['uploads'].$path;
-            $html = '';
         }
-        else{
 
-            $archivo = '';
-            $html = $this->renderView('LinkBackendBundle:Reportes:interaccionColaborativoTabla.html.twig', array('listado' => $listado,
-                                                                                                                 'empresa' => $empresa->getNombre(),
-                                                                                                                 'programa' => $pagina->getNombre(),
-                                                                                                                 'tema' => $tema->getTema()));
-        }
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+        $path = 'recursos/reportes/interaccionColaborativo'.$session->get('sesion_id').'.xls';
+        $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+        $writer->save($xls);
+
+        $archivo = $this->container->getParameter('folders')['uploads'].$path;
+        $document_name = 'interaccionColaborativo'.$session->get('sesion_id').'.xls';
+        $bytes = filesize($xls);
+        $document_size = $fn->fileSizeConvert($bytes);
         
         $return = array('archivo' => $archivo,
-                        'html' => $html);
+                        'document_name' => $document_name,
+                        'document_size' => $document_size);
 
         $return = json_encode($return);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));    
+        return new Response($return, 200, array('Content-Type' => 'application/json'));  
     }
 
     public function interaccionMuroAction($app_id, $empresa_id, $desde, $hasta, Request $request)
@@ -514,6 +505,7 @@ class ReportesController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fn = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
@@ -532,116 +524,109 @@ class ReportesController extends Controller
 
         $listado = $rs->interaccionMuro($empresa_id, $pagina_id, $desde, $hasta);
 
-        if ($excel)
+
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionMuro.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+        // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+
+        if (!count($listado))
         {
+            $objWorksheet->mergeCells('A5:S5');
+            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+        }
+        else {
 
-            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionMuro.xlsx';
-            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-
-            // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
-            $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
-
-            if (!count($listado))
-            {
-                $objWorksheet->mergeCells('A5:S5');
-                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
-            }
-            else {
-
-                $row = 5;
-                $i = 0;
-                $styleThinBlackBorderOutline = array(
-                    'borders' => array(
-                        'allborders' => array(
-                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                            'color' => array('argb' => 'FF000000'),
-                        ),
+            $row = 5;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
                     ),
-                );
-                $font_size = 11;
-                $font = 'Arial';
-                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
-                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                ),
+            );
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
 
-                foreach ($listado as $participante)
+            foreach ($listado as $participante)
+            {
+
+                $limit_iterations = count($participante['muros'])-1;
+                $limit_row = $row+$limit_iterations;
+
+                // Estilizar las celdas antes de un posible merge
+                for ($f=$row; $f<=$limit_row; $f++)
                 {
-
-                    $limit_iterations = count($participante['muros'])-1;
-                    $limit_row = $row+$limit_iterations;
-
-                    // Estilizar las celdas antes de un posible merge
-                    for ($f=$row; $f<=$limit_row; $f++)
-                    {
-                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
-                    }
-
-                    if ($limit_iterations > 0)
-                    {
-                        // Merge de las celdas
-                        for ($c=0; $c<=11; $c++)
-                        {
-                            $col = $columnNames[$c];
-                            $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
-                        }
-                    }
-
-                    // Datos de las columnas comunes
-                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
-                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
-                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
-                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                    $objWorksheet->setCellValue('F'.$row, $participante['correo']);
-                    $objWorksheet->setCellValue('G'.$row, $participante['pais']);
-                    $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
-                    $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
-                    $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
-                    $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
-                    $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-
-                    //return new response(var_dump($participante['muros']));
-
-                    // Datos de los mensajes
-                    foreach ($participante['muros'] as $m)
-                    {
-                        $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
-                        $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
-                        $row++;
-
-                    }
-                    //return new response(var_dump($row));
-
+                    $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
 
+                if ($limit_iterations > 0)
+                {
+                    // Merge de las celdas
+                    for ($c=0; $c<=11; $c++)
+                    {
+                        $col = $columnNames[$c];
+                        $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
+                    }
+                }
+
+                // Datos de las columnas comunes
+                $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('G'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
+
+                //return new response(var_dump($participante['muros']));
+
+                // Datos de los mensajes
+                foreach ($participante['muros'] as $m)
+                {
+                    $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
+                    $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
+                    $row++;
+
+                }
+                //return new response(var_dump($row));
+
             }
 
-            // Crea el writer
-            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/interaccionMuro'.$session->get('sesion_id').'.xls';
-            $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
-            $writer->save($xls);
-
-            $archivo = $this->container->getParameter('folders')['uploads'].$path;
-            $html = '';
         }
-        else{
 
-            $archivo = '';
-            $html = $this->renderView('LinkBackendBundle:Reportes:interaccionMuroTabla.html.twig', array('listado' => $listado,
-                                                                                                         'empresa' => $empresa->getNombre(),
-                                                                                                         'programa' => $pagina->getNombre()));
-        }
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+        $path = 'recursos/reportes/interaccionMuro'.$session->get('sesion_id').'.xls';
+        $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+        $writer->save($xls);
+
+        $archivo = $this->container->getParameter('folders')['uploads'].$path;
+        $document_name = 'interaccionMuro'.$session->get('sesion_id').'.xls';
+        $bytes = filesize($xls);
+        $document_size = $fn->fileSizeConvert($bytes);
         
         $return = array('archivo' => $archivo,
-                        'html' => $html);
+                        'document_name' => $document_name,
+                        'document_size' => $document_size);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));    
@@ -724,17 +709,19 @@ class ReportesController extends Controller
                                    ->setCellValue('A5', 'Programas')
                                    ->setCellValue('B5', 'Fecha inicio')
                                    ->setCellValue('C5', 'Fecha fin')
-                                   ->setCellValue('D5', 'Usuarios registrados')
+                                   ->setCellValue('D5', 'Usuarios no iniciados')
                                    ->setCellValue('E5', 'Usuarios cursando')
                                    ->setCellValue('F5', 'Usuarios finalizado')
-                                   ->setCellValue('G5', 'Usuarios no iniciados')
+                                   ->setCellValue('G5', 'Usuarios activos')
+                                   ->setCellValue('H5', 'Usuarios registrados')
                                    ->setCellValue('A'.$i, $r['nombre'])
                                    ->setCellValue('B'.$i, $r['fecha_inicio'])
                                    ->setCellValue('C'.$i, $r['fecha_vencimiento'])
-                                   ->setCellValue('D'.$i, $r['registrados'])
+                                   ->setCellValue('D'.$i, $r['no_iniciados'])
                                    ->setCellValue('E'.$i, $r['cursando'])
                                    ->setCellValue('F'.$i, $r['culminado'])
-                                   ->setCellValue('G'.$i, $r['no_iniciados']);
+                                   ->setCellValue('G'.$i, $r['activos'])
+                                   ->setCellValue('H'.$i, $r['registrados']);
                 }
             $phpExcelObject->getActiveSheet()->setTitle('Participantes');
 

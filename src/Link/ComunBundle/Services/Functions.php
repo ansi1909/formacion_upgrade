@@ -1056,6 +1056,7 @@ class Functions
 					$bloqueada = '';
 					$prelacion_id = 0;
 					$prelada_por = '';
+					$aprobada = '';
 					if ($subpagina['prelacion'])
 					{
 						// Se determina si el contenido estará bloqueado
@@ -1102,6 +1103,15 @@ class Functions
 							$prelada_por = $this->translator->trans('Prelada por').' '.$prelada->getCategoria()->getNombre().': '.$prelada->getNombre();
 						}
 					}
+					// Se determina si el contenido ya está completado
+					$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+					                            WHERE pl.pagina = :pagina_id 
+					                            AND pl.usuario = :usuario_id 
+					                            AND pl.estatusPagina = :completada')
+					            ->setParameters(array('pagina_id' => $subpagina['id'],
+					            					  'usuario_id' => $usuario_id,
+					                        		  'completada' => $estatus_completada));
+					$aprobada = $query->getSingleScalarResult();
 					$menu_str .= '<li title="'.$prelada_por.'">
 									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
@@ -1132,10 +1142,13 @@ class Functions
 			$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa['id']);
 			if ($programa['acceso'] && !$pagina->getPagina())
 			{
+
 				$active = ' active';
 				$bloqueada = '';
 				$prelacion_id = 0;
 				$prelada_por = '';
+				$aprobada = '';
+
 				if ($programa['prelacion'])
 				{
 					// Se determina si el contenido estará bloqueado
@@ -1162,9 +1175,21 @@ class Functions
 						$prelada_por = $this->translator->trans('Prelada por').' '.$prelada->getCategoria()->getNombre().': '.$prelada->getNombre();
 					}
 				}
+
+				// Se determina si el contenido ya está completado
+				$query = $em->createQuery('SELECT COUNT(pl.id) FROM LinkComunBundle:CertiPaginaLog pl 
+				                            WHERE pl.pagina = :pagina_id 
+				                            AND pl.usuario = :usuario_id 
+				                            AND pl.estatusPagina = :completada')
+				            ->setParameters(array('pagina_id' => $programa['id'],
+				            					  'usuario_id' => $usuario_id,
+				                        		  'completada' => $estatus_completada));
+				$aprobada = $query->getSingleScalarResult();
+
 				$menu_str .= '<li title="'.$prelada_por.'">
 								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
+
 			}
 		}
 

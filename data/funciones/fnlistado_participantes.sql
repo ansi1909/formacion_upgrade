@@ -184,6 +184,7 @@ begin
                 (SELECT * FROM certi_pagina_log pl 
                     WHERE  pl.usuario_id = u.id AND pl.pagina_id = ppagina_id ) 
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+            AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
             AND pe.pagina_id = ppagina_id
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id;
 
@@ -203,4 +204,4 @@ $BODY$
   --select * from fnlistado_participantes('re', 2, 1, 0, 1) as resultado; fetch all from re;
   --select * from fnlistado_participantes('re', 3, 1, 0, 1) as resultado; fetch all from re;
   --select * from fnlistado_participantes('re', 4, 1, 0, 1) as resultado; fetch all from re;
-  --select * from fnlistado_participantes('re', 5, 1, 0, 1) as resultado; fetch all from re;
+  --select * from fnlistado_participantes('re', 5, 1, 0, 12) as resultado; fetch all from re;
