@@ -288,6 +288,7 @@ Empresas activas: Active companies
 Empresas inactivas: Inactive companies
 Empresas registradas: Registered companies
 En curso: In progress
+En evaluación: In evaluation
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: In Admin interface, in module Certificados y Constancias, you can add certificates
 en la biblioteca: in the library
 Encabezado: Header
@@ -324,6 +325,7 @@ Esta plantilla no posee thumbnails en la base de datos: This template does not h
 ¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
 Estado: Status
 Estatus: Status
+Estatus del programa: Program status
 Estatus de las sub-paginas: Sub-pages status
 Estatus de los participantes de la empresa: Participants status of the company
 este archivo descargable: this downloadable file
@@ -365,6 +367,7 @@ Filtrar usuarios: Filter users
 Filtro: Filter
 Fin del programa: End of the program
 Finalizar: Finish
+Finalizado: Finalized
 Finalizar Evaluación: Finish Test
 Firma del Participante: Signature of the Participant
 Firma del Supervisor: Signature of supervisor
@@ -413,6 +416,7 @@ Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
 Ingrese lo que desea buscar: Enter what you want to search
+Iniciado: Initiated
 Inicia el: Starts at
 Iniciar Sesión: Log in
 Inicio: Begin
@@ -548,6 +552,7 @@ No hay problema, te enviaremos un correo con: No problem, we send you an email w
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
 No iniciados: Without starting
+No Iniciado: Not started
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se mostrará en la página de login: It will not be shown in login page

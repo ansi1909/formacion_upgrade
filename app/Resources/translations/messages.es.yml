@@ -288,6 +288,7 @@ Empresas activas: Empresas activas
 Empresas inactivas: Empresas inactivas
 Empresas registradas: Empresas registradas
 En curso: En curso
+En evaluación: En evaluación
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: En el módulo administrativo de Certificados y Constancias se puede agregar certificados
 en la biblioteca: en la biblioteca
 Encabezado: Encabezado
@@ -324,6 +325,7 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 ¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
 Estado: Estado
 Estatus: Estatus
+Estatus del programa: Estatus del programa
 Estatus de las sub-paginas: Estatus de las sub-paginas
 Estatus de los participantes de la empresa: Estatus de los participantes de la empresa
 este archivo descargable: este archivo descargable
@@ -365,6 +367,7 @@ Filtrar usuarios: Filtrar usuarios
 Filtro: Filtro
 Fin del programa: Fin del programa
 Finalizar: Finalizar
+Finalizado: Finalizado
 Finalizar Evaluación: Finalizar Evaluación
 Firma del Participante: Firma del Participante
 Firma del Supervisor: Firma del Supervisor
@@ -413,6 +416,7 @@ Ingrese el mensaje que desea enviar: Ingrese el mensaje que desea enviar
 Ingresa tu usuario: Ingresa tu usuario
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa
 Ingrese lo que desea buscar: Ingrese lo que desea buscar
+Iniciado: Iniciado
 Inicia el: Inicia el
 Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
@@ -548,6 +552,7 @@ No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un 
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
 No iniciados: No iniciados
+No Iniciado: No Iniciado
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se mostrará en la página de login: No se mostrará en la página de login

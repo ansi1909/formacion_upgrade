@@ -45,7 +45,7 @@ class ReportesJTController extends Controller
         }
 
         // Lógica inicial de la pantalla de este reporte
-        //$datos = 'Foo';
+       
 
         return $this->render('LinkBackendBundle:Reportes:conexionesUsuario.html.twig', array(
                                                                                                 'usuario' => $usuario,
@@ -91,6 +91,7 @@ class ReportesJTController extends Controller
 
     public function ajaxAvanceProgramasAction(Request $request)
     {
+        $estatusProragama=['No Iniciado','Iniciado','En evaluación','Finalizado'];
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
@@ -150,18 +151,19 @@ class ReportesJTController extends Controller
                  // Estilizar las celdas antes de insertar los datos
                 for ($f=$row; $f<=$last_row; $f++)
                 {
-                        $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
+                        $objWorksheet->getStyle("A$f:T$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:T$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:T$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:T$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:T$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:T$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
                 
                 foreach ($listado as $participante)
                 {
-
+                    $status=($participante['status'])? $participante['status']:0;
+                    $promedio=($participante['promedio'])? $participante['promedio']:0;
 
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -178,11 +180,12 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
                     $objWorksheet->setCellValue('M'.$row, $participante['modulos']);
                     $objWorksheet->setCellValue('N'.$row, $participante['materias']);
-                    $objWorksheet->setCellValue('O'.$row, $participante['promedio']);
-                    $objWorksheet->setCellValue('P'.$row, $participante['fecha_inicio_programa']);
-                    $objWorksheet->setCellValue('Q'.$row, $participante['hora_inicio_programa']);
-                    $objWorksheet->setCellValue('R'.$row, $participante['fecha_fin_programa']);
-                    $objWorksheet->setCellValue('S'.$row, $participante['hora_fin_programa']);
+                    $objWorksheet->setCellValue('O'.$row, $promedio);
+                    $objWorksheet->setCellValue('P'.$row, $estatusProragama[$status]);
+                    $objWorksheet->setCellValue('Q'.$row, $participante['fecha_inicio_programa']);
+                    $objWorksheet->setCellValue('R'.$row, $participante['hora_inicio_programa']);
+                    $objWorksheet->setCellValue('S'.$row, $participante['fecha_fin_programa']);
+                    $objWorksheet->setCellValue('T'.$row, $participante['hora_fin_programa']);
 
                   
                     $row++;
@@ -202,29 +205,23 @@ class ReportesJTController extends Controller
         {
 
         $archivo = '';
-        // $html = $this->renderView('LinkBackendBundle:Reportes:avanceProgramasTabla.html.twig', 
-        //                         array('listado' => $listado,
-        //                               'empresa' => $empresa->getNombre(),
-        //                               'programa' => $pagina->getNombre()
-        //                               ));
-
+        
 
                   $html = '<table class="table" id="avanceProgramasTable">
                     <thead class="sty__title">
                         <tr>
-                            <th class="hd__title">'.$this->get('translator')->trans('Código').'</th>
+                            
                             <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Estatus del programa').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Hora inicio').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Hora fin').'</th>
+                            
 
 
                         </tr>
@@ -234,20 +231,21 @@ class ReportesJTController extends Controller
         foreach ($listado as $registro)
         {
            
+            $status=($registro['status'])? $registro['status']:0;
+            $promedio=($registro['promedio'])? $registro['promedio']:0;
             $html .= '<tr>
-                        <td>'.$registro['codigo'].'</td>
+                       
                         <td>'.$registro['login'].'</td>
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
-                        <td>'.$registro['correo_corporativo'].'</td>
                         <td>'.$registro['nivel'].'</td>
                         <td>'.$registro['fecha_registro'].'</td>
                         <td>'.$registro['modulos'].'</td>
                         <td>'.$registro['materias'].'</td>
-                        <td>'.$registro['promedio'].'</td>
+                        <td>'.$promedio.'</td>
+                        <td>'.$this->get('translator')->trans($estatusProragama[$registro['status']]).'</td>
                         <td>'.$registro['fecha_inicio_programa'].'</td>
-                        <td>'.$registro['hora_inicio_programa'].'</td>
                         <td>'.$registro['fecha_fin_programa'].'</td>
-                        <td>'.$registro['hora_fin_programa'].'</td>
+
                     </tr>';
         }
 
@@ -378,11 +376,7 @@ class ReportesJTController extends Controller
         else
         {
 
-                // $archivo = '';
-                // $html = $this->renderView('LinkBackendBundle:Reportes:conexionesUsuarioTable.html.twig', 
-                //                         array('listado' => $listado,
-                //                               'empresa' => $empresa->getNombre()
-                //                               ));
+               
 
                   $html = '<table class="table" id="conexionesUsuarioTable">
                     <thead class="sty__title">
