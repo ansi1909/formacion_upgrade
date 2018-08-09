@@ -136,6 +136,7 @@
                 </div>
                 <form id="form-upload" method="POST">
                     <input type="hidden" id="upload_foro_id" name="upload_foro_id" value="{{ foro.id }}">
+                    <input type="hidden" id="upload_pagina_id" name="upload_pagina_id" value="{{ programa.id }}">
                     <div class="row pl-3 align-items-center justify-content-center">
                         <div class="col-12">
                             <label class="mb-2 titulo-form" for="descripcion"> {{ 'Descripción'|trans }}: </label>
@@ -183,6 +184,11 @@
     </section>
     
     <section class="esp_col" id="section-list">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
+                <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}"><button class="btn btn-primary btn-nw-tema">{{ 'Volver al listado'|trans }}</button></a>
+            </div>
+        </div>
         <div class="row">
             <ul class="table-card-det">
                 <li class="f-card-det">

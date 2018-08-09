@@ -2450,6 +2450,18 @@ class Functions
 
 	}
 
+	public function delete_folder($folder) {
+	    $glob = glob($folder);
+	    foreach ($glob as $g) {
+	        if (!is_dir($g)) {
+	            unlink($g);
+	        } else {
+	            $this->delete_folder("$g/*");
+	            rmdir($g);
+	        }
+	    }
+	}
+
 	public function nextLesson($indexedPages, $pagina_id, $usuario_id, $empresa_id, $yml, $programa_id)
 	{
 

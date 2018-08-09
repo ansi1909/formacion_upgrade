@@ -100,19 +100,71 @@ $(document).ready(function() {
 	    });
     });
 
+    $('#fileupload').fileupload({
+        url: $('#url_upload').val(),
+        dataType: 'json',
+        done: function (e, data) {
+        	$.each(data.result.response.files, function (index, file) {
+        		$('#archivo_input').val(file.name);
+        		$('#archivo').val($('#base_upload').val()+file.name);
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    })
+    .prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+    $('#saveFile').click(function(){
+        var valid = $("#form-upload").valid();
+        if (valid) 
+        {
+        	$('.boton').hide();
+            $('#wait_file').show(1000);
+		    $.ajax({
+		        type: "POST",
+		        url: $('#url_archivo').val(),
+		        async: true,
+		        data: { foro_id: $('#upload_foro_id').val(), descripcion: $('#descripcion').val(), archivo: $('#archivo').val() },
+		        dataType: "json",
+		        success: function(data) {
+		        	$('#foro_id').val(data.foro_id);
+		        	$('#descripcion').val('');
+		        	$('#archivo').val('');
+		        	$('#archivo_input').val('');
+		        	$('.boton').show();
+		            $('#wait_file').hide(1000);
+		            $( "#cancelarUpload" ).trigger( "click" );
+		        },
+		        error: function(){
+		            console.log('Error guardando el archivo en el espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
+		            $('.boton').show();
+		            $('#wait_file').hide(1000);
+		        }
+		    });
+        }
+    });
+
 });
 
 function observeTopic(newTopic)
 {
 	newTopic.click(function(){
 		var foro_id = $(this).attr('data');
+		var empresa_id = $('#empresa_id').val();
 		$('#foro_id').val(foro_id);
+		$('#upload_foro_id').val(foro_id);
 		$('#mensaje_content').val('');
 		$('#section-list').hide(1000);
 		$('#wait').show(1000);
 		if (foro_id != '0')
 		{
 			$('#titulo').html($('#titulo_edit').val());
+			$('#base_upload').val('recursos/espacio/'+empresa_id+'/'+foro_id+'/');
 			$.ajax({
 		        type: "GET",
 		        url: $('#url_edit').val(),
@@ -147,6 +199,7 @@ function observeTopic(newTopic)
 			$('#titulo').html($('#titulo_new').val());
 			$('.form-control').val('');
 			CKEDITOR.instances.mensaje.setData('');
+			$('#base_upload').val('');
 			$('#section-form').show(1000);
 			$('#wait').hide(1000);
 		}
@@ -160,7 +213,6 @@ function saveForo()
     $('#publicar').hide();
     $('#cancelar').hide();
     $('#wait').show(1000);
-    var foro_id = $('#foro_id').val();
     $.ajax({
         type: "POST",
         url: $('#form').attr('action'),

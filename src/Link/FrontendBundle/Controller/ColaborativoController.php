@@ -30,10 +30,39 @@ class ColaborativoController extends Controller
 
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
+        // Foros vacíos, eliminarlos
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
                                     WHERE f.pagina = :programa_id 
                                     AND f.empresa = :empresa_id 
-                                    AND f.foro IS NULL
+                                    AND f.foro IS NULL 
+                                    AND f.tema IS NULL 
+                                    ORDER BY f.fechaPublicacion DESC")
+                    ->setParameters(array('programa_id' => $programa_id,
+                                          'empresa_id' => $session->get('empresa')['id']));
+        $foros_bd = $query->getResult();
+        foreach ($foros_bd as $foro)
+        {
+            $foro_archivo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForoArchivo')->findByForo($foro->getId());
+            foreach ($foro_archivo as $fa)
+            {
+                $file = $this->container->getParameter('folders')['dir_uploads'].$fa->getArchivo();
+                if (file_exists($file))
+                {
+                    unlink($file);
+                }
+                $em->remove($fa);
+                $em->flush();
+            }
+            $dirname = $this->container->getParameter('folders')['dir_uploads'].'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro->getId().'/';
+            $f->delete_folder($dirname);
+            $em->remove($foro);
+            $em->flush();
+        }
+
+        $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
+                                    WHERE f.pagina = :programa_id 
+                                    AND f.empresa = :empresa_id 
+                                    AND f.foro IS NULL 
                                     ORDER BY f.fechaPublicacion DESC")
                     ->setParameters(array('programa_id' => $programa_id,
                                           'empresa_id' => $session->get('empresa')['id']));
@@ -132,7 +161,6 @@ class ColaborativoController extends Controller
             $foro->setFechaRegistro(new \DateTime('now'));
             $foro->setPagina($pagina);
             $foro->setEmpresa($empresa);
-            $foro->setPagina($pagina);
             $foro->setUsuario($usuario);
 
         }
@@ -579,8 +607,38 @@ class ColaborativoController extends Controller
     {
         
         $session = new Session();
+        $em = $this->getDoctrine()->getManager();
         
         $foro_id = $request->request->get('upload_foro_id');
+        $pagina_id = $request->request->get('upload_pagina_id');
+
+        if (!$foro_id)
+        {
+
+            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
+            $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            $foro = new CertiForo();
+            $foro->setFechaRegistro(new \DateTime('now'));
+            $foro->setPagina($pagina);
+            $foro->setEmpresa($empresa);
+            $foro->setUsuario($usuario);
+            $em->persist($foro);
+            $em->flush();
+
+            $foro_id = $foro->getId();
+            $session->set('upload_foro_id', $foro_id);
+
+            // Se crea el subdirectorio para los archivos del espacio colaborativo
+            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+            $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
+            if (!file_exists($dir) && !is_dir($dir))
+            {
+                mkdir($dir, 750, true);
+            }
+
+        }
 
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
         $uploads = $this->container->getParameter('folders')['uploads'];
@@ -603,11 +661,19 @@ class ColaborativoController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $html = '';
+        $generar_alarma = 1;
 
         // Recepción de parámetros del request
         $foro_id = $request->request->get('foro_id');
         $descripcion = $request->request->get('descripcion');
         $archivo = $request->request->get('archivo');
+
+        if (!$foro_id)
+        {
+            $foro_id = $session->get('upload_foro_id');
+            $archivo = 'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/'.$archivo;
+            $generar_alarma = 0;
+        }
 
         // Preparando entidades de almacenamiento
         $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
@@ -626,7 +692,7 @@ class ColaborativoController extends Controller
         $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
 
         // Generación de alarmas
-        if ($foro->getUsuario()->getId() != $usuario->getId())
+        if ($foro->getUsuario()->getId() != $usuario->getId() && $generar_alarma)
         {
 
             $descripcion_alarma = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
@@ -676,7 +742,8 @@ class ColaborativoController extends Controller
                     </div>
                 </li>';
 
-        $return = array('html' => $html);
+        $return = array('html' => $html,
+                        'foro_id' => $foro_id);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
