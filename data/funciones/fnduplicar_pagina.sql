@@ -27,9 +27,9 @@ begin
 
          -- Buscar el orden para el nuevo registro
          If rst.pagina_id is Null Then
-         SELECT MAX(orden::integer) INTO neworden FROM certi_pagina WHERE pagina_id IS NULL;
+            SELECT MAX(orden::integer) INTO neworden FROM certi_pagina WHERE pagina_id IS NULL;
          Else
-             SELECT MAX(orden::integer) INTO neworden FROM certi_pagina WHERE pagina_id = rst.pagina_id;
+            SELECT MAX(orden::integer) INTO neworden FROM certi_pagina WHERE pagina_id = rst.pagina_id;
          End If;
          neworden = neworden+1;
 

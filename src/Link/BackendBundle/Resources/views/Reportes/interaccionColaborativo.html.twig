@@ -18,8 +18,7 @@
 </form>
 
 {# Sección de resultados del reporte #}
-<input type="hidden" id="desdef" name="desdef" value="">
-<input type="hidden" id="hastaf" name="hastaf" value="">
+<input type="hidden" id="archivo" name="archivo" value="">
 <div class="row" id="reporte" style="display:none;">
     <div class="col-sm-16">
         <div class="card">
@@ -27,7 +26,18 @@
                 <h5 class="card-title">{{ encabezado }}. <span id="label_filtro" style="display:none;">{{ 'Desde'|trans }}: <span id="label_desde"></span> / {{ 'Hasta'|trans }}: <span id="label_hasta"></span>.</span></h5>
             </div>
             <div class="card-block">
-                <div id="resultado" style="display:none;">
+                <div id="resultado" style="display:none; cursor:pointer">
+                    <div class="list-unstyled member-list row">
+                        <div class="col-lg-4 col-sm-8 col-xs-16 offset-sm-4 offset-md-4 offset-lg-6">
+                            <div class="media flex-column"> <span class="message_userpic text-success"><i class="fa fa-file-excel-o"></i></span>
+                              <div class="media-body">
+                                <h6 class="mt-0 mb-1" id="document_name">My_Document_2.xls</h6>
+                                <span id="document_size">25.5mb</span> | 
+                                <button type="button" class="btn btn-link btn-sm"><i class="fa fa-download m-0"></i> {{ 'Descargar'|trans }}</button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="load1 load-wrapper">
                     <div class="loader">

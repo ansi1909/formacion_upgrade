@@ -52,6 +52,7 @@ function mostrarReporte(data)
 	
     $('#label_empresa').html(data.empresa);
     $('.label_programa').html(data.programa);
+    $('.label_inicio').html(data.fecha_inicio);
 	$('.week_before').html(data.week_before);
 	$('.now').html(data.now);
 

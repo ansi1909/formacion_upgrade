@@ -211,6 +211,13 @@ a.active {
             }
         }
     }
+    .ulItemsAprob{
+        list-style: none;
+        &::before li{
+            color: $green;
+            content: url
+        }
+    }
 }
 
 .nav-lesson #pills-tabContent{

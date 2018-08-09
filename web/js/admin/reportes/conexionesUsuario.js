@@ -18,6 +18,7 @@ function mostrarReporte(data)
 		$('#label_filtro').show();
 		$('#resultado').html(data.html);
 		$('#resultado').show();
+		applyDataTable();
 		observe();
 }
 
@@ -46,3 +47,4 @@ function observe()
 		});
     });
 }
+
