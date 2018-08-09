@@ -45,7 +45,7 @@ class ReportesJTController extends Controller
         }
 
         // Lógica inicial de la pantalla de este reporte
-       
+        //return new response(var_dump($usuario));
 
         return $this->render('LinkBackendBundle:Reportes:conexionesUsuario.html.twig', array(
                                                                                                 'usuario' => $usuario,
@@ -56,7 +56,7 @@ class ReportesJTController extends Controller
     public function avanceProgramasAction($app_id, Request $request)
     {
         
-         $session = new Session();
+        $session = new Session();
         $f = $this->get('funciones');
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
