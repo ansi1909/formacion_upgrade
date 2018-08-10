@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block body %}
-    {% set rol = app.session.get('administrador') ? 'true' : 'false' %}
+    {% if not usuario.empresa or app.session.get('administrador') %}
+        {% set rol = 'true' %}
+    {% else %}
+        {% set rol = 'false' %}
+    {% endif %}
     {% set app_id = app.session.get('app_id') %}
     <br><br>
     {% if rol == 'true' %}
@@ -129,8 +133,8 @@
                 <div class="activity-block linkg1">
                     <div class="media">
                         <div class="media-body">
-                            <h5>#<span class="spincreament">{{total}}</span></h5>
-                            <p>{{'Usuarios registrados' |trans}}</p>
+                            <h5>#<span class="spincreament">{{ total }}</span></h5>
+                            <p>{{ 'Usuarios registrados'|trans }}</p>
                         </div>
                         <i class="fa fa-users"></i>
                     </div>

@@ -2190,7 +2190,7 @@ class Functions
                     {
                         
                         // Verifico si el rol está dentro de los roles de backend
-                        if (in_array($rol_usuario->getRol()->getId(), $roles_bk))
+                        if ($rol_usuario->getRol()->getBackend())
                         {
                             $roles_ok = 1;
                         }

@@ -27,8 +27,10 @@ class DefaultController extends Controller
 
       	if ($this->container->get('session')->isStarted())
       	{
+
+            $usuarioS = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         	
-        	if($session->get('administrador') == 'true')
+        	if($session->get('administrador') == 'true' || !$usuarioS->getEmpresa())
             {
                 $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
                 $empresasA=array();
@@ -72,10 +74,10 @@ class DefaultController extends Controller
                         }
 
                         $empresasA[]=array('id' => $empresa->getId(),
-                                           'nombre'=> $empresa->getNombre(),
-                                           'usuarios'=>$usuarios,
-                                           'programas'=>$paginasA,
-                                           'tiene'=>$tieneA);                        
+                                           'nombre' => $empresa->getNombre(),
+                                           'usuarios' => $usuarios,
+                                           'programas' => $paginasA,
+                                           'tiene' => $tieneA);                        
                     }
                     else
                     {
@@ -108,31 +110,29 @@ class DefaultController extends Controller
                             $tieneI++;
                         }
 
-                        $empresasI[]=array('nombre'=> $empresa->getNombre(),
-                                           'usuarios'=>$usuarios,
-                                           'programas'=>$paginasI,
-                                           'tiene'=>$tieneI);
+                        $empresasI[]=array('nombre' => $empresa->getNombre(),
+                                           'usuarios' => $usuarios,
+                                           'programas' => $paginasI,
+                                           'tiene' => $tieneI);
                     }
                 }
 
 
-                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast'=>$empresas_a + $empresas_i,
-                                                                                             'activas'=>$empresas_a,
-                                                                                             'inactivas'=>$empresas_i,
-                                                                                             'empresasA'=>$empresasA,
-                                                                                             'empresasI'=>$empresasI));
+                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast' => $empresas_a + $empresas_i,
+                                                                                             'activas' => $empresas_a,
+                                                                                             'inactivas' => $empresas_i,
+                                                                                             'empresasA' => $empresasA,
+                                                                                             'empresasI' => $empresasI,
+                                                                                             'usuario' => $usuarioS));
 
                 return $response;
 
             }
-            else
-            {
+            else {
 
-                $usuarioS = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-
-                $usuarios_activos=0;
-                $usuarios_inactivos=0;
-                $usuarios_registrados=0;
+                $usuarios_activos = 0;
+                $usuarios_inactivos = 0;
+                $usuarios_registrados = 0;
 
                 $query = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general2(:re, :pempresa_id) as
@@ -146,7 +146,8 @@ class DefaultController extends Controller
                 foreach ($r as $re) {
                     if ($re['logueado'] > 0) {
                         $usuarios_activos++;
-                    }else{
+                    }
+                    else {
                         $usuarios_inactivos++;
                     }
                    $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
@@ -161,7 +162,7 @@ class DefaultController extends Controller
                 $query2->execute();
                 $r1 = $query2->fetchAll();
 
-                foreach($r1 as $r )
+                foreach($r1 as $r)
                 {   
                     $paginas[] = array('pagina' => $r['nombre'],
                                        'fecha_i' => $r['fecha_inicio'],
@@ -174,12 +175,12 @@ class DefaultController extends Controller
                                        'id' => $r['id']);
                 }                      
 
-                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuarios_activos,
-                                                                                             'inactivos'=> $usuarios_inactivos,
-                                                                                             'total'=> $usuarios_registrados,
-                                                                                             'paginas'=>$paginas,
-                                                                                             'empresa_id' => $usuarioS->getEmpresa()->getId()
-                                                                                             ));
+                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos' => $usuarios_activos,
+                                                                                             'inactivos' => $usuarios_inactivos,
+                                                                                             'total' => $usuarios_registrados,
+                                                                                             'paginas' => $paginas,
+                                                                                             'empresa_id' => $usuarioS->getEmpresa()->getId(),
+                                                                                             'usuario' => $usuarioS));
 
                 return $response;
             }

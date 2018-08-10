@@ -24,6 +24,8 @@
                         <tr>
                             <th class="hd__title">Rol</th>
                             <th class="hd__title">{{'Descripción'|trans }}</th>
+                            <th class="hd__title">{{'Rol de empresa'|trans }}</th>
+                            <th class="hd__title">{{'Acceso al Backend'|trans }}</th>
                             <th class="hd__title">{{'Acciones'|trans }}</th>
                         </tr>
                     </thead>
@@ -33,6 +35,8 @@
                             <tr class="{{eo}}">
                                 <td>{{ rol.nombre }}</td>
                                 <td>{{ rol.descripcion }}</td>
+                                <td>{{ rol.empresa }}</td>
+                                <td>{{ rol.backend }}</td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ rol.id }}"><span class="fa fa-pencil"></span></a>
                                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if rol.delete_disabled == '' %}delete{% endif %} {{ rol.delete_disabled }}" data="{{rol.id}}"><span class="fa fa-trash"></span></a>
@@ -67,6 +71,24 @@
             <label for="message-text" class="form-control-label">{{ 'Descripción'|trans }}:</label>
             <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
         </div>
+        <div class="form-group">
+            <div class="can-toggle demo-rebrand-2 small">
+                <label for="company" class="col-6 col-form-label">{{ 'Rol de empresa'|trans }}</label>
+                <input id="empresa" name="empresa" type="checkbox">
+                <label for="empresa">
+                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="can-toggle demo-rebrand-2 small">
+                <label for="bknd" class="col-6 col-form-label">{{ 'Acceso al Backend'|trans }}</label>
+                <input id="backend" name="backend" type="checkbox">
+                <label for="backend">
+                    <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                </label>
+            </div>
+        </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
         <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El rol ha sido almacenada con éxito'|trans }}. 
@@ -86,8 +108,20 @@
                 <br>
                 <div class="row justify-content-between">
                     <div class="col-sm-16 col-md-16 show__details">
-                        <h5>{{'Descripción'| trans}}</h5>
+                        <h5>{{ 'Descripción'|trans }}</h5>
                         <p id="p-des">https://Loremipsumdolorsitamet.domain/</p>
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Rol de empresa'|trans }}</h5>
+                        <p id="p-empresa">https://Loremipsumdolorsitamet.domain/</p>
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-sm-16 col-md-16 show__details">
+                        <h5>{{ 'Acceso al Backend'|trans }}</h5>
+                        <p id="p-backend">https://Loremipsumdolorsitamet.domain/</p>
                     </div>
                 </div>
                 <br>
