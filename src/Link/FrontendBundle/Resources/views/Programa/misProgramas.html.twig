@@ -7,6 +7,8 @@
 
 {% block body %}
 {% set uri = app.request.getbasepath %}
+{% set certificado = activo ? 'activo' : " " %}
+
 
 {% if reciente == 1 %}
     {% set cursando = '' %}
@@ -20,6 +22,8 @@
     {% set aprobado = 'disabled' %}
 {% endif %}
 {% if reciente == 0 and completado == 0 %}
+
+<input type="hidden" id="certificado" name="certificado" value="{{certificado}}">
 
 <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
     <h4 class="mb-4 title-grey">Actividades Recientes</h4>
@@ -38,10 +42,10 @@
         <div class="col-12">
             <div class="filter-group d-flex justify-content-around mb-3">
                 <ul class="tabs">
-                    <li class="activo mt-3 {{ cursando }}">
+                    <li class=" activo mt-3 {{ cursando }}">
                         <span>En curso</span>
                     </li>
-                    <li class="mt-3 {{ aprobado }}">
+                    <li class=" mt-3 {{ aprobado }} " id="finalizados">
                         <span>Finalizados</span>
                     </li>
                 </ul>

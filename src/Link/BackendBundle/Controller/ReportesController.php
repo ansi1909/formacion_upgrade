@@ -704,8 +704,6 @@ class ReportesController extends Controller
 
             foreach ($r1 as $re)
             {
-
-                
                 
                 $objWorksheet->getStyle("A$row:H$row")->getFont()->setSize($font_size); // Tamaño de las letras
                 $objWorksheet->getStyle("A$row:H$row")->getFont()->setName($font); // Tipo de letra

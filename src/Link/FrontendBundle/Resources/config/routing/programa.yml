@@ -3,8 +3,8 @@ _programa:
     defaults: { _controller: LinkFrontendBundle:Programa:programa }
 
 _misProgramas:
-    path:     /misProgramas
-    defaults: { _controller: LinkFrontendBundle:Programa:misProgramas }
+    path:     /misProgramas/{activo}
+    defaults: { _controller: LinkFrontendBundle:Programa:misProgramas, activo : 0 }
 
 _programas:
     path:     /programas
