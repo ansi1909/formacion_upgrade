@@ -177,7 +177,9 @@ class DefaultController extends Controller
                 $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos'=> $usuarios_activos,
                                                                                              'inactivos'=> $usuarios_inactivos,
                                                                                              'total'=> $usuarios_registrados,
-                                                                                             'paginas'=>$paginas));
+                                                                                             'paginas'=>$paginas,
+                                                                                             'empresa_id' => $usuarioS->getEmpresa()->getId()
+                                                                                             ));
 
                 return $response;
             }
@@ -473,6 +475,54 @@ class DefaultController extends Controller
 
         return new Response('<p><b>Páginas asignadas a la empresa '.$empresa->getNombre().':</b></p>'.var_dump($paginas_ordenadas));
 
+    }
+
+    public function ajaxUsuariosConectadosAction(Request $request )
+    {
+       $session = new Session();
+       $em = $this->getDoctrine()->getManager();
+       $rs = $this->get('reportes');
+
+       $empresaid = (integer) $request->request->get('empresa_id_');
+
+       $listado = $rs->usuariosConectados($empresaid);
+       $usuariosConectados = count($listado);
+      
+       
+     
+       $html = '<table class="table" id="usuariosConectadosTable">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: .7rem;">';
+        
+        foreach ($listado as $registro)
+        {
+           
+            
+            $html .= '<tr>
+                       
+                        <td>'.$registro['login'].'</td>
+                        <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
+                        <td>'.$registro['correo'].'</td>
+                        <td>'.$registro['nivel'].'</td>
+                    </tr>';
+        }
+
+        $html .= '</tbody>
+                </table>'; 
+
+
+        
+        $return = array( 'conectados' => $usuariosConectados, 'html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
 }

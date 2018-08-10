@@ -205,6 +205,23 @@
                 </div>
             </div>
         </div>
+        <form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
+             <input type="hidden" id="empresa_id_" name="empresa_id_" value="{{empresa_id}}">
+        </form>
+           
+        <input type="hidden" id="usuarios_conectados" name="usuarios_conectados" value="{{ path('_ajaxUsuariosConectados') }}">
+        <div class="row">
+            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <div class="card-title" id="labelConectados">{{'Usuarios conectados' |trans}} : <span id='totalConectados'></span></div>
+                    </div>
+                    <div class="card-block" id="tablaConectados"> 
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     {% endif %}
 {% endblock %}
@@ -219,6 +236,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/dashboard1_light.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/dashboard.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/usuarios_conectados.js') }}"></script>
     <script type="text/javascript">
         $('#frmt1, #frmt2').jstree({
             'core' : {
@@ -239,6 +257,40 @@
             }
         });
     </script>
+    <script type="text/javascript" >
+            function applyDataTable()
+                        {
+                            $('#usuariosConectadosTable').DataTable({
+                                responsive: true,
+                                pageLength:10,
+                                sPaginationType: "full_numbers",
+                                oLanguage: {
+                                    "sProcessing":    "{{ 'Procesando'|trans }}...",
+                                    "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                                    "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                                    "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                                    "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                                    "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                                    "sInfoPostFix":   "",
+                                    "sSearch":        "{{ 'Buscar'|trans }}:",
+                                    "sUrl":           "",
+                                    "sInfoThousands":  ",",
+                                    "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                                    oPaginate: {
+                                        sFirst: "<<",
+                                        sPrevious: "<",
+                                        sNext: ">", 
+                                        sLast: ">>" 
+                                    },
+                                    "oAria": {
+                                        "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                        "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                                    }
+                                }
+                            });
+                        }
+</script>
 
     
 {% endblock %}
