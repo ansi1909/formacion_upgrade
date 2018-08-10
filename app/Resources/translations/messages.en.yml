@@ -267,6 +267,10 @@ El tipo de recurso es requerido: Type of resource is required
 El título debe contener al menos 10 caracteres: Title must have at least 10 characters
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
+El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
+El tutorial ha sido almacenado con éxito: The tutorial has been stored successfully
+El Url proporcionado no es correcto: Url given is incorrect
+El usuario es requerido: Username is required
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
 El valor de la pregunta es requerido.: Question weighing is required.
@@ -276,9 +280,6 @@ El valor de las horas académicas no puede ser cero: Academic hours value can no
 El valor del puntaje con que se aprueba debe ser mayor o igual a 10.: The score with it is approved must be greater or equal than 10.
 El valor del puntaje con que se aprueba debe ser un valor numérico.: The score with it is approved must be a numeric value.
 El valor del puntaje con que se aprueba no debe sobrepasar a 100.: The score value with it is approved must not exceed to 100.
-El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
-El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
-El Url proporcionado no es correcto: Url given is incorrect
 El vídeo es requerido: Video is required
 Email de contacto: Contact Email
 Empresa: Company

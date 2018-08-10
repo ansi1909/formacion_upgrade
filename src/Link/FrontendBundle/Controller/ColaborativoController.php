@@ -207,17 +207,50 @@ class ColaborativoController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
         
         $foro_id = $request->query->get('foro_id');
 
+        $html = '';
+
         $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
+
+        // Archivos
+        $archivos_bd = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForoArchivo')->findBy(array('foro' => $foro_id),
+                                                                                                       array('fechaRegistro' => 'ASC'));
+        foreach ($archivos_bd as $archivo)
+        {
+            $archivo_arr = $f->archivoForo($archivo, $session->get('usuario')['id']);
+            $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
+            $html .= '<li class="element-downloads" id="archivo-'.$archivo_arr['id'].'">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
+                                <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <div class="cont-opc">
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <span class="color-light-grey barra">|</span>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row px-0 justify-content-start">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                            </div>
+                        </div>
+                    </li>';
+        }
         
         $return = array('tema' => $foro->getTema(),
                         'fechaPublicacion' => $foro->getFechaPublicacion()->format('d/m/Y'),
                         'fechaVencimiento' => $foro->getFechaVencimiento()->format('d/m/Y'),
                         'fechaPublicacionF' => $foro->getFechaPublicacion()->format('Y-m-d'),
                         'fechaVencimientoF' => $foro->getFechaVencimiento()->format('Y-m-d'),
-                        'mensaje' => $foro->getMensaje());
+                        'mensaje' => $foro->getMensaje(),
+                        'html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -667,6 +700,7 @@ class ColaborativoController extends Controller
         $foro_id = $request->request->get('foro_id');
         $descripcion = $request->request->get('descripcion');
         $archivo = $request->request->get('archivo');
+        $edit = $request->request->get('edit');
 
         if (!$foro_id)
         {
@@ -723,30 +757,86 @@ class ColaborativoController extends Controller
             $em->flush();
         }
 
-        $html .= '<li class="element-downloads">
-                    <div class="row px-0 d-flex justify-content-between">
-                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                            <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
-                            <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
-                        </div>
-                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
-                            <div class="cont-opc">
-                                <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+        if ($edit)
+        {
+            $html .= '<li class="element-downloads" id="archivo-'.$archivo_arr['id'].'">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
+                                <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <div class="cont-opc">
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <span class="color-light-grey barra">|</span>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row px-0 justify-content-start">
-                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                            <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                        <div class="row px-0 justify-content-start">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                            </div>
                         </div>
-                    </div>
-                </li>';
+                    </li>';
+        }
+        else {
+            $html .= '<li class="element-downloads">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
+                                <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <div class="cont-opc">
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row px-0 justify-content-start">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                            </div>
+                        </div>
+                    </li>';
+        }
 
         $return = array('html' => $html,
                         'foro_id' => $foro_id);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxDeleteFileAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $archivo_id = $request->request->get('archivo_id');
+
+        $archivo = $em->getRepository('LinkComunBundle:CertiForoArchivo')->find($archivo_id);
+        $foro_id = $archivo->getForo()->getId();
+        $file = $this->container->getParameter('folders')['dir_uploads'].$archivo->getArchivo();
+        if (file_exists($file))
+        {
+            unlink($file);
+        }
+        $em->remove($archivo);
+        $em->flush();
+
+        $query = $em->createQuery('SELECT COUNT(fa.id) FROM LinkComunBundle:CertiForoArchivo fa 
+                                    WHERE fa.foro = :foro_id')
+                    ->setParameter('foro_id', $foro_id);
+        $archivos = $query->getSingleScalarResult();
+
+        $return = array('archivos' => $archivos);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
 

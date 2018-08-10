@@ -129,13 +129,16 @@ $(document).ready(function() {
 		        type: "POST",
 		        url: $('#url_archivo').val(),
 		        async: true,
-		        data: { foro_id: $('#upload_foro_id').val(), descripcion: $('#descripcion').val(), archivo: $('#archivo').val() },
+		        data: { foro_id: $('#upload_foro_id').val(), descripcion: $('#descripcion').val(), archivo: $('#archivo').val(), edit: 1 },
 		        dataType: "json",
 		        success: function(data) {
 		        	$('#foro_id').val(data.foro_id);
 		        	$('#descripcion').val('');
 		        	$('#archivo').val('');
 		        	$('#archivo_input').val('');
+		        	$('.list-downloads').append(data.html);
+		        	$('.attachments').show();
+		        	observeDeleteFile();
 		        	$('.boton').show();
 		            $('#wait_file').hide(1000);
 		            $( "#cancelarUpload" ).trigger( "click" );
@@ -182,6 +185,12 @@ function observeTopic(newTopic)
 		            endDate.setDate(endDate.getDate() + 1);
 		            $('#fechaVencimiento').datepicker('setStartDate', startDate);
 			    	$('#fechaPublicacion').datepicker('setEndDate', endDate);
+			    	if (data.html != '')
+			    	{
+			    		$('.list-downloads').html(data.html);
+			    		$('.attachments').show();
+			    		observeDeleteFile();
+			    	}
 			    	$('#section-form').show(1000);
 					$('#wait').hide(1000);
 					$('html, body').animate({
@@ -200,6 +209,8 @@ function observeTopic(newTopic)
 			$('.form-control').val('');
 			CKEDITOR.instances.mensaje.setData('');
 			$('#base_upload').val('');
+			$('.list-downloads').html('');
+			$('.attachments').hide();
 			$('#section-form').show(1000);
 			$('#wait').hide(1000);
 		}
@@ -229,4 +240,30 @@ function saveForo()
             $('#wait').hide(1000);
         }
     });
+}
+
+function observeDeleteFile()
+{
+	$('.delete').unbind('click');
+	$('.delete').click(function(){
+		var archivo_id = $(this).attr('data');
+		$.ajax({
+	        type: "POST",
+	        url: $('#url_delete_file').val(),
+	        async: true,
+	        data: { archivo_id: archivo_id },
+	        dataType: "json",
+	        success: function(data) {
+	        	$('#archivo-'+archivo_id).remove();
+	        	if (data.archivos == 0)
+	        	{
+	        		$('.list-downloads').html('');
+					$('.attachments').hide();
+	        	}
+	        },
+	        error: function(){
+	            console.log('Error eliminando el archivo'); // Hay que implementar los mensajes de error para el frontend
+	        }
+	    });
+	});
 }

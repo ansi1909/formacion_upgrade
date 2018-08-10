@@ -20,6 +20,69 @@
         .ui-autocomplete-loading {
             background: white url("{{ asset('img/ui-anim_basic_16x16.gif') }}") right center no-repeat;
         }
+        .attachments {
+            background-color: #FAFAFA;
+            display: none;
+            top: calc(2rem - 7px);
+            right: -25rem;
+            padding: 0rem 1rem;
+            transition: .8s ease;
+            z-index: 10;
+            box-shadow: -2px 0px 20px rgba(56, 56, 56, 0.2);
+            margin-bottom: 1rem;
+        }
+        .list-downloads {
+            list-style: none;
+            padding: 0;
+            width: 50rem;
+        }
+        .list-downloads .element-downloads {
+            /*width: 20rem;*/
+            padding: 1rem 2rem;
+            border-top: 2px solid #F0F4F7;
+        }
+        .list-downloads .element-downloads .imgdl {
+            width: 2rem;
+            height: 2rem;
+            margin-right: calc(1rem - 8px);
+        }
+        .list-downloads .element-downloads .nameArch {
+            position: relative;
+            top: .3rem;
+            color: #adb5bd;
+            display: block;
+            font-weight: 600;
+            font-family: "Open Sans";
+            font-size: 0.87rem;
+            white-space: pre-wrap;
+            max-width: 13rem;
+            text-align: justify;
+            line-height: 1rem;
+        }
+        .list-downloads .element-downloads .icDl {
+            font-size: calc(1rem + 4px);
+            color: #adb5bd;
+            position: relative;
+            top: calc(1rem - 12px);
+        }
+        .list-downloads .element-downloads .nameUpload {
+            position: relative;
+            top: -.6rem;
+            left: 2.5rem;
+            color: #adb5bd;
+            font-weight: 600;
+            font-family: "Open Sans";
+            font-size: 0.75rem;
+            text-align: justify;
+            line-height: 1rem;
+            margin-bottom: -1.5rem;
+        }
+        .barra {
+            font-size: calc(1rem + 8px);
+            top: calc(-1rem + 6px);
+            margin: 0 1rem;
+            cursor: default;
+        }
     </style>
 {% endblock %}
 
@@ -84,6 +147,7 @@
     <input type="hidden" id="url_delete" name="url_delete" value="{{ path('_ajaxDeleteForo') }}">
     <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadForoArchivo') }}">
     <input type="hidden" id="url_archivo" name="url_archivo" value="{{ path('_ajaxSaveForoArchivo') }}">
+    <input type="hidden" id="url_delete_file" name="url_delete_file" value="{{ path('_ajaxDeleteFile') }}">
     <input type="hidden" id="titulo_new" name="titulo_new" value="{{ 'Crear nuevo tema'|trans }}">
     <input type="hidden" id="titulo_edit" name="titulo_edit" value="{{ 'Editar tema'|trans }}">
     <input type="hidden" id="base_upload" name="base_upload" value="">
@@ -139,6 +203,10 @@
                                     <a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row pl-3 align-items-center attachments" id="attachments">
+                            <ul class="list-downloads">
+                            </ul>
                         </div>
                         <div class="row mb-3 align-items-center justify-content-end">
                             <div class="col-auto text-left">
