@@ -499,7 +499,8 @@ class Functions
 		
 		foreach ($roles as $rol_id)
         {
-        	if ($rol_id != $yml['parameters']['rol']['administrador'])
+        	$rol = $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+        	if ($rol->getEmpresa())
         	{
         		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
         		$empresa_id = $usuario->getEmpresa()->getId();
@@ -2190,7 +2191,7 @@ class Functions
                     {
                         
                         // Verifico si el rol está dentro de los roles de backend
-                        if (in_array($rol_usuario->getRol()->getId(), $roles_bk))
+                        if ($rol_usuario->getRol()->getBackend())
                         {
                             $roles_ok = 1;
                         }
@@ -2448,6 +2449,18 @@ class Functions
 
         return $archivo_arr;
 
+	}
+
+	public function delete_folder($folder) {
+	    $glob = glob($folder);
+	    foreach ($glob as $g) {
+	        if (!is_dir($g)) {
+	            unlink($g);
+	        } else {
+	            $this->delete_folder("$g/*");
+	            rmdir($g);
+	        }
+	    }
 	}
 
 	public function nextLesson($indexedPages, $pagina_id, $usuario_id, $empresa_id, $yml, $programa_id)

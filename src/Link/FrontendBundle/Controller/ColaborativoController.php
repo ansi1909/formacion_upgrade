@@ -30,10 +30,39 @@ class ColaborativoController extends Controller
 
         $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
+        // Foros vacíos, eliminarlos
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
                                     WHERE f.pagina = :programa_id 
                                     AND f.empresa = :empresa_id 
-                                    AND f.foro IS NULL
+                                    AND f.foro IS NULL 
+                                    AND f.tema IS NULL 
+                                    ORDER BY f.fechaPublicacion DESC")
+                    ->setParameters(array('programa_id' => $programa_id,
+                                          'empresa_id' => $session->get('empresa')['id']));
+        $foros_bd = $query->getResult();
+        foreach ($foros_bd as $foro)
+        {
+            $foro_archivo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForoArchivo')->findByForo($foro->getId());
+            foreach ($foro_archivo as $fa)
+            {
+                $file = $this->container->getParameter('folders')['dir_uploads'].$fa->getArchivo();
+                if (file_exists($file))
+                {
+                    unlink($file);
+                }
+                $em->remove($fa);
+                $em->flush();
+            }
+            $dirname = $this->container->getParameter('folders')['dir_uploads'].'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro->getId().'/';
+            $f->delete_folder($dirname);
+            $em->remove($foro);
+            $em->flush();
+        }
+
+        $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
+                                    WHERE f.pagina = :programa_id 
+                                    AND f.empresa = :empresa_id 
+                                    AND f.foro IS NULL 
                                     ORDER BY f.fechaPublicacion DESC")
                     ->setParameters(array('programa_id' => $programa_id,
                                           'empresa_id' => $session->get('empresa')['id']));
@@ -132,7 +161,6 @@ class ColaborativoController extends Controller
             $foro->setFechaRegistro(new \DateTime('now'));
             $foro->setPagina($pagina);
             $foro->setEmpresa($empresa);
-            $foro->setPagina($pagina);
             $foro->setUsuario($usuario);
 
         }
@@ -179,17 +207,50 @@ class ColaborativoController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
         
         $foro_id = $request->query->get('foro_id');
 
+        $html = '';
+
         $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
+
+        // Archivos
+        $archivos_bd = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForoArchivo')->findBy(array('foro' => $foro_id),
+                                                                                                       array('fechaRegistro' => 'ASC'));
+        foreach ($archivos_bd as $archivo)
+        {
+            $archivo_arr = $f->archivoForo($archivo, $session->get('usuario')['id']);
+            $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
+            $html .= '<li class="element-downloads" id="archivo-'.$archivo_arr['id'].'">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
+                                <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <div class="cont-opc">
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <span class="color-light-grey barra">|</span>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row px-0 justify-content-start">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                            </div>
+                        </div>
+                    </li>';
+        }
         
         $return = array('tema' => $foro->getTema(),
                         'fechaPublicacion' => $foro->getFechaPublicacion()->format('d/m/Y'),
                         'fechaVencimiento' => $foro->getFechaVencimiento()->format('d/m/Y'),
                         'fechaPublicacionF' => $foro->getFechaPublicacion()->format('Y-m-d'),
                         'fechaVencimientoF' => $foro->getFechaVencimiento()->format('Y-m-d'),
-                        'mensaje' => $foro->getMensaje());
+                        'mensaje' => $foro->getMensaje(),
+                        'html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -579,8 +640,38 @@ class ColaborativoController extends Controller
     {
         
         $session = new Session();
+        $em = $this->getDoctrine()->getManager();
         
         $foro_id = $request->request->get('upload_foro_id');
+        $pagina_id = $request->request->get('upload_pagina_id');
+
+        if (!$foro_id)
+        {
+
+            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
+            $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            $foro = new CertiForo();
+            $foro->setFechaRegistro(new \DateTime('now'));
+            $foro->setPagina($pagina);
+            $foro->setEmpresa($empresa);
+            $foro->setUsuario($usuario);
+            $em->persist($foro);
+            $em->flush();
+
+            $foro_id = $foro->getId();
+            $session->set('upload_foro_id', $foro_id);
+
+            // Se crea el subdirectorio para los archivos del espacio colaborativo
+            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+            $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
+            if (!file_exists($dir) && !is_dir($dir))
+            {
+                mkdir($dir, 750, true);
+            }
+
+        }
 
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
         $uploads = $this->container->getParameter('folders')['uploads'];
@@ -603,11 +694,20 @@ class ColaborativoController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $html = '';
+        $generar_alarma = 1;
 
         // Recepción de parámetros del request
         $foro_id = $request->request->get('foro_id');
         $descripcion = $request->request->get('descripcion');
         $archivo = $request->request->get('archivo');
+        $edit = $request->request->get('edit');
+
+        if (!$foro_id)
+        {
+            $foro_id = $session->get('upload_foro_id');
+            $archivo = 'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/'.$archivo;
+            $generar_alarma = 0;
+        }
 
         // Preparando entidades de almacenamiento
         $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
@@ -626,7 +726,7 @@ class ColaborativoController extends Controller
         $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
 
         // Generación de alarmas
-        if ($foro->getUsuario()->getId() != $usuario->getId())
+        if ($foro->getUsuario()->getId() != $usuario->getId() && $generar_alarma)
         {
 
             $descripcion_alarma = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
@@ -657,29 +757,86 @@ class ColaborativoController extends Controller
             $em->flush();
         }
 
-        $html .= '<li class="element-downloads">
-                    <div class="row px-0 d-flex justify-content-between">
-                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                            <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
-                            <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
-                        </div>
-                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
-                            <div class="cont-opc">
-                                <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+        if ($edit)
+        {
+            $html .= '<li class="element-downloads" id="archivo-'.$archivo_arr['id'].'">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
+                                <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <div class="cont-opc">
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <span class="color-light-grey barra">|</span>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row px-0 justify-content-start">
-                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                            <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                        <div class="row px-0 justify-content-start">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                            </div>
                         </div>
-                    </div>
-                </li>';
+                    </li>';
+        }
+        else {
+            $html .= '<li class="element-downloads">
+                        <div class="row px-0 d-flex justify-content-between">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <img src="'.$archivo_arr['img'].'" class="imgdl" alt="">
+                                <p class="nameArch">'.$archivo_arr['descripcion'].'</p>
+                            </div>
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                                <div class="cont-opc">
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row px-0 justify-content-start">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                            </div>
+                        </div>
+                    </li>';
+        }
 
-        $return = array('html' => $html);
+        $return = array('html' => $html,
+                        'foro_id' => $foro_id);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxDeleteFileAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $archivo_id = $request->request->get('archivo_id');
+
+        $archivo = $em->getRepository('LinkComunBundle:CertiForoArchivo')->find($archivo_id);
+        $foro_id = $archivo->getForo()->getId();
+        $file = $this->container->getParameter('folders')['dir_uploads'].$archivo->getArchivo();
+        if (file_exists($file))
+        {
+            unlink($file);
+        }
+        $em->remove($archivo);
+        $em->flush();
+
+        $query = $em->createQuery('SELECT COUNT(fa.id) FROM LinkComunBundle:CertiForoArchivo fa 
+                                    WHERE fa.foro = :foro_id')
+                    ->setParameter('foro_id', $foro_id);
+        $archivos = $query->getSingleScalarResult();
+
+        $return = array('archivos' => $archivos);
+
+        $return = json_encode($return);
+        return new Response($return,200,array('Content-Type' => 'application/json'));
 
     }
 

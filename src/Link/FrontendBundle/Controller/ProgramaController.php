@@ -277,7 +277,7 @@ class ProgramaController extends Controller
 
     }
 
-    public function misProgramasAction()
+    public function misProgramasAction($activo, Request $request )
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -455,7 +455,8 @@ class ProgramaController extends Controller
         return $this->render('LinkFrontendBundle:Programa:misProgramas.html.twig', array('reciente' => $reciente,
                                                                                          'actividad_reciente' => $actividad_reciente,
                                                                                          'completado' => $completado,
-                                                                                         'programas_aprobados' => $programas_aprobados));
+                                                                                         'programas_aprobados' => $programas_aprobados,
+                                                                                         'activo' => $activo));
 
         $response->headers->setCookie(new Cookie('Peter', 'Griffina', time() + 36, '/'));
 

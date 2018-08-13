@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block body %}
-    {% set rol = app.session.get('administrador') ? 'true' : 'false' %}
+    {% if not usuario.empresa or app.session.get('administrador') %}
+        {% set rol = 'true' %}
+    {% else %}
+        {% set rol = 'false' %}
+    {% endif %}
     {% set app_id = app.session.get('app_id') %}
     <br><br>
     {% if rol == 'true' %}
@@ -124,13 +128,14 @@
     </div>
     {% else %}
     <div class="emp_dash">
+        <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                 <div class="activity-block linkg1">
                     <div class="media">
                         <div class="media-body">
-                            <h5>#<span class="spincreament">{{total}}</span></h5>
-                            <p>{{'Usuarios registrados' |trans}}</p>
+                            <h5>#<span class="spincreament">{{ total }}</span></h5>
+                            <p>{{ 'Usuarios registrados'|trans }}</p>
                         </div>
                         <i class="fa fa-users"></i>
                     </div>
@@ -205,6 +210,27 @@
                 </div>
             </div>
         </div>
+        <form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
+             <input type="hidden" id="empresa_id_" name="empresa_id_" value="{{empresa_id}}">
+        </form>
+           
+        <input type="hidden" id="usuarios_conectados" name="usuarios_conectados" value="{{ path('_ajaxUsuariosConectados') }}">
+        <div class="row">
+            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <div class="card-title" id="labelConectados" style="display: : none">{{'Usuarios conectados' |trans}} : <span id='totalConectados'></span></div>
+                        <div class="card-title" id="labelConectadosLoading" style="display: : none">{{'Actualizando la lista de usuarios conectados..' |trans}}  <span id='ConectadosLoading'></span></div>
+                    </div>
+                    <div class="card-block" id="tablaConectados"> 
+                      
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     {% endif %}
 {% endblock %}
@@ -219,6 +245,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/dashboard1_light.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/dashboard.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/usuarios_conectados.js') }}"></script>
     <script type="text/javascript">
         $('#frmt1, #frmt2').jstree({
             'core' : {
@@ -239,6 +266,40 @@
             }
         });
     </script>
+    <script type="text/javascript" >
+            function applyDataTable()
+                        {
+                            $('#usuariosConectadosTable').DataTable({
+                                responsive: true,
+                                pageLength:10,
+                                sPaginationType: "full_numbers",
+                                oLanguage: {
+                                    "sProcessing":    "{{ 'Procesando'|trans }}...",
+                                    "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                                    "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                                    "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                                    "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                                    "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                                    "sInfoPostFix":   "",
+                                    "sSearch":        "{{ 'Buscar'|trans }}:",
+                                    "sUrl":           "",
+                                    "sInfoThousands":  ",",
+                                    "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                                    oPaginate: {
+                                        sFirst: "<<",
+                                        sPrevious: "<",
+                                        sNext: ">", 
+                                        sLast: ">>" 
+                                    },
+                                    "oAria": {
+                                        "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                        "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                                    }
+                                }
+                            });
+                        }
+</script>
 
     
 {% endblock %}

@@ -34,18 +34,20 @@ class RolController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $rolesdb= array();
+        $rolesdb = array();
 
-        $query= $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r
+        $query = $em->createQuery('SELECT r FROM LinkComunBundle:AdminRol r
                                         ORDER BY r.nombre ASC');
-        $roles=$query->getResult();
+        $roles = $query->getResult();
                 
         foreach ($roles as $rol)
         {
-            $rolesdb[]= array('id'=>$rol->getId(),
-                              'nombre'=>$rol->getNombre(),
-                              'descripcion'=>$rol->getDescripcion(),
-                              'delete_disabled'=>$f->linkEliminar($rol->getId(),'AdminRol'));
+            $rolesdb[]= array('id' => $rol->getId(),
+                              'nombre' => $rol->getNombre(),
+                              'descripcion' => $rol->getDescripcion(),
+                              'empresa' => $rol->getEmpresa() ? $this->get('translator')->trans('Sí') : 'No',
+                              'backend' => $rol->getBackend() ? $this->get('translator')->trans('Sí') : 'No',
+                              'delete_disabled' => $f->linkEliminar($rol->getId(),'AdminRol'));
 
         }
 
@@ -62,6 +64,8 @@ class RolController extends Controller
         $rol_id = $request->request->get('rol_id');
         $nombre = $request->request->get('rol');
         $descripcion = $request->request->get('descripcion');
+        $empresa = $request->request->get('empresa');
+        $backend = $request->request->get('backend');
 
         if ($rol_id)
         {
@@ -72,15 +76,18 @@ class RolController extends Controller
         }
 
         $rol->setNombre($nombre);
-        $rol->setDescripcion($descripcion);
-        
+        $rol->setDescripcion($descripcion); 
+        $rol->setEmpresa(isset($empresa) ? $empresa ? true : false : false);
+        $rol->setBackend(isset($backend) ? $backend ? true : false : false);
         $em->persist($rol);
         $em->flush();
                     
         $return = array('id' => $rol->getId(),
-                        'nombre' =>$rol->getNombre(),
-                        'descripcion' =>$rol->getDescripcion(),
-                        'delete_disabled' =>$f->linkEliminar($rol->getId(),'AdminRol'));
+                        'nombre' => $rol->getNombre(),
+                        'descripcion' => $rol->getDescripcion(),
+                        'empresa' => $rol->getEmpresa() ? $this->get('translator')->trans('Sí') : 'No',
+                        'backend' => $rol->getBackend() ? $this->get('translator')->trans('Sí') : 'No',
+                        'delete_disabled' => $f->linkEliminar($rol->getId(),'AdminRol'));
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -102,7 +109,9 @@ class RolController extends Controller
 
 
         $return = array('nombre' => $rol->getNombre(),
-                        'descripcion' => $rol->getDescripcion());
+                        'descripcion' => $rol->getDescripcion(),
+                        'empresa' => $rol->getEmpresa(),
+                        'backend' => $rol->getBackend());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
