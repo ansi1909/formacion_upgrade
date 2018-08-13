@@ -486,7 +486,7 @@ class DefaultController extends Controller
 
        $empresaid = (integer) $request->request->get('empresa_id_');
 
-       $listado = $rs->usuariosConectados($empresaid);
+       $listado = $rs->usuariosConectados($empresaid, $session->get('usuario')['id']);
        $usuariosConectados = count($listado);
       
        
@@ -501,19 +501,30 @@ class DefaultController extends Controller
                         </tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
-        
-        foreach ($listado as $registro)
-        {
+        if ($usuariosConectados>0) {
+             foreach ($listado as $registro)
+                {
            
             
-            $html .= '<tr>
-                       
-                        <td>'.$registro['login'].'</td>
-                        <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
-                        <td>'.$registro['correo'].'</td>
-                        <td>'.$registro['nivel'].'</td>
-                    </tr>';
+                    $html .= '<tr>
+                               
+                                <td>'.$registro['login'].'</td>
+                                <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
+                                <td>'.$registro['correo'].'</td>
+                                <td>'.$registro['nivel'].'</td>
+                            </tr>';
+                 }
+            
         }
+        else
+        {
+            $html.= '<tr>
+                <td coslpan="4">'.$this->get('translator')->trans('No existen usuarios conectados en este momento').'</td>
+            </tr>';
+
+        }
+        
+       
 
         $html .= '</tbody>
                 </table>'; 

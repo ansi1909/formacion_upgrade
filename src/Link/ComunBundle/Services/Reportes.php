@@ -66,16 +66,17 @@ class Reportes
         return $rs;
     }
 
-    public function usuariosConectados($pempresa_id)
+    public function usuariosConectados($pempresa_id,$pusuario_id)
     {
         $em = $this->em;
 
         $query = $em->getConnection()->prepare('SELECT
-                                                fnusuarios_conectados(:re, :pempresa_id) as
+                                                fnusuarios_conectados(:re, :pempresa_id, :pusuario_id) as
                                                 resultado; fetch all from re;');
         $re = 're';
         $query->bindValue(':re', $re, \PDO::PARAM_STR);
         $query->bindValue(':pempresa_id', $pempresa_id, \PDO::PARAM_INT);
+         $query->bindValue(':pusuario_id', $pusuario_id, \PDO::PARAM_INT);
         $query->execute();
         $rs = $query->fetchAll();
         

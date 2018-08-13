@@ -1,11 +1,12 @@
--- Function: fnusuarios_conectados(refcursor, integer)
+-- Function: fnusuarios_conectados(refcursor, integer, integer)
 
 -- DROP FUNCTION fnusuarios_conectados(refcursor, integer);
 
 
 CREATE OR REPLACE FUNCTION fnusuarios_conectados(
     resultado refcursor,
-    pempresa_id integer
+    pempresa_id integer,
+    pusuario_id integer
 )
   RETURNS refcursor AS
 $BODY$
@@ -31,6 +32,8 @@ begin
 			  ass.disponible IS TRUE
 		AND
 			  au.empresa_id = pempresa_id
+		AND   
+			  ass.usuario_id <> pusuario_id
 		GROUP BY au.login, au.nombre, au.apellido, an.nombre, au.correo_corporativo
 		ORDER BY au.login DESC;
     
@@ -41,4 +44,4 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
 
   
-   --select * from fnusuarios_conectados('re', 2) as resultado; fetch all from re;
+   --select * from fnusuarios_conectados('re', 2, 24) as resultado; fetch all from re;
