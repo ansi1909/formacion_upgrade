@@ -128,6 +128,7 @@
     </div>
     {% else %}
     <div class="emp_dash">
+        <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
         <div class="row">
             <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                 <div class="activity-block linkg1">
@@ -218,10 +219,14 @@
             <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                 <div class="card">
                     <div class="card-header gradiente">
-                        <div class="card-title" id="labelConectados">{{'Usuarios conectados' |trans}} : <span id='totalConectados'></span></div>
+                        <div class="card-title" id="labelConectados" style="display: : none">{{'Usuarios conectados' |trans}} : <span id='totalConectados'></span></div>
+                        <div class="card-title" id="labelConectadosLoading" style="display: : none">{{'Actualizando la lista de usuarios conectados..' |trans}}  <span id='ConectadosLoading'></span></div>
                     </div>
                     <div class="card-block" id="tablaConectados"> 
                       
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
+                        
                     </div>
                 </div>
             </div>

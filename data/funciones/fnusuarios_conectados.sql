@@ -1,6 +1,6 @@
 -- Function: fnusuarios_conectados(refcursor, integer, integer)
 
--- DROP FUNCTION fnusuarios_conectados(refcursor, integer);
+-- DROP FUNCTION fnusuarios_conectados(refcursor, integer, integer);
 
 
 CREATE OR REPLACE FUNCTION fnusuarios_conectados(

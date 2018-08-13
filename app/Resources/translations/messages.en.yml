@@ -13,6 +13,7 @@ Activar para ordenar la columna de manera descendente: Enable to order column de
 Activar webinar: Activate webinar
 Activo: Active
 Activos: Active
+Actualizando la lista de usuarios conectados.. : Updating the list of connected users..
 Advertencia: Warning
 Agregar: Add
 Agregar categoría: Add category
@@ -85,6 +86,7 @@ Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of ch
 Cantidad mínima de caracteres en el Resumen: Minimum number of characters in the Summary
 Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content 
 Cargando..: Loading..
+Cargando usuarios conectados..: Loading connected users..
 Carga masiva: Bulk load
 Carga masiva de participantes de la empresa: Bulk load of participants of company
 Categoría: Category
@@ -388,6 +390,7 @@ Ha ocurrido un error en la eliminación de este registro: An error ocurred delet
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: An error ocurred getting the programs. Contact your system administrator.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
+Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.: An error occurred when loading connected users, verify your internet connection or contact the system administrator. 
 Ha sido publicado: It has been published
 Ha sido publicado el evento: It has been published an event
 ha subido un archivo en el espacio colaborativo de: has uploaded a file into the collaborative space of
