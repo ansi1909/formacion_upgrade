@@ -283,8 +283,8 @@ class UsuarioController extends Controller
         $qb = $em->createQueryBuilder();
         $qb->select('r')
            ->from('LinkComunBundle:AdminRol', 'r')
-           ->andWhere('r.id != :administrador')
-           ->setParameter('administrador', $yml['parameters']['rol']['administrador']);
+           ->andWhere('r.empresa = :empresa')
+           ->setParameter('empresa', true);
         $query = $qb->getQuery();
         $roles_empresa_bd = $query->getResult();
         $roles_empresa = array();

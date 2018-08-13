@@ -42,6 +42,12 @@ class ReportesController extends Controller
             $nivel_id = $nivel_id ? $nivel_id : 0;
             $pagina_id = $pagina_id ? $pagina_id : 0;
             $i = 1;
+            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+            if ($pagina_id)
+            {
+                $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            }
             $query = $em->getConnection()->prepare('SELECT
                                                     fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
                                                     resultado; fetch all from re;');
@@ -56,56 +62,81 @@ class ReportesController extends Controller
 
 
             // Solicita el servicio de excel
-            $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantes.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
-            $phpExcelObject->getProperties()->setCreator("formacion")
-               ->setLastModifiedBy($session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'])
-               ->setTitle("Listado de participantes")
-               ->setSubject("Listado de participantes")
-               ->setDescription("Listado de participantes")
-               ->setKeywords("office 2005 openxml php")
-               ->setCategory("Reportes");
-            foreach ($r as $re) {
-            
-                $i++;
-                $activo = $re['activo'] = "TRUE" ? '1' : '0';
-                $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
-                $phpExcelObject->setActiveSheetIndex(0)
-                               ->setCellValue('A1', 'Nombre')
-                               ->setCellValue('B1', 'Apellido')
-                               ->setCellValue('C1', 'Login')
-                               ->setCellValue('D1', 'Correo Personal')
-                               ->setCellValue('E1', 'Correp Corporativo')
-                               ->setCellValue('F1', 'Activo')
-                               ->setCellValue('G1', 'Logueado')
-                               ->setCellValue('H1', 'Fecha de registro')
-                               ->setCellValue('I1', 'Fecha de nacimiento')
-                               ->setCellValue('J1', 'País')
-                               ->setCellValue('K1', 'Nivel')
-                               ->setCellValue('L1', 'campo1')
-                               ->setCellValue('M1', 'campo2')
-                               ->setCellValue('N1', 'campo3')
-                               ->setCellValue('O1', 'campo4')
-                               ->setCellValue('A'.$i, $re['nombre'])
-                               ->setCellValue('B'.$i, $re['apellido'])
-                               ->setCellValue('C'.$i, $re['login'])
-                               ->setCellValue('D'.$i, $re['correo'])
-                               ->setCellValue('E'.$i, $re['correo2'])
-                               ->setCellValue('F'.$i, $activo)
-                               ->setCellValue('G'.$i, $logueado)
-                               ->setCellValue('H'.$i, $re['fecha_registro'])
-                               ->setCellValue('I'.$i, $re['fecha_nacimiento'])
-                               ->setCellValue('J'.$i, $re['pais'])
-                               ->setCellValue('K'.$i, $re['nivel'])
-                               ->setCellValue('L'.$i, $re['campo1'])
-                               ->setCellValue('M'.$i, $re['campo2'])
-                               ->setCellValue('N'.$i, $re['campo3'])
-                               ->setCellValue('O'.$i, $re['campo4']);
+            // Encabezado
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').'. ');
+            if ($pagina_id)
+            {
+                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+            }else
+            {
+                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
             }
-            $phpExcelObject->getActiveSheet()->setTitle('Participantes');
+            if (!count($r))
+            {
+                $objWorksheet->mergeCells('A5:S5');
+                $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+            }
+            else {
+
+                $row = 5;
+                $i = 0;
+                $styleThinBlackBorderOutline = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('argb' => 'FF000000'),
+                        ),
+                    ),
+                );
+                $font_size = 11;
+                $font = 'Arial';
+                $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+
+                foreach ($r as $re)
+                {
+
+                    $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
+                    $activo = $re['activo'] = "TRUE" ? '1' : '0';
+                    $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
+                    
+                    $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
+                
+
+                    // Datos de las columnas comunes
+                    $objWorksheet->setCellValue('A'.$row, $re['codigo']);
+                    $objWorksheet->setCellValue('B'.$row, $re['login']);
+                    $objWorksheet->setCellValue('C'.$row, $re['nombre']);
+                    $objWorksheet->setCellValue('D'.$row, $re['apellido']);
+                    $objWorksheet->setCellValue('E'.$row, $re['fecha_registro']);
+                    $objWorksheet->setCellValue('F'.$row, $correo);
+                    $objWorksheet->setCellValue('G'.$row, $activo);
+                    $objWorksheet->setCellValue('H'.$row, $logueado);
+                    $objWorksheet->setCellValue('I'.$row, $re['pais']);
+                    $objWorksheet->setCellValue('J'.$row, $re['nivel']);
+                    $objWorksheet->setCellValue('K'.$row, $re['campo1']);
+                    $objWorksheet->setCellValue('L'.$row, $re['campo2']);
+                    $objWorksheet->setCellValue('M'.$row, $re['campo3']);
+                    $objWorksheet->setCellValue('N'.$row, $re['campo4']);
+                    $row++;
+
+                }
+
+            }
+           
 
             // Crea el writer
-            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
+            $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
             //$writer->setUseBOM(true);
             //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
             //$writer->save($this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/data.csv');
@@ -318,7 +349,7 @@ class ReportesController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de espacio colaborativo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'. '.$this->get('translator')->trans('Tema').': '.$tema->getTema().'.');
 
         if (!count($listado))
@@ -346,29 +377,15 @@ class ReportesController extends Controller
             foreach ($listado as $participante)
             {
 
-                $limit_iterations = count($participante['foro'])-1;
-                $limit_row = $row+$limit_iterations;
-
-                // Estilizar las celdas antes de un posible merge
-                for ($f=$row; $f<=$limit_row; $f++)
-                {
-                    $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
-                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                    $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
-                }
-
-                if ($limit_iterations > 0)
-                {
-                    // Merge de las celdas
-                    for ($c=0; $c<=11; $c++)
-                    {
-                        $col = $columnNames[$c];
-                        $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
-                    }
-                }
+                $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
+                
+                $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
+            
 
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -376,25 +393,16 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
                 $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('F'.$row, $correo);
                 $objWorksheet->setCellValue('G'.$row, $participante['pais']);
                 $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
                 $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
                 $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
                 $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-
-                //return new response(var_dump($participante['muros']));
-
-                // Datos de los mensajes
-                foreach ($participante['foro'] as $m)
-                {
-                    $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
-                    $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
-                    $row++;
-
-                }
-                //return new response(var_dump($row));
+                $objWorksheet->setCellValue('M'.$row, $participante['fecha_mensaje']);
+                $objWorksheet->setCellValue('N'.$row, $participante['mensaje']);
+                $row++;
 
             }
 
@@ -558,30 +566,15 @@ class ReportesController extends Controller
 
             foreach ($listado as $participante)
             {
-
-                $limit_iterations = count($participante['muros'])-1;
-                $limit_row = $row+$limit_iterations;
-
-                // Estilizar las celdas antes de un posible merge
-                for ($f=$row; $f<=$limit_row; $f++)
-                {
-                    $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
-                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                    $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
-                }
-
-                if ($limit_iterations > 0)
-                {
-                    // Merge de las celdas
-                    for ($c=0; $c<=11; $c++)
-                    {
-                        $col = $columnNames[$c];
-                        $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
-                    }
-                }
+               $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
+                
+                $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
+            
 
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -589,25 +582,16 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
                 $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('F'.$row, $correo);
                 $objWorksheet->setCellValue('G'.$row, $participante['pais']);
                 $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
                 $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
                 $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
                 $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-
-                //return new response(var_dump($participante['muros']));
-
-                // Datos de los mensajes
-                foreach ($participante['muros'] as $m)
-                {
-                    $objWorksheet->setCellValue('M'.$row, $m['fecha_mensaje']);
-                    $objWorksheet->setCellValue('N'.$row, $m['mensaje']);
-                    $row++;
-
-                }
-                //return new response(var_dump($row));
+                $objWorksheet->setCellValue('M'.$row, $participante['fecha_mensaje']);
+                $objWorksheet->setCellValue('N'.$row, $participante['mensaje']);
+                $row++;
 
             }
 
@@ -656,6 +640,7 @@ class ReportesController extends Controller
         $usuarios_inactivos=0;
         $usuarios_registrados=0;
         $i= 5;
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         $query = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general2(:re, :pempresa_id) as
@@ -686,65 +671,85 @@ class ReportesController extends Controller
 
 
          // Solicita el servicio de excel
-            $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/reporteGeneral.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
-            $phpExcelObject->getProperties()->setCreator("formacion")
-               ->setLastModifiedBy($session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'])
-               ->setTitle("Listado de participantes")
-               ->setSubject("Listado de participantes")
-               ->setDescription("Listado de participantes")
-               ->setKeywords("office 2005 openxml php")
-               ->setCategory("Reportes");
-            
-                foreach($r1 as $r )
-                {
-                 $i++;
-                 $phpExcelObject->setActiveSheetIndex(0)
-                                   ->setCellValue('A1', 'Usuarios registrados')
-                                   ->setCellValue('B1', 'Usuarios activos')
-                                   ->setCellValue('C1', 'Usuarios inactivos')
-                                   ->setCellValue('A2', $usuarios_registrados)
-                                   ->setCellValue('B2', $usuarios_activos)
-                                   ->setCellValue('C2', $usuarios_inactivos)
-                                   ->setCellValue('A5', 'Programas')
-                                   ->setCellValue('B5', 'Fecha inicio')
-                                   ->setCellValue('C5', 'Fecha fin')
-                                   ->setCellValue('D5', 'Usuarios no iniciados')
-                                   ->setCellValue('E5', 'Usuarios cursando')
-                                   ->setCellValue('F5', 'Usuarios finalizado')
-                                   ->setCellValue('G5', 'Usuarios activos')
-                                   ->setCellValue('H5', 'Usuarios registrados')
-                                   ->setCellValue('A'.$i, $r['nombre'])
-                                   ->setCellValue('B'.$i, $r['fecha_inicio'])
-                                   ->setCellValue('C'.$i, $r['fecha_vencimiento'])
-                                   ->setCellValue('D'.$i, $r['no_iniciados'])
-                                   ->setCellValue('E'.$i, $r['cursando'])
-                                   ->setCellValue('F'.$i, $r['culminado'])
-                                   ->setCellValue('G'.$i, $r['activos'])
-                                   ->setCellValue('H'.$i, $r['registrados']);
-                }
-            $phpExcelObject->getActiveSheet()->setTitle('Participantes');
+        // Encabezado
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').'. ');
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
+        
+        if (!count($r))
+        {
+            $objWorksheet->mergeCells('A5:S5');
+            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+        }
+        else {
 
-            // Crea el writer
-            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
-            //$writer->setUseBOM(true);
-            //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            //$writer->save($this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/data.csv');
-            
-            // Envia la respuesta del controlador
-            $response = $this->get('phpexcel')->createStreamedResponse($writer);
-            // Agrega los headers requeridos
-            $dispositionHeader = $response->headers->makeDisposition(
-                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                'ListadoDeParticipantes.xlsx'
+            $row = 9;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
+                    ),
+                ),
             );
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
 
-            $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-            $response->headers->set('Pragma', 'public');
-            $response->headers->set('Cache-Control', 'maxage=1');
-            $response->headers->set('Content-Disposition', $dispositionHeader);
+            foreach ($r1 as $re)
+            {
+                
+                $objWorksheet->getStyle("A$row:H$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:H$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getRowDimension($row)->setRowHeight(30); // Altura de la fila
+            
 
-            return $response;
+                // Datos de las columnas comunes
+                $objWorksheet->setCellValue('A6', $usuarios_registrados);
+                $objWorksheet->setCellValue('B6', $usuarios_activos);
+                $objWorksheet->setCellValue('C6', $usuarios_inactivos);
+                $objWorksheet->setCellValue('A'.$row, $re['nombre']);
+                $objWorksheet->setCellValue('B'.$row, $re['fecha_inicio']);
+                $objWorksheet->setCellValue('C'.$row, $re['fecha_vencimiento']);
+                $objWorksheet->setCellValue('D'.$row, $re['no_iniciados']);
+                $objWorksheet->setCellValue('E'.$row, $re['cursando']);
+                $objWorksheet->setCellValue('F'.$row, $re['culminado']);
+                $objWorksheet->setCellValue('G'.$row, $re['activos']);
+                $objWorksheet->setCellValue('H'.$row, $re['registrados']);
+                $row++;
+
+            }
+
+        }
+
+        // Crea el writer
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
+        //$writer->setUseBOM(true);
+        //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        //$writer->save($this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/data.csv');
+        
+        // Envia la respuesta del controlador
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // Agrega los headers requeridos
+        $dispositionHeader = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'ListadoDeParticipantes.xlsx'
+        );
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
 
 
     }

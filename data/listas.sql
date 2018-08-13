@@ -18,11 +18,11 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_rol', 'id'), 6
 -- Data for Name: admin_rol; Type: TABLE DATA; Schema: public;
 --
 
-INSERT INTO admin_rol (id, nombre, descripcion) VALUES (1, 'Administrador', 'Puede acceder a todos los módulos del backend, puede crear más administradores, administrar las empresas que tendrán acceso al sistema, crear perfiles para estas empresas, configurar las páginas, entre otros.');
-INSERT INTO admin_rol (id, nombre, descripcion) VALUES (2, 'Participante', 'Usado para los usuarios que verán los programas asociados a las empresas a las que pertenecen.');
-INSERT INTO admin_rol (id, nombre, descripcion) VALUES (3, 'Tutor Virtual', 'Es un perfil más alto que el de un participante, puesto que permite el monitoreo de las actividades e interacciones de los participantes con los programas y sus evaluaciones. Además puede generar debates en cada programa asignado a la empresa.');
-INSERT INTO admin_rol (id, nombre, descripcion) VALUES (4, 'Reporte', 'Con este rol el usuario puede visualizar cualquier reporte generado en el sistema filtrado por la empresa a la que pertenece desde la interfaz del backend.');
-INSERT INTO admin_rol (id, nombre, descripcion) VALUES (5, 'Empresa', 'Permite la administración de los participantes, la creación de niveles de acceso a los contenidos de los programas, la generación de consultas relacionadas con la auditoria de las interacciones de los usuarios.');
+INSERT INTO admin_rol (id, nombre, descripcion, empresa, backend) VALUES (1, 'Administrador', 'Puede acceder a todos los módulos del backend, puede crear más administradores, administrar las empresas que tendrán acceso al sistema, crear perfiles para estas empresas, configurar las páginas, entre otros.', FALSE, TRUE);
+INSERT INTO admin_rol (id, nombre, descripcion, empresa, backend) VALUES (2, 'Participante', 'Usado para los usuarios que verán los programas asociados a las empresas a las que pertenecen.', TRUE, FALSE);
+INSERT INTO admin_rol (id, nombre, descripcion, empresa, backend) VALUES (3, 'Tutor Virtual', 'Es un perfil más alto que el de un participante, puesto que permite el monitoreo de las actividades e interacciones de los participantes con los programas y sus evaluaciones. Además puede generar debates en cada programa asignado a la empresa.', TRUE, TRUE);
+INSERT INTO admin_rol (id, nombre, descripcion, empresa, backend) VALUES (4, 'Reporte', 'Con este rol el usuario puede visualizar cualquier reporte generado en el sistema filtrado por la empresa a la que pertenece desde la interfaz del backend.', TRUE, TRUE);
+INSERT INTO admin_rol (id, nombre, descripcion, empresa, backend) VALUES (5, 'Empresa', 'Permite la administración de los participantes, la creación de niveles de acceso a los contenidos de los programas, la generación de consultas relacionadas con la auditoria de las interacciones de los usuarios.', TRUE, TRUE);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_pais_seq;; Type: SEQUENCE SET; Schema: public;

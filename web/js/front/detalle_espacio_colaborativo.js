@@ -132,7 +132,7 @@ $(document).ready(function() {
 		        type: "POST",
 		        url: $('#url_archivo').val(),
 		        async: true,
-		        data: { foro_id: $('#upload_foro_id').val(), descripcion: $('#descripcion').val(), archivo: $('#archivo').val() },
+		        data: { foro_id: $('#upload_foro_id').val(), descripcion: $('#descripcion').val(), archivo: $('#archivo').val(), edit: 0 },
 		        dataType: "json",
 		        success: function(data) {
 		        	$('.list-downloads').append(data.html);

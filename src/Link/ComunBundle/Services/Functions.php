@@ -10,6 +10,12 @@ use Link\ComunBundle\Entity\CertiPaginaLog;
 use Link\ComunBundle\Entity\AdminAlarma;
 use Symfony\Component\Translation\TranslatorInterface;
 use Link\ComunBundle\Entity\AdminSesion;
+use Link\ComunBundle\Entity\CertiPagina;
+use Link\ComunBundle\Entity\CertiPrueba;
+use Link\ComunBundle\Entity\CertiPregunta;
+use Link\ComunBundle\Entity\CertiOpcion;
+use Link\ComunBundle\Entity\CertiPreguntaOpcion;
+use Link\ComunBundle\Entity\CertiPreguntaAsociacion;
 
 
 class Functions
@@ -493,7 +499,8 @@ class Functions
 		
 		foreach ($roles as $rol_id)
         {
-        	if ($rol_id != $yml['parameters']['rol']['administrador'])
+        	$rol = $em->getRepository('LinkComunBundle:AdminRol')->find($rol_id);
+        	if ($rol->getEmpresa())
         	{
         		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
         		$empresa_id = $usuario->getEmpresa()->getId();
@@ -2184,7 +2191,7 @@ class Functions
                     {
                         
                         // Verifico si el rol está dentro de los roles de backend
-                        if (in_array($rol_usuario->getRol()->getId(), $roles_bk))
+                        if ($rol_usuario->getRol()->getBackend())
                         {
                             $roles_ok = 1;
                         }
@@ -2442,6 +2449,18 @@ class Functions
 
         return $archivo_arr;
 
+	}
+
+	public function delete_folder($folder) {
+	    $glob = glob($folder);
+	    foreach ($glob as $g) {
+	        if (!is_dir($g)) {
+	            unlink($g);
+	        } else {
+	            $this->delete_folder("$g/*");
+	            rmdir($g);
+	        }
+	    }
 	}
 
 	public function nextLesson($indexedPages, $pagina_id, $usuario_id, $empresa_id, $yml, $programa_id)
@@ -2713,6 +2732,288 @@ class Functions
 	    }
 
 	    return $result;
+
+	}
+
+	// Duplicación de una página
+	public function duplicarPagina($pagina_id, $nombre, $usuario_id)
+	{
+
+		$em = $this->em;
+		$c = 0;
+
+		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+		$pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+
+		// Orden para el nuevo registro
+		if ($pagina->getPagina())
+		{
+			$query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+                                    	WHERE p.pagina = :pagina_id')
+						->setParameter('pagina_id', $pagina->getPagina()->getId());
+		}
+		else {
+			$query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+                                    	WHERE p.pagina IS NULL');
+		}
+        $orden = $query->getSingleScalarResult();
+        $orden++;
+
+        $new_pagina = new CertiPagina();
+        $new_pagina->setNombre($nombre);
+        $new_pagina->setPagina($pagina->getPagina());
+        $new_pagina->setCategoria($pagina->getCategoria());
+        $new_pagina->setDescripcion($pagina->getDescripcion());
+        $new_pagina->setContenido($pagina->getContenido());
+        $new_pagina->setFoto($pagina->getFoto());
+        $new_pagina->setPdf($pagina->getPdf());
+        $new_pagina->setFechaCreacion(new \DateTime('now'));
+        $new_pagina->setFechaModificacion(new \DateTime('now'));
+        $new_pagina->setEstatusContenido($pagina->getEstatusContenido());
+        $new_pagina->setUsuario($usuario);
+        $new_pagina->setOrden($orden);
+        $new_pagina->setEncuesta($pagina->getEncuesta());
+        $new_pagina->setHorasAcademicas($pagina->getHorasAcademicas());
+        $em->persist($new_pagina);
+        $em->flush();
+        $c++;
+
+        // Duplicación de la prueba
+        $c += $this->duplicarPrueba($pagina_id, $new_pagina->getId(), $usuario_id);
+
+        // Duplicar sub-páginas
+        $c += $this->duplicarSubPaginas($pagina_id, $new_pagina->getId(), $usuario_id);
+
+        return array('inserts' => $c,
+        			 'id' => $new_pagina->getId());
+
+	}
+
+	// Duplicación de sub-páginas dada la página
+	public function duplicarSubPaginas($pagina_id, $pagina_padre_id, $usuario_id)
+	{
+
+		$em = $this->em;
+		$c = 0;
+
+		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+		
+		$paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findByPagina($pagina_id);
+
+		foreach ($paginas as $pagina)
+		{
+
+			$pagina_padre = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
+
+			$query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+                                    	WHERE p.pagina = :pagina_id')
+						->setParameter('pagina_id', $pagina_padre_id);
+			$orden = $query->getSingleScalarResult();
+        	$orden++;
+
+        	$new_pagina = new CertiPagina();
+	        $new_pagina->setNombre($pagina->getNombre());
+	        $new_pagina->setPagina($pagina_padre);
+	        $new_pagina->setCategoria($pagina->getCategoria());
+	        $new_pagina->setDescripcion($pagina->getDescripcion());
+	        $new_pagina->setContenido($pagina->getContenido());
+	        $new_pagina->setFoto($pagina->getFoto());
+	        $new_pagina->setPdf($pagina->getPdf());
+	        $new_pagina->setFechaCreacion(new \DateTime('now'));
+	        $new_pagina->setFechaModificacion(new \DateTime('now'));
+	        $new_pagina->setEstatusContenido($pagina->getEstatusContenido());
+	        $new_pagina->setUsuario($usuario);
+	        $new_pagina->setOrden($orden);
+	        $new_pagina->setEncuesta($pagina->getEncuesta());
+	        $new_pagina->setHorasAcademicas($pagina->getHorasAcademicas());
+	        $em->persist($new_pagina);
+	        $em->flush();
+	        $c++;
+
+	        // Duplicación de la prueba
+	        $c += $this->duplicarPrueba($pagina->getId(), $new_pagina->getId(), $usuario_id);
+
+	        // Duplicar sub-páginas
+	        $c += $this->duplicarSubPaginas($pagina->getId(), $new_pagina->getId(), $usuario_id);
+
+		}
+
+        return $c;
+
+	}
+
+	// Duplicación de la evaluación de una página
+	public function duplicarPrueba($pagina_id, $new_pagina_id, $usuario_id)
+	{
+
+		$em = $this->em;
+		$c = 0;	// Cantidad de registros insertados
+
+		$prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina_id);
+
+		if ($prueba)
+		{
+
+			$new_pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($new_pagina_id);
+			$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+
+			$new_prueba = new CertiPrueba();
+			$new_prueba->setNombre($prueba->getNombre());
+			$new_prueba->setPagina($new_pagina);
+			$new_prueba->setCantidadPreguntas($prueba->getCantidadPreguntas());
+			$new_prueba->setCantidadMostrar($prueba->getCantidadMostrar());
+			$new_prueba->setDuracion($prueba->getDuracion());
+			$new_prueba->setUsuario($usuario);
+			$new_prueba->setEstatusContenido($prueba->getEstatusContenido());
+			$new_prueba->setFechaCreacion(new \DateTime('now'));
+			$new_prueba->setFechaModificacion(new \DateTime('now'));
+        	$em->persist($new_prueba);
+        	$em->flush();
+        	$c++;
+
+        	// Preguntas
+        	$par_preguntas = array();	// $par_preguntas[$pregunta_id] = $new_pregunta_id
+        	$orden = 0;
+        	$query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
+	                                    WHERE p.prueba = :prueba_id 
+	                                    AND p.pregunta IS NULL 
+	                                    ORDER BY p.orden ASC")
+	                    ->setParameter('prueba_id', $prueba->getId());
+	        $preguntas = $query->getResult();
+
+        	foreach ($preguntas as $pregunta)
+        	{
+
+        		$orden++;
+        		$new_pregunta = new CertiPregunta();
+        		$new_pregunta->setEnunciado($pregunta->getEnunciado());
+        		$new_pregunta->setImagen($pregunta->getImagen());
+        		$new_pregunta->setPrueba($new_prueba);
+        		$new_pregunta->setTipoPregunta($pregunta->getTipoPregunta());
+        		$new_pregunta->setTipoElemento($pregunta->getTipoElemento());
+        		$new_pregunta->setUsuario($usuario);
+        		$new_pregunta->setEstatusContenido($pregunta->getEstatusContenido());
+        		$new_pregunta->setValor($pregunta->getValor());
+        		$new_pregunta->setOrden($orden);
+        		$new_pregunta->setFechaCreacion(new \DateTime('now'));
+				$new_pregunta->setFechaModificacion(new \DateTime('now'));
+	        	$em->persist($new_pregunta);
+	        	$em->flush();
+	        	$c++;
+
+	        	$par_preguntas[$pregunta->getId()] = $new_pregunta->getId();
+
+	        	// Sub-preguntas
+	        	$sub_preguntas = $em->getRepository('LinkComunBundle:CertiPregunta')->findByPregunta($pregunta->getId());
+	        	foreach ($sub_preguntas as $sub_pregunta)
+	        	{
+
+	        		$new_sub_pregunta = new CertiPregunta();
+	        		$new_sub_pregunta->setEnunciado($sub_pregunta->getEnunciado());
+	        		$new_sub_pregunta->setImagen($sub_pregunta->getImagen());
+	        		$new_sub_pregunta->setPrueba($new_prueba);
+	        		$new_sub_pregunta->setTipoPregunta($sub_pregunta->getTipoPregunta());
+	        		$new_sub_pregunta->setTipoElemento($sub_pregunta->getTipoElemento());
+	        		$new_sub_pregunta->setUsuario($usuario);
+	        		$new_sub_pregunta->setEstatusContenido($sub_pregunta->getEstatusContenido());
+	        		$new_sub_pregunta->setValor($sub_pregunta->getValor());
+	        		$new_sub_pregunta->setPregunta($new_pregunta);
+	        		$new_sub_pregunta->setFechaCreacion(new \DateTime('now'));
+					$new_sub_pregunta->setFechaModificacion(new \DateTime('now'));
+		        	$em->persist($new_sub_pregunta);
+		        	$em->flush();
+		        	$c++;
+
+		        	$par_preguntas[$sub_pregunta->getId()] = $new_sub_pregunta->getId();
+
+	        	}
+
+        	}
+
+        	// Opciones
+        	$par_opciones = array();	// $par_opciones[$opcion_id] = $new_opcion_id
+        	$opciones = $em->getRepository('LinkComunBundle:CertiOpcion')->findByPrueba($prueba->getId());
+
+        	foreach ($opciones as $opcion)
+        	{
+
+        		$new_opcion = new CertiOpcion();
+        		$new_opcion->setDescripcion($opcion->getDescripcion());
+        		$new_opcion->setImagen($opcion->getImagen());
+        		$new_opcion->setPrueba($new_prueba);
+        		$new_opcion->setUsuario($usuario);
+        		$new_opcion->setFechaCreacion(new \DateTime('now'));
+				$new_opcion->setFechaModificacion(new \DateTime('now'));
+				$em->persist($new_opcion);
+	        	$em->flush();
+	        	$c++;
+
+	        	$par_opciones[$opcion->getId()] = $new_opcion->getId();
+
+        	}
+
+        	// Preguntas/Opciones y de Asociación
+        	$query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPregunta p 
+	                                    WHERE p.prueba = :prueba_id 
+	                                    ORDER BY p.orden ASC")
+	                    ->setParameter('prueba_id', $prueba->getId());
+	        $preguntas = $query->getResult();
+
+	        foreach ($preguntas as $pregunta)
+	        {
+
+	        	$pos = $em->getRepository('LinkComunBundle:CertiPreguntaOpcion')->findByPregunta($pregunta->getId());
+	        	foreach ($pos as $po)
+	        	{
+
+	        		$new_pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($par_preguntas[$po->getPregunta()->getId()]);
+	        		$new_opcion = $em->getRepository('LinkComunBundle:CertiOpcion')->find($par_opciones[$po->getOpcion()->getId()]);
+	        		$pregunta_opcion = new CertiPreguntaOpcion();
+	        		$pregunta_opcion->setPregunta($new_pregunta);
+	        		$pregunta_opcion->setOpcion($new_opcion);
+	        		$pregunta_opcion->setCorrecta($po->getCorrecta());
+	        		$em->persist($pregunta_opcion);
+	        		$em->flush();
+	        		$c++;
+	        	}
+
+	        	$pas = $em->getRepository('LinkComunBundle:CertiPreguntaAsociacion')->findByPregunta($pregunta->getId());
+	        	foreach ($pas as $pa)
+	        	{
+
+	        		$new_pregunta = $em->getRepository('LinkComunBundle:CertiPregunta')->find($par_preguntas[$pa->getPregunta()->getId()]);
+	        		
+	        		$preguntas_asociadas = explode(",", $pa->getPreguntas());
+	        		$new_preguntas_asociadas = array();
+	        		foreach ($preguntas_asociadas as $pregunta_asociada)
+	        		{
+	        			$new_preguntas_asociadas[] = $par_preguntas[$pregunta_asociada];
+	        		}
+	        		$new_preguntas_asociadas_str = implode(",", $new_preguntas_asociadas);
+
+	        		$opciones_asociadas = explode(",", $pa->getOpciones());
+	        		$new_opciones_asociadas = array();
+	        		foreach ($opciones_asociadas as $opcion_asociada)
+	        		{
+	        			$new_opciones_asociadas[] = $par_opciones[$opcion_asociada];
+	        		}
+	        		$new_opciones_asociadas_str = implode(",", $new_opciones_asociadas);
+
+	        		$pregunta_asociacion = new CertiPreguntaAsociacion();
+	        		$pregunta_asociacion->setPregunta($new_pregunta);
+	        		$pregunta_asociacion->setPreguntas($new_preguntas_asociadas_str);
+	        		$pregunta_asociacion->setOpciones($new_opciones_asociadas_str);
+	        		$em->persist($pregunta_asociacion);
+	        		$em->flush();
+	        		$c++;
+
+	        	}
+
+	        }
+		
+		}
+
+		return $c;
 
 	}
 

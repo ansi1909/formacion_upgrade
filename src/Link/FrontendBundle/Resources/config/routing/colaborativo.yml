@@ -53,3 +53,9 @@ _ajaxSaveForoArchivo:
     defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxSaveForoArchivo }
     requirements:
         _method: POST
+
+_ajaxDeleteFile:
+    path:     /ajaxDeleteFile
+    defaults: { _controller: LinkFrontendBundle:Colaborativo:ajaxDeleteFile }
+    requirements:
+        method: POST

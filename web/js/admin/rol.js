@@ -34,6 +34,8 @@ $(document).ready(function() {
 				$('#rol_id').val(rol_id);
 				$('#rol').val(data.nombre);
 				$('#descripcion').val(data.descripcion);
+				$('#empresa').prop('checked', data.empresa);
+				$('#backend').prop('checked', data.backend);
 			},
 			error: function(){
 				$('alert-error').html($('#error_msg_edit').val());
@@ -69,6 +71,8 @@ $(document).ready(function() {
 						$('.form-control').prop('disabled', true);
 						$('#p-nombre').html(data.nombre);
 						$('#p-des').html(data.descripcion);
+						$('#p-empresa').html(data.empresa);
+						$('#p-backend').html(data.backend);
 						console.log('Formulario enviado. Id '+data.id);
 						$( "#detail-edit" ).attr( "data", data.id );
 						if (data.delete_disabled != '') 

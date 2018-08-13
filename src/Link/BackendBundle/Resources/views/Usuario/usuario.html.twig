@@ -380,6 +380,7 @@
             if (!valid) 
             {
                 notify($('#div-error').html());
+                $('#finish').show();
             }
             else {
 
@@ -403,6 +404,7 @@
                     $('#div-error ul').html("<li>- {{ 'Debe seleccionar tanto la empresa como el nivel.'|trans }}</li>");
                     $('#div-error ul').show();
                     notify($('#div-error').html());
+                    $('#finish').show();
                 }
                 else {
 
@@ -421,6 +423,7 @@
                                     $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
                                     $('#div-error ul').show();
                                     notify($('#div-error').html());
+                                    $('#finish').show();
                                 }
                                 else {
                                     $('#form').submit();
@@ -430,10 +433,12 @@
                                 $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
                                 $('#div-error ul').show();
                                 notify($('#div-error').html());
+                                $('#finish').show();
                             }
                         });
                     }
                     else {
+                        $('#finish').hide();
                         $('#form').submit();
                     }
                 }

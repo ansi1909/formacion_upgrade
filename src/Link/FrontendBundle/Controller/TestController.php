@@ -201,6 +201,7 @@ class TestController extends Controller
                                                                               'preguntas' => $preguntas,
                                                                               'preguntas_str' => $preguntas_str,
                                                                               'programa_id' => $programa_id,
+                                                                              'pagina_id' => $pagina_id,
                                                                               'tipo_pregunta' => $yml['parameters']['tipo_pregunta'],
                                                                               'tipo_elemento' => $yml['parameters']['tipo_elemento'],
                                                                               'duracion' => $duracion));
