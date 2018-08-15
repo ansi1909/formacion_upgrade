@@ -22,7 +22,7 @@
                     <div class="media">
                         <div class="media-body">
                             <h5>#<span class="spincreament">{{ empresast }}</span></h5>
-                            <p>{{'Empresas registradas' |trans}}</p>
+                            <p>{{ 'Empresas registradas'|trans }}</p>
                         </div>
                         <i class="fa fa-industry"></i>
                     </div>
@@ -35,7 +35,7 @@
                     <div class="media">
                         <div class="media-body">
                             <h5>#<span class="spincreament">{{ activas }}</span></h5>
-                            <p>{{'Empresas activas' |trans}}</p>
+                            <p>{{ 'Empresas activas'|trans }}</p>
                         </div>
                         <i class="fa fa-industry"></i> </div>
                     <br>
@@ -47,7 +47,7 @@
                     <div class="media">
                         <div class="media-body">
                             <h5>#<span class="spincreament">{{ inactivas }}</span></h5>
-                            <p>{{'Empresas inactivas' |trans}}</p>
+                            <p>{{ 'Empresas inactivas'|trans }}</p>
                         </div>
                         <i class="fa fa-industry"></i> </div>
                     <br>
@@ -61,7 +61,7 @@
             <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                 <div class="card">
                     <div class="card-header gradiente">
-                        <div class="card-title"><span class="fa fa-industry"></span> {{' Resumen general por empresa.' |trans}}</div>
+                        <div class="card-title"><span class="fa fa-industry"></span> {{ 'Resumen general por empresa'|trans }}.</div>
                     </div>
                     <div class="card-block">
                         <div class="card-block">
@@ -211,7 +211,7 @@
             </div>
         </div>
         <form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
-             <input type="hidden" id="empresa_id_" name="empresa_id_" value="{{empresa_id}}">
+             <input type="hidden" id="empresa_id_" name="empresa_id_" value="{{ empresa_id }}">
         </form>
            
         <input type="hidden" id="usuarios_conectados" name="usuarios_conectados" value="{{ path('_ajaxUsuariosConectados') }}">

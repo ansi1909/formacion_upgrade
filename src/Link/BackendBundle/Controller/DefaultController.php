@@ -33,10 +33,10 @@ class DefaultController extends Controller
         	if($session->get('administrador') == 'true' || !$usuarioS->getEmpresa())
             {
                 $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-                $empresasA=array();
-                $empresasI=array();
-                $empresas_a=0;
-                $empresas_i=0;
+                $empresasA = array();
+                $empresasI = array();
+                $empresas_a = 0;
+                $empresas_i = 0;
                 
                 foreach($empresas_db as $empresa)
                 {
