@@ -120,7 +120,7 @@ function enableSubmit()
 {
     $('#guardar').show();
     $('#guardar').prop('disabled', false);
-    $('.form-control').prop('disabled', false);
+    //$('.form-control').prop('disabled', false);
     $('#form').safeform('complete');
 }
 
@@ -128,7 +128,7 @@ function disableSubmit()
 {
     $('#guardar').hide();
     $('#guardar').prop('disabled', true);
-    $('.form-control').prop('disabled', true);
+    //$('.form-control').prop('disabled', true);
 }
 
 // Función que transforma el gráfico en imagen

@@ -1,5 +1,6 @@
 Acceso: Access
 Acceso a la página: Access to this page
+Acceso al Backend: Backend access
 Acción: Action
 Acciones: Actions
 Aceptar: Accept
@@ -12,6 +13,7 @@ Activar para ordenar la columna de manera descendente: Enable to order column de
 Activar webinar: Activate webinar
 Activo: Active
 Activos: Active
+Actualizando la lista de usuarios conectados.. : Updating the list of connected users..
 Advertencia: Warning
 Agregar: Add
 Agregar categoría: Add category
@@ -84,6 +86,7 @@ Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of ch
 Cantidad mínima de caracteres en el Resumen: Minimum number of characters in the Summary
 Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content 
 Cargando..: Loading..
+Cargando usuarios conectados..: Loading connected users..
 Carga masiva: Bulk load
 Carga masiva de participantes de la empresa: Bulk load of participants of company
 Categoría: Category
@@ -267,6 +270,10 @@ El tipo de recurso es requerido: Type of resource is required
 El título debe contener al menos 10 caracteres: Title must have at least 10 characters
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
+El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
+El tutorial ha sido almacenado con éxito: The tutorial has been stored successfully
+El Url proporcionado no es correcto: Url given is incorrect
+El usuario es requerido: Username is required
 El Usuario no pertenece a la empresa. Contacte al administrador del sistema.: The User does not belong to the company. Contact the system administrator.
 El valor de la pregunta debe ser un valor numérico.: Question weighing must be a numeric value.
 El valor de la pregunta es requerido.: Question weighing is required.
@@ -276,9 +283,6 @@ El valor de las horas académicas no puede ser cero: Academic hours value can no
 El valor del puntaje con que se aprueba debe ser mayor o igual a 10.: The score with it is approved must be greater or equal than 10.
 El valor del puntaje con que se aprueba debe ser un valor numérico.: The score with it is approved must be a numeric value.
 El valor del puntaje con que se aprueba no debe sobrepasar a 100.: The score value with it is approved must not exceed to 100.
-El tutor virtual aún no ha creado un tema de discusión: Virtual tutor has not yet created a topic of discussion
-El tutorial ha sido almacenada con éxito: The tutorial has been stored successfully
-El Url proporcionado no es correcto: Url given is incorrect
 El vídeo es requerido: Video is required
 Email de contacto: Contact Email
 Empresa: Company
@@ -288,6 +292,7 @@ Empresas activas: Active companies
 Empresas inactivas: Inactive companies
 Empresas registradas: Registered companies
 En curso: In progress
+En evaluación: In evaluation
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: In Admin interface, in module Certificados y Constancias, you can add certificates
 en la biblioteca: in the library
 Encabezado: Header
@@ -324,6 +329,7 @@ Esta plantilla no posee thumbnails en la base de datos: This template does not h
 ¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
 Estado: Status
 Estatus: Status
+Estatus del programa: Program status
 Estatus de las sub-paginas: Sub-pages status
 Estatus de los participantes de la empresa: Participants status of the company
 este archivo descargable: this downloadable file
@@ -365,6 +371,7 @@ Filtrar usuarios: Filter users
 Filtro: Filter
 Fin del programa: End of the program
 Finalizar: Finish
+Finalizado: Finalized
 Finalizar Evaluación: Finish Test
 Firma del Participante: Signature of the Participant
 Firma del Supervisor: Signature of supervisor
@@ -383,6 +390,7 @@ Ha ocurrido un error en la eliminación de este registro: An error ocurred delet
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: An error ocurred getting the programs. Contact your system administrator.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
+Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.: An error occurred when loading connected users, verify your internet connection or contact the system administrator. 
 Ha sido publicado: It has been published
 Ha sido publicado el evento: It has been published an event
 ha subido un archivo en el espacio colaborativo de: has uploaded a file into the collaborative space of
@@ -413,6 +421,7 @@ Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
 Ingrese lo que desea buscar: Enter what you want to search
+Iniciado: Initiated
 Inicia el: Starts at
 Iniciar Sesión: Log in
 Inicio: Begin
@@ -544,10 +553,12 @@ No existe destino al que se pueda mover la página: There is not destination in 
 No existe evaluación para esta página: There is not test for this page
 No existen páginas: There are no pages
 No existen registros para esta consulta: No records for this query
+No existen usuarios conectados en este momento: There are no users connected at this time
 No hay problema, te enviaremos un correo con: No problem, we send you an email with
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
 No iniciados: Without starting
+No Iniciado: Not started
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se mostrará en la página de login: It will not be shown in login page
@@ -678,7 +689,9 @@ Resumen: Summary
 Resumen de registros de participantes en el: Summary of records of participants in the
 Resumen general de registros: General summary of records
 Resumen general de registros por empresa: General summary of records per company
+Resumen general por empresa: General summary per company
 Rol: Role
+Rol de empresa: Company role
 Roles: Roles
 Roles asignados: Assigned roles
 Roles a seleccionar: Selectable roles
@@ -764,6 +777,7 @@ Usted no tiene permiso para acceder a esta ruta: You do not have permissions to 
 Usted tiene una invitación a un evento corporativo programado para mañana: You have an invitation to an corporate event which is scheduled for tomorrow
 Usuario: User
 Usuarios: Users
+Usuarios conectados: Users connected
 Usuario inactivo. Contacte al administrador del sistema.: Inactive user. Contact the system administrator.
 Usuario o clave incorrecta.: User or password incorrect.
 Usuarios activos: Active users

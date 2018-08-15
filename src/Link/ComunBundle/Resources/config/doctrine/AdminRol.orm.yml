@@ -23,4 +23,10 @@ Link\ComunBundle\Entity\AdminRol:
             length: null
             options:
                 fixed: false
+        empresa:
+            type: boolean
+            nullable: true
+        backend:
+            type: boolean
+            nullable: true
     lifecycleCallbacks: {  }

@@ -31,7 +31,7 @@ begin
             AND pl.fecha_inicio BETWEEN pdesde AND phasta 
         ) as materias, 
         (SELECT ROUND(AVG(prl.nota)::numeric,2) AS promedio FROM certi_prueba_log prl INNER JOIN certi_prueba pr ON prl.prueba_id = pr.id 
-        WHERE prl.estado != 'EN CURSO' 
+        WHERE prl.estado = 'APROBADO' 
         AND prl.usuario_id = u.id 
         AND prl.fecha_inicio BETWEEN pdesde AND phasta 
         AND pr.pagina_id IN 
@@ -40,6 +40,10 @@ begin
             AND p.pagina_id = ppagina_id
         )
     ) as promedio,
+        (SELECT pl.estatus_pagina_id  AS status FROM certi_pagina_log pl
+         WHERE  pl.pagina_id = ppagina_id
+         AND    pl.usuario_id = u.id
+         )as status,
         (SELECT TO_CHAR(pl.fecha_inicio, 'DD/MM/YYYY') AS fecha_inicio_programa FROM certi_pagina_log pl 
             WHERE pl.usuario_id = u.id 
             AND pl.pagina_id = ppagina_id 

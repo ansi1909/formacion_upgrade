@@ -1,6 +1,7 @@
 jQuery(document).ready(function($) {
 	
 	$('#search').click(function(){
+		$("#excel_contenedor").hide();
     	$('#label_filtro').hide();
     	$('.descargable').hide();
     	$('.generable').show();
@@ -17,6 +18,7 @@ function mostrarReporte(data)
 	$('#label_filtro').show();
 	$('#resultado').html(data.html);
 	$('#resultado').show();
+	$("#excel_contenedor").show();
 	applyDataTable();
 	observe();
 

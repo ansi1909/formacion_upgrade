@@ -36,6 +36,20 @@ class AdminRol
      */
     private $descripcion;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="empresa", type="boolean", nullable=true)
+     */
+    private $empresa;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="backend", type="boolean", nullable=true)
+     */
+    private $backend;
+
 
 
     /**
@@ -94,5 +108,53 @@ class AdminRol
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+
+    /**
+     * Set empresa
+     *
+     * @param boolean $empresa
+     *
+     * @return AdminRol
+     */
+    public function setEmpresa($empresa)
+    {
+        $this->empresa = $empresa;
+    
+        return $this;
+    }
+
+    /**
+     * Get empresa
+     *
+     * @return boolean
+     */
+    public function getEmpresa()
+    {
+        return $this->empresa;
+    }
+
+    /**
+     * Set backend
+     *
+     * @param boolean $backend
+     *
+     * @return AdminRol
+     */
+    public function setBackend($backend)
+    {
+        $this->backend = $backend;
+    
+        return $this;
+    }
+
+    /**
+     * Get backend
+     *
+     * @return boolean
+     */
+    public function getBackend()
+    {
+        return $this->backend;
     }
 }

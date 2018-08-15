@@ -3,6 +3,8 @@ CREATE TABLE admin_rol(
 id serial,
 nombre varchar(50),
 descripcion text,
+empresa boolean,
+backend boolean,
  PRIMARY KEY (id));
 
 CREATE TABLE admin_aplicacion(
