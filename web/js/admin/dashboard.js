@@ -2,24 +2,29 @@ $(document).ready(function() {
 
      $('#empresa_id').change(function(){
         var empresa_id = $(this).val();
-            $.ajax({
-                type: "POST",
-                url: $('#url_ajaxProgramasDash').val(),
-                async: true,
-                data: { empresa_id: empresa_id },
-                dataType: "json",
-                success: function(data) {
-                    $('#listado_programas_empresa').html(data);
-                    
-                },
-                error: function(){
-                    $('#active-error').html($('#error_msg-filter').val());
-                    $('#div-active-alert').show();
-                }
-            });
+        $('.load1').show();
+        $('#listado_programas_empresa').hide();
+        $.ajax({
+            type: "GET",
+            url: $('#url_ajaxProgramasDash').val(),
+            async: true,
+            data: { empresa_id: empresa_id },
+            dataType: "json",
+            success: function(data) {
+                $('.load1').hide();
+                $('#listado_programas_empresa').show();
+                $('#listado_programas_empresa').html(data);
+                $('.data_table').DataTable().destroy();
+                applyDataTable();
+            },
+            error: function(){
+                $('#active-error').html($('#error_msg-filter').val());
+                $('#div-active-alert').show();
+            }
+        });
      });
     
-    /*cicular progress sidebar home page */   
+    /*circular progress sidebar home page */   
      $('.progress_profile').circleProgress({ 
          fill: {gradient: ["#2ec7cb", "#6c8bef"]},
          lineCap: 'butt'
