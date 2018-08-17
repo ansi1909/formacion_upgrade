@@ -34,10 +34,8 @@
 
 .color-light-grey { color: $gray-500;}
 .color-grey { color: $gray-700; }
-.color-dark-black {
-    color: $black-300;
-    font-weight: $font-weight-normal;
-}
+.color-dark-black {color: $black-300;font-weight: $font-weight-normal;}
+.color-light-black {color: $black-600;font-weight: $font-weight-normal;}
 .color-dark-grey { color: $gray-800; }
 .bg-white { background-color: $white; }
 .text-sm { font-size: $font-size-sm; }

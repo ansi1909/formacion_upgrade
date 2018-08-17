@@ -36,6 +36,10 @@
   color: #383838;
   font-weight: 400; }
 
+.color-light-black {
+  color: #666666;
+  font-weight: 400; }
+
 .color-dark-grey {
   color: #5C6266; }
 
@@ -1907,6 +1911,11 @@ a.active {
       color: #AAAFB3; }
       .nav-lesson .ul-items li span a {
         display: inline-block; }
+  .nav-lesson .ulItemsAprob {
+    list-style: none; }
+    .nav-lesson .ulItemsAprob::before li {
+      color: #CFE65C;
+      content: url; }
 
 .nav-lesson #pills-tabContent {
   transition: all .5s ease;
