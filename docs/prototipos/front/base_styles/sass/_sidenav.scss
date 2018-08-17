@@ -182,7 +182,7 @@ a.active {
         a {
             padding: 0;
             font-size: $font-size-sm;
-            margin: 16px auto;
+            margin: .8rem auto;
 
 
 
@@ -210,12 +210,29 @@ a.active {
                 }
             }
         }
+        .liItemsAprob{
+            position: relative;
+            left: -2rem;
+            padding-left: 0;
+            list-style: none;
+            a{
+                color: $green !important;
+                i{
+                    font-size: .8rem;
+                    position: relative;
+                    left: -.1rem;
+                    top: .05rem;
+                }
+            }
+        }
     }
-    .ulItemsAprob{
-        list-style: none;
-        &::before li{
-            color: $green;
-            content: url
+    
+    .ol-itemsAprob{
+        .itemsAprob{
+            color: $green !important;
+            a{
+                color: $green !important;
+            }
         }
     }
 }

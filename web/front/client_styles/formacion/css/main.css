@@ -1897,7 +1897,7 @@ a.active {
     .nav-lesson ol a {
       padding: 0;
       font-size: 0.87rem;
-      margin: 16px auto; }
+      margin: .8rem auto; }
       .nav-lesson ol a i {
         font-size: 6px;
         margin: 8px; }
@@ -1911,11 +1911,22 @@ a.active {
       color: #AAAFB3; }
       .nav-lesson .ul-items li span a {
         display: inline-block; }
-  .nav-lesson .ulItemsAprob {
-    list-style: none; }
-    .nav-lesson .ulItemsAprob::before li {
-      color: #CFE65C;
-      content: url; }
+    .nav-lesson .ul-items .liItemsAprob {
+      position: relative;
+      left: -2rem;
+      padding-left: 0;
+      list-style: none; }
+      .nav-lesson .ul-items .liItemsAprob a {
+        color: #CFE65C !important; }
+        .nav-lesson .ul-items .liItemsAprob a i {
+          font-size: .8rem;
+          position: relative;
+          left: -.1rem;
+          top: .05rem; }
+  .nav-lesson .ol-itemsAprob .itemsAprob {
+    color: #CFE65C !important; }
+    .nav-lesson .ol-itemsAprob .itemsAprob a {
+      color: #CFE65C !important; }
 
 .nav-lesson #pills-tabContent {
   transition: all .5s ease;
