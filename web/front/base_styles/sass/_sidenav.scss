@@ -216,12 +216,15 @@ a.active {
             padding-left: 0;
             list-style: none;
             a{
-                color: $green !important;
+                color: $verylightgreen !important;
                 i{
                     font-size: .8rem;
                     position: relative;
                     left: -.1rem;
                     top: .05rem;
+                }
+                &:hover{
+                    color: $white !important;
                 }
             }
         }
@@ -229,9 +232,15 @@ a.active {
     
     .ol-itemsAprob{
         .itemsAprob{
-            color: $green !important;
+            color: $verylightgreen !important;
             a{
-                color: $green !important;
+                color: $verylightgreen !important;
+            }
+            &:hover{
+                color: $gray-600 !important;
+                a{
+                    color: $white !important;
+                }
             }
         }
     }

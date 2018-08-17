@@ -1917,16 +1917,22 @@ a.active {
       padding-left: 0;
       list-style: none; }
       .nav-lesson .ul-items .liItemsAprob a {
-        color: #CFE65C !important; }
+        color: #eefca1 !important; }
         .nav-lesson .ul-items .liItemsAprob a i {
           font-size: .8rem;
           position: relative;
           left: -.1rem;
           top: .05rem; }
+        .nav-lesson .ul-items .liItemsAprob a:hover {
+          color: #fff !important; }
   .nav-lesson .ol-itemsAprob .itemsAprob {
-    color: #CFE65C !important; }
+    color: #eefca1 !important; }
     .nav-lesson .ol-itemsAprob .itemsAprob a {
-      color: #CFE65C !important; }
+      color: #eefca1 !important; }
+    .nav-lesson .ol-itemsAprob .itemsAprob:hover {
+      color: #AAAFB3 !important; }
+      .nav-lesson .ol-itemsAprob .itemsAprob:hover a {
+        color: #fff !important; }
 
 .nav-lesson #pills-tabContent {
   transition: all .5s ease;
