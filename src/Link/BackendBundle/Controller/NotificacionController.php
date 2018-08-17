@@ -17,6 +17,7 @@ class NotificacionController extends Controller
 {
     public function indexAction($app_id, Request $request)
     {
+
         $session = new Session();
         $f = $this->get('funciones');
         
@@ -33,58 +34,57 @@ class NotificacionController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
+        
         $em = $this->getDoctrine()->getManager();
-        $notificacionesdb = array();
-        $usuario_empresa = 0;
+        
         $empresas = array();
+        $notificaciones = array();
+        
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
-        $tipo_notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoNotificacion')->findAll();
 
-        if ($usuario->getEmpresa()) {
-            $usuario_empresa = 1;
-            $notificaciones = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($usuario->getEmpresa());
+        if ($usuario->getEmpresa()) 
+        {
+            $notificacionesdb = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->findByEmpresa($usuario->getEmpresa());
         }
         else {
-            $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
-                                       WHERE e.activo = :activo
-                                       ORDER BY e.id ASC")
-                        ->setParameters(array('activo' => true));
-            $empresas = $query->getResult();
+
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true); 
             
-            $query2 = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
-                                       JOIN LinkComunBundle:AdminEmpresa e
+            $query = $em->createQuery("SELECT n FROM LinkComunBundle:AdminNotificacion n
+                                       JOIN n.empresa e 
                                        WHERE e.activo = :activo 
-                                       AND e.id = n.empresa
                                        ORDER BY n.id ASC")
-                         ->setParameters(array('activo' => true));
-            $notificaciones = $query2->getResult();
+                         ->setParameter('activo', true);
+            $notificacionesdb = $query->getResult();
+
         }
 
-         foreach ($notificaciones as $notificacion)
+        foreach ($notificacionesdb as $notificacion)
         {
-            $notificacionesdb[]= array('id'=>$notificacion->getId(),
-                                       'asunto'=>$notificacion->getAsunto(),
-                                       'empresa'=>$notificacion->getEmpresa()->getNombre(),
-                                       'tipo_notificacion'=>$notificacion->getTipoNotificacion()->getNombre(),
-                                       'delete_disabled'=>$f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
-
+            $notificaciones[] = array('id' => $notificacion->getId(),
+                                      'asunto' => $notificacion->getAsunto(),
+                                      'empresa' => $notificacion->getEmpresa()->getNombre(),
+                                      'tipo_notificacion' => $notificacion->getTipoNotificacion()->getNombre(),
+                                      'delete_disabled' => $f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
         }
 
 
         return $this->render('LinkBackendBundle:Notificacion:index.html.twig', array('empresas' => $empresas,
-                                                                                     'usuario_empresa' => $usuario_empresa,
-                                                                                     'notificaciones' => $notificacionesdb,
-                                                                                     'tipo_notificaciones' => $tipo_notificaciones,
+                                                                                     'notificaciones' => $notificaciones,
                                                                                      'usuario' => $usuario));
     }
 
-    public function ajaxNotificacionAction(Request $request)
+    public function ajaxNotificacionesAction(Request $request)
     {
 
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        $empresa_id = $request->query->get('empresa_id');
-        $usuario_empresa = $request->query->get('usuario_empresa');
         $f = $this->get('funciones');
+
+        $empresa_id = $request->query->get('empresa_id');
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        $notificaciones = array();
 
         $qb = $em->createQueryBuilder();
 
@@ -95,41 +95,28 @@ class NotificacionController extends Controller
             $qb->andWhere('u.empresa = :empresa_id');
             $parametros['empresa_id'] = $empresa_id;
             $qb->setParameters($parametros);
-        }else{
+        }
+        else{
             $qb->select('u')
                ->from('LinkComunBundle:AdminNotificacion', 'u');
         }
 
         $query = $qb->getQuery();
-        $notificaciones_db = $query->getResult();
-        $notificaciones = '';
-        $notificaciones .= '<table class="table" id="dt">
-                            <thead class="sty__title">
-                                <tr>
-                                    <th>'.$this->get('translator')->trans('Asunto').'</th>';
-                                    if ($usuario_empresa == 0){
-                                        $notificaciones .= '<th>'.$this->get('translator')->trans('Empresa').'</th>';
-                                    }
-                                    $notificaciones .= '<th>'.$this->get('translator')->trans('Tipo notificación').'</th>
-                                    <th>'.$this->get('translator')->trans('Acciones').'</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
+        $notificacionesdb = $query->getResult();
 
-        foreach ($notificaciones_db as $notificacion) {
-            $delete_disabled = $f->linkEliminar($notificacion->getId(), 'AdminNotificacion');
-            $class_delete = $delete_disabled == '' ? 'delete' : '';
-            $notificaciones .= '<tr><td>'.$notificacion->getAsunto().'</td><td>'.$notificacion->getEmpresa()->getNombre().'</td><td>'.$notificacion->getTipoNotificacion()->getNombre().'</td>
-            <td class="center">
-                <a href="'.$this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId())).'" title="'.$this->get('translator')->trans('Editar').'" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
-                <a href="'.$this->generateUrl('_showNotificacion', array('notificacion_id' => $notificacion->getId(), 'status' => 'show')).'" title="'.$this->get('translator')->trans('Ver').'" class="btn btn-link btn-sm"><span class="fa fa-eye"></span></a>
-                <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$class_delete.' '.$delete_disabled.'" data="'.$notificacion->getId().'"><span class="fa fa-trash"></span></a>
-            </td> </tr>';
+        foreach ($notificacionesdb as $notificacion)
+        {
+            $notificaciones[] = array('id' => $notificacion->getId(),
+                                      'asunto' => $notificacion->getAsunto(),
+                                      'empresa' => $notificacion->getEmpresa()->getNombre(),
+                                      'tipo_notificacion' => $notificacion->getTipoNotificacion()->getNombre(),
+                                      'delete_disabled' => $f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
         }
-        $notificaciones .= '</tbody>
-                        </table>';
-        
-        $return = array('notificaciones' => $notificaciones);
+
+        $html = $this->renderView('LinkBackendBundle:Notificacion:notificaciones.html.twig', array('notificaciones' => $notificaciones,
+                                                                                                   'usuario' => $usuario));
+
+        $return = array('html' => $html);
  
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

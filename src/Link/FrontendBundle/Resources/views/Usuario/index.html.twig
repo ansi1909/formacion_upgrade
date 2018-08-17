@@ -132,15 +132,15 @@
                     </div>
                     <div class="form-group text-left">
                         <label for="correo_personal">{{ 'Correo corporativo'|trans }}</label>
-                        <input type="mail" class="form-control mb-1" id="correo_personal" name="correo_personal" value="{{ correo }}">
+                        <input type="mail" class="form-control mb-1" id="correo_personal" name="correo_personal" value="{{ correo }}" disabled="disabled">
                     </div>
                     <div class="form-group text-left">
                         <label for="correo_corporativo">{{ 'Correo secundario'|trans }}</label>
-                        <input type="mail" class="form-control mb-4" id="correo_corporativo" name="correo_corporativo" value="{{ correo_corporativo }}">
+                        <input type="mail" class="form-control mb-4" id="correo_secundario" name="correo_secundario" value="{{ correo_corporativo }}">
                     </div>
                     <div class="form-group text-left">
                         <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>
-                        <input type="date" class="form-control mb-4" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" data-date-end-date="-18y">
+                        <input type="date" class="form-control mb-4" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" disabled="disabled" data-date-end-date="-18y">
                     </div>
                 </div>
             </div>

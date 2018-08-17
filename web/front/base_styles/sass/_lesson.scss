@@ -43,9 +43,12 @@
       margin: 1.5rem auto;
       font-size: 1.3rem;
       width: 75%;
+      font-weight: $font-weight-normal-hard; 
       font-family:$lessons-font;
+      text-align: justify;
       a {
-          color: $yellow;
+          color: $bluedark;
+          font-weight: bold;
       }
     }
     
@@ -278,7 +281,7 @@
 .s2_fin-materia{
     padding-top: 2rem;
     .text_fin-materia{
-        color: $gray-650;
+        color: $black-600;
         font-family: $primary-font;
         font-size: $h4-font-size;
         line-height: calc(2rem + 1px);

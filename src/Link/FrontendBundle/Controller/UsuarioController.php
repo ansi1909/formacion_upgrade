@@ -114,15 +114,14 @@ class UsuarioController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         
-        $correo_personal = trim($request->request->get('correo_personal'));
-        $correo_corporativo = trim($request->request->get('correo_corporativo'));
-        $fecha_nacimiento = $request->request->get('fecha_nacimiento');
+        
+        $correo_secundario = trim($request->request->get('correo_secundario'));
+        
 
         // Actualización de la foto en la BD
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        $usuario->setCorreoPersonal($correo_personal);
-        $usuario->setCorreoCorporativo($correo_corporativo);
-        $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+        $usuario->setCorreoCorporativo($correo_secundario);
+    
         $em->persist($usuario);
         $em->flush();
 

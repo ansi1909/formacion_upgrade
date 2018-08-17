@@ -2,9 +2,9 @@ _notificacion:
     path:     /listado/{app_id}
     defaults: { _controller: LinkBackendBundle:Notificacion:index }
 
-_ajaxNotificacion:
-    path:     /ajaxNotificacion
-    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxNotificacion }
+_ajaxNotificaciones:
+    path:     /ajaxNotificaciones
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxNotificaciones }
     requirements:
         method: GET
 
@@ -13,8 +13,8 @@ _createNotificacion:
     defaults: { _controller: LinkBackendBundle:Notificacion:createNotificacion }
 
 _editNotificacion:
-    path:     /editNotificacion/{notificacion_id}/
-    defaults: { _controller: LinkBackendBundle:Notificacion:editNotificacion }
+    path:     /editNotificacion/{notificacion_id}
+    defaults: { _controller: LinkBackendBundle:Notificacion:editNotificacion, notificacion_id: 0 }
 
 _showNotificacion:
     path:     /showNotificacion/{notificacion_id}/{status}

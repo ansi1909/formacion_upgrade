@@ -168,7 +168,7 @@ $(document).ready(function() {
             
     });
     
-    $("#iconDownloads").click(function(){
+    $("#iconDownloads, #iconDownloads2").click(function(){
         $(".downloads").toggleClass("open-downloads");
         $("#main").toggleClass("ml-comments");
         if (!$(".main-sidenav-close")[0]){
