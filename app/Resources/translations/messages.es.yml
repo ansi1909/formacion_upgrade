@@ -327,6 +327,7 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
 ¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
+¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?: ¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?
 Estado: Estado
 Estatus: Estatus
 Estatus del programa: Estatus del programa
@@ -532,6 +533,7 @@ Mensaje del servidor: Mensaje del servidor
 Mi avance: Mi avance
 Miércoles: Miércoles
 minutos: minutos
+minutos para completar la evaluación: minutos para completar la evaluación
 Modificado el: Modificado el
 Modificado por: Modificado por
 Modificar evento: Modificar evento
@@ -689,6 +691,7 @@ Resumen: Resumen
 Resumen de registros de participantes en el: Resumen de registros de participantes en el
 Resumen general de registros: Resumen general de registros
 Resumen general de registros por empresa: Resumen general de registros por empresa
+Resumen general por empresa: Resumen general por empresa
 Rol: Rol
 Rol de empresa: Rol de empresa
 Roles: Roles
@@ -708,6 +711,7 @@ Seleccione la empresa para mostrar las páginas asignadas: Seleccione la empresa
 Seleccione fecha difusión: Seleccione fecha difusión
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
+Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas, puedes realizar la evaluación haciendo clic en el botón
 Si deseas, puedes tomar la evaluación de: Si deseas, puedes tomar la evaluación de
 Si deseas, puedes tomar la evaluación en este momento: Si deseas, puedes tomar la evaluación en este momento
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.
@@ -738,8 +742,9 @@ Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0: También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0
-Tema: Tema
 Teléfono de contacto: Teléfono de Contacto
+Tema: Tema
+Tendrás: Tendrás
 Thumbnails de la plantilla: Thumbnails de la plantilla
 Thumbnails inexistentes: Thumbnails inexistentes
 Tiempo de duración de la evaluación: Tiempo de duración de la evaluación
@@ -807,6 +812,7 @@ Viernes: Viernes
 Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver
+Volver al contenido: Volver al contenido
 Volver al programa: Volver al programa
 Volver al inicio: Volver al inicio
 y el: y el

@@ -327,6 +327,7 @@ Esta plantilla no posee thumbnails en la base de datos: This template does not h
 ¿Estás segur@ de que deseas cerrar la sesión?: Are you sure of loging out?
 ¿Estás segur@ de que deseas eliminar este registro?: Are you sure of deleting this item?
 ¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
+¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?: Are you sure of returning to the start without taking the evaluation?
 Estado: Status
 Estatus: Status
 Estatus del programa: Program status
@@ -532,6 +533,7 @@ Mensaje del servidor: Server message
 Mi avance: My progress
 Miércoles: Wednesday
 minutos: minutes
+minutos para completar la evaluación: minutes for completing the evaluation
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
@@ -709,6 +711,7 @@ Seleccione la empresa para mostrar las páginas asignadas: Select the company in
 Seleccione fecha difusión: Select dissemination date
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
+Si deseas, puedes realizar la evaluación haciendo clic en el botón: If you want, you can take the evaluation clicking the button
 Si deseas, puedes tomar la evaluación de: If you want, you can take the evaluation of
 Si deseas, puedes tomar la evaluación en este momento: If you want, you can take the evaluation in this moment
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
@@ -739,8 +742,9 @@ Sub-Aplicación de: Sub-Application of
 Sub-Aplicaciones de: Sub-Applications of
 Sub-páginas: Sub-pages
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0: You can also request the upload of this certificate through the Content Manager of Formación 2.0 team
-Tema: Theme
 Teléfono de contacto: Contact Number
+Tema: Theme
+Tendrás: You will have
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails
 Tiempo de duración de la evaluación: Duration of the test
@@ -808,6 +812,7 @@ Viernes: Friday
 Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
 Volver: Back
+Volver al contenido: Back to the content
 Volver al programa: Back to program page
 Volver al inicio: Back to home
 y el: and

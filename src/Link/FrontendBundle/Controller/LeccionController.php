@@ -258,13 +258,28 @@ class LeccionController extends Controller
         // Determinar siguiente lección a ver
         $continue_button = $f->nextLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml, $programa_id);
 
+        if ($continue_button['evaluacion'])
+        {
+
+            $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($continue_button['evaluacion']);
+
+            // Duración en minutos
+            $duracion = intval($prueba->getDuracion()->format('G'))*60;
+            $duracion += intval($prueba->getDuracion()->format('i'));
+
+        }
+        else {
+            $duracion = 0;
+        }
+
         //return new Response('next_lesson: '.$next_lesson.', puntos: '.$puntos);
         //return new Response(var_dump($indexedPages[$subpagina_id]));
 
         return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
                                                                                         'subpagina' => $indexedPages[$subpagina_id],
                                                                                         'continue_button' => $continue_button,
-                                                                                        'puntos' => $puntos));
+                                                                                        'puntos' => $puntos,
+                                                                                        'duracion' => $duracion));
 
     }
 
