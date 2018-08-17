@@ -36,6 +36,10 @@
   color: #383838;
   font-weight: 400; }
 
+.color-light-black {
+  color: #666666;
+  font-weight: 400; }
+
 .color-dark-grey {
   color: #5C6266; }
 
@@ -134,7 +138,7 @@ h5, .h5 {
 p {
   font-family: "Open Sans";
   font-size: 1.125rem;
-  color: #383838;
+  color: #666666;
   font-weight: 300; }
 
 label {
@@ -319,7 +323,6 @@ input.form-control:focus {
     left: 0; }
 
 .btnRepeatEval {
-  margin-top: 2rem;
   padding: 0;
   border-radius: 50%;
   height: 6rem;
@@ -343,9 +346,7 @@ input.form-control:focus {
 
 .bttn_fm {
   font-family: "Roboto";
-  font-size: 1.125rem;
   font-weight: 500;
-  line-height: calc(1rem + 3px);
   text-align: center; }
 
 body {
@@ -836,6 +837,42 @@ a:focus, a:active, a:target, a:checked {
       background: linear-gradient(to right, #FFDC60 0%, #FFDC60 100%);
       color: #565656; }
 
+.modalVc {
+  -webkit-animation: bounce .5s ease-in 1 forwards;
+  /*-moz-animation-name: bounce;*/
+  animation: bounce .5s ease-in 1 forwards; }
+  .modalVc .tituloVc {
+    color: #5CAEE6;
+    font-family: "Open Sans";
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 2.375rem; }
+    @media (max-width: 324.98px) {
+      .modalVc .tituloVc {
+        font-size: 1.125rem;
+        line-height: 1.5rem; } }
+  .modalVc .btn-Cs {
+    text-transform: uppercase;
+    font-family: "Roboto";
+    font-weight: 700;
+    border: 0px !important;
+    padding: .7rem 2rem;
+    border-radius: 50rem;
+    color: #797D80;
+    background: linear-gradient(to left, #FFDC60 0%, #FFDC60 100%); }
+    @media (max-width: 559.98px) {
+      .modalVc .btn-Cs {
+        position: relative;
+        left: -1.5rem; } }
+    @media (max-width: 324.98px) {
+      .modalVc .btn-Cs {
+        font-size: .9rem;
+        left: -1.75rem; } }
+    .modalVc .btn-Cs:hover {
+      background: linear-gradient(to right, #FFDC60 0%, #FFDC60 100%);
+      color: #565656; }
+
 .modalEEval .textModalEv {
   font-size: calc(1rem + 9px);
   font-family: "Roboto";
@@ -1143,7 +1180,7 @@ a:focus, a:active, a:target, a:checked {
 .modalCEval, .modalEEval {
   height: 33.5rem;
   width: 33.5rem;
-  height: 28.5rem;
+  height: 25.5rem;
   width: 30.5rem; }
   @media (max-width: 559.98px) {
     .modalCEval, .modalEEval {
@@ -1151,6 +1188,20 @@ a:focus, a:active, a:target, a:checked {
       width: 20rem; } }
   @media (max-width: 324.98px) {
     .modalCEval, .modalEEval {
+      height: 30rem;
+      width: 17rem; } }
+
+.modalVc {
+  height: 25rem;
+  width: 33.5rem;
+  height: 19rem;
+  width: 30.5rem; }
+  @media (max-width: 559.98px) {
+    .modalVc {
+      height: 30rem;
+      width: 20rem; } }
+  @media (max-width: 324.98px) {
+    .modalVc {
       height: 30rem;
       width: 17rem; } }
 
@@ -1168,32 +1219,32 @@ a:focus, a:active, a:target, a:checked {
       .modal-recuperacion::-webkit-scrollbar-thumb, .modal-calendario::-webkit-scrollbar-thumb, .modalEditP::-webkit-scrollbar-thumb, .modalChagePwd::-webkit-scrollbar-thumb, .modalSopVirtual::-webkit-scrollbar-thumb, .modalSuccess::-webkit-scrollbar-thumb, .modalWrong::-webkit-scrollbar-thumb {
         background-color: #DAE1E6; } }
 
-.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
+.modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalVc, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
   margin: 8rem auto !important;
   border-radius: 1rem;
   background: #FAFAFA;
   margin: calc(2rem - 4px) auto !important; }
   @media (max-width: 559.98px) {
-    .modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
+    .modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalVc, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
       margin: 5rem auto !important; } }
   @media (max-width: 324.98px) {
-    .modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
+    .modal-recuperacion, .modal-calendario, .modal-edit, .modal-resp, .modalEditP, .modalChagePwd, .modalCerrarSesion, .modalSopVirtual, .modalCEval, .modalVc, .modalEEval, .modalMuroNotify, .modalSuccess, .modalWrong {
       margin: calc(2rem + 4px) auto !important; } }
-  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal, .modalSuccess .btn_close_modal, .modalWrong .btn_close_modal {
+  .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalVc .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal, .modalSuccess .btn_close_modal, .modalWrong .btn_close_modal {
     position: relative;
     top: 1.3125rem;
     right: 0;
     border: 0;
     background: transparent; }
     @media (max-width: 559.98px) {
-      .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal, .modalSuccess .btn_close_modal, .modalWrong .btn_close_modal {
+      .modal-recuperacion .btn_close_modal, .modal-calendario .btn_close_modal, .modal-edit .btn_close_modal, .modal-resp .btn_close_modal, .modalEditP .btn_close_modal, .modalChagePwd .btn_close_modal, .modalCerrarSesion .btn_close_modal, .modalSopVirtual .btn_close_modal, .modalCEval .btn_close_modal, .modalVc .btn_close_modal, .modalEEval .btn_close_modal, .modalMuroNotify .btn_close_modal, .modalSuccess .btn_close_modal, .modalWrong .btn_close_modal {
         right: -1rem; } }
-    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white, .modalMuroNotify .btn_close_modal .ic-close-white, .modalSuccess .btn_close_modal .ic-close-white, .modalWrong .btn_close_modal .ic-close-white {
+    .modal-recuperacion .btn_close_modal .ic-close-white, .modal-calendario .btn_close_modal .ic-close-white, .modal-edit .btn_close_modal .ic-close-white, .modal-resp .btn_close_modal .ic-close-white, .modalEditP .btn_close_modal .ic-close-white, .modalChagePwd .btn_close_modal .ic-close-white, .modalCerrarSesion .btn_close_modal .ic-close-white, .modalSopVirtual .btn_close_modal .ic-close-white, .modalCEval .btn_close_modal .ic-close-white, .modalVc .btn_close_modal .ic-close-white, .modalEEval .btn_close_modal .ic-close-white, .modalMuroNotify .btn_close_modal .ic-close-white, .modalSuccess .btn_close_modal .ic-close-white, .modalWrong .btn_close_modal .ic-close-white {
       height: 1.5rem;
       width: 1.5rem;
       cursor: pointer;
       color: #AAAFB3; }
-  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo, .modalMuroNotify .titulo, .modalSuccess .titulo, .modalWrong .titulo {
+  .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalVc .titulo, .modalEEval .titulo, .modalMuroNotify .titulo, .modalSuccess .titulo, .modalWrong .titulo {
     color: #797D80;
     font-family: "Open Sans";
     font-weight: 600;
@@ -1201,7 +1252,7 @@ a:focus, a:active, a:target, a:checked {
     text-align: center;
     line-height: 2.375rem; }
     @media (max-width: 324.98px) {
-      .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalEEval .titulo, .modalMuroNotify .titulo, .modalSuccess .titulo, .modalWrong .titulo {
+      .modal-recuperacion .titulo, .modal-calendario .titulo, .modal-edit .titulo, .modal-resp .titulo, .modalEditP .titulo, .modalChagePwd .titulo, .modalCerrarSesion .titulo, .modalSopVirtual .titulo, .modalCEval .titulo, .modalVc .titulo, .modalEEval .titulo, .modalMuroNotify .titulo, .modalSuccess .titulo, .modalWrong .titulo {
         font-size: 1.125rem;
         line-height: 1.5rem; } }
 
@@ -1213,12 +1264,12 @@ a:focus, a:active, a:target, a:checked {
   font-weight: 500;
   text-align: left; }
 
-.modalCerrarSesion .cancelarCs, .modalCEval .cancelarCs {
+.modalCerrarSesion .cancelarCs, .modalCEval .cancelarCs, .modalVc .cancelarCs {
   text-transform: uppercase;
   font-family: "Roboto";
   font-weight: 700;
   color: #adb5bd; }
-  .modalCerrarSesion .cancelarCs:hover, .modalCEval .cancelarCs:hover {
+  .modalCerrarSesion .cancelarCs:hover, .modalCEval .cancelarCs:hover, .modalVc .cancelarCs:hover {
     color: #565656; }
 
 .avatar-img {
@@ -1893,7 +1944,7 @@ a.active {
     .nav-lesson ol a {
       padding: 0;
       font-size: 0.87rem;
-      margin: 16px auto; }
+      margin: .8rem auto; }
       .nav-lesson ol a i {
         font-size: 6px;
         margin: 8px; }
@@ -1907,6 +1958,28 @@ a.active {
       color: #AAAFB3; }
       .nav-lesson .ul-items li span a {
         display: inline-block; }
+    .nav-lesson .ul-items .liItemsAprob {
+      position: relative;
+      left: -2rem;
+      padding-left: 0;
+      list-style: none; }
+      .nav-lesson .ul-items .liItemsAprob a {
+        color: #eefca1 !important; }
+        .nav-lesson .ul-items .liItemsAprob a i {
+          font-size: .8rem;
+          position: relative;
+          left: -.1rem;
+          top: .05rem; }
+        .nav-lesson .ul-items .liItemsAprob a:hover {
+          color: #fff !important; }
+  .nav-lesson .ol-itemsAprob .itemsAprob {
+    color: #eefca1 !important; }
+    .nav-lesson .ol-itemsAprob .itemsAprob a {
+      color: #eefca1 !important; }
+    .nav-lesson .ol-itemsAprob .itemsAprob:hover {
+      color: #AAAFB3 !important; }
+      .nav-lesson .ol-itemsAprob .itemsAprob:hover a {
+        color: #fff !important; }
 
 .nav-lesson #pills-tabContent {
   transition: all .5s ease;
@@ -2061,9 +2134,12 @@ p.up {
   margin: 1.5rem auto;
   font-size: 1.3rem;
   width: 75%;
-  font-family: "Open Sans"; }
+  font-weight: 500;
+  font-family: "Open Sans";
+  text-align: justify; }
   .lesson-container h4 a {
-    color: #FFDC60; }
+    color: #3D93CC;
+    font-weight: bold; }
 .lesson-container h3 {
   margin: 1.5rem auto;
   width: 75%;
@@ -2226,7 +2302,7 @@ p.up {
 .s2_fin-materia {
   padding-top: 2rem; }
   .s2_fin-materia .text_fin-materia {
-    color: #9B9B9B;
+    color: #666666;
     font-family: "Roboto";
     font-size: 1.5rem;
     line-height: calc(2rem + 1px);
@@ -3559,9 +3635,8 @@ p.up {
 
 .titulo-resul {
   color: #5CAEE6;
-  font-family: "Roboto";
-  font-size: 4.25rem;
-  line-height: calc(2rem - 2px);
+  font-family: "Open Sans";
+  font-size: 3rem;
   margin-top: 3rem; }
 
 .txt-resul {

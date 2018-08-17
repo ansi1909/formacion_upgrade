@@ -182,7 +182,7 @@ a.active {
         a {
             padding: 0;
             font-size: $font-size-sm;
-            margin: 16px auto;
+            margin: .8rem auto;
 
 
 
@@ -207,6 +207,39 @@ a.active {
 
                 a {
                     display: inline-block;
+                }
+            }
+        }
+        .liItemsAprob{
+            position: relative;
+            left: -2rem;
+            padding-left: 0;
+            list-style: none;
+            a{
+                color: $verylightgreen !important;
+                i{
+                    font-size: .8rem;
+                    position: relative;
+                    left: -.1rem;
+                    top: .05rem;
+                }
+                &:hover{
+                    color: $white !important;
+                }
+            }
+        }
+    }
+    
+    .ol-itemsAprob{
+        .itemsAprob{
+            color: $verylightgreen !important;
+            a{
+                color: $verylightgreen !important;
+            }
+            &:hover{
+                color: $gray-600 !important;
+                a{
+                    color: $white !important;
                 }
             }
         }

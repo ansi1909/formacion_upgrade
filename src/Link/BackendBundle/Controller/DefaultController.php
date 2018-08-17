@@ -25,181 +25,155 @@ class DefaultController extends Controller
       	}
         $f->setRequest($session->get('sesion_id'));
 
-      	if ($this->container->get('session')->isStarted())
-      	{
+      	$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+            
+        if($session->get('administrador') == 'true' || !$usuario->getEmpresa())
+        {
 
-            $usuarioS = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        	
-        	if($session->get('administrador') == 'true' || !$usuarioS->getEmpresa())
+            $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+            $empresasA = array();
+            $empresasI = array();
+            $empresas_a = 0;
+            $empresas_i = 0;
+            
+            foreach($empresas_db as $empresa)
             {
-                $empresas_db = $em->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
-                $empresasA = array();
-                $empresasI = array();
-                $empresas_a = 0;
-                $empresas_i = 0;
-                
-                foreach($empresas_db as $empresa)
+
+                $programas = '';
+                $tiene = 0;
+
+                $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                           WHERE u.empresa = :empresa_id')
+                            ->setParameter('empresa_id', $empresa->getId());
+                $usuarios = $query->getSingleScalarResult();
+
+                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                           JOIN pe.pagina p
+                                           WHERE pe.empresa = :empresa_id
+                                           AND p.pagina IS NULL')
+                            ->setParameter('empresa_id', $empresa->getId());
+                $paginas_db = $query->getResult();
+
+                foreach ($paginas_db as $pagina)
                 {
+                    $tiene++;
+                    $programas .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$pagina->getPagina()->getId().'" p_str="'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre().'">'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre();
+                    $subpaginas = $f->subPaginasEmpresa($pagina->getPagina()->getId(), $empresa->getId());     
+                    if ($subpaginas['tiene'] > 0)
+                    {
+                        $programas .= '<ul>';
+                        $programas .= $subpaginas['return'];
+                        $programas .= '</ul>';
+                    }
+                    $programas .= '</li>'; 
+                }
+                
+                if ($empresa->getActivo() == 'true') 
+                {
+
+                    $empresas_a++;
+
+                    $empresasA[] = array('id' => $empresa->getId(),
+                                         'nombre' => $empresa->getNombre(),
+                                         'usuarios' => $usuarios,
+                                         'programas' => $programas,
+                                         'tiene' => $tiene);
+
+                }
+                else  {
                     
-                    if($empresa->getActivo() == 'true') 
-                    {
-                        $tieneA = 0;
-                        $paginasA= "";
-                        $empresas_a=$empresas_a+1;
+                    $empresas_i++;
 
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
-                                                   WHERE u.empresa = :empresa_id')
-                                    ->setParameter('empresa_id', $empresa->getId());
-                        $usuarios = $query->getSingleScalarResult();
+                    $empresasI[]=array('nombre' => $empresa->getNombre(),
+                                       'usuarios' => $usuarios,
+                                       'programas' => $programas,
+                                       'tiene' => $tiene);
 
-                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                                   JOIN pe.pagina p
-                                                   WHERE pe.empresa = :empresa_id
-                                                   AND p.pagina IS NULL')
-                                    ->setParameter('empresa_id', $empresa->getId());
-                        $paginas_db = $query->getResult();
-
-                        foreach( $paginas_db as $pagina )
-                        {
-                            $tieneA++;
-                            $paginasA .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$pagina->getPagina()->getId().'" p_str="'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre().'">'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre();
-                            $subpaginas = $f->subPaginasEmpresa($pagina->getPagina()->getId(), $empresa->getId());     
-                            if ($subpaginas['tiene'] > 0)
-                            {
-                                $paginasA .= '<ul>';
-                                $paginasA .= $subpaginas['return'];
-                                $paginasA .= '</ul>';
-                            }
-                            $paginasA .= '</li>'; 
-                        }
-
-                        $empresasA[]=array('id' => $empresa->getId(),
-                                           'nombre' => $empresa->getNombre(),
-                                           'usuarios' => $usuarios,
-                                           'programas' => $paginasA,
-                                           'tiene' => $tieneA);                        
-                    }
-                    else
-                    {
-                        $empresas_i=$empresas_i+1;
-                        $tieneI=0;
-                        $paginasI="";
-                        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
-                                                   WHERE u.empresa = :empresa_id')
-                                    ->setParameter('empresa_id', $empresa->getId());
-                        $usuarios = $query->getSingleScalarResult();
-
-                        $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe
-                                                   JOIN pe.pagina p
-                                                   WHERE pe.empresa = :empresa_id
-                                                   AND p.pagina IS NULL')
-                                    ->setParameter('empresa_id', $empresa->getId());
-                        $paginas_db = $query->getResult();
-
-                        foreach( $paginas_db as $pagina )
-                        {
-                            $paginasI .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$pagina->getPagina()->getId().'" p_str="'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre().'">'.$pagina->getPagina()->getCategoria()->getNombre().': '.$pagina->getPagina()->getNombre();
-                            $subpaginas = $f->subPaginasEmpresa($pagina->getPagina()->getId(), $empresa->getId());     
-                            if ($subpaginas['tiene'] > 0)
-                            {
-                                $paginasI .= '<ul>';
-                                $paginasI .= $subpaginas['return'];
-                                $paginasI .= '</ul>';
-                            }
-                            $paginasI .= '</li>';
-                            $tieneI++;
-                        }
-
-                        $empresasI[]=array('nombre' => $empresa->getNombre(),
-                                           'usuarios' => $usuarios,
-                                           'programas' => $paginasI,
-                                           'tiene' => $tieneI);
-                    }
                 }
 
-
-                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast' => $empresas_a + $empresas_i,
-                                                                                             'activas' => $empresas_a,
-                                                                                             'inactivas' => $empresas_i,
-                                                                                             'empresasA' => $empresasA,
-                                                                                             'empresasI' => $empresasI,
-                                                                                             'usuario' => $usuarioS));
-
-                return $response;
-
             }
-            else {
 
-                $usuarios_activos = 0;
-                $usuarios_inactivos = 0;
-                $usuarios_registrados = 0;
 
-                $query = $em->getConnection()->prepare('SELECT
-                                                fnreporte_general2(:re, :pempresa_id) as
-                                                resultado; fetch all from re;');
-                $re = 're';
-                $query->bindValue(':re', $re, \PDO::PARAM_STR);
-                $query->bindValue(':pempresa_id', $usuarioS->getEmpresa()->getId(), \PDO::PARAM_INT);
-                $query->execute();
-                $r = $query->fetchAll();
+            $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('empresast' => $empresas_a + $empresas_i,
+                                                                                         'activas' => $empresas_a,
+                                                                                         'inactivas' => $empresas_i,
+                                                                                         'empresasA' => $empresasA,
+                                                                                         'empresasI' => $empresasI,
+                                                                                         'usuario' => $usuario));
 
-                foreach ($r as $re) {
-                    if ($re['logueado'] > 0) {
-                        $usuarios_activos++;
-                    }
-                    else {
-                        $usuarios_inactivos++;
-                    }
-                   $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+            return $response;
+
+        }
+        else {
+
+            $usuarios_activos = 0;
+            $usuarios_inactivos = 0;
+            $usuarios_registrados = 0;
+
+            $query = $em->getConnection()->prepare('SELECT
+                                            fnreporte_general2(:re, :pempresa_id) as
+                                            resultado; fetch all from re;');
+            $re = 're';
+            $query->bindValue(':re', $re, \PDO::PARAM_STR);
+            $query->bindValue(':pempresa_id', $usuario->getEmpresa()->getId(), \PDO::PARAM_INT);
+            $query->execute();
+            $r = $query->fetchAll();
+
+            foreach ($r as $re) {
+                if ($re['logueado'] > 0) {
+                    $usuarios_activos++;
                 }
-
-                $query2 = $em->getConnection()->prepare('SELECT
-                                                        fnreporte_general(:re, :pempresa_id) as
-                                                        resultado; fetch all from re;');
-                $re1 = 're';
-                $query2->bindValue(':re', $re1, \PDO::PARAM_STR);
-                $query2->bindValue(':pempresa_id', $usuarioS->getEmpresa()->getId(), \PDO::PARAM_INT);
-                $query2->execute();
-                $r1 = $query2->fetchAll();
-
-                foreach($r1 as $r)
-                {   
-                    $paginas[] = array('pagina' => $r['nombre'],
-                                       'fecha_i' => $r['fecha_inicio'],
-                                       'fecha_f' => $r['fecha_vencimiento'],
-                                       'usuariosT' => $r['registrados'],
-                                       'usuariosCur' => $r['cursando'],
-                                       'usuariosF' => $r['culminado'],
-                                       'usuariosN' => $r['no_iniciados'],
-                                       'usuariosA' => $r['activos'],
-                                       'id' => $r['id']);
-                }                      
-
-                $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos' => $usuarios_activos,
-                                                                                             'inactivos' => $usuarios_inactivos,
-                                                                                             'total' => $usuarios_registrados,
-                                                                                             'paginas' => $paginas,
-                                                                                             'empresa_id' => $usuarioS->getEmpresa()->getId(),
-                                                                                             'usuario' => $usuarioS));
-
-                return $response;
+                else {
+                    $usuarios_inactivos++;
+                }
             }
 
-      	}
-      	else {
-      		return $this->redirectToRoute('_loginAdmin');
-      	}
+            $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
+
+            $query = $em->getConnection()->prepare('SELECT
+                                                    fnreporte_general(:re, :pempresa_id) as
+                                                    resultado; fetch all from re;');
+            $re = 're';
+            $query->bindValue(':re', $re, \PDO::PARAM_STR);
+            $query->bindValue(':pempresa_id', $usuario->getEmpresa()->getId(), \PDO::PARAM_INT);
+            $query->execute();
+            $r = $query->fetchAll();
+
+            foreach($r as $re)
+            {   
+                $paginas[] = array('pagina' => $re['nombre'],
+                                   'fecha_i' => $re['fecha_inicio'],
+                                   'fecha_f' => $re['fecha_vencimiento'],
+                                   'usuariosT' => $re['registrados'],
+                                   'usuariosCur' => $re['cursando'],
+                                   'usuariosF' => $re['culminado'],
+                                   'usuariosN' => $re['no_iniciados'],
+                                   'usuariosA' => $re['activos'],
+                                   'id' => $re['id']);
+            }
+
+            $response = $this->render('LinkBackendBundle:Default:index.html.twig', array('activos' => $usuarios_activos,
+                                                                                         'inactivos' => $usuarios_inactivos,
+                                                                                         'total' => $usuarios_registrados,
+                                                                                         'paginas' => $paginas,
+                                                                                         'usuario' => $usuario));
+
+            return $response;
+
+        }
+
     }
 
-     public function ajaxProgramasDashboardAction(Request $request)
+    public function ajaxProgramasDashboardAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
 
-        $empresa_id = $request->request->get('empresa_id');
+        $empresa_id = $request->query->get('empresa_id');
 
-        $usuarios_activos=0;
-        $usuarios_inactivos=0;
-        $usuarios_registrados=0;
+        $usuarios_activos = 0;
+        $usuarios_inactivos = 0;
+        $usuarios_registrados = 0;
 
         $query = $em->getConnection()->prepare('SELECT
                                         fnreporte_general2(:re, :pempresa_id) as
@@ -217,30 +191,27 @@ class DefaultController extends Controller
             }else{
                 $usuarios_inactivos++;
             }
-           $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;
         }
+        $usuarios_registrados = $usuarios_activos + $usuarios_inactivos;  
 
-               
+        $html = '<table class="table">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
+                            <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
+                            <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios inactivos').'</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => 20, 'pagina_id' => 0, 'empresa_id' => $empresa_id)).'"><span>'. $usuarios_registrados .'<i class="fa fa-user"></i></span></a></td>
+                            <td class="text-center"><span>'. $usuarios_activos .'<i class="fa fa-user"></i></span></td>
+                            <td class="text-center"><span>'. $usuarios_inactivos .'<i class="fa fa-user"></i></span></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-        $html = '
-            <table class="table" id="dt">
-                <thead class="sty__title">
-                    <tr>
-                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
-                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
-                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios inactivos').'</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesEmpresa', array('app_id' => '20', 'pagina_id' => '0', 'empresa_id' => $empresa_id)).'"><span>'. $usuarios_registrados .'<i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><span>'. $usuarios_activos .'<i class="fa fa-user"></i></span></td>
-                        <td class="text-center"><span>'. $usuarios_inactivos .'<i class="fa fa-user"></i></span></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table class="table" id="dt">
+            <table class="table data_table">
                 <thead class="sty__title">
                     <tr>
                         <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
@@ -255,26 +226,26 @@ class DefaultController extends Controller
                 </thead>
                 <tbody>';
                 
-        $query2 = $em->getConnection()->prepare('SELECT
+        $query = $em->getConnection()->prepare('SELECT
                                                 fnreporte_general(:re, :pempresa_id) as
                                                 resultado; fetch all from re;');
-        $re1 = 're';
-        $query2->bindValue(':re', $re1, \PDO::PARAM_STR);
-        $query2->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-        $query2->execute();
-        $r1 = $query2->fetchAll();
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->execute();
+        $r = $query->fetchAll();
                   
-        foreach($r1 as $r )
+        foreach ($r as $re)
         {  
             $html .= '<tr>
-                        <td >'. $r['nombre'] .'</td>
-                        <td >'. $r['fecha_inicio'] .'</td>
-                        <td >'. $r['fecha_vencimiento'].'</td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['cursando'] .'<i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['culminado'] .' <i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="#"><span>'. $r['activos'] .'<i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => '20', 'pagina_id' => $r['id'], 'empresa_id' => $empresa_id )).'"><span>'. $r['registrados'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td >'. $re['nombre'] .'</td>
+                        <td >'. $re['fecha_inicio'] .'</td>
+                        <td >'. $re['fecha_vencimiento'].'</td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="#"><span>'. $re['activos'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['registrados'] .'<i class="fa fa-user"></i></span></a></td>
                       </tr>';
         }
 
@@ -283,8 +254,8 @@ class DefaultController extends Controller
 
                 <div class="card-footer">
                     <div class="row">
-                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 justify-content-start">
-                           <a href="'.$this->generateUrl('_excelReporteGeneral', array('app_id' => '20', 'empresa_id' => $empresa_id )).'"> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                           <a href="'.$this->generateUrl('_excelReporteGeneral', array('app_id' => 20, 'empresa_id' => $empresa_id)).'"> <button type="button" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="Descargar"><span class="fa fa-download"></span></button></a>
                         </div>
                     </div>
                 </div>';
@@ -292,6 +263,7 @@ class DefaultController extends Controller
 
         $return = json_encode($html);
         return new Response($return,200,array('Content-Type' => 'application/json'));
+
     }
 
     public function authExceptionAction()
@@ -480,18 +452,17 @@ class DefaultController extends Controller
 
     public function ajaxUsuariosConectadosAction(Request $request )
     {
+
        $session = new Session();
        $em = $this->getDoctrine()->getManager();
        $rs = $this->get('reportes');
 
-       $empresaid = (integer) $request->request->get('empresa_id_');
+       $empresa_id = (integer) $request->request->get('empresa_id');
 
-       $listado = $rs->usuariosConectados($empresaid, $session->get('usuario')['id']);
+       $listado = $rs->usuariosConectados($empresa_id, $session->get('usuario')['id']);
        $usuariosConectados = count($listado);
       
-       
-     
-       $html = '<table class="table" id="usuariosConectadosTable">
+       $html = '<table class="table data_table">
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
@@ -501,37 +472,20 @@ class DefaultController extends Controller
                         </tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
-        if ($usuariosConectados>0) {
-             foreach ($listado as $registro)
-                {
-           
-            
-                    $html .= '<tr>
-                               
-                                <td>'.$registro['login'].'</td>
-                                <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
-                                <td>'.$registro['correo'].'</td>
-                                <td>'.$registro['nivel'].'</td>
-                            </tr>';
-                 }
-            
-        }
-        else
+        foreach ($listado as $registro)
         {
-            $html.= '<tr>
-                <td coslpan="4">'.$this->get('translator')->trans('No existen usuarios conectados en este momento').'</td>
-            </tr>';
-
+            $html .= '<tr>
+                        <td>'.$registro['login'].'</td>
+                        <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
+                        <td>'.$registro['correo'].'</td>
+                        <td>'.$registro['nivel'].'</td>
+                    </tr>';
         }
         
-       
-
         $html .= '</tbody>
                 </table>'; 
 
-
-        
-        $return = array( 'conectados' => $usuariosConectados, 'html' => $html);
+        $return = array('conectados' => $usuariosConectados, 'html' => $html);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

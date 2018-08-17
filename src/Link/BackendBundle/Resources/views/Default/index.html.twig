@@ -14,58 +14,59 @@
     {% set app_id = app.session.get('app_id') %}
     <br><br>
     {% if rol == 'true' %}
-    <input type="hidden" id="url_ajaxProgramasDash" name="url_ajaxProgramasDash" value="{{ path('_ajaxProgramasDashboard') }}">
-    <div class="admin_dash" >
-        <div class="row">
-            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="activity-block linkg1">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5>#<span class="spincreament">{{ empresast }}</span></h5>
-                            <p>{{ 'Empresas registradas'|trans }}</p>
+        <input type="hidden" id="url_ajaxProgramasDash" name="url_ajaxProgramasDash" value="{{ path('_ajaxProgramasDashboard') }}">
+        <input type="hidden" id="ver_conectados" name="ver_conectados" value="0">
+        <div class="admin_dash" >
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="activity-block linkg1">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5>#<span class="spincreament">{{ empresast }}</span></h5>
+                                <p>{{ 'Empresas registradas'|trans }}</p>
+                            </div>
+                            <i class="fa fa-industry"></i>
                         </div>
-                        <i class="fa fa-industry"></i>
+                        <br>
+                        <i class="bg-icon text-center fa fa-pencil"></i>
                     </div>
-                    <br>
-                    <i class="bg-icon text-center fa fa-pencil"></i>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="activity-block linkg2">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5>#<span class="spincreament">{{ activas }}</span></h5>
-                            <p>{{ 'Empresas activas'|trans }}</p>
-                        </div>
-                        <i class="fa fa-industry"></i> </div>
-                    <br>
-                    <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i> 
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="activity-block danger">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5>#<span class="spincreament">{{ inactivas }}</span></h5>
-                            <p>{{ 'Empresas inactivas'|trans }}</p>
-                        </div>
-                        <i class="fa fa-industry"></i> </div>
-                    <br>
-                    <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i> 
-                </div>
-            </div>
-        </div>
-        <!-- fin bloques de empresas registradas -->
-        <br>
-        <div class="row">
-            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="card">
-                    <div class="card-header gradiente">
-                        <div class="card-title"><span class="fa fa-industry"></span> {{ 'Resumen general por empresa'|trans }}.</div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="activity-block linkg2">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5>#<span class="spincreament">{{ activas }}</span></h5>
+                                <p>{{ 'Empresas activas'|trans }}</p>
+                            </div>
+                            <i class="fa fa-industry"></i> </div>
+                        <br>
+                        <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i> 
                     </div>
-                    <div class="card-block">
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="activity-block danger">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5>#<span class="spincreament">{{ inactivas }}</span></h5>
+                                <p>{{ 'Empresas inactivas'|trans }}</p>
+                            </div>
+                            <i class="fa fa-industry"></i> </div>
+                        <br>
+                        <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i> 
+                    </div>
+                </div>
+            </div>
+            <!-- fin bloques de empresas registradas -->
+            <br>
+            <div class="row">
+                <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="card">
+                        <div class="card-header gradiente">
+                            <div class="card-title"><span class="fa fa-industry"></span> {{ 'Resumen general por empresa'|trans }}.</div>
+                        </div>
                         <div class="card-block">
-                             <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
+                            <div class="card-block">
+                                <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans}}</label>
                                 <div class="row">
                                     <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                         <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
@@ -80,158 +81,161 @@
                                 </div>
                                 <br>
                                 <div id="listado_programas_empresa">
-                                    
                                 </div>
+                                <div class="load1 load-wrapper">
+                                    <div class="loader">
+                                        Loading...
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="card">
+                        <div class="card-header gradiente">
+                            <div class="card-title"><span class="fa fa-industry"></span> {{'Listado de empresas inactivas' |trans}}</div>
+                        </div>
+                        <div class="card-block">
+                            <table class="table data_table">
+                                <thead class="sty__title">
+                                    <tr>
+                                        <th class="hd__title text-center">{{ 'Empresas'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Prog. asociados'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Usuarios reg.'|trans }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for empresa in empresasI %}
+                                        {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                        <tr class="{{ eo }}">
+                                            <td>{{ empresa.nombre }}</td>
+                                            <td>
+                                                {% if empresa.tiene > 0 %}
+                                                    <div class="tree">
+                                                        <ul data-jstree='{ "opened" : true }'>
+                                                            {{ empresa.programas|raw }}
+                                                        </ul>
+                                                    </div>
+                                                {% else %}
+                                                    {{ 'No tiene sub-páginas'|trans }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center"><span>{{ empresa.usuarios }} <i class="fa fa-user"></i></span></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="card">
-                    <div class="card-header gradiente">
-                        <div class="card-title"><span class="fa fa-industry"></span> {{'Listado de empresas inactivas' |trans}}</div>
-                    </div>
-                    <div class="card-block">
-                        <table class="table" id="dt2">
-                            <thead class="sty__title">
-                                <tr>
-                                    <th class="hd__title text-center">{{'Empresas' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Prog. asociados' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Usuarios reg.' |trans}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for empresaI in empresasI %}
-                                {% set eo = cycle(['odd', 'even'], loop.index) %}
-                                <tr class="{{eo}}">
-                                    <td>{{empresaI.nombre}}</td>
-                                    <td>
-                                        {% if empresaI.tiene > 0 %}
-                                            <div class="tree">
-                                                <ul data-jstree='{ "opened" : true }'>
-                                                    {{ empresaI.programas|raw }}
-                                                </ul>
-                                            </div>
-                                        {% else %}
-                                            {{ 'No tiene sub-páginas'|trans }}
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-center"><span>{{empresaI.usuarios}} <i class="fa fa-user"></i></span></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
     {% else %}
-    <div class="emp_dash">
-        <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
-        <div class="row">
-            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="activity-block linkg1">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5>#<span class="spincreament">{{ total }}</span></h5>
-                            <p>{{ 'Usuarios registrados'|trans }}</p>
+        <input type="hidden" id="ver_conectados" name="ver_conectados" value="1">
+        <div class="emp_dash">
+            <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="activity-block linkg1">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5>#<span class="spincreament">{{ total }}</span></h5>
+                                <p>{{ 'Usuarios registrados'|trans }}</p>
+                            </div>
+                            <i class="fa fa-users"></i>
                         </div>
-                        <i class="fa fa-users"></i>
+                        <br>
+                        <i class="bg-icon text-center fa fa-pencil"></i>
                     </div>
-                    <br>
-                    <i class="bg-icon text-center fa fa-pencil"></i>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="activity-block linkg2">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5>#<span class="spincreament">{{ activos }}</span></h5>
+                                <p>{{ 'Usuarios activos'|trans }}</p>
+                            </div>
+                            <i class="fa fa-user"></i> </div>
+                        <br>
+                        <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i> 
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="activity-block danger">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5>#<span class="spincreament">{{ inactivos }}</span></h5>
+                                <p>{{ 'Usuarios inactivos'|trans }}</p>
+                            </div>
+                            <i class="fa fa-user-times"></i> </div>
+                        <br>
+                        <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i> 
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="activity-block linkg2">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5>#<span class="spincreament">{{activos}}</span></h5>
-                            <p>{{'Usuarios activos' |trans}}</p>
+            <!-- fin bloques de empresas registradas -->
+            <br>
+            <div class="row">
+                <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="card">
+                        <div class="card-header gradiente">
+                            <div class="card-title">{{'Listado de programas' |trans}}</div>
                         </div>
-                        <i class="fa fa-user"></i> </div>
-                    <br>
-                    <i class="bg-icon text-center fa fa-check" style="margin-top: 0px;"></i> 
+                        <div class="card-block">
+                            <table class="table data_table">
+                                <thead class="sty__title">
+                                    <tr>
+                                        <th class="hd__title">{{ 'Nombre'|trans }}</th>
+                                        <th class="hd__title">{{ 'Fecha inicio'|trans }}</th>
+                                        <th class="hd__title">{{ 'Fecha fin'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Usuarios no iniciados'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Usuarios cursando'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Usuarios culminados'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Usuarios activos'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Usuarios registrados'|trans }}</th>                                  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pagina in paginas %}
+                                        {% set eo = cycle(['odd', 'even'], loop.index) %}
+                                        <tr class="{{ eo }}">
+                                            <td>{{ pagina.pagina }}</td>
+                                            <td>{{ pagina.fecha_i }}</td>
+                                            <td>{{ pagina.fecha_f }}</td>
+                                            <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34, 'pagina_id': pagina.id }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesCursando',{'app_id': 21 , 'pagina_id': pagina.id}) }}"><span>{{ pagina.usuariosCur }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesAprobados',{'app_id': 20,'pagina_id': pagina.id }) }}"><span>{{ pagina.usuariosF }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="#"><span>{{ pagina.usuariosA }} <i class="fa fa-user"></i></span></a></td>
+                                            <td class="text-center"><a href="{{ path('_participantesRegistrados',{'app_id': 22, 'pagina_id': pagina.id }) }}"><span>{{ pagina.usuariosT }} <i class="fa fa-user"></i></span></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="activity-block danger">
-                    <div class="media">
-                        <div class="media-body">
-                            <h5>#<span class="spincreament">{{inactivos}}</span></h5>
-                            <p>{{'Usuarios inactivos' |trans}}</p>
+            <form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
+                 <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
+            </form>
+               
+            <input type="hidden" id="usuarios_conectados" name="usuarios_conectados" value="{{ path('_ajaxUsuariosConectados') }}">
+            <div class="row">
+                <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
+                    <div class="card">
+                        <div class="card-header gradiente">
+                            <div class="card-title" id="labelConectados" style="display:none;">{{ 'Usuarios conectados'|trans }}: <span id="totalConectados"></span></div>
+                            <div class="card-title" id="labelConectadosLoading" style="display:none;">{{ 'Actualizando la lista de usuarios conectados'|trans}}..</div>
                         </div>
-                        <i class="fa fa-user-times"></i> </div>
-                    <br>
-                    <i class="bg-icon text-center fa fa-times" style="margin-top: 0px;"></i> 
+                        <div class="card-block" id="tablaConectados">
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- fin bloques de empresas registradas -->
-        <br>
-        <div class="row">
-            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="card">
-                    <div class="card-header gradiente">
-                        <div class="card-title">{{'Listado de programas' |trans}}</div>
-                    </div>
-                    <div class="card-block">
-                        <table class="table" id="dt">
-                            <thead class="sty__title">
-                                <tr>
-                                    <th class="hd__title">{{'Nombre' |trans}}</th>
-                                    <th class="hd__title">{{'Fecha inicio' |trans}}</th>
-                                    <th class="hd__title">{{'Fecha fin' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Usuarios no iniciados' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Usuarios cursando' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Usuarios culminados' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Usuarios activos' |trans}}</th>
-                                    <th class="hd__title text-center">{{'Usuarios registrados' |trans}}</th>                                  
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for pagina in paginas %}
-                                {% set eo = cycle(['odd', 'even'], loop.index) %}
-                                <tr class="{{eo}}">
-                                    <td>{{ pagina.pagina }}</td>
-                                    <td>{{ pagina.fecha_i }}</td>
-                                    <td>{{ pagina.fecha_f }}</td>
-                                    <td class="text-center"><a href="{{ path('_participantesNoIniciados',{'app_id': 34, 'pagina_id': pagina.id }) }}"><span>{{ pagina.usuariosN }} <i class="fa fa-user"></i></span></a></td>
-                                    <td class="text-center"><a href="{{ path('_participantesCursando',{'app_id': 21 , 'pagina_id': pagina.id}) }}"><span>{{ pagina.usuariosCur }} <i class="fa fa-user"></i></span></a></td>
-                                    <td class="text-center"><a href="{{ path('_participantesAprobados',{'app_id': 20,'pagina_id': pagina.id }) }}"><span>{{ pagina.usuariosF }} <i class="fa fa-user"></i></span></a></td>
-                                    <td class="text-center"><a href="#"><span>{{ pagina.usuariosA }} <i class="fa fa-user"></i></span></a></td>
-                                    <td class="text-center"><a href="{{ path('_participantesRegistrados',{'app_id': 22, 'pagina_id': pagina.id }) }}"><span>{{ pagina.usuariosT }} <i class="fa fa-user"></i></span></a></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <form id="form" name="form" action="{{ path ('_ajaxUsuariosConectados') }}" method="POST">
-             <input type="hidden" id="empresa_id_" name="empresa_id_" value="{{ empresa_id }}">
-        </form>
-           
-        <input type="hidden" id="usuarios_conectados" name="usuarios_conectados" value="{{ path('_ajaxUsuariosConectados') }}">
-        <div class="row">
-            <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
-                <div class="card">
-                    <div class="card-header gradiente">
-                        <div class="card-title" id="labelConectados" style="display: : none">{{'Usuarios conectados' |trans}} : <span id='totalConectados'></span></div>
-                        <div class="card-title" id="labelConectadosLoading" style="display: : none">{{'Actualizando la lista de usuarios conectados..' |trans}}  <span id='ConectadosLoading'></span></div>
-                    </div>
-                    <div class="card-block" id="tablaConectados"> 
-                      
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-users" style="display:none;">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     {% endif %}
 {% endblock %}
 
@@ -266,40 +270,5 @@
             }
         });
     </script>
-    <script type="text/javascript" >
-            function applyDataTable()
-                        {
-                            $('#usuariosConectadosTable').DataTable({
-                                responsive: true,
-                                pageLength:10,
-                                sPaginationType: "full_numbers",
-                                oLanguage: {
-                                    "sProcessing":    "{{ 'Procesando'|trans }}...",
-                                    "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
-                                    "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
-                                    "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
-                                    "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
-                                    "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
-                                    "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
-                                    "sInfoPostFix":   "",
-                                    "sSearch":        "{{ 'Buscar'|trans }}:",
-                                    "sUrl":           "",
-                                    "sInfoThousands":  ",",
-                                    "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
-                                    oPaginate: {
-                                        sFirst: "<<",
-                                        sPrevious: "<",
-                                        sNext: ">", 
-                                        sLast: ">>" 
-                                    },
-                                    "oAria": {
-                                        "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
-                                        "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
-                                    }
-                                }
-                            });
-                        }
-</script>
-
     
 {% endblock %}
