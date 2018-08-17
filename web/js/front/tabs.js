@@ -4,12 +4,6 @@ $(document).ready(function() {
     var tabWrapper = $(".tab__content");
     var activeTab = tabWrapper.find(".activo");
     var activeTabHeight = activeTab.outerHeight();
-    var certificado = $('#certificado');
-
-    if (certificado != '0') 
-    {
-        
-    }
     
     // Muestra el tab al cargar la pagina load
     activeTab.show();
