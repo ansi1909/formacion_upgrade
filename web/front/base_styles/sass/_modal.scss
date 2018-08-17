@@ -243,6 +243,51 @@
     }
 }
 
+.modalVc{
+    @extend %modal-xs;
+    @extend %modal;
+    -webkit-animation: bounce .5s ease-in 1 forwards;
+    /*-moz-animation-name: bounce;*/
+    animation: bounce .5s ease-in 1 forwards;
+    .tituloVc{
+        color: $blue;
+        font-family: $lessons-font;
+        font-weight: $font-weight-easy-medium;
+        font-size: $h4-font-size;
+        text-align: center;
+        line-height: 2.375rem;
+        @include media-breakpoint-down(xxs){
+            font-size: $p-font-size;
+            line-height: 1.5rem;
+        }
+    }
+    .btn-Cs{
+        text-transform: uppercase;
+        font-family: $primary-font;
+        font-weight: $font-weight-medium;
+        border: 0px !important;
+        padding: .7rem 2rem;
+        border-radius: 50rem;
+        color: $gray-700;
+        background: linear-gradient(to left, $yellow 0%, $yellow 100%);
+        @include media-breakpoint-down(xs){
+            position: relative;
+            left: -1.5rem;
+        }
+        @include media-breakpoint-down(xxs){
+            font-size: .9rem;
+            left: -1.75rem;
+        }
+        &:hover{
+            background: linear-gradient(to right, $yellow 0%, $yellow 100%);
+            color: $gray-850;
+        }
+    }
+    .cancelarCs{
+        @extend %btn-cc;
+    }
+}
+
 .modalEEval{
     @extend %modal-sm;
     @extend %modal;
@@ -636,7 +681,24 @@
     height: 33.5rem;
     width: 33.5rem;
     @include media-breakpoint-down(xl){
-        height: 28.5rem;
+        height: 25.5rem;
+        width: 30.5rem;
+    }
+    @include media-breakpoint-down(xs){
+        height: 30rem;
+        width: 20rem;
+    }
+    @include media-breakpoint-down(xxs){
+        height: 30rem;
+        width: 17rem;
+    }
+}
+
+%modal-xs{
+    height: 25rem;
+    width: 33.5rem;
+    @include media-breakpoint-down(xl){
+        height: 19rem;
         width: 30.5rem;
     }
     @include media-breakpoint-down(xs){

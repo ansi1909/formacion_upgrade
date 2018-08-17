@@ -119,28 +119,27 @@
                 <section class="s1_fin-materia">
                     <div class="row align-items-center justify-content-center">
                         <div class="col-10 text-center">
-                            <h1 class="titulo_fin-materia">¡Excelente!</h1>
-                            <span class="material-icons ic-verify">check_circle</span>
+                            <h3>Has completado con éxito los contenidos de la materia:</h3>
+                            <h3><strong>Cambios personales que requieren actitud.</strong></h3>
                         </div>
                     </div>
                     <div class="row align-items-center justify-content-center">
                         <div class="col-10 text-center">
-                            <p class="text_fin-materia">Haz completado con éxito  la materia de <strong>Cambios personales que requieren actitud.</strong></p>
+                            <p class="text_fin-materia">Si deseas puedes realizar la evaluación haciendo clic en el botón</p>
+                            <button type="submit" class="btn btn-primary"> Tomar evaluación </button>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-10 text-center">
+                            <p class="text_fin-materia">Tendrás 99 minutos para completar la evaluación</p>
                         </div>
                     </div>
                 </section>
                 <section class="s2_fin-materia">
+                    
                     <div class="row align-items-center justify-content-center">
                         <div class="col-8 text-center">
-                            <p class="text_fin-materia">Si deseas puedes tomar la evaluación en este momento</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-4 text-center">
-                            <button type="submit" class="btn btn-warning bttn_fm"> Continuar </button>
-                        </div>
-                        <div class="col-4 text-center">
-                            <button type="submit" class="btn btn-primary"> Tomar evaluación </button>
+                            <button data-toggle="modal" data-target="#modalVc" class="btn btn-warning bttn_fm"> Volver al contenido </button>
                         </div>
                     </div>
                 </section>
@@ -229,7 +228,33 @@
             </div>
 
         </div>    <!-- END MAIN  -->
-
+            <!-- Modal volver al contenido-->
+            <div class="modal modalVc" id="modalVc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="container-fluid">
+                    <div class="row align-items-end justify-content-end">
+                        <div class="col-auto text-center">
+                            <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                                <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mt-4 justify-content-center align-items-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                            <h4 class="tituloVc">¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?</h4>
+                        </div>
+                    </div>
+                    <div class="row mt-3 align-items-center justify-content-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                            <a href="#"><button type="button" class="btn btn-warning bttn_fm">Aceptar</button></a>
+                        </div>
+                    </div>
+                    <div class="row mt-3 align-items-end justify-content-center">
+                        <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                            <a href="#" class="cancelarCs" data-dismiss="modal">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <!-- JAVASCRIPT -->
         <script src="js/jquery-3.3.1.min.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" charset="utf-8"></script>
