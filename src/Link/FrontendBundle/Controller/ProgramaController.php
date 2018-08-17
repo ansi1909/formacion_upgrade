@@ -150,10 +150,10 @@ class ProgramaController extends Controller
                                 $enlace = $this->generateUrl('_lecciones', array('programa_id' => $programa_id)).'/'.$sub_subpagina['id'];
                                 // seleccionando el icono que debe mostrarse
                                 if ($statusPaginaId==$yml['parameters']['estatus_pagina']['completada']) {
-                                    $icono=['nombre'=>'replay','tooltit'=>'Repetir Lección'];
+                                    $icono=['nombre'=>'visibility','tooltit'=>'Volver al contenido'];
                                 }
                                 else{
-                                     $icono=['nombre'=>'visibility','tooltit'=>'Continuar Lección'];
+                                     $icono=['nombre'=>'visibility','tooltit'=>'Volver al contenido'];
                                 }
 
                                 

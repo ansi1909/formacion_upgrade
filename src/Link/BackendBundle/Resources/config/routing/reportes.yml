@@ -38,7 +38,7 @@ _excelReporte:
 
 _excelReporteGeneral:
     path:     /excelReporteGeneral/{app_id}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:reporteGeneral}
+    defaults: { _controller: LinkBackendBundle:Reportes:reporteGeneral }
     requirements:
         method: POST
 

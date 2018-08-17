@@ -151,7 +151,6 @@
 }
 
 .btnRepeatEval{
-    margin-top: 2rem;
     padding: 0;
     border-radius: 50%;
     height: 6rem;
@@ -181,8 +180,6 @@
 //Extend
 %bttn{
     font-family: $primary-font;	
-    font-size: $p-font-size;	
-    font-weight: $font-weight-normal-hard;	
-    line-height: calc(1rem + 3px);	
+    font-weight: $font-weight-normal-hard;		
     text-align: center;
 }

@@ -321,8 +321,11 @@ class DefaultController extends Controller
         
         $correo = trim($request->request->get('correo'));
         $empresa_id = $request->request->get('empresa_id');
+        //new response(var_dump(['empresa'=>$empresa_id]));
         $ok = 1;
         $error = '';
+
+
 
         if($correo!="")
         {
@@ -330,6 +333,7 @@ class DefaultController extends Controller
 
             if(!$usuario)
             {
+               // new response(var_dump(['correo'=>$correo,'entro'=>'Busca el correo personal']));
                 $usuario = $em ->getRepository('LinkComunBundle:AdminUsuario')->findOneByCorreoPersonal($correo);
             }
 
@@ -348,8 +352,9 @@ class DefaultController extends Controller
                         $error = $this->get('translator')->trans('El usuario no tiene empresa asignada. Contacte al administrador del sistema.');
                     }else
                     {
+                        
                         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-
+                        
                         if ($empresa && $usuario->getEmpresa()->getId() != $empresa->getId()) //validamos que el usuario pertenezca a la empresa
                         {
                             $error = $this->get('translator')->trans('El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.');
@@ -363,12 +368,12 @@ class DefaultController extends Controller
 
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                                'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] => 'Formación 2.0'),
+                                                'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] ),
                                                 'destinatario' => $correo,
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave()) );
-                           // return new response(var_dump($parametros));
+                          
                             $correoRecuperacion = $f->sendEmail($parametros);
                             return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }

@@ -242,7 +242,7 @@ class ReportesJTController extends Controller
                         <td>'.$registro['modulos'].'</td>
                         <td>'.$registro['materias'].'</td>
                         <td>'.$promedio.'</td>
-                        <td>'.$this->get('translator')->trans($estatusProragama[$registro['status']]).'</td>
+                        <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
                         <td>'.$registro['fecha_inicio_programa'].'</td>
                         <td>'.$registro['fecha_fin_programa'].'</td>
 

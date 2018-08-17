@@ -1,34 +1,38 @@
 jQuery(document).ready(function($) {
-
-	getUsuariosConectados();
-	getUsuariosConectadosRefresh();
+	var ver_conectados = $('#ver_conectados').val();
+	if (ver_conectados == '1')
+	{
+		getUsuariosConectados();
+		getUsuariosConectadosRefresh();
+	}
 });
 
 
 function getUsuariosConectados()
-	{
-		$("#labelConectados").hide();
-		$('#labelConectadosLoading').show();
-		$.ajax({
-				type: "POST",
-				url: $('#form').attr('action'),
-				async: true,
-				data: $("#form").serialize(),
-				dataType: "json",
-				success: function(data) {
-					$('#tablaConectados').html(data.html);
-					$('#totalConectados').html(' '+data.conectados);
-					$('#labelConectadosLoading').hide();
-					$("#labelConectados").show();
-					applyDataTable();
-				},
-				error: function(){
-					$("#tablaConectados").empty();
-					$('#div-error-users').html($('#error-msg').val());
-					notify($('#div-error-users').html());
-					
-				}
-			});	
+{
+	$("#labelConectados").hide();
+	$('#labelConectadosLoading').show();
+	$.ajax({
+		type: "POST",
+		url: $('#form').attr('action'),
+		async: true,
+		data: $("#form").serialize(),
+		dataType: "json",
+		success: function(data) {
+			$('#tablaConectados').html(data.html);
+			$('#totalConectados').html(data.conectados);
+			$('#labelConectadosLoading').hide();
+			$("#labelConectados").show();
+			$('.data_table').DataTable().destroy();
+			applyDataTable();
+		},
+		error: function(){
+			$("#tablaConectados").empty();
+			$('#div-error-users').html($('#error-msg').val());
+			notify($('#div-error-users').html());
+			
+		}
+	});
 }
 
 
