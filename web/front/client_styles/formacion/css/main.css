@@ -138,7 +138,7 @@ h5, .h5 {
 p {
   font-family: "Open Sans";
   font-size: 1.125rem;
-  color: #383838;
+  color: #666666;
   font-weight: 300; }
 
 label {
@@ -323,7 +323,6 @@ input.form-control:focus {
     left: 0; }
 
 .btnRepeatEval {
-  margin-top: 2rem;
   padding: 0;
   border-radius: 50%;
   height: 6rem;
@@ -2135,9 +2134,12 @@ p.up {
   margin: 1.5rem auto;
   font-size: 1.3rem;
   width: 75%;
-  font-family: "Open Sans"; }
+  font-weight: 500;
+  font-family: "Open Sans";
+  text-align: justify; }
   .lesson-container h4 a {
-    color: #FFDC60; }
+    color: #3D93CC;
+    font-weight: bold; }
 .lesson-container h3 {
   margin: 1.5rem auto;
   width: 75%;
@@ -3633,9 +3635,8 @@ p.up {
 
 .titulo-resul {
   color: #5CAEE6;
-  font-family: "Roboto";
-  font-size: 4.25rem;
-  line-height: calc(2rem - 2px);
+  font-family: "Open Sans";
+  font-size: 3rem;
   margin-top: 3rem; }
 
 .txt-resul {

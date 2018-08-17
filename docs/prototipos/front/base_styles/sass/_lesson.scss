@@ -43,9 +43,12 @@
       margin: 1.5rem auto;
       font-size: 1.3rem;
       width: 75%;
+      font-weight: $font-weight-normal-hard; 
       font-family:$lessons-font;
+      text-align: justify;
       a {
-          color: $yellow;
+          color: $bluedark;
+          font-weight: bold;
       }
     }
     
