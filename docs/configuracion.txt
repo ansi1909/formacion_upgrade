@@ -68,6 +68,7 @@
 	- funciones/fnreporte_general2.sql
 	- funciones/fnresumen_general.sql
 	- funciones/fnusuarios_conectados.sql
+	- funciones/fncerrar_sesiones.sql
 
 
 	OJO: El archivo reserialize_tables.sql se importará solo cuando se haya corrido el comando de symfony:
@@ -113,3 +114,4 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
 	c. php bin/console link:recordatorio-plataforma		--> Diariamente a las 03:00
 	d. php bin/console link:recordatorio-programas		--> Diariamente a las 04:00
 	e. php bin/console link:recordatorio-programados	--> Diariamente a las 05:00
+	f. php bin/console link:cerrar-sesiones				--> Diariamente a las 00:00
