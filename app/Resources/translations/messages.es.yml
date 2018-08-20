@@ -163,6 +163,7 @@ Datos del tutorial: Datos del tutorial
 Datos evento: Datos evento
 Datos notificación: Datos notificación
 Dar acceso: Dar acceso
+de la: de la
 de la evaluación: de la evaluación
 de un total de: de un total de
 Debe coincidir con la contraseña: Debe coincidir con la contraseña
@@ -177,6 +178,7 @@ Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empr
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
+del: del
 Descripción: Descripción
 Descarga el archivo a través del siguiente enlace: Descarga el archivo a través del siguiente enlace
 Descargar: Descargar
@@ -202,7 +204,6 @@ Editar evaluación: Editar evaluación
 Editar página: Editar página
 Editar perfil: Editar perfil
 Editar tema: Editar tema
-el: el
 El archivo seleccionado no se cargo correctamente.: El archivo seleccionado no se cargo correctamente.
 Elegir empresa: Elegir empresa
 Elija el destino de la página: Elija el destino de la página
@@ -396,7 +397,7 @@ Ha sido publicado: Ha sido publicado
 Ha sido publicado el evento: Ha sido publicado el evento
 ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el espacio colaborativo de
 Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
-Has completado con éxito los contenidos de: Has completado con éxito los contenidos de
+Has completado con éxito los contenidos: Has completado con éxito los contenidos
 Has ganado: Has ganado
 Hasta: Hasta
 Historial de programaciones de: Historial de programaciones de
@@ -439,7 +440,6 @@ Ir al listado de evaluaciones: Ir al listado de evaluaciones
 Ir al listado de opciones: Ir al listado de opciones
 Ir al listado de preguntas: Ir al listado de preguntas
 Jueves: Jueves
-la: la
 La aplicación ha sido almacenada con éxito: La aplicación ha sido almacenada con éxito
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: La cantidad de preguntas a mostrar debe ser mayor o igual a 1.
 La cantidad de preguntas a mostrar debe ser un valor entero.: La cantidad de preguntas a mostrar debe ser un valor entero.
@@ -558,6 +558,7 @@ No existen registros para esta consulta: No existen registros para esta consulta
 No existen usuarios conectados en este momento: No existen usuarios conectados en este momento
 No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
+No has alcanzado la aprobación de la evaluación: No has alcanzado la aprobación de la evaluación
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
 No iniciados: No iniciados
 No Iniciado: No Iniciado
@@ -674,6 +675,7 @@ Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
 Regresar al inicio: Regresar al inicio
 Reiniciar contraseña: Reiniciar contraseña
+Repetir evaluación: Repetir evaluación
 Reportar problema: Reportar problema
 Reporte de participantes aprobados por programas: Reporte de participantes aprobados por programas
 Reporte de participantes cursando por programas: Reporte de participantes cursando por programas
@@ -714,6 +716,8 @@ Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas, puedes realizar la evaluación haciendo clic en el botón
 Si deseas, puedes tomar la evaluación de: Si deseas, puedes tomar la evaluación de
 Si deseas, puedes tomar la evaluación en este momento: Si deseas, puedes tomar la evaluación en este momento
+Sí deseas volver a intentarlo haz clic aquí: Sí deseas volver a intentarlo haz clic aquí
+Si deseas volver a ver el contenido, haz clic en el botón: Si deseas volver a ver el contenido, haz clic en el botón
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.
 Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.

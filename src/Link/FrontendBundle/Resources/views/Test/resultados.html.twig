@@ -26,6 +26,7 @@
         <input type="hidden" id="url_inicio" name="url_inicio" value="{{ path('_inicio') }}">
         <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa_id, 'subpagina_id': continue_button.next_lesson }) }}">
         <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa_id }) }}">
+        <input type="hidden" id="url_content" name="url_content" value="{{ path('_lecciones', { 'programa_id': programa_id, 'subpagina_id': prueba_log.prueba.pagina.id }) }}">
         
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
@@ -45,112 +46,148 @@
 
         <div class="container-fluid mt-6 px-0">
 
-            <section>
-                <div class="row py-4 align-items-center justify-content-center">
-                    <div class="col-4 text-center">
-                        <p class="txt-resul">
-                            {% if prueba_log.estado == estados.aprobado %}
-                                {{ 'Has aprobado con éxito la evaluación'|trans }} <strong>{{ prueba_log.prueba.nombre }}</strong>.
-                                <br>{{ 'Sigue aprendiendo'|trans }}.
-                            {% else %}
-                                {{ 'No has alcanzado la calificación para la aprobación de'|trans }} <strong>{{ prueba_log.prueba.nombre }}</strong>.
-                                <br>{{ 'No te rindas'|trans }}!
-                            {% endif %}
-                        </p>
-                    </div>
-                    {% if prueba_log.estado == estados.aprobado %}
-                        <div class="col-6 text-center">
-                            <h1 class="titulo-resul">¡ {{ 'FELICIDADES'|trans }} !</h1>
-                            <span class="material-icons ic-resul">thumb_up</span>
-                        </div>
-                    {% else %}
-                        {% if try_button %}
-                            <div class="col-6 text-center">
-                                <h1 class="titulo-resul">{{ 'Sigue intentándolo'|trans }}</h1>
-                                <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
-                                    <span class="material-icons ic-resul alreves">replay</span>
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </section>
+            {% if prueba_log.estado == estados.reprobado %}
 
-            <section class="mostrar-resul">
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-5 text-center">
-                        <span class="calif">{{ 'Tu calificación'|trans }} <span class="num"> {{ prueba_log.nota|round }}/100 </span></span>
-                    </div>
-                    <div class="col-5 text-center">
-                        <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }} <span class="unidad">Exp</span></span></span>
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-8 text-center anun-resul">
-                        <p class="anun-resul">{{ 'Estos son los resultados que has obtenido'|trans }}</p>
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-10 col-md-10 col-xl-10 col-lg-10 col-sm-12 col-xs-12">
-                        <ul class="resp-eval">
-                            {% for nro, pregunta in preguntas %}
-                                {% set sufijo = pregunta.errada ? 'reprob' : 'aprob' %}
-                                {% set check = pregunta.errada ? 'clear' : 'done' %}
-                                <li>
-                                    <div class="preg-{{ sufijo }}">
-                                        <div class="preg_num-{{ sufijo }} text-center">
-                                            <span class="preg_n"><i class="material-icons check">{{ check }}</i></span>
-                                        </div>
-                                        <div class="preg_enun">
-                                            <span class="preg_e">{{ pregunta.enunciado }}</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                {% if not try_button %}
-                    {% if continue_button.evaluacion != 0 %}
-                        <div class="row align-items-center justify-content-center">
-                            <div class="col-8 text-center">
-                                <p class="text_fin-materia">{{ 'Si deseas, puedes tomar la evaluación de'|trans }} {{ continue_button.nombre_pagina }}.</p>
-                            </div>
+                <section>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-10 mt-4 text-center">
+                            <h2 class="titulo-resul">{{ 'No has alcanzado la aprobación de la evaluación'|trans }}</h2>
+                            <span class="calif">{{ 'Tu calificación'|trans }}: <span class="num">{{ prueba_log.nota|round }}/100</span></span>
                         </div>
-                        <div class="row align-items-center justify-content-center">
+                        <div class="col-10 mt-3 text-center">
+                            <h3 class="color-light-black">{{ 'Sí deseas volver a intentarlo haz clic aquí'|trans }}:</h3>
+                            <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
+                                <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves" data-toogle="tooltip" title="{{ 'Repetir evaluación'|trans }}">replay</span></button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-10 text-center">
+                            <p class="txt-resul">{{ 'Si deseas volver a ver el contenido, haz clic en el botón'|trans }}:</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-10 text-center">
+                            
+                        </div>
+                    </div>
+                    <div class="row mt-3 align-items-center justify-content-center">
+                        <div class="col-10 text-center">
+                            <button type="button" class="btn btn-continuar continuar" id="content">{{ 'Volver al contenido'|trans }}</button>
+                        </div>
+                    </div>
+                </section>
+
+            {% else %}
+
+                <section>
+                    <div class="row py-4 align-items-center justify-content-center">
+                        <div class="col-4 text-center">
+                            <p class="txt-resul">
+                                {% if prueba_log.estado == estados.aprobado %}
+                                    {{ 'Has aprobado con éxito la evaluación'|trans }} <strong>{{ prueba_log.prueba.nombre }}</strong>.
+                                    <br>{{ 'Sigue aprendiendo'|trans }}.
+                                {% else %}
+                                    {{ 'No has alcanzado la calificación para la aprobación de'|trans }} <strong>{{ prueba_log.prueba.nombre }}</strong>.
+                                    <br>{{ 'No te rindas'|trans }}!
+                                {% endif %}
+                            </p>
+                        </div>
+                        {% if prueba_log.estado == estados.aprobado %}
                             <div class="col-6 text-center">
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
-                                </div>
+                                <h1 class="titulo-resul">¡ {{ 'FELICIDADES'|trans }} !</h1>
+                                <span class="material-icons ic-resul">thumb_up</span>
                             </div>
+                        {% else %}
+                            {% if try_button %}
+                                <div class="col-6 text-center">
+                                    <h1 class="titulo-resul">{{ 'Sigue intentándolo'|trans }}</h1>
+                                    <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
+                                        <span class="material-icons ic-resul alreves">replay</span>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </section>
+
+                <section class="mostrar-resul">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-5 text-center">
+                            <span class="calif">{{ 'Tu calificación'|trans }} <span class="num"> {{ prueba_log.nota|round }}/100 </span></span>
                         </div>
-                        <br>
-                    {% else %}
-                        {% if continue_button.next_lesson != 0 %}
+                        <div class="col-5 text-center">
+                            <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }} <span class="unidad">Exp</span></span></span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-8 text-center anun-resul">
+                            <p class="anun-resul">{{ 'Estos son los resultados que has obtenido'|trans }}</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-10 col-md-10 col-xl-10 col-lg-10 col-sm-12 col-xs-12">
+                            <ul class="resp-eval">
+                                {% for nro, pregunta in preguntas %}
+                                    {% set sufijo = pregunta.errada ? 'reprob' : 'aprob' %}
+                                    {% set check = pregunta.errada ? 'clear' : 'done' %}
+                                    <li>
+                                        <div class="preg-{{ sufijo }}">
+                                            <div class="preg_num-{{ sufijo }} text-center">
+                                                <span class="preg_n"><i class="material-icons check">{{ check }}</i></span>
+                                            </div>
+                                            <div class="preg_enun">
+                                                <span class="preg_e">{{ pregunta.enunciado }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% if not try_button %}
+                        {% if continue_button.evaluacion != 0 %}
                             <div class="row align-items-center justify-content-center">
                                 <div class="col-8 text-center">
-                                    <p class="text_fin-materia">¡{{ 'Sigue aprendiendo'|trans }}!</p>
+                                    <p class="text_fin-materia">{{ 'Si deseas, puedes tomar la evaluación de'|trans }} {{ continue_button.nombre_pagina }}.</p>
                                 </div>
                             </div>
                             <div class="row align-items-center justify-content-center">
                                 <div class="col-6 text-center">
                                     <div class="text-center">
-                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="next"> {{ 'Continuar'|trans }} </button>
+                                        <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
                                     </div>
                                 </div>
                             </div>
                             <br>
+                        {% else %}
+                            {% if continue_button.next_lesson != 0 %}
+                                <div class="row align-items-center justify-content-center">
+                                    <div class="col-8 text-center">
+                                        <p class="text_fin-materia">¡{{ 'Sigue aprendiendo'|trans }}!</p>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center justify-content-center">
+                                    <div class="col-6 text-center">
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-warning bttn_fm continuar" id="next"> {{ 'Continuar'|trans }} </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
-                {% endif %}
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-6 text-center">
-                        <div class="text-center">
-                            <button type="button" class="btn btn-primary continuar" id="inicio"> {{ 'Volver al inicio'|trans }} </button>
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-6 text-center">
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary continuar" id="inicio"> {{ 'Volver al inicio'|trans }} </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+
+            {% endif %}
 
             <div class="row justify-content-center" style="display:none;" id="wait">
                 <div class="col-auto px-0 py-0">
