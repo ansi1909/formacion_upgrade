@@ -129,6 +129,7 @@ Consultar: Consultar
 Contenido: Contenido
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Continuar: Continuar
+Continuar al siguiente contenido: Continuar al siguiente contenido
 Continuar en la Evaluación: Continuar en la Evaluación
 Contraseña: Contraseña
 Copia: Copia
@@ -313,6 +314,7 @@ Error en el servidor: Error en el servidor
 Error la empresa no existe: Error la empresa no existe
 Errores: Errores
 Errores de validación: Errores de validación
+Es momento de tomar la evaluación: Es momento de tomar la evaluación
 Es probable que se haya vencido el acceso para ingresar al sistema: Es probable que se haya vencido el acceso para ingresar al sistema
 Escoja una plantilla: Escoja una plantilla
 Escriba su asunto: Escriba su asunto
@@ -325,6 +327,7 @@ Esta evaluación no tiene preguntas configuradas: Esta evaluación no tiene preg
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
 Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee thumbnails en la base de datos
+¿Estás list@?: ¿Estás list@?
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
 ¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
@@ -364,7 +367,7 @@ Fecha de Publicación: Fecha de Publicación
 Fecha de registro: Fecha de registro
 Fecha de Vencimiento: Fecha de Vencimiento
 Fecha Difusión: Fecha Difusión
-FELICIDADES: FELICIDADES
+FELICITACIONES: FELICITACIONES
 Fila: Fila
 filtrado de un total de: filtrado de un total de
 Filtrar comentarios del foro: Filtrar comentarios del foro
@@ -714,8 +717,6 @@ Seleccione fecha difusión: Seleccione fecha difusión
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas, puedes realizar la evaluación haciendo clic en el botón
-Si deseas, puedes tomar la evaluación de: Si deseas, puedes tomar la evaluación de
-Si deseas, puedes tomar la evaluación en este momento: Si deseas, puedes tomar la evaluación en este momento
 Sí deseas volver a intentarlo haz clic aquí: Sí deseas volver a intentarlo haz clic aquí
 Si deseas volver a ver el contenido, haz clic en el botón: Si deseas volver a ver el contenido, haz clic en el botón
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.
@@ -817,6 +818,7 @@ Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver
 Volver al contenido: Volver al contenido
+Volver al inicio del contenido: Volver al inicio del contenido
 Volver al programa: Volver al programa
 Volver al inicio: Volver al inicio
 y el: y el

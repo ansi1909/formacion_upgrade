@@ -129,6 +129,7 @@ Consultar: Search
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
+Continuar al siguiente contenido: Continue to next content
 Continuar en la Evaluación: Continue in the Evaluation
 Contraseña: Password
 Copia: Copy
@@ -313,6 +314,7 @@ Error en el servidor: Error on server
 Error la empresa no existe: Error the company does not exist
 Errores: Errors
 Errores de validación: Validation errors
+Es momento de tomar la evaluación: It is time to take the evaluation
 Es probable que se haya vencido el acceso para ingresar al sistema: It is possible the access to enter to the system is expired
 Escoja una plantilla: Choose a template
 Escriba su asunto: Write your subject
@@ -325,6 +327,7 @@ Esta evaluación no tiene preguntas configuradas: This test has not setted quest
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
 Esta plantilla no posee thumbnails en la base de datos: This template does not have thumbnails into database
+¿Estás list@?: Are you ready?
 ¿Estás segur@ de que deseas cerrar la sesión?: Are you sure of loging out?
 ¿Estás segur@ de que deseas eliminar este registro?: Are you sure of deleting this item?
 ¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
@@ -364,7 +367,7 @@ Fecha de Publicación: Publication date
 Fecha de registro: Registration date
 Fecha de Vencimiento: Due date
 Fecha Difusión: Dissemination Date
-FELICIDADES: CONGRATULATIONS
+FELICITACIONES: CONGRATULATIONS
 Fila: Row
 filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
@@ -714,8 +717,6 @@ Seleccione fecha difusión: Select dissemination date
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: If you want, you can take the evaluation clicking the button
-Si deseas, puedes tomar la evaluación de: If you want, you can take the evaluation of
-Si deseas, puedes tomar la evaluación en este momento: If you want, you can take the evaluation in this moment
 Sí deseas volver a intentarlo haz clic aquí: If you want to try again, click here
 Si deseas volver a ver el contenido, haz clic en el botón: If you want to see the content again, click next button
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
@@ -817,6 +818,7 @@ Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
 Volver: Back
 Volver al contenido: Back to the content
+Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page
 Volver al inicio: Back to home
 y el: and

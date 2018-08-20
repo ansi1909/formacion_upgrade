@@ -32,12 +32,12 @@
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
                             <li class="opcList markOpc">
-                                <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
                             </li>
                         </a>
                     </ul>
@@ -85,7 +85,7 @@
             </div>
             <div class="row align-items-center justify-content-center">
                 <div class="col-10 text-center">
-                    <p class="text_fin-materia">{{ 'Tendrás'|trans }} {{ duracion }} {{ 'minutos para completar la evaluación'|trans }}.</p>
+                    <p class="text_fin-materia">{{ 'Tendrás'|trans }} <strong>{{ duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}.</p>
                 </div>
             </div>
         {% endif %}
