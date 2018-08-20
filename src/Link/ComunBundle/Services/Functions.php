@@ -209,7 +209,7 @@ class Functions
 		}
 		
         return $ok;
-        
+
 	}
 
 	/**
@@ -1121,8 +1121,18 @@ class Functions
 					            					  'usuario_id' => $usuario_id,
 					                        		  'completada' => $estatus_completada));
 					$aprobada = $query->getSingleScalarResult();
-					$menu_str .= '<li title="'.$prelada_por.'">
-									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
+					if ($aprobada)
+					{
+						$class_aprobada = 'liItemsAprob';
+						$icon_aprobada = '<i class="material-icons">check_circle</i>';
+					}
+					else {
+						$class_aprobada = '';
+						$icon_aprobada = '';
+					}
+
+					$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'">
+									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$icon_aprobada.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
 					{
 						// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
@@ -1194,9 +1204,18 @@ class Functions
 				            					  'usuario_id' => $usuario_id,
 				                        		  'completada' => $estatus_completada));
 				$aprobada = $query->getSingleScalarResult();
+				if ($aprobada)
+				{
+					$class_aprobada = 'liItemsAprob';
+					$icon_aprobada = '<i class="material-icons">check_circle</i>';
+				}
+				else {
+					$class_aprobada = '';
+					$icon_aprobada = '';
+				}
 
-				$menu_str .= '<li title="'.$prelada_por.'">
-								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';
+				$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'">
+								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$icon_aprobada.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
 
 			}
@@ -2473,10 +2492,11 @@ class Functions
 		$next_lesson = 0;
 		$evaluacion = 0;
 		$nombre_pagina = $indexedPages[$pagina_id]['categoria'].': '.$indexedPages[$pagina_id]['nombre'];
+		$pagina_padre_id = 0;
 		$continue_button = array('next_lesson' => $next_lesson,
 								 'evaluacion' => $evaluacion,
-								 'nombre_pagina' => $nombre_pagina);
-        $pagina_padre_id = 0;
+								 'nombre_pagina' => $nombre_pagina,
+								 'pagina_padre_id' => $pagina_padre_id);
 
         $pl = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
                                                                                     'pagina' => $pagina_id));
@@ -2484,9 +2504,17 @@ class Functions
         if ($indexedPages[$pagina_id]['tiene_evaluacion'] && $pl->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
         {
         	$evaluacion = $this->evaluacionPagina($pagina_id, $usuario_id, $empresa_id, $yml);
+        	if ($evaluacion)
+        	{
+        		if ($indexedPages[$evaluacion]['padre'])
+        		{
+        			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];
+        		}
+        	}
         	$continue_button = array('next_lesson' => $next_lesson,
 								 	 'evaluacion' => $evaluacion,
-								 	 'nombre_pagina' => $nombre_pagina);
+								 	 'nombre_pagina' => $nombre_pagina,
+								 	 'pagina_padre_id' => $pagina_padre_id);
         }
 
         if ($indexedPages[$pagina_id]['padre'] && !$evaluacion)
@@ -2534,9 +2562,17 @@ class Functions
 
             if ($next_lesson || $evaluacion)
             {
+            	if ($evaluacion)
+	        	{
+	        		if ($indexedPages[$evaluacion]['padre'])
+	        		{
+	        			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];
+	        		}
+	        	}
             	$continue_button = array('next_lesson' => $next_lesson,
 							 	 		 'evaluacion' => $evaluacion,
-							 	 		 'nombre_pagina' => $nombre_pagina);
+							 	 		 'nombre_pagina' => $nombre_pagina,
+							 	 		 'pagina_padre_id' => $pagina_padre_id);
             }
             else {
             	if ($pagina_padre_id != $programa_id)
