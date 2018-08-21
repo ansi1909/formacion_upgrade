@@ -129,6 +129,7 @@ Consultar: Search
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Continuar: Continue
+Continuar al siguiente contenido: Continue to next content
 Continuar en la Evaluación: Continue in the Evaluation
 Contraseña: Password
 Copia: Copy
@@ -163,6 +164,7 @@ Datos del tutorial: Tutorial data
 Datos evento: Event data
 Datos notificación: Notification details
 Dar acceso: Provide access
+de la: of the
 de la evaluación: of the test
 de un total de: of total of
 Debe coincidir con la contraseña: It must be equal to password
@@ -177,6 +179,7 @@ Debe seleccionar tanto la empresa como el nivel.: You must select both the compa
 Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
+del: of the
 Descripción: Description
 Descarga el archivo a través del siguiente enlace: Download file through following link
 Descargar: Download
@@ -202,7 +205,6 @@ Editar evaluación: Edit test
 Editar página: Edit page
 Editar perfil: Edit profile
 Editar tema: Edit topic
-el: the
 El archivo seleccionado no se cargo correctamente.: The selected file is not loaded correctly.
 Elegir empresa: Choose company
 Elija el destino de la página: Choose target of the page
@@ -312,6 +314,7 @@ Error en el servidor: Error on server
 Error la empresa no existe: Error the company does not exist
 Errores: Errors
 Errores de validación: Validation errors
+Es momento de tomar la evaluación: It is time to take the evaluation
 Es probable que se haya vencido el acceso para ingresar al sistema: It is possible the access to enter to the system is expired
 Escoja una plantilla: Choose a template
 Escriba su asunto: Write your subject
@@ -324,6 +327,7 @@ Esta evaluación no tiene preguntas configuradas: This test has not setted quest
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: This notification will be sent by the system automatically, you can leave today
 Esta página no tiene evaluación asignada: This page does not have assigned test
 Esta plantilla no posee thumbnails en la base de datos: This template does not have thumbnails into database
+¿Estás list@?: Are you ready?
 ¿Estás segur@ de que deseas cerrar la sesión?: Are you sure of loging out?
 ¿Estás segur@ de que deseas eliminar este registro?: Are you sure of deleting this item?
 ¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
@@ -363,7 +367,7 @@ Fecha de Publicación: Publication date
 Fecha de registro: Registration date
 Fecha de Vencimiento: Due date
 Fecha Difusión: Dissemination Date
-FELICIDADES: CONGRATULATIONS
+FELICITACIONES: CONGRATULATIONS
 Fila: Row
 filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
@@ -396,7 +400,7 @@ Ha sido publicado: It has been published
 Ha sido publicado el evento: It has been published an event
 ha subido un archivo en el espacio colaborativo de: has uploaded a file into the collaborative space of
 Has aprobado con éxito la evaluación: You have approved successfully the test
-Has completado con éxito los contenidos de: You have successfully completed the contents of
+Has completado con éxito los contenidos: You have successfully completed the contents
 Has ganado: You win
 Hasta: Until
 Historial de programaciones de: Programation history of
@@ -439,7 +443,6 @@ Ir al listado de evaluaciones: Go to tests list
 Ir al listado de opciones: Go to options list
 Ir al listado de preguntas: Go to questions list
 Jueves: Thursday
-la: the
 La aplicación ha sido almacenada con éxito: Application has been saved successfully
 La cantidad de preguntas a mostrar debe ser mayor o igual a 1.: The number of questions to show must be greater or equal than 1.
 La cantidad de preguntas a mostrar debe ser un valor entero.: The number of questions to show must be a integer value.
@@ -558,6 +561,7 @@ No existen registros para esta consulta: No records for this query
 No existen usuarios conectados en este momento: There are no users connected at this time
 No hay problema, te enviaremos un correo con: No problem, we send you an email with
 No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
+No has alcanzado la aprobación de la evaluación: You have not reached the evaluation approval
 No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
 No iniciados: Without starting
 No Iniciado: Not started
@@ -674,6 +678,7 @@ Registros actualizados: Updated items
 Registros nuevos: New items
 Regresar al inicio: Back to login
 Reiniciar contraseña: Restore password
+Repetir evaluación: Repeat evaluation
 Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
@@ -712,8 +717,8 @@ Seleccione fecha difusión: Select dissemination date
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: If you want, you can take the evaluation clicking the button
-Si deseas, puedes tomar la evaluación de: If you want, you can take the evaluation of
-Si deseas, puedes tomar la evaluación en este momento: If you want, you can take the evaluation in this moment
+Sí deseas volver a intentarlo haz clic aquí: If you want to try again, click here
+Si deseas volver a ver el contenido, haz clic en el botón: If you want to see the content again, click next button
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
 Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: If check YES, page will have a section in which user can comment over the wall
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
@@ -813,6 +818,7 @@ Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
 Volver: Back
 Volver al contenido: Back to the content
+Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page
 Volver al inicio: Back to home
 y el: and
