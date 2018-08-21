@@ -2491,11 +2491,15 @@ class Functions
 
 		$next_lesson = 0;
 		$evaluacion = 0;
+		$duracion = 0;
 		$nombre_pagina = $indexedPages[$pagina_id]['categoria'].': '.$indexedPages[$pagina_id]['nombre'];
+		$categoria = $indexedPages[$pagina_id]['categoria'];
 		$pagina_padre_id = 0;
 		$continue_button = array('next_lesson' => $next_lesson,
 								 'evaluacion' => $evaluacion,
+								 'duracion' => $duracion,
 								 'nombre_pagina' => $nombre_pagina,
+								 'categoria' => $categoria,
 								 'pagina_padre_id' => $pagina_padre_id);
 
         $pl = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
@@ -2506,6 +2510,7 @@ class Functions
         	$evaluacion = $this->evaluacionPagina($pagina_id, $usuario_id, $empresa_id, $yml);
         	if ($evaluacion)
         	{
+        		$duracion = $this->duracionPrueba($evaluacion);
         		if ($indexedPages[$evaluacion]['padre'])
         		{
         			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];
@@ -2513,7 +2518,9 @@ class Functions
         	}
         	$continue_button = array('next_lesson' => $next_lesson,
 								 	 'evaluacion' => $evaluacion,
+								 	 'duracion' => $duracion,
 								 	 'nombre_pagina' => $nombre_pagina,
+								 	 'categoria' => $categoria,
 								 	 'pagina_padre_id' => $pagina_padre_id);
         }
 
@@ -2528,6 +2535,7 @@ class Functions
             	// Próxima lección es hermana
                 $next_lesson = $keys[array_search($pagina_id,$keys)+1];
                 $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                $categoria = $indexedPages[$next_lesson]['categoria'];
             }
             else {
 
@@ -2540,6 +2548,7 @@ class Functions
                     {
                         $next_lesson = $subpagina['id'];
                         $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                        $categoria = $indexedPages[$next_lesson]['categoria'];
                         break;
                     }
                     else {
@@ -2547,12 +2556,15 @@ class Functions
                         {
                             $next_lesson = $subpagina['id'];
                             $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                            $categoria = $indexedPages[$next_lesson]['categoria'];
                             break;
                         }
                         elseif ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
                         {
                             $evaluacion = $subpagina['id'];
+                            $duracion = $this->duracionPrueba($evaluacion);
                             $nombre_pagina = $indexedPages[$evaluacion]['categoria'].': '.$indexedPages[$evaluacion]['nombre'];
+                            $categoria = $indexedPages[$evaluacion]['categoria'];
                             break;
                         }
                     }
@@ -2564,6 +2576,7 @@ class Functions
             {
             	if ($evaluacion)
 	        	{
+	        		$duracion = $this->duracionPrueba($evaluacion);
 	        		if ($indexedPages[$evaluacion]['padre'])
 	        		{
 	        			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];
@@ -2571,7 +2584,9 @@ class Functions
 	        	}
             	$continue_button = array('next_lesson' => $next_lesson,
 							 	 		 'evaluacion' => $evaluacion,
+							 	 		 'duracion' => $duracion,
 							 	 		 'nombre_pagina' => $nombre_pagina,
+							 	 		 'categoria' => $categoria,
 							 	 		 'pagina_padre_id' => $pagina_padre_id);
             }
             else {
@@ -3052,6 +3067,26 @@ class Functions
 		}
 
 		return $c;
+
+	}
+
+	// Retorna la duración en minutos de una prueba
+	public function duracionPrueba($pagina_id)
+	{
+
+		$em = $this->em;
+		$duracion = 0;
+
+		$prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($continue_button['evaluacion']);
+
+		if ($prueba)
+		{
+			// Duración en minutos
+		    $duracion = intval($prueba->getDuracion()->format('G'))*60;
+		    $duracion += intval($prueba->getDuracion()->format('i'));
+		}
+
+	    return $duracion;
 
 	}
 
