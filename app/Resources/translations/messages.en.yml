@@ -82,6 +82,7 @@ Cantidad de preguntas de la evaluación: Number of test questions
 Cantidad de registros creados: Number of records created
 Cantidad de sub-páginas: Number of sub-pages
 Cantidad máxima de intentos: Maximum number of attempts
+Cantidad mínima de caracteres en el mensaje: Minimum number of characters in the message
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cantidad mínima de caracteres en el Resumen: Minimum number of characters in the Summary
 Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content 
@@ -162,7 +163,7 @@ Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos del tutorial: Tutorial data
 Datos evento: Event data
-Datos notificación: Notification details
+Datos de notificación: Notification details
 Dar acceso: Provide access
 de la: of the
 de la evaluación: of the test
@@ -216,8 +217,8 @@ El archivo: The file
 El archivo debe tener al menos una fila con datos: File must have at least one row with data
 El archivo es requerido.: File is required.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
-El asunto de la notificación debe ser mínimo de 3 caracteres.: The subject of notification must have at least 3 characters.
-El asunto de la notificación es requerido.: The subject of notification is required.
+El asunto debe ser mínimo de 3 caracteres: The subject must have at least 3 characters
+El asunto es requerido: The subject is required
 El autor es requerido.: The author is required.
 El autor debe ser mínimo de 3 caracteres.: The author must be at least 3 characters.
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
@@ -266,7 +267,7 @@ El Tipo de Certificado es requerido.: The Type of Certificate is required.
 El tipo de elemento es requerido.: Element type is required.
 El Tipo de Imagen es requerido.: The type of image is required
 El tipo de noticia es requerido.: The type of news is required.
-El tipo de notificación es requerida.: The notification type is required.
+El tipo de notificación es requerido: The notification type is required
 El tipo de pregunta es requerido.: Question type is required.
 El tipo de recurso es requerido: Type of resource is required
 El título debe contener al menos 10 caracteres: Title must have at least 10 characters
@@ -766,7 +767,7 @@ Tipo de Imagen Certificado: Type of Image Certified
 Tipo de logo: Type of logo
 Tipo de pregunta: Question type
 Tipo de Noticia: Type of News
-Tipo notificación: Notification type
+Tipo de notificación: Notification type
 Tipo Destino: Destinit Type
 Tipo de Destinos: Desnity Types
 Título: Title

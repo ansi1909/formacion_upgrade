@@ -82,6 +82,7 @@ Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
 Cantidad de registros creados: Cantidad de registros creados
 Cantidad de sub-páginas: Cantidad de sub-páginas
 Cantidad máxima de intentos: Cantidad máxima de intentos
+Cantidad mínima de caracteres en el mensaje: Cantidad mínima de caracteres en el mensaje
 Cantidad mínima de caracteres en el mensaje de bienvenida: Cantidad mínima de caracteres en el mensaje de bienvenida
 Cantidad mínima de caracteres en el Resumen: Cantidad mínima de caracteres en el Resumen
 Cantidad mínima de caracteres en el Contenido: Cantidad mínima de caracteres en el Contenido
@@ -162,7 +163,7 @@ Datos del Tipo de Notificación: Datos del Tipo de Notificación
 Datos del Tipo de Destino: Datos del Tipo de Destino
 Datos del tutorial: Datos del tutorial
 Datos evento: Datos evento
-Datos notificación: Datos notificación
+Datos de la notificación: Datos de la notificación
 Dar acceso: Dar acceso
 de la: de la
 de la evaluación: de la evaluación
@@ -216,8 +217,8 @@ El archivo: El archivo
 El archivo debe tener al menos una fila con datos: El archivo debe tener al menos una fila con datos
 El archivo es requerido.: El archivo es requerido.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.
-El asunto de la notificación debe ser mínimo de 3 caracteres.: El asunto de la notificación debe ser mínimo de 3 caracteres.
-El asunto de la notificación es requerido.: El asunto de la notificación es requerido.
+El asunto debe ser mínimo de 3 caracteres: El asunto debe ser mínimo de 3 caracteres
+El asunto es requerido: El asunto es requerido
 El autor es requerido.: El autor es requerido.
 El autor debe ser mínimo de 3 caracteres.: El autor debe ser mínimo de 3 caracteres.
 El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
@@ -266,7 +267,7 @@ El Tipo de Certificado es requerido.: El Tipo de Certificado es requerido.
 El tipo de elemento es requerido.: El tipo de elemento es requerido.
 El Tipo de Imagen es requerido.: El Tipo de Imagen es requerido.
 El tipo de noticia es requerido.: El tipo de noticia es requerido.
-El tipo de notificación es requerida.: El tipo de notificación es requerida.
+El tipo de notificación es requerido: El tipo de notificación es requerido
 El tipo de pregunta es requerido.: El tipo de pregunta es requerido.
 El tipo de recurso es requerido: El tipo de recurso es requerido
 El título debe contener al menos 10 caracteres: El título debe contener al menos 10 caracteres
@@ -766,7 +767,7 @@ Tipo de Imagen Certificado: Tipo de Imagen Certificado
 Tipo de logo: Tipo de logo
 Tipo de pregunta: Tipo de pregunta
 Tipo de Noticia: Tipo de Noticia
-Tipo notificación: Tipo notificación
+Tipo de notificación: Tipo de notificación
 Tipo Destino: Tipo Destino
 Tipo de Destinos: Tipo de Destinos
 Título: Título

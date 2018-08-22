@@ -220,12 +220,11 @@
                 var deslen = $('#deslen').val();
                 if (deslen < {{ minlenght_bienvenida }} )
                 {
-                    $('#div-error ul').html("<li>- {{'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ minlenght_bienvenida }}</li>");
+                    $('#div-error ul').html("<li>- {{ 'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ minlenght_bienvenida }}</li>");
                     $('#div-error ul').show();
                     notify($('#div-error').html());
                 }
-                else
-                {
+                else {
                     $('#finish').hide();
                     $('#form').submit();
                 }
