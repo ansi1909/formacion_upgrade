@@ -1,0 +1,43 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_driver: pdo_pgsql
+    database_path: null
+    database_port: 5432
+    # BD LOCAL
+    database_name: formacion
+    database_user: desa
+    database_password: desa1234
+    # BD DESARROLLO
+    #database_name: develo_formacion
+    #database_user: develo
+    #database_password: F0rm4c10n2.0
+    # MAILER
+    mailer_transport: smtp
+    mailer_host: acacias.venred.com
+    mailer_port: 465
+    mailer_encryption: ssl
+    mailer_auth_mode: login
+    mailer_user: tutorvirtual@formacion2puntocero.com
+    mailer_password: UKyhCzWcq29EDKJ7!!
+    secret: ThisTokenIsNotSoSecretChangeIt
+    sendmail: 0
+    folders:
+        ########## CONFIGURACIÓN AMBIENTE LOCAL ##########
+        uploads: 'http://localhost/uploads/'
+        dir_uploads: 'C:/wamp/www/uploads/'
+        dir_project: 'C:/wamp/www/formacion2.0/'
+        #dir_uploads: 'C:/xampp/htdocs/uploads/'
+        #dir_project: 'C:/xampp/htdocs/formacion2.0/'
+        ########## CONFIGURACIÓN AMBIENTE DESARROLLO ##########
+        #uploads: 'http://develop.formacion2puntocero.com/uploads/'
+        #dir_uploads: '/home/develo/public_html/uploads/'
+        #dir_project: '/home/develo/public_html/formacion2.0/'
+        verificar_codigo_qr: 'http://localhost:8080/formacion2.0/web/validar_codigoQR.php'
+    comandos:
+        # Compilador SASS en Windows
+        sass: 'C:\Ruby24\bin\sass'
+        # Compilador SASS en Linux
+        #sass: '/usr/bin/sass'
+    base_url: 'http://localhost/formacion2.0/web/app_dev.php'
+    link_plataforma: 'http://localhost/formacion2.0/web/app_dev.php/login/'
