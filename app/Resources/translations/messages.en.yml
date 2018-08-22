@@ -224,6 +224,7 @@ El autor debe ser mínimo de 3 caracteres.: The author must be at least 3 charac
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
 El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
+El correo es requerido: Mail is required
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.

@@ -195,14 +195,31 @@
             $('.aviso_ajax').hide();
             $('.aviso_ajax').html('');
 
+            $('#correo').click(function()
+                {
+                    $('.aviso_ajax').html('');
+                    $('.aviso_ajax').removeClass('error__style');
+                    $('.aviso_ajax').hide();
+                });
+
             $('#recuperar_clave').click(function()
             {
-                $('.aviso_ajax').html('');
-                $('#recuperar_clave').hide();
-                $('#close_link_ri').hide();
-                $('#wait_soporte').show(1000);
-                $('#correo').prop('disabled',true);
-                recuperar();
+                if($('#correo').val())
+                {
+                   $('.aviso_ajax').html('');
+                   $('#recuperar_clave').hide();
+                   $('#close_link_ri').hide();
+                   $('#wait_soporte').show(1000);
+                   $('#correo').prop('disabled',true);
+                   recuperar();
+                }
+                else
+                {
+                    $('.aviso_ajax').addClass('error__style');
+                    $('.aviso_ajax').html("{{ 'El correo es requerido'|trans }}!");
+                    $('.aviso_ajax').show();
+                }
+               
             });
 
             $('.close').click(function()
