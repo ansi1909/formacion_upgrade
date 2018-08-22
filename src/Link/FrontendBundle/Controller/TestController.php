@@ -726,6 +726,8 @@ class TestController extends Controller
 
         }
 
+        //return new Response(var_dump($continue_button));
+
         return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
                                                                                    'preguntas' => $preguntas,
                                                                                    'programa_id' => $programa_id,
