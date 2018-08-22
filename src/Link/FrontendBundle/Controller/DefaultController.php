@@ -339,7 +339,7 @@ class DefaultController extends Controller
 
             if (!$usuario)//validamos que el correo exista
             {
-                $error = $this->get('translator')->trans('El correo no existe en la base de datos.');
+                $error = $this->get('translator')->trans('El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com');
             }
             else{
                 if (!$usuario->getActivo()) //validamos que el usuario este activo
@@ -361,7 +361,7 @@ class DefaultController extends Controller
                         }
                         else{
                             $ok = 0;
-                            $error = $this->get('translator')->trans('El correo se esta enviando.');
+                            $error = $this->get('translator')->trans('La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico');
 
                             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
@@ -372,10 +372,11 @@ class DefaultController extends Controller
                                                 'destinatario' => $correo,
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
-                                                                 'clave' => $usuario->getClave()) );
+                                                                 'clave' => $usuario->getClave(),
+                                                                 'nombre'=> $usuario->getNombre().' '.$usuario->getApellido()) );
                           
                             $correoRecuperacion = $f->sendEmail($parametros);
-                            return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
+                            //return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }
                     }
                 }

@@ -225,7 +225,7 @@ El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser m�
 El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
 El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
-El correo no existe en la base de datos.: El correo no existe en la base de datos.
+El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.
 El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
 El Encabezado es requerido.: El Encabezado es requerido.
@@ -259,6 +259,7 @@ El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
 El programa es requerido: El programa es requerido
 El puntaje con que se aprueba es requerido.: El puntaje con que se aprueba es requerido.
+El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema
 El recurso es requerido: El recurso es requerido
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
@@ -488,6 +489,7 @@ La página es requerida: La página es requerida
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 La respuesta al comentario: La respuesta al comentario
+La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: La recuperación de sus credenciales se realizo correctamente , revise su correo electrónico
 La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
 Lecciones: Lecciones

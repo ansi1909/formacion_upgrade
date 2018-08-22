@@ -225,7 +225,7 @@ El campo usuario debe ser mínimo de 3 caracteres.: User field must have at leas
 El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
-El correo no existe en la base de datos.: Mail does not exist in the database.
+El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El Encabezado es requerido.: The Header is required
@@ -259,6 +259,7 @@ El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
 El programa es requerido: Program is required
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
+El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: The server has been slow to respond, verify your internet connection or contact the system administrator
 El recurso es requerido: The resource is required
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
@@ -488,6 +489,7 @@ La página es requerida: Page is required
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 La respuesta al comentario: The comment response
+La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: The recovery of your credentials was successful, check your email
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lecciones: Lessons
