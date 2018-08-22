@@ -82,6 +82,7 @@ Cantidad de preguntas de la evaluación: Number of test questions
 Cantidad de registros creados: Number of records created
 Cantidad de sub-páginas: Number of sub-pages
 Cantidad máxima de intentos: Maximum number of attempts
+Cantidad mínima de caracteres en el mensaje: Minimum number of characters in the message
 Cantidad mínima de caracteres en el mensaje de bienvenida: Minimum number of characters in the welcome message
 Cantidad mínima de caracteres en el Resumen: Minimum number of characters in the Summary
 Cantidad mínima de caracteres en el Contenido: Minimum number of characters in the Content 
@@ -162,7 +163,7 @@ Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos del tutorial: Tutorial data
 Datos evento: Event data
-Datos notificación: Notification details
+Datos de notificación: Notification details
 Dar acceso: Provide access
 de la: of the
 de la evaluación: of the test
@@ -216,15 +217,16 @@ El archivo: The file
 El archivo debe tener al menos una fila con datos: File must have at least one row with data
 El archivo es requerido.: File is required.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
-El asunto de la notificación debe ser mínimo de 3 caracteres.: The subject of notification must have at least 3 characters.
-El asunto de la notificación es requerido.: The subject of notification is required.
+El asunto debe ser mínimo de 3 caracteres: The subject must have at least 3 characters
+El asunto es requerido: The subject is required
 El autor es requerido.: The author is required.
 El autor debe ser mínimo de 3 caracteres.: The author must be at least 3 characters.
 El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
 El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
+El correo es requerido: Mail is required
 El correo corporativo tiene un formato inválido.: Company email has invalid format.
-El correo no existe en la base de datos.: Mail does not exist in the database.
+El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El Encabezado es requerido.: The Header is required
@@ -258,6 +260,7 @@ El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
 El programa es requerido: Program is required
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
+El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: The server has been slow to respond, verify your internet connection or contact the system administrator
 El recurso es requerido: The resource is required
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tiempo de duración es requerido.: Duration is required.
@@ -266,7 +269,7 @@ El Tipo de Certificado es requerido.: The Type of Certificate is required.
 El tipo de elemento es requerido.: Element type is required.
 El Tipo de Imagen es requerido.: The type of image is required
 El tipo de noticia es requerido.: The type of news is required.
-El tipo de notificación es requerida.: The notification type is required.
+El tipo de notificación es requerido: The notification type is required
 El tipo de pregunta es requerido.: Question type is required.
 El tipo de recurso es requerido: Type of resource is required
 El título debe contener al menos 10 caracteres: Title must have at least 10 characters
@@ -487,6 +490,7 @@ La página es requerida: Page is required
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 La respuesta al comentario: The comment response
+La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: The recovery of your credentials was successful, check your email
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lecciones: Lessons
@@ -766,7 +770,7 @@ Tipo de Imagen Certificado: Type of Image Certified
 Tipo de logo: Type of logo
 Tipo de pregunta: Question type
 Tipo de Noticia: Type of News
-Tipo notificación: Notification type
+Tipo de notificación: Notification type
 Tipo Destino: Destinit Type
 Tipo de Destinos: Desnity Types
 Título: Title

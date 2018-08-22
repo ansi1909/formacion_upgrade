@@ -68,10 +68,10 @@ class NotificacionController extends Controller
                                       'delete_disabled' => $f->linkEliminar($notificacion->getId(),'AdminNotificacion'));
         }
 
-
         return $this->render('LinkBackendBundle:Notificacion:index.html.twig', array('empresas' => $empresas,
                                                                                      'notificaciones' => $notificaciones,
                                                                                      'usuario' => $usuario));
+
     }
 
     public function ajaxNotificacionesAction(Request $request)
@@ -258,72 +258,61 @@ class NotificacionController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
             return $this->redirectToRoute('_loginAdmin');
         }
         else {
-
-            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')) or $usuario->getEmpresa() and $usuario->getEmpresa()->getId() != $notificacion->getEmpresa()->getId())
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
             {
                 return $this->redirectToRoute('_authException');
             }
         }
         $f->setRequest($session->get('sesion_id'));
 
-        $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
-        $usuario_empresa = 0;
-
+        if ($notificacion_id)
+        {
+            $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+        }
+        else {
+            $notificacion = new AdminNotificacion();
+        }
+        
         $notificacion->setUsuario($usuario);
 
+        $form = $this->createFormBuilder($notificacion)
+                     ->setAction($this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion_id)))
+                     ->setMethod('POST')
+                     ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
+                     ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
+                     ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
+                                                                        'choice_label' => 'nombre',
+                                                                        'expanded' => false,
+                                                                        'label' => $this->get('translator')->trans('Tipo de notificación'),
+                                                                        'placeholder' => ''))
+                     ->getForm();
+
         if ($usuario->getEmpresa()) {
-
-            $usuario_empresa = 1;
-            $notificacion->setEmpresa($usuario->getEmpresa());
-
-            $form = $this->createFormBuilder($notificacion)
-                ->setAction($this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId())))
-                ->setMethod('POST')
-                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
-                ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
-                ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
-                                                                   'choice_label' => 'nombre',
-                                                                   'expanded' => false,
-                                                                   'label' => $this->get('translator')->trans('Tipo notificación'),
-                                                                   'placeholder' => ''))
-                ->getForm();
-                
-        }else{
-
-            $form = $this->createFormBuilder($notificacion)
-                ->setAction($this->generateUrl('_editNotificacion', array('notificacion_id' => $notificacion->getId())))
-                ->setMethod('POST')
-                ->add('asunto', TextType::class, array('label' => $this->get('translator')->trans('Asunto')))
-                ->add('mensaje', TextareaType::class, array('label' => $this->get('translator')->trans('Mensaje')))
-                ->add('tipoNotificacion', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminTipoNotificacion',
-                                                                   'choice_label' => 'nombre',
-                                                                   'expanded' => false,
-                                                                   'label' => $this->get('translator')->trans('Tipo notificación'),
-                                                                   'placeholder' => ''))
-                ->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
-                                                          'choice_label' => 'nombre',
-                                                          'expanded' => false,
-                                                          'label' => $this->get('translator')->trans('Empresa'),
-                                                          'placeholder' => '',
-                                                          'query_builder' => function(EntityRepository $er){
-                                                             return $er->createQueryBuilder('e')
-                                                                      ->where('e.activo = ?1')
-                                                                      ->setParameter(1, true)
-                                                                      ->orderBy('e.nombre', 'ASC');
-                                                         }))
-                ->getForm();
-                
+            $notificacion->setEmpresa($usuario->getEmpresa());            
+        }
+        else {
+            $form->add('empresa', EntityType::class, array('class' => 'Link\\ComunBundle\\Entity\\AdminEmpresa',
+                                                           'choice_label' => 'nombre',
+                                                           'expanded' => false,
+                                                           'label' => $this->get('translator')->trans('Empresa'),
+                                                           'placeholder' => '',
+                                                           'query_builder' => function(EntityRepository $er){
+                                                                return $er->createQueryBuilder('e')
+                                                                          ->where('e.activo = ?1')
+                                                                          ->setParameter(1, true)
+                                                                          ->orderBy('e.nombre', 'ASC');
+                                                         }));
         }
 
         $form->handleRequest($request);
-
         
         if ($request->getMethod() == 'POST')
         {
@@ -336,7 +325,7 @@ class NotificacionController extends Controller
         }
         
         return $this->render('LinkBackendBundle:Notificacion:editNotificacion.html.twig', array('form' => $form->createView(),
-                                                                                                'usuario_empresa' => $usuario_empresa,
+                                                                                                'notificacion' => $notificacion,
                                                                                                 'usuario' => $usuario));
         
     }

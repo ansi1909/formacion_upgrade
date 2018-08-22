@@ -2921,7 +2921,6 @@ p.up {
     padding: calc(1rem + 5px);
     border-radius: 1rem 0 0 0; }
     .card_noticia-detalle .header-titulo .titulo-detalle {
-      color: #797D80;
       font-family: "Roboto";
       font-size: 2.25rem;
       line-height: calc(3rem - 6px);
@@ -3654,6 +3653,7 @@ p.up {
   padding-bottom: 2rem;
   overflow-x: hidden !important;
   width: 100%;
+  display: none;
   /*.logro{
       @extend %cal-log;
       left: -4rem;
@@ -3992,20 +3992,13 @@ p.up {
     border: 1px solid #565656;
     box-shadow: 5px 5px 15px rgba(58, 58, 58, 0.5);
     border-radius: calc(1rem - 8px); }
-  .biblio_detalle-recurso .text-recurso {
-    color: #797D80;
-    font-family: "Open Sans";
-    font-size: 0.87rem;
-    line-height: calc(2rem - 4px);
-    margin: calc(2rem + 3px) 0; }
   .biblio_detalle-recurso .tituloTextRecurso {
-    color: #797D80;
+    color: #383838;
     font-family: "Open Sans";
     font-size: 1.125rem;
     line-height: calc(2rem - 4px);
     font-weight: 400; }
   .biblio_detalle-recurso .textRecurso {
-    color: #797D80;
     font-family: "Open Sans";
     font-size: 0.87rem;
     line-height: calc(2rem - 4px); }
