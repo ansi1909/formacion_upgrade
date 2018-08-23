@@ -8,10 +8,6 @@ _ajaxNotificaciones:
     requirements:
         method: GET
 
-_createNotificacion:
-    path:     /createNotificacion
-    defaults: { _controller: LinkBackendBundle:Notificacion:createNotificacion }
-
 _editNotificacion:
     path:     /edit/{notificacion_id}
     defaults: { _controller: LinkBackendBundle:Notificacion:edit, notificacion_id: 0 }
@@ -19,3 +15,23 @@ _editNotificacion:
 _showNotificacion:
     path:     /show/{notificacion_id}/{save}
     defaults: { _controller: LinkBackendBundle:Notificacion:show, save: 0 }
+
+_programados:
+    path:     /programados/{app_id}
+    defaults: { _controller: LinkBackendBundle:Notificacion:programados }
+
+_ajaxProgramados:
+    path:     /ajaxProgramados
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxProgramados }
+    requirements:
+        _method: GET
+
+_ajaxTreeGrupoProgramado:
+    path:     /ajaxTreeGrupoProgramado/{notificacion_programada_id}
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxTreeGrupoProgramado, notificacion_programada_id: 0 }
+    requirements:
+        method: GET
+
+_editNotificacionProgramada:
+    path:     /editNotificacionProgramada/{notificacion_id}/{notificacion_programada_id}
+    defaults: { _controller: LinkBackendBundle:Notificacion:editNotificacionProgramada, notificacion_programada_id: 0 }

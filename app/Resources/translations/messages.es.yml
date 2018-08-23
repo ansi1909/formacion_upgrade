@@ -59,6 +59,7 @@ Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aún sin publicar: Aún sin publicar
 Aviso de cierre de sesión: Aviso de cierre de sesión
+Avisos programados de: Avisos programados de
 Ayer: Ayer
 Ayuda: Ayuda
 Biblioteca: Biblioteca
@@ -189,6 +190,7 @@ Descargar archivo: Descargar archivo
 Descargue material complementario: Descargue material complementario
 Desde: Desde
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
+Destinado a: Destinado a
 Destino: Destino
 Detalle: Detalle
 Detalle de la Biblioteca Virtual:
@@ -306,11 +308,13 @@ Enunciado: Enunciado
 Enunciado (Lado A): Enunciado (Lado A)
 Entidad: Entidad
 Entrar: Entrar
+Enviado: Enviado
 Enviar: Enviar
-Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener el historial.: Error al obtener el historial.
-Error al obtener las páginas asignadas.: Error al obtener las páginas asignadas.
 Error al obtener la repuesta: Error al obtener la repuesta
+Error al obtener las notificaciones programadas: Error al obtener las notificaciones programadas
+Error al obtener las páginas asignadas.: Error al obtener las páginas asignadas.
+Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener los thumbnails: Error al obtener los thumbnails
 Error de Excepción: Error de Excepción
 Error en el servidor: Error en el servidor
@@ -389,6 +393,7 @@ Foto de la página: Foto de la página
 Generar: Generar
 Gráfica: Gráfica
 Gráfico del promedio de conexiones: Grafico del promedio de conexiones
+Grupo seleccionado: Grupo seleccionado
 Guardar: Guardar
 ha comentado en el espacio colaborativo de: ha comentado en el espacio colaborativo de
 ha creado un tema en el espacio colaborativo del: ha creado un tema en el espacio colaborativo del
@@ -594,6 +599,7 @@ Noticia: Noticia
 Noticias: Noticias
 Noticias y Novedades: Noticias y Novedades
 Notificaciones: Notificaciones
+Notificaciones programadas: Notificaciones programadas
 Novedades: Novedades
 Nueva contraseña: Nueva contraseña
 Nueva evaluación: Nueva evaluación
@@ -659,6 +665,8 @@ Presiona el botón finalizar para completar: Presiona el botón finalizar para c
 Procesando: Procesando
 Procesar: Procesar
 Programa: Programa
+Programado para: Programado para
+Programar nuevo aviso: Programar nuevo aviso
 Programas: Programas
 Prog. asociados: Prog. asociados
 Promedio evaluación módulo: Promedio evaluación módulo
@@ -814,6 +822,7 @@ Ver más: Ver más
 Ver más comentarios: Ver más comentarios
 Ver más respuestas: Ver más respuestas
 Ver mis certificados: Ver mis certificados
+Ver notificaciones programadas: Ver notificaciones programadas
 Ver páginas asignadas: Ver páginas asignadas
 Ver ranking: Ver ranking
 Ver respuesta: Ver respuesta
