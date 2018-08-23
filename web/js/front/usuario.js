@@ -10,6 +10,7 @@ $(document).ready(function() {
     	{
     		$('.boton').hide();
             $('#wait_profile').show(1000);
+            $('#correo_usado').hide();
 		    $.ajax({
 		        type: "POST",
 		        url: $('#form').attr('action'),
@@ -17,12 +18,21 @@ $(document).ready(function() {
 		        data: $("#form").serialize(),
 		        dataType: "json",
 		        success: function(data) {
-		        	$('#label-correo').html(data.correo);
-		        	$('#label-correo_corporativo').html(data.correo_corporativo);
-		        	$('#label-fn').html(data.fechaNacimiento);
-		        	$('.boton').show();
-		            $('#wait_profile').hide(1000);
-		            $( ".close" ).trigger( "click" );
+		        	if (data.existe == 0) 
+		        	{
+			        	$('#label-correo').html(data.correo);
+			        	$('#label-correo_corporativo').html(data.correo_corporativo);
+			        	$('#label-fn').html(data.fechaNacimiento);
+			        	$('.boton').show();
+			            $('#wait_profile').hide(1000);
+			            $( ".close" ).trigger( "click" );
+
+			        }else
+			        {
+			        	$('#correo_usado').show();
+			        	$('.boton').show();
+			            $('#wait_profile').hide(1000);
+			        }
 		        },
 		        error: function(){
 		            console.log('Error guardando los datos del perfil del usuario'); // Hay que implementar los mensajes de error para el frontend

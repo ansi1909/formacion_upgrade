@@ -59,7 +59,7 @@
                         <div class="wrapperDdApps">
                             <a href="#" id="apps" title="{{ 'Ayuda'|trans }}">
                                 <div class="appFun">
-                                    <i class="material-icons mr-3 color-light-grey" title="{{ 'Ayuda'|trans }}">contact_support</i>
+                                    <i class="material-icons mr-3 color-light-grey" >contact_support</i>
                                 </div>
                             </a>
                             <span class="markApps"></span>
@@ -143,8 +143,8 @@
                     </div>
                     {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
                     <div class="d-flex flex-column">
-                        <div class="wrapperDdMenu" title="{{ 'Perfil de usuario'|trans }}">
-                            <a href="#" class="perfil no-decorate" id="config">
+                        <div class="wrapperDdMenu" >
+                            <a href="#" class="perfil no-decorate" id="config" title="{{ 'Perfil de usuario'|trans }}">
                                 {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                                 <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown" >expand_more</span>
                             </a>
@@ -301,7 +301,7 @@
                     <div class="row mt-1 justify-content-center">
                         <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-left">
                             <div class="form-group">
-                                <textarea class="form-control textAsv" rows="4" id="comentario" aria-describedby="messageSupportVirtual" placeholder="Escriba su mensaje"></textarea>
+                                <textarea class="form-control textAsv" rows="4" id="respuestaMuro" aria-describedby="messageSupportVirtual" placeholder="Escriba su mensaje"></textarea>
                             </div>
                         </div>
                     </div>

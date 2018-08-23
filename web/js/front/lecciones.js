@@ -210,8 +210,8 @@ $(document).ready(function() {
 					$('#puntos_agregados').val(puntos);
 					$('#button-comment').show();
 					$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
-					observeMuro();
-					observeLike();
+					observeMuroLecciones();
+					observeLikeLecciones();
 					//clearTimeout( timerId );
 				},
 				error: function(){
@@ -248,7 +248,7 @@ $(document).ready(function() {
 					success: function(data) {
 						new_tab.html(data.html);
 						observeMuro();
-						observeLike();
+						observeLikeLecciones();
 						observeMore();
 						observeMoreResponses();
 						last_tab.hide(1000);
@@ -269,9 +269,9 @@ $(document).ready(function() {
 		}
 	});
 
-	observeMuro();
+	observeMuroLecciones();
 	observeReply();
-	observeLike();
+	observeLikeLecciones();
 	observeMore();
 	observeMoreResponses();
 
@@ -335,7 +335,7 @@ function finishLesson(programa_id, pagina_id)
 	});
 }
 
-function observeMuro()
+function observeMuroLecciones()
 {
 
 	$('.reply_comment').unbind('click');
@@ -392,7 +392,7 @@ function observeReply()
 					puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
 					$('#puntos_agregados').val(puntos);
 					$('#dirty_'+$('#pagina_id_viendo').val()).val(1);
-					observeLike();
+					observeLikeLecciones();
 					//clearTimeout( timerId );
 				},
 				error: function(){
@@ -404,7 +404,7 @@ function observeReply()
 	});
 }
 
-function observeLike()
+function observeLikeLecciones()
 {
 	$('.like').unbind('click');
 	$('.like').click(function(){
@@ -458,8 +458,8 @@ function observeMore()
 				a.remove();
 				hidden.remove();
 				div.append(data.html);
-				observeMuro();
-				observeLike();
+				observeMuroLecciones();
+				observeLikeLecciones();
 				observeMore();
 				//clearTimeout( timerId );
 			},
@@ -492,7 +492,7 @@ function observeMoreResponses()
 				a.remove();
 				hidden.remove();
 				div.append(data.html);
-				observeLike();
+				observeLikeLecciones();
 				observeMoreResponses();
 				//clearTimeout( timerId );
 			},

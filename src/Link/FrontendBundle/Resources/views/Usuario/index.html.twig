@@ -136,7 +136,8 @@
                     </div>
                     <div class="form-group text-left">
                         <label for="correo_corporativo">{{ 'Correo secundario'|trans }}</label>
-                        <input type="mail" class="form-control mb-4" id="correo_secundario" name="correo_secundario" value="{{ correo_corporativo }}">
+                        <input type="mail" class="form-control " id="correo_secundario" name="correo_secundario" value="{{ correo_corporativo }}">
+                        <p id="correo_usado" style="display:none; font-size: 1rem;">Correo existente</p>
                     </div>
                     <div class="form-group text-left">
                         <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>

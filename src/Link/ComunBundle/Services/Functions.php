@@ -3077,7 +3077,7 @@ class Functions
 		$em = $this->em;
 		$duracion = 0;
 
-		$prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($continue_button['evaluacion']);
+		$prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina_id);
 
 		if ($prueba)
 		{
