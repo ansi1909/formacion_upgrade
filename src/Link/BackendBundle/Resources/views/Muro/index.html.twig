@@ -103,6 +103,7 @@
                                 <th>{{ 'Mensaje'|trans }}</th>
                                 <th>{{ 'Usuario'|trans }}</th>
                                 <th>{{ 'Fecha'|trans }}</th>
+                                <th>{{ 'Respuestas'|trans }}</th>
                                 <th>{{ 'Acciones'|trans }}</th>
                             </tr>
                         </thead>
@@ -112,6 +113,7 @@
                                     <td class="respuesta{{ comentario.id }}">{{ comentario.mensaje }}</td>
                                     <td>{{ comentario.nombreUsuario ~ ' ' ~ comentario.apellidoUsuario }}</td>
                                     <td>{{ comentario.fecharegistro }}</td>
+                                    <td>{{ comentario.hijos }}</td>
                                     <td class="center">
                                         {% if comentario.usuarioId == usuario.id %}
                                             <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>

@@ -64,7 +64,7 @@ class MuroController extends Controller
                                        AND m.muro IS NULL
                                        AND m.empresa = :empresa_id
                                        ORDER BY m.id ASC")
-                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
+                         ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
             $coments = $query2->getResult();
 
         }
@@ -83,6 +83,13 @@ class MuroController extends Controller
 
          foreach ($coments as $coment)
         {
+            $query3 = $em->createQuery("SELECT COUNT (m.id) FROM LinkComunBundle:CertiMuro m
+                                       WHERE m.muro = :muro_id")
+                         ->setParameters(array('muro_id' => $coment->getId()));
+            $hijos = $query3->getSingleScalarResult();
+
+
+
             $comentarios[]= array('id'=>$coment->getId(),
                                   'mensaje'=>$coment->getMensaje(),
                                   'usuarioId'=>$coment->getUsuario()->getId(),
@@ -90,7 +97,8 @@ class MuroController extends Controller
                                   'apellidoUsuario'=>$coment->getUsuario()->getApellido(),
                                   'fecharegistro'=>$coment->getFechaRegistro()->format("d/m/Y"),
                                   'delete_disabled'=>$f->linkEliminar($coment->getId(),'CertiMuro'),
-                                  'answer_delete'=>$answer_delete);
+                                  'answer_delete'=>$answer_delete,
+                                  'hijos'=>$hijos);
 
         }
 
@@ -174,6 +182,7 @@ class MuroController extends Controller
                                 <th>'.$this->get('translator')->trans('Mensaje').'</th>
                                 <th>'.$this->get('translator')->trans('usuario').'</th>
                                 <th>'.$this->get('translator')->trans('Fecha').'</th>
+                                <th>'.$this->get('translator')->trans('Respuestas').'</th>
                                 <th>'.$this->get('translator')->trans('Acciones').'</th>
                             </tr>
                         </thead>
@@ -183,11 +192,17 @@ class MuroController extends Controller
         {
             $delete_disabled = $f->linkEliminar($coment->getId(), 'CertiMuro');
             $delete = $delete_disabled=='' ? 'delete' : '';
+
+            $query3 = $em->createQuery("SELECT COUNT (m.id) FROM LinkComunBundle:CertiMuro m
+                                       WHERE m.muro = :muro_id")
+                         ->setParameters(array('muro_id' => $coment->getId()));
+            $hijos = $query3->getSingleScalarResult();
             
             $html .= '<tr>
                         <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
                         <td>'.$coment->getUsuario()->getNombre().' '.$coment->getUsuario()->getApellido().'</td>
                         <td>'.$coment->getFechaRegistro()->format("d/m/Y").'</td>
+                        <td>'. $hijos .' </td>
                         <td class="center">';
                           if($coment->getUsuario()->getId() == $usuario_id){
                              $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';

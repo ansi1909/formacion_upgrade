@@ -59,6 +59,7 @@ Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aún sin publicar: Not yet published
 Aviso de cierre de sesión: Notice of session closure
+Avisos programados de: Programmed notifications of
 Ayer: Yesterday
 Ayuda: Help
 Biblioteca: Library
@@ -152,6 +153,7 @@ Datos Básicos: Basic data
 Datos de la Aplicación: Application Data
 Datos de la categoría: Category data
 Datos de la empresa: Company Data
+Datos de la notificación: Notification details
 Datos de la opción: Option data
 Datos de la pregunta: Question data
 Datos de la programación: Programming data
@@ -163,7 +165,6 @@ Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos del tutorial: Tutorial data
 Datos evento: Event data
-Datos de notificación: Notification details
 Dar acceso: Provide access
 de la: of the
 de la evaluación: of the test
@@ -189,6 +190,7 @@ Descargar archivo: Download file
 Descargue material complementario: Download complementary content
 Desde: Since
 ¿Desea eliminar el registro?: Are you sure to delete this item?
+Destinado a: Target
 Destino: Destination
 Detalle: Detail
 Detalle de la Biblioteca Virtual: Detail of the Virtual Library
@@ -306,11 +308,13 @@ Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
 Entidad: Entity
 Entrar: Get in
+Enviado: Sent
 Enviar: Send
-Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener el historial.: Error ocurred retrieving history.
-Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
 Error al obtener la repuesta: Error getting the answer
+Error al obtener las notificaciones programadas: Error ocurred retrieving the programmed notifications
+Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
+Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
 Error en el servidor: Error on server
@@ -389,6 +393,7 @@ Foto de la página: Page picture
 Generar: Generate
 Gráfica: Graph
 Gráfico del promedio de conexiones: Connections average graph
+Grupo seleccionado: Selected group
 Guardar: Save
 ha comentado en el espacio colaborativo de: has commented into the collaborative space of
 ha creado un tema en el espacio colaborativo del: has created a topic into collaborative space of
@@ -594,6 +599,7 @@ Noticia: News
 Noticias: News
 Noticias y Novedades: News and Novelties
 Notificaciones: Notifications
+Notificaciones programadas: Programmed notifications
 Novedades: Novelties
 Nueva contraseña: New password
 Nueva evaluación: New test
@@ -659,6 +665,8 @@ Presiona el botón finalizar para completar: Press finish button to complete
 Procesando: Processing
 Procesar: Process
 Programa: Program
+Programado para: scheduled at
+Programar nuevo aviso: Program new notice
 Programas: Programs
 Prog. asociados: Associated Prog.
 Promedio de conexiones: Average connections
@@ -814,6 +822,7 @@ Ver más: See more
 Ver más comentarios: See more comments
 Ver más respuestas: See more resplies
 Ver mis certificados: See my certificates
+Ver notificaciones programadas: See programmed notifications
 Ver páginas asignadas: View assigned pages
 Ver ranking: See ranking
 Ver respuesta: See answer
