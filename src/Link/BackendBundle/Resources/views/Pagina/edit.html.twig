@@ -281,17 +281,9 @@
             }
             else {
 
-                var deslen = $('#deslen').val();
+                
                 var deslen2 = $('#deslen2').val();
                 error = 0;
-                
-                {% if not pagina.pagina %}
-                    if (deslen < {{ minlenght_bienvenida }} )
-                    {
-                        error = 1;
-                        $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
-                    }
-                {% endif %}
 
                 if (deslen2 < {{ minlenght_bienvenida }} )
                 {
@@ -327,10 +319,6 @@
                 'form[foto]': {
                     required: {% if not pagina.pagina %}true{% else %}false{% endif %}
                 },
-                'deslen': {
-                    required: {% if not pagina.pagina %}true{% else %}false{% endif %},
-                    min: {% if not pagina.pagina %}3{% else %}0{% endif %}
-                },
                 'deslen2': {
                     required: true,
                     min: 3
@@ -357,10 +345,6 @@
                 },
                 'form[foto]': {
                     required: "- {{ 'La foto principal de la página es requerida'|trans }}."
-                },
-                'deslen': {
-                    required: "- {{ 'La descripción es requerida.'|trans }}",
-                    min: "- {{ 'La descripción es requerida.'|trans }}"
                 },
                 'deslen2': {
                     required: "- {{ 'El contenido es requerido.'|trans }}",
