@@ -1,0 +1,87 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+
+<br><br>
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_programados', { 'app_id': app.session.get('app_id') }) }}">
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_programados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col text-right">
+        <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': notificacion_programada.notificacion.id, 'notificacion_programada_id': notificacion_programada.id })}}" class="bttn__bck"><span class="fa fa-pencil"></span><span class="text__bck">{{ 'Editar'|trans }}</span></a>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Programación del aviso'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-8 col-md-8 col-lg-8 justify-content-end">
+                        <label for="fecha_difusion" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha de difusión'|trans }}</label>
+                        <div class="col-sm-14 col-md-14 col-lg-14">
+                            <input type="text" class="form-control form_sty1" id="fecha_difusion" name="fecha_difusion" value="{{ notificacion_programada.fechaDifusion|date('d/m/Y') }}" disabled="disabled">
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                        <label for="tipo_destino_id" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Tipo de destino'|trans }}</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <input type="text" class="form-control form_sty1" id="tipo_destino_id" name="tipo_destino_id" value="{{ notificacion_programada.tipoDestino.nombre }}" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10">
+                        <label for="entidades" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Grupo seleccionado'|trans }}</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            {% if entidades.tipo == 'text' %}
+                                <input type="text" id="entidades" name="entidades"  class="form-control form_sty1" value="{{ entidades.valor }}" disabled="disabled">
+                            {% else %}
+                                <table class="table">
+                                    <thead class="sty__title">
+                                        <tr>
+                                            <th class="hd__title" colspan="2">{{ 'Participantes seleccionados'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for entidad in entidades.valores %}
+                                            {% if loop.first %}
+                                                <tr>
+                                            {% endif %}
+                                            <td>{{ entidad }}</td>
+                                            {% if loop.index is divisibleby(2) %}
+                                                </tr>
+                                                {% if not loop.last %}
+                                                    <tr>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if loop.last %}
+                                                    <td>&nbsp;</td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <button type="button" class="bttn__end" id="list"><span class="text__end">{{ 'Ir al listado'|trans }}</span><span class="fa fa-clipboard"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

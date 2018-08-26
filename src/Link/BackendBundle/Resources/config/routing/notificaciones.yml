@@ -35,3 +35,13 @@ _ajaxTreeGrupoProgramado:
 _editNotificacionProgramada:
     path:     /editNotificacionProgramada/{notificacion_id}/{notificacion_programada_id}
     defaults: { _controller: LinkBackendBundle:Notificacion:editNotificacionProgramada, notificacion_programada_id: 0 }
+
+_ajaxGrupoSeleccion:
+    path:     /ajaxGrupoSeleccion
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxGrupoSeleccion }
+    requirements:
+        _method: GET
+
+_showNotificacionProgramada:
+    path:     /showNotificacionProgramada/{notificacion_programada_id}
+    defaults: { _controller: LinkBackendBundle:Notificacion:showNotificacionProgramada }

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNotificacion;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
+use Link\ComunBundle\Entity\AdminNotificacionProgramada;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -360,12 +361,14 @@ class NotificacionController extends Controller
                                   'icon' => 'fa fa-angle-double-right');
                 break;
             case $yml['parameters']['tipo_destino']['no_ingresado_programa']:
-                $return[] = array('text' => 'N/A',
+                $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $return[] = array('text' => $entidad->getNombre(),
                                   'state' => array('opened' => true),
                                   'icon' => 'fa fa-angle-double-right');
                 break;
             case $yml['parameters']['tipo_destino']['aprobados']:
-                $return[] = array('text' => 'N/A',
+                $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $return[] = array('text' => $entidad->getNombre(),
                                   'state' => array('opened' => true),
                                   'icon' => 'fa fa-angle-double-right');
                 break;
@@ -373,6 +376,450 @@ class NotificacionController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function editNotificacionProgramadaAction(Request $request, $notificacion_id, $notificacion_programada_id)
+    {
+                
+        $session = new Session();
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        if ($notificacion_programada_id)
+        {
+
+            $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($notificacion_programada_id);
+
+            switch ($notificacion_programada->getTipoDestino()->getId())
+            {
+                case $yml['parameters']['tipo_destino']['todos']:
+                    $entidades = array('tipo' => 'text',
+                                       'multiple' => false,
+                                       'valor' => $this->get('translator')->trans('Todos los empleados de la empresa').' '.$notificacion_programada->getNotificacion()->getEmpresa()->getNombre());
+                    break;
+                case $yml['parameters']['tipo_destino']['nivel']:
+                    $niveles = $em->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($notificacion_programada->getNotificacion()->getEmpresa()->getId());
+                    $valores = array();
+                    foreach ($niveles as $nivel)
+                    {
+                        $valores[] = array('id' => $nivel->getId(),
+                                           'nombre' => $nivel->getNombre(),
+                                           'selected' => $nivel->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '');
+                    }
+                    $entidades = array('tipo' => 'select',
+                                       'multiple' => false,
+                                       'valores' => $valores);
+                    break;
+                case $yml['parameters']['tipo_destino']['programa']:
+                    $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                JOIN pe.pagina p 
+                                                WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                                ORDER BY pe.orden ASC")
+                                ->setParameter('empresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId());
+                    $pes = $query->getResult();
+                    $valores = array();
+                    foreach ($pes as $pe)
+                    {
+                        $valores[] = array('id' => $pe->getPagina()->getId(),
+                                           'nombre' => $pe->getPagina()->getNombre(),
+                                           'selected' => $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '');
+                    }
+                    $entidades = array('tipo' => 'select',
+                                       'multiple' => false,
+                                       'valores' => $valores);
+                    break;
+                case $yml['parameters']['tipo_destino']['grupo']:
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    $usuarios_id = array();
+                    foreach ($nps as $np)
+                    {
+                        $usuarios_id[] = $np->getEntidadId();
+                    }
+                    $qb = $em->createQueryBuilder();
+                    $qb->select('ru, u')
+                       ->from('LinkComunBundle:AdminRolUsuario', 'ru')
+                       ->leftJoin('ru.usuario', 'u')
+                       ->andWhere('u.empresa = :empresa_id')
+                       ->andWhere('ru.rol = :participante')
+                       ->setParameters(array('empresa_id' => $notificacion_programada->getNotificacion()->getEmpresa()->getId(),
+                                             'participante' => $yml['parameters']['rol']['participante']));
+                    $query = $qb->getQuery();
+                    $rus = $query->getResult();
+                    $valores = array();
+                    foreach ($rus as $ru)
+                    {
+                        $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                           'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido(),
+                                           'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                    }
+                    $entidades = array('tipo' => 'select',
+                                       'multiple' => true,
+                                       'valores' => $valores);
+                    break;
+                case $yml['parameters']['tipo_destino']['no_ingresado']:
+                    $entidades = array('tipo' => 'text',
+                                       'multiple' => false,
+                                       'valor' => $this->get('translator')->trans('Aquellos empleados de la empresa').' '.$notificacion_programada->getNotificacion()->getEmpresa()->getNombre().' '.$this->get('translator')->trans('que aún no han ingresado a la plataforma').'.');
+                    break;
+                case $yml['parameters']['tipo_destino']['no_ingresado_programa']:
+                    $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                JOIN pe.pagina p 
+                                                WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                                ORDER BY pe.orden ASC")
+                                ->setParameter('empresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId());
+                    $pes = $query->getResult();
+                    $valores = array();
+                    foreach ($pes as $pe)
+                    {
+                        $valores[] = array('id' => $pe->getPagina()->getId(),
+                                           'nombre' => $pe->getPagina()->getNombre(),
+                                           'selected' => $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '');
+                    }
+                    $entidades = array('tipo' => 'select',
+                                       'multiple' => false,
+                                       'valores' => $valores);
+                    break;
+                case $yml['parameters']['tipo_destino']['aprobados']:
+                    $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                JOIN pe.pagina p 
+                                                WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                                ORDER BY pe.orden ASC")
+                                ->setParameter('empresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId());
+                    $pes = $query->getResult();
+                    $valores = array();
+                    foreach ($pes as $pe)
+                    {
+                        $valores[] = array('id' => $pe->getPagina()->getId(),
+                                           'nombre' => $pe->getPagina()->getNombre(),
+                                           'selected' => $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '');
+                    }
+                    $entidades = array('tipo' => 'select',
+                                       'multiple' => false,
+                                       'valores' => $valores);
+                    break;
+            }
+
+        }
+        else {
+
+            $notificacion_programada = new AdminNotificacionProgramada();
+
+            $notificacion = $em->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+            $notificacion_programada->setNotificacion($notificacion);
+            $entidades = array();
+
+        }
+
+        if ($request->getMethod() == 'POST')
+        {
+
+            $fecha_difusion = $request->request->get('fecha_difusion');
+            $tipo_destino_id = $request->request->get('tipo_destino_id');
+            $entidades_seleccionadas = $request->request->get('entidades');
+
+            $tipo_destino = $em->getRepository('LinkComunBundle:AdminTipoDestino')->find($tipo_destino_id);
+            $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+            list($d, $m, $a) = explode("/", $fecha_difusion);
+            $fecha_difusion = "$a-$m-$d";
+
+            $entidades_incluidas = array();
+
+            // Si estamos editando una notificación programada del tipo destino Grupo de participantes, hay que eliminar primero el grupo
+            if ($notificacion_programada_id)
+            {
+                $grupos = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                foreach ($grupos as $grupo)
+                {
+                    if ($tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'])
+                    {
+                        if (!in_array($grupo->getEntidadId(), $entidades_seleccionadas))
+                        {
+                            $em->remove($grupo);
+                            $em->flush();
+                        }
+                        else {
+                            $entidades_incluidas[] = $grupo->getEntidadId();
+                        }
+                    }
+                    else {
+                        $em->remove($grupo);
+                        $em->flush();
+                    }
+                }
+            }
+
+            $notificacion_programada->setTipoDestino($tipo_destino);
+            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['todos'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['no_ingresado'])
+            {
+                $notificacion_programada->setEntidadId(null);
+            }
+            else {
+                $notificacion_programada->setEntidadId($entidades_seleccionadas);
+            }
+            $notificacion_programada->setUsuario($usuario);
+            $notificacion_programada->setFechaDifusion(new \DateTime($fecha_difusion));
+            $notificacion_programada->setGrupo(null);
+            $notificacion_programada->setEnviado(false);
+            $em->persist($notificacion_programada);
+            $em->flush();
+
+            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'])
+            {
+                // Creación del grupo de participantes seleccionados
+                foreach ($entidades_seleccionadas as $entidad)
+                {
+                    if (!in_array($entidad, $entidades_incluidas))
+                    {
+                        $np = new AdminNotificacionProgramada();
+                        $np->setNotificacion($notificacion_programada->getNotificacion());
+                        $np->setTipoDestino($tipo_destino);
+                        $np->setEntidadId($entidad);
+                        $np->setUsuario($usuario);
+                        $np->setFechaDifusion(new \DateTime($fecha_difusion));
+                        $np->setGrupo($notificacion_programada);
+                        $np->setEnviado(false);
+                        $em->persist($np);
+                        $em->flush();
+                    }
+                }
+            }
+
+            return $this->redirectToRoute('_showNotificacionProgramada', array('notificacion_programada_id' => $notificacion_programada->getId()));
+
+        }
+        
+        // Tipos de destino
+        $tds = $em->getRepository('LinkComunBundle:AdminTipoDestino')->findAll();
+        
+        return $this->render('LinkBackendBundle:Notificacion:editNotificacionProgramada.html.twig', array('notificacion_programada' => $notificacion_programada,
+                                                                                                          'tds' => $tds,
+                                                                                                          'entidades' => $entidades));
+        
+    }
+
+    public function ajaxGrupoSeleccionAction(Request $request)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $tipo_destino_id = $request->query->get('tipo_destino_id');
+        $notificacion_id = $request->query->get('notificacion_id');
+        $notificacion_programada_id = $request->query->get('notificacion_programada_id');
+
+        if ($notificacion_programada_id)
+        {
+            $notificacion_programada = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($notificacion_programada_id);
+            $notificacion = $notificacion_programada->getNotificacion();
+        }
+        else {
+            $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
+        }
+        
+        switch ($tipo_destino_id)
+        {
+            case $yml['parameters']['tipo_destino']['todos']:
+                $entidades = array('tipo' => 'text',
+                                   'multiple' => false,
+                                   'valor' => $this->get('translator')->trans('Todos los empleados de la empresa').' '.$notificacion->getEmpresa()->getNombre());
+                break;
+            case $yml['parameters']['tipo_destino']['nivel']:
+                $niveles = $em->getRepository('LinkComunBundle:AdminNivel')->findByEmpresa($notificacion->getEmpresa()->getId());
+                $valores = array();
+                foreach ($niveles as $nivel)
+                {
+                    $valores[] = array('id' => $nivel->getId(),
+                                       'nombre' => $nivel->getNombre(),
+                                       'selected' => $notificacion_programada_id ? $nivel->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
+                }
+                $entidades = array('tipo' => 'select',
+                                   'multiple' => false,
+                                   'valores' => $valores);
+                break;
+            case $yml['parameters']['tipo_destino']['programa']:
+                $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                            JOIN pe.pagina p 
+                                            WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                            ORDER BY pe.orden ASC")
+                            ->setParameter('empresa_id', $notificacion->getEmpresa()->getId());
+                $pes = $query->getResult();
+                $valores = array();
+                foreach ($pes as $pe)
+                {
+                    $valores[] = array('id' => $pe->getPagina()->getId(),
+                                       'nombre' => $pe->getPagina()->getNombre(),
+                                       'selected' => $notificacion_programada_id ? $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
+                }
+                $entidades = array('tipo' => 'select',
+                                   'multiple' => false,
+                                   'valores' => $valores);
+                break;
+            case $yml['parameters']['tipo_destino']['grupo']:
+                $usuarios_id = array();
+                if ($notificacion_programada_id)
+                {
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    foreach ($nps as $np)
+                    {
+                        $usuarios_id[] = $np->getEntidadId();
+                    }
+                }
+                $qb = $em->createQueryBuilder();
+                $qb->select('ru, u')
+                   ->from('LinkComunBundle:AdminRolUsuario', 'ru')
+                   ->leftJoin('ru.usuario', 'u')
+                   ->andWhere('u.empresa = :empresa_id')
+                   ->andWhere('ru.rol = :participante')
+                   ->setParameters(array('empresa_id' => $notificacion->getEmpresa()->getId(),
+                                         'participante' => $yml['parameters']['rol']['participante']));
+                $query = $qb->getQuery();
+                $rus = $query->getResult();
+                $valores = array();
+                foreach ($rus as $ru)
+                {
+                    $valores[] = array('id' => $ru->getUsuario()->getId(),
+                                       'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido(),
+                                       'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
+                }
+                $entidades = array('tipo' => 'select',
+                                   'multiple' => true,
+                                   'valores' => $valores);
+                break;
+            case $yml['parameters']['tipo_destino']['no_ingresado']:
+                $entidades = array('tipo' => 'text',
+                                   'multiple' => false,
+                                   'valor' => $this->get('translator')->trans('Aquellos empleados de la empresa').' '.$notificacion->getEmpresa()->getNombre().' '.$this->get('translator')->trans('que aún no han ingresado a la plataforma').'.');
+                break;
+            case $yml['parameters']['tipo_destino']['no_ingresado_programa']:
+                $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                            JOIN pe.pagina p 
+                                            WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                            ORDER BY pe.orden ASC")
+                            ->setParameter('empresa_id', $notificacion->getEmpresa()->getId());
+                $pes = $query->getResult();
+                $valores = array();
+                foreach ($pes as $pe)
+                {
+                    $valores[] = array('id' => $pe->getPagina()->getId(),
+                                       'nombre' => $pe->getPagina()->getNombre(),
+                                       'selected' => $notificacion_programada_id ? $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
+                }
+                $entidades = array('tipo' => 'select',
+                                   'multiple' => false,
+                                   'valores' => $valores);
+                break;
+            case $yml['parameters']['tipo_destino']['aprobados']:
+                $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                            JOIN pe.pagina p 
+                                            WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                            ORDER BY pe.orden ASC")
+                            ->setParameter('empresa_id', $notificacion->getEmpresa()->getId());
+                $pes = $query->getResult();
+                $valores = array();
+                foreach ($pes as $pe)
+                {
+                    $valores[] = array('id' => $pe->getPagina()->getId(),
+                                       'nombre' => $pe->getPagina()->getNombre(),
+                                       'selected' => $notificacion_programada_id ? $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
+                }
+                $entidades = array('tipo' => 'select',
+                                   'multiple' => false,
+                                   'valores' => $valores);
+                break;
+        }
+
+        $html = $this->renderView('LinkBackendBundle:Notificacion:grupoSeleccion.html.twig', array('entidades' => $entidades));
+
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
+    }
+
+    public function showNotificacionProgramadaAction(Request $request, $notificacion_programada_id)
+    {
+                
+        $session = new Session();
+        $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        
+        if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_loginAdmin');
+        }
+        else {
+            if (!$f->accesoRoles($session->get('usuario')['roles'], $session->get('app_id')))
+            {
+                return $this->redirectToRoute('_authException');
+            }
+        }
+        $f->setRequest($session->get('sesion_id'));
+
+        $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($notificacion_programada_id);
+
+        switch ($notificacion_programada->getTipoDestino()->getId())
+        {
+            case $yml['parameters']['tipo_destino']['todos']:
+                $entidades = array('tipo' => 'text',
+                                   'valor' => $this->get('translator')->trans('Todos los empleados de la empresa').' '.$notificacion_programada->getNotificacion()->getEmpresa()->getNombre());
+                break;
+            case $yml['parameters']['tipo_destino']['nivel']:
+                $entidad = $em->getRepository('LinkComunBundle:AdminNivel')->find($notificacion_programada->getEntidadId());
+                $entidades = array('tipo' => 'text',
+                                   'valor' => $entidad->getNombre());
+                break;
+            case $yml['parameters']['tipo_destino']['programa']:
+                $entidad = $em->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $entidades = array('tipo' => 'text',
+                                   'valor' => $entidad->getNombre());
+                break;
+            case $yml['parameters']['tipo_destino']['grupo']:
+                $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                $valores = array();
+                foreach ($nps as $np)
+                {
+                    $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($np->getEntidadId());
+                    $valores[] = $usuario->getNombre().' '.$usuario->getApellido();
+                }
+                $entidades = array('tipo' => 'table',
+                                   'valores' => $valores);
+                break;
+            case $yml['parameters']['tipo_destino']['no_ingresado']:
+                $entidades = array('tipo' => 'text',
+                                   'valor' => $this->get('translator')->trans('Aquellos empleados de la empresa').' '.$notificacion_programada->getNotificacion()->getEmpresa()->getNombre().' '.$this->get('translator')->trans('que aún no han ingresado a la plataforma').'.');
+                break;
+            case $yml['parameters']['tipo_destino']['no_ingresado_programa']:
+                $entidad = $em->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $entidades = array('tipo' => 'text',
+                                   'valor' => $entidad->getNombre());
+                break;
+            case $yml['parameters']['tipo_destino']['aprobados']:
+                $entidad = $em->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $entidades = array('tipo' => 'text',
+                                   'valor' => $entidad->getNombre());
+                break;
+        }
+
+        return $this->render('LinkBackendBundle:Notificacion:showNotificacionProgramada.html.twig', array('notificacion_programada' => $notificacion_programada,
+                                                                                                          'entidades' => $entidades));
         
     }
 
