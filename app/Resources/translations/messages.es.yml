@@ -35,6 +35,7 @@ Aplicaciones: Aplicaciones
 Aplicaciones a la que tiene acceso: Aplicaciones a la que tiene acceso
 Aplicar periodo a las sub-páginas: Aplicar periodo a las sub-páginas
 Aprobados: Aprobados
+Aquellos empleados de la empresa: Aquellos empleados de la empresa
 Archivo procesado con éxito: Archivo procesado con éxito
 Archivos: Archivos
 Archivos de este espacio: Archivos de este espacio
@@ -173,6 +174,7 @@ Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe escribir su respuesta: Debe escribir su respuesta
 Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
+Debe seleccionar el grupo: Debe seleccionar el grupo
 Debe seleccionar la fecha inicial: Debe seleccionar la fecha inicial
 Debe seleccionar la fecha final: Debe seleccionar la fecha final
 Debe seleccionar la página.: Debe seleccionar la página.
@@ -268,6 +270,7 @@ El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión
 El Tipo de Certificado es requerido.: El Tipo de Certificado es requerido.
+El tipo de destino es requerido: El tipo de destino es requerido
 El tipo de elemento es requerido.: El tipo de elemento es requerido.
 El Tipo de Imagen es requerido.: El Tipo de Imagen es requerido.
 El tipo de noticia es requerido.: El tipo de noticia es requerido.
@@ -310,6 +313,7 @@ Entidad: Entidad
 Entrar: Entrar
 Enviado: Enviado
 Enviar: Enviar
+Error al obtener el grupo de selección: Error al obtener el grupo de selección
 Error al obtener el historial.: Error al obtener el historial.
 Error al obtener la repuesta: Error al obtener la repuesta
 Error al obtener las notificaciones programadas: Error al obtener las notificaciones programadas
@@ -366,14 +370,14 @@ Extensiones aceptadas para imagen: Extensiones aceptadas para imagen
 Extensiones aceptadas para vídeo: Extensiones aceptadas para vídeo
 Fecha: Fecha
 Fecha Creación: Fecha Creación
-Fecha fin: Fecha fin 
+Fecha fin: Fecha fin
 Fecha inicio: Fecha inicio
+Fecha de difusión: Fecha de difusión
 Fecha de nacimiento: Fecha de nacimiento
 Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
 Fecha de Publicación: Fecha de Publicación
 Fecha de registro: Fecha de registro
 Fecha de Vencimiento: Fecha de Vencimiento
-Fecha Difusión: Fecha Difusión
 FELICITACIONES: FELICITACIONES
 Fila: Fila
 filtrado de un total de: filtrado de un total de
@@ -632,6 +636,7 @@ Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para env
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
 participantes: participantes
 particpante: participante
+Participantes de la empresa: Participantes de la empresa
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma
 Participantes que han aprobado el último módulo del programa o curso: Participantes que han aprobado el último módulo del programa o curso
 Participantes que han ingresado al programa o curso asignado: Participantes que han ingresado al programa o curso asignado
@@ -639,6 +644,7 @@ Participantes que se han logueado al menos una vez en la plataforma: Participant
 Participantes que si bien están activos en la plataforma, no han ingresado al contenido del programa o curso: Participantes que si bien están activos en la plataforma, no han han ingresado al contenido del programa o curso
 Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes registrados en el programa que aunque tienen usuario y clave nunca se han logueado en la plataforma
 Participantes registrados en el programa que se han logueado al menos una vez en la plataforma: Participantes registrados en el programa que se han logueado al menos una vez en la plataforma
+Participantes seleccionados: Participantes seleccionados
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
@@ -665,6 +671,7 @@ Presiona el botón finalizar para completar: Presiona el botón finalizar para c
 Procesando: Procesando
 Procesar: Procesar
 Programa: Programa
+Programación del aviso: Programación del aviso
 Programado para: Programado para
 Programar nuevo aviso: Programar nuevo aviso
 Programas: Programas
@@ -680,6 +687,7 @@ Puede solicitar crear una evaluación para esta página a través del Administra
 Puntaje: Puntaje
 Puntaje con que se aprueba: Puntaje con que se aprueba
 Puntaje definitivo del programa: Puntaje definitivo del programa
+que aún no han ingresado a la plataforma: que aún no han ingresado a la plataforma
 QR: QR
 Recordarme: Recordarme
 Recordar mi contaseña: Recordar mi contaseña
@@ -727,9 +735,10 @@ Seleccione el nivel: Seleccione el nivel
 Seleccione el programa: Seleccione el programa
 Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostrar los niveles
 Seleccione la empresa para mostrar las páginas asignadas: Seleccione la empresa para mostrar las páginas asignadas
-Seleccione fecha difusión: Seleccione fecha difusión
+Seleccione la fecha difusión: Seleccione la fecha difusión
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
+Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.: Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas, puedes realizar la evaluación haciendo clic en el botón
 Sí deseas volver a intentarlo haz clic aquí: Sí deseas volver a intentarlo haz clic aquí
 Si deseas volver a ver el contenido, haz clic en el botón: Si deseas volver a ver el contenido, haz clic en el botón
@@ -781,12 +790,12 @@ Tipo de logo: Tipo de logo
 Tipo de pregunta: Tipo de pregunta
 Tipo de Noticia: Tipo de Noticia
 Tipo de notificación: Tipo de notificación
-Tipo Destino: Tipo Destino
-Tipo de Destinos: Tipo de Destinos
+Tipo de destino: Tipo de destino
 Título: Título
 Título en la ventana del navegador: Título en la ventana del navegador
 Todas: Todas
 Todos: Todos
+Todos los empleados de la empresa: Todos los empleados de la empresa
 Todos los niveles: Todos los niveles
 Tomar evaluación: Tomar evaluación
 Tu calificación: Tu calificación

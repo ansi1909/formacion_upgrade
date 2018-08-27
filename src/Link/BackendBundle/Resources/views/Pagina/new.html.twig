@@ -36,7 +36,7 @@
 		<div class="card">
 			<div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Detalles de la página'|trans }}</h6>
+                    <h6>{{ 'Detalles de la página'|trans }} </h6>
                 </div>
             </div>
            	<div class="card-block">
@@ -329,15 +329,8 @@
             }
             else {
 
-                var deslen = $('#deslen').val();
                 var deslen2 = $('#deslen2').val();
                 error = 0;
-                
-                if (deslen < {{ minlenght_bienvenida }} )
-                {
-                    error = 1;
-                    $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
-                }
 
                 if (deslen2 < {{ minlenght_bienvenida }} && parseInt($('#subpaginas').val()) == 0)
                 {
@@ -373,10 +366,6 @@
                 'form[foto]': {
                     required: {% if not pagina.pagina %}true{% else %}false{% endif %}
                 },
-                'deslen': {
-                    required: true,
-                    min: 3
-                },
                 'form[pdf]': {
                     extension: "pdf"
                 },
@@ -402,10 +391,6 @@
                 },
                 'form[foto]': {
                     required: "- {{ 'La foto principal de la página es requerida'|trans }}."
-                },
-                'deslen': {
-                    required: "- {{ 'La descripción es requerida.'|trans }}",
-                    min: "- {{ 'La descripción es requerida.'|trans }}"
                 },
                 'form[pdf]': {
                     extension: "- {{ 'El material complementario debe ser sólo archivo con extensión pdf.'|trans }}"
