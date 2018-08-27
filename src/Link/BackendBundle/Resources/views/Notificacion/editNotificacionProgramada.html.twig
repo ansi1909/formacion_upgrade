@@ -1,0 +1,205 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
+    <style>
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+        .ms-container {
+            width: 80%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<br><br>
+<input type="hidden" id="url_grupo" name="url_grupo" value="{{ path('_ajaxGrupoSeleccion') }}">
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_programados', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+</div>
+<br>
+<div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 alert alert-danger" role="alert" id="div-error" style="display:none;">
+    <ul></ul>
+</div>
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Programación del aviso'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <form id="form" name="form" action="{{ path('_editNotificacionProgramada', { 'notificacion_id': notificacion_programada.notificacion.id, 'notificacion_programada_id': notificacion_programada.id }) }}" method="POST">
+                    <input type="hidden" id="notificacion_id" name="notificacion_id" value="{{ notificacion_programada.notificacion.id }}">
+                    <input type="hidden" id="notificacion_programada_id" name="notificacion_programada_id" value="{{ notificacion_programada.id }}">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8 justify-content-end">
+                            <label for="fecha_difusion" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Fecha de difusión'|trans }}</label>
+                            <div class="col-sm-14 col-md-14 col-lg-14">
+                                {% set fecha_difusion = notificacion_programada.fechaDifusion ? notificacion_programada.fechaDifusion|date('d/m/Y') : '' %}
+                                <input type="text" class="form-control form_sty1" id="fecha_difusion" placeholder="DD/MM/YYYY" name="fecha_difusion" value="{{ fecha_difusion }}" data-date-start-date="0d">
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                            <small id="help" class="form-text text-muted">{{ 'Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.'|trans }}</small>
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+                            <label for="tipo_destino_id" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Tipo de destino'|trans }}</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16">
+                                <select class="form-control form_sty_select" name="tipo_destino_id" id="tipo_destino_id">
+                                    <option value=""></option>
+                                    {% for td in tds %}
+                                        {% set selected = notificacion_programada.tipoDestino ? notificacion_programada.tipoDestino.id == td.id ? 'selected="selected"' : '' : '' %}
+                                        <option value="{{ td.id }}" {{ selected }} >{{ td.nombre|trim }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="fa fa-location-arrow"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" id="div-entidades">
+                        {% if notificacion_programada.id and entidades|length > 0 %}
+                            <div class="col-sm-10 col-md-10 col-lg-10" id="div-grupo">
+                                <label for="entidades" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Grupo seleccionado'|trans }}</label>
+                                <div class="col-sm-16 col-md-16 col-lg-16">
+                                    {% if entidades.tipo == 'text' %}
+                                        <input type="text" id="entidades" name="entidades"  class="form-control form_sty1" value="{{ entidades.valor }}" disabled="disabled">
+                                    {% else %}
+                                        {% if entidades.multiple %}
+                                            <select name="entidades[]" id="entidades" class="form-control multiple" multiple="multiple">
+                                        {% else %}
+                                            <select name="entidades" id="entidades" class="form-control form_sty_select">
+                                        {% endif %}
+                                            {% for valor in entidades.valores %}
+                                                <option value="{{ valor.id }}" {{ valor.selected }}>{{ valor.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        {% if not entidades.multiple %}
+                                            <span class="fa fa-group"></span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="col-sm-12" id="change" style="display:none;">
+                            <div class="load1 load-wrapper">
+                                <div class="loader">
+                                    Loading...
+                                </div>  
+                            </div>
+                            <div class="alert alert-danger" role="alert" id="div-entidades-alert" style="display:none;"> 
+                                <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener el grupo de selección'|trans }}.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                                <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/notificacion_programada.js') }}"></script>
+    <script type="text/javascript">
+
+        function observeMultiSelect()
+        {
+            $('.multiple').multiSelect({
+                selectableHeader: "<div class='sty__title'>{{ 'Participantes de la empresa'|trans }}</div>",
+                selectionHeader: "<div class='sty__title'>{{ 'Participantes seleccionados'|trans }}</div>"
+            });
+        }
+
+        $('#finish').click(function(){
+           var valid = $('#form').valid();
+            if(!valid){
+                notify($('#div-error').html());
+            }
+            else {
+
+                // Validaciones adicionales
+                var entidades = $('#entidades').val();
+                var tipo_destino_id = $('#tipo_destino_id').val();
+                
+                if (tipo_destino_id == 4)
+                {
+                    if (entidades == null)
+                    {
+                        valid = false;
+                    }
+                    else {
+                        if (entidades.length < 1)
+                        {
+                            valid = false;
+                        }
+                    }
+                }
+                else if (tipo_destino_id == 2 || tipo_destino_id == 3 || tipo_destino_id == 6 || tipo_destino_id == 7)
+                {
+                    if (entidades == '')
+                    {
+                        valid = false;
+                    }
+                }
+                
+                if (!valid){
+                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar el grupo'|trans }}.</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                    $('#finish').show();
+                }
+                else {
+                    $('#finish').hide();
+                    $('#form').submit();
+                }
+            }
+        });
+
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'fecha_difusion': {
+                    required: true
+                },
+                'tipo_destino_id': {
+                    required: true
+                }
+            },
+            messages: {
+                'fecha_difusion': {
+                    required: "- {{ 'Seleccione la fecha difusión'|trans }}."
+                },
+                'tipo_destino_id': {
+                    required: "- {{ 'El tipo de destino es requerido'|trans }}.",
+                }
+            }
+        });
+
+        </script>
+{% endblock %}

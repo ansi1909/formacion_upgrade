@@ -25,7 +25,7 @@
             <div class="card-block">
                 {{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
                     {% if usuario.empresa %}
-                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa }}">
+                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
                     {% else %}
                         {% if notificacion.id %}
                             <input type="hidden" id="empresa_id" name="empresa_id" value="{{ notificacion.empresa.id }}">

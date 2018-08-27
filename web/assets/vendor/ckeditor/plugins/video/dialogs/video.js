@@ -82,7 +82,7 @@
           id: 'browse',
           type: 'button',
           filebrowser: 'info:src',
-          hidden: true,
+          hidden: false,
           label: editor.lang.common.browseServer
         }, {
           id: 'controls',
