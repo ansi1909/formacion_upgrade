@@ -95,8 +95,8 @@
                     </div>
                     {% if not try_button %}
                         {% if continue_button.evaluacion != 0 %}
-                            <div class="row mt-3 align-items-center justify-content-center">
-                                <div class="col-8 text-center">
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-10 my-3 text-center">
                                     {% if continue_button.categoria == 'Materia' %}
                                         {% set articulo = 'de la'|trans %}
                                     {% elseif continue_button.categoria == 'Lección' %}
@@ -104,27 +104,19 @@
                                     {% else %}
                                         {% set articulo = 'del'|trans %}
                                     {% endif %}
-                                    <p class="text_fin-materia">{{ 'Es momento de tomar la evaluación'|trans }} {{ articulo~' '~continue_button.nombre_pagina }}.</p>
+                                    <h4 class="color-light-black">{{ 'Es momento de tomar la evaluación'|trans }} {{ articulo~' '~continue_button.nombre_pagina }}.</h4>
+                                    <h4 class="color-light-black">{{ 'Tendrás'|trans }} <strong>{{ continue_button.duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}. {{ '¿Estás list@?'|trans }}</h4>
                                 </div>
                             </div>
-                            <div class="row mt-3 align-items-center justify-content-center">
-                                <div class="col-10 text-center">
-                                    <p class="text_fin-materia">{{ 'Tendrás'|trans }} <strong>{{ continue_button.duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}.</p>
-                                    <p class="text_fin-materia">{{ '¿Estás list@?'|trans }}</p>
+                            <div class="row mt-5 align-items-center justify-content-center">
+                                <div class="col-3 text-center">
+                                    <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}"> {{ 'Volver al inicio'|trans }} </button>
                                 </div>
-                            </div>
-                            <div class="row mt-3 align-items-center justify-content-center">
-                                <div class="col-4 text-center">
-                                    <div class="text-center">
-                                        <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
-                                    </div>
+                                <div class="col-3 text-center">
+                                    <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}">{{ 'Mostrar resultados'|trans }}</button>
                                 </div>
-                            </div>
-                            <div class="row mt-3 align-items-center justify-content-center">
-                                <div class="col-4 text-center">
-                                    <div class="text-center">
-                                        <button type="button" class="btn btn-continuar continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}">{{ 'Volver al contenido'|trans }}</button>
-                                    </div>
+                                <div class="col-3 text-center">
+                                    <button type="button" class="btn btn-primary continuar" id="test" title="{{ 'Tomar evaluación'|trans }}"> {{ 'Tomar evaluación'|trans }} </button>
                                 </div>
                             </div>
                             <br>
@@ -143,6 +135,17 @@
                                 </div>
                             {% else %}
                                 {# Ir a la pantalla de imprimir certificado y constancia de notas #}
+                                <div class="row mt-5 align-items-center justify-content-center">
+                                    <div class="col-3 text-center">
+                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}"> {{ 'Volver al inicio'|trans }} </button>
+                                    </div>
+                                    <div class="col-3 text-center">
+                                        <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}">{{ 'Mostrar resultados'|trans }}</button>
+                                    </div>
+                                    {#<div class="col-3 text-center">
+                                        <button type="button" class="btn btn-primary continuar" id="next" title="{{ 'Continuar al siguiente contenido'|trans }}"> {{ 'Continuar'|trans }} </button>
+                                    </div>#}
+                                </div>
                             {% endif %}
                         {% endif %}
                     {% endif %}
@@ -224,7 +227,7 @@
         <script type="text/javascript">
             $('.continuar').click(function(){
                 var button = $(this);
-                $('.continuar').hide();
+                $('.continuar, #btnShowResul').hide();
                 $('#wait').show();
                 var id = button.attr('id');
                 window.location.replace($('#url_'+id).val());
