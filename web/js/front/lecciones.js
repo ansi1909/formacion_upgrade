@@ -32,7 +32,9 @@ $(document).ready(function() {
 		circle_nav.removeClass('less-disabled'); // Remueve el css de disables al tab que se está presionando
 		$('#tab_activo').val(circle_nav.attr('id'));
 		$('.nav-less-container').scrollTo($('.circle-less-viendo'));
-		$(window).scrollTop(0); // Scroll al tope de la pantalla
+		$('html, body').animate({
+		    scrollTop: 0
+		},1000);
 
 		var new_pagina_id = circle_nav.attr('data');
 

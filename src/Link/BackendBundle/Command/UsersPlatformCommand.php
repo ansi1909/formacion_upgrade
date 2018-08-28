@@ -15,24 +15,22 @@ use Doctrine\ORM\EntityManager;
 
 class UsersPlatformCommand extends ContainerAwareCommand
 {
-  protected function configure()
-  {
-      $this
-      ->setName('link:recordatorio-plataforma')
-      ->setDescription('Envía por correo notificaciones programadas y recordatorios a los usuarios que no han ingresado a la plataforma')
-      ;
-  }
+    protected function configure()
+    {
+        $this->setName('link:recordatorio-plataforma')
+             ->setDescription('Envía por correo notificaciones programadas y recordatorios a los usuarios que no han ingresado a la plataforma');
+    }
 
-  protected function execute(InputInterface $input, OutputInterface $output)
-  {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-      //$doctrine = $this->getContainer()->get('doctrine');
-      $em = $this->getContainer()->get('doctrine')->getManager();
-      $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
-      // tomando fecha actual para buscar usuarios que no hallan ingresado en 5 días
-      $template = "LinkBackendBundle:Programados:emailCommand.html.twig";
-      $consulta = array();
-      $query = $em->getConnection()->prepare('SELECT fnplataforma_usuarios() AS resultado;');
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
+      
+        // tomando fecha actual para buscar usuarios que no hallan ingresado en 5 días
+        $template = "LinkBackendBundle:Notificacion:emailCommand.html.twig";
+        $consulta = array();
+        $query = $em->getConnection()->prepare('SELECT fnplataforma_usuarios() AS resultado;');
       $query->execute();
       $consulta = $query->fetchAll();
       $output->writeln(var_dump($consulta));
