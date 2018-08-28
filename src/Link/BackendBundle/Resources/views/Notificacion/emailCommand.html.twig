@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'Notificaciones'|trans }} Formación 2.0</title>
+</head>
+<body>
+    <div>
+        <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="background: #f7f7f7; border-collapse: collapse;">
+            <tbody>
+                <tr>
+                    <td align="center" style="font-family: Arial,sans-serif;"> 
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px; border-radius: 25px; background: #fff; margin: 2% auto; box-shadow: 5px 5px 20px rgba(121, 125, 128, .3)">
+                            <tbody>
+                                <tr>
+                                    <td align="left" style="padding-top: 20px; padding-bottom: 20px; background: rgba(92, 174, 230, .5); border-radius: 25px 25px 0 0">
+                                        <a href="#" style="padding: 0;">
+                                            <img src="{{ asset('img/logo_formacion.png') }}" style="height: auto; width: 175px; position: relative; left: 1rem" alt="">
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr style="background: url({{ asset('front/assets/img/decorate_qr.svg') }}) no-repeat top right;">
+                                    <td align="justify" style="padding: 10% 5%;">
+                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;">
+                                        	{{ 'Hola'|trans~' '~nombre~' '~apellido }}.
+                                        </p>
+                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;">
+                                        	{{ mensaje|raw }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

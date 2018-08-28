@@ -32,7 +32,7 @@ class AdminNotificacionProgramada
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_difusion", type="datetime", nullable=true)
+     * @ORM\Column(name="fecha_difusion", type="date", nullable=true)
      */
     private $fechaDifusion;
 

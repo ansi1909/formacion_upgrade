@@ -31,7 +31,7 @@ Link\ComunBundle\Entity\AdminNotificacionProgramada:
                 unsigned: false
             column: entidad_id
         fechaDifusion:
-            type: datetime
+            type: date
             nullable: true
             column: fecha_difusion
         enviado:
