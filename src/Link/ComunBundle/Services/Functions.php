@@ -3,6 +3,7 @@
 namespace Link\ComunBundle\Services;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
@@ -14,6 +15,7 @@ use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPrueba;
 use Link\ComunBundle\Entity\CertiPregunta;
 use Link\ComunBundle\Entity\CertiOpcion;
+use Link\ComunBundle\Entity\CertiEmpresa;
 use Link\ComunBundle\Entity\CertiPreguntaOpcion;
 use Link\ComunBundle\Entity\CertiPreguntaAsociacion;
 
@@ -164,6 +166,96 @@ class Functions
         
         return $html;
 
+	}
+
+	protected function tipoDescripcion($tipoMensaje,$usuario,$pagina,$author)
+    {
+       
+        $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('Realizo una publicación en el muro de').' '.$pagina->getNombre().'.';
+
+        if($tipoMensaje=='Respondió')
+        {
+           $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('Respondió en el muro al comentario de').' '.$author.'.';
+        }
+
+        return $mensaje;
+       
+    }
+
+	
+	//Obtiene la informacion de los tutores asignados a una empresa 
+	public function getTutoresEmpresa($empresaId, $yml)
+	{
+		 $em = $this->em;
+
+		 $dql = "
+                 SELECT au FROM LinkComunBundle:AdminUsuario au 
+                 INNER JOIN LinkComunBundle:AdminRolUsuario ru WITH au.id = ru.usuario
+                 WHERE ru.rol = :rol
+                 AND au.empresa = :empresa
+                ";
+
+        $query = $em->createQuery($dql);
+        $query->setParameters(['rol'=>$yml['parameters']['rol']['tutor'], 'empresa'=>$empresaId]);
+        $tutores = $query->getResult();
+
+        return $tutores;
+	}
+
+	////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
+	public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje )
+	{
+		foreach ($tutores as $tutor) 
+            {
+                $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal())? $tutor->getCorreoPersonal() : null;
+
+                  //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
+                    if($muro->getUsuario()->getId()!= $tutor->getId()) 
+                    {
+                        if ($correo) 
+                        {
+                        
+                            
+                            $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.$tipoMensaje.' lo siguiente: ';
+
+                            $parametros_correo = [
+                                       
+                                                    'twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
+                                                    'datos' => 
+                                                                [
+                                                                'leccion' => $pagina->getNombre(),
+                                                                'categoria' => $categoria['categoria'],
+                                                                'nombrePrograma' => $categoria['nombre'],
+                                                                'leccion' => $pagina->getNombre(),
+                                                                'encabezadoUsuario' => $encabezadoUsuario,
+                                                                'mensaje' => $muro->getMensaje(),
+                                                                'usuarioPadre' =>($tipoMensaje =='Respondió')? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido():null,
+                                                                'mensajePadre' => ($tipoMensaje =='Respondió')? $muro->getMuro()->getMensaje():null,
+                                                                'empresa' => $empresa->getNombre()
+                                                                ],
+                                                    'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
+                                                    'remitente' => $this->container->getParameter('mailer_user'),
+                                                    'destinatario' => $correo
+
+                                    ];
+
+                            $correo = $this->sendEmail($parametros_correo);
+                        }
+
+                       //crea la notificacion para el usuario cuando el usuario que publica 
+                       $descripcion = $this->tipoDescripcion($tipoMensaje,$muro->getUsuario(),$pagina,$parametros_correo['datos']['usuarioPadre']);
+
+                       $tipoAlarma = ($tipoMensaje=='Respondió')? 'respuesta_muro':'aporte_muro';
+
+                       $this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
+
+                        
+                   }
+
+                    
+                }
+
+        return 1;
 	}
 
 	// Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.

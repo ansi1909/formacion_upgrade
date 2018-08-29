@@ -599,6 +599,57 @@ class NotificacionController extends Controller
                 }
             }
 
+            /*if ($notificacion_programada->getFechaDifusion()->format('Y-m-d') == date('Y-m-d'))
+            {
+                
+                // Se envía la notificación de una vez
+                $query = $em->getConnection()->prepare('SELECT fnnotificacion_programada(:pnotificacion_programada_id) AS resultado;');
+                $query->bindValue(':pnotificacion_programada_id', $notificacion_programada->getId(), \PDO::PARAM_INT);
+                $query->execute();
+                $r = $query->fetchAll();
+
+                for ($i = 0; $i < count($r); $i++) {
+
+                    // Limpieza de resultados
+                    $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
+                    $reg = str_replace('"}', '', $reg);
+                    
+                    $valor = explode('__', $r[$i]['resultado']);
+                  $_nombre = explode('"', $valor[0]);
+                  $nombre = $_nombre[1];
+                  $apellido = $valor[1];
+                  $correo = $valor[2];
+                  $asunto = $valor[3];
+                  $mensaje = $valor[4];
+                  $_id = explode('"', $valor[5]);
+                  $id = $_id[0];
+                  $output->writeln('NOMBRE: '.$nombre.' APELLIDO: '.$apellido.' EMAIL: '.$correo.' ASUNTO: '.$asunto.' MENSAJE: '.$mensaje.' ID NOTIFICACION: '.$id[0]);
+                  $parametros = array();
+                  $parametros= array('twig'=>$template,
+                                     'asunto'=>$asunto,
+                                     'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación2.0'),
+                                     'destinatario'=>$correo,
+                                     'datos'=>array('mensaje' => $mensaje, 'nombre'=> $nombre, 'apellido' => $apellido ));
+
+                  $f->sendEmailCommand($parametros);
+
+                  $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($id);
+                  $programacion->setEnviado(true);
+                        
+                  $em->persist($programacion);
+                  $em->flush();
+
+                    // busco si hay notificaciones hijas de la programación para cambiar a enviado
+                  $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
+                  foreach ($grupo_programada as $individual) {
+                      $individual->setEnviado(true);
+                      $em->persist($individual);
+                      $em->flush();
+                  }
+                }
+                return new Response(var_dump($usuarios));
+            }*/
+
             return $this->redirectToRoute('_showNotificacionProgramada', array('notificacion_programada_id' => $notificacion_programada->getId()));
 
         }

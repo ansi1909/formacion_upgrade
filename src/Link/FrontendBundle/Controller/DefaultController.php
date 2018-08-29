@@ -860,6 +860,10 @@ class DefaultController extends Controller
         $em->persist($comentario);
         $em->flush();
 
+        // $categoria = $this->obtenerProgramaCurso_($comentario->getPagina()->getId());
+        // $tutores = $f->getTutoresEmpresa($usuario->getEmpresa()->getId(), $yml);
+        // $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $comentario->getPagina(),  $comentario, $categoria, $usuario->getEmpresa(), 'Respondió' );
+
         $img = $usuario->getFoto() ? $upload.$usuario->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
         $autor = $this->get('translator')->trans('Yo');
         $fechah = $this->get('translator')->trans('Ahora');
@@ -888,4 +892,20 @@ class DefaultController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
+
+     public function obtenerProgramaCurso_($paginaId)
+        {
+            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
+            while ($pagina->getPagina())
+            {
+                $paginaId = $pagina->getPagina()->getId();
+                $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
+            }
+
+            $categoria = $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->find($pagina->getCategoria()->getId());
+
+           
+
+            return ['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
+        }
 }
