@@ -12,6 +12,7 @@
 <br><br>
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
+<input type="hidden" id="url_auto" name="url_auto" value="{{ path ('_filtroMuro', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_paginas_muro" name="url_paginas_muro" value="{{ path('_ajaxPaginasMuro') }}">
 <input type="hidden" id="url_comentarios_muro" name="url_comentarios_muro" value="{{ path ('_ajaxComentariosMuro') }}">
 <input type="hidden" id="url_respuestas_comentarios_muro" name="url_respuestas_comentarios_muro" value="{{ path ('_ajaxRespuestasComentariosMuro') }}">
@@ -32,7 +33,7 @@
                     <label for="select_empresa_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa'|trans }}</label>
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_empresa_id" name="select_empresa_id">
+                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                 <option value="0"></option>
                                 {% for empresa in empresas %}
                                     <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
@@ -43,36 +44,41 @@
                         </div>
                     </div>
                     <br>
-                    <label for="select_pagina_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Páginas'|trans }}</label>
-                    <div class="row">
-                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_pagina_id" name="select_pagina_id">
-                                <option value="0"></option>
-                            </select>
-                            <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                        </div>
-                    </div>
-                    <br>
                 </div>
             {% else %}
-                <div class="card-block">
-                    <label for="select_pagina_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Páginas'|trans }}</label>
-                    <div class="row">
-                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_pagina_id" name="select_pagina_id">
-                                <option value="0"></option>
-                                {% for pagina in paginas %}
-                                    <option value="{{ pagina.id }}" >{{ pagina.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                            <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
+            {% endif %}
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                       <label for="select_pagina_id" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Páginas'|trans }}</label>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-2 pnl__tree">
+                                {% if paginas|length %}
+                                    {% if paginas.tiene > 0 %}
+                                        <div class="tree">
+                                            <ul data-jstree='{ "opened" : true }'>
+                                                {{ paginas.str|raw }}
+                                            </ul>
+                                        </div>
+                                    {% else %}
+                                        {{ 'No existen páginas'|trans }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ 'Seleccione la empresa para mostrar las páginas asignadas'|trans }}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    <br>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label for="pg_sel" class="col-16 col-form-label">{{ 'Página seleccionada'|trans }}</label>
+                            <div class="col-14">
+                                <input type="text" class="form-control" id="pagina_str" name="pagina_str" readonly="readonly" value="">
+                                <input type="hidden" id="pagina_id" name="pagina_id" value="">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            {% endif %}
         </div>
     </div>
 </div>
@@ -195,6 +201,7 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/muro.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript">
 
         $('.add').click(function(){

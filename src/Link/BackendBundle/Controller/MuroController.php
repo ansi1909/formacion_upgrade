@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 class MuroController extends Controller
 {
 
-   public function indexAction($app_id, Request $request)
+   public function indexAction($app_id, $empresa_id, Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -42,6 +42,8 @@ class MuroController extends Controller
         $paginas = array();
         $comentarios = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+
+        //return new Response (var_dump($empresa_id));
 
         if ($usuario->getEmpresa()) {
             $usuario_empresa = 1;
@@ -99,6 +101,42 @@ class MuroController extends Controller
                                   'delete_disabled'=>$f->linkEliminar($coment->getId(),'CertiMuro'),
                                   'answer_delete'=>$answer_delete,
                                   'hijos'=>$hijos);
+
+        }
+
+        //return new Response (var_dump($empresa_id));
+
+        if ($empresa_id)
+        {
+
+            $str = '';
+            $tiene = 0;
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        JOIN pe.pagina p
+                                        WHERE p.pagina IS NULL
+                                        AND pe.empresa = :empresa_id 
+                                        ORDER BY p.id ASC")
+                        ->setParameter('empresa_id', $empresa_id);
+            $pages = $query->getResult();
+
+            //return new Response (var_dump($empresa_id));
+
+            foreach ($pages as $page)
+            {
+                $tiene++;
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
+                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
+                if ($subPaginas['tiene'] > 0)
+                {
+                    $str .= '<ul>';
+                    $str .= $subPaginas['return'];
+                    $str .= '</ul>';
+                }
+                $str .= '</li>';
+            }
+
+            $paginas = array('tiene' => $tiene,
+                             'str' => $str);
 
         }
 
