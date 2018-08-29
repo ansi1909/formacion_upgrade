@@ -30,7 +30,6 @@ BEGIN
                 FROM admin_usuario u 
                 WHERE u.activo = true 
                     AND u.empresa_id = reg.empresa_id 
-                    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                 ORDER BY u.id ASC LOOP
                 str = reg.id || '__' || rst.id || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje;
                 arr = '{}';
@@ -45,7 +44,6 @@ BEGIN
         SELECT u.id, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo  
                 FROM admin_usuario u 
                 WHERE u.activo = true 
-            AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.empresa_id = reg.empresa_id 
                     AND u.nivel_id = reg.entidad_id 
                 ORDER BY u.id ASC LOOP
@@ -64,7 +62,6 @@ BEGIN
                 INNER JOIN admin_nivel n ON u.nivel_id = n.id 
         WHERE u.empresa_id = reg.empresa_id 
             AND u.activo = true 
-            AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.nivel_id IN 
             (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
                 (SELECT pe.id FROM certi_pagina_empresa pe 
