@@ -146,4 +146,9 @@ class EmpresaController extends Controller
 
     }
 
+    public function registradosEmpresaAction( Request $request )
+    {
+        
+    }
+
 }

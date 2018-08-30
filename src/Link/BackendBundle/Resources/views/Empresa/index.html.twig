@@ -1,9 +1,20 @@
 {% extends '::admin.html.twig'%}
 
 {% block body %}
+<style type="text/css">
+    .enlaceActivo{
+        pointer-events: null;
+    }
+
+    .enlaceInactivo{
+        pointer-events: none;
+
+    }
+</style>
 
 <br>
 <div class="row align-items-center justify-content-between">
+    <input type="text" id="registradosEmpresa" value="{{ path('_registradosEmpresa') }}">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Empresas'|trans }}</h3>
     </div>
@@ -55,9 +66,16 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td class="center">
-                                    <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if empresa.delete_disabled == '' %}delete{% endif %} {{ empresa.delete_disabled }}" data="{{ empresa.id }}"><span class="fa fa-trash"></span></a>
+                                <td class="center" id="acciones{{empresa.id}}" >
+
+                                   
+                                    <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm enlaces"><span class="fa fa-pencil"></span></a>
+
+                                    <a href="#" class="btn btn-link btn-sm {% if empresa.delete_disabled == '' %}delete{% endif %} {{ empresa.delete_disabled }} enlaces" data="{{ empresa.id }}"><span class="fa fa-trash enlaces"></span></a>
+
+                                     <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none">
+
+                                    <a href="#" data-empresa="{{ empresa.id }}" class="btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-download"></span></a >
                                 </td>
                 			</tr>
                 		{% endfor %}

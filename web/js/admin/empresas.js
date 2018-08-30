@@ -71,4 +71,41 @@ $(document).ready(function() {
 		sweetAlertDelete(empresa_id, 'AdminEmpresa');
 	});
 
+	$('.downloadDb').click(function(){
+		desactivarEnlaces();
+		var empresaId = $(this).attr('data-empresa');
+		$('.downloadDb').remove();
+		$('#excel-loader').show();
+		timer = setInterval(function(){
+        agregarBotonDescarga(empresaId);
+    }, 60000);
+
+
+
+	})//fin de la funcion
+
 });
+
+function agregarBotonDescarga(empresaId)
+{
+	// $('#'+'empresa'+empresaId).append(" <a href="#" data-empresa="+empresaId+" class="+'btn btn-link btn-sm enlaces downloadDb'+" ><span class="+'fa fa-download'
+	// 	"></span></a >");
+	// activarEnlaces();
+	// $('#excel-loader').hide();
+}
+
+function activarEnlaces()
+{
+	$('.enlaces').addClass('enlaceInactivo');
+	$('.enlaces').removeClass('enlaceActivo');
+
+	return 0;
+}
+
+function desactivarEnlaces()
+{
+	$('.enlaces').removeClass('enlaceActivo');
+	$('.enlaces').addClass('enlaceInactivo');
+
+	return 0;
+}
