@@ -1,6 +1,6 @@
 _filtroMuro:
-    path:     /listado/{app_id}
-    defaults: { _controller: LinkBackendBundle:Muro:index }
+    path:     /listado/{app_id}/{empresa_id}
+    defaults: { _controller: LinkBackendBundle:Muro:index, empresa_id: 0 }
 
 _ajaxPaginasMuro:
     path:     /ajaxPaginasMuro
