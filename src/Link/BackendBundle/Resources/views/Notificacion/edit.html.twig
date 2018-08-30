@@ -18,12 +18,12 @@
 </div>
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
-        <div class="card">
-            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Datos de la notificación'|trans }}</h5>
-            </div>
-            <div class="card-block">
-                {{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
+        {{ form_start(form, { 'attr': { 'id': 'form', 'role': 'form' } }) }}
+            <div class="card">
+                <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                    <h5 class="card-title">{{ 'Datos de la notificación'|trans }}</h5>
+                </div>
+                <div class="card-block">
                     {% if usuario.empresa %}
                         <input type="hidden" id="empresa_id" name="empresa_id" value="{{ usuario.empresa.id }}">
                     {% else %}
@@ -69,17 +69,15 @@
                                 {{ form_widget(form.mensaje, { 'attr': { 'class': 'ckeditor' } }) }}
                             </div>
                         </div>
-                    </div>                     
-                    <div class="row">
-                        <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16 text-right">
-                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
-                                <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
-                            </div>
-                        </div>
-                    </div> 
-                {{ form_end(form) }}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-sm-16 col-md-16 text-right">
+                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
+                    </div>
+                </div>
             </div>
-        </div>
+        {{ form_end(form) }}
     </div>
 </div>
 

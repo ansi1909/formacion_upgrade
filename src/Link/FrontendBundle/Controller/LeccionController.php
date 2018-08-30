@@ -369,70 +369,10 @@ class LeccionController extends Controller
         $em->flush();
 
         /////////// Enviar notificacion al tutor o tutores de actividad en el muro ///////////
-             $dql = "
-                        SELECT au FROM LinkComunBundle:AdminUsuario au 
-                        INNER JOIN LinkComunBundle:AdminRolUsuario ru WITH au.id = ru.usuario
-                        WHERE ru.rol = :rol
-                        AND au.empresa = :empresa
-                    ";
-            
-            $query = $em->createQuery($dql);
-            $query->setParameters(['rol'=>3, 'empresa'=>$empresa->getId()]);
-            $tutores = $query->getResult();
-            $tutoresAux = $tutores;
-
-            foreach ($tutores as $tutor) 
-            {
-                $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal())? $tutor->getCorreoPersonal() : null;
-
-                if ($correo) 
-                {
-                    if(!$this->isAuthor($usuario->getId(),$tutoresAux)) //El tutor de turno es quien publico ?
-                    {
-                        $encabezadoUsuario = 'El usuario: '.$usuario->getNombre().' '.$usuario->getApellido().', '.$tipoMensaje.' lo siguiente: ';
-                        $categoria = $this->obtenerProgramaCurso($pagina->getId());
-
-                        $parametros_correo = [
-                                   
-                                                'twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
-                                                'datos' => 
-                                                            [
-                                                            'leccion' => $pagina->getNombre(),
-                                                            'categoria' => $categoria['categoria'],
-                                                            'nombrePrograma' => $categoria['nombre'],
-                                                            'leccion' => $pagina->getNombre(),
-                                                            'encabezadoUsuario' => $encabezadoUsuario,
-                                                            'mensaje' => $mensaje,
-                                                            'usuarioPadre' => $usuarioPadre,
-                                                            'mensajePadre' => $mensajePadre,
-                                                            'empresa' => $empresa->getNombre()
-                                                            ],
-                                                'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
-                                                'remitente' => $this->container->getParameter('mailer_user'),
-                                                'destinatario' => $correo
-
-                                ];
-
-                        $correo = $f->sendEmail($parametros_correo);
-
-
-                    // $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('Realizo una publicación en el muro de').' '.$pagina->getNombre().'.';
-                    // $descripcion = ($tipoMensaje=='Respondió')?  $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('Realizo una publicación en el muro de').' '.$pagina->getNombre().'.';: $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('Realizo una publicación en el muro de').' '.$pagina->getNombre().'.';
-
-                    $descripcion = $this->tipoDescripcion($tipoMensaje,$usuario,$pagina,$parametros_correo['datos']['usuarioPadre']);
-
-                    $tipoAlarma = ($tipoMensaje=='Respondió')? 'respuesta_muro':'aporte_muro';
-
-                    $f->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
-                   }
-                    
-                }
-            }
-
-             
-
-
-        
+        $categoria = $this->obtenerProgramaCurso($pagina->getId());
+        $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
+        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $pagina, $muro, $categoria, $empresa,$tipoMensaje );
+    
 
         $puntos = $pagina_log->getPuntos() + $puntos_agregados;
         $pagina_log->setPuntos($puntos);
@@ -478,39 +418,10 @@ class LeccionController extends Controller
 
     }
 
-    protected function tipoDescripcion($tipoMensaje,$usuario,$pagina,$author)
-    {
-        $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('Realizo una publicación en el muro de').' '.$pagina->getNombre().'.';
+    
 
-        if($tipoMensaje=='Respondió')
-        {
-           $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('Respondió en el muro al comentario de').' '.$author.'.';
-        }
-
-        return $mensaje;
-       
-    }
-
-    protected function isAuthor($usuarioId,$tutores)
-    {
-        $retorno = false;
-        $i = 0;
-
-        $longitud = count($tutores);
-        while(!$retorno && $i<$longitud)
-        {
-            if($usuarioId == $tutores[$i]->getId())
-            {
-                $retorno = true;
-            }
-
-            $i++;
-        }
-        
-        return $retorno;
-    }
-
-     protected function obtenerProgramaCurso($paginaId)
+    
+    public function obtenerProgramaCurso($paginaId)
         {
             $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
             while ($pagina->getPagina())
@@ -525,6 +436,7 @@ class LeccionController extends Controller
 
             return ['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
         }
+
 
     public function ajaxDivResponseAction(Request $request)
     {
