@@ -599,7 +599,7 @@ class NotificacionController extends Controller
                 }
             }
 
-            /*if ($notificacion_programada->getFechaDifusion()->format('Y-m-d') == date('Y-m-d'))
+            if ($notificacion_programada->getFechaDifusion()->format('Y-m-d') == date('Y-m-d'))
             {
                 
                 // Se envía la notificación de una vez
@@ -613,42 +613,47 @@ class NotificacionController extends Controller
                     // Limpieza de resultados
                     $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
                     $reg = str_replace('"}', '', $reg);
+
+                    // Se descomponen los elementos del resultado
+                    list($np_id, $usuario_id, $login, $clave, $nombre, $apellido, $correo, $asunto, $mensaje) = explode("__", $reg);
+
+                    if ($correo != '')
+                    {
+
+                        // Sustitución de variables en el texto
+                        $comodines = array('%%usuario%%', '%%clave%%');
+                        $reemplazos = array($login, $clave);
+                        $mensaje = str_replace($comodines, $reemplazos, $mensaje);
+
+                        $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
+                                                   'datos' => array('nombre' => $nombre,
+                                                                    'apellido' => $apellido,
+                                                                    'mensaje' => $mensaje),
+                                                   'asunto' => $asunto,
+                                                   'remitente' => $this->container->getParameter('mailer_user'),
+                                                   'destinatario' => $correo);
+                        $correo = $f->sendEmail($parametros_correo);
+
+                        $notificacion_programada->setEnviado(true);
+                        $em->persist($notificacion_programada);
+                        $em->flush();
+
+                        if ($notificacion_programada->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
+                        {
+                            $npgs = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                            foreach ($npgs as $npg)
+                            {
+                                $npg->setEnviado(true);
+                                $em->persist($npg);
+                                $em->flush();
+                            }
+                        }
+
+                    }
                     
-                    $valor = explode('__', $r[$i]['resultado']);
-                  $_nombre = explode('"', $valor[0]);
-                  $nombre = $_nombre[1];
-                  $apellido = $valor[1];
-                  $correo = $valor[2];
-                  $asunto = $valor[3];
-                  $mensaje = $valor[4];
-                  $_id = explode('"', $valor[5]);
-                  $id = $_id[0];
-                  $output->writeln('NOMBRE: '.$nombre.' APELLIDO: '.$apellido.' EMAIL: '.$correo.' ASUNTO: '.$asunto.' MENSAJE: '.$mensaje.' ID NOTIFICACION: '.$id[0]);
-                  $parametros = array();
-                  $parametros= array('twig'=>$template,
-                                     'asunto'=>$asunto,
-                                     'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación2.0'),
-                                     'destinatario'=>$correo,
-                                     'datos'=>array('mensaje' => $mensaje, 'nombre'=> $nombre, 'apellido' => $apellido ));
-
-                  $f->sendEmailCommand($parametros);
-
-                  $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($id);
-                  $programacion->setEnviado(true);
-                        
-                  $em->persist($programacion);
-                  $em->flush();
-
-                    // busco si hay notificaciones hijas de la programación para cambiar a enviado
-                  $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
-                  foreach ($grupo_programada as $individual) {
-                      $individual->setEnviado(true);
-                      $em->persist($individual);
-                      $em->flush();
-                  }
                 }
-                return new Response(var_dump($usuarios));
-            }*/
+                
+            }
 
             return $this->redirectToRoute('_showNotificacionProgramada', array('notificacion_programada_id' => $notificacion_programada->getId()));
 
