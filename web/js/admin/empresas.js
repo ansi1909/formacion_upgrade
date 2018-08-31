@@ -74,12 +74,30 @@ $(document).ready(function() {
 	$('.downloadDb').click(function(){
 		desactivarEnlaces();
 		var empresaId = $(this).attr('data-empresa');
-		$('.downloadDb').remove();
-		$('#excel-loader').show();
-		timer = setInterval(function(){
-        agregarBotonDescarga(empresaId);
-    }, 60000);
-
+		$('#botonExcel'+empresaId).remove();
+		$('#excel-loader'+empresaId).show();
+		
+		$.ajax({/*------------------------------ peticion para gegerar excel -------------*/
+			type: "POST",
+			url: $('#formEmpresa'+empresaId).attr('action'),
+			async: true,
+			data: $('#formEmpresa'+empresaId).serialize(),
+			dataType: "json",
+			success: function(data) {
+				activarEnlaces()
+				$('#excel-loader'+empresaId).hide();
+				$('#acciones'+empresaId).append(data.html);
+				// $('#excel-loader').hide();
+	   //      	$("#excel-link").attr("href", data.archivo);
+	   //      	$('#excel-link').show();
+			},
+			error: function(){
+				// $('#div-error-server').html($('#error-msg').val());
+				// notify($('#div-error-server').html());
+				// $('.descargable').hide();
+    // 			$('.generable').show();
+			}
+		});
 
 
 	})//fin de la funcion
@@ -96,8 +114,8 @@ function agregarBotonDescarga(empresaId)
 
 function activarEnlaces()
 {
-	$('.enlaces').addClass('enlaceInactivo');
-	$('.enlaces').removeClass('enlaceActivo');
+	$('.enlaces').removeClass('enlaceInactivo');
+	$('.enlaces').addClass('enlaceActivo');
 
 	return 0;
 }

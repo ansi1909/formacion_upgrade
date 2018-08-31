@@ -14,7 +14,7 @@
 
 <br>
 <div class="row align-items-center justify-content-between">
-    <input type="text" id="registradosEmpresa" value="{{ path('_registradosEmpresa') }}">
+  
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Empresas'|trans }}</h3>
     </div>
@@ -68,14 +68,18 @@
                                 </td>
                                 <td class="center" id="acciones{{empresa.id}}" >
 
-                                   
+                                    <form action="{{ path('_registradosEmpresa') }}" method="post" id = "{{'formEmpresa'~empresa.id}}">
+                                          <input type="hidden" name = "empresa_id" value = "{{empresa.id}}">
+                                    </form>
+
                                     <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm enlaces"><span class="fa fa-pencil"></span></a>
 
                                     <a href="#" class="btn btn-link btn-sm {% if empresa.delete_disabled == '' %}delete{% endif %} {{ empresa.delete_disabled }} enlaces" data="{{ empresa.id }}"><span class="fa fa-trash enlaces"></span></a>
 
-                                     <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none">
+                                     <img id="{{'excel-loader' ~ empresa.id}}" class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none">
 
-                                    <a href="#" data-empresa="{{ empresa.id }}" class="btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-download"></span></a >
+                                     <a href="#" data-empresa="{{ empresa.id }}" id="{{'botonExcel'~ empresa.id}}" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >
+
                                 </td>
                 			</tr>
                 		{% endfor %}
