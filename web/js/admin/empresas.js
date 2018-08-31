@@ -92,6 +92,8 @@ $(document).ready(function() {
 	   //      	$('#excel-link').show();
 			},
 			error: function(){
+				$('#excel-loader'+empresaId).hide();
+				$('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
 				// $('#div-error-server').html($('#error-msg').val());
 				// notify($('#div-error-server').html());
 				// $('.descargable').hide();
