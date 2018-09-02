@@ -55,7 +55,7 @@ class UsersProgramsCommand extends ContainerAwareCommand
                              'destinatario'=>$correo,
                              'datos'=>array('mensaje' => $mensaje, 'nombre'=> $nombre, 'apellido' => $apellido ));
 
-          $f->sendEmailCommand($parametros);
+          $f->sendEmail($parametros);
 
       }
    }
