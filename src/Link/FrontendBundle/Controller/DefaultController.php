@@ -612,9 +612,9 @@ class DefaultController extends Controller
         foreach ($notificaciones as $notificacion)
         {
             
-            if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro']) {
-                $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().'>
-                            <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
+            if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_muro'] ) {
+                // $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().'>
+                //             <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
 
             }
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) 
@@ -860,10 +860,6 @@ class DefaultController extends Controller
         $em->persist($comentario);
         $em->flush();
 
-        // $categoria = $this->obtenerProgramaCurso_($comentario->getPagina()->getId());
-        // $tutores = $f->getTutoresEmpresa($usuario->getEmpresa()->getId(), $yml);
-        // $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $comentario->getPagina(),  $comentario, $categoria, $usuario->getEmpresa(), 'Respondió' );
-
         $img = $usuario->getFoto() ? $upload.$usuario->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
         $autor = $this->get('translator')->trans('Yo');
         $fechah = $this->get('translator')->trans('Ahora');
@@ -883,7 +879,7 @@ class DefaultController extends Controller
                             </a>
                         </div>
                         <div class="comm-body text-justify">
-                            <p class="textMuroNoti">'. $mensaje .'</p>
+                            <p class="textMuroNoti">'. $mensaje .'Este es el controlador</p>
                         </div>
                     </li>';
 
@@ -893,19 +889,5 @@ class DefaultController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-     public function obtenerProgramaCurso_($paginaId)
-        {
-            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
-            while ($pagina->getPagina())
-            {
-                $paginaId = $pagina->getPagina()->getId();
-                $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
-            }
-
-            $categoria = $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->find($pagina->getCategoria()->getId());
-
-           
-
-            return ['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
-        }
+    
 }
