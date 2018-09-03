@@ -71,7 +71,9 @@ $(document).ready(function() {
 		sweetAlertDelete(empresa_id, 'AdminEmpresa');
 	});
 
-	$('.downloadDb').click(function(){
+	$('#dt .downloadDb').on('click',function(){
+		$('#div-active-alert').hide();
+		$('#div-active-warning').hide();
 		desactivarEnlaces();
 		var empresaId = $(this).attr('data-empresa');
 		$('#botonExcel'+empresaId).remove();
@@ -86,18 +88,24 @@ $(document).ready(function() {
 			success: function(data) {
 				activarEnlaces()
 				$('#excel-loader'+empresaId).hide();
-				$('#acciones'+empresaId).append(data.html);
-				// $('#excel-loader').hide();
-	   //      	$("#excel-link").attr("href", data.archivo);
-	   //      	$('#excel-link').show();
+				if (data.ok == 1) {
+				   $('#acciones'+empresaId).append(data.html);
+				}
+				else //no existen registros
+				{
+				  $('#div-active-warning').html(data.html);
+				  $('#div-active-warning').show();
+				  $('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
+				  activarEnlaces()
+				}
+				
 			},
 			error: function(){
 				$('#excel-loader'+empresaId).hide();
 				$('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
-				// $('#div-error-server').html($('#error-msg').val());
-				// notify($('#div-error-server').html());
-				// $('.descargable').hide();
-    // 			$('.generable').show();
+				activarEnlaces()
+				$('#div-active-alert').show();
+				
 			}
 		});
 
@@ -106,13 +114,7 @@ $(document).ready(function() {
 
 });
 
-function agregarBotonDescarga(empresaId)
-{
-	// $('#'+'empresa'+empresaId).append(" <a href="#" data-empresa="+empresaId+" class="+'btn btn-link btn-sm enlaces downloadDb'+" ><span class="+'fa fa-download'
-	// 	"></span></a >");
-	// activarEnlaces();
-	// $('#excel-loader').hide();
-}
+
 
 function activarEnlaces()
 {
