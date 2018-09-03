@@ -29,13 +29,16 @@
             	<h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
         	</div>
         	<div class="card-block">
-                <div class="row" id="div-active-alert" style="display:none;">
+                <div class="row"  >
                     <div class="col-sm-2">
                         &nbsp;
                     </div>
                     <div class="col-sm-12">
-                        <div class="alert alert-danger" role="alert"> 
+                        <div class="alert alert-danger" id="div-active-alert" role="alert" style="display:none;"> 
                             <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        </div>
+                         <div class="alert alert-warning" id="div-active-warning" role="alert" style="display:none;"> 
+                           
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -66,7 +69,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td class="center" id="acciones{{empresa.id}}" >
+                                <td class="center" class="acciones" id="acciones{{empresa.id}}" >
 
                                     <form action="{{ path('_registradosEmpresa') }}" method="post" id = "{{'formEmpresa'~empresa.id}}">
                                           <input type="hidden" name = "empresa_id" value = "{{empresa.id}}">
