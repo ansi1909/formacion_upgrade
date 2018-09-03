@@ -1,9 +1,9 @@
-﻿-- Function: fnnotificacion_programada(integer)
+﻿-- Function: fnrecordatorios_usuarios(date)
 
--- DROP FUNCTION fnnotificacion_programada(integer);
+-- DROP FUNCTION fnrecordatorios_usuarios(date);
 
-CREATE OR REPLACE FUNCTION fnnotificacion_programada(pnotificacion_programada_id integer)
-  RETURNS SETOF text[] AS
+CREATE OR REPLACE FUNCTION fnrecordatorios_usuarios(pfecha date)
+ RETURNS SETOF text[] AS
 $BODY$
 DECLARE
   arr text[];
@@ -13,12 +13,16 @@ DECLARE
   str text;
 BEGIN
 
-    SELECT INTO reg np.id as id, np.tipo_destino_id as tipo_destino_id, np.entidad_id as entidad_id, n.asunto as asunto, n.mensaje as mensaje, n.empresa_id as empresa_id 
+  FOR reg IN 
+    SELECT np.id as id, np.tipo_destino_id as tipo_destino_id, np.entidad_id as entidad_id, n.asunto as asunto, n.mensaje as mensaje, n.empresa_id as empresa_id 
     FROM admin_notificacion_programada np 
     JOIN admin_notificacion n ON np.notificacion_id = n.id 
     JOIN admin_empresa e ON n.empresa_id = e.id 
-    WHERE np.id = pnotificacion_programada_id;
-
+    WHERE np.fecha_difusion = pfecha
+        AND e.activo = true 
+        AND np.grupo_id IS NULL 
+    ORDER BY np.id ASC LOOP
+      
     -- En caso de ser una programacion dirigida a todos usuarios de una empresa
     IF reg.tipo_destino_id = 1 THEN
         FOR rst IN 
@@ -164,8 +168,10 @@ BEGIN
             
     END IF;
 
+  END LOOP;
+
 end;
 $BODY$
-  LANGUAGE 'plpgsql' VOLATILE;
+ LANGUAGE 'plpgsql' VOLATILE;
 
---select * from fnnotificacion_programada(2);
+--select * from fnrecordatorios_usuarios('2018-11-14');

@@ -12,66 +12,90 @@ use Doctrine\ORM\Query\Parameter;
 use Doctrine\DBAL\Connection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Yaml\Yaml;
 
 class UsersScheduledCommand extends ContainerAwareCommand
 {
-      protected function configure()
-      {
-          $this
-          ->setName('link:recordatorio-programados')
-          ->setDescription('Envía por correo notificaciones programadas y recordatorios de la fecha actual')
-          ;
-      }
+    protected function configure()
+    {
+        $this->setName('link:recordatorio-programados')
+        	 ->setDescription('Envía por correo notificaciones programadas y recordatorios de la fecha actual');
+    }
 
-      protected function execute(InputInterface $input, OutputInterface $output)
-      {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
-          //$doctrine = $this->getContainer()->get('doctrine');
-          $em = $this->getContainer()->get('doctrine')->getManager();
-          $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
-          // tomando fecha actual para buscar usuarios que no hallan ingresado en 5 días
-          $fecha = '2018-03-31';
-          $template = "LinkBackendBundle:Programados:emailCommand.html.twig";
-          $consulta = array();
-          $query = $em->getConnection()->prepare('SELECT fnrecordatorios_usuarios(:pfecha) AS resultado;');
-          $query->bindValue(':pfecha', date('Y-m-d'), \PDO::PARAM_STR);
-          $query->execute();
-          $consulta = $query->fetchAll();
-          $output->writeln(var_dump($consulta));
-          $output->writeln('CANTIDAD: '.count($consulta));
-          for ($i = 0; $i < count($consulta); $i++) {
-              $valor = explode('__', $consulta[$i]['resultado']);
-              $_nombre = explode('"', $valor[0]);
-              $nombre = $_nombre[1];
-              $apellido = $valor[1];
-              $correo = $valor[2];
-              $asunto = $valor[3];
-              $mensaje = $valor[4];
-              $_id = explode('"', $valor[5]);
-              $id = $_id[0];
-              $output->writeln('NOMBRE: '.$nombre.' APELLIDO: '.$apellido.' EMAIL: '.$correo.' ASUNTO: '.$asunto.' MENSAJE: '.$mensaje.' ID NOTIFICACION: '.$id[0]);
-              $parametros = array();
-              $parametros= array('twig'=>$template,
-                                 'asunto'=>$asunto,
-                                 'remitente'=>array('tutorvirtual@formacion2puntocero.com' => 'Formación2.0'),
-                                 'destinatario'=>$correo,
-                                 'datos'=>array('mensaje' => $mensaje, 'nombre'=> $nombre, 'apellido' => $apellido ));
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
+        $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
+        $base = $yml['parameters']['link_plataforma'];
+        
+        $query = $em->getConnection()->prepare('SELECT fnrecordatorios_usuarios(:pfecha) AS resultado;');
+        $query->bindValue(':pfecha', date('Y-m-d'), \PDO::PARAM_STR);
+        $query->execute();
+        $r = $query->fetchAll();
 
-              $f->sendEmail($parametros);
+        $output->writeln('CANTIDAD: '.count($r));
 
-              $programacion = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($id);
-              $programacion->setEnviado(true);
-                    
-              $em->persist($programacion);
-              $em->flush();
+        $background = $yml['parameters']['folders']['uploads'].'recursos/decorate_qr.svg';
+        $logo = $yml['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
 
-                // busco si hay notificaciones hijas de la programación para cambiar a enviado
-              $grupo_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($programacion->getId());
-              foreach ($grupo_programada as $individual) {
-                  $individual->setEnviado(true);
-                  $em->persist($individual);
-                  $em->flush();
-              }
-          }
-      }
+        for ($i = 0; $i < count($r); $i++) 
+        {
+
+            // Limpieza de resultados
+            $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
+            $reg = str_replace('"}', '', $reg);
+
+            $output->writeln(var_dump($reg));
+
+            // Se descomponen los elementos del resultado
+            list($np_id, $usuario_id, $login, $clave, $nombre, $apellido, $correo, $asunto, $mensaje, $empresa_id) = explode("__", $reg);
+
+            if ($correo != '')
+            {
+
+                // Sustitución de variables en el texto
+                $comodines = array('%%usuario%%', '%%clave%%');
+                $reemplazos = array($login, $clave);
+                $mensaje = str_replace($comodines, $reemplazos, $mensaje);
+
+                $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
+                                           'datos' => array('nombre' => $nombre,
+                                                            'apellido' => $apellido,
+                                                            'mensaje' => $mensaje,
+                                                            'background' => $background,
+                                                            'logo' => $logo,
+                                                            'link_plataforma' => $base.$empresa_id),
+                                           'asunto' => $asunto,
+                                           'remitente' => $yml['parameters']['mailer_user'],
+                                           'destinatario' => $correo);
+                $ok = $f->sendEmail($parametros_correo);
+                if ($ok)
+                {
+                	$output->writeln('Correo enviado a '.$correo);
+                }
+
+                $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                $notificacion_programada->setEnviado(true);
+                $em->persist($notificacion_programada);
+                $em->flush();
+
+                if ($notificacion_programada->getTipoDestino()->getId() == $yml2['parameters']['tipo_destino']['grupo'])
+                {
+                    $npgs = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    foreach ($npgs as $npg)
+                    {
+                        $npg->setEnviado(true);
+                        $em->persist($npg);
+                        $em->flush();
+                    }
+                }
+
+            }
+            
+        }
+
+    }
 }

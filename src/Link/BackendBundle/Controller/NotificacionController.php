@@ -608,7 +608,12 @@ class NotificacionController extends Controller
                 $query->execute();
                 $r = $query->fetchAll();
 
-                for ($i = 0; $i < count($r); $i++) {
+                $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_qr.svg';
+                $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
+
+                for ($i = 0; $i < count($r); $i++) 
+                {
 
                     // Limpieza de resultados
                     $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
@@ -628,7 +633,10 @@ class NotificacionController extends Controller
                         $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
                                                    'datos' => array('nombre' => $nombre,
                                                                     'apellido' => $apellido,
-                                                                    'mensaje' => $mensaje),
+                                                                    'mensaje' => $mensaje,
+                                                                    'background' => $background,
+                                                                    'logo' => $logo,
+                                                                    'link_plataforma' => $link_plataforma),
                                                    'asunto' => $asunto,
                                                    'remitente' => $this->container->getParameter('mailer_user'),
                                                    'destinatario' => $correo);

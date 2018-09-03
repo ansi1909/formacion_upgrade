@@ -33,6 +33,9 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
         $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
         $translator = $this->getContainer()->get('translator');
         $base = $yml2['parameters']['base_url'];
+        $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_qr.svg';
+        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $yml2['parameters']['link_plataforma'];
 
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
                                     JOIN f.empresa e 
@@ -95,8 +98,11 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
                     $ruta = $this->getContainer()->get('router')->generate('_detalleColaborativo', array('foro_id' => $foro->getId()));
                     $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativoParticipantes.html.twig',
                                                'datos' => array('descripcion' => $descripcion,
-                                                                'href' => $base.$ruta),
-                                               'asunto' => 'Formación 2.0: Nuevo espacio colaborativo.',
+                                                                'href' => $base.$ruta,
+                                                                'background' => $background,
+                                                                'logo' => $logo,
+                                                                'link_plataforma' => $link_plataforma.$usuario_nivel->getEmpresa()->getId()),
+                                               'asunto' => 'Formación 2.0: '.$translator->trans('Nuevo espacio colaborativo').'.',
                                                'remitente' => $yml['parameters']['mailer_user'],
                                                'destinatario' => $correo_participante);
                     $correo = $f->sendEmail($parametros_correo);

@@ -429,6 +429,9 @@ class ColaborativoController extends Controller
         $em->flush();
 
         // Generación de alarmas
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_qr.svg';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
         if ($foro_main->getUsuario()->getId() != $usuario->getId() && $foro_main->getId() == $foro->getForo()->getId())
         {
 
@@ -439,7 +442,10 @@ class ColaborativoController extends Controller
             if ($correo_tutor)
             {
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativo.html.twig',
-                                           'datos' => array('mensaje' => $mensaje),
+                                           'datos' => array('mensaje' => $mensaje,
+                                                            'background' => $background,
+                                                            'logo' => $logo,
+                                                            'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación 2.0: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
@@ -724,6 +730,9 @@ class ColaborativoController extends Controller
 
         $archivo_arr = $f->archivoForo($foro_archivo, $session->get('usuario')['id']);
         $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_qr.svg';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$foro->getUsuario()->getEmpresa()->getId();
 
         // Generación de alarmas
         if ($foro->getUsuario()->getId() != $usuario->getId() && $generar_alarma)
@@ -737,7 +746,10 @@ class ColaborativoController extends Controller
             {
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailArchivo.html.twig',
                                            'datos' => array('descripcion' => $descripcion,
-                                                            'descarga' => $href),
+                                                            'descarga' => $href,
+                                                            'background' => $background,
+                                                            'logo' => $logo,
+                                                            'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación 2.0: '.$descripcion_alarma,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
