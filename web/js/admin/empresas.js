@@ -71,7 +71,31 @@ $(document).ready(function() {
 		sweetAlertDelete(empresa_id, 'AdminEmpresa');
 	});
 
-	$('#dt .downloadDb').on('click',function(){
+	
+ observe();
+});
+
+
+
+function activarEnlaces()
+{
+	$('.enlaces').removeClass('enlaceInactivo');
+	$('.enlaces').addClass('enlaceActivo');
+
+	return 0;
+}
+
+function desactivarEnlaces()
+{
+	$('.enlaces').removeClass('enlaceActivo');
+	$('.enlaces').addClass('enlaceInactivo');
+
+	return 0;
+}
+
+function observe()
+{
+	$('.downloadDb').click(function(){
 		$('#div-active-alert').hide();
 		$('#div-active-warning').hide();
 		desactivarEnlaces();
@@ -97,6 +121,8 @@ $(document).ready(function() {
 				  $('#div-active-warning').show();
 				  $('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
 				  activarEnlaces()
+				 $( ".downloadDb" ).unbind( "click" );
+				  observe()
 				}
 				
 			},
@@ -105,29 +131,12 @@ $(document).ready(function() {
 				$('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
 				activarEnlaces()
 				$('#div-active-alert').show();
+				$( ".downloadDb" ).unbind( "click" );
+				observe();
 				
 			}
 		});
 
 
 	})//fin de la funcion
-
-});
-
-
-
-function activarEnlaces()
-{
-	$('.enlaces').removeClass('enlaceInactivo');
-	$('.enlaces').addClass('enlaceActivo');
-
-	return 0;
-}
-
-function desactivarEnlaces()
-{
-	$('.enlaces').removeClass('enlaceActivo');
-	$('.enlaces').addClass('enlaceInactivo');
-
-	return 0;
 }
