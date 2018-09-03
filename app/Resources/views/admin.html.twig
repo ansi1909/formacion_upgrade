@@ -379,9 +379,11 @@
                 function applyDataTable()
                 {
                     $('#dt, #dt2, .data_table').DataTable({
-                        responsive: true,
+                        responsive: false,
                         pageLength:10,
                         sPaginationType: "full_numbers",
+                        lengthChange: false,
+                        info: false,
                         oLanguage: {
                             "sProcessing":    "{{ 'Procesando'|trans }}...",
                             "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",

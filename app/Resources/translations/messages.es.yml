@@ -1,3 +1,4 @@
+académicas: académicas
 Acceso: Acceso
 Acceso a la página: Acceso a la página
 Acceso al Backend: Acceso al Backend
@@ -313,6 +314,7 @@ Entidad: Entidad
 Entrar: Entrar
 Enviado: Enviado
 Enviar: Enviar
+Equivalente a: Equivalente a
 Error al obtener el grupo de selección: Error al obtener el grupo de selección
 Error al obtener el historial.: Error al obtener el historial.
 Error al obtener la repuesta: Error al obtener la repuesta

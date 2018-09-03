@@ -61,7 +61,9 @@ class GrupoController extends Controller
 
         }
         
-        $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+        $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e 
+                                    ORDER BY e.nombre ASC');
+        $empresas = $query->getResult();
 
         return $this->render('LinkBackendBundle:Grupo:index.html.twig', array('empresas' => $empresas,
                                                                               'usuario' => $usuario,

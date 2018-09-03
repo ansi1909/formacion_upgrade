@@ -1,3 +1,4 @@
+académicas: academics
 Acceso: Access
 Acceso a la página: Access to this page
 Acceso al Backend: Backend access
@@ -313,6 +314,7 @@ Entidad: Entity
 Entrar: Get in
 Enviado: Sent
 Enviar: Send
+Equivalente a: Equivalent to
 Error al obtener el grupo de selección: Error ocurred retrieving the selection group
 Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener la repuesta: Error getting the answer
