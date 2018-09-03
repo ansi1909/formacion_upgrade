@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
-    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
         .menu{
             width: 60%;
@@ -105,7 +104,7 @@
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class="d-flex flex-column">
-                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}">
+                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}" data-toggle="tooltip" data-placement="bottom">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                         <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
@@ -200,7 +199,7 @@
                         <div class="row pl-3 align-items-center justify-content-center">
                             <div class="col-12">
                                 <div class="form-group text-right">
-                                    <a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
+                                    <a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +252,7 @@
                         </div>
                         <div class="col-2">
                             <a href="#" class="fileinput-button">
-                                <span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}">file_upload</span>
+                                <span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span>
                                 <input id="fileupload" type="file" name="files[]" multiple>
                             </a>
                         </div>
@@ -387,7 +386,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>

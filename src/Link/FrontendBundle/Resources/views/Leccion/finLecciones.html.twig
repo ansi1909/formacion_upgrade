@@ -2,7 +2,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
     <style>
         .menu{
             width: 60%;
@@ -157,8 +156,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
-    <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
     <script type="text/javascript">
         $('.continuar').click(function(){
             var button = $(this);
@@ -166,10 +163,6 @@
             $('#wait').show();
             var id = button.attr('id');
             window.location.replace($('#url_'+id).val());
-        });
-
-        $( document ).tooltip({
-          track: true
         });
     </script>
 {% endblock %}

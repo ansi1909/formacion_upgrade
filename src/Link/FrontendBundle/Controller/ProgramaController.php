@@ -160,7 +160,7 @@ class ProgramaController extends Controller
                                 $titulo_leccion = '<a href="'.$enlace.'" class="color-light-grey" >
                                                      <li class="my-1" >
                                                         <span class="d-flex">'.$sub_subpagina['nombre'].'</span>
-                                                         <i class="material-icons d-flex icVc " title="'.$icono['tooltit'].'" >'.$icono['nombre'].'</i>
+                                                         <i class="material-icons d-flex icVc " title="'.$icono['tooltit'].'" data-toggle="tooltip" data-placement="bottom">'.$icono['nombre'].'</i>
                                                      </li>
                                                   <a/>';
                             }

@@ -230,9 +230,9 @@ class ColaborativoController extends Controller
                             </div>
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
-                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
                                     <span class="color-light-grey barra">|</span>
-                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'" data-toggle="tooltip" data-placement="bottom">clear</span></a>
                                 </div>
                             </div>
                         </div>
@@ -779,9 +779,9 @@ class ColaborativoController extends Controller
                             </div>
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
-                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
                                     <span class="color-light-grey barra">|</span>
-                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'" data-toggle="tooltip" data-placement="bottom">clear</span></a>
                                 </div>
                             </div>
                         </div>
@@ -801,7 +801,7 @@ class ColaborativoController extends Controller
                             </div>
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
-                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
                                 </div>
                             </div>
                         </div>

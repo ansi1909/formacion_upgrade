@@ -2,7 +2,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
     <style>
@@ -33,7 +32,7 @@
                     <input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
                     <input type="hidden" id="base_upload" name="base_upload" value="recursos/usuarios/{{ empresa_id }}/">
                     {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
-                    <a class="fileinput-button" data-placement="bottom" title="{{ 'Cambiar imagen'|trans }}">
+                    <a class="fileinput-button" title="{{ 'Cambiar imagen'|trans }}" data-toggle="tooltip" data-placement="bottom">
                         <img src="{{ img }}" class="img-user-pic" id="perfil">
                         <input id="fileupload" type="file" name="files[]" multiple>
                     </a>
@@ -211,7 +210,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
     <script type="text/javascript" src="{{ asset('front/js/acordion.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
