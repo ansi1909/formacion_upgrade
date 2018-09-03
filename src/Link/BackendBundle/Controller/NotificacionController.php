@@ -608,7 +608,7 @@ class NotificacionController extends Controller
                 $query->execute();
                 $r = $query->fetchAll();
 
-                $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_qr.svg';
+                $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
                 $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
                 $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
 

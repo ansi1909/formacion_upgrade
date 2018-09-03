@@ -57,7 +57,7 @@
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
                     <div class="d-flex flex-column">
                         <div class="wrapperDdApps">
-                            <a href="#" id="apps" title="{{ 'Ayuda'|trans }}">
+                            <a href="#" id="apps" title="{{ 'Ayuda'|trans }}" data-toggle="tooltip" data-placement="bottom">
                                 <div class="appFun">
                                     <i class="material-icons mr-3 color-light-grey" >contact_support</i>
                                 </div>
@@ -144,7 +144,7 @@
                     {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
                     <div class="d-flex flex-column">
                         <div class="wrapperDdMenu" >
-                            <a href="#" class="perfil no-decorate" id="config" title="{{ 'Perfil de usuario'|trans }}">
+                            <a href="#" class="perfil no-decorate" id="config" title="{{ 'Perfil de usuario'|trans }}" data-toggle="tooltip" data-placement="bottom">
                                 {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                                 <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown" >expand_more</span>
                             </a>
@@ -324,6 +324,7 @@
 
         {% block javascripts %}
             <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+            <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
             <script src="{{ asset('front/js/popper.min.js')}}"></script>
             <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('js/front/alarmas.js') }}"></script>
@@ -333,14 +334,6 @@
             <script src="{{ asset('front/js/audio.js') }}"></script>
             <script src="{{ asset('js/front/expireSession.js') }}"></script>
             <script src="{{ asset('js/front/soporte_virtual.js') }}"></script>
-            <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $( document ).tooltip({
-                        track: true
-                    });
-                });
-            </script>
         {% endblock %}
     </body>
 </html>

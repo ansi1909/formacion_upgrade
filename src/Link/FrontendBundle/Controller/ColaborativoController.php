@@ -429,7 +429,7 @@ class ColaborativoController extends Controller
         $em->flush();
 
         // Generación de alarmas
-        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_qr.svg';
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
         if ($foro_main->getUsuario()->getId() != $usuario->getId() && $foro_main->getId() == $foro->getForo()->getId())
@@ -730,7 +730,7 @@ class ColaborativoController extends Controller
 
         $archivo_arr = $f->archivoForo($foro_archivo, $session->get('usuario')['id']);
         $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
-        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_qr.svg';
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro->getUsuario()->getEmpresa()->getId();
 

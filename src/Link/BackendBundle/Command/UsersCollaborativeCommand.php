@@ -33,7 +33,7 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
         $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
         $translator = $this->getContainer()->get('translator');
         $base = $yml2['parameters']['base_url'];
-        $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_qr.svg';
+        $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
         $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
 

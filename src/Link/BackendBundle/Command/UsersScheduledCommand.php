@@ -38,7 +38,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
 
         $output->writeln('CANTIDAD: '.count($r));
 
-        $background = $yml['parameters']['folders']['uploads'].'recursos/decorate_qr.svg';
+        $background = $yml['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
         $logo = $yml['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
 
         for ($i = 0; $i < count($r); $i++) 
