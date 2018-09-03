@@ -209,6 +209,7 @@ class ForoController extends Controller
 
         $return = array('html' => $html);
 
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
@@ -246,6 +247,11 @@ class ForoController extends Controller
         {
             $delete_disabled = $f->linkEliminar($coment->getId(), 'CertiForo');
             $delete = $delete_disabled=='' ? 'delete' : '';
+            $archivos = $em->createQuery("SELECT file FROM LinkComunBundle:CertiForoArchivo file
+                                   WHERE file.foro = :foro_id
+                                   AND file.usuario = :usuario_id
+                                   ORDER BY m.id ASC")
+                     ->setParameters(array('foro_id' => $foro_id, 'usuario_id'=> $coment->getUsuario()->getId()));
             
             $html .= '<tr>
                         <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
@@ -255,7 +261,13 @@ class ForoController extends Controller
                           if($coment->getUsuario()->getId() == $usuario_id){
                              $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
                           }
-                           $html .= '<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
+                           $html .= '<a href="#" title="'.$this->get('translator')->trans("Archivos").'" class="btn btn-link btn-sm "><span class="fa fa-download"></span></a>';
+                           if($archivos)
+                           {
+                              $html .='<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>';
+                           }
+
+                           $html .='
                         </td>
                     </tr>';
         }
