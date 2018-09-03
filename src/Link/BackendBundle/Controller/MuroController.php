@@ -47,16 +47,35 @@ class MuroController extends Controller
 
         if ($usuario->getEmpresa()) {
             $usuario_empresa = 1;
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
-                                       WHERE e.activo = 'true'
-                                       AND e.muroActivo = 'true'
-                                       AND e.pagina = p.id
-                                       AND p.pagina IS NULL
-                                       AND e.empresa = :empresa_id
-                                       ORDER BY p.id ASC")
-                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
-            $paginas = $query->getResult();
+
+            $str = '';
+            $tiene = 0;
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        JOIN pe.pagina p
+                                        WHERE p.pagina IS NULL
+                                        AND pe.empresa = :empresa_id 
+                                        ORDER BY p.id ASC")
+                        ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
+            $pages = $query->getResult();
+
+            //return new Response (var_dump($empresa_id));
+
+            foreach ($pages as $page)
+            {
+                $tiene++;
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
+                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
+                if ($subPaginas['tiene'] > 0)
+                {
+                    $str .= '<ul>';
+                    $str .= $subPaginas['return'];
+                    $str .= '</ul>';
+                }
+                $str .= '</li>';
+            }
+
+            $paginas = array('tiene' => $tiene,
+                             'str' => $str);
 
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
                                        JOIN LinkComunBundle:CertiPaginaEmpresa e
@@ -104,7 +123,6 @@ class MuroController extends Controller
 
         }
 
-        //return new Response (var_dump($empresa_id));
 
         if ($empresa_id)
         {
@@ -140,12 +158,12 @@ class MuroController extends Controller
 
         }
 
-
         return $this->render('LinkBackendBundle:Muro:index.html.twig', array('empresas' => $empresas,
                                                                              'paginas' => $paginas,
                                                                              'usuario_empresa' => $usuario_empresa,
                                                                              'comentarios' => $comentarios,
-                                                                             'usuario' => $usuario));
+                                                                             'usuario' => $usuario,
+                                                                             'empresa_id_a' => $empresa_id));
 
     }
 

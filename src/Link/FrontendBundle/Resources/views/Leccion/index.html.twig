@@ -33,7 +33,7 @@
             </a>
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class="d-flex flex-column">
-                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}">
+                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}" data-toggle="tooltip" data-placement="bottom">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                         <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>

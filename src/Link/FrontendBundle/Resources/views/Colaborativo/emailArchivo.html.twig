@@ -1,22 +1,41 @@
-<table style="width:100%; font-family:Arial; font-size:18px;">
-	<tr style="padding:0px; background-color:#c2e5fc; color:#000000;">
-		<td style="text-align:left;">
-		  	<b>{{ 'Descripción'|trans }}:</b>
-		</td>
-	</tr>
-	<tr style="padding:10px; background-color:#F9FCFE; color:#000000;">
-		<td style="text-align:left;">
-		  	{{ descripcion }}
-		</td>
-	</tr>
-	<tr style="padding:10px; background-color:#c2e5fc; color:#000000;">
-		<td style="text-align:left;">
-		  	<b>{{ 'Descarga el archivo a través del siguiente enlace'|trans }}:</b>
-		</td>
-	</tr>
-	<tr style="padding:10px; background-color:#F9FCFE; color:#000000;">
-		<td style="text-align:left;">
-		  	{{ descarga }}
-		</td>
-	</tr>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'Notificaciones'|trans }} Formación 2.0</title>
+</head>
+<body>
+    <div>
+        <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="background: #f7f7f7; border-collapse: collapse;">
+            <tbody>
+                <tr>
+                    <td align="center" style="font-family: Arial,sans-serif;"> 
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px; border-radius: 25px; background: #fff; margin: 2% auto; box-shadow: 5px 5px 20px rgba(121, 125, 128, .3)">
+                            <tbody>
+                                <tr>
+                                    <td align="left" style="padding-top: 20px; padding-bottom: 20px; background: rgba(92, 174, 230, .5); border-radius: 25px 25px 0 0">
+                                        <a href="{{ link_plataforma }}" style="padding: 0;">
+                                            <img src="{{ logo }}" style="height: auto; width: 175px; position: relative; left: 1rem" alt="">
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr style="background: url('{{ background }}') no-repeat top right;">
+                                    <td align="justify" style="padding: 10% 5%;">
+                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;">
+                                        	{{ descripcion }}
+                                        </p>
+                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;">
+                                        	{{ 'Descarga el archivo a través del siguiente enlace'|trans }}:<br>
+                                        	{{ descarga }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
