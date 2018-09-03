@@ -240,7 +240,7 @@ class EmpresaController extends Controller
          $writer->save($xls);
 
          $archivo = $this->container->getParameter('folders')['uploads'].$path;
-         $html = ($ok == 1)? '<a href ="'.$archivo.'" class="btn btn-link btn-sm enlaces" id="excelFile'.$empresa_id.'"  ><span class="fa fa-download"> </span></a>':'<strong>'.$empresa->getNombre().': </strong>'. '<span>'. $this->get('translator')->trans('no posee participantes registrados').'</span>';
+         $html = ($ok == 1)? '<a href ="'.$archivo.'" class="btn btn-link btn-sm enlaces" id="excelFile'.$empresa_id.'"  ><span class="fa fa-download"> </span></a>':'<strong>'.$empresa->getNombre().', </strong>'. '<span>'. $this->get('translator')->trans('no posee participantes registrados').'</span>';
          
          $return = array('html'=>$html,'ok'=>$ok);
          $return = json_encode($return);
