@@ -16,7 +16,6 @@
         {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
         <link rel="icon" type="image/x-icon" href="{{ img }}" />
         <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
-        <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
         {% set css = app.session.get('empresa').css is defined ? app.session.get('empresa').css is not null and app.session.get('empresa').css != '' ? asset(app.session.get('empresa').css) : asset('front/client_styles/formacion/css/main.css') : asset('front/client_styles/formacion/css/main.css') %}
         <link rel="stylesheet" href="{{ css }}">
     </head>
@@ -58,7 +57,7 @@
                         <div class="col-10 mt-3 text-center">
                             <h3 class="color-light-black">{{ 'Sí deseas volver a intentarlo haz clic aquí'|trans }}:</h3>
                             <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
-                                <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves" data-toogle="tooltip" title="{{ 'Repetir evaluación'|trans }}">replay</span></button>
+                                <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves" title="{{ 'Repetir evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">replay</span></button>
                             </a>
                         </div>
                     </div>
@@ -110,13 +109,13 @@
                             </div>
                             <div class="row mt-5 align-items-center justify-content-center">
                                 <div class="col-3 text-center">
-                                    <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}"> {{ 'Volver al inicio'|trans }} </button>
+                                    <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Volver al inicio'|trans }} </button>
                                 </div>
                                 <div class="col-3 text-center">
-                                    <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}">{{ 'Mostrar resultados'|trans }}</button>
+                                    <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">{{ 'Mostrar resultados'|trans }}</button>
                                 </div>
                                 <div class="col-3 text-center">
-                                    <button type="button" class="btn btn-primary continuar" id="test" title="{{ 'Tomar evaluación'|trans }}"> {{ 'Tomar evaluación'|trans }} </button>
+                                    <button type="button" class="btn btn-primary continuar" id="test" title="{{ 'Tomar evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Tomar evaluación'|trans }} </button>
                                 </div>
                             </div>
                             <br>
@@ -124,26 +123,26 @@
                             {% if continue_button.next_lesson != 0 %}
                                 <div class="row mt-5 align-items-center justify-content-center">
                                     <div class="col-3 text-center">
-                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}"> {{ 'Volver al inicio'|trans }} </button>
+                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Volver al inicio'|trans }} </button>
                                     </div>
                                     <div class="col-3 text-center">
-                                        <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}">{{ 'Mostrar resultados'|trans }}</button>
+                                        <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">{{ 'Mostrar resultados'|trans }}</button>
                                     </div>
                                     <div class="col-3 text-center">
-                                        <button type="button" class="btn btn-primary continuar" id="next" title="{{ 'Continuar al siguiente contenido'|trans }}"> {{ 'Continuar'|trans }} </button>
+                                        <button type="button" class="btn btn-primary continuar" id="next" title="{{ 'Continuar al siguiente contenido'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Continuar'|trans }} </button>
                                     </div>
                                 </div>
                             {% else %}
                                 {# Ir a la pantalla de imprimir certificado y constancia de notas #}
                                 <div class="row mt-5 align-items-center justify-content-center">
                                     <div class="col-3 text-center">
-                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}"> {{ 'Volver al inicio'|trans }} </button>
+                                        <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Volver al inicio'|trans }} </button>
                                     </div>
                                     <div class="col-3 text-center">
-                                        <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}">{{ 'Mostrar resultados'|trans }}</button>
+                                        <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">{{ 'Mostrar resultados'|trans }}</button>
                                     </div>
                                     {#<div class="col-3 text-center">
-                                        <button type="button" class="btn btn-primary continuar" id="next" title="{{ 'Continuar al siguiente contenido'|trans }}"> {{ 'Continuar'|trans }} </button>
+                                        <button type="button" class="btn btn-primary continuar" id="next" title="{{ 'Continuar al siguiente contenido'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Continuar'|trans }} </button>
                                     </div>#}
                                 </div>
                             {% endif %}
@@ -221,7 +220,6 @@
 
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
         <script src="{{ asset('front/js/custom.js') }}"></script>
         <script src="{{ asset('js/front/expireSession.js') }}"></script>
         <script type="text/javascript">
@@ -231,10 +229,6 @@
                 $('#wait').show();
                 var id = button.attr('id');
                 window.location.replace($('#url_'+id).val());
-            });
-
-            $( document ).tooltip({
-              track: true
             });
         </script>
 

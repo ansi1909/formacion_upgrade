@@ -837,41 +837,6 @@ class Functions
 
 	}
 
-	public function emailUsuarios($usuarios, $notificacion, $template, $yml, $link)
-	{
-		$controller = 'RecordatoriosCommand';
-      	$parametros = array();
-      	
-		foreach ($usuarios as $usuario) {
-
-		 //Si es una notificacion de bienvenida se anexa al mensaje el link de la pltaforma para el usuario junto a sus credenciales	
-		  if($notificacion->getTipoNotificacion()->getId() === $yml['parameters']['notificacion_programada']['bienvenida'])
-		  {
-		  	 
-		  	 $link = $link.$usuario->getEmpresa()->getId();
-		  	 $mensaje=$notificacion->getMensaje().'<br>'.
-		  	 									  '<p><B>Nombre de usuario: </B>'.$usuario->getLogin().'</p><BR>'.
-		  	 									  '<p><B>Contraseña: </B>'.$usuario->getClave().'</p><BR>'.
-		  	 									  '<p><B>Link de acceso a la plataforma: </B><a href="'.$link.'">Formacion2.0</a></p>';
-		  } 
-		  else
-		  {
-		  	$mensaje=$notificacion->getMensaje();
-		  }
-          $parametros= array('twig'=>$template,
-                             'asunto'=>$notificacion->getAsunto(),
-                             'remitente'=>array('webmail@formacion2puntocero.com' => 'Formación2.0'),
-                             'destinatario'=>$usuario->getCorreoCorporativo(),
-                             'datos'=>array('mensaje' => $mensaje, 'usuario' => $usuario ));
-
-          $this->sendEmail($parametros, $controller);
-
-        }
-		
-		return true;
-
-	}
-
 	// Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
 	public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0, $onlyMuro = 0)
 	{
@@ -1205,7 +1170,7 @@ class Functions
 						$icon_aprobada = '';
 					}
 
-					$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'">
+					$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'" data-toggle="tooltip" data-placement="bottom">
 									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$icon_aprobada.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
 					{
@@ -1288,7 +1253,7 @@ class Functions
 					$icon_aprobada = '';
 				}
 
-				$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'">
+				$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'" data-toggle="tooltip" data-placement="bottom">
 								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$icon_aprobada.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
 

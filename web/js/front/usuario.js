@@ -1,9 +1,5 @@
 $(document).ready(function() {
 
-	$( document ).tooltip({
-    	track: true
-    });
-
     $('#modificar').click(function(){
     	var valid = $("#form").valid();
     	if (valid)

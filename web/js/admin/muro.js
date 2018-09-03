@@ -1,27 +1,28 @@
 $(document).ready(function() {
+	
 
     $('#empresa_id').change(function(){
     	var empresa_id = $(this).val();
     	var pagina_id = 0;
     	var usuario_id = $('#usuario_id').val();
     	window.location.replace($('#url_auto').val()+'/'+$('#empresa_id').val());
-		getListadoComentarios(empresa_id,pagina_id,usuario_id);
 	});
 
 	$('.tree').jstree();
 
 	$('.tree').on("select_node.jstree", function (e, data) {
+		var usuario_id = $('#usuario_id').val();
+		var empresa_id = $('#empresa_id').val();
 		var id = data.node.id;
 		var pagina_id = $('#'+id).attr('p_id');
 		var pagina_str = $('#'+id).attr('p_str');
 		$('#pagina_str').val(pagina_str);
 		$('#pagina_id').val(pagina_id);
+		getListadoComentarios(empresa_id,pagina_id,usuario_id)
 	});
 
 
 	$('#guardar').click(function(){
-		var muro_id = $('#comentario_padre_muro_id').val();
-		$('#muro_id').val(muro_id);
 		$('#guardar').hide();
 		$('#cancelar').hide();
 		saveComentario();
@@ -47,22 +48,7 @@ $(document).ready(function() {
 	segundaTabla();
 });
 
-function getPaginas(empresa_id){
-	$.ajax({
-		type: "GET",
-		url: $('#url_paginas_muro').val(),
-		async: true,
-		data: { empresa_id: empresa_id },
-		dataType: "json",
-		success: function(data) {
-			$('#select_pagina_id').html(data.options);
-		},
-		error: function(){
-			$('#active-error').html($('#error_msg-filter').val());
-			$('#div-active-alert').show();
-		}
-	});
-}
+
 
 function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 	$.ajax({

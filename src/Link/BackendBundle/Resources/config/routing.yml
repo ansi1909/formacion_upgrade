@@ -86,10 +86,6 @@ notificaciones:
     resource: "@LinkBackendBundle/Resources/config/routing/notificaciones.yml"
     prefix: /notificaciones
 
-programados:
-    resource: "@LinkBackendBundle/Resources/config/routing/programados.yml"
-    prefix: /programados
-
 tutorial:
     resource: "@LinkBackendBundle/Resources/config/routing/tutorial.yml"
     prefix: /tutorial

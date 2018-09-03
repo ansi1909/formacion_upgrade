@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
     </style>
 {% endblock %}
 
@@ -9,6 +10,7 @@
 
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 {% set uri = app.request.getbasepath %}
+{% set selected = " " %}
 <br><br>
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
@@ -36,7 +38,8 @@
                             <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
                                 <option value="0"></option>
                                 {% for empresa in empresas %}
-                                    <option value="{{ empresa.id }}" >{{ empresa.nombre }}</option>
+                                    {% set selected = empresa.id == empresa_id_a ? 'selected="selected"' : '' %}
+                                    <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre }}</option>
                                 {% endfor %}
                             </select>
                             <span class="fa fa-industry"></span>
@@ -79,6 +82,7 @@
                         </div>
                     </div>
                 </div>
+                <br>
         </div>
     </div>
 </div>

@@ -4,7 +4,6 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
-    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
         .menu{
             width: 60%;
@@ -32,12 +31,12 @@
             <h6 class="mt-0 color-light-grey" >{{ programa.nombre }}</h6>
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
-            <a id="iconDownloads" href="#" title="{{ 'Archivos de este espacio'|trans }}">
+            <a id="iconDownloads" href="#" title="{{ 'Archivos de este espacio'|trans }}" data-toggle="tooltip" data-placement="bottom">
                 <i class="material-icons mx-3 color-light-grey">cloud_download</i>
             </a>
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class="d-flex flex-column">
-                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}">
+                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}" data-toggle="tooltip" data-placement="bottom">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                         <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
@@ -150,7 +149,7 @@
                         </div>
                         <div class="col-2">
                             <a href="#" class="fileinput-button">
-                                <span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}">file_upload</span>
+                                <span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span>
                                 <input id="fileupload" type="file" name="files[]" multiple>
                             </a>
                         </div>
@@ -318,7 +317,7 @@
                     </form>
                     <br>
                     <div class="form-group text-right">
-                        <a id="iconDownloads2" href="#li_responder"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
+                        <a id="iconDownloads2" href="#li_responder"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>
                     </div>
 
 
@@ -341,9 +340,9 @@
                 <h5 class="color-grey text-left titulo">{{ 'Descargas'|trans }}</h5>
             </div>
             <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto d-flex">
-                <a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}">file_upload</span></a>
+                <a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>
                 <span class="color-light-grey barra">|</span>
-                <a href="#"><span class="material-icons color-light-grey icClose" id="iconCloseDownloads" title="{{ 'Cerrar panel'|trans }}">clear</span></a>
+                <a href="#"><span class="material-icons color-light-grey icClose" id="iconCloseDownloads" title="{{ 'Cerrar panel'|trans }}" data-toggle="tooltip" data-placement="bottom">clear</span></a>
             </div>
         </div>
         <div class="row justify-content-center cont-downloads">
@@ -358,7 +357,7 @@
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
                                     {% set file = uploads~archivo.archivo %}
-                                    <a href="{{ file }}" target="_blank"><span class="material-icons icDl" title="{{ 'Descargar archivo'|trans }}">file_download</span></a>
+                                    <a href="{{ file }}" target="_blank"><span class="material-icons icDl" title="{{ 'Descargar archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_download</span></a>
                                 </div>
                             </div>
                         </div>
@@ -403,7 +402,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/esp_col.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>

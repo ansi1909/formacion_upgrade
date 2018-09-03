@@ -389,20 +389,6 @@ class PaginaController extends Controller
         $pagina_id = $request->request->get('pagina_id');
         $nombre = $request->request->get('nombre');
 
-        // Llamada a la función de BD que duplica la página
-        /*$query = $em->getConnection()->prepare('SELECT
-                                                fnduplicar_pagina(:ppagina_id, :pnombre, :pusuario_id, :pfecha) as
-                                                resultado;');
-        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-        $query->bindValue(':pnombre', $nombre, \PDO::PARAM_STR);
-        $query->bindValue(':pusuario_id', $session->get('usuario')['id'], \PDO::PARAM_INT);
-        $query->bindValue(':pfecha', date('Y-m-d H:i:s'), \PDO::PARAM_STR);
-        $query->execute();
-        $r = $query->fetchAll();
-
-        // La respuesta viene formada por Inserts__newIdPaginaPadre
-        $r_arr = explode("__", $r[0]['resultado']);*/
-
         $return = $f->duplicarPagina($pagina_id, $nombre, $session->get('usuario')['id']);
         
         /*$return = array('id' => $r_arr[1],

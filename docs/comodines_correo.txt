@@ -1,0 +1,2 @@
+'%%usuario%%'	--> Dato admin_usuario.login
+'%%clave%%'		--> Dato admin_usuario.clave

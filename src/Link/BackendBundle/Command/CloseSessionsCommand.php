@@ -12,7 +12,6 @@ use Doctrine\ORM\Query\Parameter;
 use Doctrine\DBAL\Connection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\RequestContext;
 
@@ -28,11 +27,6 @@ class CloseSessionsCommand extends ContainerAwareCommand
     {
 
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $f = $this->getApplication()->getKernel()->getContainer()->get('funciones');
-        $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
-        $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
-        $translator = $this->getContainer()->get('translator');
-        $base = $yml2['parameters']['base_url'];
 
         // Llamada a la función que verifica aquellas sesiones abiertas de hace muchas horas
         $query = $em->getConnection()->prepare('SELECT
