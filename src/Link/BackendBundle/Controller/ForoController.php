@@ -209,6 +209,7 @@ class ForoController extends Controller
 
         $return = array('html' => $html);
 
+
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
@@ -246,6 +247,12 @@ class ForoController extends Controller
         {
             $delete_disabled = $f->linkEliminar($coment->getId(), 'CertiForo');
             $delete = $delete_disabled=='' ? 'delete' : '';
+            $consulta = $em->createQuery("SELECT file FROM LinkComunBundle:CertiForoArchivo file
+                                   WHERE file.foro = :foro_id
+                                   AND file.usuario = :usuario_id
+                                   ORDER BY file.id ASC")
+                     ->setParameters(array('foro_id' => $foro_id, 'usuario_id'=> $coment->getUsuario()->getId()));
+            $archivos = $consulta->getResult();
             
             $html .= '<tr>
                         <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
@@ -255,7 +262,19 @@ class ForoController extends Controller
                           if($coment->getUsuario()->getId() == $usuario_id){
                              $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
                           }
-                           $html .= '<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
+                          
+                           $html .='<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>';
+                           if($archivos)
+                           {
+                               $html .= '<a href="#" title="'.$this->get('translator')->trans("Archivos").'" class="btn btn-link btn-sm fileList" data-comentario="'.$coment->getId().' " ><span class="fa fa-archive "></span></a>';
+
+                              $html .='<form id="comentario'.$coment->getId().'" >
+                                          <input type="hidden" name="usuario_id" value="'.$coment->getUsuario()->getId().'">
+                                          <input type="hidden" name="foro_id" value="'.$foro_id.'">
+                                       </form>';
+                           }
+
+                           $html .='
                         </td>
                     </tr>';
         }
@@ -263,7 +282,7 @@ class ForoController extends Controller
                 </table>
                 <input type="hidden" id="comentario_padre_foro_id" name="comentario_padre_foro_id" value="'.$foro_id.'">';
         $html .= '<div class="col text-right ">
-                    <button type="button" class="bttn__nr add" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">Responder</span></button>
+                    <button type="button" class="bttn__nr add" data-toggle="modal" data-target="#filesModal"><span class="fa fa-plus"></span><span class="text__nr">Responder</span></button>
                   </div>';
 
         $return = array('html' => $html);
@@ -271,6 +290,76 @@ class ForoController extends Controller
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
+    }
+
+    public function ajaxFilesForoListAction(Request $request)
+    {
+       $em = $this->getDoctrine()->getManager();
+       $f = $this->get('funciones');
+       $usuario_id = $request->request->get('usuario_id');
+       $foro_id = $request->request->get('foro_id');
+       $html ='';
+       
+
+       $consulta = $em->createQuery("SELECT file FROM LinkComunBundle:CertiForoArchivo file
+                                   WHERE file.foro = :foro_id
+                                   AND file.usuario = :usuario_id
+                                   ORDER BY file.id ASC")
+                     ->setParameters(array('foro_id' => $foro_id, 'usuario_id'=> $usuario_id));
+       $archivos = $consulta->getResult();
+
+    
+      
+
+       
+       if($archivos)
+       {
+          $total = count($archivos);
+          $mod = $total%2;
+          $filas = ($mod==0)? ($total/2):(($total-1)/2)+1;
+          $f = 0;
+          $e = 0;
+
+         foreach ($archivos as $archivo) 
+         {
+            $ruta = $this->container->getParameter('folders')['uploads'].$archivo->getArchivo();
+            $extension = explode('.',$archivo->getArchivo());
+            $iconoExtension = '/formacion2.0/web/front/assets/img/'.$extension[1].'.svg';
+
+            $html .= ($e%2==0)? ($f==0)? '<div class="row" style="margin-top: 15px">':'</div><div class="row" style="margin-top: 15px">':'';
+
+            $html .= '
+                      <div class ="col-md-1"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
+                      <div class ="col-md-4" style="margin-left:0px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().'</a></div>
+                      ';
+
+            $e++;
+
+
+           // $ruta = $this->container->getParameter('folders')['uploads'].$archivo->getArchivo();
+           // $extension = explode('.',$archivo->getArchivo());
+           // $iconoExtension = '/formacion2.0/web/front/assets/img/'.$extension[1].'.svg';
+           // $html .='
+           //          <div class ="row" style="margin-top: 20px;">    
+           //              <div class ="col-md-1"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
+           //              <div class ="col-md-1" style="margin-left:0px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm enlaces" download><span class="fa fa-cloud-download" ></span></a></div>
+           //              <div class ="col-md-6">'.$archivo->getDescripcion().'</div>
+           //          </div> 
+           //         ';
+          
+         }
+         
+         $html .= '</div>';
+       }
+      
+      
+       
+       $usuario_id = $request->request->get('usuario_id');
+       $foro_id = $request->request->get('foro_id');
+
+       $return =['html'=>$html,'foro'=>$foro_id];
+       $return = json_encode($return);
+       return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     public function ajaxUpdateRespuestaForoAction(Request $request)

@@ -97,7 +97,8 @@ class CertificadoController extends Controller
                 $usuario_empresa = $usuario->getEmpresa()->getId(); 
         }
      
-        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findByActivo(true);
+        $empresas = $em->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                               array('nombre' => 'ASC'));
      
         $tipo_certificados = $em->getRepository('LinkComunBundle:CertiTipoCertificado')->findAll(array('nombre' => 'ASC')); 
 
@@ -414,114 +415,135 @@ class CertificadoController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
-        $modulo=2;
 
-        $uploads = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
-        $values = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
      
         $fecha = $f->fechaNatural(date('Y-m-d'));
+        $contenidoMod = '';
 
         $certificado = $em->getRepository('LinkComunBundle:CertiCertificado')->find($id_certificado);
-        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
-        $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp
-                                   WHERE cp.pagina= :programa_id AND cp.categoria= :categoria ')
-                    ->setParameters(
-                                    array('programa_id' => $pagina->getId(),
-                                          'categoria' => $modulo)
-                                   );
 
-
-        $modulos=$query->getResult();
-        $categoria= ($pagina->getCategoria()->getId()==1) ? 'Programa':'Curso';
-
-        $contenidoMod='<div style="font-size:21px;text-align:center"> <h1>Contenido del '.$categoria.': '.$pagina->getNombre().'</h1>';
-        $item=1;
-        
-        foreach ($modulos as $modulo) 
+        if ($certificado->getTipoCertificado()->getId() != $yml['parameters']['tipo_certificado']['empresa'])
         {
-            $contenidoMod.='<h2> * Módulo '.$item.': '.$modulo->getNombre().'</h2>';
-            $item+=1;
+
+            if ($certificado->getTipoCertificado()->getId() == $yml['parameters']['tipo_certificado']['pagina'])
+            {
+
+                $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($certificado->getEntidadId());
+                $articulo = $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['materia'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'] ? $this->get('translator')->trans('de la') : $this->get('translator')->trans('del');
+                $contenidoMod .= '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido').' '.$articulo.' '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'</h1>';
+
+                $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                            JOIN pe.pagina p 
+                                            WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                                            ORDER BY pe.orden ASC')
+                            ->setParameters(array('empresa_id' => $certificado->getEmpresa()->getId(),
+                                                  'pagina_id' => $pagina->getId()));
+                $subpaginas = $query->getResult();
+
+                foreach ($subpaginas as $subpagina)
+                {
+                    $contenidoMod .= '<h2> * '.$subpagina->getPagina()->getCategoria()->getNombre().' '.$subpagina->getOrden().': '.$subpagina->getPagina()->getNombre().'</h2>';
+                }
+
+                $contenidoMod .= '</div>';
+
+            }
+            else {
+
+                $grupos = $em->getRepository('LinkComunBundle:CertiGrupoPagina')->findByGrupo($certificado->getEntidadId());
+
+                foreach ($grupos as $grupo)
+                {
+
+                    $pagina = $grupo->getPagina();
+                    $articulo = $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['materia'] || $pagina->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'] ? $this->get('translator')->trans('de la') : $this->get('translator')->trans('del');
+                    $contenidoMod .= '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido').' '.$articulo.' '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'</h1>';
+
+                    $query = $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                JOIN pe.pagina p 
+                                                WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                                                ORDER BY pe.orden ASC')
+                                ->setParameters(array('empresa_id' => $certificado->getEmpresa()->getId(),
+                                                      'pagina_id' => $pagina->getId()));
+                    $subpaginas = $query->getResult();
+
+                    foreach ($subpaginas as $subpagina)
+                    {
+                        $contenidoMod .= '<h2> * '.$subpagina->getPagina()->getCategoria()->getNombre().' '.$subpagina->getOrden().': '.$subpagina->getPagina()->getNombre().'</h2>';
+                    }
+
+                    $contenidoMod .= '</div>';
+
+                }
+
+            }
+
         }
-        $contenidoMod.='</div>';
+        
+        $programa = '';
 
-
-        $programa='';
-
-        if($certificado->getTipoCertificado()->getId() == 1)//por empresa
+        if($certificado->getTipoCertificado()->getId() == $yml['parameters']['tipo_certificado']['empresa'])//por empresa
         {
-            $programa=$certificado->getEmpresa()->getNombre();
-        }else
-        {
-            if($certificado->getTipoCertificado()->getId() == 2)//por pagina
+            $programa = $certificado->getEmpresa()->getNombre();
+        }
+        else {
+            if($certificado->getTipoCertificado()->getId() == $yml['parameters']['tipo_certificado']['pagina'])//por pagina
             {
                 $programa = $pagina->getNombre();
-            }else// por grupo de paginas
-            {
-                $grupoPaginas= $em->getRepository('LinkComunBundle:CertiGrupo')->find($certificado->getEntidadId());
+            }
+            else {
+                $grupoPaginas = $em->getRepository('LinkComunBundle:CertiGrupo')->find($certificado->getEntidadId());
                 $programa = $grupoPaginas->getNombre();
             }
         }
 
-        $ruta ='<img src="'.$uploads['parameters']['folders']['dir_project'].'/web/img/codigo_qr.png">';
+        $ruta ='<img src="'.$this->container->getParameter('folders')['dir_project'].'web/img/codigo_qr.png">';
+        $file = $this->container->getParameter('folders')['dir_uploads'].$certificado->getImagen();
 
-        $file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
-
-        if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
+        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
         {
-            //fehca del dia de hoy '.date('d/m/Y').' 
+            
             $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
             $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
                                         <div>
-                                       
                                             <div style="font-size:24px;margin-left:50px">'.$certificado->getEncabezado().'</div>
                                             <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
-                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
+                                            <div style="text-align:center; font-size:24px; margin-top:70px; margin-left:50px; margin-right:50px;">'.$certificado->getDescripcion().'</div>
                                             <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$programa.'</div>
-                                            <div style="text-align:center;margin-top:40px;font-size:14px;">Fecha Inicio: dd/mm/aa  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin: dd/mm/aa </div>
-                                            <div style="text-align:center;margin-top:15px;font-size:14px;">Equivalente a: x hrs. académicas </div>
+                                            <div style="text-align:center;margin-top:40px;font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').': dd/mm/aa  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').': dd/mm/aa </div>
+                                            <div style="text-align:center;margin-top:15px;font-size:14px;">'.$this->get('translator')->trans('Equivalente a').': x hrs. '.$this->get('translator')->trans('académicas').'</div>
                                             <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
-                                            <div style="margin-top:80px; margin-left:910px; ">'.$ruta.'</div>
+                                            <div style="margin-top:60px; margin-left:910px; ">'.$ruta.'</div>
                                         </div>
                                        
                                         </page>');
 
-
-             $certificado_pdf->writeHtml('<page title="prueba" pageset="new"  backimgw="90%" backimgx="center">'
-                                                    .$contenidoMod.'
-                                                </page>');
-
-            /*certificado numero 3
-            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(48, 60, 0, 0));
-            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
-                                            <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
-                                            <div style="text-align:center; font-size:24px; margin-top:50px; ">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:30px; margin-top:50px; text-transform:uppercase;">'.$programa.'</div>
-                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$fecha.'</div>
-                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>                                            
-                                        </page>');*/
-            //<qrcode value="http://www.eldesvandejose.com" ec="H" style="margin-top:70px; margin-left:700px; width: 25mm; background-color: white; color: black; border:none"></qrcode>                                        
-            //Generamos el PDF
-            $certificado_pdf->output('certificiado.pdf');
-        }else
-        {
-            if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['constancia'] )
+            if ($contenidoMod != '')
             {
-                $certificado_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 60, 10, 5));
-                $certificado_pdf->writeHTML('<page orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
-                                                <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
-                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
-                                                <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
-                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">'.$programa.'</div>
-                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getTitulo().'</div>
-                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$fecha.'</div>
-                                                <div style="margin-top:50px; margin-left:500px; ">'.$ruta.'</div>
+                $certificado_pdf->writeHtml('<page title="prueba" pageset="new"  backimgw="90%" backimgx="center">'
+                                                .$contenidoMod.'
                                             </page>');
-                $certificado_pdf->output('constancia.pdf');
             }
+
+            $certificado_pdf->output('certificiado.pdf');
+
         }
+        else {
+            $certificado_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 60, 10, 5));
+            $certificado_pdf->writeHTML('<page orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
+                                            <div style=" text-align:center; font-size:20px;">'.$certificado->getEncabezado().'</div>
+                                            <div style="margin-top:30px; text-align:center; color: #00558D; font-size:30px;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
+                                            <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
+                                            <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">'.$programa.'</div>
+                                            <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getTitulo().'</div>
+                                            <div style="margin-top:40px; text-align:center; font-size:14px;">'.$fecha.'</div>
+                                            <div style="margin-top:50px; margin-left:500px; ">'.$ruta.'</div>
+                                        </page>');
+            $certificado_pdf->output('constancia.pdf');
+        }
+
     }
 
 }

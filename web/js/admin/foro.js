@@ -43,6 +43,53 @@ $(document).ready(function() {
 	segundaTabla();
 });
 
+
+function linkArchivos()
+{
+	$( ".fileList").unbind( "click" );
+
+	$('.fileList').click(function()
+	{
+			var comentarioId = $(this).attr('data-comentario');
+			$.ajax({/*------------------------------ peticion para gegerar excel -------------*/
+			type: "POST",
+			url: $('#url_files_foroList').val(),
+			async: true,
+			data: $('#comentario'+comentarioId).serialize(),
+			dataType: "json",
+			success: function(data) {
+				$('#listOfFiles').html(data.html);
+				$('#filesModal').modal('show');
+				// activarEnlaces()
+				// $('#excel-loader'+empresaId).hide();
+				// if (data.ok == 1) {
+				//    $('#acciones'+empresaId).append(data.html);
+				// }
+				// else //no existen registros
+				// {
+				//   $('#div-active-warning').html(data.html);
+				//   $('#div-active-warning').show();
+				//   $('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
+				//   activarEnlaces()
+				//  $( ".downloadDb" ).unbind( "click" );
+				//   observe()
+				// }
+				
+			},
+			error: function(){
+				// $('#excel-loader'+empresaId).hide();
+				// $('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
+				// activarEnlaces()
+				// $('#div-active-alert').show();
+				// $( ".downloadDb" ).unbind( "click" );
+				// observe();
+				
+			}
+		});
+		
+	});
+}
+
 function getPaginas(empresa_id){
 	$.ajax({
 		type: "GET",
@@ -252,6 +299,7 @@ function afterPaginate(){
                 $('#tbody_history_programation').html(data.html);
                 $('#tbody_history_programation').show();
                 $('#loading').hide();
+                linkArchivos();
                 segundaTabla();
                 editComentario();
                 clearTimeout( timerId );

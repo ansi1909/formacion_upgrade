@@ -49,11 +49,11 @@
                         {% for faq in faqs %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ faq.tipopregunta }}</td>
+                                <td>{{ faq.tipoPregunta.nombre }}</td>
                                 <td>{{ faq.pregunta }}</td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ faq.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if faq.delete_disabled == '' %}delete{% endif %} {{ faq.delete_disabled }}" data="{{ faq.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ faq.id }}"><span class="fa fa-trash"></span></a>
                                     <a href="#" title="{{ 'Ver respuesta'|trans }}" class="btn btn-link btn-sm see" data="{{ faq.id }}"><span class="fa fa-eye"></span></a>
                                 </td>
                             </tr>
@@ -86,16 +86,16 @@
     <div class="modal-body">
         <form id="form" name="form" action="{{ path('_ajaxUpdateFaqs') }}" method="POST">
             <input type="hidden" id="faq_id" name="faq_id" value="">
-            <input type="hidden" id="id_tipo_pregunta" name="id_tipo_pregunta" value="">
+            <input type="hidden" id="tipo_pregunta_id" name="tipo_pregunta_id" value="">
             <div class="form-group row justify-content-end">
                 <label for="pregunta" class="col-3 col-form-label">{{ 'Pregunta'|trans }}:</label>
                 <div class="col-13">
                     <input type="text" class="form-control form_sty1" id="pregunta" name="pregunta" value="">
-                    <span class="fa fa-keyboard-o"></span>
+                    <span class="fa fa-question"></span>
                 </div>
             </div>
             <div class="form-group row justify-content-end">
-                <label for="respuesta" class="col-3 col-form-label">{{'Respuesta'|trans}}:</label>
+                <label for="respuesta" class="col-3 col-form-label">{{ 'Respuesta'|trans }}:</label>
                 <div class="col-13">
                     <textarea class="form-control" id="respuesta" name="respuesta"></textarea>
                 </div>
