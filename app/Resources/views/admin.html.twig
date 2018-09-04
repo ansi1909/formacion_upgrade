@@ -176,7 +176,7 @@
                 <div class="modal-content">
                     {% block formModal %}
                         <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-                            <h5 class="modal-title" id="formModalLabel">New message</h5>
+                            <h5 class="modal-title" id="formModalLabel">New message asa</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                         </div>
                         <div class="modal-body">
@@ -211,6 +211,39 @@
                         <button type="button" class="bttn__save" id="guardar"><span class="text__save">{{ 'Guardar'|trans }}</span><span class="fa fa-save"></span></button>
                         <button type="button" class="bttn__save" id="aceptar" style="display:none;" data-dismiss="modal"><span class="text__save">{{ 'Aceptar'|trans }}</span><span class="fa fa-check"></span></button>
                         <button type="button" class="bttn__save" id="procesar" style="display:none;" data-dismiss="modal"><span class="text__save">{{ 'Procesar'|trans }}</span><span class="fa fa-stack-overflow"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal dark_bg fade" id="filesModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    {% block filesModal %}
+                        <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                            <h5 class="modal-title" id="formModalLabel">New message asa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                        </div>
+                        <div class="modal-body" id ="listOfFiles">
+                            
+                        </div>
+                    {% endblock %}
+                    <div class="row" id="div-alert" style="display:none;">
+                        <div class="col-sm-2">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger" role="alert"> 
+                                <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            &nbsp;
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        
                     </div>
                 </div>
             </div>
