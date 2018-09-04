@@ -41,26 +41,21 @@ class FaqsController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $faqsdb = array();
-        $faqs = $em->getRepository('LinkComunBundle:AdminFaqs')->findAll();
+        $faqs = array();
+        $query = $em->createQuery("SELECT f FROM LinkComunBundle:AdminFaqs f 
+                                    ORDER BY f.tipoPregunta ASC");
+        $faqsdb = $query->getResult();
 
-        foreach ($faqs as $faq)
+        foreach ($faqsdb as $faq)
         {
-
-
-            $faqsdb[] = array('id' => $faq->getId(),
-                              'tipopregunta' => $faq->getTipoPregunta()->getNombre(),
-                              'pregunta' => $faq->getPregunta(),
-                              'respuesta' => $faq->getRespuesta(),
-                              'delete_disabled' => $f->linkEliminar($faq->getId(), 'AdminFaqs'));
-                              
+            $faqs[] = $faq;                     
         }
 
-        $tipo_pregunta = array();
         $tipo_pregunta = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoPregunta')->findAll();
 
         return $this->render('LinkBackendBundle:Faqs:index.html.twig', array('faqs' => $faqsdb,
                                                                              'tipos' => $tipo_pregunta));
+        
     }
 
     public function ajaxUpdateFaqsAction(Request $request)

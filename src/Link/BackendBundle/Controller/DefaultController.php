@@ -367,7 +367,7 @@ class DefaultController extends Controller
                 $recordar_datos = $request->request->get('recordar');
                 $login = $request->request->get('usuario');
                 $clave = $request->request->get('clave');
-                $verificacion=1;
+                $verificacion = 1;
             }
         }
 
