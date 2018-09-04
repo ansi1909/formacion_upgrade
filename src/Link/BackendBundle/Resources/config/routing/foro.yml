@@ -25,3 +25,9 @@ _ajaxUpdateRespuestaForo:
     defaults: { _controller: LinkBackendBundle:Foro:ajaxUpdateRespuestaForo }
     requirements:
         _method: POST
+
+_ajaxFilesForoList:
+    path: /ajaxFilesForoList
+    defaults: { _controller: LinkBackendBundle:Foro:ajaxFilesForoList }
+    requirements:
+        _method: POST

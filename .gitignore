@@ -30,3 +30,4 @@ web/error_log
 /web/.sass-cache/*
 /web/front/client_styles/[1-9]*
 /node_modules/*
+.phpintel
