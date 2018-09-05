@@ -95,9 +95,8 @@ function desactivarEnlaces()
 
 function observe()
 {
+	$('.downloadDb').unbind('click');
 	$('.downloadDb').click(function(){
-		$('#div-active-alert').hide();
-		$('#div-active-warning').hide();
 		desactivarEnlaces();
 		var empresaId = $(this).attr('data-empresa');
 		$('#botonExcel'+empresaId).remove();
@@ -117,11 +116,10 @@ function observe()
 				}
 				else //no existen registros
 				{
-				  $('#div-active-warning').html(data.html);
-				  $('#div-active-warning').show();
+				  $('#div-warning-empresa').html($('#warning-msg-empresa').val());
+			      notify($('#div-warning-empresa').html(),'warning'," ");
 				  $('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
 				  activarEnlaces()
-				 $( ".downloadDb" ).unbind( "click" );
 				  observe()
 				}
 				
@@ -130,8 +128,8 @@ function observe()
 				$('#excel-loader'+empresaId).hide();
 				$('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
 				activarEnlaces()
-				$('#div-active-alert').show();
-				$( ".downloadDb" ).unbind( "click" );
+				$('#div-error-empresa').html($('#error-msg-empresa').val());
+			    notify($('#div-error-empresa').html());
 				observe();
 				
 			}

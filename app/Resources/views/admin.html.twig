@@ -388,6 +388,38 @@
                     });
                 }
 
+                 function notify(msg,type="danger",title="<b>{{ 'Errores de validación'|trans }}</b><br>")
+                {
+                    $.notify({
+                        // options
+                        title:title,
+                        message: msg
+                    },{
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: type,
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "bottom",
+                            align: "center"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 2000,
+                        timer: 3000,
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        icon_type: 'class'
+                    });
+                }
+
                 function reordenar(id, entity, orden)
                 {
                     $.ajax({
