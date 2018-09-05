@@ -138,6 +138,9 @@ function saveFaq()
 function afterPaginate(){
 	$('.see').click(function(){
 		var faq_id = $(this).attr('data');
+		$('#div-respuesta').show();
+		$('#loader').show();
+		$('#respuesta_v').hide();
 		$('#div-active-alert').hide();
 		$.ajax({
 			type: "GET",
@@ -147,11 +150,13 @@ function afterPaginate(){
 			dataType: "json",
 			success: function(data) {
 				$('#respuesta_v').html(data.respuesta);
-				$('#div-respuesta').show();
+				$('#loader').hide();
+				$('#respuesta_v').show();
 				observe();
 			},
 			error: function(){
 				$('#active-error').html($('#error_msg-subapps').val());
+				$('#loader').hide();
 				$('#div-active-alert').show();
 				$('#div-respuesta').hide();
 			}

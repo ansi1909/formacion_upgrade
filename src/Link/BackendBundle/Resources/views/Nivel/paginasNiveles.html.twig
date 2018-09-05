@@ -51,6 +51,11 @@
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
                 <h5 class="card-title" >{{ 'Listado de niveles' |trans}} <span id="nombre-p"></span></h5>
             </div>
+            <div class="load1 load-wrapper" id="loader" style="display: none;">
+                <div class="loader">
+                    Loading...
+                </div>  
+            </div>
             {% if not usuario_empresa %}
             <div class="card-block" id="lpe">   
             </div>
@@ -82,6 +87,11 @@
         <div class="card">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Asignar página al nivel'|trans }} <span id="nivelTitle"></span></h5>
+            </div>
+            <div class="load1 load-wrapper" id="loader2" style="display: none;">
+                <div class="loader">
+                    Loading...
+                </div>  
             </div>
             <div class="card-block" id="paginas">
                 
