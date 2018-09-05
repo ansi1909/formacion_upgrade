@@ -50,39 +50,24 @@ function linkArchivos()
 
 	$('.fileList').click(function()
 	{
+			$('#loadingFiles').show();
 			var comentarioId = $(this).attr('data-comentario');
-			$.ajax({/*------------------------------ peticion para gegerar excel -------------*/
+			$.ajax({
 			type: "POST",
 			url: $('#url_files_foroList').val(),
 			async: true,
 			data: $('#comentario'+comentarioId).serialize(),
 			dataType: "json",
 			success: function(data) {
+				title(data.usuario);
 				$('#listOfFiles').html(data.html);
+				$('#loadingFiles').hide();
 				$('#filesModal').modal('show');
-				// activarEnlaces()
-				// $('#excel-loader'+empresaId).hide();
-				// if (data.ok == 1) {
-				//    $('#acciones'+empresaId).append(data.html);
-				// }
-				// else //no existen registros
-				// {
-				//   $('#div-active-warning').html(data.html);
-				//   $('#div-active-warning').show();
-				//   $('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
-				//   activarEnlaces()
-				//  $( ".downloadDb" ).unbind( "click" );
-				//   observe()
-				// }
-				
 			},
 			error: function(){
-				// $('#excel-loader'+empresaId).hide();
-				// $('#acciones'+empresaId).append('<a href="#" data-empresa="'+empresaId+'" id="botonExcel'+empresaId+'" class= "btn btn-link btn-sm enlaces downloadDb" ><span class="fa fa-file-excel-o" ></span></a >');
-				// activarEnlaces()
-				// $('#div-active-alert').show();
-				// $( ".downloadDb" ).unbind( "click" );
-				// observe();
+				$('#loadingFiles').hide();
+				$('#div-error-files').html($('#error-msg-files').val());
+			    notify($('#div-error-files').html());
 				
 			}
 		});
@@ -282,7 +267,7 @@ function segundaTabla()
 function afterPaginate(){
 
 	editComentario();
-
+	$('.see').unbind('click');
     $('.see').click(function(){
         var foro_id = $(this).attr('data');
         var usuario_id = $('#usuario_id').val();
