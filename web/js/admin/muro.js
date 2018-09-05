@@ -51,6 +51,8 @@ $(document).ready(function() {
 
 
 function getListadoComentarios(empresa_id,pagina_id,usuario_id){
+	$('#loader').show();
+	$('#list_comentarios').hide();
 	$.ajax({
 		type: "GET",
 		url: $('#url_comentarios_muro').val(),
@@ -62,8 +64,11 @@ function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 			applyDataTable();
 			observe();
 			clearTimeout( timerId );
+			$('#loader').hide();
+			$('#list_comentarios').show();
 		},
 		error: function(){
+			$('#loader').hide();
 			$('#active-error').html($('#error_msg-filter').val());
 			$('#div-active-alert').show();
 		}
@@ -232,7 +237,7 @@ function afterPaginate(){
         var usuario_id = $('#usuario_id').val();
         $('#div-active-alert').hide();
         $('#tbody_history_programation').hide();
-        $('#loading').show();
+        $('#loader2').show();
         $.ajax({
             type: "GET",
             url: $('#url_respuestas_comentarios_muro').val(),
@@ -242,12 +247,13 @@ function afterPaginate(){
             success: function(data) {
                 $('#tbody_history_programation').html(data.html);
                 $('#tbody_history_programation').show();
-                $('#loading').hide();
+                $('#loader2').hide();
                 segundaTabla();
                 editComentario();
                 clearTimeout( timerId );
             },
             error: function(){
+            	$('#loader2').hide();
                 $('#active-error').html($('#error_msg_history').val());
                 $('#div-active-alert').show();
             }
