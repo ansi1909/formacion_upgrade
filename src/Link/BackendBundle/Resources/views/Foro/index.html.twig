@@ -20,13 +20,14 @@
 {% if usuario_empresa %}
     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
 {% endif %}
+<input type="hidden" id="error-msg-files" name="error-msg-files" value="{{ 'Ha ocurrido un error al cargar los archivos, verifique su conexión a internet o contacte al administrador del sistema'|trans }}">
 
 <br>
 <div class="row">
     <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
         <div class="card">
             <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                <h5 class="card-title">{{ 'Filtrar comentarios del foro'|trans  }} Esta es la vista</h5>
+                <h5 class="card-title">{{ 'Filtrar comentarios del foro'|trans  }}</h5>
             </div>
             {% if not usuario_empresa %}
                 <div class="card-block">
@@ -53,6 +54,11 @@
                             <span class="fa fa-industry"></span>
                             <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
                         </div>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-files" style="display:none;">
+                    </div>
+                    <div id="loadingFiles" style="width:20px;display:none">
+                            <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
                     </div>
                     <br>
                 </div>
@@ -191,7 +197,7 @@
 {% endblock %}
 {% block filesModal %}
 <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{'Lista de archivos'|trans}}</h5>
+    <h5 class="modal-title" id="ModalLongTitle"> </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" style="color: #fff;">&times;</span>
     </button>
@@ -267,6 +273,13 @@
                 }
             }
         });
+
+        function title(usuario)
+        {
+            $('#ModalLongTitle').html("{{'Lista de archivos'|trans}}"+" : "+usuario );
+            
+            return 0;
+        }
 
         </script>
 {% endblock %}

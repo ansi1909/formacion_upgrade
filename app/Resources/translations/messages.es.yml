@@ -403,6 +403,8 @@ Grupo seleccionado: Grupo seleccionado
 Guardar: Guardar
 ha comentado en el espacio colaborativo de: ha comentado en el espacio colaborativo de
 ha creado un tema en el espacio colaborativo del: ha creado un tema en el espacio colaborativo del
+Ha ocurrido un error al cargar los archivos, verifique su conexión a internet o contacte al administrador del sistema: Ha ocurrido un error al cargar los archivos, verifique su conexión a internet o contacte al administrador del sistema
+Ha ocurrido un error al generar el archivo de participantes, verifique su conexión a internet o contacte al administrador del sistema: Ha ocurrido un error al generar el archivo de participantes, verifique su conexión a internet o contacte al administrador del sistema
 Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
@@ -512,6 +514,7 @@ Libros: Libros
 Línea: Línea
 Lista de archivos: Lista de archivos
 Listado de: Listado de
+Archivos para el comentario de: Archivos para el comentario de
 Listado de Aplicaciones: Listado de Aplicaciones
 Listado de categorías: Listado de categorías
 Listado de comentarios: Listado de comentarios

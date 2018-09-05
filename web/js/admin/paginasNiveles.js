@@ -3,6 +3,9 @@ $(document).ready(function() {
     $('#empresa_id').change(function(){
     	console.log('Usuario admin');
     	var empresa_id = $(this).val();
+    	$('#lpe').hide();
+        $('#div-grupos').show();
+        $('#loader').show();
 		getListadoNiveles(empresa_id);
 	});
 
@@ -16,6 +19,8 @@ $(document).ready(function() {
 
 
 function getListadoNiveles(empresa_id){
+	$('#loader').show();
+	$('#lpe').hide();
 	$.ajax({
 		type: "GET",
 		url: $('#url_niveles').val(),
@@ -23,15 +28,17 @@ function getListadoNiveles(empresa_id){
 		data: { empresa_id: empresa_id},
 		dataType: "json",
 		success: function(data) {
+			$('#lpe').show();
 			$('#lpe').html(data.niveles);
 			$('#id_empresa').val(empresa_id);
 			$('#div-paginas').hide();
-			$('#div-grupos').show();
+			$('#loader').hide();
 			$('#nombre-p').html(data.empresa);
 			afterPaginate();
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
+			$('#loader').hide();
 			$('#div-active-alert').show();
 		}
 	});
@@ -67,6 +74,9 @@ function observe()
 function afterPaginate(){
 	$('.see').click(function(){
 		var nivel_id = $(this).attr('data');
+		$('#div-paginas').show();
+		$('#paginas').hide();
+		$('#loader2').show();
 		$('#div-active-alert').hide();
 		$.ajax({
 			type: "GET",
@@ -77,7 +87,8 @@ function afterPaginate(){
 			success: function(data) {
 				$('#paginas').html(data.paginas);
 				$('#nivelTitle').html(data.nombre);
-				$('#div-paginas').show();
+				$('#loader2').hide();
+				$('#paginas').show();
 				observe();
 			},
 			error: function(){

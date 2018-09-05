@@ -403,6 +403,8 @@ Grupo seleccionado: Selected group
 Guardar: Save
 ha comentado en el espacio colaborativo de: has commented into the collaborative space of
 ha creado un tema en el espacio colaborativo del: has created a topic into collaborative space of
+Ha ocurrido un error al cargar los archivos, verifique su conexión a internet o contacte al administrador del sistema: An error occurred when loading the files, check your internet connection or contact the system administrator
+Ha ocurrido un error al generar el archivo de participantes, verifique su conexión a internet o contacte al administrador del sistema: An error occurred while generating the participant file, verify your internet connection or contact the system administrator
 Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: An error ocurred into query processing. Contact your system administrator.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
@@ -511,6 +513,7 @@ Libro: Book
 Libros: Books
 Línea: Line
 Lista de archivos: List of files
+Archivos para el comentario de: Files for the comment of
 Listado de: List of
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List

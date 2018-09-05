@@ -298,6 +298,7 @@ class ForoController extends Controller
        $f = $this->get('funciones');
        $usuario_id = $request->request->get('usuario_id');
        $foro_id = $request->request->get('foro_id');
+       $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
        $html ='';
        
 
@@ -317,7 +318,6 @@ class ForoController extends Controller
           $total = count($archivos);
           $mod = $total%2;
           $filas = ($mod==0)? ($total/2):(($total-1)/2)+1;
-          $f = 0;
           $e = 0;
 
          foreach ($archivos as $archivo) 
@@ -326,26 +326,17 @@ class ForoController extends Controller
             $extension = explode('.',$archivo->getArchivo());
             $iconoExtension = '/formacion2.0/web/front/assets/img/'.$extension[1].'.svg';
 
-            $html .= ($e%2==0)? ($f==0)? '<div class="row" style="margin-top: 15px">':'</div><div class="row" style="margin-top: 15px">':'';
+            $html .= ($e%2==0)? ($e==0)? '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">':'</div><div class="row" style="margin-top: 15px; border-bottom: 2px solid #EEE8E7;">':'';
 
             $html .= '
-                      <div class ="col-md-1"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
-                      <div class ="col-md-4" style="margin-left:0px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().'</a></div>
+                      <div class ="col-md-1" style="margin-bottom:5px"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
+                      <div class ="col-md-7" style="margin-bottom:5px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().'</a></div>
                       ';
 
             $e++;
 
 
-           // $ruta = $this->container->getParameter('folders')['uploads'].$archivo->getArchivo();
-           // $extension = explode('.',$archivo->getArchivo());
-           // $iconoExtension = '/formacion2.0/web/front/assets/img/'.$extension[1].'.svg';
-           // $html .='
-           //          <div class ="row" style="margin-top: 20px;">    
-           //              <div class ="col-md-1"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
-           //              <div class ="col-md-1" style="margin-left:0px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm enlaces" download><span class="fa fa-cloud-download" ></span></a></div>
-           //              <div class ="col-md-6">'.$archivo->getDescripcion().'</div>
-           //          </div> 
-           //         ';
+          
           
          }
          
@@ -357,7 +348,7 @@ class ForoController extends Controller
        $usuario_id = $request->request->get('usuario_id');
        $foro_id = $request->request->get('foro_id');
 
-       $return =['html'=>$html,'foro'=>$foro_id];
+       $return =['html'=>$html,'usuario'=>$usuario->getNombre().' '.$usuario->getApellido()];
        $return = json_encode($return);
        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
