@@ -51,7 +51,6 @@ $(document).ready(function() {
                     dataType: "json",
                     success: function(data) {
                         $('.form-control').val('');
-                        $('.form-control').prop('disabled', true);
                         $('#p-nombre').html(data.nombre);
                         console.log('Formulario enviado. Id '+data.id);
                         $( "#detail-edit" ).attr( "data", data.id );
