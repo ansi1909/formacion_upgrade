@@ -17,10 +17,10 @@ Activos: Activos
 Actualizando la lista de usuarios conectados: Actualizando la lista de usuarios conectados
 Advertencia: Advertencia
 Agregar: Agregar
-Agregar categoría: Agregar categoría
 Agregar opción: Agregar opción
 Agregar pregunta: Agregar pregunta
 Agregar sub-página: Agregar sub-página
+Agregar tipo de pregunta: Agregar tipo de pregunta
 Agrupación de páginas: Agrupación de páginas
 Ahora: Ahora
 al: al
@@ -176,6 +176,7 @@ Debe escribir su respuesta: Debe escribir su respuesta
 Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar el grupo: Debe seleccionar el grupo
+Debe seleccionar el tipo de pregunta o agregar una nueva: Debe seleccionar el tipo de pregunta o agregar una nueva
 Debe seleccionar la fecha inicial: Debe seleccionar la fecha inicial
 Debe seleccionar la fecha final: Debe seleccionar la fecha final
 Debe seleccionar la página.: Debe seleccionar la página.
@@ -315,6 +316,7 @@ Entrar: Entrar
 Enviado: Enviado
 Enviar: Enviar
 Equivalente a: Equivalente a
+Error al agregar el tipo de respuesta: Error al agregar el tipo de respuesta
 Error al obtener el grupo de selección: Error al obtener el grupo de selección
 Error al obtener el historial.: Error al obtener el historial.
 Error al obtener la repuesta: Error al obtener la repuesta
@@ -502,9 +504,11 @@ La notificación ha sido almacenada con éxito: La notificación ha sido almacen
 La notificación ha sido programada con éxito: La notificación ha sido programada con éxito
 La página es requerida: La página es requerida
 La página seleccionada ya está asociada a otra evaluación.: La página seleccionada ya está asociada a otra evaluación.
+La pregunta es requerida: La pregunta es requerida
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 La respuesta al comentario: La respuesta al comentario
 La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: La recuperación de sus credenciales se realizo correctamente , revise su correo electrónico
+La respuesta es requerida: La respuesta es requerida
 La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
 Lecciones: Lecciones
@@ -576,6 +580,7 @@ Nivel no existente para esta empresa: Nivel no existente para esta empresa
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
+No has elegido el tipo de pregunta: No has elegido el tipo de pregunta
 no posee participantes registrados: no posee participantes registrados
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
@@ -621,6 +626,7 @@ Nuevo espacio colaborativo: Nuevo espacio colaborativo
 Nuevo nivel: Nuevo nivel
 Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo registro: Nuevo registro
+Nuevo tipo de pregunta: Nuevo tipo de pregunta
 Nuevos registros almacenados: Nuevos registros almacenados
 Opción: Opción
 Opción correcta (Lado B): Opción correcta (Lado B)
