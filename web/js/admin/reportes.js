@@ -167,6 +167,8 @@ $(document).ready(function() {
 });
 
 function getNiveles(empresa_id){
+	$('#nivel_id').hide();
+	$('#pagina-loader').show();
 	$.ajax({
 		type: "GET",
 		url: $('#url_niveles').val(),
@@ -175,6 +177,8 @@ function getNiveles(empresa_id){
 		dataType: "json",
 		success: function(data) {
 			$('#nivel_id').html(data.options);
+			$('#nivel_id').show();
+			$('#pagina-loader').hide();	
 			$('#excel').show();
 		},
 		error: function(){
@@ -203,6 +207,8 @@ function getLecciones(empresa_id){
 }
 
 function getProgramas(empresa_id,pagina_previa){
+	$('#programa_id').hide();
+	$('#pagina-loader').show();
 	$.ajax({
 		type: "GET",
 		url: $('#url_programas').val(),
@@ -211,6 +217,8 @@ function getProgramas(empresa_id,pagina_previa){
 		dataType: "json",
 		success: function(data) {
 			$('#programa_id').html(data.options);
+			$('#programa_id').show();
+			$('#pagina-loader').hide();
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
@@ -220,6 +228,8 @@ function getProgramas(empresa_id,pagina_previa){
 }
 
 function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
+	$('#loader').show();
+	$('#usuarios').hide();
 	$.ajax({
 		type: "GET",
 		url: $('#url_participantes').val(),
@@ -227,6 +237,8 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 		data: { empresa_id: empresa_id, nivel_id: nivel_id, pagina_id: pagina_id, reporte: reporte },
 		dataType: "json",
 		success: function(data) {
+			$('#loader').hide();
+			$('#usuarios').show();
 			$('#usuarios').html(data.html);
 			$('#excel').show();
 			applyDataTable();
