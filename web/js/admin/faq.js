@@ -3,32 +3,31 @@ $(document).ready(function() {
 	$('#div-active-alert').hide();
 
 	$('.new').click(function(){
-		$('label.error').hide();
-		$('#form').show();
-		$('#alert-success').hide();
-		$('#detail').hide();
-		$('#aceptar').hide();
-		$('#guardar').show();
-		$('#cancelar').show();
+		initModalEdit();
+		enableSubmit();
 		$('#faq_id').val("");
+		$('#tipo_pregunta_id').val("");
 		$('#pregunta').val("");
 		$('#respuesta').val("");
-		$('#tipo_pregunta_id').val("");
-		$('#new_pregunta').val("");
-		$('#div-alert').hide();
+		$('#new_tipo_pregunta_id').val("");
+		$('#new_tipo_pregunta_id').prop('disabled', true);
 	});
 
 	afterPaginate();
 
+	$('.paginate_button').click(function(){
+		afterPaginate();
+	});
+
 	$('#guardar').click(function(){
-		saveFaq();
+		$('#form').submit();
+		return false;
 	});
 
-
-	$('.nuevap').click(function(){
-		nuevaPregunta();
+	$('#form').submit(function(e) {
+		e.preventDefault();
 	});
-	 
+ 
  	$('#aceptar').click(function(){
 		window.location.replace($('#url_list').val());
 	});
@@ -38,6 +37,106 @@ $(document).ready(function() {
 		sweetAlertDelete(faq_id, 'AdminFaqs');
 	});
 
+	$('#form').safeform({
+		submit: function(e) {
+			
+			$('#div-alert').hide();
+			if ($("#form").valid())
+			{
+				var tipo_pregunta_id = $('#tipo_pregunta_id').val();
+				if (tipo_pregunta_id == 'add')
+				{
+					$('#alert-error').html($('#error_msg-tipo').val());
+					$('#div-alert').show();
+					$('#guardar').prop('disabled', false);
+					$('#form').safeform('complete');
+                    return false; // revent real submit
+				}
+				else {
+					$('#guardar').prop('disabled', true);
+					$.ajax({
+						type: "POST",
+						url: $('#form').attr('action'),
+						async: true,
+						data: $("#form").serialize(),
+						dataType: "json",
+						success: function(data) {
+							$('#p-t').html(data.tipo_pregunta);
+							$('#p-pregunta').html(data.pregunta);
+							$('#p-respuesta').html(data.respuesta);
+							console.log('Formulario enviado. Id '+data.id);
+							$( "#detail-edit" ).attr( "data", data.id );
+							$( "#detail-delete" ).attr("data",data.id);
+							$('.delete').unbind('click');
+							$('.delete').click(function()
+							{
+								var faq_id= $(this).attr('data');
+								sweetAlertDelete(faq_id, 'AdminFaqs');
+							});
+
+							initModalShow();
+
+							// manual complete, reenable form ASAP
+							$('#form').safeform('complete');
+							return false; // revent real submit
+
+						},
+						error: function(){
+							$('#alert-error').html($('#error_msg-save').val());
+							$('#div-alert').show();
+							$('#guardar').prop('disabled', false);
+							$('#form').safeform('complete');
+	                        return false; // revent real submit
+						}
+					});
+				}
+			}
+			else {
+				$('#form').safeform('complete');
+                return false; // revent real submit
+			}
+			
+		}
+	});
+
+	$('#tipo_pregunta_id').change(function(){
+		var tipo_pregunta_id = $('#tipo_pregunta_id').val();
+		if (tipo_pregunta_id == 'add')
+		{
+			$('#new_tipo_pregunta_id').prop('disabled', false);
+		}
+	});
+
+	$('#add').click(function(){
+		var new_tipo_pregunta = $.trim($('#new_tipo_pregunta_id').val());
+		if (new_tipo_pregunta != '')
+		{
+			$.ajax({
+				type: "POST",
+				url: $('#url_nuevaPregunta').val(),
+				async: true,
+				data: { new_tipo_pregunta: new_tipo_pregunta },
+				dataType: "json",
+				success: function(data) {
+					if (data.ok == 1)
+					{
+						$('#tipo_pregunta_id').append($('<option>', {
+						    value: data.id,
+						    text: new_tipo_pregunta
+						}));
+					}
+					$('#tipo_pregunta_id').val(data.id);
+					$('#new_tipo_pregunta_id').val("");
+					$('#new_tipo_pregunta_id').prop('disabled', true);
+				},
+				error: function(){
+					$('#alert-error').html($('#error_msg-type').val());
+					$('#div-alert').show();
+				}
+			});
+		}
+	});
+
 	observe();
 
 });
@@ -45,30 +144,24 @@ $(document).ready(function() {
 function observe()
 {
 
+	$('.edit').unbind('click');
 	$('.edit').click(function(){
 		var faq_id = $(this).attr('data');
-		var url_edit = $('#url_edit').val();
-		$('#guardar').prop('disabled', false);
-		$('label.error').hide();
-		$('#form').show();
-		$('#alert-success').hide();
-		$('#detail').hide();
-		$('#aceptar').hide();
-		$('#guardar').show();
-		$('#cancelar').show();
-		$('#div-alert').hide();
+		initModalEdit();
 		$.ajax({
 			type: "GET",
-			url: url_edit,
+			url: $('#url_edit').val(),
 			async: true,
 			data: { faq_id: faq_id },
 			dataType: "json",
 			success: function(data) {
+				enableSubmit();
 				$('#faq_id').val(faq_id);
+				$('#tipo_pregunta_id').val(data.tipo_pregunta_id);
 				$('#pregunta').val(data.pregunta);
 				$('#respuesta').val(data.respuesta);
-				$('#id_tipo_pregunta').val(data.id_tipo_pregunta)
-				$('#tipo_pregunta_id').html(data.tipo_pregunta);
+				$('#new_tipo_pregunta_id').val('');
+				$('#new_tipo_pregunta_id').prop('disabled', true);
 			},
 			error: function(){
 				$('#alert-error').html($('#error_msg-edit').val());
@@ -85,62 +178,14 @@ function observe()
 
 }
 
-function saveFaq()
-{
-	$('#div-alert').hide();
-		if ($("#form").valid())
-		{
-			$('#guardar').prop('disabled', true);
-			$.ajax({
-				type: "POST",
-				url: $('#form').attr('action'),
-				async: true,
-				data: $("#form").serialize(),
-				dataType: "json",
-				success: function(data) {
-					$('#p-pregunta').html(data.pregunta);
-					$('#p-respuesta').html(data.respuesta);
-					$('#p-t').html(data.tipo_pregunta);
-					console.log('Formulario enviado. Id '+data.id);
-					$( "#detail-edit" ).attr( "data", data.id );
-					if (data.delete_disabled != '') 
-					{
-						$("#detail-delete").hide();
-						$("#detail-delete").removeClass( "delete" );
-					}
-					else
-					{
-						$( "#detail-delete" ).attr("data",data.id);
-						$( "#detail-delete" ).addClass("delete");
-						$( "#detail-delete" ).show();
-						$('.delete').unbind('click');
-						$('.delete').click(function()
-						{
-							var faq_id= $(this).attr('data');
-							sweetAlertDelete(faq_id, 'AdminFaqs');
-						});
-					}
-					$('#form').hide();
-					$('#alert-success').show();
-					$('#detail').show();
-					$('#aceptar').show();
-					$('#guardar').hide();
-					$('#cancelar').hide();
-				},
-				error: function(){
-					$('#alert-error').html($('#error_msg-save').val());
-					$('#div-alert').show();
-				}
-			});
-		}
-}
-
 function afterPaginate(){
+
+	$('.see').unbind('click');
 	$('.see').click(function(){
 		var faq_id = $(this).attr('data');
 		$('#div-respuesta').show();
 		$('#loader').show();
-		$('#respuesta_v').hide();
+		$('#answer').hide();
 		$('#div-active-alert').hide();
 		$.ajax({
 			type: "GET",
@@ -149,9 +194,9 @@ function afterPaginate(){
 			data: { faq_id: faq_id },
 			dataType: "json",
 			success: function(data) {
-				$('#respuesta_v').html(data.respuesta);
 				$('#loader').hide();
-				$('#respuesta_v').show();
+				$('#answer').html(data.respuesta);
+				$('#answer').show();
 				observe();
 			},
 			error: function(){
@@ -161,26 +206,5 @@ function afterPaginate(){
 				$('#div-respuesta').hide();
 			}
 		});
-	});
-}
-
-function nuevaPregunta()
-{		
-	var url_nuevaPregunta = $('#url_nuevaPregunta').val();
-	$('#nuevap').prop('disabled', true);
-	$.ajax({
-		type: "POST",
-		url: url_nuevaPregunta,
-		async: true,
-		data: $("#form").serialize(),
-		dataType: "json",
-		success: function(data) {
-			$('#tipo_pregunta_id').html(data.tipo_pregunta);
-			$('#new_pregunta').val("");
-		},
-		error: function(){
-			$('#alert-error').html($('#error_msg-save').val());
-			$('#div-alert').show();
-		}
 	});
 }
