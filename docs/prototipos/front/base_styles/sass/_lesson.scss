@@ -10,11 +10,10 @@
 
     p {
         font-family: $lessons-font;
-        font-size: 1.1rem;
-        line-height: 1.4rem;
+        line-height: 1.5rem;
         color: $black-300;
         width: 75%;
-        font-weight: 200;
+        font-weight: 400;
         text-align: justify;
         margin: .5rem auto;
 
@@ -22,11 +21,11 @@
 
     ul, ol {
         display: inline-block;
-        text-align: left;
+        text-align: justify;
         font-family: $lessons-font;
         font-size: 1.1rem;
         color: $black-300;
-        line-height: 1rem;
+        line-height: 1.5rem;
         width: 75%;
 
         li{
@@ -41,7 +40,7 @@
     
     h4 {
       margin: 1.5rem auto;
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       width: 75%;
       font-weight: $font-weight-normal-hard; 
       font-family:$lessons-font;
@@ -56,6 +55,9 @@
         margin: 1.5rem auto;
         width: 75%;
         font-family:$lessons-font;
+        text-align: left;
+        font-size: 1.50rem;
+        font-weight: $font-weight-normal;
     }
     
     img{
