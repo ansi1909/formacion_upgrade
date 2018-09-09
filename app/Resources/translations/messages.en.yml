@@ -237,7 +237,7 @@ El correo no pertenece a un Usuario de la empresa. Contacte al administrador del
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El Encabezado es requerido.: The Header is required
 El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
-El enlace de la encuesta no un válido URL: Poll link is not a valid URL
+El enlace de la encuesta no es un válido URL: Poll link is not a valid URL
 El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
 El enunciado es requerido.: Statement is required.
 El evento ha sido guardado con éxito: The event has been saved successfully

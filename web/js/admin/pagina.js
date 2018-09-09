@@ -95,9 +95,6 @@ $(document).ready(function() {
         			var img = $('#foto_img');
         			img.attr("src", uploads+base_upload+file.name);
         		}
-        		else {
-        			var img = $('#icono');
-        		}
         		$('#form_'+file_input).val(base_upload+file.name);
             });
         }
