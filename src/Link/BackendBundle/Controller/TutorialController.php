@@ -38,13 +38,12 @@ class TutorialController extends Controller
 
     }
 
-
     protected function cleanRootDirectory($directorio,$removeDir=false)
     {
         /*
             Elimina los archivos dentro del directorio indicado, sin consultar si estan registrados en la 
             base de datos, cuando el argumento: removeDir es true se procede a borrar la carpeta una vez
-            se encuentre vacia. Se utiliza cuando se elimina un tutorial del sistema y para limpiar 
+            se encuentre vacía. Se utiliza cuando se elimina un tutorial del sistema y para limpiar 
             el directorio : recursos/tutoriales/ luego de realizar una insercion. elimina la carpeta thumbnail
         */
 
@@ -52,6 +51,7 @@ class TutorialController extends Controller
 
         if($existe)
         {
+
             $archivos = scandir($directorio);
             
             for ($i=0; $i <count($archivos) ; $i++) 
@@ -62,9 +62,9 @@ class TutorialController extends Controller
                 }
                 else
                 {
-                    if ($archivos[$i]=='thumbnail') {
-                        $thumbnails=scandir($directorio.'/'.$archivos[$i].'/');
-                        for ($j=2; $j <count($thumbnails) ; $j++) { 
+                    if ($archivos[$i] == 'thumbnail') {
+                        $thumbnails = scandir($directorio.'/'.$archivos[$i].'/');
+                        for ($j=2; $j<count($thumbnails) ; $j++) { 
                             unlink($directorio.'/'.$archivos[$i].'/'.$thumbnails[$j]);
                         }
                         rmdir($directorio.'/'.$archivos[$i]);
@@ -72,14 +72,15 @@ class TutorialController extends Controller
                 }
             }
 
-
             if ($removeDir) {
                 rmdir($directorio);
             }
-        }
-        return 0;
-    }
 
+        }
+
+        return 0;
+
+    }
 
     protected function deleteOrphanFilesTutorial($directorio,$objeto)
     {
@@ -88,47 +89,42 @@ class TutorialController extends Controller
             registrados en la base de datos. Se utiliza al momento de modificar un tutorial, para evitar 
             que queden archivos huerfanos luego de modificar el tutorial.
         */
-            
-
+        
         $archivos = scandir($directorio);
         for ($i=0; $i <count($archivos); $i++) 
         { 
             if (!is_dir($directorio.'/'.$archivos[$i])) {
                 if($objeto->getPdf() != $archivos[$i] && $objeto->getImagen() != $archivos[$i] && $objeto->getVideo() != $archivos[$i])
                 {
-                 unlink($directorio.'/'.$archivos[$i]);
+                    unlink($directorio.'/'.$archivos[$i]);
                 }
             }
-            else
-            {
-                 if ($archivos[$i]=='thumbnail') 
-                 {
+            else {
+                if ($archivos[$i]=='thumbnail') 
+                {
                     $thumbnails=scandir($directorio.'/'.$archivos[$i].'/');
                     for ($j=2; $j <count($thumbnails) ; $j++) 
                     { 
                         unlink($directorio.'/'.$archivos[$i].'/'.$thumbnails[$j]);
                     }
-                        rmdir($directorio.'/'.$archivos[$i]);
+                    rmdir($directorio.'/'.$archivos[$i]);
                 }
             }
         }
+
         return 0;
+
     }
     
-  
-
     protected function moverArchivo($pathInicio,$pathTutorial,$nombreArchivo)
     {
-        if ($nombreArchivo!='') 
+        if ($nombreArchivo != '') 
         {
             rename($pathInicio.$nombreArchivo,$pathTutorial.$nombreArchivo);
         }
 
         return 0;
     }
-
-    
-
     
     public function ajaxUpdateTutorialAction(Request $request)
     {
@@ -147,7 +143,6 @@ class TutorialController extends Controller
         $imagen = $request->request->get('imagen');
         $descripcion = $request->request->get('descripcion');
        
-
         if ($tutorial_id)
         {
             $tutorial = $em->getRepository('LinkComunBundle:AdminTutorial')->find($tutorial_id);
@@ -157,13 +152,12 @@ class TutorialController extends Controller
             $tutorial->setFecha(new \DateTime('now'));
         }
         
-        $tutorial->setNombre(ucfirst(mb_strtolower(trim($nombre))));
+        $tutorial->setNombre($nombre);
         $tutorial->setPdf($pdf);
         $tutorial->setVideo($video);
         $tutorial->setImagen($imagen);
-        $tutorial->setDescripcion(ucfirst(mb_strtolower(trim($descripcion))));
+        $tutorial->setDescripcion($descripcion);
         $tutorial->setUsuario($usuario);
-
         $em->persist($tutorial);
         $em->flush();
 
@@ -177,9 +171,7 @@ class TutorialController extends Controller
             $this->cleanRootDirectory($dir_uploads);//elimina los archivos huerfanos       
         }
         else{
-
             $this->deleteOrphanFilesTutorial($dir_uploads.'/'.$tutorial_id,$tutorial);//elimina los archivos huerfanos de la carpeta del tutorial
-
         }
   
         $return = array('id' => $tutorial->getId(),
@@ -214,45 +206,33 @@ class TutorialController extends Controller
         
     }
 
-
     public function ajaxRefreshTableAction(Request $request)
     {
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
-        $ruta = $yml['parameters']['folders']['uploads'].'recursos/tutoriales/';
+        
         $em = $this->getDoctrine()->getManager();
         $data = ['data'=>[]];
-
-        $query= $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
-                                                ORDER BY t.id ASC');
-        $tutoriales = $query->getResult();
+        $ruta = $this->container->getParameter('folders')['uploads'].'recursos/tutoriales/';
         $f = $this->get('funciones');
+
+        $query = $em->createQuery('SELECT t FROM LinkComunBundle:AdminTutorial t
+                                    ORDER BY t.id ASC');
+        $tutoriales = $query->getResult();
                 
         foreach ($tutoriales as $tutorial)
         {
-           $delete_disabled = $f->linkEliminar($tutorial->getId(),'AdminTutorial');
-           $delete = $delete_disabled == '' ? 'delete' : '';
-           $enlacePdf = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getPdf().'" target="_blank">'.              $tutorial->getPdf().
-                       ' </a>';
-
-                        $enlaceVideo = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getVideo().'" target="_blank">'.$tutorial->getVideo().' </a>';
-                        $acciones = '
-                                      <td class="center" >
-                                         <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'"  ><span class="fa fa-pencil"></span> 
-                                         </a>
-                                         <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm '.$delete.''.$delete_disabled.'" data="'.$tutorial->getId().'" data-ubicacion="1" ><span class="fa fa-trash"></span>
-
-                                         </a>
-                                      </td>';
-                        
+            $enlacePdf = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getPdf().'" target="_blank">'.$tutorial->getPdf().' </a>';
+            $enlaceVideo = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getVideo().'" target="_blank">'.$tutorial->getVideo().' </a>';
+            $acciones = '<td class="center" >
+                            <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm delete" data="'.$tutorial->getId().'" data-ubicacion="1"><span class="fa fa-trash"></span></a>
+                        </td>';
             array_push($data['data'],[$tutorial->getId(),$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones]);
         }
 
         $return = json_encode($data);
-        return new Response($return, 200, array('Content-Type' => 'application/json'));  
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
-
-
-   
 
     public function ajaxDeleteTutorialAction(Request $request)
     {
@@ -271,7 +251,6 @@ class TutorialController extends Controller
 
         $return = json_encode($return);
         return new Response($return,200,array('Content-Type' => 'application/json'));
-
 
     }
 

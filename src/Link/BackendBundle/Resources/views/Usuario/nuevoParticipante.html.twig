@@ -3,11 +3,25 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
-    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
     <style>
-        .input-group-addon{padding:0px;}
+        .input-group-addon{
+            padding:0px;
+            border-radius: 50px !important;
+        }
         .input-group .form-control {
             z-index: 1;
+        }
+        .input-group {
+            margin-top: 35px;
+            margin-left: 20px;
+        }
+        .fileinput-button {
+            position: absolute;
+        }
+        #btn_foto {
+            padding-top: 17px;
         }
         .social-profile-pic img {
             width: 10rem;
@@ -58,6 +72,11 @@
                     <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
                     <input type="hidden" id="url_login" name="url_login" value="{{ path('_ajaxValidLogin') }}">
                     <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
+                    <input type="hidden" id="file_input" name="file_input" value="">
+                    <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadLogo') }}">
+                    <input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
+                    {% set subdirectory = usuario.empresa ? usuario.empresa.id~'/' : '' %}
+                    <input type="hidden" id="base_upload" name="base_upload" value="recursos/usuarios/{{ subdirectory }}">
                     <div class="container_wizard wizard-thin">
                         <div class="stepwizard">
                             <div class="stepwizard-row setup-panel d-flex">
@@ -88,20 +107,15 @@
                                         <div class="row">
                                             <div class="col-sm-10 col-md-10 col-lg-10">
                                                 {% set img = usuario.foto ? uploads~usuario.foto : asset('img/user.png') %}
-                                                <figure class="social-profile-pic" id="figure"><img src="{{ img }}" alt="" class="img_figure"></figure>
+                                                <figure class="social-profile-pic" id="figure"><img id="foto_img" src="{{ img }}" alt="" class="img_figure"></figure>
                                             </div>
                                             <div class="col-sm-6 col-md-6 col-lg-6">
                                                 <div class="input-group">
                                                     <input type="hidden" id="foto" name="foto" value="{{ usuario.foto }}" readonly="readonly">
                                                     <span class="input-group-addon">
-                                                        {% if empresa_asignada %}
-                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios/{{ empresa_asignada }}" class="btn iframe-btn" type="button">
-                                                        {% else %}
-                                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=foto&rootFolder=recursos/usuarios" class="btn iframe-btn" type="button">
-                                                        {% endif %}
-                                                            <button type="button" class="btn_addImg">
-                                                                <span class="fa fa-photo"></span>
-                                                            </button>
+                                                        <a class="fileinput-button btn_addImg" data="foto" id="btn_foto">
+                                                            <span class="fa fa-photo"></span>
+                                                            <input class="fileupload" type="file" name="files[]" multiple>
                                                         </a>
                                                     </span>
                                                     <span class="input-group-addon">
@@ -324,15 +338,13 @@
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
-    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
     <script type="text/javascript">
-
-        $("#btn_clear").on("click",function(event) {
-            $("#foto").val("");
-            $("#figure").html('<img src="'+$('#avatar').val()+'" style="background: transparent; border-radius: 50%;">');
-        });
         
         $('#finish').click(function(){
             var valid = $("#form").valid();
@@ -459,5 +471,4 @@
         });
 
     </script>
-    <script type="text/javascript" src="{{ asset('js/admin/usuario.js') }}"></script>
 {% endblock %}

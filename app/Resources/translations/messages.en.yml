@@ -17,10 +17,10 @@ Activos: Active
 Actualizando la lista de usuarios conectados: Updating the list of connected users
 Advertencia: Warning
 Agregar: Add
-Agregar categoría: Add category
 Agregar opción: Add option
 Agregar pregunta: Add question
 Agregar sub-página: Add sub-page
+Agregar tipo de pregunta: Add question type
 Agrupación de páginas: Grouping pages
 Ahora: Now
 al: to
@@ -176,6 +176,7 @@ Debe escribir su respuesta: You must write your response
 Debe ingresar el correo electrónico.: You must enter the email.
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar el grupo: You must select the group
+Debe seleccionar el tipo de pregunta o agregar una nueva: You must select the question type or add a new one
 Debe seleccionar la fecha inicial: You must select the initial date
 Debe seleccionar la fecha final: You must select the final date
 Debe seleccionar la página.: You must select the page.
@@ -236,7 +237,7 @@ El correo no pertenece a un Usuario de la empresa. Contacte al administrador del
 El correo personal tiene un formato inválido.: Personal email has invalid format.
 El Encabezado es requerido.: The Header is required
 El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
-El enlace de la encuesta no un válido URL: Poll link is not a valid URL
+El enlace de la encuesta no es un válido URL: Poll link is not a valid URL
 El enunciado debe ser mínimo de 3 caracteres.: Statement must have at least 3 characters.
 El enunciado es requerido.: Statement is required.
 El evento ha sido guardado con éxito: The event has been saved successfully
@@ -315,6 +316,7 @@ Entrar: Get in
 Enviado: Sent
 Enviar: Send
 Equivalente a: Equivalent to
+Error al agregar el tipo de respuesta: Error ocurred adding the question type
 Error al obtener el grupo de selección: Error ocurred retrieving the selection group
 Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener la repuesta: Error getting the answer
@@ -502,9 +504,11 @@ La notificación ha sido almacenada con éxito: Notification has been saved succ
 La notificación ha sido programada con éxito: Programation has been saved successfully
 La página es requerida: Page is required
 La página seleccionada ya está asociada a otra evaluación.: Selected page is already setted to another test.
+La pregunta es requerida: Question is required
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 La respuesta al comentario: The comment response
 La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: The recovery of your credentials was successful, check your email
+La respuesta es requerida: Answer is required
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lecciones: Lessons
@@ -576,6 +580,7 @@ Nivel no existente para esta empresa: No level for this company
 Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
+No has elegido el tipo de pregunta: You have not chosen the question type
 no posee participantes registrados: does not have registered participants
 No existe destino al que se pueda mover la página: There is not destination in which the page can be moved
 No existe evaluación para esta página: There is not test for this page
@@ -621,6 +626,7 @@ Nuevo espacio colaborativo: New collaborative space
 Nuevo nivel: New level
 Nuevo nivel de la empresa: New level of company
 Nuevo registro: New item
+Nuevo tipo de pregunta: New type of question
 Nuevos registros almacenados: New records added
 Opción: Option
 Opción correcta (Lado B): Correct option (Side B)

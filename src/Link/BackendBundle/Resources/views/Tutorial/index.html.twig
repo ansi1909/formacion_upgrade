@@ -2,52 +2,32 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
-    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">  
-    
-    
+    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
-        .input-group-addon{padding:0px;}
         .input-group .form-control {
             z-index: 1;
-        }
-        .social-profile-pic img {
-            width: 150px;
-            height: 150px;
-            overflow: hidden;
-            border: 0;
-            -webkit-border-radius: 6px;
-            -moz-border-radius: 6px;
-            -ms-border-radius: 6px;
-            border-radius: 6px;
-            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
-            margin: 0 20px 0 10px;
         }
         .sty__title {
             padding: 2px 5px;
             box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
             font-weight: bold;
         }
-
-
         .radar {
-          position: relative;
-          width: calc(1rem - 11px);
-          height: calc(1rem - 11px);
-          top: 49%;
-          top: -webkit-calc(50% - calc(3rem - 5px));
-          top: calc(50% - calc(1rem - 13.5px));
-          left: 49%;
-          left: -webkit-calc(50% - calc(3rem - 5px));
-          left: calc(50% - calc(1rem - 13.5px));
-          background-color: #5CAEE6;
-          border-radius: 50px; }
-          .radar::after {
+            position: relative;
+            width: calc(1rem - 11px);
+            height: calc(1rem - 11px);
+            top: 49%;
+            top: -webkit-calc(50% - calc(3rem - 5px));
+            top: calc(50% - calc(1rem - 13.5px));
+            left: 49%;
+            left: -webkit-calc(50% - calc(3rem - 5px));
+            left: calc(50% - calc(1rem - 13.5px));
+            background-color: #5CAEE6;
+            border-radius: 50px; 
+        }
+        .radar::after {
             content: "";
             position: absolute;
             top: calc(1rem - 13px);
@@ -62,7 +42,7 @@
             transform-origin: 100% 0%;
             -webkit-animation: radar 1.5s linear infinite;
             animation: radar 1.5s linear infinite; }
-          .radar::before {
+        .radar::before {
             content: "";
             position: absolute;
             top: calc(-1 * calc(1rem + 6px));
@@ -76,7 +56,8 @@
             -webkit-transform-origin: 0% 100%;
             transform-origin: 0% 100%;
             -webkit-animation: radar 1.5s linear infinite;
-            animation: radar 1.5s linear infinite; }
+            animation: radar 1.5s linear infinite; 
+        }
 
         @-webkit-keyframes minAgu {
           0% {
@@ -139,21 +120,15 @@
 
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_tutorial', { 'app_id': app.session.get('app_id') }) }}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditTutorial') }}">
-<input type="hidden" id="url_update" name="url_updatet" value="{{ path('_ajaxRefreshTable') }}">
-<input type="hidden" id="url_updateTutorial" name="url_updateTutorial" value="{{path( '_ajaxUpdateTutorial') }}">
+<input type="hidden" id="url_update" name="url_update" value="{{ path('_ajaxRefreshTable') }}">
 <input type="hidden" id="url_deleteTutorial" name="url_deleteTutorial" value="{{path( '_ajaxDeleteTutorial') }}">
 <input type="hidden" id="url_uploadFiles_tutorial" name="url_uploadFiles_tutorial" value="{{path( '_ajaxUploadFileTutorial') }}">
-
-
-
-
-<br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>{{'Tutoriales'|trans}}</h3>
+        <h3>{{ 'Tutoriales'|trans }}</h3>
     </div>
    <div class="col text-right">
-       <button type="button" id="nuevoTutorial" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
+       <button type="button" class="bttn__nr new" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">{{'Nuevo registro' | trans}}</span></button>
    </div>
 </div>
 <div class="row">
@@ -167,10 +142,10 @@
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">ID</th>
-                            <th class="hd__title">{{'Nombre' |trans }}</th>
+                            <th class="hd__title">{{ 'Nombre'|trans }}</th>
                             <th class="hd__title">PDF</th>
                             <th class="hd__title">Videos</th>
-                            <th class="hd__title">{{'Acciones'|trans }}</th>
+                            <th class="hd__title">{{ 'Acciones'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody id="BodyTable">
@@ -193,8 +168,8 @@
     </button>
 </div>
 <div class="modal-body" id="modal_body">
-    <input type="hidden" id="fileUpload" value="">
     <form id="form" name="form" action="{{ path('_ajaxUpdateTutorial') }}" method="POST">
+        <input type="hidden" id="fileUpload" value="">
         <input type="hidden" id="tutorial_id" name="tutorial_id" value="">
         <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Nombre'|trans }}:</label>
@@ -210,15 +185,13 @@
             <label for="recipient-name" class="form-control-label">PDF:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="pdf" id="pdf" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}" >
-                    <a href="#" id="href_pdf" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="pdf" >
-                        <span class="fa fa-photo"></span>
-                        <input class="uploadFile"  type="file" name="files[]" multiple>
-                    </a>
+                <a href="#" id="href_pdf" class="btn fileinput-button uploadFileHref" type="button" data-etiqueta="pdf" >
+                    <span class="fa fa-photo"></span>
+                    <input class="uploadFile"  type="file" name="files[]" multiple>
+                </a>
             </div>
         </div>
-         
-        
-        <div class="form-group ">
+        <div class="form-group">
             <label for="recipient-name" class="form-control-label">{{ 'Imagen'|trans }}:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="imagen" id="imagen" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
@@ -228,9 +201,7 @@
                 </a>
             </div>
         </div>
-
-       
-        <div class="form-group ">
+        <div class="form-group">
             <label for="recipient-name" class="form-control-label">Video:</label>
             <div class="input-group">
                 <input type="text" class="form-control " name="video" id="video" value="" readonly="readonly" placeholder="{{ 'Seleccione el archivo'|trans }}">
@@ -240,15 +211,13 @@
                 </a>
             </div>
         </div>
-        <div class="row justify-content-center" style="display:none;" id="wait_tutorial">
+        <div class="row justify-content-center" style="display:none;" id="wait">
             <div class="col-auto px-0 py-0">
                 <div class="contenedor">
                     <div class="radar"></div>
                 </div>
             </div>
         </div>
-
-
     </form>
     <div class="col-sm-16 col-md-16 col-lg-16 alert alert-danger" role="alert" id="div-error" style="display:none;">
         <ul id="error-messages"></ul>
@@ -307,14 +276,49 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
-    {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/tutorial.js') }}"></script>
     <script type="text/javascript">
+
+        var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que contendra los registros   
+        {   
+            paging: true, 
+            searching: true, 
+            ajax: $('#url_update').val(),
+            order: [[ 0, "desc" ]],
+            responsive: false,
+            pageLength:10,
+            sPaginationType: "full_numbers",
+            lengthChange: false,
+            info: false,
+            oLanguage: {
+                "sProcessing":    "{{ 'Procesando'|trans }}...",
+                "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                "sInfoPostFix":   "",
+                "sSearch":        "{{ 'Buscar'|trans }}:",
+                "sUrl":           "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                oPaginate: {
+                    sFirst: "<<",
+                    sPrevious: "<",
+                    sNext: ">", 
+                    sLast: ">>" 
+                },
+                "oAria": {
+                    "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                    "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                }
+            }
+        } );
 
         $("#form").validate({
             errorLabelContainer: "#div-error ul",
@@ -367,7 +371,6 @@
         {
             swal(""," {{ 'El archivo seleccionado no se cargo correctamente.'| trans }} ","error");
             showButtons();
-
             return 0;
         }
 
@@ -397,16 +400,10 @@
                             "{{ 'Eliminado'|trans }}!",
                             "{{ 'Su registro ha sido eliminado'|trans }}",
                             'success');
-
-                            if (ubicacion==2) {
-
+                            if (ubicacion == 2) {
                                $( "#detail-edit" ).attr( "disabled", true);
                                $( "#detail-delete" ).attr("disabled",true);
-
                             }
-                           
-                            
-
                             table.ajax.reload(null,false);
                     },
                     error: function(){
@@ -419,6 +416,6 @@
                 });
             });
         }
-        
+
     </script>
 {% endblock %}

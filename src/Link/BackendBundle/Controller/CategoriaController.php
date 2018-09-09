@@ -40,19 +40,17 @@ class CategoriaController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $categoriasdb= array();
+        $categoriasdb = array();
 
-        $query= $em->createQuery('SELECT c FROM LinkComunBundle:CertiCategoria c
+        $query = $em->createQuery('SELECT c FROM LinkComunBundle:CertiCategoria c
                                         ORDER BY c.nombre ASC');
-        $categorias=$query->getResult();
-        
-       //return new Response(var_dump($roles));
+        $categorias = $query->getResult();
         
         foreach ($categorias as $categoria)
         {
-            $categoriasdb[]= array('id'=>$categoria->getId(),
-                              'nombre'=>$categoria->getNombre(),
-                              'delete_disabled'=>$f->linkEliminar($categoria->getId(),'CertiCategoria'));
+            $categoriasdb[] = array('id' => $categoria->getId(),
+                                    'nombre' => $categoria->getNombre(),
+                                    'delete_disabled' => $f->linkEliminar($categoria->getId(),'CertiCategoria'));
 
         }
 
@@ -83,8 +81,8 @@ class CategoriaController extends Controller
         $em->flush();
                     
         $return = array('id' => $categoria->getId(),
-                        'nombre' =>$categoria->getNombre(),
-                        'delete_disabled' =>$f->linkEliminar($categoria->getId(),'CertiCategoria'));
+                        'nombre' => $categoria->getNombre(),
+                        'delete_disabled' => $f->linkEliminar($categoria->getId(),'CertiCategoria'));
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
