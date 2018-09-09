@@ -52,6 +52,7 @@
                 		</div>
                 	</div>
                 	<form id="form" name="form" action="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="container-fluid p-0" method="POST">
+                        <input type="hidden" name="empresa_id" id="empresa_id" value="{{ empresa.id }}">
                 		<div class="row setup-content" id="det0">	
                 			<div class="col-sm-16">
                 				<div class="row">
