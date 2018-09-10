@@ -170,7 +170,7 @@ class EmpresaController extends Controller
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
         $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
 
-        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M');
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N','O');
 
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Usuarios registrados'));
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre());
@@ -198,12 +198,12 @@ class EmpresaController extends Controller
             // Estilizar las celdas antes de insertar los datos
                 for ($f=$row; $f<=$last_row; $f++)
                 {
-                        $objWorksheet->getStyle("A$f:M$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:M$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:M$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:M$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:M$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getStyle("A$f:M$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
+                        $objWorksheet->getStyle("A$f:O$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:O$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:O$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
 
@@ -211,21 +211,25 @@ class EmpresaController extends Controller
                 {
 
                     $correo = ($participante['correo'])? $participante['correo']:$participante['correo2'];
+                    $activo = ($participante['activo'])? 1:0;
+                    $competencia = ($participante['competencia'])? 1:0;
 
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $participante['login']);
                     $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_nacimiento']);
-                    $objWorksheet->setCellValue('F'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('F'.$row, $participante['clave']);
                     $objWorksheet->setCellValue('G'.$row, $correo);
-                    $objWorksheet->setCellValue('H'.$row, $participante['pais']);
-                    $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('H'.$row, $competencia);
+                    $objWorksheet->setCellValue('I'.$row, $participante['pais']);
                     $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
                     $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
                     $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
                     $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
+                    $objWorksheet->setCellValue('N'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('O'.$row, $activo);
                   
                     $row++;
                 }
