@@ -45,10 +45,12 @@
                         <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
                         <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">{{ ar.dias_vencimiento }}</span>
                     </div>
-                    {% if ar.avanzar == 2 %}
-                        <a href="{{ path('_test', { 'pagina_id':  ar.evaluacion_pagina, 'programa_id': ar.evaluacion_programa }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                    {% else %}
-                        <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > {{ 'Continuar'|trans }} </a>
+                    {% if ar.link_enabled %}
+                        {% if ar.avanzar == 2 %}
+                            <a href="{{ path('_test', { 'pagina_id':  ar.evaluacion_pagina, 'programa_id': ar.evaluacion_programa }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
+                        {% else %}
+                            <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > {{ 'Continuar'|trans }} </a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -70,10 +72,10 @@
         <div class="col-12">
             <div class="filter-group d-flex justify-content-around mb-3">
                 <ul class="tabs">
-                    {% for g in grupos %}
-                    <li class="{% if loop.index == 1 %} activo {% endif %} mt-3">
-                        <span>{{ g.nombre }}</span>
-                    </li>
+                    {% for grupo in grupos %}
+                        <li class="{% if loop.index == 1 %} activo {% endif %} mt-3">
+                            <span>{{ grupo.nombre }}</span>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
@@ -81,70 +83,82 @@
     </div>
     <div class="row">
         <ul class="tab__content">
-        {% for g in grupos %}
-            <li {% if loop.index == 1 %} class="activo" {% endif %}>
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
-                    {% for pd in programas_disponibles %}
-                        {% if pd.nombregrupo == g.nombre %}
-                            <div class="card">
-                                <img class="card-img-top" src="{{ uploads ~ pd.imagen }}" alt="Card image cap">
-                                <div class="card-img-overlay">
-                                    <span class="count text-xs {{ pd.class_finaliza }}">{{ pd.dias_vencimiento }}</span>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title mb-3"> {{ pd.nombre }} </h5>
-                                    <p class="card-text">{{ pd.descripcion | raw }}</p>
-                                    {% if pd.continuar == 0 %}
-                                        {% if pd.tiene_subpaginas == 1 %}
-                                            <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
-                                        {% else %}
-                                            <a href="{{ path('_lecciones', { 'programa_id':  pd.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
-                                        {% endif %}
-                                    {% elseif pd.continuar == 1 %}
-                                        {% if pd.tiene_subpaginas == 1 %}
-                                            <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">{{ 'Continuar'|trans}}</a>
-                                        {% else %}
-                                            <a href="{{ path('_lecciones', { 'programa_id':  pd.id }) }}" class="btn btn-continuar  mt-3">{{ 'Continuar'|trans}}</a>
-                                        {% endif %}
-                                    {% elseif  pd.continuar in [2, 3] %}
-                                    <div class="badge-wrap">
-                                        <i class="material-icons badge-aprobado ">check_circle</i>
-                                        <span class="text-badge">{{ 'Aprobado'|trans }}</span>
+            {% for grupo in grupos %}
+                <li {% if loop.index == 1 %} class="activo" {% endif %}>
+                    <div class="content__wrapper">
+                        <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
+                            {% for pagina in grupo.paginas %}
+                                <div class="card">
+                                    <img class="card-img-top" src="{{ uploads ~ pagina.imagen }}" alt="Card image cap">
+                                    <div class="card-img-overlay">
+                                        <span class="count text-xs {{ pagina.class_finaliza }}">{{ pagina.dias_vencimiento }}</span>
                                     </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3"> {{ pagina.nombre }} </h5>
+                                        <p class="card-text">{{ pagina.descripcion|raw }}</p>
+                                        {% if pagina.continuar == 0 %}
+                                            {% if pagina.tiene_subpaginas == 1 %}
+                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                            {% else %}
+                                                <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                            {% endif %}
+                                        {% elseif pagina.continuar == 1 %}
+                                            {% if pagina.tiene_subpaginas == 1 %}
+                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                            {% else %}
+                                                <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                            {% endif %}
+                                        {% elseif  pagina.continuar in [2, 3] %}
+                                            <div class="badge-wrap">
+                                                {% if pagina.link_enabled %}
+                                                    <i class="material-icons badge-aprobado">check_circle</i>
+                                                    <span class="text-badge">{{ 'Aprobado'|trans }}</span>
+                                                {% else %}
+                                                    {# Cambiar el ícono por un relojito #}
+                                                    <i class="material-icons badge-aprobado">event</i>
+                                                    <span class="text-badge">{{ 'Vencido'|trans }}</span>
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            {# Cambiar el ícono por un relojito #}
+                                            <div class="badge-wrap">
+                                                <i class="material-icons badge-aprobado">event</i>
+                                                <span class="text-badge">{{ 'Vencido'|trans }}</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    {% if pagina.continuar in [2, 3] %}
+                                        <a id="iconos"></a>
+                                        <div class="card-footer d-flex justify-content-around">
+                                            <a href="{{ path('_generarCertificado', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
+                                                <i class="material-icons d-block">aspect_ratio</i>
+                                                <small class="d-block">{{ 'Certificado'|trans }}</small>
+                                            </a>
+                                            <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
+                                                <i class="material-icons d-block">content_copy</i>
+                                                <small class=" d-block">{{ 'Notas'|trans }}</small>
+                                            </a>
+                                            {% if pagina.continuar == 2 %}
+                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
+                                            {% else %}
+                                                <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-ver disabled">
+                                            {% endif %}
+                                                <i class="material-icons d-block">visibility</i>
+                                                <small class=" d-block">{{ 'Ver'|trans }}</small>
+                                            </a>
+                                        </div>
                                     {% endif %}
                                 </div>
-                                {% if pd.continuar in [2, 3] %}
-                                <div class="card-footer  d-flex justify-content-around">
-                                    <a href="{{ path('_generarCertificado', { 'programa_id': pd.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
-                                        <i class="material-icons d-block">aspect_ratio</i>
-                                        <small class=" d-block">{{ 'Certificado'|trans }}</small>
-                                    </a>
-                                    <a href="{{ path('_generarNotas', { 'programa_id': pd.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas " >
-                                        <i class="material-icons d-block">content_copy</i>
-                                        <small class=" d-block">{{ 'Notas'|trans }}</small>
-                                    </a>
-                                    {% if pd.continuar == 2 %}
-                                        <a href="{{ path('_programa', { 'programa_id':  pd.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver" >
-                                    {% else %}
-                                        <a href="#" class="flex-column align-items-center col-4 btn-edge btn-ver disabled" >
-                                    {% endif %}
-                                        <i class="material-icons d-block">visibility</i>
-                                        <small class=" d-block">{{ 'Ver'|trans }}</small>
-                                    </a>
-                                </div>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            </li>
-        {% endfor %}
+                </li>
+            {% endfor %}
         </ul>
     </div>
 </div>
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/front/tabs.js') }}"></script>

@@ -164,7 +164,8 @@ class DefaultController extends Controller
                                               'porcentaje' => $porcentaje,
                                               'avanzar' => $avanzar,
                                               'evaluacion_pagina' => $evaluacion_pagina,
-                                              'evaluacion_programa' => $evaluacion_programa);
+                                              'evaluacion_programa' => $evaluacion_programa,
+                                              'link_enabled' => $link_enabled);
 
             }
         
@@ -177,100 +178,132 @@ class DefaultController extends Controller
         
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
-        foreach ($session->get('paginas') as $pg) {
+        foreach ($session->get('paginas') as $pg) 
+        {
             $paginas_ids[] = $pg['id'];
         }
 
         // Buscamos los grupos disponibles para el usuario por los programas disponibles en la sesión
-        $group_query = $em->createQuery('SELECT cg FROM LinkComunBundle:CertiGrupo cg 
-                                        JOIN LinkComunBundle:CertiGrupoPagina cgp
-                                        WHERE cg.empresa = :empresa
-                                        AND  cgp.grupo = cg.id
-                                        AND cgp.pagina IN (:pagina)
-                                        ORDER BY cg.id ASC')
-                        ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                              'pagina' => $paginas_ids));
-        $grupos = $group_query->getResult();
+        $query = $em->createQuery('SELECT gp FROM LinkComunBundle:CertiGrupoPagina gp 
+                                    JOIN gp.grupo g 
+                                    WHERE g.empresa = :empresa
+                                        AND gp.pagina IN (:paginas)
+                                    ORDER BY g.orden ASC')
+                    ->setParameters(array('empresa' => $session->get('empresa')['id'],
+                                          'paginas' => $paginas_ids));
+        $gps = $query->getResult();
 
-        // Buscamos datos especificos de los programas de la sesion obteniendo el grupo al que pertenece cada programa
-        $query_pages_by_group = $em->createQuery('SELECT cgp 
-                                                  FROM LinkComunBundle:CertiGrupo cg,
-                                                       LinkComunBundle:CertiGrupoPagina cgp,
-                                                       LinkComunBundle:CertiPagina cp
-                                                  WHERE cg.empresa = :empresa
-                                                  AND  cgp.grupo = cg.id
-                                                  AND cp.id IN (:pagina)
-                                                  AND cgp.pagina = cp.id
-                                                  ORDER BY cg.id ASC')
-                                    ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                                          'pagina' => $paginas_ids));
-        $pages_by_group = $query_pages_by_group->getResult();
-        
-        foreach ($pages_by_group as $pg) {
-
-            // contruimos un array con los datos necesarios para el template y el grupo de cada programa
-            $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                             'pagina' => $pg->getPagina()->getId()));
-
-            $pagina_sesion = $session->get('paginas')[$pg->getPagina()->getId()];
-
-            if(count($pagina_sesion['subpaginas']) >= 1){
-                $tiene_subpaginas = 1;
-            }else{
-                $tiene_subpaginas = 0;
+        $grupos_id = array();
+        foreach ($gps as $gp)
+        {
+            if (!in_array($gp->getGrupo()->getId(), $grupos_id))
+            {
+                $grupos_id[] = $gp->getGrupo()->getId();
             }
+        }
 
-            $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                'pagina' => $pg->getPagina()->getId()));
-            if($datos_log){
-                if($datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
-                    if($pagina_empresa->getAcceso()){
-                        // aprobado y con acceso de seguir viendo
-                        $continuar = 2;
-                    }else{
-                        // aprobado y sin poder ver solo descargar notas y certificados
-                        $continuar = 3;
+        $grupos = array();
+        foreach ($grupos_id as $grupo_id)
+        {
+
+            $grupos_bd = $this->getDoctrine()->getRepository('LinkComunBundle:CertiGrupoPagina')->findByGrupo($grupo_id);
+
+            $paginas = array();
+
+            foreach ($grupos_bd as $grupo)
+            {
+
+                $nombre_grupo = $grupo->getGrupo()->getNombre();
+
+                // Programas pertenecientes al grupo
+                $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                             'pagina' => $grupo->getPagina()->getId()));
+
+                $pagina_sesion = $session->get('paginas')[$grupo->getPagina()->getId()];
+
+                if (count($pagina_sesion['subpaginas']) >= 1)
+                {
+                    $tiene_subpaginas = 1;
+                }
+                else {
+                    $tiene_subpaginas = 0;
+                }
+
+                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+
+                $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                     'pagina' => $grupo->getPagina()->getId()));
+                if ($pagina_log)
+                {
+                    if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
+                    {
+                        if ($pagina_empresa->getAcceso() && $link_enabled)
+                        {
+                            // aprobado y con acceso de seguir viendo
+                            $continuar = 2;
+                        }
+                        else {
+                            // aprobado y sin poder ver solo descargar notas y certificados
+                            $continuar = 3;
+                        }
                     }
-                }else{
-                   // cursando actualemnete el progarama - continuar
-                   $continuar = 1; 
+                    else {
+                       // cursando actualmente el programa - 1 = continuar, 4 = vencido y sin haber finalizado
+                       $continuar = $link_enabled ? 1 : 4;
+                    }
+                    
+                }
+                else {
+                    // sin registros - 0 = iniciar, 4 = vencido y sin haber iniciado
+                    $continuar = $link_enabled ? 0 : 4;
+                }
+
+                $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                if ($link_enabled)
+                {
+                    if ($porcentaje_finalizacion >= 70)
+                    {
+                       $class_finaliza = 'alertTimeGood';
+                    }
+                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
+                    {
+                        $class_finaliza = 'alertTimeWarning';
+                    }
+                    elseif ($porcentaje_finalizacion <= 30) 
+                    {
+                        $class_finaliza = 'alertTimeDanger';
+                    }
+                    else {
+                        $class_finaliza = '';
+                    }
+                }
+                else {
+                    $class_finaliza = '';
                 }
                 
-            }else{
-                // si registros - iniciar
-                $continuar = 0;
+                $paginas[] = array('id' => $grupo->getPagina()->getId(),
+                                   'nombre' => $grupo->getPagina()->getNombre(),
+                                   'imagen' => $grupo->getPagina()->getFoto(),
+                                   'descripcion' => $grupo->getPagina()->getDescripcion(),
+                                   'dias_vencimiento' => $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")),
+                                   'class_finaliza' => $class_finaliza,
+                                   'tiene_subpaginas' => $tiene_subpaginas,
+                                   'continuar' => $continuar,
+                                   'link_enabled' => $link_enabled);
+
             }
 
-            $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-            if($porcentaje_finalizacion >= 70){
-               $class_finaliza = 'alertTimeGood';
-            }elseif($porcentaje_finalizacion >= 31 and $porcentaje_finalizacion <= 69){
-                $class_finaliza = 'alertTimeWarning';
-            }elseif ($porcentaje_finalizacion <= 30) {
-                $class_finaliza = 'alertTimeDanger';
-            }
-            else {
-                $class_finaliza = '';
-            }
-           
-            $programas_disponibles[]= array('id' => $pg->getPagina()->getId(),
-                                            'nombre' => $pg->getPagina()->getNombre(),
-                                            'nombregrupo' => $pg->getGrupo()->getNombre(),
-                                            'imagen' => $pg->getPagina()->getFoto(),
-                                            'descripcion' => $pg->getPagina()->getDescripcion(),
-                                            'dias_vencimiento' => $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")),
-                                            'class_finaliza' => $class_finaliza,
-                                            'tiene_subpaginas' => $tiene_subpaginas,
-                                            'continuar' => $continuar);
-            
+            $grupos[] = array('id' => $grupo_id,
+                              'nombre' => $nombre_grupo,
+                              'paginas' => $paginas);
+
         }
+
         return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
                                                                                  'reciente' => $reciente,
                                                                                  'grupos' => $grupos,
-                                                                                 'actividad_reciente' => $actividad_reciente,
-                                                                                 'programas_disponibles' => $programas_disponibles));
+                                                                                 'actividad_reciente' => $actividad_reciente));
 
-        return $response;        
     }
 
     public function authExceptionEmpresaAction($tipo)
