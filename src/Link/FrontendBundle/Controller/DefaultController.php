@@ -19,236 +19,258 @@ class DefaultController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-       $f = $this->get('funciones');
-       $session = new Session();
+        $f = $this->get('funciones');
+        $session = new Session();
 
-       if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
-       {
-           return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-       }
-       $f->setRequest($session->get('sesion_id'));
+        if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
+        }
+        $f->setRequest($session->get('sesion_id'));
 
-       $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-       $datos = $session;
-       $empresa_obj = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
-       $bienvenida = $empresa_obj->getBienvenida();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-       // buscando las últimas 3 interacciones del usuario donde la página no este completada
-       $query_actividad_padre = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar
-                                                  JOIN LinkComunBundle:CertiPagina p 
-                                                  WHERE ar.usuario = :usuario_id
-                                                  AND ar.estatusPagina != :completada
-                                                  AND p.id = ar.pagina
-                                                  AND p.pagina IS NULL
-                                                  ORDER BY ar.id DESC')
-                                   ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                                         'completada' => $yml['parameters']['estatus_pagina']['completada']))
-                                   ->setMaxResults(3);
-       $actividadreciente_padre = $query_actividad_padre->getResult();
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
-       $actividad_reciente = array();
-       // Si tiene actividades
-       if(count($actividadreciente_padre) >=  1){
-           $reciente = 1;
-           foreach ($actividadreciente_padre as $arp) {
-               $ar = array();
-               $pagina_sesion = $session->get('paginas')[$arp->getPagina()->getId()];
-               $subpaginas_ids = $f->hijas($pagina_sesion['subpaginas']);
-               //return new Response(var_dump($subpaginas_ids));
-               $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                                'pagina' => $arp->getPagina()->getId()));
+        // buscando las últimas 3 interacciones del usuario donde la página no este completada
+        $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
+                                    JOIN pl.pagina p  
+                                    WHERE pl.usuario = :usuario_id
+                                        AND pl.estatusPagina != :completada
+                                        AND p.pagina IS NULL
+                                    ORDER BY pl.id DESC')
+                    ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                          'completada' => $yml['parameters']['estatus_pagina']['completada']))
+                    ->setMaxResults(3);
+        $actividadreciente_padre = $query->getResult();
 
-               if(count($subpaginas_ids)){
+        $actividad_reciente = array();
+        
+        // Si tiene actividades
+        if (count($actividadreciente_padre))
+        {
 
-                   $query_actividad_hija = $em->createQuery('SELECT ar FROM LinkComunBundle:CertiPaginaLog ar 
-                                                             WHERE ar.usuario = :usuario_id
-                                                             AND ar.estatusPagina != :completada
-                                                             AND ar.pagina IN (:hijas)
-                                                             ORDER BY ar.id DESC')
-                                               ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                                                     'completada' => $yml['parameters']['estatus_pagina']['completada'],
-                                                                     'hijas' => $subpaginas_ids))
-                                       ->setMaxResults(1);
-                   $ar = $query_actividad_hija->getResult();
-               }
-               if($ar){
-                   if($ar[0]){
+            $reciente = 1;
 
-                       $id =  $ar[0]->getPagina()->getId();
-                       $padre_id = $arp->getPagina()->getId();
-                       $titulo_padre = $arp->getPagina()->getNombre();
-                       $titulo_hijo = $ar[0]->getPagina()->getNombre();
-                       $imagen = $arp->getPagina()->getFoto();
-                       $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
-                       $porcentaje = round($arp->getPorcentajeAvance());
-                       $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
-                       // buscando registros de la pagina para validar si esta en evaluación
-                       $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                           'pagina' => $id));
-                       if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
-                           $avanzar = 2;
-                           $evaluacion_pagina = $id;
-                           $evaluacion_programa = $padre_id;
-                       }else{
-                           $avanzar = 0;
-                           $evaluacion_pagina = 0;
-                           $evaluacion_programa = 0;
-                       }
+            foreach ($actividadreciente_padre as $arp) 
+            {
 
-                   }
-               }else{
+                $ar = array();
+                $pagina_sesion = $session->get('paginas')[$arp->getPagina()->getId()];
+                $subpaginas_ids = $f->hijas($pagina_sesion['subpaginas']);
+                //return new Response(var_dump($subpaginas_ids));
+                $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                             'pagina' => $arp->getPagina()->getId()));
 
-                   $id = 0;
-                   $padre_id = $arp->getPagina()->getId();
-                   $titulo_padre = $arp->getPagina()->getNombre();
-                   $titulo_hijo = '';
-                   $imagen = $arp->getPagina()->getFoto();
-                   $categoria = $arp->getPagina()->getCategoria()->getNombre();
-                   $porcentaje = round($arp->getPorcentajeAvance());
-                   $fecha_vencimiento = $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
-                   // buscando registros de la pagina para validar si esta en evaluación
-                   $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                       'pagina' => $padre_id));
-                   if($datos_log && $datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion']){
-                       $avanzar = 2;
-                       $evaluacion_pagina = $padre_id;
-                       $evaluacion_programa = $padre_id;
-                   }else{
-                       $avanzar = 0;
-                       $evaluacion_pagina = 0;
-                       $evaluacion_programa = 0;
-                   }
+                $padre_id = $arp->getPagina()->getId();
+                $imagen = $arp->getPagina()->getFoto();
+                $porcentaje = round($arp->getPorcentajeAvance());
+                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
 
-               }
+                if (count($subpaginas_ids))
+                {
 
-               $porcentaje_finalizacion = $f->timeAgoPorcentaje($datos_certi_pagina->getFechaInicio()->format("Y/m/d"), $datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
-               if ($porcentaje_finalizacion >= 70){
-                  $class_finaliza = 'alertTimeGood';
-               }elseif($porcentaje_finalizacion >= 31 and $porcentaje_finalizacion <= 69){
-                   $class_finaliza = 'alertTimeWarning';
-               }elseif ($porcentaje_finalizacion <= 30) {
-                   $class_finaliza = 'alertTimeDanger';
-               }
-               else {
-                   $class_finaliza = '';
-               }
+                    $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
+                                                WHERE pl.usuario = :usuario_id
+                                                    AND pl.estatusPagina != :completada
+                                                    AND pl.pagina IN (:hijas)
+                                                ORDER BY pl.id DESC')
+                                ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
+                                                      'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                                      'hijas' => $subpaginas_ids))
+                                ->setMaxResults(1);
+                    $ar = $query->getResult();
+                }
 
-               $actividad_reciente[]= array('id' => $id,
-                                            'padre_id' => $padre_id,
-                                            'titulo_padre' => $titulo_padre,
-                                            'titulo_hijo' => $titulo_hijo,
-                                            'imagen' => $imagen,
-                                            'categoria' => $categoria,
-                                            'fecha_vencimiento' => $fecha_vencimiento,
-                                            'class_finaliza' => $class_finaliza,
-                                            'porcentaje' => $porcentaje,
-                                            'avanzar' => $avanzar,
-                                            'evaluacion_pagina' => $evaluacion_pagina,
-                                            'evaluacion_programa' => $evaluacion_programa);
-           }
-       // No tiene actividades
-       }else{
-           $reciente = 0;
-       }
+                if ($ar)
+                {
 
-       $programas_disponibles = array();
-       
-       // Convertimos los id de las paginas de la sesion en un nuevo array
-       $paginas_ids = array();
-       foreach ($session->get('paginas') as $pg) {
-           $paginas_ids[] = $pg['id'];
-       }
+                    $id =  $ar[0]->getPagina()->getId();
+                    $titulo_padre = $arp->getPagina()->getNombre();
+                    $titulo_hijo = $ar[0]->getPagina()->getNombre();
+                    $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
+                    
+                    // buscando registros de la pagina para validar si está en evaluación
+                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                         'pagina' => $id));
+                    if ($pagina_log && $pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                    {
+                        $avanzar = 2;
+                        $evaluacion_pagina = $id;
+                        $evaluacion_programa = $padre_id;
+                    }
+                    else {
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
+                }
+                else {
 
-       // Buscamos los grupos disponibles para el usuario por los programas disponibles en la sesión
-       $group_query = $em->createQuery('SELECT cg FROM LinkComunBundle:CertiGrupo cg 
-                                       JOIN LinkComunBundle:CertiGrupoPagina cgp
-                                       WHERE cg.empresa = :empresa
-                                       AND  cgp.grupo = cg.id
-                                       AND cgp.pagina IN (:pagina)
-                                       ORDER BY cg.id ASC')
-                       ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                             'pagina' => $paginas_ids));
-       $grupos = $group_query->getResult();
+                    $id = 0;
+                    $titulo_padre = $arp->getPagina()->getNombre();
+                    $titulo_hijo = '';
+                    $categoria = $arp->getPagina()->getCategoria()->getNombre();
+                    
+                    // buscando registros de la pagina para validar si esta en evaluación
+                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                        'pagina' => $padre_id));
+                    if ($pagina_log && $pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                    {
+                        $avanzar = 2;
+                        $evaluacion_pagina = $padre_id;
+                        $evaluacion_programa = $padre_id;
+                    }
+                    else {
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
 
-       // Buscamos datos especificos de los programas de la sesion obteniendo el grupo al que pertenece cada programa
-       $query_pages_by_group = $em->createQuery('SELECT cgp 
-                                                 FROM LinkComunBundle:CertiGrupo cg,
-                                                      LinkComunBundle:CertiGrupoPagina cgp,
-                                                      LinkComunBundle:CertiPagina cp
-                                                 WHERE cg.empresa = :empresa
-                                                 AND  cgp.grupo = cg.id
-                                                 AND cp.id IN (:pagina)
-                                                 AND cgp.pagina = cp.id
-                                                 ORDER BY cg.id ASC')
-                                   ->setParameters(array('empresa' => $session->get('empresa')['id'],
-                                                         'pagina' => $paginas_ids));
-       $pages_by_group = $query_pages_by_group->getResult();
-       
-       foreach ($pages_by_group as $pg) {
+                }
 
-           // contruimos un array con los datos necesarios para el template y el grupo de cada programa
-           $datos_certi_pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                            'pagina' => $pg->getPagina()->getId()));
+                $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                if ($link_enabled)
+                {
+                    if ($porcentaje_finalizacion >= 70)
+                    {
+                       $class_finaliza = 'alertTimeGood';
+                    }
+                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
+                    {
+                        $class_finaliza = 'alertTimeWarning';
+                    }
+                    elseif ($porcentaje_finalizacion <= 30) 
+                    {
+                        $class_finaliza = 'alertTimeDanger';
+                    }
+                    else {
+                        $class_finaliza = '';
+                    }
+                }
+                else {
+                    $class_finaliza = '';
+                }
 
-           $pagina_sesion = $session->get('paginas')[$pg->getPagina()->getId()];
+                $actividad_reciente[] = array('id' => $id,
+                                              'padre_id' => $padre_id,
+                                              'titulo_padre' => $titulo_padre,
+                                              'titulo_hijo' => $titulo_hijo,
+                                              'imagen' => $imagen,
+                                              'categoria' => $categoria,
+                                              'dias_vencimiento' => $dias_vencimiento,
+                                              'class_finaliza' => $class_finaliza,
+                                              'porcentaje' => $porcentaje,
+                                              'avanzar' => $avanzar,
+                                              'evaluacion_pagina' => $evaluacion_pagina,
+                                              'evaluacion_programa' => $evaluacion_programa);
 
-           if(count($pagina_sesion['subpaginas']) >= 1){
-               $tiene_subpaginas = 1;
-           }else{
-               $tiene_subpaginas = 0;
-           }
+            }
+        
+        }
+        else {
+            $reciente = 0;
+        }
 
-           $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                               'pagina' => $pg->getPagina()->getId()));
-           if($datos_log){
-               if($datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
-                   if($datos_certi_pagina->getAcceso()){
-                       // aprobado y con acceso de seguir viendo
-                       $continuar = 2;
-                   }else{
-                       // aprobado y sin poder ver solo descargar notas y certificados
-                       $continuar = 3;
-                   }
-               }else{
-                  // cursando actualemnete el progarama - continuar
-                  $continuar = 1; 
-               }
-               
-           }else{
-               // si registros - iniciar
-               $continuar = 0;
-           }
+        $programas_disponibles = array();
+        
+        // Convertimos los id de las paginas de la sesion en un nuevo array
+        $paginas_ids = array();
+        foreach ($session->get('paginas') as $pg) {
+            $paginas_ids[] = $pg['id'];
+        }
 
-           $porcentaje_finalizacion = $f->timeAgoPorcentaje($datos_certi_pagina->getFechaInicio()->format("Y/m/d"), $datos_certi_pagina->getFechaVencimiento()->format("Y/m/d"));
-           if($porcentaje_finalizacion >= 70){
-              $class_finaliza = 'alertTimeGood';
-           }elseif($porcentaje_finalizacion >= 31 and $porcentaje_finalizacion <= 69){
-               $class_finaliza = 'alertTimeWarning';
-           }elseif ($porcentaje_finalizacion <= 30) {
-               $class_finaliza = 'alertTimeDanger';
-           }
-           else {
-               $class_finaliza = '';
-           }
-          
-           $programas_disponibles[]= array('id' => $pg->getPagina()->getId(),
-                                           'nombre' => $pg->getPagina()->getNombre(),
-                                           'nombregrupo' => $pg->getGrupo()->getNombre(),
-                                           'imagen' => $pg->getPagina()->getFoto(),
-                                           'descripcion' => $pg->getPagina()->getDescripcion(),
-                                           'fecha_vencimiento' => $f->timeAgo($datos_certi_pagina->getFechaVencimiento()->format("Y/m/d")),
-                                           'class_finaliza' => $class_finaliza,
-                                           'tiene_subpaginas' => $tiene_subpaginas,
-                                           'continuar' => $continuar);
+        // Buscamos los grupos disponibles para el usuario por los programas disponibles en la sesión
+        $group_query = $em->createQuery('SELECT cg FROM LinkComunBundle:CertiGrupo cg 
+                                        JOIN LinkComunBundle:CertiGrupoPagina cgp
+                                        WHERE cg.empresa = :empresa
+                                        AND  cgp.grupo = cg.id
+                                        AND cgp.pagina IN (:pagina)
+                                        ORDER BY cg.id ASC')
+                        ->setParameters(array('empresa' => $session->get('empresa')['id'],
+                                              'pagina' => $paginas_ids));
+        $grupos = $group_query->getResult();
+
+        // Buscamos datos especificos de los programas de la sesion obteniendo el grupo al que pertenece cada programa
+        $query_pages_by_group = $em->createQuery('SELECT cgp 
+                                                  FROM LinkComunBundle:CertiGrupo cg,
+                                                       LinkComunBundle:CertiGrupoPagina cgp,
+                                                       LinkComunBundle:CertiPagina cp
+                                                  WHERE cg.empresa = :empresa
+                                                  AND  cgp.grupo = cg.id
+                                                  AND cp.id IN (:pagina)
+                                                  AND cgp.pagina = cp.id
+                                                  ORDER BY cg.id ASC')
+                                    ->setParameters(array('empresa' => $session->get('empresa')['id'],
+                                                          'pagina' => $paginas_ids));
+        $pages_by_group = $query_pages_by_group->getResult();
+        
+        foreach ($pages_by_group as $pg) {
+
+            // contruimos un array con los datos necesarios para el template y el grupo de cada programa
+            $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                             'pagina' => $pg->getPagina()->getId()));
+
+            $pagina_sesion = $session->get('paginas')[$pg->getPagina()->getId()];
+
+            if(count($pagina_sesion['subpaginas']) >= 1){
+                $tiene_subpaginas = 1;
+            }else{
+                $tiene_subpaginas = 0;
+            }
+
+            $datos_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                'pagina' => $pg->getPagina()->getId()));
+            if($datos_log){
+                if($datos_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+                    if($pagina_empresa->getAcceso()){
+                        // aprobado y con acceso de seguir viendo
+                        $continuar = 2;
+                    }else{
+                        // aprobado y sin poder ver solo descargar notas y certificados
+                        $continuar = 3;
+                    }
+                }else{
+                   // cursando actualemnete el progarama - continuar
+                   $continuar = 1; 
+                }
+                
+            }else{
+                // si registros - iniciar
+                $continuar = 0;
+            }
+
+            $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+            if($porcentaje_finalizacion >= 70){
+               $class_finaliza = 'alertTimeGood';
+            }elseif($porcentaje_finalizacion >= 31 and $porcentaje_finalizacion <= 69){
+                $class_finaliza = 'alertTimeWarning';
+            }elseif ($porcentaje_finalizacion <= 30) {
+                $class_finaliza = 'alertTimeDanger';
+            }
+            else {
+                $class_finaliza = '';
+            }
            
-       }
-       return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $bienvenida,
-                                                                                'reciente' => $reciente,
-                                                                                'grupos' => $grupos,
-                                                                                'actividad_reciente' => $actividad_reciente,
-                                                                                'programas_disponibles' => $programas_disponibles));
+            $programas_disponibles[]= array('id' => $pg->getPagina()->getId(),
+                                            'nombre' => $pg->getPagina()->getNombre(),
+                                            'nombregrupo' => $pg->getGrupo()->getNombre(),
+                                            'imagen' => $pg->getPagina()->getFoto(),
+                                            'descripcion' => $pg->getPagina()->getDescripcion(),
+                                            'dias_vencimiento' => $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")),
+                                            'class_finaliza' => $class_finaliza,
+                                            'tiene_subpaginas' => $tiene_subpaginas,
+                                            'continuar' => $continuar);
+            
+        }
+        return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
+                                                                                 'reciente' => $reciente,
+                                                                                 'grupos' => $grupos,
+                                                                                 'actividad_reciente' => $actividad_reciente,
+                                                                                 'programas_disponibles' => $programas_disponibles));
 
-       return $response; 
+        return $response;        
     }
 
     public function authExceptionEmpresaAction($tipo)
