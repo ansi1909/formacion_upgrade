@@ -296,6 +296,8 @@ class LeccionController extends Controller
         $usuarioPadre = '';
         $mensajePadre = '';
 
+        
+
         $pagina_id = $request->request->get('pagina_id');
         $mensaje = $request->request->get('mensaje');
         $muro_id = $request->request->get('muro_id');
@@ -314,6 +316,10 @@ class LeccionController extends Controller
         $muro->setMensaje($mensaje);
         $muro->setPagina($pagina);
         $muro->setUsuario($usuario);
+
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
 
         if ($muro_id)
         {
@@ -346,9 +352,37 @@ class LeccionController extends Controller
             $correo_tutor = (!$muro_padre->getUsuario()->getCorreoPersonal() || $muro_padre->getUsuario()->getCorreoPersonal() == '') ? (!$muro_padre->getUsuario()->getCorreoCorporativo() || $muro_padre->getUsuario()->getCorreoCorporativo() == '') ? 0 : $muro_padre->getUsuario()->getCorreoCorporativo() : $muro_padre->getUsuario()->getCorreoPersonal();
             if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor)
             {
+                $mensajeVista = 
+                                '<table >
+                                    <tr >
+                                        <td style="text-align:left;">
+                                            <b>'.$this->get('translator')->trans('Tu comentario').'</b>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td style="text-align:left;">
+                                            '.$muro_padre->getMensaje().'
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td style="text-align:left;">
+                                            <b>'.$this->get('translator')->trans('La respuesta al comentario').'</b>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td style="text-align:left;">
+                                            '.$mensaje.' 
+                                        </td>
+                                    </tr>
+                                </table>';
+
+
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
-                                           'datos' => array('comment' => $muro_padre->getMensaje(),
-                                                            'response' => $mensaje),
+                                           'datos' => array('mensaje' =>$mensajeVista, 'logo'=> $logo,
+                                                            'background'=>$background, 
+                                                            'link_plataforma'=>$link_plataforma,
+                                                            'logo'=>$logo),
+                                                            
                                            'asunto' => 'Formación 2.0: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
