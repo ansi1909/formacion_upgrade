@@ -201,11 +201,10 @@ class Functions
 
         return $tutores;
 	}
-
-	////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
-	public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje )
-	{
-		foreach ($tutores as $tutor) 
+////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
+    public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje,$background,$logo,$link_plataforma)
+    {
+        foreach ($tutores as $tutor) 
             {
                 $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal())? $tutor->getCorreoPersonal() : null;
 
@@ -231,7 +230,10 @@ class Functions
                                                                 'mensaje' => $muro->getMensaje(),
                                                                 'usuarioPadre' =>($tipoMensaje =='Respondió')? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido():null,
                                                                 'mensajePadre' => ($tipoMensaje =='Respondió')? $muro->getMuro()->getMensaje():null,
-                                                                'empresa' => $empresa->getNombre()
+                                                                'empresa' => $empresa->getNombre(),
+                                                                 'background' =>$background,
+                                                                'logo' => $logo,
+                                                                'link_plataforma' => $link_plataforma
                                                                 ],
                                                     'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
                                                     'remitente' => $this->container->getParameter('mailer_user'),
@@ -256,7 +258,7 @@ class Functions
                 }
 
         return 1;
-	}
+    }
 
 	// Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.
 	public function getWebDirectory()

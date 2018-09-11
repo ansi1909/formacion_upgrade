@@ -369,9 +369,12 @@ class LeccionController extends Controller
         $em->flush();
 
         /////////// Enviar notificacion al tutor o tutores de actividad en el muro ///////////
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
         $categoria = $this->obtenerProgramaCurso($pagina->getId());
         $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
-        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $pagina, $muro, $categoria, $empresa,$tipoMensaje );
+        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $pagina, $muro, $categoria, $empresa,$tipoMensaje ,$background, $logo,$link_plataforma);
     
 
         $puntos = $pagina_log->getPuntos() + $puntos_agregados;
