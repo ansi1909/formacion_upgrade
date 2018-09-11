@@ -387,6 +387,7 @@ class DefaultController extends Controller
     {
         
         $em = $this->getDoctrine()->getManager();
+        $session = new Session();
         
         $correo = trim($request->request->get('correo'));
         $empresa_id = $request->request->get('empresa_id');
@@ -434,7 +435,9 @@ class DefaultController extends Controller
 
                             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
-
+                            $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+                            $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                            $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
                                                 'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] ),
@@ -442,7 +445,10 @@ class DefaultController extends Controller
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave(),
-                                                                 'nombre'=> $usuario->getNombre().' '.$usuario->getApellido()) );
+                                                                 'nombre'=> $usuario->getNombre().' '.$usuario->getApellido(),
+                                                                 'background' => $background,
+                                                                'logo'=>$logo,
+                                                                'link_plataforma'=>$link_plataforma) );
                           
                             $correoRecuperacion = $f->sendEmail($parametros);
                             //return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
