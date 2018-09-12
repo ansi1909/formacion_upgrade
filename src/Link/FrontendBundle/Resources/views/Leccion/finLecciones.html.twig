@@ -64,15 +64,17 @@
     <section class="s1_fin-materia">
         <div class="row align-items-center justify-content-center">
             <div class="col-10 text-center">
-                {% if subpagina.categoria == 'Materia' %}
+                {% set categoria = continue_button.evaluacion != 0 ? continue_button.evaluacion != subpagina.id ? continue_button.categoria : subpagina.categoria : subpagina.categoria %}
+                {% set nombre_pagina = continue_button.evaluacion != 0 ? continue_button.evaluacion != subpagina.id ? continue_button.nombre_pagina : subpagina.nombre : subpagina.nombre %}
+                {% if categoria == 'Materia' %}
                     {% set articulo = 'de la'|trans %}
-                {% elseif subpagina.categoria == 'Lección' %}
+                {% elseif categoria == 'Lección' %}
                     {% set articulo = 'de la'|trans %}
                 {% else %}
                     {% set articulo = 'del'|trans %}
                 {% endif %}
-                <h3>{{ ' Has completado con éxito los contenidos'|trans }} {{ articulo~' '~subpagina.categoria }}:</h3>
-                <h3><strong>{{ subpagina.nombre }}</strong>.</h3>
+                <h3>{{ ' Has completado con éxito los contenidos'|trans }} {{ articulo~' '~categoria }}:</h3>
+                <h3><strong>{{ nombre_pagina }}</strong>.</h3>
             </div>
         </div>
         {% if continue_button.evaluacion != 0 %}

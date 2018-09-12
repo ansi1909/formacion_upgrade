@@ -272,7 +272,7 @@ class LeccionController extends Controller
             $duracion = 0;
         }
 
-        //return new Response('next_lesson: '.$next_lesson.', puntos: '.$puntos);
+        //return new Response(var_dump($continue_button));
         //return new Response(var_dump($indexedPages[$subpagina_id]));
 
         return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
