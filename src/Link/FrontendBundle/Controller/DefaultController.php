@@ -322,7 +322,7 @@ class DefaultController extends Controller
                                                          $this->get('translator')->trans('Al loggearse se restablecerán los datos para una nueva sesión')));
                 $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
                 $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
-                $imagen = '<img class="img-error" src="../../front/assets/img/lock.svg" alt="">';
+                $imagen = 'front/assets/img/lock.svg';
                 $texto = $this->get('translator')->trans('Sesión expirada');
                 break;
             
@@ -332,7 +332,7 @@ class DefaultController extends Controller
                                                          $this->get('translator')->trans('En el módulo administrativo de Certificados y Constancias se puede agregar certificados'),
                                                          $this->get('translator')->trans('También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
                 $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
-                $imagen = '<img class="img-error" src="../../front/assets/img/warning (1).svg" alt="">';
+                $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Certificado no encontrado');
                 break;
 
@@ -342,7 +342,7 @@ class DefaultController extends Controller
                                                          $this->get('translator')->trans('Contacte al Administrador del Sistema para mayor información')));
                 $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
                 $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
-                $imagen = '<img class="img-error" src="../../front/assets/img/lock.svg" alt="">';
+                $imagen = 'front/assets/img/lock.svg';
                 $texto = $this->get('translator')->trans('Empresa inactiva');
                 break;
 
@@ -353,7 +353,7 @@ class DefaultController extends Controller
                                                          $this->get('translator')->trans('Contacte al Administrador del Sistema para mayor información')));
                 $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
                 $continuar = '<a href="'.$this->generateUrl('_login', array('empresa_id' => $empresa_id)).'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
-                $imagen = '<img class="img-error" src="../../front/assets/img/warning (1).svg" alt="">';
+                $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Url no encontrada');
                 break;
 
@@ -361,7 +361,7 @@ class DefaultController extends Controller
                 $mensaje = array('principal' => $this->get('translator')->trans('No existe evaluación para esta página'),
                                  'indicaciones' => array($this->get('translator')->trans('Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
                 $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
-                $imagen = '<img class="img-error" src="../../front/assets/img/warning (1).svg" alt="">';
+                $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Evaluación no encontrada');
                 break;
 
@@ -369,7 +369,7 @@ class DefaultController extends Controller
                 $mensaje = array('principal' => $this->get('translator')->trans('Esta evaluación no tiene preguntas configuradas'),
                                  'indicaciones' => array($this->get('translator')->trans('Contacte al Administrador del Sistema para mayor información')));
                 $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
-                $imagen = '<img class="img-error" src="../../front/assets/img/warning (1).svg" alt="">';
+                $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Preguntas no encontradas');
                 break;
 
