@@ -12,6 +12,7 @@ Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
+Actividades en curso: Activities in progress
 Actividades Recientes: Recents Activities
 Activo: Active
 Activos: Active
@@ -40,6 +41,7 @@ Aprobado: Approved
 Aprobados: Approved
 Aquellos empleados de la empresa: Those employees of the company
 Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.: Here you can access your latest activities, and see your progress in them.
+Aquí podrás ver tus actividades finalizadas: Here you can see your finished activities
 Archivo procesado con éxito: File processed successfully
 Archivos: Files
 Archivos de este espacio: Files of this space
@@ -402,7 +404,8 @@ Filtro: Filter
 Fin del programa: End of the program
 Finaliza en: Ends in
 Finalizar: Finish
-Finalizado: Finalized
+Finalizado: Finished
+Finalizados: Finished
 Finalizar Evaluación: Finish Test
 Firma del Participante: Signature of the Participant
 Firma del Supervisor: Signature of supervisor
@@ -574,6 +577,7 @@ Mi avance: My progress
 Miércoles: Wednesday
 minutos: minutes
 minutos para completar la evaluación: minutes for completing the evaluation
+Mis Programas: My Programs
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
@@ -705,6 +709,7 @@ Programación del aviso: Notification schedule
 Programado para: scheduled at
 Programar nuevo aviso: Program new notice
 Programas: Programs
+Programas Finalizados: Finished programs
 Prog. asociados: Associated Prog.
 Promedio de conexiones: Average connections
 Promedio evaluación módulo: Average evaluation module
