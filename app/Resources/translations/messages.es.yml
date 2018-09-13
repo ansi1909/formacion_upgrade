@@ -59,7 +59,7 @@ Asunto: Asunto
 Atrás: Atrás
 Autor: Autor
 Avance en programas: Avance en programas
-Aún no ha respondido las preguntas: Aún no ha respondido las preguntas
+Aún no has respondido las preguntas: Aún no has respondido las preguntas
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aún sin publicar: Aún sin publicar
@@ -105,6 +105,7 @@ Cerrar panel: Cerrar panel
 Cerrar sesión: Cerrar sesión
 Certificado: Certificado
 Certificado inexistente para este contenido: Certificado inexistente para este contenido
+Certificado no encontrado: Certificado no encontrado
 Código: Código
 Código del empleado repetido: Código del empleado repetido
 Columna: Columna
@@ -305,6 +306,7 @@ El vídeo es requerido: El vídeo es requerido
 Email de contacto: Email de Contacto
 Empresa: Empresa
 Empresa con estatus inactivo: Empresa con estatus inactivo
+Empresa inactiva: Empresa inactiva
 Empresas: Empresas
 Empresas activas: Empresas activas
 Empresas inactivas: Empresas inactivas
@@ -370,6 +372,7 @@ Estos son los resultados que has obtenido: Estos son los resultados que has obte
 Estructura: Estructura
 Evaluación: Evaluación
 Evaluación activa: Evaluación activa
+Evaluación no encontrada: Evaluación no encontrada
 Evaluaciones por módulo: Evaluaciones por módulo
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
@@ -461,7 +464,7 @@ Iniciar Sesión: Iniciar Sesión
 Inicio: Inicio
 Inicio de la evaluación: Inicio de la evaluación
 Inicio del programa: Inicio del programa
-instrucciones para reiniciarla. Ingresa tu correo.: instrucciones para reiniciarla. Ingresa tu correo.
+tu usuario y clave. Ingresa tu correo.: tu usuario y clave. Ingresa tu correo.
 Interacción: Interacción
 Interacción en los muros: Interacción en los muros
 Interacción en los muros por empresa: Interacción en los muros por empresa
@@ -517,7 +520,7 @@ La página seleccionada ya está asociada a otra evaluación.: La página selecc
 La pregunta es requerida: La pregunta es requerida
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos
 La respuesta al comentario: La respuesta al comentario
-La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: La recuperación de sus credenciales se realizo correctamente , revise su correo electrónico
+La recuperación de tus credenciales se realizó correctamente, revisa tu correo electrónico: La recuperación de tus credenciales se realizó correctamente, revisa tu correo electrónico
 La respuesta es requerida: La respuesta es requerida
 La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
@@ -691,6 +694,7 @@ Preferencias de usuario: Preferencias de usuario
 Pregunta: Pregunta
 Preguntas: Preguntas
 Preguntas frecuentes: Preguntas frecuentes
+Preguntas no encontradas: Preguntas no encontradas
 Prelación: Prelación
 Prelada por: Prelada por
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
@@ -726,7 +730,7 @@ registros: registros
 Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
 Regresar al inicio: Regresar al inicio
-Reiniciar contraseña: Reiniciar contraseña
+Recuperar contraseña: Recuperar contraseña
 Repetir evaluación: Repetir evaluación
 Reportar problema: Reportar problema
 Reporte de participantes aprobados por programas: Reporte de participantes aprobados por programas
@@ -755,7 +759,7 @@ Roles a seleccionar: Roles a seleccionar
 Sábado: Sábado
 Salir: Salir
 Salir de la evaluación: Salir de la evaluación
-se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione: se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione
+se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona: se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona
 Seleccionado: Seleccionado
 Seleccione el archivo: Seleccione el archivo
 Seleccione el/los usuarios: Seleccione el/los usuarios
@@ -764,11 +768,12 @@ Seleccione el programa: Seleccione el programa
 Seleccione la empresa para mostrar los niveles: Seleccione la empresa para mostrar los niveles
 Seleccione la empresa para mostrar las páginas asignadas: Seleccione la empresa para mostrar las páginas asignadas
 Seleccione la fecha difusión: Seleccione la fecha difusión
+Sesión expirada: Sesión expirada
 Si: Si
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.: Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas, puedes realizar la evaluación haciendo clic en el botón
-Sí deseas volver a intentarlo haz clic aquí: Sí deseas volver a intentarlo haz clic aquí
+Si deseas volver a intentarlo haz clic aquí: Si deseas volver a intentarlo haz clic aquí
 Si deseas volver a ver el contenido, haz clic en el botón: Si deseas volver a ver el contenido, haz clic en el botón
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.
 Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.
@@ -776,7 +781,7 @@ Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta pá
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
 Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
-Si presiona: Si presiona
+Si presionas: Si presionas
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
 Sigue aprendiendo: Sigue aprendiendo
@@ -832,6 +837,7 @@ Tu respuesta: Tu respuesta
 Tutoriales: Tutoriales
 Últimos 12: Últimos 12
 Url de la empresa no existe: Url de la empresa no existe
+Url no encontrada: Url no encontrada
 Usted no tiene aplicaciones asignadas para su rol.: Usted no tiene aplicaciones asignadas para su rol.
 Usted no tiene permiso para acceder a esta ruta: Usted no tiene permiso para acceder a esta ruta
 Usted tiene una invitación a un evento corporativo programado para mañana: Usted tiene una invitación a un evento corporativo programado para mañana

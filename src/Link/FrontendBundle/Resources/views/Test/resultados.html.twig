@@ -55,7 +55,7 @@
                             <span class="calif">{{ 'Tu calificación'|trans }}: <span class="num">{{ prueba_log.nota|round }}/100</span></span>
                         </div>
                         <div class="col-10 mt-3 text-center">
-                            <h3 class="color-light-black">{{ 'Sí deseas volver a intentarlo haz clic aquí'|trans }}:</h3>
+                            <h3 class="color-light-black">{{ 'Si deseas volver a intentarlo haz clic aquí'|trans }}:</h3>
                             <a href="{{ path('_test', { 'pagina_id': prueba_log.prueba.pagina.id, 'programa_id': programa_id }) }}">
                                 <button class="btn btnRepeatEval"><span class="material-icons ic-resul alreves" title="{{ 'Repetir evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">replay</span></button>
                             </a>

@@ -436,7 +436,7 @@ class DefaultController extends Controller
                         }
                         else{
                             $ok = 0;
-                            $error = $this->get('translator')->trans('La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico');
+                            $error = $this->get('translator')->trans('La recuperación de tus credenciales se realizó correctamente, revisa tu correo electrónico');
 
                             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
