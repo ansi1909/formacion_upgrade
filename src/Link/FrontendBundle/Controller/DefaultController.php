@@ -105,6 +105,7 @@ class DefaultController extends Controller
                         $evaluacion_pagina = 0;
                         $evaluacion_programa = 0;
                     }
+
                 }
                 else {
 
@@ -213,83 +214,87 @@ class DefaultController extends Controller
             foreach ($grupos_bd as $grupo)
             {
 
-                $nombre_grupo = $grupo->getGrupo()->getNombre();
-
-                // Programas pertenecientes al grupo
-                $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-                                                                                                                             'pagina' => $grupo->getPagina()->getId()));
-
-                $pagina_sesion = $session->get('paginas')[$grupo->getPagina()->getId()];
-
-                if (count($pagina_sesion['subpaginas']) >= 1)
+                if (in_array($grupo->getPagina()->getId(), $paginas_ids))
                 {
-                    $tiene_subpaginas = 1;
-                }
-                else {
-                    $tiene_subpaginas = 0;
-                }
 
-                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+                    $nombre_grupo = $grupo->getGrupo()->getNombre();
 
-                $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                     'pagina' => $grupo->getPagina()->getId()));
-                if ($pagina_log)
-                {
-                    if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
+                    // Programas pertenecientes al grupo
+                    $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
+                                                                                                                                 'pagina' => $grupo->getPagina()->getId()));
+
+                    $pagina_sesion = $session->get('paginas')[$grupo->getPagina()->getId()];
+
+                    if (count($pagina_sesion['subpaginas']) >= 1)
                     {
-                        if ($pagina_empresa->getAcceso() && $link_enabled)
+                        $tiene_subpaginas = 1;
+                    }
+                    else {
+                        $tiene_subpaginas = 0;
+                    }
+
+                    $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+
+                    $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
+                                                                                                                         'pagina' => $grupo->getPagina()->getId()));
+                    if ($pagina_log)
+                    {
+                        if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
                         {
-                            // aprobado y con acceso de seguir viendo
-                            $continuar = 2;
+                            if ($pagina_empresa->getAcceso() && $link_enabled)
+                            {
+                                // aprobado y con acceso de seguir viendo
+                                $continuar = 2;
+                            }
+                            else {
+                                // aprobado y sin poder ver solo descargar notas y certificados
+                                $continuar = 3;
+                            }
                         }
                         else {
-                            // aprobado y sin poder ver solo descargar notas y certificados
-                            $continuar = 3;
+                           // cursando actualmente el programa - 1 = continuar, 4 = vencido y sin haber finalizado
+                           $continuar = $link_enabled ? 1 : 4;
                         }
                     }
                     else {
-                       // cursando actualmente el programa - 1 = continuar, 4 = vencido y sin haber finalizado
-                       $continuar = $link_enabled ? 1 : 4;
+                        // sin registros - 0 = iniciar, 4 = vencido y sin haber iniciado
+                        $continuar = $link_enabled ? 0 : 4;
                     }
-                    
-                }
-                else {
-                    // sin registros - 0 = iniciar, 4 = vencido y sin haber iniciado
-                    $continuar = $link_enabled ? 0 : 4;
-                }
 
-                $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-                if ($link_enabled)
-                {
-                    if ($porcentaje_finalizacion >= 70)
+                    $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                    if ($link_enabled)
                     {
-                       $class_finaliza = 'alertTimeGood';
-                    }
-                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                    {
-                        $class_finaliza = 'alertTimeWarning';
-                    }
-                    elseif ($porcentaje_finalizacion <= 30) 
-                    {
-                        $class_finaliza = 'alertTimeDanger';
+                        if ($porcentaje_finalizacion >= 70)
+                        {
+                           $class_finaliza = 'alertTimeGood';
+                        }
+                        elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
+                        {
+                            $class_finaliza = 'alertTimeWarning';
+                        }
+                        elseif ($porcentaje_finalizacion <= 30) 
+                        {
+                            $class_finaliza = 'alertTimeDanger';
+                        }
+                        else {
+                            $class_finaliza = '';
+                        }
                     }
                     else {
                         $class_finaliza = '';
                     }
+                    
+                    $paginas[] = array('id' => $grupo->getPagina()->getId(),
+                                       'nombre' => $grupo->getPagina()->getNombre(),
+                                       'imagen' => $grupo->getPagina()->getFoto(),
+                                       'descripcion' => $grupo->getPagina()->getDescripcion(),
+                                       'dias_vencimiento' => $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")),
+                                       'class_finaliza' => $class_finaliza,
+                                       'tiene_subpaginas' => $tiene_subpaginas,
+                                       'continuar' => $continuar,
+                                       'link_enabled' => $link_enabled);
+
                 }
-                else {
-                    $class_finaliza = '';
-                }
-                
-                $paginas[] = array('id' => $grupo->getPagina()->getId(),
-                                   'nombre' => $grupo->getPagina()->getNombre(),
-                                   'imagen' => $grupo->getPagina()->getFoto(),
-                                   'descripcion' => $grupo->getPagina()->getDescripcion(),
-                                   'dias_vencimiento' => $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")),
-                                   'class_finaliza' => $class_finaliza,
-                                   'tiene_subpaginas' => $tiene_subpaginas,
-                                   'continuar' => $continuar,
-                                   'link_enabled' => $link_enabled);
 
             }
 
@@ -536,13 +541,13 @@ class DefaultController extends Controller
                                  'css' => $css);
 
                 //validamos que exista una cookie
-                if($_COOKIE && isset($_COOKIE["id_usuario"]))
+                if ($_COOKIE && isset($_COOKIE["id_usuario"]))
                 {
                     $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
                                                                                                    'empresa' => $empresa_bd->getId(),
                                                                                                    'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
                     
-                    if($usuario)
+                    if ($usuario)
                     {
                         $recordar_datos=1;
                         $login = $usuario->getLogin();
