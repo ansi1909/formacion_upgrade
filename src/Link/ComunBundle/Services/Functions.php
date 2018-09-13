@@ -1864,7 +1864,8 @@ class Functions
 		foreach ($subpagina as $sub) 
 		{
 			$hijas[] = $sub['id'];
-			if($sub['subpaginas']){
+			if ($sub['subpaginas'])
+			{
 				$hijas = $this->hijas($sub['subpaginas'], $hijas);
 			}
 		}
@@ -1966,8 +1967,8 @@ class Functions
 	public function iniciarSesion($datos)
     {
 
-        $exito=false;
-        $error='';
+        $exito = false;
+        $error = '';
 
 		$em = $this->em;
 
@@ -1993,6 +1994,7 @@ class Functions
                         $error = $this->translator->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
                     }
                     else {
+
                         $roles_front = array();
                         $roles_front[] = $datos['yml']['rol']['participante'];
                         $roles_front[] = $datos['yml']['rol']['tutor'];
@@ -2028,12 +2030,11 @@ class Functions
                         else {
 
                         	$sesion_activa = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array('usuario' => $usuario->getId(),
-                                                                                       							 'disponible' => 'true'));
+                                                                                       							'disponible' => true));
                         	if ($sesion_activa) {
-                        		
-                        		$error = $this->translator->trans('Ya existe una sesion activa.');
+                        		$error = $this->translator->trans('Este usuario tiene una sesión activa').'.';
                         	}
-                        	else{
+                        	else {
 
 	                            // se consulta si la empresa tiene paginas activas
 	                            $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
@@ -2055,8 +2056,8 @@ class Functions
 	                            {
 	                                $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
 	                            }
-	                            else 
-	                            {
+	                            else {
+
 	                                // Se setea los datos del usuario
 	                                $datosUsuario = array('id' => $usuario->getId(),
 	                                                      'login' => $usuario->getLogin(),
@@ -2108,6 +2109,8 @@ class Functions
 	                                foreach ($sesiones as $s)
 	                                {
 	                                    $s->setDisponible(false);
+	                                    $em->persist($s);
+	                                	$em->flush();
 	                                }
 
 	                                // Se crea la sesión en BD
@@ -2126,7 +2129,7 @@ class Functions
 	                                $session->set('empresa', $datos['empresa']);
 	                                $session->set('paginas', $paginas);
 
-	                                if($datos['recordar_datos']==1)
+	                                if ($datos['recordar_datos']==1)
 	                                {
 	                                    //alimentamos el generador de aleatorios
 	                                    mt_srand (time());
@@ -2144,6 +2147,7 @@ class Functions
 	                                }
 
 	                                $exito = true;
+
 	                            }
                         	}
                         }
@@ -2568,6 +2572,8 @@ class Functions
         	if ($evaluacion)
         	{
         		$duracion = $this->duracionPrueba($evaluacion);
+        		$nombre_pagina = $indexedPages[$evaluacion]['categoria'].': '.$indexedPages[$evaluacion]['nombre'];
+				$categoria = $indexedPages[$evaluacion]['categoria'];
         		if ($indexedPages[$evaluacion]['padre'])
         		{
         			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];
