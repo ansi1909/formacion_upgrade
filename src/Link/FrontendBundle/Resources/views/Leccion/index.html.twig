@@ -28,7 +28,7 @@
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             {% set display = lecciones.muro_activo ? '' : 'display:none;' %}
-            <a id="iconComments" href="javascript:void(0)" style="{{ display }}">
+            <a id="iconComments" href="javascript:void(0)" title="" data-toggle="tooltip" data-original-title="Muro" data-placement="bottom"  style="{{ display }}"  >
                 <i class="material-icons mx-3 color-light-grey">comment</i>
             </a>
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}

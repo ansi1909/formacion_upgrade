@@ -32,7 +32,7 @@ class DefaultController extends Controller
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($session->get('empresa')['id']);
 
-        // buscando las últimas 3 interacciones del usuario donde la página no este completada
+        // buscando las últimas 3 interacciones del usuario donde la página no esté completada
         $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
                                     JOIN pl.pagina p  
                                     WHERE pl.usuario = :usuario_id
@@ -174,8 +174,6 @@ class DefaultController extends Controller
         else {
             $reciente = 0;
         }
-
-        $programas_disponibles = array();
         
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
@@ -284,11 +282,13 @@ class DefaultController extends Controller
                         $class_finaliza = '';
                     }
                     
+                    $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
+
                     $paginas[] = array('id' => $grupo->getPagina()->getId(),
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
                                        'descripcion' => $grupo->getPagina()->getDescripcion(),
-                                       'dias_vencimiento' => $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")),
+                                       'dias_vencimiento' => $dias_vencimiento,
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
@@ -436,7 +436,7 @@ class DefaultController extends Controller
                         }
                         else{
                             $ok = 0;
-                            $error = $this->get('translator')->trans('La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico');
+                            $error = $this->get('translator')->trans('La recuperación de tus credenciales se realizó correctamente, revisa tu correo electrónico');
 
                             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
