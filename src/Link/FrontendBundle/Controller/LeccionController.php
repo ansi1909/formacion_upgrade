@@ -352,31 +352,6 @@ class LeccionController extends Controller
             $correo_tutor = (!$muro_padre->getUsuario()->getCorreoPersonal() || $muro_padre->getUsuario()->getCorreoPersonal() == '') ? (!$muro_padre->getUsuario()->getCorreoCorporativo() || $muro_padre->getUsuario()->getCorreoCorporativo() == '') ? 0 : $muro_padre->getUsuario()->getCorreoCorporativo() : $muro_padre->getUsuario()->getCorreoPersonal();
             if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor)
             {
-                //$mensajeVista = 
-                                // '<table >
-                                //     <tr >
-                                //         <td style="text-align:left;">
-                                //             <b>¡Hola'..'
-                                //             <b>'.$this->get('translator')->trans('Tu comentario').'</b>
-                                //         </td>
-                                //     </tr>
-                                //     <tr >
-                                //         <td style="text-align:left;">
-                                //             '.$muro_padre->getMensaje().'
-                                //         </td>
-                                //     </tr>
-                                //     <tr >
-                                //         <td style="text-align:left;">
-                                //             <b>'.$this->get('translator')->trans('La respuesta al comentario').'</b>
-                                //         </td>
-                                //     </tr>
-                                //     <tr >
-                                //         <td style="text-align:left;">
-                                //             '.$mensaje.' 
-                                //         </td>
-                                //     </tr>
-                                // </table>';
-                 //['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
                 $categoria = $this->obtenerProgramaCurso($pagina_id);
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
                                            'datos' => array('logo'=> $logo,
