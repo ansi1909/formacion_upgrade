@@ -75,11 +75,11 @@ parameters:
         bienvenida: 1
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
-        remitente: 'tutorvirtual@formacion2puntocero.com'
+        remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
         asunto: 'Formación2.0 - Solicitud de soporte virtual. '
-        remitente: 'tutorvirtual@formacion2puntocero.com'
-        destinatario: 'josetayupo@gmail.com'
+        remitente: 'soporte@formacion2puntocero.com'
+        destinatario: 'soporte@formacion2puntocero.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2
