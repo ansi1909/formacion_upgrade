@@ -24,15 +24,17 @@
                                 </tr>
                                 <tr style="background: url({{ background }}) no-repeat top right;">
                                     <td align="justify" style="padding: 10% 5%;">
-                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;">
+                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;text-align: left;">
+                                            <B>¡Hola {{nombre}}!</B><BR><BR></B>
+                                               Existe actividad en uno de los muros  monitorizados  por ti , a continuación te presento los detalles:<BR><BR>
                                         	<B>Empresa: </B>{{empresa}}<BR>
                                         	<B>{{categoria}}: </B>{{nombrePrograma}}<BR>
                                         	<B>Lección: </B>{{leccion}}<BR><BR>
                                         	<B>{{encabezadoUsuario}}</B><BR><BR>{{mensaje}}<BR><BR>
                                         	{% if usuarioPadre %}
-	                                        	 	<B>A la siguiente publicación de {{usuarioPadre}}</B><BR><BR>
+	                                        	 	<B>A la publicación de {{usuarioPadre}}</B><BR><BR>
 	                                        	 	{{mensajePadre}}
-                                        	{% endif%}
+                                        	{% endif %}
                                         </p>
                                     </td>
                                 </tr>
