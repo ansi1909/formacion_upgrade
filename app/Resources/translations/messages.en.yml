@@ -12,6 +12,7 @@ Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
+Actividades en curso: Activities in progress
 Actividades Recientes: Recents Activities
 Activo: Active
 Activos: Active
@@ -40,6 +41,7 @@ Aprobado: Approved
 Aprobados: Approved
 Aquellos empleados de la empresa: Those employees of the company
 Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.: Here you can access your latest activities, and see your progress in them.
+Aquí podrás ver tus actividades finalizadas: Here you can see your finished activities
 Archivo procesado con éxito: File processed successfully
 Archivos: Files
 Archivos de este espacio: Files of this space
@@ -59,7 +61,7 @@ Asunto: Subject
 Atrás: Back
 Autor: Author
 Avance en programas: Advance in programs
-Aún no ha respondido las preguntas: You have not already answered the questions
+Aún no has respondido las preguntas: You have not answered the questions yet
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aún sin publicar: Not yet published
@@ -105,6 +107,7 @@ Cerrar panel: Close panel
 Cerrar sesión: Log out
 Certificado: Certificate
 Certificado inexistente para este contenido: No certificate for this content
+Certificado no encontrado: Certificate not found
 Código: Code
 Código del empleado repetido: Employee code repeated
 Columna: Column
@@ -305,6 +308,7 @@ El vídeo es requerido: Video is required
 Email de contacto: Contact Email
 Empresa: Company
 Empresa con estatus inactivo: Company with inactive status
+Empresa inactiva: Inactive company
 Empresas: Companies
 Empresas activas: Active companies
 Empresas inactivas: Inactive companies
@@ -370,6 +374,7 @@ Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
+Evaluación no encontrada: Evaluation not found
 Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
@@ -399,7 +404,8 @@ Filtro: Filter
 Fin del programa: End of the program
 Finaliza en: Ends in
 Finalizar: Finish
-Finalizado: Finalized
+Finalizado: Finished
+Finalizados: Finished
 Finalizar Evaluación: Finish Test
 Firma del Participante: Signature of the Participant
 Firma del Supervisor: Signature of supervisor
@@ -461,7 +467,7 @@ Iniciar Sesión: Log in
 Inicio: Begin
 Inicio de la evaluación: Evaluation start
 Inicio del programa: Program start
-instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
+tu usuario y clave. Ingresa tu correo.: your username and password. Enter your email.
 Interacción: Interaction
 Interacción en los muros: Wall interactions
 Interacción en los muros por empresa: Wall interactions per company
@@ -517,7 +523,7 @@ La página seleccionada ya está asociada a otra evaluación.: Selected page is 
 La pregunta es requerida: Question is required
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 La respuesta al comentario: The comment response
-La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: The recovery of your credentials was successful, check your email
+La recuperación de tus credenciales se realizó correctamente, revisa tu correo electrónico: The recovery of your credentials was successful, check your email
 La respuesta es requerida: Answer is required
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
@@ -571,6 +577,7 @@ Mi avance: My progress
 Miércoles: Wednesday
 minutos: minutes
 minutos para completar la evaluación: minutes for completing the evaluation
+Mis Programas: My Programs
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
@@ -691,6 +698,7 @@ Preferencias de usuario: User preferences
 Pregunta: Question
 Preguntas: Questions
 Preguntas frecuentes: Frequent questions
+Preguntas no encontradas: Questions not found
 Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
@@ -701,6 +709,7 @@ Programación del aviso: Notification schedule
 Programado para: scheduled at
 Programar nuevo aviso: Program new notice
 Programas: Programs
+Programas Finalizados: Finished programs
 Prog. asociados: Associated Prog.
 Promedio de conexiones: Average connections
 Promedio evaluación módulo: Average evaluation module
@@ -726,7 +735,7 @@ registros: items
 Registros actualizados: Updated items
 Registros nuevos: New items
 Regresar al inicio: Back to login
-Reiniciar contraseña: Restore password
+Recuperar contraseña: Recover password
 Repetir evaluación: Repeat evaluation
 Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
@@ -755,7 +764,7 @@ Roles a seleccionar: Selectable roles
 Sábado: Saturday
 Salir: Log out
 Salir de la evaluación: Leave the evaluation
-se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione: results will be calculated leaving these questions unanswered. If you want to complete your answers press
+se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona: the results will be calculated leaving these questions unanswered. If you want to complete your answers press
 Seleccionado: Selected
 Seleccione el archivo: Select the file
 Seleccione el/los usuarios: Select the user
@@ -764,11 +773,12 @@ Seleccione el programa: Select the program
 Seleccione la empresa para mostrar los niveles: Select the company to show its levels
 Seleccione la empresa para mostrar las páginas asignadas: Select the company in order to show its assigned pages
 Seleccione la fecha difusión: Select broadcasting date
+Sesión expirada: Expired session
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
 Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.: If you want the notifiaction to be broadcast when you save the changes, select today date.
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: If you want, you can take the evaluation clicking the button
-Sí deseas volver a intentarlo haz clic aquí: If you want to try again, click here
+Si deseas volver a intentarlo haz clic aquí: If you want to try again, click here
 Si deseas volver a ver el contenido, haz clic en el botón: If you want to see the content again, click next button
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
 Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: If check YES, page will have a section in which user can comment over the wall
@@ -776,7 +786,7 @@ Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta pá
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
 Si necesitas ayuda escribenos a: If you need help email us to
-Si presiona: If press
+Si presionas: If you press
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Sigue aprendiendo: Keep learning
@@ -832,6 +842,7 @@ Tu respuesta: Your answer
 Tutoriales: Tutorials
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found
+Url no encontrada: Url not found
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
 Usted tiene una invitación a un evento corporativo programado para mañana: You have an invitation to an corporate event which is scheduled for tomorrow

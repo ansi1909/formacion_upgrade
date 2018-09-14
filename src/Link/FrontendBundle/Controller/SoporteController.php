@@ -33,6 +33,9 @@ class SoporteController extends Controller
 			
 		$nombreUsuario = ucwords($session->get('usuario')['nombre']).' '.ucwords($session->get('usuario')['nombre']).' ('.ucwords($session->get('empresa')['nombre']).')';
 
+		$background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$session->get('empresa')['id'];
 		$datosCorreo =
 		[
 			'twig' => $yml['parameters']['correo_soporte']['plantilla'],
@@ -44,7 +47,10 @@ class SoporteController extends Controller
 				'nombreUsuario' => $nombreUsuario,
 				'correoUsuario' => $datosAjax['correo'],
 				'asuntoMensaje' => $datosAjax['asunto'],
-				'mensaje' => $datosAjax['mensaje']
+				'mensaje' => $datosAjax['mensaje'],
+				'background' => $background,
+				'logo' => $logo,
+				'link_plataforma' => $link_plataforma
 			]
 		];
 

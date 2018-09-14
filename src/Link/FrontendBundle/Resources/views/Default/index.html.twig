@@ -1,12 +1,7 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    
-{% endblock %}
-
 {% block body %}
-{% set uri = app.request.getbasepath %}
+
 <div id="message" class="for-message well-message container py-6 px-6 mb-4 bckgd">
     <i id="equis" class="material-icons mr-2" >close</i>
     {{ bienvenida|raw }}    
@@ -14,7 +9,7 @@
 
 {% if reciente == 0 %}
 
-    <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
+    <div class="for-message es-message container py-5 px-6 mb-4">
         <h4 class="mb-4 title-grey">{{ 'Actividades Recientes'|trans }}</h4>
         <p>{{ 'Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.'|trans }}</p>
         <h5>{{ '¡Comencemos! Elige tu programa'|trans }}</h5>
@@ -31,29 +26,29 @@
             
             {% for ar in actividad_reciente %}
                 <div class="card-hrz card-current">
-                <img class="card-hrz-img  rounded-left" src="{{ uploads ~ ar.imagen }}" alt="">
-                <div class="card-hrz-body">
-                    <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
-                    <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>
-                    <span class="text-sm color-light-grey d-none d-lg-block"> {{ ar.titulo_hijo }} </span>
-                    <div class="progress mt-2">
-                        <div class="progress-bar" role="progressbar" style="width: {{ ar.porcentaje }}%" aria-valuenow="{{ ar.porcentaje }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <img class="card-hrz-img  rounded-left" src="{{ uploads ~ ar.imagen }}" alt="">
+                    <div class="card-hrz-body">
+                        <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
+                        <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>
+                        <span class="text-sm color-light-grey d-none d-lg-block"> {{ ar.titulo_hijo }} </span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar" role="progressbar" style="width: {{ ar.porcentaje }}%" aria-valuenow="{{ ar.porcentaje }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="card-hrz-right float-right px-2 d-flex flex-wrap align-items-center justify-content-center ">
-                    <div class="percent text-center mt-3">
-                        <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
-                        <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">{{ ar.dias_vencimiento }}</span>
-                    </div>
-                    {% if ar.link_enabled %}
-                        {% if ar.avanzar == 2 %}
-                            <a href="{{ path('_test', { 'pagina_id':  ar.evaluacion_pagina, 'programa_id': ar.evaluacion_programa }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                        {% else %}
-                            <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > {{ 'Continuar'|trans }} </a>
+                    <div class="card-hrz-right float-right px-2 d-flex flex-wrap align-items-center justify-content-center ">
+                        <div class="percent text-center mt-3">
+                            <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
+                            <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">{{ ar.dias_vencimiento }}</span>
+                        </div>
+                        {% if ar.link_enabled %}
+                            {% if ar.avanzar == 2 %}
+                                <a href="{{ path('_test', { 'pagina_id':  ar.evaluacion_pagina, 'programa_id': ar.evaluacion_programa }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3">{{ 'Continuar'|trans }}</a>
+                            {% else %}
+                                <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3">{{ 'Continuar'|trans }}</a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
+                    </div>
                 </div>
-            </div>
             {% endfor %}
 
         </div>
@@ -115,14 +110,14 @@
                                                     <span class="text-badge">{{ 'Aprobado'|trans }}</span>
                                                 {% else %}
                                                     {# Cambiar el ícono por un relojito #}
-                                                    <i class="material-icons badge-aprobado">event</i>
+                                                    <i class="material-icons badge-aprobado">update</i>
                                                     <span class="text-badge">{{ 'Vencido'|trans }}</span>
                                                 {% endif %}
                                             </div>
                                         {% else %}
                                             {# Cambiar el ícono por un relojito #}
                                             <div class="badge-wrap">
-                                                <i class="material-icons badge-aprobado">event</i>
+                                                <i class="material-icons badge-aprobado">update</i>
                                                 <span class="text-badge">{{ 'Vencido'|trans }}</span>
                                             </div>
                                         {% endif %}
