@@ -49,6 +49,7 @@ class DefaultController extends Controller
                 $em->persist($sesion);
                 $em->flush();
                 $f->setRequest($session->get('sesion_id'));
+                
             }
 
         }

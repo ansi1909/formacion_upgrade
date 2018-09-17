@@ -224,6 +224,7 @@ class Functions
                                                                 [
                                                                 'leccion' => $pagina->getNombre(),
                                                                 'categoria' => $categoria['categoria'],
+                                                                'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
                                                                 'nombrePrograma' => $categoria['nombre'],
                                                                 'leccion' => $pagina->getNombre(),
                                                                 'encabezadoUsuario' => $encabezadoUsuario,
