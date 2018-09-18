@@ -59,12 +59,12 @@ Asignar página al grupo: Assign page to group
 Asignar página al nivel: Assign page to level 
 Asunto: Subject
 Atrás: Back
-Autor: Author
-Avance en programas: Advance in programs
 Aún no has respondido las preguntas: You have not answered the questions yet
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aún sin publicar: Not yet published
+Autor: Author
+Avance en programas: Advance in programs
 Aviso de cierre de sesión: Notice of session closure
 Avisos programados de: Programmed notifications of
 Ayer: Yesterday
@@ -140,6 +140,7 @@ Constancia de Notas: Proof of Notes
 Consultar: Search
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
+Contenido Relacionado: Related Content
 Continuar: Continue
 Continuar al siguiente contenido: Continue to next content
 Continuar en la Evaluación: Continue in the Evaluation
@@ -194,12 +195,12 @@ Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 del: of the
-Descripción: Description
 Descarga el archivo a través del siguiente enlace: Download file through following link
 Descargar: Download
 Descargas: Downloads
 Descargar archivo: Download file
 Descargue material complementario: Download complementary content
+Descripción: Description
 Desde: Since
 ¿Desea eliminar el registro?: Are you sure to delete this item?
 Destinado a: Target
@@ -651,6 +652,7 @@ Opción correcta (Lado B): Correct option (Side B)
 Opciones: Options
 Opciones de la pregunta: Options of the question
 Orden: Order
+Otras noticias: Other news
 Página: Page
 Página asociada: Associated page
 Página a mover: Page to move
@@ -881,6 +883,8 @@ Viernes: Friday
 Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
 Volver: Back
+Volver a biblioteca: Back to library
+Volver a noticias: Back to news
 Volver al contenido: Back to the content
 Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page

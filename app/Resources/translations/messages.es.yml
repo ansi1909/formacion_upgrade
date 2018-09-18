@@ -59,12 +59,12 @@ Asignar página al grupo: Asignar página al grupo
 Asignar página al nivel: Asignar página al nivel
 Asunto: Asunto
 Atrás: Atrás
-Autor: Autor
-Avance en programas: Avance en programas
 Aún no has respondido las preguntas: Aún no has respondido las preguntas
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aún sin publicar: Aún sin publicar
+Autor: Autor
+Avance en programas: Avance en programas
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Avisos programados de: Avisos programados de
 Ayer: Ayer
@@ -140,6 +140,7 @@ Constancia de Notas: Constancia de Notas
 Consultar: Consultar
 Contenido: Contenido
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
+Contenido Relacionado: Contenido Relacionado
 Continuar: Continuar
 Continuar al siguiente contenido: Continuar al siguiente contenido
 Continuar en la Evaluación: Continuar en la Evaluación
@@ -194,12 +195,12 @@ Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publi
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
 del: del
-Descripción: Descripción
 Descarga el archivo a través del siguiente enlace: Descarga el archivo a través del siguiente enlace
 Descargar: Descargar
 Descargas: Descargas
 Descargar archivo: Descargar archivo
 Descargue material complementario: Descargue material complementario
+Descripción: Descripción
 Desde: Desde
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Destinado a: Destinado a
@@ -651,6 +652,7 @@ Opción correcta (Lado B): Opción correcta (Lado B)
 Opciones: Opciones
 Opciones de la pregunta: Opciones de la pregunta
 Orden: Orden
+Otras noticias: Otras noticias
 Página: Página
 Página asociada: Página asociada
 Página a mover: Página a mover
@@ -881,6 +883,8 @@ Viernes: Viernes
 Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver
+Volver a biblioteca: Volver a biblioteca
+Volver a noticias: Volver a noticias
 Volver al contenido: Volver al contenido
 Volver al inicio del contenido: Volver al inicio del contenido
 Volver al programa: Volver al programa
