@@ -201,11 +201,10 @@ class Functions
 
         return $tutores;
 	}
-
-	////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
-	public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje )
-	{
-		foreach ($tutores as $tutor) 
+////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
+    public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje,$background,$logo,$link_plataforma)
+    {
+        foreach ($tutores as $tutor) 
             {
                 $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal())? $tutor->getCorreoPersonal() : null;
 
@@ -225,13 +224,17 @@ class Functions
                                                                 [
                                                                 'leccion' => $pagina->getNombre(),
                                                                 'categoria' => $categoria['categoria'],
+                                                                'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
                                                                 'nombrePrograma' => $categoria['nombre'],
                                                                 'leccion' => $pagina->getNombre(),
                                                                 'encabezadoUsuario' => $encabezadoUsuario,
                                                                 'mensaje' => $muro->getMensaje(),
                                                                 'usuarioPadre' =>($tipoMensaje =='Respondió')? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido():null,
                                                                 'mensajePadre' => ($tipoMensaje =='Respondió')? $muro->getMuro()->getMensaje():null,
-                                                                'empresa' => $empresa->getNombre()
+                                                                'empresa' => $empresa->getNombre(),
+                                                                 'background' =>$background,
+                                                                'logo' => $logo,
+                                                                'link_plataforma' => $link_plataforma
                                                                 ],
                                                     'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
                                                     'remitente' => $this->container->getParameter('mailer_user'),
@@ -256,7 +259,7 @@ class Functions
                 }
 
         return 1;
-	}
+    }
 
 	// Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.
 	public function getWebDirectory()
@@ -1005,7 +1008,6 @@ class Functions
                                    	AND p.estatusContenido = :estatus_activo 
                                    	AND pe.activo = :activo 
                                    	AND pe.fechaInicio <= :hoy 
-						            AND pe.fechaVencimiento >= :hoy
                                    ORDER BY pe.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                     					  'pagina_id' => $pagina_id,
@@ -1860,9 +1862,11 @@ class Functions
     // función para retornar todos los ids de las sugpaginas de una programa
     public function hijas($subpagina, $hijas=array())
 	{
-		foreach ($subpagina as $sub) {
+		foreach ($subpagina as $sub) 
+		{
 			$hijas[] = $sub['id'];
-			if($sub['subpaginas']){
+			if ($sub['subpaginas'])
+			{
 				$hijas = $this->hijas($sub['subpaginas'], $hijas);
 			}
 		}
@@ -1964,8 +1968,8 @@ class Functions
 	public function iniciarSesion($datos)
     {
 
-        $exito=false;
-        $error='';
+        $exito = false;
+        $error = '';
 
 		$em = $this->em;
 
@@ -1991,6 +1995,7 @@ class Functions
                         $error = $this->translator->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
                     }
                     else {
+
                         $roles_front = array();
                         $roles_front[] = $datos['yml']['rol']['participante'];
                         $roles_front[] = $datos['yml']['rol']['tutor'];
@@ -2024,124 +2029,138 @@ class Functions
                             $error = $this->translator->trans('Los roles que tiene el usuario no son permitidos para ingresar al sistema.');
                         }
                         else {
-                            // se consulta si la empresa tiene paginas activas
-                            $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
-                                                       JOIN np.paginaEmpresa pe
-                                                       JOIN pe.pagina p
-                                                       WHERE pe.empresa = :empresa 
-                                                        AND p.pagina IS NULL 
-                                                        AND np.nivel = :nivel_usuario 
-                                                        AND pe.activo = :activo 
-                                                        AND pe.fechaInicio <= :hoy 
-                                                        AND pe.fechaVencimiento >= :hoy
-                                                       ORDER BY p.orden')
-                                        ->setParameters(array('empresa' => $datos['empresa']['id'],
-                                                              'nivel_usuario' => $usuario->getNivel()->getId(),
-                                                              'activo' => true,
-                                                              'hoy' => date('Y-m-d')));
-                            $paginas_bd = $query->getResult();
-                            
-                            if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
-                            {
-                                $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
-                            }
-                            else {
-                            
-                                // Se setea los datos del usuario
-                                $datosUsuario = array('id' => $usuario->getId(),
-                                					  'login' => $usuario->getLogin(),
-                                                      'nombre' => $usuario->getNombre(),
-                                                      'apellido' => $usuario->getApellido(),
-                                                      'correo' => trim($usuario->getCorreoPersonal()) != '' ? trim($usuario->getCorreoPersonal()) : trim($usuario->getCorreoCorporativo()),
-                                                      'correo_corporativo' => trim($usuario->getCorreoCorporativo()),
-                                                      'fecha_nacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('Y-m-d') : '',
-                                                      'fecha_nacimiento_formateada' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
-                                                      'foto' => $usuario->getFoto(),
-                                                      'participante' => $participante,
-                                                      'tutor' => $tutor);
-                                
-                                // Estructura de páginas
-                                $paginas = array();
-                                $orden = 0;
-                                foreach ($paginas_bd as $pagina)
-                                {
 
-                                	$orden++;
+                        	$sesion_activa = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array('usuario' => $usuario->getId(),
+                                                                                       							'disponible' => true));
+                        	if ($sesion_activa) {
+                        		$error = $this->translator->trans('Este usuario tiene una sesión activa').'.';
+                        	}
+                        	else {
 
-                                    $query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
-                                                               WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
-                                                ->setParameters(array('activo' => $datos['yml']['estatus_contenido']['activo'],
-                                                                      'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
-                                    $tiene_evaluacion = $query->getSingleScalarResult();
+	                            // se consulta si la empresa tiene paginas activas
+	                            $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
+	                                                       JOIN np.paginaEmpresa pe
+	                                                       JOIN pe.pagina p
+	                                                       WHERE pe.empresa = :empresa 
+	                                                        AND p.pagina IS NULL 
+	                                                        AND np.nivel = :nivel_usuario 
+	                                                        AND pe.activo = :activo 
+	                                                        AND pe.fechaInicio <= :hoy 
+	                                                       ORDER BY p.orden')
+	                                        ->setParameters(array('empresa' => $datos['empresa']['id'],
+	                                                              'nivel_usuario' => $usuario->getNivel()->getId(),
+	                                                              'activo' => true,
+	                                                              'hoy' => date('Y-m-d')));
+	                            $paginas_bd = $query->getResult();
+	                            
+	                            if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
+	                            {
+	                                $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
+	                            }
+	                            else {
 
-                                    $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
+	                                // Se setea los datos del usuario
+	                                $datosUsuario = array('id' => $usuario->getId(),
+	                                                      'login' => $usuario->getLogin(),
+	                                                      'nombre' => $usuario->getNombre(),
+	                                                      'apellido' => $usuario->getApellido(),
+	                                                      'correo' => trim($usuario->getCorreoPersonal()) != '' ? trim($usuario->getCorreoPersonal()) : trim($usuario->getCorreoCorporativo()),
+	                                                      'correo_corporativo' => trim($usuario->getCorreoCorporativo()),
+	                                                      'fecha_nacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('Y-m-d') : '',
+	                                                      'fecha_nacimiento_formateada' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
+	                                                      'foto' => $usuario->getFoto(),
+	                                                      'participante' => $participante,
+	                                                      'tutor' => $tutor);
+	                                
+	                                // Estructura de páginas
+	                                $paginas = array();
+	                                $orden = 0;
+	                                foreach ($paginas_bd as $pagina)
+	                                {
 
-                                    $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
-                                    																	'orden' => $orden,
-                                                                                                        'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
-                                                                                                        'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
-                                                                                                        'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
-                                                                                                        'tiene_evaluacion' => $pagina->getPaginaEmpresa()->getPruebaActiva() ? $tiene_evaluacion ? true : false : false,
-                                                                                                        'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
-                                                                                                        'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
-                                                                                                        'espacio_colaborativo' => $pagina->getPaginaEmpresa()->getColaborativo(),
-                                                                                                        'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
-                                                                                                        'inicio' => $pagina->getPaginaEmpresa()->getFechaInicio()->format('d/m/Y'),
-                                                                                                        'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
-                                                                                                        'subpaginas' => $subPaginas);
+	                                    $orden++;
 
-                                }
+	                                    $query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
+	                                                               WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
+	                                                ->setParameters(array('activo' => $datos['yml']['estatus_contenido']['activo'],
+	                                                                      'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
+	                                    $tiene_evaluacion = $query->getSingleScalarResult();
 
-                                // Cierre de sesiones activas
-                                $sesiones = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
-                                                                                                            'disponible' => true));
-                                foreach ($sesiones as $s)
-                                {
-                                    $s->setDisponible(false);
-                                }
+	                                    $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
 
-                                // Se crea la sesión en BD
-                                $admin_sesion = new AdminSesion();
-                                $admin_sesion->setFechaIngreso(new \DateTime('now'));
-                                $admin_sesion->setUsuario($usuario);
-                                $admin_sesion->setDisponible(true);
-                                $em->persist($admin_sesion);
-                                $em->flush();
+	                                    $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
+	                                                                                                        'orden' => $orden,
+	                                                                                                        'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
+	                                                                                                        'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
+	                                                                                                        'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
+	                                                                                                        'tiene_evaluacion' => $pagina->getPaginaEmpresa()->getPruebaActiva() ? $tiene_evaluacion ? true : false : false,
+	                                                                                                        'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
+	                                                                                                        'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
+	                                                                                                        'espacio_colaborativo' => $pagina->getPaginaEmpresa()->getColaborativo(),
+	                                                                                                        'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
+	                                                                                                        'inicio' => $pagina->getPaginaEmpresa()->getFechaInicio()->format('d/m/Y'),
+	                                                                                                        'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
+	                                                                                                        'subpaginas' => $subPaginas);
 
-                                $session = new session();
-                                $session->set('iniFront', true);
-                                $session->set('sesion_id', $admin_sesion->getId());
-                                $session->set('code', $datos['yml']['search_locale'] ? $this->getLocaleCode() : 'VE');
-                                $session->set('usuario', $datosUsuario);
-                                $session->set('empresa', $datos['empresa']);
-                                $session->set('paginas', $paginas);
+	                                }
 
-                                if($datos['recordar_datos']==1)
-                                {
-                                	//alimentamos el generador de aleatorios
-                                    mt_srand (time());
-                                    //generamos un número aleatorio para la cookie
-                                    $numero_aleatorio = mt_rand(1000000,999999999);
-                                    //se guarda la cookie en la tabla admin_usuario
-                                    $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneById($session->get('usuario')['id']);
-                                    //hay que validar si el usuario hace la marca de recordar
-                                    $usuario->setCookies($numero_aleatorio);
-                                    $em->persist($usuario);
-                                    $em->flush();
-                                    //se creo la variable de las cookie con el id del usuario de manera que cuando destruya la cookie sea la del usuario activo
-                                    setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
-                                    setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
-                                }
+	                                // Cierre de sesiones activas
+	                                $sesiones = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
+	                                                                                                            'disponible' => true));
+	                                foreach ($sesiones as $s)
+	                                {
+	                                    $s->setDisponible(false);
+	                                    $em->persist($s);
+	                                	$em->flush();
+	                                }
 
-								$exito=true;
-                            }
+	                                // Se crea la sesión en BD
+	                                $admin_sesion = new AdminSesion();
+	                                $admin_sesion->setFechaIngreso(new \DateTime('now'));
+	                                $admin_sesion->setUsuario($usuario);
+	                                $admin_sesion->setDisponible(true);
+	                                $em->persist($admin_sesion);
+	                                $em->flush();
+
+	                                $session = new session();
+	                                $session->set('iniFront', true);
+	                                $session->set('sesion_id', $admin_sesion->getId());
+	                                $session->set('code', $datos['yml']['search_locale'] ? $this->getLocaleCode() : 'VE');
+	                                $session->set('usuario', $datosUsuario);
+	                                $session->set('empresa', $datos['empresa']);
+	                                $session->set('paginas', $paginas);
+
+	                                if ($datos['recordar_datos']==1)
+	                                {
+	                                    //alimentamos el generador de aleatorios
+	                                    mt_srand (time());
+	                                    //generamos un número aleatorio para la cookie
+	                                    $numero_aleatorio = mt_rand(1000000,999999999);
+	                                    //se guarda la cookie en la tabla admin_usuario
+	                                    $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+	                                    //hay que validar si el usuario hace la marca de recordar
+	                                    $usuario->setCookies($numero_aleatorio);
+	                                    $em->persist($usuario);
+	                                    $em->flush();
+	                                    //se creo la variable de las cookie con el id del usuario de manera que cuando destruya la cookie sea la del usuario activo
+	                                    setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
+	                                    setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
+	                                }
+
+	                                $exito = true;
+
+	                            }
+                        	}
                         }
                     }
                 }
                 
             }
         }       	
-       	return array("error"=>$error,"exito"=>$exito);
+
+       	return array("error" => $error, 
+       				 "exito" => $exito);
+
     }
 
 	public function notasPrograma($subpaginas_ids, $usuario_id, $estatus_aprobado)
@@ -2372,7 +2391,7 @@ class Functions
                             $session->set('usuario', $datosUsuario);
                             $session->set('menu', $menu);
 
-                            if($datos['recordar_datos']==1)
+                            if($datos['recordar_datos'] == 1)
                             {
                                 //alimentamos el generador de aleatorios
                                 mt_srand (time());
@@ -2388,16 +2407,19 @@ class Functions
                                 setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
                                 setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
                             }
-							$exito=true;
+							$exito = true;
                         }
                     }
                 }
             }
         }
-       	return array("error"=>$error,"exito"=>$exito);
+
+       	return array("error" => $error,
+       				 "exito" => $exito);
+
     }
 
-    // Calcula la diferencia de tiempo entre fecha y hoy
+    // Calcula la diferencia de tiempo entre fecha_ini y fecha_venc
 	// Retorna la cantidad de días
 	public function timeAgoPorcentaje($fecha_ini, $fecha_venc)
 	{
@@ -2416,6 +2438,7 @@ class Functions
 		$porcentaje = ($available_days * 100) / $complete_days;
 
 		return $porcentaje;
+
 	}
 
 	// Arreglo de comentarios en el espacio colaborativo y sus respuestas
@@ -2550,6 +2573,8 @@ class Functions
         	if ($evaluacion)
         	{
         		$duracion = $this->duracionPrueba($evaluacion);
+        		$nombre_pagina = $indexedPages[$evaluacion]['categoria'].': '.$indexedPages[$evaluacion]['nombre'];
+				$categoria = $indexedPages[$evaluacion]['categoria'];
         		if ($indexedPages[$evaluacion]['padre'])
         		{
         			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];

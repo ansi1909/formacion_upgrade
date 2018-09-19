@@ -340,6 +340,7 @@ class ColaborativoController extends Controller
     public function ajaxDeleteForoAction(Request $request)
     {
 
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -383,6 +384,9 @@ class ColaborativoController extends Controller
             $em->remove($archivo);
             $em->flush();
         }
+
+        $dirname = $this->container->getParameter('folders')['dir_uploads'].'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
+        $f->delete_folder($dirname);
 
         // Finalmente se elimina el foro padre
         $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
@@ -674,7 +678,7 @@ class ColaborativoController extends Controller
             $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
-                mkdir($dir, 750, true);
+                mkdir($dir, 755, true);
             }
 
         }

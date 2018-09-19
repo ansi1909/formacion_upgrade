@@ -12,6 +12,8 @@ Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
+Actividades en curso: Activities in progress
+Actividades Recientes: Recents Activities
 Activo: Active
 Activos: Active
 Actualizando la lista de usuarios conectados: Updating the list of connected users
@@ -35,8 +37,11 @@ Aplicación: Application
 Aplicaciones: Applications
 Aplicaciones a la que tiene acceso: Applications it has access to
 Aplicar periodo a las sub-páginas: Apply period to sub-pages
+Aprobado: Approved
 Aprobados: Approved
 Aquellos empleados de la empresa: Those employees of the company
+Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.: Here you can access your latest activities, and see your progress in them.
+Aquí podrás ver tus actividades finalizadas: Here you can see your finished activities
 Archivo procesado con éxito: File processed successfully
 Archivos: Files
 Archivos de este espacio: Files of this space
@@ -54,12 +59,12 @@ Asignar página al grupo: Assign page to group
 Asignar página al nivel: Assign page to level 
 Asunto: Subject
 Atrás: Back
-Autor: Author
-Avance en programas: Advance in programs
-Aún no ha respondido las preguntas: You have not already answered the questions
+Aún no has respondido las preguntas: You have not answered the questions yet
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
 Aún sin publicar: Not yet published
+Autor: Author
+Avance en programas: Advance in programs
 Aviso de cierre de sesión: Notice of session closure
 Avisos programados de: Programmed notifications of
 Ayer: Yesterday
@@ -100,10 +105,13 @@ Cerrar: Close
 Cerrar Menú: Close Menu
 Cerrar panel: Close panel
 Cerrar sesión: Log out
+Certificado: Certificate
 Certificado inexistente para este contenido: No certificate for this content
+Certificado no encontrado: Certificate not found
 Código: Code
 Código del empleado repetido: Employee code repeated
 Columna: Column
+¡Comencemos! Elige tu programa: Let's start! Choose your program
 Comentar: Comment
 Comentarios: Comments
 Comparativo hasta el: Comparative until
@@ -132,6 +140,7 @@ Constancia de Notas: Proof of Notes
 Consultar: Search
 Contenido: Content
 Contenido que debe ser aprobado previamente: Content that must be approved before
+Contenido Relacionado: Related Content
 Continuar: Continue
 Continuar al siguiente contenido: Continue to next content
 Continuar en la Evaluación: Continue in the Evaluation
@@ -186,12 +195,12 @@ Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
 del: of the
-Descripción: Description
 Descarga el archivo a través del siguiente enlace: Download file through following link
 Descargar: Download
 Descargas: Downloads
 Descargar archivo: Download file
 Descargue material complementario: Download complementary content
+Descripción: Description
 Desde: Since
 ¿Desea eliminar el registro?: Are you sure to delete this item?
 Destinado a: Target
@@ -202,6 +211,7 @@ Detalle de la Noticia y Novedad: Detail of the News and New
 Detalles de la página: Page details
 Detalle del Certificado y Constancia: Certificate and Certificate Detail
 Día/Hora: Day/Time
+días: days
 Dimensiones recomendadas: Recommended dimensions
 Diseño: Design
 Domingo: Sunday
@@ -299,6 +309,7 @@ El vídeo es requerido: Video is required
 Email de contacto: Contact Email
 Empresa: Company
 Empresa con estatus inactivo: Company with inactive status
+Empresa inactiva: Inactive company
 Empresas: Companies
 Empresas activas: Active companies
 Empresas inactivas: Inactive companies
@@ -356,6 +367,7 @@ este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
 Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
+Este usuario tiene una sesión activa: This user has an active session
 ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: Dear participant! Post your comments or doubts about any subject related to certification programs.
 Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora: Dear participant, if you decide to leave the evaluation at this time, you will lose the answers you have marked so far
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Dear participant, if you decide leave the page before finish the evaluation, you will lose all answers
@@ -363,6 +375,7 @@ Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
+Evaluación no encontrada: Evaluation not found
 Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
@@ -390,8 +403,10 @@ Filtrar comentarios del muro: Filter wall comments
 Filtrar usuarios: Filter users
 Filtro: Filter
 Fin del programa: End of the program
+Finaliza en: Ends in
 Finalizar: Finish
-Finalizado: Finalized
+Finalizado: Finished
+Finalizados: Finished
 Finalizar Evaluación: Finish Test
 Firma del Participante: Signature of the Participant
 Firma del Supervisor: Signature of supervisor
@@ -402,6 +417,7 @@ Generar: Generate
 Gráfica: Graph
 Gráfico del promedio de conexiones: Connections average graph
 Grupo seleccionado: Selected group
+Grupos: Groups
 Guardar: Save
 ha comentado en el espacio colaborativo de: has commented into the collaborative space of
 ha creado un tema en el espacio colaborativo del: has created a topic into collaborative space of
@@ -447,11 +463,12 @@ Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su emp
 Ingrese lo que desea buscar: Enter what you want to search
 Iniciado: Initiated
 Inicia el: Starts at
+Iniciar: Start
 Iniciar Sesión: Log in
 Inicio: Begin
 Inicio de la evaluación: Evaluation start
 Inicio del programa: Program start
-instrucciones para reiniciarla. Ingresa tu correo.: instructions to restore it. Enter your email address.
+tu usuario y clave. Ingresa tu correo.: your username and password. Enter your email.
 Interacción: Interaction
 Interacción en los muros: Wall interactions
 Interacción en los muros por empresa: Wall interactions per company
@@ -507,7 +524,7 @@ La página seleccionada ya está asociada a otra evaluación.: Selected page is 
 La pregunta es requerida: Question is required
 La primera fila se puede utilizar como encabezado y no se tomará en cuenta para añadir el registro en la base de datos: First row can be used as a header and it will not be taken for adding item into database
 La respuesta al comentario: The comment response
-La recuperación de sus credenciales se realizo correctamente, revise su correo electrónico: The recovery of your credentials was successful, check your email
+La recuperación de tus credenciales se realizó correctamente, revisa tu correo electrónico: The recovery of your credentials was successful, check your email
 La respuesta es requerida: Answer is required
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
@@ -561,6 +578,7 @@ Mi avance: My progress
 Miércoles: Wednesday
 minutos: minutes
 minutos para completar la evaluación: minutes for completing the evaluation
+Mis Programas: My Programs
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
@@ -612,6 +630,7 @@ Nombre para esta página: Name for this page
 Nombre requerido: Name required
 Nombres deben ser solo alfabéticos: Names must be alphabetical
 Nota: Score
+Notas: Scores
 Noticia: News
 Noticias: News
 Noticias y Novedades: News and Novelties
@@ -633,6 +652,7 @@ Opción correcta (Lado B): Correct option (Side B)
 Opciones: Options
 Opciones de la pregunta: Options of the question
 Orden: Order
+Otras noticias: Other news
 Página: Page
 Página asociada: Associated page
 Página a mover: Page to move
@@ -680,6 +700,7 @@ Preferencias de usuario: User preferences
 Pregunta: Question
 Preguntas: Questions
 Preguntas frecuentes: Frequent questions
+Preguntas no encontradas: Questions not found
 Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
@@ -690,6 +711,7 @@ Programación del aviso: Notification schedule
 Programado para: scheduled at
 Programar nuevo aviso: Program new notice
 Programas: Programs
+Programas Finalizados: Finished programs
 Prog. asociados: Associated Prog.
 Promedio de conexiones: Average connections
 Promedio evaluación módulo: Average evaluation module
@@ -715,7 +737,7 @@ registros: items
 Registros actualizados: Updated items
 Registros nuevos: New items
 Regresar al inicio: Back to login
-Reiniciar contraseña: Restore password
+Recuperar contraseña: Recover password
 Repetir evaluación: Repeat evaluation
 Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
@@ -744,7 +766,7 @@ Roles a seleccionar: Selectable roles
 Sábado: Saturday
 Salir: Log out
 Salir de la evaluación: Leave the evaluation
-se calcularán los resultados quedando estas preguntas sin contestar. Si desea completar sus respuestas presione: results will be calculated leaving these questions unanswered. If you want to complete your answers press
+se calcularán los resultados quedando estas preguntas sin contestar. Si deseas completar sus respuestas presiona: the results will be calculated leaving these questions unanswered. If you want to complete your answers press
 Seleccionado: Selected
 Seleccione el archivo: Select the file
 Seleccione el/los usuarios: Select the user
@@ -753,11 +775,12 @@ Seleccione el programa: Select the program
 Seleccione la empresa para mostrar los niveles: Select the company to show its levels
 Seleccione la empresa para mostrar las páginas asignadas: Select the company in order to show its assigned pages
 Seleccione la fecha difusión: Select broadcasting date
+Sesión expirada: Expired session
 Si: Yes
 Si acepta no puede revertir el cambio: If you accept, you can not revert this change
 Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.: If you want the notifiaction to be broadcast when you save the changes, select today date.
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: If you want, you can take the evaluation clicking the button
-Sí deseas volver a intentarlo haz clic aquí: If you want to try again, click here
+Si deseas volver a intentarlo haz clic aquí: If you want to try again, click here
 Si deseas volver a ver el contenido, haz clic en el botón: If you want to see the content again, click next button
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
 Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: If check YES, page will have a section in which user can comment over the wall
@@ -765,7 +788,7 @@ Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta pá
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
 Si necesitas ayuda escribenos a: If you need help email us to
-Si presiona: If press
+Si presionas: If you press
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Sigue aprendiendo: Keep learning
@@ -821,6 +844,7 @@ Tu respuesta: Your answer
 Tutoriales: Tutorials
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found
+Url no encontrada: Url not found
 Usted no tiene aplicaciones asignadas para su rol.: You do not have applications assigned for your role.
 Usted no tiene permiso para acceder a esta ruta: You do not have permissions to access to this URL
 Usted tiene una invitación a un evento corporativo programado para mañana: You have an invitation to an corporate event which is scheduled for tomorrow
@@ -843,6 +867,7 @@ Variables de colores que se aplican a la plantilla: Color variables that are app
 Veces cursadas: Times Coursed
 Vencido: Expired
 Vencimiento: Expiration
+Ver: See
 Ver historial: See history
 Ver más: See more
 Ver más comentarios: See more comments
@@ -858,6 +883,8 @@ Viernes: Friday
 Vista previa: Preview
 Vista previa del dashboard: Dashboard preview
 Volver: Back
+Volver a biblioteca: Back to library
+Volver a noticias: Back to news
 Volver al contenido: Back to the content
 Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page

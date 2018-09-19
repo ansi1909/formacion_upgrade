@@ -25,6 +25,12 @@ parameters:
         empresa: 1
         pagina: 2
         grupo_paginas: 3
+    categoria:
+        programa: 1
+        modulo: 2
+        materia: 3
+        leccion: 4
+        curso: 5
     tipo_imagen_certificado:
         certificado: 1
         constancia: 2
@@ -48,6 +54,7 @@ parameters:
         noticia : 5
         novedad : 6
         biblioteca : 7
+        aporte_muro: 8
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2
@@ -59,13 +66,23 @@ parameters:
     social:
         muro: 1
         espacio_colaborativo: 2
+    aplicacion:
+        noticias: 17
+        biblioteca: 26
     layout:
         base: 1
+    notificacion_programada:
+        bienvenida: 1
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
-        remitente: 'tutorvirtualformacion@gmail.com'
+        remitente: 'soporte@formacion2puntocero.com'
+    correo_soporte:
+        asunto: 'Formación2.0 - Solicitud de soporte virtual. '
+        remitente: 'soporte@formacion2puntocero.com'
+        destinatario: 'soporte@formacion2puntocero.com'
+        plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
-        evaluacion: 0.5
+        evaluacion: 0.2
     puntos:
         mitad_periodo: 100
         aprobar_primer_intento: 500
@@ -75,3 +92,5 @@ parameters:
         respuesta_muro: 50
         espacio_colaborativo: 100
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
+    search_locale: 0
+    mailer_user: tutorvirtual@formacion2puntocero.com
