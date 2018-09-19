@@ -359,7 +359,7 @@ class LeccionController extends Controller
                                                             'comentarioPadre' => $muro_padre->getMensaje(),
                                                             'respuesta' => $mensaje,
                                                             'link_plataforma' => $link_plataforma,
-                                                            'logo' = >$logo,
+                                                            'logo' => $logo,
                                                             'categoria' => $categoria['categoria'],
                                                             'pagina' => $categoria['nombre'],
                                                             'empresa' => $empresa->getNombre()),

@@ -190,7 +190,7 @@ class ColaborativoController extends Controller
             $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
-                mkdir($dir, 750, true);
+                mkdir($dir, 755, true);
             }
 
         }
@@ -655,6 +655,8 @@ class ColaborativoController extends Controller
         $foro_id = $request->request->get('upload_foro_id');
         $pagina_id = $request->request->get('upload_pagina_id');
 
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+
         if (!$foro_id)
         {
 
@@ -674,7 +676,6 @@ class ColaborativoController extends Controller
             $session->set('upload_foro_id', $foro_id);
 
             // Se crea el subdirectorio para los archivos del espacio colaborativo
-            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
             $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
@@ -683,7 +684,6 @@ class ColaborativoController extends Controller
 
         }
 
-        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
         $uploads = $this->container->getParameter('folders')['uploads'];
         $upload_dir = $dir_uploads.'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
         $upload_url = $uploads.'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
