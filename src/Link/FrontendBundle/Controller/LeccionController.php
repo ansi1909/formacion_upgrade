@@ -296,8 +296,6 @@ class LeccionController extends Controller
         $usuarioPadre = '';
         $mensajePadre = '';
 
-        
-
         $pagina_id = $request->request->get('pagina_id');
         $mensaje = $request->request->get('mensaje');
         $muro_id = $request->request->get('muro_id');
@@ -355,31 +353,25 @@ class LeccionController extends Controller
                 $categoria = $this->obtenerProgramaCurso($pagina_id);
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
                                            'datos' => array('logo'=> $logo,
-                                                            'background'=>$background, 
-                                                            'nombre' =>$muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido(),
-                                                            'usuario'=>$usuario->getNombre().' '.$usuario->getApellido(),
-                                                            'comentarioPadre'=>$muro_padre->getMensaje(),
-                                                            'respuesta'=>$mensaje,
-                                                            'link_plataforma'=>$link_plataforma,
-                                                            'logo'=>$logo,
-                                                            'categoria'=>$categoria['categoria'],
-                                                            'pagina'=>$categoria['nombre'],
-                                                            'empresa'=>$empresa->getNombre()),
+                                                            'background' => $background, 
+                                                            'nombre' => $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido(),
+                                                            'usuario'=> $usuario->getNombre().' '.$usuario->getApellido(),
+                                                            'comentarioPadre' => $muro_padre->getMensaje(),
+                                                            'respuesta' => $mensaje,
+                                                            'link_plataforma' => $link_plataforma,
+                                                            'logo' = >$logo,
+                                                            'categoria' => $categoria['categoria'],
+                                                            'pagina' => $categoria['nombre'],
+                                                            'empresa' => $empresa->getNombre()),
 
                                                             
                                            'asunto' => 'Formación 2.0: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
                 $correo = $f->sendEmail($parametros_correo);
-            }
-
-           
-
-             
+            }             
 
         }
-
-            
 
         $muro->setEmpresa($empresa);
         $muro->setFechaRegistro(new \DateTime('now'));
@@ -393,7 +385,6 @@ class LeccionController extends Controller
         $categoria = $this->obtenerProgramaCurso($pagina->getId());
         $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
         $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $pagina, $muro, $categoria, $empresa,$tipoMensaje ,$background, $logo,$link_plataforma);
-    
 
         $puntos = $pagina_log->getPuntos() + $puntos_agregados;
         $pagina_log->setPuntos($puntos);
