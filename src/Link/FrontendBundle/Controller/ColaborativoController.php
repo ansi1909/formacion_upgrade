@@ -190,7 +190,7 @@ class ColaborativoController extends Controller
             $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
-                mkdir($dir, 755, true);
+                mkdir($dir, 777, true);
             }
 
         }
@@ -679,7 +679,7 @@ class ColaborativoController extends Controller
             $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
-                mkdir($dir, 755, true);
+                mkdir($dir, 777, true);
             }
 
         }
