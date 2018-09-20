@@ -168,21 +168,20 @@ class Functions
 
 	}
 
-	protected function tipoDescripcion($tipoMensaje,$usuario,$pagina,$author)
+	protected function tipoDescripcion($tipoMensaje, $usuario, $pagina, $author)
     {
        
-        $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('Realizo una publicación en el muro de').' '.$pagina->getNombre().'.';
+        $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('realizó una publicación en el muro de').' '.$pagina->getNombre().'.';
 
         if($tipoMensaje=='Respondió')
         {
-           $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('Respondió en el muro al comentario de').' '.$author.'.';
+           $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('respondió en el muro al comentario de').' '.$author.'.';
         }
 
         return $mensaje;
        
     }
 
-	
 	//Obtiene la informacion de los tutores asignados a una empresa 
 	public function getTutoresEmpresa($empresaId, $yml)
 	{
@@ -201,64 +200,59 @@ class Functions
 
         return $tutores;
 	}
-////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
-    public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje,$background,$logo,$link_plataforma)
+
+	////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
+    public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje, $background, $logo, $link_plataforma)
     {
+
         foreach ($tutores as $tutor) 
+        {
+
+            $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
+
+            //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
+            if($muro->getUsuario()->getId()!= $tutor->getId()) 
             {
-                $correo = ($tutor->getCorreoCorporativo())? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal())? $tutor->getCorreoPersonal() : null;
-
-                  //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
-                    if($muro->getUsuario()->getId()!= $tutor->getId()) 
-                    {
-                        if ($correo) 
-                        {
-                        
-                            
-                            $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.$tipoMensaje.' lo siguiente: ';
-
-                            $parametros_correo = [
-                                       
-                                                    'twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
-                                                    'datos' => 
-                                                                [
-                                                                'leccion' => $pagina->getNombre(),
-                                                                'categoria' => $categoria['categoria'],
-                                                                'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
-                                                                'nombrePrograma' => $categoria['nombre'],
-                                                                'leccion' => $pagina->getNombre(),
-                                                                'encabezadoUsuario' => $encabezadoUsuario,
-                                                                'mensaje' => $muro->getMensaje(),
-                                                                'usuarioPadre' =>($tipoMensaje =='Respondió')? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido():null,
-                                                                'mensajePadre' => ($tipoMensaje =='Respondió')? $muro->getMuro()->getMensaje():null,
-                                                                'empresa' => $empresa->getNombre(),
-                                                                 'background' =>$background,
-                                                                'logo' => $logo,
-                                                                'link_plataforma' => $link_plataforma
-                                                                ],
-                                                    'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
-                                                    'remitente' => $this->container->getParameter('mailer_user'),
-                                                    'destinatario' => $correo
-
-                                    ];
-
-                            $correo = $this->sendEmail($parametros_correo);
-                        }
-
-                       //crea la notificacion para el usuario cuando el usuario que publica 
-                       $descripcion = $this->tipoDescripcion($tipoMensaje,$muro->getUsuario(),$pagina,$parametros_correo['datos']['usuarioPadre']);
-
-                       $tipoAlarma = ($tipoMensaje=='Respondió')? 'respuesta_muro':'aporte_muro';
-
-                       $this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
-
-                        
-                   }
-
+                if ($correo) 
+                {
                     
+                    $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.$tipoMensaje.' lo siguiente: ';
+
+                    $parametros_correo = ['twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
+                                          'datos' => ['leccion' => $pagina->getNombre(),
+                                                      'categoria' => $categoria['categoria'],
+                                                      'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
+                                                      'nombrePrograma' => $categoria['nombre'],
+                                                      'leccion' => $pagina->getNombre(),
+                                                      'encabezadoUsuario' => $encabezadoUsuario,
+                                                      'mensaje' => $muro->getMensaje(),
+                                                      'usuarioPadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido() : null,
+                                                      'mensajePadre' => ($tipoMensaje =='Respondió') ? $muro->getMuro()->getMensaje() : null,
+                                                      'empresa' => $empresa->getNombre(),
+                                                      'background' => $background,
+                                                      'logo' => $logo,
+                                                      'link_plataforma' => $link_plataforma
+                                                     ],
+                                            'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
+                                            'remitente' => $this->container->getParameter('mailer_user'),
+                                            'destinatario' => $correo
+                            			 ];
+
+                    $correo = $this->sendEmail($parametros_correo);
+
                 }
 
+               	//crea la notificacion para el usuario cuando el usuario que publica 
+               	$descripcion = $this->tipoDescripcion($tipoMensaje, $muro->getUsuario(), $pagina, $parametros_correo['datos']['usuarioPadre']);
+               	$tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+               	$this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
+
+           	}
+
+        }
+
         return 1;
+        
     }
 
 	// Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.
@@ -2534,16 +2528,26 @@ class Functions
 
 	}
 
-	public function delete_folder($folder) {
-	    $glob = glob($folder);
-	    foreach ($glob as $g) {
-	        if (!is_dir($g)) {
-	            unlink($g);
-	        } else {
-	            $this->delete_folder("$g/*");
-	            rmdir($g);
-	        }
-	    }
+	function delete_folder($dir) {
+		if (is_dir($dir)) 
+		{
+	    	$objects = scandir($dir);
+	    	foreach ($objects as $object) 
+	    	{
+	      		if ($object != "." && $object != "..")
+	      		{
+	        		if (filetype($dir."/".$object) == "dir") 
+	        		{
+	        			$this->delete_folder($dir."/".$object);
+	        		}
+	        		else {
+	        			unlink($dir."/".$object);
+	        		}
+	      		}
+	    	}
+	    	reset($objects);
+	    	rmdir($dir);
+	  	}
 	}
 
 	public function nextLesson($indexedPages, $pagina_id, $usuario_id, $empresa_id, $yml, $programa_id)
