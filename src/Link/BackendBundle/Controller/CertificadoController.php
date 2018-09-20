@@ -504,17 +504,22 @@ class CertificadoController extends Controller
 
         if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
         {
+
+            $comodines = array('%%categoria%%');
+            $reemplazos = array('Programa');
+            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
+
             
             $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
             $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
                                         <div>
-                                            <div style="font-size:24px;margin-left:50px">'.$certificado->getEncabezado().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
-                                            <div style="text-align:center; font-size:24px; margin-top:70px; margin-left:50px; margin-right:50px;">'.$certificado->getDescripcion().'</div>
-                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$programa.'</div>
+                                            <div style="font-size:22px;margin-top:95px;text-align:center">'.$certificado->getEncabezado().'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
+                                            <div style="text-align:center; font-size:24px; margin-top:25px; margin-left:50px; margin-right:50px;">'.$descripcion.'</div>
+                                            <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$programa.'</div>
                                             <div style="text-align:center;margin-top:40px;font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').': dd/mm/aa  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').': dd/mm/aa </div>
                                             <div style="text-align:center;margin-top:15px;font-size:14px;">'.$this->get('translator')->trans('Equivalente a').': x hrs. '.$this->get('translator')->trans('académicas').'</div>
-                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
+                                            <div style="text-align:center; font-size:14px; margin-top:20px;">'.$fecha.'</div>
                                             <div style="margin-top:60px; margin-left:910px; ">'.$ruta.'</div>
                                         </div>
                                        
@@ -527,7 +532,7 @@ class CertificadoController extends Controller
                                             </page>');
             }
 
-            $certificado_pdf->output('certificiado.pdf');
+            $certificado_pdf->output('certificado.pdf');
 
         }
         else {

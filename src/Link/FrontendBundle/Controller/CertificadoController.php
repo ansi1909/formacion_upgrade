@@ -120,16 +120,29 @@ class CertificadoController extends Controller
 		        if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
 		        {
 		            /*certificado numero 2*/
-            		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(10, 35, 0, 0));
+
+		            if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
+		            	
+		            	$comodines = array('%%categoria%%');
+			            $reemplazos = array('Curso');
+			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
+		            }else{
+
+		            	$comodines = array('%%categoria%%');
+			            $reemplazos = array('Programa');
+			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
+		            }
+
+            		$certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(0, 15, 0, 0));
 		            $certificado_pdf->writeHTML('<page title="Certificado" pageset="new" backimg="'.$file.'" backimgw="90%" backimgx="center"> 
-		                                            <div style="font-size:20px;margin-left:50px">'.$certificado->getEncabezado().'</div>
-		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
-		                                            <div style="text-align:center; font-size:24px; margin-top:70px; ">'.$certificado->getDescripcion().'</div>
-		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
-		                                            <div style="text-align:center;margin-top:40px;font-size:14px;">Fecha Inicio:'.$pagina_log->getFechaInicio()->format("d/m/y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin:'.$pagina_log->getFechaFin()->format("d/m/y").' </div>
-		                                            <div style="text-align:center;margin-top:15px;font-size:14px;">Equivalente a: '.$pagina->getHorasAcademicas().' hrs. académicas </div>
-		                                            <div style="text-align:center; font-size:14px; margin-top:40px;">'.$fecha.'</div>
-                                        			<div style="margin-top:80px; margin-left:910px; ">'.'$ruta'.'</div>
+		            								<div style="margin-left:910px; ">'.$ruta.'</div>
+		                                            <div style="font-size:22px; margin-top:90px; text-align:center">'.$certificado->getEncabezado().'</div>
+                                            		<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
+		                                            <div style="text-align:center; font-size:24px; margin-top:25px; ">'.$descripcion.'</div>
+		                                            <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
+		                                            <div style="text-align:center; margin-top:40px; font-size:14px;">Fecha Inicio:'.$pagina_log->getFechaInicio()->format("d/m/y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin:'.$pagina_log->getFechaFin()->format("d/m/y").' </div>
+		                                            <div style="text-align:center; margin-top:15px; font-size:14px;">Equivalente a: '.$pagina->getHorasAcademicas().' hrs. académicas </div>
+		                                            <div style="text-align:center; font-size:14px; margin-top:20px;">'.$fecha.'</div>
 		                                        </page>');
 
 
@@ -148,7 +161,7 @@ class CertificadoController extends Controller
 		                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
 		                                        </page>');*/
 		            //Generamos el PDF
-		            $certificado_pdf->output('certificiado.pdf');
+		            $certificado_pdf->output('certificado.pdf');
 		        }
 		        else {
 		            if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['constancia'] )
@@ -233,7 +246,7 @@ class CertificadoController extends Controller
 		if($programa_aprobado)
 		{
 	        if($session->get('empresa')['logo']!='')
-            	$file =  $uploads['parameters']['folders']['dir_project'].$session->get('empresa')['logo'];
+            	$file =  $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
             else
             	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion.png'; 
 
@@ -448,7 +461,7 @@ class CertificadoController extends Controller
 		}
 		else {
 			//return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-        	//return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, no hya notas disponibles para está página.')));
+        	//return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, no hay notas disponibles para está página.')));
 	    }
     }
 }
