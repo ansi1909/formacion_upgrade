@@ -17,7 +17,7 @@
   margin-top: 12vh; }
   @media (max-width: 767.98px) {
     .mt-12v {
-      margin-top: 0; } }
+      margin-top: 3vh; } }
 
 @media (min-width: 560px) and (max-width: 767.98px) {
   .mt-xs-15v {
@@ -197,6 +197,11 @@ input.form-control:focus {
   border: solid 2px #80CCFF;
   border-radius: 8px;
   box-shadow: none; }
+
+@media (max-width: 991.98px) {
+  .btn {
+    padding: .5rem 1.25rem;
+    font-size: .85rem; } }
 
 .btn-primary {
   color: #F0F4F7;
@@ -412,19 +417,21 @@ body {
   transition: all .6s;
   padding: 16px;
   margin-left: 170px;
-  max-width: 90%; }
+  max-width: 90%;
+  /*@include media-breakpoint-down(xs){
+      margin-left: 1rem;
+      padding-right: 0px;
+  }*/ }
   @media (min-width: 768px) and (max-width: 991.98px) {
     #main {
-      width: 90%;
+      width: 99%;
       margin-left: 8rem; } }
   @media (min-width: 560px) and (max-width: 767.98px) {
     #main {
-      width: 90%;
-      margin-left: 1rem; } }
-  @media (max-width: 559.98px) {
-    #main {
+      width: 99%;
       margin-left: 1rem;
-      padding-right: 0px; } }
+      padding: 16px 10px 10px 16px;
+      max-width: 99%; } }
 
 .bckgd {
   background: url(../../../assets/img/decorate_qr.svg) no-repeat top right; }
@@ -1847,7 +1854,7 @@ nav.navbar {
   background-color: #00253D;
   overflow: auto;
   transition: 0.6s;
-  padding-top: 30px; }
+  padding-top: 70px; }
   .main-sidenav::-webkit-scrollbar {
     width: calc(1rem - 12px); }
   .main-sidenav::-webkit-scrollbar-track {
@@ -1892,7 +1899,8 @@ nav.navbar {
   margin-left: 9%; }
   @media (max-width: 767.98px) {
     #main.ml-10 {
-      margin-left: 20%; } }
+      margin-left: 20%;
+      width: 85%; } }
   @media (max-width: 559.98px) {
     #main.ml-10 {
       margin-left: 3%; } }
@@ -2812,6 +2820,12 @@ p.up {
     top: 0;
     padding: 0;
     border-radius: 50rem; }
+    @media (max-width: 991.98px) {
+      .card-datos .pic-img {
+        left: 0;
+        right: 2rem;
+        height: calc(1rem * 8);
+        width: calc(1rem * 8); } }
     .card-datos .pic-img .img-user-pic {
       height: calc(1rem * 10);
       width: calc(1rem * 10);
@@ -2821,6 +2835,10 @@ p.up {
       top: 0;
       padding: 0;
       cursor: pointer; }
+      @media (max-width: 991.98px) {
+        .card-datos .pic-img .img-user-pic {
+          height: calc(1rem * 8);
+          width: calc(1rem * 8); } }
     .card-datos .pic-img .add-img {
       width: calc(1rem * 10);
       height: calc(1rem * 10);
@@ -2857,6 +2875,10 @@ p.up {
     position: relative;
     left: calc(-1 * calc(2rem + 4px));
     color: #5c6266; }
+    @media (max-width: 767.98px) {
+      .card-datos .name-titulo {
+        font-size: 2rem;
+        left: calc(-1 * calc (1rem + 8px)); } }
   .card-datos .numExp {
     display: block;
     color: #5CAEE6;
@@ -3242,6 +3264,9 @@ p.up {
   font-size: 1rem;
   line-height: calc(1rem + 3px);
   font-weight: 400; }
+  @media (max-width: 767.98px) {
+    .card-datos .info_datos, .card-datos .datos_user {
+      font-size: .85rem; } }
 
 .card-anuncio .card_footer .tipo_anuncio1, .card-anuncio .card_footer .tipo_anuncio2 {
   font-family: "Roboto";

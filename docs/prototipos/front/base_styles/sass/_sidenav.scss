@@ -8,7 +8,7 @@
     background-color: $bluedarkest;
     overflow: auto;
     transition: 0.6s;
-    padding-top: 30px;
+    padding-top: 70px;
     &::-webkit-scrollbar {
         width: calc(1rem - 12px);
     }
@@ -68,6 +68,7 @@
     margin-left: 9%;
     @include media-breakpoint-down(sm){
         margin-left: 20%;
+        width: 85%;
     }
     @include media-breakpoint-down(xs){
         margin-left: 3%;
