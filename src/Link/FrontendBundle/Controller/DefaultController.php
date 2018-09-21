@@ -425,8 +425,8 @@ class DefaultController extends Controller
                     if(!$usuario->getEmpresa())
                     {
                         $error = $this->get('translator')->trans('El usuario no tiene empresa asignada. Contacte al administrador del sistema.');
-                    }else
-                    {
+                    }
+                    else {
                         
                         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
                         
@@ -445,7 +445,7 @@ class DefaultController extends Controller
                             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                                'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] ),
+                                                'remitente'=>array($this->container->getParameter('mailer_user')),
                                                 'destinatario' => $correo,
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
