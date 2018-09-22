@@ -204,6 +204,7 @@ class CertificadoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 		$nota = '';
+		
 		//se consulta la informacion de la pagina padre
 		$query = $em->createQuery('SELECT pl.nota as nota FROM LinkComunBundle:CertiPruebaLog pl
                                    JOIN pl.prueba p
@@ -218,7 +219,7 @@ class CertificadoController extends Controller
 
 		foreach ($nota_programa as $n)
 		{
-			$nota = $n['nota'];
+			$nota = (double)$n['nota'];
 		}
 
 		$cantidad_intentos = '';
@@ -229,30 +230,35 @@ class CertificadoController extends Controller
                     ->setParameters(array('usuario' => $session->get('usuario')['id'],
                 						  'pagina' => $session->get('paginas')[$programa_id]['id']));
         $cantidad_intentos = $query->getSingleScalarResult();
+        $cantidad_intentos = $cantidad_intentos ? $cantidad_intentos : '';
 
-		$programa_aprobado=array('id' => $session->get('paginas')[$programa_id]['id'],
-							     'nombre' => $session->get('paginas')[$programa_id]['nombre'],
-							     'categoria' => 1,
-							     'nota' => $nota,
-								 'cantidad_intentos' => $cantidad_intentos);
+		$programa_aprobado = array('id' => $session->get('paginas')[$programa_id]['id'],
+							       'nombre' => $session->get('paginas')[$programa_id]['nombre'],
+							       'categoria' => 1,
+							       'nota' => $nota,
+								   'cantidad_intentos' => $cantidad_intentos ? $cantidad_intentos : '');
 
-        if(count($session->get('paginas')[$programa_id]['subpaginas'])  )
+        if (count($session->get('paginas')[$programa_id]['subpaginas']))
         {
 	        $subpaginas_ids = $f->hijas($session->get('paginas')[$programa_id]['subpaginas']);
 			
 			$programa_aprobado = $f->notasPrograma($subpaginas_ids, $session->get('usuario')['id'], $values['parameters']['estado_prueba']['aprobado']);
         }
 
-		if($programa_aprobado)
+		if ($programa_aprobado)
 		{
+
 	        if($session->get('empresa')['logo']!='')
-            	$file =  $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
-            else
+	        {
+            	$file = $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
+	        }
+            else {
             	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion.png'; 
+            }
 
 		    $constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 10, 15, 5));
 
-			$html="<!DOCTYPE html>
+			$html = "<!DOCTYPE html>
 				<html lang='es'>
 				    <head>
 				        <meta charset='UTF-8'>
@@ -341,15 +347,16 @@ class CertificadoController extends Controller
 		                        <p class='textConst'>".$this->get('translator')->trans('Por medio de la presente se certifica que el participante arriba indicado ha cursado y aprobado las pruebas correspondientes a').":</p>
 			                </div>
 			                <div class='row'>";
-			                $puntaje=0;
-			                $indice=1;
-							if(count($session->get('paginas')[$programa_id]['subpaginas']))
-							{
-								$valor='';
-								$style='';
-								$guion='';
-								$puntaje = $puntaje+$nota;
-		                    $html .= "<table class='table-notas'>
+			                	$puntaje = 0;
+			                	$indice = 0;
+								if (count($session->get('paginas')[$programa_id]['subpaginas']))
+								{
+									$valor = '';
+									$style = '';
+									$guion = '';
+									$puntaje = $puntaje+$nota;
+									$nota = $cantidad_intentos != '' ? number_format((double)$nota, 2, ',', '.') : '';
+		                    		$html .= "<table class='table-notas'>
 			                            <thead>
 			                                <tr>
 			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
@@ -363,81 +370,82 @@ class CertificadoController extends Controller
 								               <td class='center'>".$cantidad_intentos."</td>
 								               <td class='center'>".$nota."</td>
 								            </tr>";
-								foreach ($programa_aprobado as $programa)
-						        {
-						        	
-						        	if($programa['categoria']==2)
-						        	{
-						        		$valor=20;
-						        		$guion='';
-						        	}else
-						        	{
-							        	if($programa['categoria']==3)
+									foreach ($programa_aprobado as $programa)
+							        {
+							        	
+							        	if ($programa['categoria'] == 2)
 							        	{
-							        		$valor=30;
-							        		$guion='+ ';
-							        	}else
-							        	{
-							        		if($programa['categoria']==4)
-							        		{
-							        			$valor=40;
-							        			$guion='- ';
-							        		}
+							        		$valor = 20;
+							        		$guion = '';
 							        	}
-							        }
-									$puntaje = $puntaje+$programa['nota'];
+							        	else {
+								        	if ($programa['categoria'] == 3)
+								        	{
+								        		$valor = 30;
+								        		$guion = '+ ';
+								        	}
+								        	else {
+								        		if ($programa['categoria'] == 4)
+								        		{
+								        			$valor = 40;
+								        			$guion = '- ';
+								        		}
+								        	}
+								        }
+										$puntaje = $puntaje+$programa['nota'];
 
-									if($programa['nota']!=0)
-									{
-										$indice=$indice+1;
-										$nota=$programa['nota'];
+										if($programa['nota'] != 0)
+										{
+											$indice = $indice+1;
+											$nota = $programa['nota'];
+										}
+	        							$html .= "<tr ".$style.">
+							               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
+									               	<td class='center'>".$programa['cantidad_intentos']."</td>
+									               	<td class='center'>".number_format($nota, 2, ',', '.')."</td>
+									            </tr>";
 									}
-        $html .= "  						<tr ".$style.">
-						               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
-								               	<td class='center'>".$programa['cantidad_intentos']."</td>
-								               	<td class='center'>".$nota."</td>
-								            </tr>";
+									$margin = '50';
+									$html .= "</tbody>
+	  			           		        </table>";
 								}
-								$margin='50';
-		$html .= "			            </tbody>
-  			           		        </table>";
-							}else
-							{
-								$puntaje = $programa_aprobado['nota'];
-								if($programa_aprobado['nota']!=0) 
-									$nota=$programa_aprobado['nota'];
-								else 
-									$nota="N/A";
-
-								$margin = '200';
-		$html .= "					<table class='table-notas' cellpadding='0' cellspacing='0'>
-			                            <thead>
-			                                <tr>
-			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
-			                                    <th style='width: 100;'>".$this->get('translator')->trans('Veces cursadas')."</th>
-			                                    <th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
-			                                </tr>
-			                            </thead>
-			                            <tbody>
-											<tr style='font-size: 14px; font-weight: 300;'>
-								               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-								               <td class='center'>".$programa_aprobado['cantidad_intentos']."</td>
-								               <td class='center'>".$nota."</td>
-								            </tr>
-										</tbody>
-					                </table>";
-							}
-							
-        $html .= "          </div>
-			                <div class='row'>		                        
+								else {
+									$puntaje = $programa_aprobado['nota'];
+									if ($programa_aprobado['nota'] != 0) 
+									{
+										$nota = $programa_aprobado['nota'];
+									}
+									else {
+										$nota="N/A";
+									}
+									$margin = '200';
+									$html .= "<table class='table-notas' cellpadding='0' cellspacing='0'>
+				                            	<thead>
+				                                	<tr>
+				                                    	<th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
+				                                    	<th style='width: 100;'>".$this->get('translator')->trans('Veces cursadas')."</th>
+				                                    	<th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
+				                                	</tr>
+				                            	</thead>
+				                            	<tbody>
+													<tr style='font-size: 14px; font-weight: 300;'>
+									               		<td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
+									               		<td class='center'>".$programa_aprobado['cantidad_intentos']."</td>
+									               		<td class='center'>".number_format($nota, 2, ',', '.')."</td>
+									            	</tr>
+												</tbody>
+						                	</table>";
+								}
+        					$html .= "</div>
+		                	<div class='row'>		                        
 								<table class='table-notas' cellpadding='0' cellspacing='0'>
 									<tr style='font-size: 16px; font-weight: 300;'>
-						               <td style='width: 500;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
-						               <td style='width: 170;' class='center'>".$puntaje/$indice."</td>
-						            </tr>
-				                </table>
-			                </div>
-			                <div class='row' style='margin-top:".$margin."px;'>
+					               		<td style='width: 500;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
+					               		<td style='width: 170;' class='center'>".number_format($puntaje/$indice, 2, ',', '.')."</td>
+					            	</tr>
+			                	</table>
+		                	</div>
+		                	<div class='row' style='margin-top:".$margin."px;'>
 								<table text-align='center' width='600' border=0' height='50'>
 									<tr>
 										<td width='150' class='center'>_____________________</td>
@@ -463,5 +471,6 @@ class CertificadoController extends Controller
 			//return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
         	//return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, no hay notas disponibles para está página.')));
 	    }
+
     }
 }
