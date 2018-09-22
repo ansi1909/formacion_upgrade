@@ -431,6 +431,12 @@
         top: 0;
         padding: 0;
         border-radius: 50rem;
+        @include media-breakpoint-down(md) {
+            left: 0;
+            right: 2rem;
+            height: calc(1rem * 8);
+            width: calc(1rem * 8);
+        }
         .img-user-pic{
             height: calc(1rem * 10);
             width: calc(1rem * 10);
@@ -440,7 +446,10 @@
             top: 0;
             padding: 0;
             cursor: pointer;
-
+            @include media-breakpoint-down(md) {
+                height: calc(1rem * 8);
+                width: calc(1rem * 8);
+            }
         }
         .add-img{
             width: calc(1rem * 10);
@@ -489,6 +498,10 @@
         position: relative;
         left: calc(-1 * calc(2rem + 4px));
         color: $black-300;
+        @include media-breakpoint-down(sm){
+            font-size: $h3-font-size;
+            left: calc(-1 * calc (1rem + 8px));
+        }
     }
     .numExp{
         display: block;
@@ -1039,6 +1052,9 @@
     font-size: $font-size-base;
     line-height: calc(1rem + 3px);
     font-weight: $font-weight-normal;
+    @include media-breakpoint-down(sm){
+        font-size: .85rem;
+    }
 }
 
 %tip_anun{

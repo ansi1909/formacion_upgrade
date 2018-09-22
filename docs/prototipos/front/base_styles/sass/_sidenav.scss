@@ -68,6 +68,7 @@
     margin-left: 9%;
     @include media-breakpoint-down(sm){
         margin-left: 20%;
+        width: 85%;
     }
     @include media-breakpoint-down(xs){
         margin-left: 3%;
