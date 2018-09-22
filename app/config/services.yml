@@ -10,3 +10,6 @@ services:
     funciones:
         class: Link\ComunBundle\Services\Functions
         arguments: ["@doctrine.orm.default_entity_manager", "@service_container", "@templating", "@translator"]
+    reportes:
+        class: Link\ComunBundle\Services\Reportes
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container", "@templating", "@translator"]
