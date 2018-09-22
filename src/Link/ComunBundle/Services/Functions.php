@@ -2165,6 +2165,7 @@ class Functions
 		
 		foreach ($subpaginas_ids as $subpage)
 		{
+
 			$cantidad_intentos = 0;
 			$nota = 0;
 			
@@ -2179,8 +2180,9 @@ class Functions
 	                    ->setMaxResults(1);
 	        $nota_programa = $query->getResult();
 
-	        if($nota_programa)
+	        if ($nota_programa)
 	        {
+
 				foreach ($nota_programa as $n)
 				{
 					$nota = $n['nota'];
@@ -2196,17 +2198,19 @@ class Functions
 			}
 	        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($subpage);
 			
-			if($nota>0)
+			if($nota > 0)
 			{
 		        $subpaginas[$subpage] = array('id' => $subpage,
 		        							  'nombre' => $pagina->getNombre(),
 		        							  'categoria' => $pagina->getCategoria()->getId(),
 								  		      'nota' => $nota,
-				               			      'cantidad_intentos' => $cantidad_intentos);
+				               			      'cantidad_intentos' => $cantidad_intentos ? $cantidad_intentos : '');
 		    }
+
 		}
 
 		return $subpaginas;
+		
 	}
 
 	public function iniciarSesionAdmin($datos)
