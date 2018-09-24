@@ -52,7 +52,7 @@ class NotificacionController extends Controller
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) 
             {
                 $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
-                // Se verifica si el programa al que pertenece el muro está vencido
+                // Se verifica si el programa al que pertenece el foro está vencido
                 $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
                 if (!$vencido)
                 {
@@ -66,7 +66,7 @@ class NotificacionController extends Controller
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) 
             {
                 $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
-                // Se verifica si el programa al que pertenece el muro está vencido
+                // Se verifica si el programa al que pertenece el foro está vencido
                 $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
                 if (!$vencido)
                 {
@@ -145,10 +145,12 @@ class NotificacionController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $todas = array();
         $no_leidas = array();
         $leidas = array();
+        $vencido = false;
 
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -166,37 +168,56 @@ class NotificacionController extends Controller
 
         foreach($alarmas as $alarma)
         {
-            $todas[] =array('id'=>$alarma->getId(),
-                            'descripcion'=> $alarma->getDescripcion(),
-                            'css'=> $alarma->getTipoAlarma()->getCss(),
-                            'icono' => $alarma->getTipoAlarma()->getIcono(),
-                            'leido' => $alarma->getLeido(),
-                            'tipo' => $alarma->getTipoAlarma()->getid(),
-                            'entidad' => $alarma->getEntidadId(),
-                            'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
 
-            if($alarma->getLeido())
+            // Se verifica si el programa al que pertenece la alarma está vencido
+            if ($alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro'] || $alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_muro']) 
             {
-                $leidas[] =array('id' => $alarma->getId(),
-                                 'descripcion' => $alarma->getDescripcion(),
-                                 'css' => $alarma->getTipoAlarma()->getCss(),
-                                 'icono' => $alarma->getTipoAlarma()->getIcono(),
-                                 'leido' => $alarma->getLeido(),
-                                 'tipo' => $alarma->getTipoAlarma()->getid(),
-                                 'entidad' => $alarma->getEntidadId(),
-                                 'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+                $muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($alarma->getEntidadId());
+                $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id']);
+            }
+            elseif ($alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo'] || $alarma->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) 
+            {
+                $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($alarma->getEntidadId());
+                $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
+            }
+
+            if (!$vencido)
+            {
+
+                $todas[] =array('id'=>$alarma->getId(),
+                                'descripcion'=> $alarma->getDescripcion(),
+                                'css'=> $alarma->getTipoAlarma()->getCss(),
+                                'icono' => $alarma->getTipoAlarma()->getIcono(),
+                                'leido' => $alarma->getLeido(),
+                                'tipo' => $alarma->getTipoAlarma()->getid(),
+                                'entidad' => $alarma->getEntidadId(),
+                                'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+
+                if($alarma->getLeido())
+                {
+                    $leidas[] =array('id' => $alarma->getId(),
+                                     'descripcion' => $alarma->getDescripcion(),
+                                     'css' => $alarma->getTipoAlarma()->getCss(),
+                                     'icono' => $alarma->getTipoAlarma()->getIcono(),
+                                     'leido' => $alarma->getLeido(),
+                                     'tipo' => $alarma->getTipoAlarma()->getid(),
+                                     'entidad' => $alarma->getEntidadId(),
+                                     'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+
+                }
+                else {
+                    $no_leidas[] =array('id' => $alarma->getId(),
+                                        'descripcion' => $alarma->getDescripcion(),
+                                        'css' => $alarma->getTipoAlarma()->getCss(),
+                                        'icono' => $alarma->getTipoAlarma()->getIcono(),
+                                        'leido' => $alarma->getLeido(),
+                                        'tipo' => $alarma->getTipoAlarma()->getid(),
+                                        'entidad' => $alarma->getEntidadId(),
+                                        'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
+                }
 
             }
-            else {
-                $no_leidas[] =array('id' => $alarma->getId(),
-                                    'descripcion' => $alarma->getDescripcion(),
-                                    'css' => $alarma->getTipoAlarma()->getCss(),
-                                    'icono' => $alarma->getTipoAlarma()->getIcono(),
-                                    'leido' => $alarma->getLeido(),
-                                    'tipo' => $alarma->getTipoAlarma()->getid(),
-                                    'entidad' => $alarma->getEntidadId(),
-                                    'fecha' => $alarma->getFechaCreacion()->format('Y-m-d'));
-            }
+            
         }
 
         return $this->render('LinkFrontendBundle:Notificaciones:index.html.twig', array('todas' => $todas,
