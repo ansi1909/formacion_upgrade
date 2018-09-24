@@ -10,12 +10,12 @@
 {% if biblioteca.TipoBiblioteca.id == '1' %}
     <div class="container-fluid">
         <div class="row mt-4">
-            <div class="col-12 text-center">
+            <div class="col-lg-12 col-sm-12 col-xl-12 col-md-12 text-center">
                 <h3>Biblioteca</h3>
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-12 text-center">
+            <div class="col-lg-12 col-sm-12 col-xl-12 col-md-12 text-center">
                 <h3 class="subtitulo-recurso">{{biblioteca.titulo}}</h3>
             </div>
         </div>
@@ -105,41 +105,41 @@
 {% elseif biblioteca.TipoBiblioteca.id == '2' %}
     <div class="container-fluid">
         <div class="row mt-4">
-            <div class="col-12 text-center">
+            <div class="col-lg-12 col-sm-12 col-xl-12 col-md-12 text-center">
                 <h3>Biblioteca</h3>
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-12 text-center">
+            <div class="col-lg-12 col-sm-12 col-xl-12 col-md-12 text-center">
                 <h3 class="subtitulo-recurso">{{biblioteca.titulo}}</h3>
             </div>
         </div>
         <div class="biblio_detalle-recurso">
             <div class="row justify-content-center">
-                <div class="col-4">
+                <div class="col-xl-4 col-lg-4 col-sm-12">
                     <div class="row justify-content-between">
-                        <div class="col-auto">
+                        <div class="col-lg-auto col-sm-auto">
                             <h4 class="sub-line">Título</h4>
                         </div>
-                        <div class="col-12 text-justify">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 text-justify">
                             <h5 class="tituloTextRecurso">{{biblioteca.titulo}}l</h5>
                         </div>
                     </div>
                     <div class="row mt-3 justify-content-between">
-                        <div class="col-auto">
+                        <div class="col-lg-auto col-xl-auto col-sm-auto">
                             <h4 class="sub-line">Fecha de creación</h4>
                         </div>
-                        <div class="col-12">
+                        <div class="col-lg-12 col-xl-12 col-sm-12">
                             <p class="textRecurso">{{biblioteca.fechapublicacion|date("d-m-Y")}}</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-xl-4 col-lg-6 col-sm-12">
                     <div class="row justify-content-between">
-                        <div class="col-auto">
+                        <div class="col-lg-auto col-sm-auto">
                             <h4 class="sub-line">Descripción</h4>
                         </div>
-                        <div class="col-12 text-justify">
+                        <div class="col-lg-12 col-sm-12 text-justify">
                             <p class="textRecurso">{{biblioteca.contenido|raw}}
                             </p>
                         </div>
@@ -147,7 +147,7 @@
                 </div>
             </div>
             <div class="row mt-3 justify-content-center">
-                <div class="col-8 col-md-8 col-sm-8 col-xl-8 col-lg-8 col-xs-8 text-center">
+                <div class="col-md-12 col-sm-12 col-xl-8 col-lg-10 text-center">
                     <div class="audio-player">
                         <img src="{{asset('img/Podcast.jpg')}}" alt="">
                         {% set audio = uploads~biblioteca.pdf %}
@@ -156,21 +156,21 @@
                 </div>
             </div>
             <div class="row mt-3 align-items-center justify-content-end">
-                <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
                     <a href="{{ path('_biblioteca') }}" class="lk-volver"><span class="material-icons ic-bck">arrow_back</span>Volver a biblioteca</a>
                 </div>
             </div>
             {% if audios %}
                 <div class="biblio_detalle-catag">
                     <div class="row">
-                        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <h4 class="mt-3 pt-3 mb-0 pb-1 title-grey sub-line ">Contenido Relacionado</h4>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap mt-3">
+                        <div class="cards-section container d-flex justify-content-between justify-content-sm-between flex-wrap mt-3">
                             {% for audio in audios %}
-                                <div class="col-4 col-lg-4 col-xl-4 col-md-6 col-sm-6 col-xs-6">
+                                <div class="col-lg-6 col-xl-4 col-md-6 col-sm-6">
                                     <a href="{{ path('_bibliotecaDetalle',  { 'biblioteca_id': audio.id}) }}">
                                         <div class="card_biblio">
                                             <div class="card_biblio-left">
@@ -178,10 +178,10 @@
                                             </div>
                                             <div class="card_biblio-right">
                                                 <div class="row">
-                                                    <div class="col-12 col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                                                         <h5 class="titulo_recurso">{{audio.titulo}}</h5>
                                                     </div>
-                                                    <div class="col-12 col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 text-right pos-recurso">
+                                                    <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right pos-recurso">
                                                         <span class="tipo_recurso">Podcast</span>
                                                     </div>
                                                 </div>
