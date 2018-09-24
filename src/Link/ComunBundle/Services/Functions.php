@@ -3162,4 +3162,30 @@ class Functions
 
 	}
 
+	// Retorna true si la página o algunos de sus padres está vencido
+	public function programaVencido($pagina_id, $empresa_id)
+	{
+
+		$em = $this->em;
+		$vencido = false;
+
+		$pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
+																									'empresa' => $empresa_id));
+
+		if ($pagina_empresa)
+		{
+			if ($pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d'))
+			{
+				$vencido = true;
+			}
+			elseif ($pagina_empresa->getPagina()->getPagina()) {
+				// Verificación de programa vencido del padre
+				$vencido = $this->programaVencido($pagina_empresa->getPagina()->getPagina()->getId(), $empresa_id);
+			}
+		}
+
+	    return $vencido;
+
+	}
+
 }

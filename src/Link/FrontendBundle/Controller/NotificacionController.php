@@ -18,6 +18,7 @@ class NotificacionController extends Controller
 
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $query = $em->createQuery('SELECT a FROM LinkComunBundle:AdminAlarma a
@@ -35,15 +36,28 @@ class NotificacionController extends Controller
         foreach ($notificaciones as $notificacion)
         {
             
+            $vencido = false;
+
             if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_muro']) {
                 $muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($notificacion->getEntidadId());
-                $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().' titulo="'.$this->get('translator')->trans('Muro').': '.$muro->getPagina()->getNombre().'.">
+                // Se verifica si el programa al que pertenece el muro está vencido
+                $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id']);
+                if (!$vencido)
+                {
+                    $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().' titulo="'.$this->get('translator')->trans('Muro').': '.$muro->getPagina()->getNombre().'.">
                             <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
+                }
 
             }
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['espacio_colaborativo']) 
             {
-                $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
+                $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
+                // Se verifica si el programa al que pertenece el muro está vencido
+                $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
+                if (!$vencido)
+                {
+                    $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
+                }
             }
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['evento'])
             {
@@ -51,7 +65,13 @@ class NotificacionController extends Controller
             }
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo']) 
             {
-                $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
+                $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($notificacion->getEntidadId());
+                // Se verifica si el programa al que pertenece el muro está vencido
+                $vencido = $f->programaVencido($foro->getPagina()->getId(), $session->get('empresa')['id']);
+                if (!$vencido)
+                {
+                    $html .= '<a href="'.$this->generateUrl('_detalleColaborativo', array('foro_id' => $notificacion->getEntidadId())).'">';
+                }
             }
             elseif ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['noticia'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['novedad']) 
             {
@@ -61,24 +81,29 @@ class NotificacionController extends Controller
             {
                 $html .= '<a href="'.$this->generateUrl('_bibliotecaDetalle', array('biblioteca_id' => $notificacion->getEntidadId())).'">';
             }
-                
-            if ($notificacion->getLeido()) 
+
+            if (!$vencido)
             {
-                    $html .= '<li class="AnunListNotify " data="'.$notificacion->getId().'">
-                              <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId() .'">';
+
+                if ($notificacion->getLeido()) 
+                {
+                        $html .= '<li class="AnunListNotify " data="'.$notificacion->getId().'">
+                                  <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId() .'">';
+                }
+                else {
+                    $sonar = 1;
+                    $html .= '<li class="AnunListNotify notiSinLeer leido " data="'.$notificacion->getId().'">
+                              <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId().'">';
+                }       
+                
+                $html .= '<div class="anunNotify">
+                            <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss().'"><i class="material-icons icNotify">'.$notificacion->getTipoAlarma()->getIcono().'</i></span>
+                                <p class="textNotify text-justify">'. $notificacion->getDescripcion().'</p>
+                        </div>
+                    </li>
+                </a>';
+
             }
-            else {
-                $sonar = 1;
-                $html .= '<li class="AnunListNotify notiSinLeer leido " data="'.$notificacion->getId().'">
-                          <input type="hidden" id="tipo_noti'.$notificacion->getId().'" value="'.$notificacion->getTipoAlarma()->getId().'">';
-            }       
-            
-            $html .= '<div class="anunNotify">
-                        <span class="stickerNotify '. $notificacion->getTipoAlarma()->getCss().'"><i class="material-icons icNotify">'.$notificacion->getTipoAlarma()->getIcono().'</i></span>
-                            <p class="textNotify text-justify">'. $notificacion->getDescripcion().'</p>
-                    </div>
-                </li>
-            </a>';
 
         }
 
