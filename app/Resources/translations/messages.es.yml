@@ -672,7 +672,9 @@ País: País
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
 participantes: participantes
-particpante: participante
+Participantes: Participantes
+Particpante: participante
+Participantes registrados: Participantes registrados
 Participantes de la empresa: Participantes de la empresa
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma
 Participantes que han aprobado el último módulo del programa o curso: Participantes que han aprobado el último módulo del programa o curso
@@ -685,6 +687,7 @@ Participantes seleccionados: Participantes seleccionados
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
+Perfil de participante: Perfil de participante
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
 Permisos: Permisos
@@ -785,12 +788,14 @@ Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas,
 Si deseas volver a intentarlo haz clic aquí: Si deseas volver a intentarlo haz clic aquí
 Si deseas volver a ver el contenido, haz clic en el botón: Si deseas volver a ver el contenido, haz clic en el botón
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.
-Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.
+Si marca SI, la página tendrá una sección en el que los particiantes podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
 Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
 Si presionas: Si presionas
+Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.
+Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
 Sigue aprendiendo: Sigue aprendiendo
