@@ -344,7 +344,10 @@ class NotificacionController extends Controller
 
         $categoria = $this->obtenerProgramaCurso_($comentario->getPagina()->getId());
         $tutores = $f->getTutoresEmpresa($usuario->getEmpresa()->getId(), $yml);
-        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $comentario->getPagina(),  $comentario, $categoria, $usuario->getEmpresa(), 'Respondió' );
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $session->get('empresa')['id'];
+        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $comentario->getPagina(),  $comentario, $categoria, $usuario->getEmpresa(), 'Respondió',$background,$logo,$link_plataforma);
 
         $img = $usuario->getFoto() ? $upload.$usuario->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
         $autor = $this->get('translator')->trans('Yo');
