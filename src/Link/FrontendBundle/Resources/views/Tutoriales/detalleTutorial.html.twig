@@ -73,7 +73,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-xs-2 col-2 text-right botonTut">
-                                         <button class="btn btn-primary btn-sm btn-dlt descargaTutorial" id="{{tutorial.id}}"  type="button" data-ruta="{{path('_descargarPdf')~'/'~tutorial.id}}" >Descargar</button>
+                                        { % if tutorial.pdf % }
+                                         <a href="">
+                                            <button type="button" class="btn btn-primary bttnDownl descargaTutorial" id="{{tutorial.id}}"><i class="material-icons" data-ruta="{{path('_descargarPdf')~'/'~tutorial.id}}">cloud_download</i></button>
+                                            <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">Cambios y liderazgo</p></div>
+                                        </a>
+                                        {{ % endif% }}
                                     </div>
 
                                 </div>
