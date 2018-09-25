@@ -119,6 +119,7 @@ Competencia debe ser un valor entero: Competition must be an integer value
 Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
 Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
 Conexiones por usuario: Connections per user
+Conexiones por participante: Connections per participant
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
@@ -128,6 +129,7 @@ Configuración de la evaluación: Test setting
 Configuración de páginas: Pages setting
 Configuración de preguntas: Questions setting
 Configuración del usuario: User setting
+Configuración del participante: Participant configuration
 Configurar: Configure
 Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
@@ -172,6 +174,7 @@ Datos del grupo: Group information
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
+Datos del participnate: Participant information
 Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos del tutorial: Tutorial data
@@ -401,6 +404,7 @@ filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
 Filtrar comentarios del muro: Filter wall comments
 Filtrar usuarios: Filter users
+Filtrar participantes: Filter participants
 Filtro: Filter
 Fin del programa: End of the program
 Finaliza en: Ends in
@@ -738,6 +742,7 @@ Recursos: Resources
 Recursos del programa: Program resources
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
+Registrar participante: Register participant
 registros: items
 Registros actualizados: Updated items
 Registros nuevos: New items

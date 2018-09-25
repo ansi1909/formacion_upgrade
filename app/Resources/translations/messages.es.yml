@@ -120,6 +120,7 @@ Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
 Conceder: Conceder
 Conexiones por usuario: Conexiones por usuario
+Conexiones por participante: Conexiones por participante 
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
 Configuración de asignación: Configuración de asignación
@@ -128,6 +129,7 @@ Configuración de la evaluación: Configuración de la evaluación
 Configuración de páginas: Configuración de páginas
 Configuración de preguntas: Configuración de preguntas
 Configuración del usuario: Configuración del usuario
+Configuración del participante: Configuración del participante
 Configurar: Configurar
 Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
@@ -172,6 +174,7 @@ Datos del grupo: Datos del grupo
 Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
 Datos del usuario: Datos del usuario
+Datos del participante: Datos del participante
 Datos del Tipo de Notificación: Datos del Tipo de Notificación
 Datos del Tipo de Destino: Datos del Tipo de Destino
 Datos del tutorial: Datos del tutorial
@@ -401,6 +404,7 @@ filtrado de un total de: filtrado de un total de
 Filtrar comentarios del foro: Filtrar comentarios del foro
 Filtrar comentarios del muro: Filtrar comentarios del muro
 Filtrar usuarios: Filtrar usuarios
+Filtrar participantes: Filtrar participantes
 Filtro: Filtro
 Fin del programa: Fin del programa
 Finaliza en: Finaliza en
@@ -738,6 +742,7 @@ Recursos: Recursos
 Recursos del programa: Recursos del programa
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
+Registrar participante: Registrar participante
 registros: registros
 Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
