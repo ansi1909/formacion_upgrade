@@ -217,8 +217,17 @@
                             <img src="{{ img }}" alt="" class="img-recurso">
                         </div>
                         <div class="col-xl-8 col-lg-10 col-md-10 col-sm-12 mt-6 my-sm-5 mt-sm-0 text-center">
-                            {% set pdf = uploads~biblioteca.pdf %}
-                            <a href="{{ pdf }}" target="_blank" ><button type="button" class="btn btn-primary">{{ 'Descargar'|trans }}</button></a>
+                            {% if biblioteca.pdf %}
+                                {% set pdf = uploads~biblioteca.pdf %}
+
+                            
+                            
+                                    <a href="{{ pdf }}" target="_blank" > 
+                                        <button type="button" class="btn btn-primary bttnDownl " id="{{biblioteca.id}}">      <i class="material-icons" >cloud_download</i>
+                                        </button>
+                                        <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargar'|trans }}</p></div>
+                                    </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
