@@ -12,7 +12,7 @@ begin
 
     FOR rst IN 
 
-  SELECT * FROM admin_sesion WHERE disponible = TRUE AND fecha_request IS NOT NULL AND fecha_request < (current_timestamp - interval '100 minutes') ORDER BY id ASC LOOP
+  SELECT * FROM admin_sesion WHERE disponible = TRUE AND fecha_request IS NOT NULL AND fecha_request < (current_timestamp - interval '60 minutes') ORDER BY id ASC LOOP
 
   i = i+1;
   

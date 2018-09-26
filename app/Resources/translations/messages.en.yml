@@ -119,6 +119,7 @@ Competencia debe ser un valor entero: Competition must be an integer value
 Competencia debe tener como valor 0 o 1: Competition must have 0 or 1 as value
 Competencia requerida. Valores válidos 0 o 1.: Competition required. Valid values 0 or 1.
 Conexiones por usuario: Connections per user
+Conexiones por participante: Connections per participant
 Conceder: Grant
 Conceder Permisos: Grant Access
 Conceder permisos de acceso: Granting access for
@@ -128,6 +129,7 @@ Configuración de la evaluación: Test setting
 Configuración de páginas: Pages setting
 Configuración de preguntas: Questions setting
 Configuración del usuario: User setting
+Configuración del participante: Participant configuration
 Configurar: Configure
 Configurar asignación de sub-páginas: Configure sub-pages assignment
 Configurar evaluación: Configure test
@@ -172,6 +174,7 @@ Datos del grupo: Group information
 Datos del nivel de la empresa: Level data of the company
 Datos del Rol: Role Details
 Datos del usuario: User details
+Datos del participnate: Participant information
 Datos del Tipo de Notificación: Notification Type Details
 Datos del Tipo de Destino: Destinity Type Details
 Datos del tutorial: Tutorial data
@@ -401,6 +404,7 @@ filtrado de un total de: filtered of a total of
 Filtrar comentarios del foro: Filter forum comments
 Filtrar comentarios del muro: Filter wall comments
 Filtrar usuarios: Filter users
+Filtrar participantes: Filter participants
 Filtro: Filter
 Fin del programa: End of the program
 Finaliza en: Ends in
@@ -672,7 +676,9 @@ País: Country
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Para ver el detalle del evento puede entrar al siguiente enlace: To see the detail of the event you can enter the following link
 participantes: participants
+Participantes: Participants
 participante: participant
+Participantes registrados: Registered participants
 Participantes de la empresa: Company participants
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participants who, although they have username and password, have never logged on the platform
 Participantes que han aprobado el último módulo del programa o curso: Participants who have approved the last module of the program or course
@@ -685,6 +691,7 @@ Participantes seleccionados: Sele participants
 Pdf: Pdf
 PDF requerido: PDF is required
 Perfil de usuario: User profile
+Perfil de participante: Participant profile
 Perfil Empresarial: Company Profile
 Periodo: Period
 Permisos: Permissions
@@ -735,6 +742,7 @@ Recursos: Resources
 Recursos del programa: Program resources
 Registrar Empresa: Add/Edit Company
 Registrar Usuario: Add/Edit User
+Registrar participante: Register participant
 registros: items
 Registros actualizados: Updated items
 Registros nuevos: New items
@@ -785,12 +793,14 @@ Si deseas, puedes realizar la evaluación haciendo clic en el botón: If you wan
 Si deseas volver a intentarlo haz clic aquí: If you want to try again, click here
 Si deseas volver a ver el contenido, haz clic en el botón: If you want to see the content again, click next button
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: If check YES, program will have a section in which virtual tutor can add additional content.
-Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: If check YES, page will have a section in which user can comment over the wall
+Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.: If you check YES, the page will have a section in which the participants can write on the wall.
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
 Si necesitas ayuda escribenos a: If you need help email us to
 Si presionas: If you press
+Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: If you check YES, company participants can view the link on this page.
+Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If you check YES, the participants of the company can access the content of this page, even if they have approved.
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: If a level is already stored into database, it will not taken into account
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: If a participant is already stored into database, only his/her data will be updated
 Sigue aprendiendo: Keep learning

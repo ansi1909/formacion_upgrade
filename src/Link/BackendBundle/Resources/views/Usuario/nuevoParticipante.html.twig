@@ -64,7 +64,7 @@
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Registrar Usuario'|trans }}</h6>
+                    <h6>{{ 'Registrar participante'|trans }}</h6>
                 </div>
             </div>
             <div class="card-block">
@@ -148,7 +148,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-5 col-lg-5 col-md-5">
-                                        <label for="login" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Usuario'|trans }}</label>
+                                        <label for="login" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Participante'|trans }}</label>
                                         <div class="col-sm-14 col-md-14 col-lg-14">
                                             {% set readonly = usuario.id ? 'readonly="readonly"' : '' %}
                                             <input type="text" class="form-control form_sty1" name="login" id="login" value="{{ usuario.login }}" {{ readonly }}>

@@ -43,6 +43,20 @@
                 </p>
             </div>
         </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-6 my-sm-5 mt-sm-0 text-center" >
+                            {% if noticia.pdf %}
+                                {% set pdf = uploads~noticia.pdf %}
+
+                            
+                            
+                                    <a href="{{ pdf }}" target="_blank" > 
+                                        <button type="button" class="btn btn-primary bttnDownl " id="{{noticia.id}}">
+                                          <i class="material-icons" >cloud_download</i>
+                                        </button>
+                                        <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargar'|trans }}&nbsp;:&nbsp;{{noticia.titulo}}.pdf</p></div>
+                                    </a>
+                            {% endif %}
+       </div>
         <div class="row align-items-center justify-content-end">
             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
                 <a href="{{ path('_noticias') }}" class="lnk-volver"><span class="material-icons ic-bck">arrow_back</span>{{ 'Volver a noticias'|trans }}</a>

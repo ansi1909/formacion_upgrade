@@ -555,7 +555,10 @@ class DefaultController extends Controller
                         $verificacion = 1;
                     }
                     else {
-                        $error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
+                        // Eliminamos las cookies almacenada
+                        setcookie('id_usuario', '', time() - 42000, '/'); 
+                        setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
+                        //$error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
                     }
                 }
                 else {
@@ -565,6 +568,15 @@ class DefaultController extends Controller
                         $login = $request->request->get('usuario');
                         $clave = $request->request->get('password');
                         $verificacion = 1;
+                    }
+                    else {
+                        if ($session->get('iniFront'))
+                        {
+                            if (!$f->sesionBloqueda($session->get('sesion_id')))
+                            {
+                                return $this->redirectToRoute('_inicio');
+                            }
+                        }
                     }
                 }
 
