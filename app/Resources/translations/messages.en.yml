@@ -17,6 +17,7 @@ Actividades Recientes: Recents Activities
 Activo: Active
 Activos: Active
 Actualizando la lista de usuarios conectados: Updating the list of connected users
+Actualizando la lista de participantes conectados: Updating the list of connected participants
 Advertencia: Warning
 Agregar: Add
 Agregar opción: Add option
@@ -433,7 +434,7 @@ Ha ocurrido un error en la eliminación de este registro: An error ocurred delet
 Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: An error ocurred getting the programs. Contact your system administrator.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
-Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.: An error occurred when loading connected users, verify your internet connection or contact the system administrator. 
+Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.: An error occurred when loading the connected participants, check your internet connection or contact the system administrator.
 Ha sido publicado: It has been published
 Ha sido publicado el evento: It has been published an event
 ha subido un archivo en el espacio colaborativo de: has uploaded a file into the collaborative space of
@@ -678,8 +679,14 @@ Para ver el detalle del evento puede entrar al siguiente enlace: To see the deta
 participantes: participants
 Participantes: Participants
 participante: participant
+Participantes activos: Active participants
+Participantes inactivos: Inactive participants
+Participantes no iniciados: Uninitiated participants
 Participantes registrados: Registered participants
 Participantes de la empresa: Company participants
+Participantes cursando: Participantes cursando
+Participantes culminados: Participantes culminados
+Participantes conectados: Participantes conectados
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participants who, although they have username and password, have never logged on the platform
 Participantes que han aprobado el último módulo del programa o curso: Participants who have approved the last module of the program or course
 Participantes que han ingresado al programa o curso asignado: Participants who have entered the assigned program or course
@@ -706,6 +713,7 @@ Por medio de la presente se certifica que el participante arriba indicado ha cur
 Preferencias de la empresa: Preferences of company
 Preferencia de plantillas de las empresas: Layout preferences of the companies
 Preferencias de usuario: User preferences
+Preferencias de participante: Participant preferences
 Pregunta: Question
 Preguntas: Questions
 Preguntas frecuentes: Frequent questions
