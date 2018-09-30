@@ -1,13 +1,89 @@
 $(document).ready(function() {
 
-	$('.uploadFileHref').click(function(){
-	  $('#fileUpload').val($(this).attr('data-etiqueta'));  
+	$('.new').click(function(){
+		initModalEdit();
+		enableSubmit();
+		$('#tutorial_id').val("");
+		$('#nombre').val("");
+		$('#pdf').val("");
+		$('#video').val("");
+		$('#imagen').val("");
+		$('#descripcion').val("");
+		$('#wait').hide();
 	});
 
+	$('#guardar').click(function(){
+		$('#form').submit();
+		return false;
+	});
 
+	$('#form').submit(function(e) {
+		e.preventDefault();
+	});
+
+	$('#form').safeform({
+		submit: function(e) {
+
+			$('#div-alert').hide();
+			$('#div-error').hide();
+			if ($("#form").valid())
+			{
+				$('#guardar').prop('disabled', true);
+				$.ajax({
+					type: "POST",
+					url: $('#form').attr('action'),
+					async: true,
+					data: $("#form").serialize(),
+					dataType: "json",
+					success: function(data) {
+						$('.form-control').val('');
+						if($('#tutorial_id').val() != '')//si se edita un tutorial
+						{
+							table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
+						}
+						else {
+							table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
+						}
+						$('#wait_tutorial').hide();
+						$('#p-nombre').html(data.nombre);
+						$('#p-pdf').html(data.pdf);
+						$('#p-imagen').html(data.pdf);
+						$('#p-video').html(data.video);
+						$( "#detail-edit" ).attr( "data", data.id );
+						$( "#detail-delete" ).attr("data",data.id);
+						$( "#detail-edit" ).attr( "disabled", false);
+						$( "#detail-delete" ).attr("disabled", false);
+						initModalShow();
+
+						// manual complete, reenable form ASAP
+						$('#form').safeform('complete');
+						return false; // revent real submit
+
+					},
+					error: function(){
+						$('#alert-error').html($('#error_msg-save').val());
+						$('#div-alert').show();
+						$('#guardar').prop('disabled', false);
+						$('#form').safeform('complete');
+                        return false; // revent real submit
+					}
+				}); 
+			}
+			else {
+				$('#div-error').show();
+				$('#form').safeform('complete');
+                return false; // revent real submit
+			}
+		}
+	});
+
+	$('.uploadFileHref').click(function(){
+		$('#fileUpload').val($(this).attr('data-etiqueta'));
+		$('#div-error').hide();
+	});
 
 	$('.uploadFile').fileupload({
-		url:$('#url_uploadFiles_tutorial').val(),
+		url: $('#url_uploadFiles_tutorial').val(),
         dataType: 'json',
         done: function (e, data) {
         	var id = $('#fileUpload').val();
@@ -15,9 +91,8 @@ $(document).ready(function() {
         	{
         		$('#'+id).val(file.name);
             });
-             showButtons();
-             $('#div-error').hide();
-	  		
+            showButtons();
+            $('#div-error').hide();
         },
         add: function (e,data ){
         	 hideButtons();
@@ -34,74 +109,11 @@ $(document).ready(function() {
 		$('.form-control').removeClass('error');
 	});
 
-	$('.iframe-btn').click(function(){
-		$('#div-alert').hide();
-		$('#div-error').hide();
-		$('.form-control').removeClass('error');
-	});
-
-	$('.new').click(function(){
-		$('label.error').hide();
-		$('#form').show();
-		$('#alert-success').hide();
-		$('#detail').hide();
-		$('#aceptar').hide();
-		$('#guardar').show();
-		$('#cancelar').show();
-		$('#tutorial_id').val("");
-		$('#nombre').val("");
-		$('#pdf').val("");
-		$('#video').val("");
-		$('#imagen').val("");
-		$('#descripcion').val("");
-		$('#div-alert').hide();
-		$('#div-error').hide();
-	});
-
-
-	$('#guardar').click(function(){
-	  if ($("#form").valid())
-		{
-			$('#guardar').hide();
-			$('#cancelar').hide();
-			$('#wait_tutorial').show(1000);
-			saveTutorial();
-		}
-		else{
-			$('#div-error').show();
-		}
-	});
-
-	$('#nuevoTutorial').click(function(){
-		document.getElementById("form").reset();
-		$('#guardar').prop('disabled',false);
-		$('#guardar').show();
-		$('#cancelar').show();
-		$('#wait_tutorial').hide();
-		
-	});
-
-	$('.iframe-btn').fancybox({	
-		'width'		: 900,
-		'height'	: 900,
-		'type'		: 'iframe',
-        'autoScale' : false,
-		'autoSize'	: false
-    });
-
 	$( "#BodyTable, #buttons" ).on( "click",".edit" , function (){
 		document.getElementById("form").reset();
 		var tutorial_id = $(this).attr('data');
 		var url_edit = $('#url_edit').val();
-		$('#guardar').prop('disabled', false);
-		$('label.error').hide();
-		$('#form').show();
-		$('#alert-success').hide();
-		$('#detail').hide();
-		$('#aceptar').hide();
-		$('#guardar').show();
-		$('#cancelar').show();
-		$('#div-alert').hide();
+		initModalEdit();
 		$('#div-error').hide();
 		$.ajax({
 			type: "GET",
@@ -110,6 +122,7 @@ $(document).ready(function() {
 			data: { tutorial_id: tutorial_id },
 			dataType: "json",
 			success: function(data) {
+				enableSubmit();
 				$('#tutorial_id').val(tutorial_id);
 				$('#nombre').val(data.nombre);
 				$('#pdf').val(data.pdf);
@@ -118,49 +131,26 @@ $(document).ready(function() {
 				$('#descripcion').val(data.descripcion);
 			},
 			error: function(){
-				$('alert-error').html($('#error_msg_edit').val());
+				$('#alert-error').html($('#error_msg-edit').val());
 				$('#div-alert').show();
 			}
 		});
 	});
 
-
 	$( "#BodyTable, #buttons" ).on( "click",".delete" , function (){
 		var tutorial_id = $(this).attr('data');
 		var ubicacion = $(this).attr('data-ubicacion');
-
 		sweetAlertDeleteTutorial(tutorial_id,ubicacion);	
      });
+
 });
-
-function responsive_filemanager_callback(field_id){
-	
-	// Ruta en el campo de texto
-	var url=jQuery('#'+field_id).val();
-	var arr = url.split('uploads/');
-	var new_image = arr[arr.length-1];
-	$('#'+field_id).val(new_image);
-
-	
-	
-}
-
-var table = $('#tablaTutoriales').DataTable( //inicializacion de la tabla que contendra los registros	
-{	
-	paging: true, 
-	searching: true, 
-	ajax: $('#url_update').val(),
-	order: [[ 0, "desc" ]]
-} );
-
 
 function showButtons()
 {
 	$('#guardar').show();
     $('#cancelar').show();
-    $('#wait_tutorial').hide();
+    $('#wait').hide();
 	$('.uploadFileHref').show();
-
 	return 0;
 }
 
@@ -169,60 +159,6 @@ function hideButtons()
 	$('.uploadFileHref').hide();
     $('#guardar').hide();
 	$('#cancelar').hide();
-	$('#wait_tutorial').show(1000);
-
+	$('#wait').show(1000);
 	return 0;
-}
-
-function saveTutorial()
-{
-	
-    $('#div-alert').hide();
-	$('#div-error').hide();
-	if ($("#form").valid())
-	{
-		$('#guardar').prop('disabled', true);
-		$.ajax({
-			type: "POST",
-			url: $('#form').attr('action'),
-			async: true,
-			data: $("#form").serialize(),
-			dataType: "json",
-			success: function(data) {
-
-				if($('#tutorial_id').val() != '')//si se edita un tutorial
-				{
-					table.ajax.reload(null,false);//recarga los datos de la tabla manteniendose en la pagina actual
-				}
-				else
-				{
-					table.ajax.reload(null,true)//recarga los datos de la tabla y la muestra desde la pagina inicial
-				}
-
-				$('#wait_tutorial').hide();
-				$('#p-nombre').html(data.nombre);
-				$('#p-pdf').html(data.pdf);
-				$('#p-imagen').html(data.pdf);
-				$('#p-video').html(data.video);
-				$( "#detail-edit" ).attr( "data", data.id );
-				$( "#detail-delete" ).attr("data",data.id);
-				$( "#detail-edit" ).attr( "disabled", false);
-				$( "#detail-delete" ).attr("disabled", false);
-				$('#form').hide();
-				$('#alert-success').show();
-				$('#detail').show();
-				$('#aceptar').show();
-				
-			},
-			error: function(){
-				$('#alert-error').html($('#error_msg-save').val());
-				$('#div-alert').show();
-				$('#guardar').prop('disabled', false);
-			}
-		}); 
-	}
-	else {
-		$('#div-error').show();
-	}
-
 }

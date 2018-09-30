@@ -43,6 +43,38 @@ $(document).ready(function() {
 	segundaTabla();
 });
 
+
+function linkArchivos()
+{
+	$( ".fileList").unbind( "click" );
+
+	$('.fileList').click(function()
+	{
+			$('#loadingFiles').show();
+			var comentarioId = $(this).attr('data-comentario');
+			$.ajax({
+			type: "POST",
+			url: $('#url_files_foroList').val(),
+			async: true,
+			data: $('#comentario'+comentarioId).serialize(),
+			dataType: "json",
+			success: function(data) {
+				title(data.usuario);
+				$('#listOfFiles').html(data.html);
+				$('#loadingFiles').hide();
+				$('#filesModal').modal('show');
+			},
+			error: function(){
+				$('#loadingFiles').hide();
+				$('#div-error-files').html($('#error-msg-files').val());
+			    notify($('#div-error-files').html());
+				
+			}
+		});
+		
+	});
+}
+
 function getPaginas(empresa_id){
 	$.ajax({
 		type: "GET",
@@ -235,7 +267,7 @@ function segundaTabla()
 function afterPaginate(){
 
 	editComentario();
-
+	$('.see').unbind('click');
     $('.see').click(function(){
         var foro_id = $(this).attr('data');
         var usuario_id = $('#usuario_id').val();
@@ -252,6 +284,7 @@ function afterPaginate(){
                 $('#tbody_history_programation').html(data.html);
                 $('#tbody_history_programation').show();
                 $('#loading').hide();
+                linkArchivos();
                 segundaTabla();
                 editComentario();
                 clearTimeout( timerId );

@@ -2,14 +2,25 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('fancybox/jquery.fancybox.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/jquery-upload-file/css/jquery.fileupload.css') }}">
     <style>
-        .input-group-addon{padding:0px;}
+        .input-group-addon{
+            padding:0px;
+            border-radius: 50px !important;
+        }
         .input-group .form-control {
             z-index: 1;
         }
         .input-group {
             margin-top: 35px;
+            margin-left: 20px;
+        }
+        .fileinput-button {
+            position: absolute;
+        }
+        #btn_foto, #btn_pdf {
+            padding-top: 17px;
         }
     </style>
 {% endblock %}
@@ -21,6 +32,10 @@
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <input type="hidden" id="deslen2" name="deslen2" value="0" />
+<input type="hidden" id="file_input" name="file_input" value="">
+<input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadLogo') }}">
+<input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
+<input type="hidden" id="base_upload" name="base_upload" value="recursos/paginas/">
 <br><br>
 <input type="hidden" id="photo" name="photo" value="{{ asset('img/picture.png') }}">
 <div class="row align-items-center justify-content-start">
@@ -182,16 +197,15 @@
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     {{ form_label(form.foto) }}
                                     {% set img = pagina.foto ? uploads~pagina.foto : asset('img/picture.png') %}
-                                    <div class="photo_img" id="figure"><img src="{{ img }}" alt="{{ 'Foto de la página'|trans }}"></div>
+                                    <div class="photo_img" id="figure"><img id="foto_img" src="{{ img }}" alt="{{ 'Foto de la página'|trans }}" style="width: 512px; height: auto; margin: 0 1rem;"></div>
                                 </div>
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <div class="input-group">
                                         {{ form_widget(form.foto, { 'attr': { 'readonly': 'readonly'} }) }}
                                         <span class="input-group-addon">
-                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=1&field_id=form_foto&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
-                                                <button type="button" class="btn_addImg">
-                                                    <span class="fa fa-photo"></span>
-                                                </button>
+                                            <a class="fileinput-button btn_addImg" data="foto" id="btn_foto">
+                                                <span class="fa fa-photo"></span>
+                                                <input class="fileupload" type="file" name="files[]" multiple>
                                             </a>
                                         </span>
                                         <span class="input-group-addon">
@@ -214,10 +228,9 @@
                                 <div class="col-sm-6 col-md-6 col-lg-6">
                                     <div class="input-group">
                                         <span class="input-group-addon">
-                                            <a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=form_pdf&rootFolder=recursos/paginas" class="btn iframe-btn" type="button">
-                                                <button type="button" class="btn_addImg">
-                                                    <span class="fa fa-file-pdf-o"></span>
-                                                </button>
+                                            <a class="fileinput-button btn_addImg" data="pdf" id="btn_pdf">
+                                                <span class="fa fa-file-pdf-o"></span>
+                                                <input class="fileupload" type="file" name="files[]" multiple>
                                             </a>
                                         </span>
                                         <span class="input-group-addon">
@@ -259,19 +272,14 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckfinder/ckfinder.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/additional-methods.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('front/js/plugins/jquery-upload-file/js/jquery.fileupload.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/pagina.js') }}"></script>
     <script type="text/javascript">
-        $("#btn_clear").on("click",function(event) {
-            $("#form_foto").val("");
-            $("#figure").html('<img src="'+$('#photo').val()+'">');
-        });
-        
-        $("#btn_clear2").on("click",function(event) {
-            $("#form_pdf").val("");
-        });
         
         $('#finish').click(function(){
             var valid = $("#form").valid();
@@ -280,18 +288,9 @@
                 notify($('#div-error').html());
             }
             else {
-
-                var deslen = $('#deslen').val();
+                
                 var deslen2 = $('#deslen2').val();
                 error = 0;
-                
-                {% if not pagina.pagina %}
-                    if (deslen < {{ minlenght_bienvenida }} )
-                    {
-                        error = 1;
-                        $('#div-error ul').html("<li>- {{ 'La descripción es requerida.'|trans }}</li>");
-                    }
-                {% endif %}
 
                 if (deslen2 < {{ minlenght_bienvenida }} )
                 {
@@ -327,10 +326,6 @@
                 'form[foto]': {
                     required: {% if not pagina.pagina %}true{% else %}false{% endif %}
                 },
-                'deslen': {
-                    required: {% if not pagina.pagina %}true{% else %}false{% endif %},
-                    min: {% if not pagina.pagina %}3{% else %}0{% endif %}
-                },
                 'deslen2': {
                     required: true,
                     min: 3
@@ -358,10 +353,6 @@
                 'form[foto]': {
                     required: "- {{ 'La foto principal de la página es requerida'|trans }}."
                 },
-                'deslen': {
-                    required: "- {{ 'La descripción es requerida.'|trans }}",
-                    min: "- {{ 'La descripción es requerida.'|trans }}"
-                },
                 'deslen2': {
                     required: "- {{ 'El contenido es requerido.'|trans }}",
                     min: "- {{ 'El contenido es requerido.'|trans }}"
@@ -370,7 +361,7 @@
                     extension: "- {{ 'El material complementario debe ser sólo archivo con extensión pdf.'|trans }}"
                 },
                 'form[encuesta]': {
-                    url: "- {{ 'El enlace de la encuesta no un válido URL'|trans }}."
+                    url: "- {{ 'El enlace de la encuesta no es un válido URL'|trans }}."
                 },
                 'form[horasAcademicas]': {
                     required: "- {{ 'El valor de las horas académicas es requerido'|trans }}.",

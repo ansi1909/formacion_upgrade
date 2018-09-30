@@ -118,24 +118,33 @@ class UsuarioController extends Controller
         $correo_secundario = trim($request->request->get('correo_secundario'));
         
 
-        // Actualización de la foto en la BD
+        // Actualización del correo en la BD
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        $usuario->setCorreoCorporativo($correo_secundario);
-    
-        $em->persist($usuario);
-        $em->flush();
+        if ($usuario->getCorreoPersonal() == $correo_secundario || $usuario->getCorreoCorporativo() == $correo_secundario) {
 
-        // Actualización en la sesión
-        $datosUsuario = $session->get('usuario');
-        $datosUsuario['correo'] = $usuario->getCorreoPersonal();
-        $datosUsuario['correo_corporativo'] = $usuario->getCorreoCorporativo();
-        $datosUsuario['fecha_nacimiento'] = $usuario->getFechaNacimiento()->format('Y-m-d');
-        $datosUsuario['fecha_nacimiento_formateada'] = $usuario->getFechaNacimiento()->format('d/m/Y');
-        $session->set('usuario', $datosUsuario);
+            $existe=1;
+            
+        }else{
+
+            $existe=0;
+            $usuario->setCorreoCorporativo($correo_secundario);
+    
+            $em->persist($usuario);
+            $em->flush();
+
+            // Actualización en la sesión
+            $datosUsuario = $session->get('usuario');
+            $datosUsuario['correo'] = $usuario->getCorreoPersonal();
+            $datosUsuario['correo_corporativo'] = $usuario->getCorreoCorporativo();
+            $datosUsuario['fecha_nacimiento'] = $usuario->getFechaNacimiento()->format('Y-m-d');
+            $datosUsuario['fecha_nacimiento_formateada'] = $usuario->getFechaNacimiento()->format('d/m/Y');
+            $session->set('usuario', $datosUsuario);
+        }
 
         $return = array('correo' => $usuario->getCorreoPersonal(),
                         'correo_corporativo' => $usuario->getCorreoCorporativo(),
-                        'fechaNacimiento' => $usuario->getFechaNacimiento()->format('d/m/Y'));
+                        'fechaNacimiento' => $usuario->getFechaNacimiento()->format('d/m/Y'),
+                        'existe' => $existe);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

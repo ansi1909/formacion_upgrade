@@ -1,0 +1,75 @@
+{% extends '::admin.html.twig' %}
+
+{% block body %}
+
+<br><br>
+<input type="hidden" id="url_list" name="url_list" value="{{ path('_notificacion', { 'app_id': app.session.get('app_id') }) }}">
+<div class="row align-items-center justify-content-start">
+    <div class="col text-left">
+        <a href="{{ path('_notificacion', { 'app_id': app.session.get('app_id') })}}" class="bttn__bck"><span class="fa fa-clipboard"></span><span class="text__bck">{{ 'Ir al listado'|trans }}</span></a>
+    </div>
+    <div class="col text-right">
+        <a href="{{ path('_editNotificacion', { 'notificacion_id': notificacion.id }) }}" class="bttn__nr"><span class="fa fa-pencil"></span><span class="text__nr">{{ 'Editar'|trans }}</span></a>
+    </div>    
+</div>
+<br>
+{% if save == 1 %}
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 alert alert-success" role="alert" id="div-success">
+        <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'La notificación ha sido almacenada con éxito'|trans }}.
+    </div>
+{% endif %}
+    
+<div class="row">
+    <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+        <div class="card">
+            <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                <h5 class="card-title">{{ 'Datos de la notificación'|trans }}</h5>
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="asunto" class="form-conttipo_notificacion-label">{{ 'Asunto'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <input type="text" class="form-control form_sty1" value="{{ notificacion.asunto }}" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="tipo_notificacion_id" class="form-conttipo_notificacion-label">{{ 'Tipo notificación'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <input type="text" class="form-control form_sty1" value="{{ notificacion.tipoNotificacion.nombre }}" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+                {% if not usuario.empresa %}
+                    <div class="row">
+                        <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <label for="form_empresa_id" class="form-conttipo_notificacion-label">{{ 'Empresa'|trans }}:</label>
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                                <input type="text" class="form-control form_sty1" value="{{ notificacion.empresa.nombre }}" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>                           
+                {% endif %}
+                <div class="row">
+                    <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                        <label for="mensaje" class="form-conttipo_notificacion-label">{{ 'Mensaje'|trans }}:</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16 content-preview">
+                                {{ notificacion.mensaje | raw }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="card-footer">
+                <div class="col-sm-16 col-md-16 text-right">
+                    <button type="button" class="bttn__end" id="list"><span class="text__end">{{ 'Ir al listado'|trans }}</span><span class="fa fa-clipboard"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -9,13 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminFaqs;
 use Link\ComunBundle\Entity\AdminTipoPregunta;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+
 
 class FaqsController extends Controller
 {
@@ -41,26 +35,29 @@ class FaqsController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $faqsdb = array();
-        $faqs = $em->getRepository('LinkComunBundle:AdminFaqs')->findAll();
+        $faqs = array();
+        $query = $em->createQuery("SELECT f FROM LinkComunBundle:AdminFaqs f 
+                                    ORDER BY f.tipoPregunta ASC");
+        $faqsdb = $query->getResult();
 
-        foreach ($faqs as $faq)
+        foreach ($faqsdb as $faq)
         {
-
-
-            $faqsdb[] = array('id' => $faq->getId(),
-                              'tipopregunta' => $faq->getTipoPregunta()->getNombre(),
-                              'pregunta' => $faq->getPregunta(),
-                              'respuesta' => $faq->getRespuesta(),
-                              'delete_disabled' => $f->linkEliminar($faq->getId(), 'AdminFaqs'));
-                              
+            $faqs[] = $faq;                     
         }
 
-        $tipo_pregunta = array();
-        $tipo_pregunta = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoPregunta')->findAll();
+        $tipos = array();
+        $query = $em->createQuery("SELECT tp FROM LinkComunBundle:AdminTipoPregunta tp 
+                                    ORDER BY tp.nombre ASC");
+        $tps = $query->getResult();
 
-        return $this->render('LinkBackendBundle:Faqs:index.html.twig', array('faqs' => $faqsdb,
-                                                                             'tipos' => $tipo_pregunta));
+        foreach ($tps as $tp)
+        {
+            $tipos[] = $tp;                     
+        }
+
+        return $this->render('LinkBackendBundle:Faqs:index.html.twig', array('faqs' => $faqs,
+                                                                             'tipos' => $tipos));
+        
     }
 
     public function ajaxUpdateFaqsAction(Request $request)
@@ -70,9 +67,9 @@ class FaqsController extends Controller
         $f = $this->get('funciones');
 
         $faq_id = $request->request->get('faq_id');
+        $tipo_pregunta_id = $request->request->get('tipo_pregunta_id');
         $pregunta = $request->request->get('pregunta');
         $respuesta = $request->request->get('respuesta');
-        $tipo_pregunta_id = $request->request->get('tipo_pregunta_id');
 
         if ($faq_id)
         {
@@ -84,19 +81,16 @@ class FaqsController extends Controller
 
         $tipo_pregunta = $em->getRepository('LinkComunBundle:AdminTipoPregunta')->find($tipo_pregunta_id);
 
+        $faq->setTipoPregunta($tipo_pregunta);
         $faq->setPregunta($pregunta);
         $faq->setRespuesta($respuesta);
-        $faq->setTipoPregunta($tipo_pregunta);
-
         $em->persist($faq);
         $em->flush();
                     
         $return = array('id' => $faq->getId(),
-                        'pregunta' =>$faq->getPregunta(),
-                        'respuesta' =>$faq->getRespuesta(),
-                        'id_tipo_pregunta' =>$faq->getTipoPregunta()->getId(),
-                        'tipo_pregunta' =>$faq->getTipoPregunta()->getnombre(),
-                        'delete_disabled' =>$f->linkEliminar($faq->getId(),'AdminFaqs'));
+                        'pregunta' => $faq->getPregunta(),
+                        'respuesta' => $faq->getRespuesta(),
+                        'tipo_pregunta' => $faq->getTipoPregunta()->getNombre());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -109,12 +103,10 @@ class FaqsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $faq_id = $request->query->get('faq_id');
-        $respuesta = array();
         
-        $respuesta = $this->getDoctrine()->getRepository('LinkComunBundle:AdminFaqs')->find($faq_id);
+        $faq = $this->getDoctrine()->getRepository('LinkComunBundle:AdminFaqs')->find($faq_id);
 
-
-        $return = array('respuesta' => $respuesta->getrespuesta());
+        $return = array('respuesta' => $faq->getRespuesta());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -127,24 +119,13 @@ class FaqsController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $faq_id = $request->query->get('faq_id');
-        $tipo_p = '<option value=""></option>';
         
-        $faq1 = $this->getDoctrine()->getRepository('LinkComunBundle:AdminFaqs')->find($faq_id);
-        $faqs = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoPregunta')->findAll();
+        $faq = $this->getDoctrine()->getRepository('LinkComunBundle:AdminFaqs')->find($faq_id);
 
-        foreach($faqs as $faq)
-        {
-
-            $selected = $faq1->getTipoPregunta()->getId() == $faq->getId() ? ' selected'  : '';
-            $tipo_p .= '<option value="'.$faq->getId().'"'.$selected.' >'.$faq->getNombre().'</option>';
-         
-        }   
-
-        $return = array('faq_id' => $faq1->getId(),
-                        'pregunta' => $faq1->getPregunta(),
-                        'respuesta' => $faq1->getRespuesta(),
-                        'id_tipo_pregunta' => $faq1->getTipoPregunta()->getId(),
-                        'tipo_pregunta' => $tipo_p);
+        $return = array('faq_id' => $faq->getId(),
+                        'tipo_pregunta_id' => $faq->getTipoPregunta()->getId(),
+                        'pregunta' => $faq->getPregunta(),
+                        'respuesta' => $faq->getRespuesta());
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -156,34 +137,27 @@ class FaqsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
 
-        $id_tipo_pregunta = $request->request->get('id_tipo_pregunta');
-        $new_pregunta = $request->request->get('new_pregunta');
-        $tipo_pre = '<option value=""></option>';
+        $new_tipo_pregunta = $request->request->get('new_tipo_pregunta');
+        $ok = 0;
+        $id = 0;
 
-        if ($id_tipo_pregunta)
+        $tp = $em->getRepository('LinkComunBundle:AdminTipoPregunta')->findOneByNombre($new_tipo_pregunta);
+
+        if (!$tp)
         {
-            $tipo_p = $em->getRepository('LinkComunBundle:AdminTipoPregunta')->find($id_tipo_pregunta);
+            $tipo_pregunta = new AdminTipoPregunta();
+            $tipo_pregunta->setNombre($new_tipo_pregunta);
+            $em->persist($tipo_pregunta);
+            $em->flush();
+            $ok = 1;
+            $id = $tipo_pregunta->getId();
         }
         else {
-            $tipo_p = new AdminTipoPregunta();
+            $id = $tp->getId();
         }
-
-
-        $tipo_p->setNombre($new_pregunta);
-
-        $em->persist($tipo_p);
-        $em->flush();
-                    
-        $tps = $this->getDoctrine()->getRepository('LinkComunBundle:AdminTipoPregunta')->findAll();
-
-        foreach($tps as $tp)
-        {
-
-            $tipo_pre .= '<option value="'.$tp->getId().'" >'.$tp->getNombre().'</option>';
-         
-        }   
-
-        $return = array('tipo_pregunta' => $tipo_pre);
+    
+        $return = array('ok' => $ok,
+                        'id' => $id);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

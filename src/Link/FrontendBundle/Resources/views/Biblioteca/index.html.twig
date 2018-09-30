@@ -2,7 +2,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('jq/jquery-ui.css') }}">
     <style>
         .menu{
             width: 60%;
@@ -372,7 +371,6 @@
             $('#biBlio').addClass("active");
         });
     </script>
-    <script src="{{ asset('jq/jquery-ui.js') }}"></script>
     <script src="{{ asset('front/js/jquery.tabpager.js') }}"></script>
     <script type="text/javascript" src="{{ asset('front/js/tabsPagBiblio.js') }}"></script> 
     <script type="text/javascript" src="{{ asset('js/front/biblioteca.js') }}"></script>

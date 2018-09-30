@@ -1,12 +1,23 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .input-group .form-control {
+            z-index: 1;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 <br>
 <input type="hidden" id="tipos" name="tipos" value="{# tipos #}">
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditFaqs') }}">
 <input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxRespuesta') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_faqs', { 'app_id': app.session.get('app_id') }) }}">
-<input type="hidden" id="error_msg-subapps" name="error_msg-subapps" value="{{ 'Error al obtener la repuesta'|trans }}.">
+<input type="hidden" id="error_msg-answer" name="error_msg-answer" value="{{ 'Error al obtener la repuesta'|trans }}.">
+<input type="hidden" id="error_msg-type" name="error_msg-type" value="{{ 'Error al agregar el tipo de respuesta'|trans }}.">
+<input type="hidden" id="error_msg-tipo" name="error_msg-tipo" value="{{ 'No has elegido el tipo de pregunta'|trans }}.">
 <input type="hidden" id="url_nuevaPregunta" name="url_nuevaPregunta" value="{{ path('_ajaxNuevaPregunta') }}">
 
 <div class="row align-items-center justify-content-between">
@@ -49,11 +60,11 @@
                         {% for faq in faqs %}
                             {% set eo = cycle(['odd', 'even'], loop.index) %}
                             <tr class="{{ eo }}">
-                                <td>{{ faq.tipopregunta }}</td>
+                                <td>{{ faq.tipoPregunta.nombre }}</td>
                                 <td>{{ faq.pregunta }}</td>
                                 <td class="center">
                                     <a href="#" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ faq.id }}"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if faq.delete_disabled == '' %}delete{% endif %} {{ faq.delete_disabled }}" data="{{ faq.id }}"><span class="fa fa-trash"></span></a>
+                                    <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ faq.id }}"><span class="fa fa-trash"></span></a>
                                     <a href="#" title="{{ 'Ver respuesta'|trans }}" class="btn btn-link btn-sm see" data="{{ faq.id }}"><span class="fa fa-eye"></span></a>
                                 </td>
                             </tr>
@@ -69,8 +80,12 @@
                 <h5 class="card-title">{{ 'Respuesta'|trans }} </h5>
             </div>
             <br>
-            <div class=" alert alert-success" id="respuesta_v" role="alert" style="margin: 0 2rem 1rem 2rem; ">
-                
+            <div class="load1 load-wrapper" id="loader" style="display: none;">
+                <div class="loader">
+                    Loading...
+                </div>  
+            </div>
+            <div class="card-block" id="answer">
             </div>
         </div>
     </div>
@@ -79,6 +94,7 @@
 {% endblock %}
 
 {% block formModal %}
+    <a id="new_tp"></a>
     <div class="modal-header gradiente">
         <h5 class="modal-title" id="formModalLabel">{{ 'Datos de la pregunta'|trans }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
@@ -86,37 +102,58 @@
     <div class="modal-body">
         <form id="form" name="form" action="{{ path('_ajaxUpdateFaqs') }}" method="POST">
             <input type="hidden" id="faq_id" name="faq_id" value="">
-            <input type="hidden" id="id_tipo_pregunta" name="id_tipo_pregunta" value="">
-            <div class="form-group row justify-content-end">
-                <label for="pregunta" class="col-3 col-form-label">{{ 'Pregunta'|trans }}:</label>
-                <div class="col-13">
-                    <input type="text" class="form-control form_sty1" id="pregunta" name="pregunta" value="">
-                    <span class="fa fa-keyboard-o"></span>
+            <div class="row">
+                <div class="col-sm-16 col-md-16 col-lg-16">
+                    <div class="form-group">
+                        <label for="tipo_pregunta_id" class="col-sm-10 col-md-10 col-lg-10 col-form-label">{{ 'Tipo de pregunta'|trans }}</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <select class="form-control form_sty_sm" id="tipo_pregunta_id" name="tipo_pregunta_id" style="border-radius: 5px;">
+                                <option value=""></option>
+                                {% for tipo in tipos %}
+                                  <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                                {% endfor %}
+                                <option value="add">{{ 'Agregar tipo de pregunta'|trans }}</option>
+                            </select>
+                            <span class="fa fa-dedent"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group row justify-content-end">
-                <label for="respuesta" class="col-3 col-form-label">{{'Respuesta'|trans}}:</label>
-                <div class="col-13">
-                    <textarea class="form-control" id="respuesta" name="respuesta"></textarea>
+            <div class="row">
+                <div class="col-sm-16 col-md-16 col-lg-16">
+                    <div class="form-group">
+                        <label for="new_tipo_pregunta_id" class="col-sm-14 col-md-14 col-lg-14 col-form-label">{{ 'Nuevo tipo de pregunta'|trans }}</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <div class="input-group">
+                                <input type="text" class="form-control form_sty1" name="new_tipo_pregunta_id" id="new_tipo_pregunta_id" value="">
+                                <span class="fa fa-question"></span>
+                                <a href="#new_tp" id="add" class="btn fileinput-button" type="button">
+                                    <span class="fa fa-check"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group row justify-content-end">
-                <label for="tipo_pregunta" class="col-4 col-form-label">{{ 'Tipo de pregunta'|trans }}:</label>
-                <div class="col-12">
-                    <select class="form-control form_sty_sm" id="tipo_pregunta_id" name="tipo_pregunta_id" style="border-radius: 5px;">
-                        {% for tipo in tipos %}
-                          <option value="{{ tipo.id }}"> {{ tipo.nombre }} </option>
-                        {% endfor %}
-                    </select>
-                    <span class="fa fa-dedent"></span>
+            <div class="row">
+                <div class="col-sm-16 col-md-16 col-lg-16">
+                    <div class="form-group">
+                        <label for="pregunta" class="col-sm-14 col-md-14 col-lg-14 col-form-label">{{ 'Pregunta'|trans }}</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <input type="text" class="form-control form_sty1" id="pregunta" name="pregunta" value="">
+                            <span class="fa fa-question"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group row justify-content-end">
-                <label for="pregunta" class="col-3 col-form-label">{{ 'Agregar categoría'|trans }}:</label>
-                <div class="col-13">
-                    <input type="text" class="form-control form_sty1 " id="new_pregunta" name="new_pregunta">
-                    <span class="fa fa-keyboard-o"></span>
-                    <button type="button" class="bttn__addp nuevap" id="nuevap" name="nuevap" style="float: right; margin-top: 0.2rem;"><span class="text__addp">{{'Agregar categoría'|trans}}</span><span class="fa fa-plus"></span></button>
+            <div class="row">
+                <div class="col-sm-16 col-md-16 col-lg-16">
+                    <div class="form-group">
+                        <label for="respuesta" class="col-sm-14 col-md-14 col-lg-14 col-form-label">{{ 'Respuesta'|trans }}</label>
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <textarea class="form-control" id="respuesta" name="respuesta"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -131,6 +168,13 @@
                 <div class="container">
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
+                            <h5>{{ 'Tipo de pregunta'|trans }}:</h5>
+                            <p id="p-t"><span class="fa fa-users"></span></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-16 col-md-16 show__details">
                             <h5>{{ 'Pregunta'|trans }}:</h5>
                             <p id="p-pregunta">Lorem Ipsum</p>
                         </div>
@@ -138,23 +182,16 @@
                     <br>
                     <div class="row justify-content-between">
                         <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{'Respuesta'|trans}}:</h5>
+                            <h5>{{ 'Respuesta'|trans }}:</h5>
                             <p id="p-respuesta">https://Loremipsumdolorsitamet.domain/</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row justify-content-between">
-                        <div class="col-sm-16 col-md-16 show__details">
-                            <h5>{{ 'Tipo de pregunta'|trans }}:</h5>
-                            <p id="p-t"><span class="fa fa-users"></span></p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="col-sm-16 col-md-16 text-right">
-                    <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{'Editar' |trans}}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
-                    <button type="button" class="bttn__elim" data-toggle="tooltip" data-placement="bottom" title="{{'Eliminar' |trans}}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
+                    <button type="button" class="bttn__edit edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'Editar'|trans }}" id="detail-edit" data=""><span class="fa fa-pencil"></span></button>
+                    <button type="button" class="bttn__elim delete" data-toggle="tooltip" data-placement="bottom" title="{{ 'Eliminar'|trans }}" id="detail-delete" data=""><span class="fa fa-trash"></span></button>
                 </div>
             </div>
         </div>
@@ -163,28 +200,31 @@
 
 {% block javascripts %}
     {{ parent() }}
-
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/faq.js') }}"></script>
     <script type="text/javascript">
 
         $("#form").validate({
             rules: {
-                'nombre': {
-                    required: true,
-                    minlength: 3
+                'tipo_pregunta_id': {
+                    required: true
                 },
-                'url': {
-                    noSpace: true
+                'pregunta': {
+                    required: true
                 },
-                'icono': {
-                    noSpace: true
+                'respuesta': {
+                    required: true
                 }
             },
             messages: {
-                'nombre': {
-                    required: "{{ 'Este campo es requerido.'|trans }}",
-                    minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                'tipo_pregunta_id': {
+                    required: "{{ 'Debe seleccionar el tipo de pregunta o agregar una nueva'|trans }}."
+                },
+                'pregunta': {
+                    required: "{{ 'La pregunta es requerida'|trans }}."
+                },
+                'respuesta': {
+                    required: "{{ 'La respuesta es requerida'|trans }}."
                 }
             }
         });

@@ -36,6 +36,7 @@
 
 .textTuto{
     @extend %textTutorial;
+    padding-right: .5rem;
 }
 
 .dlTuto{
@@ -54,6 +55,9 @@
     background: $gray-300;
     border-radius: 1rem;
     padding: 3rem 3rem 2rem 3rem;
+    @include media-breakpoint-down(md){
+        padding: 3rem 2rem 2rem 2rem;
+    }
     .textInfoTuto{
         @extend %textTutorial;
         .link{
@@ -72,4 +76,7 @@
     font-family: $primary-font;	
     font-size: calc(1rem + 4px);	
     line-height: calc(1rem + 8px);
+    @include media-breakpoint-down(md){
+        font-size: .9rem;
+    }
 }

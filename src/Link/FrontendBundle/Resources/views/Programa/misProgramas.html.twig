@@ -1,15 +1,9 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    
-{% endblock %}
-
 {% block body %}
-{% set uri = app.request.getbasepath %}
+
 {% set certificado = activo ? 'activo' : " " %}
 {% set en_curso = activo ? " " : 'activo' %}
-
 
 {% if reciente == 1 %}
     {% set cursando = '' %}
@@ -22,149 +16,152 @@
 {% else %}
     {% set aprobado = 'disabled' %}
 {% endif %}
+
 {% if reciente == 0 and completado == 0 %}
 
-<input type="hidden" id="certificado" name="certificado" value="{{certificado}}">
-
-<div id="" class="for-message es-message container py-5 px-6 mb-4 ">
-    <h4 class="mb-4 title-grey">Actividades Recientes</h4>
-    <p>Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.</p>
-    <h5>¡Comencemos! Elige tu programa </h5>
-</div>
+    <div class="for-message es-message container py-5 px-6 mb-4">
+        <h4 class="mb-4 title-grey">{{ 'Actividades Recientes'|trans }}</h4>
+        <p>{{ 'Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.'|trans }}</p>
+        <h5>{{ '¡Comencemos! Elige tu programa'|trans }}</h5>
+    </div>
 
 {% else %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h4 class="mt-3 pt-3 mb-0 pb-1 title-grey sub-line "> Mis Programas </h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="filter-group d-flex justify-content-around mb-3">
-                <ul class="tabs">
-                    <li class="  mt-3 {{ cursando }} {{ en_curso }}">
-                        <span>En curso</span>
-                    </li>
-                    <li class=" mt-3 {{ aprobado }} {{ certificado }} " id="finalizados">
-                        <span>Finalizados</span>
-                    </li>
-                </ul>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mt-3 pt-3 mb-0 pb-1 title-grey sub-line ">{{ 'Mis Programas'|trans }}</h4>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <ul class="tab__content">
-            <li class="{{ en_curso }}" >
-                {% if reciente == 1 %}
-                <div class="content__wrapper">
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                         {% for pec in actividad_reciente %}
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card-hrz card-current">
-                                        <img class="card-hrz-img  rounded-left" src="{{  uploads ~ pec.imagen }}" alt="">
-                                        <div class="card-hrz-body">
-                                            <h5 class="title-grey "> {{ pec.titulo_padre }} </h5>
-                                            <span class="text-sm title-grey d-none d-lg-block"> {{ pec.categoria }} </span>
-                                            <span class="text-sm color-light-grey d-none d-lg-block"> {{ pec.titulo_hijo }} </span>
-                                            <div class="progress mt-3">
-                                                <div class="progress-bar" role="progressbar" style="width: {{ pec.porcentaje }}%" aria-valuenow="{{ pec.porcentaje }}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="row">
+            <div class="col-12">
+                <div class="filter-group d-flex justify-content-around mb-3">
+                    <ul class="tabs">
+                        <li class="  mt-3 {{ cursando }} {{ en_curso }}">
+                            <span>{{ 'En curso'|trans }}</span>
+                        </li>
+                        <li class=" mt-3 {{ aprobado }} {{ certificado }} " id="finalizados">
+                            <span>{{ 'Finalizados'|trans }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="tab__content">
+                <li class="{{ en_curso }}" >
+                    {% if reciente == 1 %}
+                        <div class="content__wrapper">
+                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                 {% for ar in actividad_reciente %}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card-hrz card-current">
+                                                <img class="card-hrz-img  rounded-left" src="{{ uploads ~ ar.imagen }}" alt="">
+                                                <div class="card-hrz-body">
+                                                    <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
+                                                    <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>
+                                                    <span class="text-sm color-light-grey d-none d-lg-block"> {{ ar.titulo_hijo }} </span>
+                                                    <div class="progress mt-2">
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ ar.porcentaje }}%" aria-valuenow="{{ ar.porcentaje }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-hrz-right float-right px-2 d-flex flex-wrap align-items-center justify-content-center ">
+                                                    <div class="percent text-center mt-3">
+                                                        <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
+                                                        <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">{{ ar.dias_vencimiento }}</span>
+                                                    </div>
+                                                    {% if ar.link_enabled %}
+                                                        {% if ar.avanzar == 2 %}
+                                                            <a href="{{ path('_test', { 'pagina_id':  ar.evaluacion_pagina, 'programa_id': ar.evaluacion_programa }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3">{{ 'Continuar'|trans }}</a>
+                                                        {% else %}
+                                                            <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3">{{ 'Continuar'|trans }}</a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card-hrz-right float-right col-3 ml-4 d-flex flex-wrap align-items-center justify-content-center ">
-                                            <div class="percent text-center mt-3">
-                                                <h2 class="color-light-grey mb-0 pb-0"> {{ pec.porcentaje }}% </h2>
-                                                <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey ">Finaliza en {{ pec.fecha_vencimiento }} días</span>
-                                            </div>
-                                            {% if pec.avanzar == 2 %}
-                                                <a href="{{ path('_test', { 'pagina_id':  pec.evaluacion_pagina, 'programa_id': pec.evaluacion_programa, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                                            {% else %}
-                                                <a href="{{ path('_lecciones', { 'programa_id':  pec.padre_id, 'subpagina_id': pec.id, }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3" > Continuar </a>
-                                            {% endif %}
                                         </div>
                                     </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-8">
+                                <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
+                                    <h4 class="mb-4 title-grey">{{ 'Actividades en curso'|trans }}</h4>
+                                    <p>{{ 'Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.'|trans }}</p>
+                                    <h5>{{ '¡Comencemos! Elige tu programa'|trans }}</h5>
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% else %}
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-8">
-                            <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
-                                <h4 class="mb-4 title-grey">Actividades en curso</h4>
-                                <p>Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.</p>
-                                <h5>¡Comencemos! Elige tu programa </h5>
+                        </div>
+                    {% endif %}
+                </li>
+                <li class="{{ certificado }}">
+                    {% if completado == 1 %}
+                        <div class="content__wrapper">
+                            <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
+                                {% for pagina in paginas %}
+                                    <div class="card">
+                                        <img class="card-img-top" src="{{ uploads ~ pagina.imagen }}" alt="Card image cap">
+                                        <div class="card-img-overlay">
+                                            <span class="count text-xs">{{ pagina.dias_vencimiento }}</span>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-3"> {{ pagina.nombre }} </h5>
+                                            <p class="card-text">{{ pagina.descripcion|raw }}</p>
+                                            <div class="badge-wrap">
+                                                {% if pagina.link_enabled %}
+                                                    <i class="material-icons badge-aprobado">check_circle</i>
+                                                    <span class="text-badge">{{ 'Aprobado'|trans }}</span>
+                                                {% else %}
+                                                    {# Cambiar el ícono por un relojito #}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Vencido'|trans }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <a id="iconos"></a>
+                                        <div class="card-footer d-flex justify-content-around">
+                                            <a href="{{ path('_generarCertificado', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
+                                                <i class="material-icons d-block">aspect_ratio</i>
+                                                <small class="d-block">{{ 'Certificado'|trans }}</small>
+                                            </a>
+                                            <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
+                                                <i class="material-icons d-block">content_copy</i>
+                                                <small class=" d-block">{{ 'Notas'|trans }}</small>
+                                            </a>
+                                            {% if pagina.continuar == 2 %}
+                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
+                                            {% else %}
+                                                <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-ver disabled">
+                                            {% endif %}
+                                                <i class="material-icons d-block">visibility</i>
+                                                <small class=" d-block">{{ 'Ver'|trans }}</small>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
-                    </div>
-                {% endif %}
-            </li>
-            <li  class="{{ certificado }}">
-                {% if completado == 1 %}
-                <div class="content__wrapper">
-                    <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
-                    {% for pa in programas_aprobados %}
-                        <div class="card">
-                            <img class="card-img-top" src="{{  uploads ~ pa.imagen }}" alt="Card image cap">
-                            <div class="card-img-overlay">
-                                <span class="count text-xs ">Finaliza en {{ pa.fecha_vencimiento }} días</span>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title mb-3"> {{ pa.nombre }} </h5>
-                                <p class="card-text">{{ pa.descripcion | raw }}</p>
-                                {% if pa.continuar == 0 %}
-                                    <a href="{{ path('_programa', { 'programa_id':  pa.id }) }}" class="btn btn-primary mt-3"> Iniciar </a>
-                                {% elseif pa.continuar == 1 %}
-                                    <a href="{{ path('_programa', { 'programa_id':  pa.id }) }}" class="btn btn-continuar  mt-3">Continuar </a>
-                                {% elseif  pa.continuar in [2, 3] %}
-                                <div class="badge-wrap">
-                                    <i class="material-icons badge-aprobado">check_circle</i>
-                                    <span class="text-badge"> Aprobado </span>
+                    {% else %}
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-8">
+                                <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
+                                    <h4 class="mb-4 title-grey">{{ 'Programas Finalizados'|trans }}</h4>
+                                    <p>{{ 'Aquí podrás ver tus actividades finalizadas'|trans }}.</p>
                                 </div>
-                                {% endif %}
-                            </div>
-                            {% if pa.continuar in [2, 3] %}
-                            <div class="card-footer  d-flex justify-content-around">
-                                <a href="{{ path('_generarCertificado', { 'programa_id': pa.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
-                                    <i class="material-icons d-block">aspect_ratio</i>
-                                    <small class=" d-block"> Certificado </small>
-                                </a>
-                                <a href="{{ path('_generarNotas', { 'programa_id': pa.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas " >
-                                    <i class="material-icons d-block">content_copy</i>
-                                    <small class=" d-block"> Notas </small>
-                                </a>
-                                {% if pa.continuar == 2 %}
-                                    <a href="{{ path('_programa', { 'programa_id':  pa.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver" >
-                                {% else %}
-                                    <a href="#" class="flex-column align-items-center col-4 btn-edge btn-ver disabled" >
-                                {% endif %}
-                                    <i class="material-icons d-block">visibility</i>
-                                    <small class=" d-block"> Ver </small>
-                                </a>
-                            </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                    </div>
-                </div>
-                {% else %}
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-8">
-                            <div id="" class="for-message es-message container py-5 px-6 mb-4 ">
-                                <h4 class="mb-4 title-grey">Programas Finalizados</h4>
-                                <p>Aquí podrás ver tus actividades finalizadas.</p>
                             </div>
                         </div>
-                    </div>
-                {% endif %}
-            </li>
-        </ul>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 {% endif %}
+
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/front/tabs.js') }}"></script>

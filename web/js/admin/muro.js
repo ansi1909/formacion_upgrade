@@ -1,23 +1,28 @@
 $(document).ready(function() {
+	
 
-    $('#select_empresa_id').change(function(){
+    $('#empresa_id').change(function(){
     	var empresa_id = $(this).val();
     	var pagina_id = 0;
     	var usuario_id = $('#usuario_id').val();
-		getPaginas(empresa_id);
-		getListadoComentarios(empresa_id,pagina_id,usuario_id);
+    	window.location.replace($('#url_auto').val()+'/'+$('#empresa_id').val());
 	});
 
-	$('#select_pagina_id').change(function(){
-		var pagina_id = $(this).val();
-		var empresa_id = $('#select_empresa_id').val();
+	$('.tree').jstree();
+
+	$('.tree').on("select_node.jstree", function (e, data) {
 		var usuario_id = $('#usuario_id').val();
-		getListadoComentarios(empresa_id,pagina_id,usuario_id);
+		var empresa_id = $('#empresa_id').val();
+		var id = data.node.id;
+		var pagina_id = $('#'+id).attr('p_id');
+		var pagina_str = $('#'+id).attr('p_str');
+		$('#pagina_str').val(pagina_str);
+		$('#pagina_id').val(pagina_id);
+		getListadoComentarios(empresa_id,pagina_id,usuario_id)
 	});
+
 
 	$('#guardar').click(function(){
-		var muro_id = $('#comentario_padre_muro_id').val();
-		$('#muro_id').val(muro_id);
 		$('#guardar').hide();
 		$('#cancelar').hide();
 		saveComentario();
@@ -43,24 +48,11 @@ $(document).ready(function() {
 	segundaTabla();
 });
 
-function getPaginas(empresa_id){
-	$.ajax({
-		type: "GET",
-		url: $('#url_paginas_muro').val(),
-		async: true,
-		data: { empresa_id: empresa_id },
-		dataType: "json",
-		success: function(data) {
-			$('#select_pagina_id').html(data.options);
-		},
-		error: function(){
-			$('#active-error').html($('#error_msg-filter').val());
-			$('#div-active-alert').show();
-		}
-	});
-}
+
 
 function getListadoComentarios(empresa_id,pagina_id,usuario_id){
+	$('#loader').show();
+	$('#list_comentarios').hide();
 	$.ajax({
 		type: "GET",
 		url: $('#url_comentarios_muro').val(),
@@ -72,8 +64,11 @@ function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 			applyDataTable();
 			observe();
 			clearTimeout( timerId );
+			$('#loader').hide();
+			$('#list_comentarios').show();
 		},
 		error: function(){
+			$('#loader').hide();
 			$('#active-error').html($('#error_msg-filter').val());
 			$('#div-active-alert').show();
 		}
@@ -242,7 +237,7 @@ function afterPaginate(){
         var usuario_id = $('#usuario_id').val();
         $('#div-active-alert').hide();
         $('#tbody_history_programation').hide();
-        $('#loading').show();
+        $('#loader2').show();
         $.ajax({
             type: "GET",
             url: $('#url_respuestas_comentarios_muro').val(),
@@ -252,12 +247,13 @@ function afterPaginate(){
             success: function(data) {
                 $('#tbody_history_programation').html(data.html);
                 $('#tbody_history_programation').show();
-                $('#loading').hide();
+                $('#loader2').hide();
                 segundaTabla();
                 editComentario();
                 clearTimeout( timerId );
             },
             error: function(){
+            	$('#loader2').hide();
                 $('#active-error').html($('#error_msg_history').val());
                 $('#div-active-alert').show();
             }

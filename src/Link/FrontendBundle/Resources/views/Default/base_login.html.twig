@@ -17,7 +17,20 @@
                 color: #fd5c63; 
                 margin: 5px 10px 0px 0px; 
                 text-align: left;
+
+
             }
+
+            .success__style{
+                color: #49A12F; 
+                margin: 5px 10px 0px 0px; 
+                text-align: left;
+            }
+
+            #contCorreoRecu{
+                margin-left: 14px;
+            }
+           
         </style>
     </head>
     <body class="bg-white bckLogin">
@@ -71,6 +84,7 @@
                 </div>
             </div>
         </div>
+         
 
         {# Modal #}
         <div class="modal modal-recuperacion" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -89,30 +103,38 @@
                 </div>
                 <div class="row mt-4 justify-content-center align-items-center">
                     <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
-                        <p class="txt-modal">{{ 'No hay problema, te enviaremos un correo con'|trans }}<br/>{{ 'instrucciones para reiniciarla. Ingresa tu correo.'|trans }}</p>
+                        <p class="txt-modal">{{ 'No hay problema, te enviaremos un correo con'|trans }}<br/>{{ 'tu usuario y clave. Ingresa tu correo.'|trans }}</p>
                     </div>
                 </div>
                 <form id="form_clave" name="form_clave" >
                     <div class="row mt-3 justify-content-center align-items-center">
-                        <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
-                            <div class="form-group">
+                        <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 text-center">
+                            <div class="form-group" id="contCorreoRecu">
                                 <label class="mb-2" for="mail-rec">{{ 'Correo electrónico'|trans }}</label>
-                                <input type="email" class="form-control" name="correo" id="correo" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
-                                <span class="error_ajax error__style"></span>
+                                <input type="email" class="form-control " name="correo" id="correo" aria-describedby="mailRecoveryHelp" placeholder="Ingrese su correo">
+                                <span class="aviso_ajax "></span>
+                                
                             </div>
                         </div>
                     </div>
                     <div class="row justify-content-center align-items-center">
                         <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8">
                             <div class="form-group text-center">
-                                <button type="button" id="recuperar_clave" class="btn btn-primary btn_rc mx-0">{{ 'Reiniciar contraseña'|trans }}</button>
+                                <button type="button" id="recuperar_clave" class="btn btn-primary btn_rc mx-0">{{ 'Recuperar contraseña'|trans }}</button>
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-2 align-items-center justify-content-center" style="display:none;" id="wait_soporte">
+                        <div class="col-auto px-0 py-0">
+                            <div class="contenedor">
+                                    <div class="radar"></div>
+                            </div>
+                        </div>
+                </div>
                 </form>
                 <div class="row align-items-center justify-content-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <a href="#" class="close link_ri" data-dismiss="modal">{{ 'Regresar al inicio'|trans }}</a>
+                        <a href="#" class="close link_ri" id="close_link_ri" data-dismiss="modal">{{ 'Regresar al inicio'|trans }}</a>
                     </div>
                 </div>
                 <div class="row align-items-end justify-content-center">
@@ -170,22 +192,45 @@
                 }
             });
 
-            $('.error_ajax').hide();
-            $('.error_ajax').html('');
+            $('.aviso_ajax').hide();
+            $('.aviso_ajax').html('');
+
+            $('#correo').click(function()
+                {
+                    $('.aviso_ajax').html('');
+                    $('.aviso_ajax').removeClass('error__style');
+                    $('.aviso_ajax').hide();
+                });
 
             $('#recuperar_clave').click(function()
             {
-                $('#recuperar_clave').hide();
-                recuperar();
+                if($('#correo').val())
+                {
+                   $('.aviso_ajax').html('');
+                   $('#recuperar_clave').hide();
+                   $('#close_link_ri').hide();
+                   $('#wait_soporte').show(1000);
+                   $('#correo').prop('disabled',true);
+                   recuperar();
+                }
+                else
+                {
+                    $('.aviso_ajax').addClass('error__style');
+                    $('.aviso_ajax').html("{{ 'El correo es requerido'|trans }}!");
+                    $('.aviso_ajax').show();
+                }
+               
             });
 
             $('.close').click(function()
             {
                 $('#correo').val('');
-                $('.error_ajax').html('');
-                $('.error_ajax').hide();
+                $('.aviso_ajax').html('');
+                $('.aviso_ajax').hide();
                 $('#recuperar_clave').show();
             });
+
+
 
             function recuperar()
             {
@@ -201,36 +246,49 @@
                         dataType: "json",
                         data: { correo: correo, empresa_id: empresa_id },
                         success: function(data){
-                            console.log(data.error);
+                           console.log(data.error);
+                           $('#wait_soporte').hide();
+                           $('#correo').prop('disabled',false);
+                           $('#correo').val('');
+                           $('#recuperar_clave').show();
+                           $('#close_link_ri').show();
                             if(data.ok==0)
                             {
-                                $('.error_ajax').show();
-                                $('.error_ajax').html(data.error);
+                                $('.aviso_ajax').show();
+                                $('.aviso_ajax').removeClass('error__style');
+                                $('.aviso_ajax').addClass('success__style');
+                                $('.aviso_ajax').html(data.error);
 
                                 setTimeout(function(){
                                     $('.modal-backdrop,#modal1').hide();
-                                    $('.error_ajax').hide();
-                                    $('.error_ajax').html('');                                    
-                                    $('#correo').val('');
+                                    $('.aviso_ajax').hide();
+                                    $('.aviso_ajax').removeClass('success__style');                                
                                     $('#recuperar_clave').show();
-                                }, 1000); // 1 segundos 
+                                }, 10000); // 10 segundos
                             }else
                             {
-                                $('.error_ajax').show();
-                                $('.error_ajax').html(data.error);
+                                $('.aviso_ajax').addClass('error__style');
+                                $('.aviso_ajax').show();
+                                $('.aviso_ajax').html(data.error);
                                 $('#recuperar_clave').show();
                                 $('#correo').val('');
-                                setTimeout(function(){
-                                    $('.error_ajax').hide();
-                                    $('.error_ajax').html('');
-                                }, 3000); // 3 segundos 
+                                // setTimeout(function(){
+                                //     $('.aviso_ajax').hide();
+                                //     $('.aviso_ajax').html('');
+                                // }, 3000); // 3 segundos 
 
                             }
 
                         },
                         error: function(){
-                            $('#alert-error').html($('#error_msg-edit').val());
-                            $('#div-alert').show();
+                            $('#wait_soporte').hide();
+                            $('#correo').prop('disabled',false);
+                            $('#recuperar_clave').show();
+                            $('#close_link_ri').show();
+                            $('.aviso_ajax').addClass('error__style');
+                            $('.aviso_ajax').html("{{ 'El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema'|trans }}!");
+                            $('.aviso_ajax').show();
+                           
                         }
                     });
                 }else{

@@ -93,6 +93,10 @@ $(document).ready(function() {
         track: true
     });
 
+    $('.form-control').focus(function(){
+        $('#div-alert').hide();
+    });
+
 });
 
 function initModalShow()

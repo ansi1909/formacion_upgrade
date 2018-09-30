@@ -188,6 +188,10 @@ $(document).ready(function() {
         $(".tooltipN").slideToggle(300);
     });
     
+    $("#btnShowResul").on('click',function(){
+        $(".mostrar-resul").slideToggle(300);
+    });
+    
     document.oncontextmenu = function(){return false;}
     
     $(function () {

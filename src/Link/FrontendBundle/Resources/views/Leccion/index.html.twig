@@ -23,17 +23,17 @@
             </a>
         </div>
         <div class="wraper-title-lesson d-flex flex-column align-items-center">
-            <h4 class="my-1 color-light-grey" >{{ titulo }} </h4>
-            <h6 class="mt-0 color-light-grey" >{{ subtitulo }}</h6>
+            <h4 class="my-1 color-grey" >{{ titulo }} </h4>
+            <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
         </div>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             {% set display = lecciones.muro_activo ? '' : 'display:none;' %}
-            <a id="iconComments" href="javascript:void(0)" style="{{ display }}">
+            <a id="iconComments" href="javascript:void(0)" title="" data-toggle="tooltip" data-original-title="Muro" data-placement="bottom"  style="{{ display }}"  >
                 <i class="material-icons mx-3 color-light-grey">comment</i>
             </a>
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class="d-flex flex-column">
-                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}">
+                <div class="wrapperDdMenu" title="{{ 'Configuración del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                         <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
@@ -42,7 +42,7 @@
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Preferencias de participante'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
@@ -87,7 +87,7 @@
         {# NAVEGACION LECCION #}
         {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
         <div class="wraper-nav-less" id="wraperNavLess">
-            <h4 class="text-center mt-4 mb-0 color-light-black">{{ 'Lecciones'|trans }}</h4>
+            <h4 class="text-center mt-4 mb-0 color-grey">{{ 'Lecciones'|trans }}</h4>
             <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
             <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
             <div class=" nav-less-container text-center lesson-nav py-0 mb-1 mt-0" id="NavLess">
@@ -111,7 +111,7 @@
         {% if not wizard %}
             <input type="hidden" id="muroActivo{{ lecciones.id }}" name="muroActivo{{ lecciones.id }}" value="{{ lecciones.muro_activo ? '1' : '0' }}">
             <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
-                <div class="lesson-container container py-6 text-center">
+                <div class="lesson-container container py-4 text-center">
                     <h2>{{ lecciones.nombre }}</h2>
                     {% if lecciones.foto %}
                         {% set img = uploads~lecciones.foto %}
@@ -137,7 +137,7 @@
         {% else %}
             {% for subpagina in lecciones.subpaginas %}
                 <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}">
-                    <div class="lesson-container container py-6 text-center">
+                    <div class="lesson-container container py-4 text-center">
                         <h2>{{ subpagina.nombre }}</h2>
                         {% if subpagina.foto %}
                             {% set img = uploads~subpagina.foto %}

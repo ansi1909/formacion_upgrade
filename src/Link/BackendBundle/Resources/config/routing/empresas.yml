@@ -14,3 +14,8 @@ _showEmpresa:
     path:     /mostrar/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Empresa:mostrar }
 
+_registradosEmpresa:
+    path: /registradosEmpresa
+    defaults: {_controller: LinkBackendBundle:Empresa:registradosEmpresa}
+
+

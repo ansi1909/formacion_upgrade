@@ -68,7 +68,6 @@ $(document).ready(function() {
 					dataType: "json",
 					success: function(data) {
 						$('.form-control').val('');
-						$('.form-control').prop('disabled', true);
 						$('#p-nombre').html(data.nombre);
 						$('#p-des').html(data.descripcion);
 						$('#p-empresa').html(data.empresa);

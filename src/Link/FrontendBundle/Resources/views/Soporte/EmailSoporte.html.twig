@@ -1,36 +1,50 @@
-<h2>
-
-	Cordial saludo, se ha recibido un mensaje proveniente de la sección: "Soporte Virtual" de la plataforma: "formación2.0" , 
-	<br>a continuación se muestran los detalles:  
-
-</h2>
-<br>
-<br>
-<table style="width: 100%;font-family: Arial;font-size: 18px;">
-	
-	<tr style="padding: 10px;background-color: #c2e5fc;color:#000000">
-		  <td style="width: 30%;text-align: left;"><B>Nombre y apellido del usuario:</B>
-		  &nbsp;&nbsp;{{ nombreUsuario }}</td>
-		  
-	</tr>
-	
-	<tr style="padding: 10px;background-color: #c2e5fc;color:#000000">
-		 <td  style="width: 30%;text-align: left;">
-		 	<B>Correo del usuario:</B>
-		 	&nbsp;&nbsp;{{ correoUsuario }}
-		</td>
-		 
-	</tr>
-	<tr style="padding: 10px;background-color: #c2e5fc;color:#000000">
-		 <td  style="width: 30%;text-align: left;">
-		 		<B>Asunto:</B>
-		 		&nbsp;&nbsp;{{ asuntoMensaje }}
-		 </td>
-		 
-	</tr>
-	<tr style="padding: 10px;background-color: #F9FCFE">
-		 <td style="width: 100%;text-align: left;">
-		 	<br>{{ mensaje }}
-		 </td>
-	</tr>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitud de soporte técnico</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div>
+        <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="background: #f7f7f7; border-collapse: collapse;">
+            <tbody>
+                <tr>
+                    <td align="center" style="font-family: Arial,sans-serif;"> 
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px; border-radius: 25px; background: #fff; margin: 2% auto; box-shadow: 5px 5px 20px rgba(121, 125, 128, .3)">
+                            <tbody>
+                                <tr>
+                                    <td align="left" style="padding-top: 20px; padding-bottom: 20px; background: rgba(92, 174, 230, .5); border-radius: 25px 25px 0 0">
+                                        <a href="{{ link_plataforma }}" style="padding: 0;">
+                                            <img src="{{ logo }}" style="height: auto; width: 175px; position: relative; left: 1rem" alt="">
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr style="background: url({{ background }}) no-repeat top right;">
+                                    <td align="justify" style="padding: 10% 5%;">
+                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;text-align: left;">
+                                        	
+													Cordial saludo, tienes una solicitud de soporte técnico  proveniente de la plataforma:  formación2.0, a continuación te presento los detalles:, 
+													<BR><BR><BR>
+													<B>Correo del participante:</B>&nbsp;&nbsp;{{ correoUsuario }}
+													<BR>
+                                                    <B>Empresa:</B>&nbsp;&nbsp;{{ empresa }}
+                                                    <BR>
+													<B>Asunto:</B>&nbsp;&nbsp;{{ asuntoMensaje }}
+													<BR><BR><BR>
+													{{ mensaje }}		
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

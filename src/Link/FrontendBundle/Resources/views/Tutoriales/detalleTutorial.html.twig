@@ -13,12 +13,24 @@
 
     
     {% block body %}
+                <style type="text/css" >
+                    .botonTut{
+                        margin-left: 310px;
+                        margin-top: 10px;
+                    }
+                    .descargaTut{
+                        margin-left: 90px;"
+                    }
+                </style>
 
 	    		<div class="container">
                     <div class="row mt-4">
-                        <div class="col-12 text-center">
+                      
+                       
+                        <div class="col-12 text-center" style="">
                             <h3 class="titulo_faqs">Tutoriales</h3>
                         </div>
+
                     </div>
                     <section>
                         <div class="row justify-content-center align-items-center">
@@ -46,10 +58,24 @@
                         </div>
                         <div class="row mt-3 justify-content-center align-items-center">
                             <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 col-8 text-right">
-                                <div class="dlTuto">
-                                    <span class="textTuto">Puedes descargar el tutorial en formato PDF </span>
-                                    <button class="btn btn-primary btn-sm btn-dlt descargaTutorial" id="{{tutorial.id}}"  type="button" data-ruta="{{path('_descargarPdf')~'/'~tutorial.id}}" >Descargar</button>
-                                   
+                                <div class="row">
+                                    <div class="col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 col-8 text-right descargaTut">
+                                        <div class="dlTuto">
+                                            <span class="textTuto">Puedes descargar el tutorial en formato PDF </span>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-xs-2 col-2 text-right botonTut">
+                                        {% if tutorial.pdf %}
+                                         <a href="{{path('_descargarPdf')~'/'~tutorial.id}}">
+                                            <button type="button" class="btn btn-primary bttnDownl " id="{{tutorial.id}}"><i class="material-icons" >cloud_download</i></button>
+                                            <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargar'|trans }}&nbsp;:&nbsp;{{tutorial.pdf}}</p></div>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -60,13 +86,19 @@
                                 </div>
                             </div>
                         </div>
+                       <div class="row justify-content-center">
+                        <div class="col-auto text-center">
+                                  <a href="{{path('_indexTutoriales')}}">
+                                    <div class="btn-warning btn before_lesson" data="109-113-2-0" >{{ 'Volver'|trans }}</div>
+                                  </a>
+                        </div>
+                    </div>
                     </section>
                 </div>
             </div>        
     {% endblock %}
     {% block javascripts %}
         {{ parent() }}
-        <script src="{{ asset('jq/jquery-ui.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script> 
         <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>

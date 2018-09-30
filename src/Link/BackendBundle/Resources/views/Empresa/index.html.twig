@@ -1,9 +1,22 @@
 {% extends '::admin.html.twig'%}
 
 {% block body %}
+<style type="text/css">
+    .enlaceActivo{
+        pointer-events: null;
+    }
+
+    .enlaceInactivo{
+        pointer-events: none;
+
+    }
+</style>
 
 <br>
+<input type="hidden" id="error-msg-empresa" name="error-msg-empresa" value="{{ 'Ha ocurrido un error al generar el archivo de participantes, verifique su conexión a internet o contacte al administrador del sistema'|trans }}">
+<input type="hidden" id="warning-msg-empresa" name="warning-msg-empresa" value="<strong>{{ 'No existen registros para esta consulta'|trans }}</strong>">
 <div class="row align-items-center justify-content-between">
+  
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Empresas'|trans }}</h3>
     </div>
@@ -18,14 +31,16 @@
             	<h5 class="card-title">{{ 'Listado de Empresas'|trans }}</h5>
         	</div>
         	<div class="card-block">
-                <div class="row" id="div-active-alert" style="display:none;">
+                <div class="row"  >
                     <div class="col-sm-2">
                         &nbsp;
                     </div>
                     <div class="col-sm-12">
-                        <div class="alert alert-danger" role="alert"> 
-                            <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                        <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-empresa" style="display:none;">
                         </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 alert alert-warning" role="alert" id="div-warning-empresa" style="display:none;">
+                        </div>
+                         
                     </div>
                     <div class="col-sm-2">
                         &nbsp;
@@ -55,9 +70,14 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td class="center">
-                                    <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm"><span class="fa fa-pencil"></span></a>
-                                    <a href="#" class="btn btn-link btn-sm {% if empresa.delete_disabled == '' %}delete{% endif %} {{ empresa.delete_disabled }}" data="{{ empresa.id }}"><span class="fa fa-trash"></span></a>
+                                <td class="center" class="acciones" id="acciones{{empresa.id}}" >
+                                    <form action="{{ path('_registradosEmpresa') }}" method="post" id = "{{'formEmpresa'~empresa.id}}">
+                                          <input type="hidden" name = "empresa_id" value = "{{empresa.id}}">
+                                    </form>
+                                    <a href="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="btn btn-link btn-sm enlaces" title="{{ 'Editar'|trans }}"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="btn btn-link btn-sm {% if empresa.delete_disabled == '' %}delete{% endif %} {{ empresa.delete_disabled }} enlaces" data="{{ empresa.id }}" title="{{ 'Eliminar'|trans }}"><span class="fa fa-trash enlaces"></span></a>
+                                    <img id="{{ 'excel-loader'~empresa.id }}" class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none">
+                                    <a href="#" data-empresa="{{ empresa.id }}" id="{{ 'botonExcel'~empresa.id }}" class= "btn btn-link btn-sm enlaces downloadDb" title="{{ 'Listado de participantes'|trans }}"><span class="fa fa-file-excel-o"></span></a>
                                 </td>
                 			</tr>
                 		{% endfor %}

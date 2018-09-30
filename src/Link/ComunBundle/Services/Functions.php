@@ -3,6 +3,7 @@
 namespace Link\ComunBundle\Services;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Link\ComunBundle\Entity\CertiPaginaEmpresa;
@@ -14,6 +15,7 @@ use Link\ComunBundle\Entity\CertiPagina;
 use Link\ComunBundle\Entity\CertiPrueba;
 use Link\ComunBundle\Entity\CertiPregunta;
 use Link\ComunBundle\Entity\CertiOpcion;
+use Link\ComunBundle\Entity\CertiEmpresa;
 use Link\ComunBundle\Entity\CertiPreguntaOpcion;
 use Link\ComunBundle\Entity\CertiPreguntaAsociacion;
 
@@ -166,6 +168,93 @@ class Functions
 
 	}
 
+	protected function tipoDescripcion($tipoMensaje, $usuario, $pagina, $author)
+    {
+       
+        $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('realizó una publicación en el muro de').' '.$pagina->getNombre().'.';
+
+        if($tipoMensaje=='Respondió')
+        {
+           $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('respondió en el muro al comentario de').' '.$author.'.';
+        }
+
+        return $mensaje;
+       
+    }
+
+	//Obtiene la informacion de los tutores asignados a una empresa 
+	public function getTutoresEmpresa($empresaId, $yml)
+	{
+		 $em = $this->em;
+
+		 $dql = "
+                 SELECT au FROM LinkComunBundle:AdminUsuario au 
+                 INNER JOIN LinkComunBundle:AdminRolUsuario ru WITH au.id = ru.usuario
+                 WHERE ru.rol = :rol
+                 AND au.empresa = :empresa
+                ";
+
+        $query = $em->createQuery($dql);
+        $query->setParameters(['rol'=>$yml['parameters']['rol']['tutor'], 'empresa'=>$empresaId]);
+        $tutores = $query->getResult();
+
+        return $tutores;
+	}
+
+	////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
+    public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje, $background, $logo, $link_plataforma)
+    {
+
+        foreach ($tutores as $tutor) 
+        {
+
+            $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
+
+            //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
+            if($muro->getUsuario()->getId()!= $tutor->getId()) 
+            {
+                if ($correo) 
+                {
+                    
+                    $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.$tipoMensaje.' lo siguiente: ';
+
+                    $parametros_correo = ['twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
+                                          'datos' => ['leccion' => $pagina->getNombre(),
+                                                      'categoria' => $categoria['categoria'],
+                                                      'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
+                                                      'nombrePrograma' => $categoria['nombre'],
+                                                      'leccion' => $pagina->getNombre(),
+                                                      'encabezadoUsuario' => $encabezadoUsuario,
+                                                      'mensaje' => $muro->getMensaje(),
+                                                      'usuarioPadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido() : null,
+                                                      'mensajePadre' => ($tipoMensaje =='Respondió') ? $muro->getMuro()->getMensaje() : null,
+                                                      'empresa' => $empresa->getNombre(),
+                                                      'background' => $background,
+                                                      'logo' => $logo,
+                                                      'link_plataforma' => $link_plataforma
+                                                     ],
+                                            'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
+                                            'remitente' => $this->container->getParameter('mailer_user'),
+                                            'destinatario' => $correo
+                            			 ];
+
+                    $correo = $this->sendEmail($parametros_correo);
+
+                }
+
+               	//crea la notificacion para el usuario cuando el usuario que publica 
+               	$descripcion = $this->tipoDescripcion($tipoMensaje, $muro->getUsuario(), $pagina, $parametros_correo['datos']['usuarioPadre']);
+               	$tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+               	$this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
+
+           	}
+
+        }
+
+        return 1;
+        
+    }
+
 	// Retorna el URL hasta el directorio web de la aplicación. NO incluye el slash.
 	public function getWebDirectory()
 	{
@@ -209,7 +298,7 @@ class Functions
 		}
 		
         return $ok;
-        
+
 	}
 
 	/**
@@ -745,41 +834,6 @@ class Functions
 
 	}
 
-	public function emailUsuarios($usuarios, $notificacion, $template, $yml, $link)
-	{
-		$controller = 'RecordatoriosCommand';
-      	$parametros = array();
-      	
-		foreach ($usuarios as $usuario) {
-
-		 //Si es una notificacion de bienvenida se anexa al mensaje el link de la pltaforma para el usuario junto a sus credenciales	
-		  if($notificacion->getTipoNotificacion()->getId() === $yml['parameters']['notificacion_programada']['bienvenida'])
-		  {
-		  	 
-		  	 $link = $link.$usuario->getEmpresa()->getId();
-		  	 $mensaje=$notificacion->getMensaje().'<br>'.
-		  	 									  '<p><B>Nombre de usuario: </B>'.$usuario->getLogin().'</p><BR>'.
-		  	 									  '<p><B>Contraseña: </B>'.$usuario->getClave().'</p><BR>'.
-		  	 									  '<p><B>Link de acceso a la plataforma: </B><a href="'.$link.'">Formacion2.0</a></p>';
-		  } 
-		  else
-		  {
-		  	$mensaje=$notificacion->getMensaje();
-		  }
-          $parametros= array('twig'=>$template,
-                             'asunto'=>$notificacion->getAsunto(),
-                             'remitente'=>array('webmail@formacion2puntocero.com' => 'Formación2.0'),
-                             'destinatario'=>$usuario->getCorreoCorporativo(),
-                             'datos'=>array('mensaje' => $mensaje, 'usuario' => $usuario ));
-
-          $this->sendEmail($parametros, $controller);
-
-        }
-		
-		return true;
-
-	}
-
 	// Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
 	public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0, $onlyMuro = 0)
 	{
@@ -840,24 +894,6 @@ class Functions
 
 		}
 
-	}
-
-	public function sendEmailCommand($parametros)
-	{
-
-		if ($this->container->getParameter('sendMail'))
-		{
-			// ->setBody($this->render($parametros['twig'], $parametros['datos']), 'text/html');
-			$body = $this->templating->render($parametros['twig'],$parametros['datos']);
-			$message = \Swift_Message::newInstance()
-	            ->setSubject($parametros['asunto'])
-	            ->setFrom($parametros['remitente'])
-	            ->setTo($parametros['destinatario'])
-	            ->setBody($body, 'text/html');
-	        $this->mailer->send($message);
-		}
-		
-        return true;
 	}
 
 	// Permite crear la carpeta empresa_id en cada sub-directorio de uploads/
@@ -966,7 +1002,6 @@ class Functions
                                    	AND p.estatusContenido = :estatus_activo 
                                    	AND pe.activo = :activo 
                                    	AND pe.fechaInicio <= :hoy 
-						            AND pe.fechaVencimiento >= :hoy
                                    ORDER BY pe.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                     					  'pagina_id' => $pagina_id,
@@ -1121,8 +1156,18 @@ class Functions
 					            					  'usuario_id' => $usuario_id,
 					                        		  'completada' => $estatus_completada));
 					$aprobada = $query->getSingleScalarResult();
-					$menu_str .= '<li title="'.$prelada_por.'">
-									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$subpagina['nombre'].'</a>';
+					if ($aprobada)
+					{
+						$class_aprobada = 'liItemsAprob';
+						$icon_aprobada = '<i class="material-icons">check_circle</i>';
+					}
+					else {
+						$class_aprobada = '';
+						$icon_aprobada = '';
+					}
+
+					$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'" data-toggle="tooltip" data-placement="bottom">
+									<a href="'.$href.'/'.$subpagina['id'].'" class="'.$active.' '.$bloqueada.'" id="m-'.$subpagina['id'].'">'.$icon_aprobada.$subpagina['nombre'].'</a>';
 					if (count($subpagina['subpaginas']) && $dimension == 1)
 					{
 						// Recorremos las sub-páginas de la sub-página a ver si existe al menos una que tenga acceso
@@ -1194,9 +1239,18 @@ class Functions
 				            					  'usuario_id' => $usuario_id,
 				                        		  'completada' => $estatus_completada));
 				$aprobada = $query->getSingleScalarResult();
+				if ($aprobada)
+				{
+					$class_aprobada = 'liItemsAprob';
+					$icon_aprobada = '<i class="material-icons">check_circle</i>';
+				}
+				else {
+					$class_aprobada = '';
+					$icon_aprobada = '';
+				}
 
-				$menu_str .= '<li title="'.$prelada_por.'">
-								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$programa['nombre'].'</a>';
+				$menu_str .= '<li title="'.$prelada_por.'" class="'.$class_aprobada.'" data-toggle="tooltip" data-placement="bottom">
+								<a href="'.$href.'" class="'.$active.' '.$bloqueada.'" id="m-'.$programa['id'].'">'.$icon_aprobada.$programa['nombre'].'</a>';
 				$menu_str .= '</li>';
 
 			}
@@ -1802,9 +1856,11 @@ class Functions
     // función para retornar todos los ids de las sugpaginas de una programa
     public function hijas($subpagina, $hijas=array())
 	{
-		foreach ($subpagina as $sub) {
+		foreach ($subpagina as $sub) 
+		{
 			$hijas[] = $sub['id'];
-			if($sub['subpaginas']){
+			if ($sub['subpaginas'])
+			{
 				$hijas = $this->hijas($sub['subpaginas'], $hijas);
 			}
 		}
@@ -1906,8 +1962,8 @@ class Functions
 	public function iniciarSesion($datos)
     {
 
-        $exito=false;
-        $error='';
+        $exito = false;
+        $error = '';
 
 		$em = $this->em;
 
@@ -1933,6 +1989,7 @@ class Functions
                         $error = $this->translator->trans('El Usuario no pertenece a la empresa. Contacte al administrador del sistema.');
                     }
                     else {
+
                         $roles_front = array();
                         $roles_front[] = $datos['yml']['rol']['participante'];
                         $roles_front[] = $datos['yml']['rol']['tutor'];
@@ -1966,124 +2023,138 @@ class Functions
                             $error = $this->translator->trans('Los roles que tiene el usuario no son permitidos para ingresar al sistema.');
                         }
                         else {
-                            // se consulta si la empresa tiene paginas activas
-                            $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
-                                                       JOIN np.paginaEmpresa pe
-                                                       JOIN pe.pagina p
-                                                       WHERE pe.empresa = :empresa 
-                                                        AND p.pagina IS NULL 
-                                                        AND np.nivel = :nivel_usuario 
-                                                        AND pe.activo = :activo 
-                                                        AND pe.fechaInicio <= :hoy 
-                                                        AND pe.fechaVencimiento >= :hoy
-                                                       ORDER BY p.orden')
-                                        ->setParameters(array('empresa' => $datos['empresa']['id'],
-                                                              'nivel_usuario' => $usuario->getNivel()->getId(),
-                                                              'activo' => true,
-                                                              'hoy' => date('Y-m-d')));
-                            $paginas_bd = $query->getResult();
-                            
-                            if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
-                            {
-                                $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
-                            }
-                            else {
-                            
-                                // Se setea los datos del usuario
-                                $datosUsuario = array('id' => $usuario->getId(),
-                                					  'login' => $usuario->getLogin(),
-                                                      'nombre' => $usuario->getNombre(),
-                                                      'apellido' => $usuario->getApellido(),
-                                                      'correo' => trim($usuario->getCorreoPersonal()) != '' ? trim($usuario->getCorreoPersonal()) : trim($usuario->getCorreoCorporativo()),
-                                                      'correo_corporativo' => trim($usuario->getCorreoCorporativo()),
-                                                      'fecha_nacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('Y-m-d') : '',
-                                                      'fecha_nacimiento_formateada' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
-                                                      'foto' => $usuario->getFoto(),
-                                                      'participante' => $participante,
-                                                      'tutor' => $tutor);
-                                
-                                // Estructura de páginas
-                                $paginas = array();
-                                $orden = 0;
-                                foreach ($paginas_bd as $pagina)
-                                {
 
-                                	$orden++;
+                        	$sesion_activa = $em->getRepository('LinkComunBundle:AdminSesion')->findOneBy(array('usuario' => $usuario->getId(),
+                                                                                       							'disponible' => true));
+                        	if ($sesion_activa) {
+                        		$error = $this->translator->trans('Este usuario tiene una sesión activa').'.';
+                        	}
+                        	else {
 
-                                    $query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
-                                                               WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
-                                                ->setParameters(array('activo' => $datos['yml']['estatus_contenido']['activo'],
-                                                                      'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
-                                    $tiene_evaluacion = $query->getSingleScalarResult();
+	                            // se consulta si la empresa tiene paginas activas
+	                            $query = $em->createQuery('SELECT np FROM LinkComunBundle:CertiNivelPagina np
+	                                                       JOIN np.paginaEmpresa pe
+	                                                       JOIN pe.pagina p
+	                                                       WHERE pe.empresa = :empresa 
+	                                                        AND p.pagina IS NULL 
+	                                                        AND np.nivel = :nivel_usuario 
+	                                                        AND pe.activo = :activo 
+	                                                        AND pe.fechaInicio <= :hoy 
+	                                                       ORDER BY p.orden')
+	                                        ->setParameters(array('empresa' => $datos['empresa']['id'],
+	                                                              'nivel_usuario' => $usuario->getNivel()->getId(),
+	                                                              'activo' => true,
+	                                                              'hoy' => date('Y-m-d')));
+	                            $paginas_bd = $query->getResult();
+	                            
+	                            if (!$paginas_bd)  //validamos que la empresa tenga paginas activas
+	                            {
+	                                $error = $this->translator->trans('No hay Programas disponibles para la empresa. Contacte al administrador del sistema.');
+	                            }
+	                            else {
 
-                                    $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
+	                                // Se setea los datos del usuario
+	                                $datosUsuario = array('id' => $usuario->getId(),
+	                                                      'login' => $usuario->getLogin(),
+	                                                      'nombre' => $usuario->getNombre(),
+	                                                      'apellido' => $usuario->getApellido(),
+	                                                      'correo' => trim($usuario->getCorreoPersonal()) != '' ? trim($usuario->getCorreoPersonal()) : trim($usuario->getCorreoCorporativo()),
+	                                                      'correo_corporativo' => trim($usuario->getCorreoCorporativo()),
+	                                                      'fecha_nacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('Y-m-d') : '',
+	                                                      'fecha_nacimiento_formateada' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
+	                                                      'foto' => $usuario->getFoto(),
+	                                                      'participante' => $participante,
+	                                                      'tutor' => $tutor);
+	                                
+	                                // Estructura de páginas
+	                                $paginas = array();
+	                                $orden = 0;
+	                                foreach ($paginas_bd as $pagina)
+	                                {
 
-                                    $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
-                                    																	'orden' => $orden,
-                                                                                                        'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
-                                                                                                        'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
-                                                                                                        'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
-                                                                                                        'tiene_evaluacion' => $pagina->getPaginaEmpresa()->getPruebaActiva() ? $tiene_evaluacion ? true : false : false,
-                                                                                                        'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
-                                                                                                        'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
-                                                                                                        'espacio_colaborativo' => $pagina->getPaginaEmpresa()->getColaborativo(),
-                                                                                                        'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
-                                                                                                        'inicio' => $pagina->getPaginaEmpresa()->getFechaInicio()->format('d/m/Y'),
-                                                                                                        'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
-                                                                                                        'subpaginas' => $subPaginas);
+	                                    $orden++;
 
-                                }
+	                                    $query = $em->createQuery('SELECT COUNT(cp.id) FROM LinkComunBundle:CertiPrueba cp
+	                                                               WHERE cp.estatusContenido = :activo and cp.pagina = :pagina_id')
+	                                                ->setParameters(array('activo' => $datos['yml']['estatus_contenido']['activo'],
+	                                                                      'pagina_id' => $pagina->getPaginaEmpresa()->getPagina()->getId()));
+	                                    $tiene_evaluacion = $query->getSingleScalarResult();
 
-                                // Cierre de sesiones activas
-                                $sesiones = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
-                                                                                                            'disponible' => true));
-                                foreach ($sesiones as $s)
-                                {
-                                    $s->setDisponible(false);
-                                }
+	                                    $subPaginas = $this->subPaginasNivel($pagina->getPaginaEmpresa()->getPagina()->getId(), $datos['yml']['estatus_contenido']['activo'], $datos['empresa']['id']);
 
-                                // Se crea la sesión en BD
-                                $admin_sesion = new AdminSesion();
-                                $admin_sesion->setFechaIngreso(new \DateTime('now'));
-                                $admin_sesion->setUsuario($usuario);
-                                $admin_sesion->setDisponible(true);
-                                $em->persist($admin_sesion);
-                                $em->flush();
+	                                    $paginas[$pagina->getPaginaEmpresa()->getPagina()->getId()] = array('id' => $pagina->getPaginaEmpresa()->getPagina()->getId(),
+	                                                                                                        'orden' => $orden,
+	                                                                                                        'nombre' => $pagina->getPaginaEmpresa()->getPagina()->getNombre(),
+	                                                                                                        'categoria' => $pagina->getPaginaEmpresa()->getPagina()->getCategoria()->getNombre(),
+	                                                                                                        'foto' => $pagina->getPaginaEmpresa()->getPagina()->getFoto(),
+	                                                                                                        'tiene_evaluacion' => $pagina->getPaginaEmpresa()->getPruebaActiva() ? $tiene_evaluacion ? true : false : false,
+	                                                                                                        'acceso' => $pagina->getPaginaEmpresa()->getAcceso(),
+	                                                                                                        'muro_activo' => $pagina->getPaginaEmpresa()->getMuroActivo(),
+	                                                                                                        'espacio_colaborativo' => $pagina->getPaginaEmpresa()->getColaborativo(),
+	                                                                                                        'prelacion' => $pagina->getPaginaEmpresa()->getPrelacion() ? $pagina->getPaginaEmpresa()->getPrelacion()->getId() : 0,
+	                                                                                                        'inicio' => $pagina->getPaginaEmpresa()->getFechaInicio()->format('d/m/Y'),
+	                                                                                                        'vencimiento' => $pagina->getPaginaEmpresa()->getFechaVencimiento()->format('d/m/Y'),
+	                                                                                                        'subpaginas' => $subPaginas);
 
-                                $session = new session();
-                                $session->set('iniFront', true);
-                                $session->set('sesion_id', $admin_sesion->getId());
-                                $session->set('code', $datos['yml']['search_locale'] ? $this->getLocaleCode() : 'VE');
-                                $session->set('usuario', $datosUsuario);
-                                $session->set('empresa', $datos['empresa']);
-                                $session->set('paginas', $paginas);
+	                                }
 
-                                if($datos['recordar_datos']==1)
-                                {
-                                	//alimentamos el generador de aleatorios
-                                    mt_srand (time());
-                                    //generamos un número aleatorio para la cookie
-                                    $numero_aleatorio = mt_rand(1000000,999999999);
-                                    //se guarda la cookie en la tabla admin_usuario
-                                    $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneById($session->get('usuario')['id']);
-                                    //hay que validar si el usuario hace la marca de recordar
-                                    $usuario->setCookies($numero_aleatorio);
-                                    $em->persist($usuario);
-                                    $em->flush();
-                                    //se creo la variable de las cookie con el id del usuario de manera que cuando destruya la cookie sea la del usuario activo
-                                    setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
-                                    setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
-                                }
+	                                // Cierre de sesiones activas
+	                                $sesiones = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
+	                                                                                                            'disponible' => true));
+	                                foreach ($sesiones as $s)
+	                                {
+	                                    $s->setDisponible(false);
+	                                    $em->persist($s);
+	                                	$em->flush();
+	                                }
 
-								$exito=true;
-                            }
+	                                // Se crea la sesión en BD
+	                                $admin_sesion = new AdminSesion();
+	                                $admin_sesion->setFechaIngreso(new \DateTime('now'));
+	                                $admin_sesion->setUsuario($usuario);
+	                                $admin_sesion->setDisponible(true);
+	                                $em->persist($admin_sesion);
+	                                $em->flush();
+
+	                                $session = new session();
+	                                $session->set('iniFront', true);
+	                                $session->set('sesion_id', $admin_sesion->getId());
+	                                $session->set('code', $datos['yml']['search_locale'] ? $this->getLocaleCode() : 'VE');
+	                                $session->set('usuario', $datosUsuario);
+	                                $session->set('empresa', $datos['empresa']);
+	                                $session->set('paginas', $paginas);
+
+	                                if ($datos['recordar_datos'] == 1)
+	                                {
+	                                    //alimentamos el generador de aleatorios
+	                                    mt_srand (time());
+	                                    //generamos un número aleatorio para la cookie
+	                                    $numero_aleatorio = mt_rand(1000000,999999999);
+	                                    //se guarda la cookie en la tabla admin_usuario
+	                                    $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+	                                    //hay que validar si el usuario hace la marca de recordar
+	                                    $usuario->setCookies($numero_aleatorio);
+	                                    $em->persist($usuario);
+	                                    $em->flush();
+	                                    //se creo la variable de las cookie con el id del usuario de manera que cuando destruya la cookie sea la del usuario activo
+	                                    setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
+	                                    setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
+	                                }
+
+	                                $exito = true;
+
+	                            }
+                        	}
                         }
                     }
                 }
                 
             }
         }       	
-       	return array("error"=>$error,"exito"=>$exito);
+
+       	return array("error" => $error, 
+       				 "exito" => $exito);
+
     }
 
 	public function notasPrograma($subpaginas_ids, $usuario_id, $estatus_aprobado)
@@ -2094,6 +2165,7 @@ class Functions
 		
 		foreach ($subpaginas_ids as $subpage)
 		{
+
 			$cantidad_intentos = 0;
 			$nota = 0;
 			
@@ -2108,8 +2180,9 @@ class Functions
 	                    ->setMaxResults(1);
 	        $nota_programa = $query->getResult();
 
-	        if($nota_programa)
+	        if ($nota_programa)
 	        {
+
 				foreach ($nota_programa as $n)
 				{
 					$nota = $n['nota'];
@@ -2125,17 +2198,19 @@ class Functions
 			}
 	        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($subpage);
 			
-			if($nota>0)
+			if($nota > 0)
 			{
 		        $subpaginas[$subpage] = array('id' => $subpage,
 		        							  'nombre' => $pagina->getNombre(),
 		        							  'categoria' => $pagina->getCategoria()->getId(),
 								  		      'nota' => $nota,
-				               			      'cantidad_intentos' => $cantidad_intentos);
+				               			      'cantidad_intentos' => $cantidad_intentos ? $cantidad_intentos : '');
 		    }
+
 		}
 
 		return $subpaginas;
+		
 	}
 
 	public function iniciarSesionAdmin($datos)
@@ -2314,7 +2389,7 @@ class Functions
                             $session->set('usuario', $datosUsuario);
                             $session->set('menu', $menu);
 
-                            if($datos['recordar_datos']==1)
+                            if($datos['recordar_datos'] == 1)
                             {
                                 //alimentamos el generador de aleatorios
                                 mt_srand (time());
@@ -2330,16 +2405,19 @@ class Functions
                                 setcookie("id_usuario", $usuario->getId(), time()+(60*60*24*365),'/');
                                 setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365),'/');
                             }
-							$exito=true;
+							$exito = true;
                         }
                     }
                 }
             }
         }
-       	return array("error"=>$error,"exito"=>$exito);
+
+       	return array("error" => $error,
+       				 "exito" => $exito);
+
     }
 
-    // Calcula la diferencia de tiempo entre fecha y hoy
+    // Calcula la diferencia de tiempo entre fecha_ini y fecha_venc
 	// Retorna la cantidad de días
 	public function timeAgoPorcentaje($fecha_ini, $fecha_venc)
 	{
@@ -2358,6 +2436,7 @@ class Functions
 		$porcentaje = ($available_days * 100) / $complete_days;
 
 		return $porcentaje;
+
 	}
 
 	// Arreglo de comentarios en el espacio colaborativo y sus respuestas
@@ -2453,16 +2532,26 @@ class Functions
 
 	}
 
-	public function delete_folder($folder) {
-	    $glob = glob($folder);
-	    foreach ($glob as $g) {
-	        if (!is_dir($g)) {
-	            unlink($g);
-	        } else {
-	            $this->delete_folder("$g/*");
-	            rmdir($g);
-	        }
-	    }
+	function delete_folder($dir) {
+		if (is_dir($dir)) 
+		{
+	    	$objects = scandir($dir);
+	    	foreach ($objects as $object) 
+	    	{
+	      		if ($object != "." && $object != "..")
+	      		{
+	        		if (filetype($dir."/".$object) == "dir") 
+	        		{
+	        			$this->delete_folder($dir."/".$object);
+	        		}
+	        		else {
+	        			unlink($dir."/".$object);
+	        		}
+	      		}
+	    	}
+	    	reset($objects);
+	    	rmdir($dir);
+	  	}
 	}
 
 	public function nextLesson($indexedPages, $pagina_id, $usuario_id, $empresa_id, $yml, $programa_id)
@@ -2472,11 +2561,16 @@ class Functions
 
 		$next_lesson = 0;
 		$evaluacion = 0;
+		$duracion = 0;
 		$nombre_pagina = $indexedPages[$pagina_id]['categoria'].': '.$indexedPages[$pagina_id]['nombre'];
+		$categoria = $indexedPages[$pagina_id]['categoria'];
+		$pagina_padre_id = 0;
 		$continue_button = array('next_lesson' => $next_lesson,
 								 'evaluacion' => $evaluacion,
-								 'nombre_pagina' => $nombre_pagina);
-        $pagina_padre_id = 0;
+								 'duracion' => $duracion,
+								 'nombre_pagina' => $nombre_pagina,
+								 'categoria' => $categoria,
+								 'pagina_padre_id' => $pagina_padre_id);
 
         $pl = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
                                                                                     'pagina' => $pagina_id));
@@ -2484,9 +2578,22 @@ class Functions
         if ($indexedPages[$pagina_id]['tiene_evaluacion'] && $pl->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
         {
         	$evaluacion = $this->evaluacionPagina($pagina_id, $usuario_id, $empresa_id, $yml);
+        	if ($evaluacion)
+        	{
+        		$duracion = $this->duracionPrueba($evaluacion);
+        		$nombre_pagina = $indexedPages[$evaluacion]['categoria'].': '.$indexedPages[$evaluacion]['nombre'];
+				$categoria = $indexedPages[$evaluacion]['categoria'];
+        		if ($indexedPages[$evaluacion]['padre'])
+        		{
+        			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];
+        		}
+        	}
         	$continue_button = array('next_lesson' => $next_lesson,
 								 	 'evaluacion' => $evaluacion,
-								 	 'nombre_pagina' => $nombre_pagina);
+								 	 'duracion' => $duracion,
+								 	 'nombre_pagina' => $nombre_pagina,
+								 	 'categoria' => $categoria,
+								 	 'pagina_padre_id' => $pagina_padre_id);
         }
 
         if ($indexedPages[$pagina_id]['padre'] && !$evaluacion)
@@ -2500,6 +2607,7 @@ class Functions
             	// Próxima lección es hermana
                 $next_lesson = $keys[array_search($pagina_id,$keys)+1];
                 $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                $categoria = $indexedPages[$next_lesson]['categoria'];
             }
             else {
 
@@ -2512,6 +2620,7 @@ class Functions
                     {
                         $next_lesson = $subpagina['id'];
                         $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                        $categoria = $indexedPages[$next_lesson]['categoria'];
                         break;
                     }
                     else {
@@ -2519,12 +2628,15 @@ class Functions
                         {
                             $next_lesson = $subpagina['id'];
                             $nombre_pagina = $indexedPages[$next_lesson]['categoria'].': '.$indexedPages[$next_lesson]['nombre'];
+                            $categoria = $indexedPages[$next_lesson]['categoria'];
                             break;
                         }
                         elseif ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
                         {
                             $evaluacion = $subpagina['id'];
+                            $duracion = $this->duracionPrueba($evaluacion);
                             $nombre_pagina = $indexedPages[$evaluacion]['categoria'].': '.$indexedPages[$evaluacion]['nombre'];
+                            $categoria = $indexedPages[$evaluacion]['categoria'];
                             break;
                         }
                     }
@@ -2534,9 +2646,20 @@ class Functions
 
             if ($next_lesson || $evaluacion)
             {
+            	if ($evaluacion)
+	        	{
+	        		$duracion = $this->duracionPrueba($evaluacion);
+	        		if ($indexedPages[$evaluacion]['padre'])
+	        		{
+	        			$pagina_padre_id = $indexedPages[$evaluacion]['padre'];
+	        		}
+	        	}
             	$continue_button = array('next_lesson' => $next_lesson,
 							 	 		 'evaluacion' => $evaluacion,
-							 	 		 'nombre_pagina' => $nombre_pagina);
+							 	 		 'duracion' => $duracion,
+							 	 		 'nombre_pagina' => $nombre_pagina,
+							 	 		 'categoria' => $categoria,
+							 	 		 'pagina_padre_id' => $pagina_padre_id);
             }
             else {
             	if ($pagina_padre_id != $programa_id)
@@ -3016,6 +3139,52 @@ class Functions
 		}
 
 		return $c;
+
+	}
+
+	// Retorna la duración en minutos de una prueba
+	public function duracionPrueba($pagina_id)
+	{
+
+		$em = $this->em;
+		$duracion = 0;
+
+		$prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina_id);
+
+		if ($prueba)
+		{
+			// Duración en minutos
+		    $duracion = intval($prueba->getDuracion()->format('G'))*60;
+		    $duracion += intval($prueba->getDuracion()->format('i'));
+		}
+
+	    return $duracion;
+
+	}
+
+	// Retorna true si la página o algunos de sus padres está vencido
+	public function programaVencido($pagina_id, $empresa_id)
+	{
+
+		$em = $this->em;
+		$vencido = false;
+
+		$pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
+																									'empresa' => $empresa_id));
+
+		if ($pagina_empresa)
+		{
+			if ($pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d'))
+			{
+				$vencido = true;
+			}
+			elseif ($pagina_empresa->getPagina()->getPagina()) {
+				// Verificación de programa vencido del padre
+				$vencido = $this->programaVencido($pagina_empresa->getPagina()->getPagina()->getId(), $empresa_id);
+			}
+		}
+
+	    return $vencido;
 
 	}
 

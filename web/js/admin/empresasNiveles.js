@@ -30,7 +30,6 @@ $(document).ready(function() {
 					dataType: "json",
 					success: function(data) {
 						$('.form-control').val('');
-						$('.form-control').prop('disabled', true);
 						$('#guardar').prop('disabled', false);
 						$( "#cancelar" ).trigger( "click" );
 						$('#td-'+data.empresa_id).jstree(true).settings.core.data.url = $('#url_tree').val()+'/'+data.empresa_id;

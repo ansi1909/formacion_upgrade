@@ -15,23 +15,15 @@
         box-shadow: 5px 5px 15px rgba(58, 58, 58, .5);
         border-radius: calc(1rem - 8px);
     }
-    .text-recurso{
-        color: $gray-700;	
-        font-family: $lessons-font;	
-        font-size: $font-size-sm;	
-        line-height: calc(2rem - 4px);
-        margin: calc(2rem + 3px) 0;
-    }
     .tituloTextRecurso{
-        color: $gray-700;	
+        color: $black-300;
         font-family: $lessons-font;	
         font-size: $h5-font-size;	
         line-height: calc(2rem - 4px);
         font-weight: $font-weight-normal
     }
     
-    .textRecurso{
-        color: $gray-700;	
+    .textRecurso{	
         font-family: $lessons-font;	
         font-size: $font-size-sm;	
         line-height: calc(2rem - 4px);

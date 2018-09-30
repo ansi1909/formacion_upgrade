@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-{% set encabezado = 'Conexiones por usuario'|trans %}
+{% set encabezado = 'Conexiones por participante'|trans %}
 
 <form id="form" name="form" action="{{ path ('_ajaxConexionesUsuario') }}" method="POST">
     {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 0 ,'filtro_tema': 0}) }}

@@ -40,7 +40,7 @@ class NovedadController extends Controller
         $qb = $em->createQueryBuilder();
         $qb->select('n')
            ->from('LinkComunBundle:AdminNoticia', 'n')
-           ->orderBy('n.fechaPublicacion', 'ASC');
+           ->orderBy('n.fechaRegistro', 'ASC');
         
         if ($app_id == $yml['parameters']['aplicacion']['biblioteca'])
         {

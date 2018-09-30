@@ -1,0 +1,3 @@
+'%%usuario%%'	--> Dato admin_usuario.login
+'%%clave%%'		--> Dato admin_usuario.clave
+'%%categoria$$' --> Dato que se tiene que poner en la descripcion de los certificados por el backend

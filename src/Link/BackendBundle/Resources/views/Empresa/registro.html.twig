@@ -52,6 +52,7 @@
                 		</div>
                 	</div>
                 	<form id="form" name="form" action="{{ path('_registro', { 'empresa_id': empresa.id }) }}" class="container-fluid p-0" method="POST">
+                        <input type="hidden" name="empresa_id" id="empresa_id" value="{{ empresa.id }}">
                 		<div class="row setup-content" id="det0">	
                 			<div class="col-sm-16">
                 				<div class="row">
@@ -220,12 +221,11 @@
                 var deslen = $('#deslen').val();
                 if (deslen < {{ minlenght_bienvenida }} )
                 {
-                    $('#div-error ul').html("<li>- {{'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ minlenght_bienvenida }}</li>");
+                    $('#div-error ul').html("<li>- {{ 'Cantidad mínima de caracteres en el mensaje de bienvenida'|trans }}: {{ minlenght_bienvenida }}</li>");
                     $('#div-error ul').show();
                     notify($('#div-error').html());
                 }
-                else
-                {
+                else {
                     $('#finish').hide();
                     $('#form').submit();
                 }

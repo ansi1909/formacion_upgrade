@@ -472,6 +472,7 @@ class UsuarioController extends Controller
         
         $session = new Session();
         $f = $this->get('funciones');
+        $em = $this->getDoctrine()->getManager();
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -495,7 +496,9 @@ class UsuarioController extends Controller
             $usuario_empresa = 1; 
         }
         else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+            $query = $em->createQuery('SELECT e FROM LinkComunBundle:AdminEmpresa e 
+                                        ORDER BY e.nombre ASC');
+            $empresas = $query->getResult();
         } 
 
         return $this->render('LinkBackendBundle:Usuario:participantes.html.twig', array('empresas' => $empresas,

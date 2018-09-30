@@ -92,7 +92,7 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('certi_categoria', 'i
 INSERT INTO certi_categoria (id, nombre) VALUES (1, 'Programa');
 INSERT INTO certi_categoria (id, nombre) VALUES (2, 'Módulo');
 INSERT INTO certi_categoria (id, nombre) VALUES (3, 'Materia');
-INSERT INTO certi_categoria (id, nombre) VALUES (4, 'Leccion');
+INSERT INTO certi_categoria (id, nombre) VALUES (4, 'Lección');
 INSERT INTO certi_categoria (id, nombre) VALUES (5, 'Curso');
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -358,6 +358,7 @@ INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (4, 'Notificación
 INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (5, 'Notificación de una noticia', 'library_books', 'notiSticker');
 INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (6, 'Notificación de una novedad', 'volume_down', 'anunSticker');
 INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (7, 'Notificación de la biblioteca', 'import_contacts', 'biblioSticker');
+INSERT INTO admin_tipo_alarma (id, nombre, icono, css) VALUES (8, 'Notificación de una nueva publicación en el muro', 'insert_comment', 'ecpSticker');
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idadmin_tipo_logo_seq;; Type: SEQUENCE SET; Schema: public;

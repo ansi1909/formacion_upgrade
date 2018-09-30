@@ -146,4 +146,110 @@ class EmpresaController extends Controller
 
     }
 
+    public function registradosEmpresaAction( Request $request )
+    {
+        $session = new Session();
+        $empresa_id = $request->request->get('empresa_id');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getConnection()->prepare('SELECT
+                                                    fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
+                                                    resultado; fetch all from re;');
+        $ok = 0;
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':preporte', 1, \PDO::PARAM_INT);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':pnivel_id', 0, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', 0, \PDO::PARAM_INT);
+        $query->execute();
+        $registrados = $query->fetchAll();
+
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/participantesEmpresa.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+
+        $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N','O');
+
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Usuarios registrados'));
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre());
+
+        if (count($registrados)>0) {
+            
+            
+            $row = 5;
+            $last_row=($row+count($registrados))-1;
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('argb' => 'FF000000'),
+                        ),
+                    ),
+                );
+
+            $font_size = 11;
+            $font = 'Arial';
+            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+
+            // Estilizar las celdas antes de insertar los datos
+                for ($f=$row; $f<=$last_row; $f++)
+                {
+                        $objWorksheet->getStyle("A$f:O$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:O$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:O$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
+                        $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
+                }
+
+                foreach ($registrados as $participante)
+                {
+
+                    $correo = ($participante['correo'])? $participante['correo']:$participante['correo2'];
+                    $activo = ($participante['activo'])? 1:0;
+                    $competencia = ($participante['competencia'])? 1:0;
+
+                    // Datos de las columnas del reporte
+                    $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                    $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                    $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                    $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('F'.$row, $participante['clave']);
+                    $objWorksheet->setCellValue('G'.$row, $correo);
+                    $objWorksheet->setCellValue('H'.$row, $competencia);
+                    $objWorksheet->setCellValue('I'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
+                    $objWorksheet->setCellValue('N'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('O'.$row, $activo);
+                  
+                    $row++;
+                }
+
+
+                $ok = 1;
+        }
+
+         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+         $path = 'recursos/reportes/participantesEmpresa'.$session->get('sesion_id').'.xls';
+         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+         $writer->save($xls);
+
+         $archivo = $this->container->getParameter('folders')['uploads'].$path;
+         $html = ($ok == 1)? '<a href ="'.$archivo.'" class="btn btn-link btn-sm enlaces" id="excelFile'.$empresa_id.'"  ><span class="fa fa-download"> </span></a>':'<strong>'.$empresa->getNombre().', </strong>'. '<span>'. $this->get('translator')->trans('no posee participantes registrados').'</span>';
+         
+         $return = array('html'=>$html,'ok'=>$ok);
+         $return = json_encode($return);
+         return new Response($return, 200, array('Content-Type' => 'application/json'));          
+        
+    }
+
 }

@@ -190,7 +190,7 @@ class ColaborativoController extends Controller
             $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
-                mkdir($dir, 750, true);
+                mkdir($dir, 777, true);
             }
 
         }
@@ -230,9 +230,9 @@ class ColaborativoController extends Controller
                             </div>
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
-                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
                                     <span class="color-light-grey barra">|</span>
-                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'" data-toggle="tooltip" data-placement="bottom">clear</span></a>
                                 </div>
                             </div>
                         </div>
@@ -340,6 +340,7 @@ class ColaborativoController extends Controller
     public function ajaxDeleteForoAction(Request $request)
     {
 
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
@@ -383,6 +384,9 @@ class ColaborativoController extends Controller
             $em->remove($archivo);
             $em->flush();
         }
+
+        $dirname = $this->container->getParameter('folders')['dir_uploads'].'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
+        $f->delete_folder($dirname);
 
         // Finalmente se elimina el foro padre
         $foro = $em->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
@@ -429,6 +433,9 @@ class ColaborativoController extends Controller
         $em->flush();
 
         // Generación de alarmas
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
         if ($foro_main->getUsuario()->getId() != $usuario->getId() && $foro_main->getId() == $foro->getForo()->getId())
         {
 
@@ -439,7 +446,10 @@ class ColaborativoController extends Controller
             if ($correo_tutor)
             {
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativo.html.twig',
-                                           'datos' => array('mensaje' => $mensaje),
+                                           'datos' => array('mensaje' => $mensaje,
+                                                            'background' => $background,
+                                                            'logo' => $logo,
+                                                            'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación 2.0: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
@@ -645,6 +655,8 @@ class ColaborativoController extends Controller
         $foro_id = $request->request->get('upload_foro_id');
         $pagina_id = $request->request->get('upload_pagina_id');
 
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+
         if (!$foro_id)
         {
 
@@ -664,16 +676,14 @@ class ColaborativoController extends Controller
             $session->set('upload_foro_id', $foro_id);
 
             // Se crea el subdirectorio para los archivos del espacio colaborativo
-            $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
             $dir = $dir_uploads.'recursos/espacio/'.$empresa->getId().'/'.$foro->getId().'/';
             if (!file_exists($dir) && !is_dir($dir))
             {
-                mkdir($dir, 750, true);
+                mkdir($dir, 777, true);
             }
 
         }
 
-        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
         $uploads = $this->container->getParameter('folders')['uploads'];
         $upload_dir = $dir_uploads.'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
         $upload_url = $uploads.'recursos/espacio/'.$session->get('empresa')['id'].'/'.$foro_id.'/';
@@ -724,6 +734,9 @@ class ColaborativoController extends Controller
 
         $archivo_arr = $f->archivoForo($foro_archivo, $session->get('usuario')['id']);
         $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$foro->getUsuario()->getEmpresa()->getId();
 
         // Generación de alarmas
         if ($foro->getUsuario()->getId() != $usuario->getId() && $generar_alarma)
@@ -737,7 +750,10 @@ class ColaborativoController extends Controller
             {
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailArchivo.html.twig',
                                            'datos' => array('descripcion' => $descripcion,
-                                                            'descarga' => $href),
+                                                            'descarga' => $href,
+                                                            'background' => $background,
+                                                            'logo' => $logo,
+                                                            'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación 2.0: '.$descripcion_alarma,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
@@ -767,9 +783,9 @@ class ColaborativoController extends Controller
                             </div>
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
-                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
                                     <span class="color-light-grey barra">|</span>
-                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'">clear</span></a>
+                                    <a href="#attachments"><span class="material-icons color-light-grey icDl delete" data="'.$archivo_arr['id'].'" id="iconCloseDownloads" title="'.$this->get('translator')->trans('Eliminar').'" data-toggle="tooltip" data-placement="bottom">clear</span></a>
                                 </div>
                             </div>
                         </div>
@@ -789,7 +805,7 @@ class ColaborativoController extends Controller
                             </div>
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
                                 <div class="cont-opc">
-                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="left" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
+                                    <a href="'.$href.'" target="_blank"><span class="material-icons icDl" data-toggle="tooltip" data-placement="bottom" title="'.$this->get('translator')->trans('Descargar archivo').'">file_download</span></a>
                                 </div>
                             </div>
                         </div>

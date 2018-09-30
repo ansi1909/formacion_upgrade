@@ -15,7 +15,7 @@
         {% for pagina in paginas %}
             {% set eo = cycle(['odd', 'even'], loop.index) %}
             <tr class="{{ eo }}">
-                <td>{{ pagina.orden }}</td>
+                <td class="columorden">{{ pagina.orden }}</td>
                 <td>{{ pagina.id }}</td>
                 <td>{{ pagina.nombre }}</td>
                 <td>{{ pagina.categoria }}</td>

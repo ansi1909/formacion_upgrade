@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     $('#responder').click(function(){
         var muro_id = $('#notificaciones_muro_id').val();
-        var mensaje = $.trim($('#comentario').val());
+        var mensaje = $.trim($('#respuestaMuro').val());
         if (mensaje == '')
         {
             $('#muroResponse-error').show();
@@ -26,7 +26,7 @@ $(document).ready(function() {
                 success: function(data) {
                     $('.msjMuroResp').append(data.html);
                     $(".msjMuroResp").animate({ scrollTop: $('.msjMuroResp')[0].scrollHeight}, 1000);
-                    $('#comentario').val("");
+                    $('#respuestaMuro').val("");
                     $('#notificaciones_wait').hide();
                     $('#responder').show();
                     observeLike();

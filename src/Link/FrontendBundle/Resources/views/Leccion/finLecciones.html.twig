@@ -2,11 +2,14 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
     <style>
         .menu{
             width: 60%;
             height: 300px;
+        }
+        .btn-primary {
+            font-weight: 500;
+            color: #797D80;
         }
     </style>
 {% endblock %}
@@ -26,18 +29,18 @@
                 <div class="wrapperDdMenu">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
-                        <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                        <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
                     </a>
                     <ul class="dropDownMenu">
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>Preferencias de usuario <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Preferencias de participante'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
                             <li class="opcList markOpc">
-                                <span>Cerrar sesión<i class="material-icons icMenu">exit_to_app</i></span>
+                                <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
                             </li>
                         </a>
                     </ul>
@@ -60,22 +63,34 @@
     <input type="hidden" id="url_programa" name="url_programa" value="{{ path('_programa', { 'programa_id': programa.id }) }}">
     <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': continue_button.next_lesson }) }}">
     <input type="hidden" id="url_test" name="url_test" value="{{ path('_test', { 'pagina_id': continue_button.evaluacion, 'programa_id': programa.id }) }}">
+    <input type="hidden" id="url_start" name="url_start" value="{{ path('_lecciones', { 'programa_id': programa.id, 'subpagina_id': continue_button.pagina_padre_id }) }}">
 
     <section class="s1_fin-materia">
         <div class="row align-items-center justify-content-center">
-            <div class="col-6 text-center">
-                {% set articulo = subpagina.categoria != 'Materia' ? 'el'|trans : 'la'|trans %}
-                <p class="text_fin-materia">{{ ' Has completado con éxito los contenidos de '|trans }} {{ articulo~' '~subpagina.categoria }} <strong>{{ subpagina.nombre }}</strong>.</p>
-            </div>
-            <div class="col-4 text-center">
-                <h1 class="titulo_fin-materia">¡{{ 'Excelente'|trans }}!</h1>
-                <span class="material-icons ic-verify">check_circle</span>
+            <div class="col-10 text-center">
+                {% set categoria = continue_button.evaluacion != 0 ? continue_button.evaluacion != subpagina.id ? continue_button.categoria : subpagina.categoria : subpagina.categoria %}
+                {% set nombre_pagina = continue_button.evaluacion != 0 ? continue_button.evaluacion != subpagina.id ? continue_button.nombre_pagina : subpagina.nombre : subpagina.nombre %}
+                {% if categoria == 'Materia' %}
+                    {% set articulo = 'de la'|trans %}
+                {% elseif categoria == 'Lección' %}
+                    {% set articulo = 'de la'|trans %}
+                {% else %}
+                    {% set articulo = 'del'|trans %}
+                {% endif %}
+                <h3>{{ 'Has completado con éxito los contenidos'|trans }} {{ articulo~' '~categoria }}:</h3>
+                <h3><strong>{{ nombre_pagina }}</strong>.</h3>
             </div>
         </div>
-        {% if puntos > 0 %}
-            <div class="row align-items-center justify-content-end">
-                <div class="col-auto text-center">
-                    <span class="logro">{{ 'Has ganado'|trans }} <span class="num">{{ puntos }}<span class="unidad">Exp</span></span></span>
+        {% if continue_button.evaluacion != 0 %}
+            <div class="row align-items-center justify-content-center">
+                <div class="col-10 text-center">
+                    <p class="text_fin-materia">{{ 'Si deseas, puedes realizar la evaluación haciendo clic en el botón'|trans }}</p>
+                    <button type="button" class="btn btn-primary continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-10 text-center">
+                    <p class="text_fin-materia">{{ 'Tendrás'|trans }} <strong>{{ duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}.</p>
                 </div>
             </div>
         {% endif %}
@@ -85,14 +100,7 @@
         {% if continue_button.evaluacion != 0 %}
             <div class="row align-items-center justify-content-center">
                 <div class="col-8 text-center">
-                    <p class="text_fin-materia">{{ 'Si deseas, puedes tomar la evaluación de'|trans }} {{ continue_button.nombre_pagina }}.</p>
-                </div>
-            </div>
-            <div class="row align-items-center justify-content-center">
-                <div class="col-6 text-center">
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary bttn_fm continuar" id="test"> {{ 'Tomar evaluación'|trans }} </button>
-                    </div>
+                    <button data-toggle="modal" data-target="#modalVc" class="btn btn-warning bttn_fm" id="volver_start">{{ 'Volver al contenido'|trans }}</button>
                 </div>
             </div>
         {% else %}
@@ -115,6 +123,33 @@
         {% endif %}
     </section>
 
+    <div class="modal modalVc" id="modalVc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="container-fluid">
+            <div class="row align-items-end justify-content-end">
+                <div class="col-auto text-center">
+                    <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                        <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row mt-4 justify-content-center align-items-center">
+                <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
+                    <h4 class="tituloVc">{{ '¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?'|trans }}</h4>
+                </div>
+            </div>
+            <div class="row mt-3 align-items-center justify-content-center">
+                <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                    <button type="button" class="btn btn-warning bttn_fm continuar" id="start">{{ 'Aceptar'|trans }}</button>
+                </div>
+            </div>
+            <div class="row mt-3 align-items-end justify-content-center">
+                <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
+                    <a href="#" class="cancelarCs" data-dismiss="modal">{{ 'Cancelar'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row justify-content-center" style="display:none;" id="wait">
         <div class="col-auto px-0 py-0">
             <div class="contenedor">
@@ -127,19 +162,13 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
-    <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
     <script type="text/javascript">
         $('.continuar').click(function(){
             var button = $(this);
-            $('.continuar').hide();
+            $('.continuar, #volver_start').hide();
             $('#wait').show();
             var id = button.attr('id');
             window.location.replace($('#url_'+id).val());
-        });
-
-        $( document ).tooltip({
-          track: true
         });
     </script>
 {% endblock %}

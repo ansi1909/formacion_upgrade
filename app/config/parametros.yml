@@ -25,6 +25,12 @@ parameters:
         empresa: 1
         pagina: 2
         grupo_paginas: 3
+    categoria:
+        programa: 1
+        modulo: 2
+        materia: 3
+        leccion: 4
+        curso: 5
     tipo_imagen_certificado:
         certificado: 1
         constancia: 2
@@ -48,6 +54,7 @@ parameters:
         noticia : 5
         novedad : 6
         biblioteca : 7
+        aporte_muro: 8
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2

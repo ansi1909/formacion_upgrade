@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 class MuroController extends Controller
 {
 
-   public function indexAction($app_id, Request $request)
+   public function indexAction($app_id, $empresa_id, Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -43,18 +43,39 @@ class MuroController extends Controller
         $comentarios = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
+        //return new Response (var_dump($empresa_id));
+
         if ($usuario->getEmpresa()) {
             $usuario_empresa = 1;
-            $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
-                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
-                                       WHERE e.activo = 'true'
-                                       AND e.muroActivo = 'true'
-                                       AND e.pagina = p.id
-                                       AND p.pagina IS NULL
-                                       AND e.empresa = :empresa_id
-                                       ORDER BY p.id ASC")
-                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
-            $paginas = $query->getResult();
+
+            $str = '';
+            $tiene = 0;
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        JOIN pe.pagina p
+                                        WHERE p.pagina IS NULL
+                                        AND pe.empresa = :empresa_id 
+                                        ORDER BY p.id ASC")
+                        ->setParameter('empresa_id', $usuario->getEmpresa()->getId());
+            $pages = $query->getResult();
+
+            //return new Response (var_dump($empresa_id));
+
+            foreach ($pages as $page)
+            {
+                $tiene++;
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
+                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $usuario->getEmpresa()->getId());
+                if ($subPaginas['tiene'] > 0)
+                {
+                    $str .= '<ul>';
+                    $str .= $subPaginas['return'];
+                    $str .= '</ul>';
+                }
+                $str .= '</li>';
+            }
+
+            $paginas = array('tiene' => $tiene,
+                             'str' => $str);
 
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
                                        JOIN LinkComunBundle:CertiPaginaEmpresa e
@@ -64,7 +85,7 @@ class MuroController extends Controller
                                        AND m.muro IS NULL
                                        AND m.empresa = :empresa_id
                                        ORDER BY m.id ASC")
-                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
+                         ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
             $coments = $query2->getResult();
 
         }
@@ -83,6 +104,13 @@ class MuroController extends Controller
 
          foreach ($coments as $coment)
         {
+            $query3 = $em->createQuery("SELECT COUNT (m.id) FROM LinkComunBundle:CertiMuro m
+                                       WHERE m.muro = :muro_id")
+                         ->setParameters(array('muro_id' => $coment->getId()));
+            $hijos = $query3->getSingleScalarResult();
+
+
+
             $comentarios[]= array('id'=>$coment->getId(),
                                   'mensaje'=>$coment->getMensaje(),
                                   'usuarioId'=>$coment->getUsuario()->getId(),
@@ -90,16 +118,52 @@ class MuroController extends Controller
                                   'apellidoUsuario'=>$coment->getUsuario()->getApellido(),
                                   'fecharegistro'=>$coment->getFechaRegistro()->format("d/m/Y"),
                                   'delete_disabled'=>$f->linkEliminar($coment->getId(),'CertiMuro'),
-                                  'answer_delete'=>$answer_delete);
+                                  'answer_delete'=>$answer_delete,
+                                  'hijos'=>$hijos);
 
         }
 
+
+        if ($empresa_id)
+        {
+
+            $str = '';
+            $tiene = 0;
+            $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        JOIN pe.pagina p
+                                        WHERE p.pagina IS NULL
+                                        AND pe.empresa = :empresa_id 
+                                        ORDER BY p.id ASC")
+                        ->setParameter('empresa_id', $empresa_id);
+            $pages = $query->getResult();
+
+            //return new Response (var_dump($empresa_id));
+
+            foreach ($pages as $page)
+            {
+                $tiene++;
+                $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
+                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
+                if ($subPaginas['tiene'] > 0)
+                {
+                    $str .= '<ul>';
+                    $str .= $subPaginas['return'];
+                    $str .= '</ul>';
+                }
+                $str .= '</li>';
+            }
+
+            $paginas = array('tiene' => $tiene,
+                             'str' => $str);
+
+        }
 
         return $this->render('LinkBackendBundle:Muro:index.html.twig', array('empresas' => $empresas,
                                                                              'paginas' => $paginas,
                                                                              'usuario_empresa' => $usuario_empresa,
                                                                              'comentarios' => $comentarios,
-                                                                             'usuario' => $usuario));
+                                                                             'usuario' => $usuario,
+                                                                             'empresa_id_a' => $empresa_id));
 
     }
 
@@ -174,6 +238,7 @@ class MuroController extends Controller
                                 <th>'.$this->get('translator')->trans('Mensaje').'</th>
                                 <th>'.$this->get('translator')->trans('usuario').'</th>
                                 <th>'.$this->get('translator')->trans('Fecha').'</th>
+                                <th>'.$this->get('translator')->trans('Respuestas').'</th>
                                 <th>'.$this->get('translator')->trans('Acciones').'</th>
                             </tr>
                         </thead>
@@ -183,17 +248,23 @@ class MuroController extends Controller
         {
             $delete_disabled = $f->linkEliminar($coment->getId(), 'CertiMuro');
             $delete = $delete_disabled=='' ? 'delete' : '';
+
+            $query3 = $em->createQuery("SELECT COUNT (m.id) FROM LinkComunBundle:CertiMuro m
+                                       WHERE m.muro = :muro_id")
+                         ->setParameters(array('muro_id' => $coment->getId()));
+            $hijos = $query3->getSingleScalarResult();
             
             $html .= '<tr>
                         <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
                         <td>'.$coment->getUsuario()->getNombre().' '.$coment->getUsuario()->getApellido().'</td>
                         <td>'.$coment->getFechaRegistro()->format("d/m/Y").'</td>
+                        <td>'. $hijos .' </td>
                         <td class="center">';
                           if($coment->getUsuario()->getId() == $usuario_id){
                              $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
                           }
                            $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>
-                            <a href="#" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>
+                            <a href="#history_programation" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>
                             <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';

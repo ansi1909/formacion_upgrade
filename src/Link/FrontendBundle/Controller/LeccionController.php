@@ -258,15 +258,32 @@ class LeccionController extends Controller
         // Determinar siguiente lección a ver
         $continue_button = $f->nextLesson($indexedPages, $subpagina_id, $session->get('usuario')['id'], $session->get('empresa')['id'], $yml, $programa_id);
 
-        //return new Response('next_lesson: '.$next_lesson.', puntos: '.$puntos);
+        if ($continue_button['evaluacion'])
+        {
+
+            $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($continue_button['evaluacion']);
+
+            // Duración en minutos
+            $duracion = intval($prueba->getDuracion()->format('G'))*60;
+            $duracion += intval($prueba->getDuracion()->format('i'));
+
+        }
+        else {
+            $duracion = 0;
+        }
+
+        //return new Response(var_dump($continue_button));
         //return new Response(var_dump($indexedPages[$subpagina_id]));
 
         return $this->render('LinkFrontendBundle:Leccion:finLecciones.html.twig', array('programa' => $programa,
                                                                                         'subpagina' => $indexedPages[$subpagina_id],
                                                                                         'continue_button' => $continue_button,
-                                                                                        'puntos' => $puntos));
+                                                                                        'puntos' => $puntos,
+                                                                                        'duracion' => $duracion));
 
     }
+
+    
 
     public function ajaxEnviarComentarioAction(Request $request)
     {
@@ -275,6 +292,9 @@ class LeccionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $tipoMensaje = 'Publicó';
+        $usuarioPadre = '';
+        $mensajePadre = '';
 
         $pagina_id = $request->request->get('pagina_id');
         $mensaje = $request->request->get('mensaje');
@@ -295,14 +315,21 @@ class LeccionController extends Controller
         $muro->setPagina($pagina);
         $muro->setUsuario($usuario);
 
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
+
         if ($muro_id)
         {
 
             $puntos_recibidos = $yml['parameters']['puntos']['respuesta_muro'];
             $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
+            $mensajePadre = $muro_padre->getMensaje();
+            $usuarioPadre = $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido();
             $muro->setMuro($muro_padre);
             $pagina_log_padre = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $muro_padre->getPagina()->getId(),
-                                                                                                      'usuario' => $muro_padre->getUsuario()->getId()));
+                                                                                                     'usuario' => $muro_padre->getUsuario()->getId()));
+            $tipoMensaje = 'Respondió';
             $puntos_padre = $pagina_log->getPuntos() + $puntos_recibidos;
             $pagina_log_padre->setPuntos($puntos_padre);
             $em->persist($pagina_log_padre);
@@ -319,17 +346,30 @@ class LeccionController extends Controller
                         ->setParameters(array('usuario_id' => $muro_padre->getUsuario()->getId(),
                                               'tutor' => $yml['parameters']['rol']['tutor']));
             $owner_tutor = $query->getSingleScalarResult();
+
             $correo_tutor = (!$muro_padre->getUsuario()->getCorreoPersonal() || $muro_padre->getUsuario()->getCorreoPersonal() == '') ? (!$muro_padre->getUsuario()->getCorreoCorporativo() || $muro_padre->getUsuario()->getCorreoCorporativo() == '') ? 0 : $muro_padre->getUsuario()->getCorreoCorporativo() : $muro_padre->getUsuario()->getCorreoPersonal();
             if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor)
             {
+                $categoria = $this->obtenerProgramaCurso($pagina_id);
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
-                                           'datos' => array('comment' => $muro_padre->getMensaje(),
-                                                            'response' => $mensaje),
+                                           'datos' => array('logo'=> $logo,
+                                                            'background' => $background, 
+                                                            'nombre' => $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido(),
+                                                            'usuario'=> $usuario->getNombre().' '.$usuario->getApellido(),
+                                                            'comentarioPadre' => $muro_padre->getMensaje(),
+                                                            'respuesta' => $mensaje,
+                                                            'link_plataforma' => $link_plataforma,
+                                                            'logo' => $logo,
+                                                            'categoria' => $categoria['categoria'],
+                                                            'pagina' => $categoria['nombre'],
+                                                            'empresa' => $empresa->getNombre()),
+
+                                                            
                                            'asunto' => 'Formación 2.0: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
                 $correo = $f->sendEmail($parametros_correo);
-            }
+            }             
 
         }
 
@@ -337,6 +377,14 @@ class LeccionController extends Controller
         $muro->setFechaRegistro(new \DateTime('now'));
         $em->persist($muro);
         $em->flush();
+
+        /////////// Enviar notificacion al tutor o tutores de actividad en el muro ///////////
+        $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
+        $categoria = $this->obtenerProgramaCurso($pagina->getId());
+        $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
+        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $pagina, $muro, $categoria, $empresa,$tipoMensaje ,$background, $logo,$link_plataforma);
 
         $puntos = $pagina_log->getPuntos() + $puntos_agregados;
         $pagina_log->setPuntos($puntos);
@@ -381,6 +429,26 @@ class LeccionController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
+
+    
+
+    
+    public function obtenerProgramaCurso($paginaId)
+        {
+            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
+            while ($pagina->getPagina())
+            {
+                $paginaId = $pagina->getPagina()->getId();
+                $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
+            }
+
+            $categoria = $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->find($pagina->getCategoria()->getId());
+
+           
+
+            return ['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
+        }
+
 
     public function ajaxDivResponseAction(Request $request)
     {
