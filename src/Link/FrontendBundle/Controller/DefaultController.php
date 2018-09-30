@@ -549,7 +549,25 @@ class DefaultController extends Controller
                     
                     if ($usuario)
                     {
-                        $recordar_datos=1;
+
+                        // Si tiene una sesión abierta se cierra, ya que lo respalda la Cookie
+                        if ($session->get('iniFront'))
+                        {
+                            if (!$f->sesionBloqueda($session->get('sesion_id')))
+                            {
+                                $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
+                                if ($sesion)
+                                {
+                                    $sesion->setDisponible(false);
+                                    $em->persist($sesion);
+                                    $em->flush();
+                                }
+                                $session->invalidate();
+                                $session->clear();
+                            }
+                        }
+
+                        $recordar_datos = 1;
                         $login = $usuario->getLogin();
                         $clave = $usuario->getClave(); 
                         $verificacion = 1;
@@ -582,7 +600,11 @@ class DefaultController extends Controller
 
                 if ($verificacion)
                 {
-                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,'login' => $login,'clave' => $clave,'empresa' => $empresa,'yml' => $yml['parameters'] ));
+                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
+                                                             'login' => $login,
+                                                             'clave' => $clave,
+                                                             'empresa' => $empresa,
+                                                             'yml' => $yml['parameters']));
 
                     if ($iniciarSesion['exito'] == true)
                     {

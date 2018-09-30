@@ -104,7 +104,7 @@
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
             <div class="d-flex flex-column">
-                <div class="wrapperDdMenu" title="{{ 'Configuración del usuario'|trans }}" data-toggle="tooltip" data-placement="bottom">
+                <div class="wrapperDdMenu" title="{{ 'Configuración del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                         <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
@@ -113,7 +113,7 @@
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Preferencias de participante'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
@@ -199,7 +199,8 @@
                         <div class="row pl-3 align-items-center justify-content-center">
                             <div class="col-12">
                                 <div class="form-group text-right">
-                                    <a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>
+                                    <button id="subir" type="button" class="btn btn-info" data-toggle="modal" data-target="#modalupload">{{ 'Subir archivo'|trans }}</button>
+                                    {#<a href="#" data-toggle="modal" data-target="#modalupload"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>#}
                                 </div>
                             </div>
                         </div>

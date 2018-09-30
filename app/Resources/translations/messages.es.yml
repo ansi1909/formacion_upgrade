@@ -433,7 +433,7 @@ Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error e
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
-Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.: Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.
+Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.: Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.
 Ha sido publicado: Ha sido publicado
 Ha sido publicado el evento: Ha sido publicado el evento
 ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el espacio colaborativo de
@@ -634,6 +634,7 @@ Nombre: Nombre
 Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
+Nombre del participante: Nombre del partcipante
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Nota: Nota
 Notas: Notas
@@ -678,8 +679,14 @@ Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el det
 participantes: participantes
 Participantes: Participantes
 Particpante: participante
+Participantes activos: Participantes activos
+Participantes inactivos: Participantes inactivos
+Participantes no iniciados: Participantes no iniciados
 Participantes registrados: Participantes registrados
 Participantes de la empresa: Participantes de la empresa
+Participantes cursando: Participants taking part
+Participantes culminados: Finished participants
+Participantes conectados: Connected participants
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma
 Participantes que han aprobado el último módulo del programa o curso: Participantes que han aprobado el último módulo del programa o curso
 Participantes que han ingresado al programa o curso asignado: Participantes que han ingresado al programa o curso asignado
@@ -706,6 +713,7 @@ Por medio de la presente se certifica que el participante arriba indicado ha cur
 Preferencias de la empresa: Preferencias de la empresa
 Preferencia de plantillas de las empresas: Preferencia de plantillas de las empresas
 Preferencias de usuario: Preferencias de usuario
+Preferencias de participante: Preferencias de participante
 Pregunta: Pregunta
 Preguntas: Preguntas
 Preguntas frecuentes: Preguntas frecuentes
@@ -755,6 +763,7 @@ Reporte de participantes cursando por programas: Reporte de participantes cursan
 Reporte de participantes no iniciados en programas: Reporte de participantes no iniciados en programas
 Reporte de participantes registrados por programas: Reporte de participantes registrados por programas
 Reporte de participantes por empresa: Reporte de participantes por empresa
+Reportar un problema: Reportar un problema
 Responder: Responder
 Responder publicación: Responder publicación
 respondió en el muro al comentario de: Respondió en el muro al comentario de
@@ -847,6 +856,7 @@ Título: Título
 Título en la ventana del navegador: Título en la ventana del navegador
 Todas: Todas
 Todos: Todos
+Todos los derechos reservados: Todos los derechos reservados
 Todos los empleados de la empresa: Todos los empleados de la empresa
 Todos los niveles: Todos los niveles
 Tomar evaluación: Tomar evaluación
