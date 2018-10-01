@@ -134,14 +134,14 @@
     {% else %}
         <input type="hidden" id="ver_conectados" name="ver_conectados" value="1">
         <div class="emp_dash">
-            <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
+            <input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.'|trans }}">
             <div class="row">
                 <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                     <div class="activity-block linkg1">
                         <div class="media">
                             <div class="media-body">
                                 <h5>#<span class="spincreament">{{ total }}</span></h5>
-                                <p>{{ 'Usuarios registrados'|trans }}</p>
+                                <p>{{ 'Participantes registrados'|trans }}</p>
                             </div>
                             <i class="fa fa-users"></i>
                         </div>
@@ -154,7 +154,7 @@
                         <div class="media">
                             <div class="media-body">
                                 <h5>#<span class="spincreament">{{ activos }}</span></h5>
-                                <p>{{ 'Usuarios activos'|trans }}</p>
+                                <p>{{ 'Participantes activos'|trans }}</p>
                             </div>
                             <i class="fa fa-user"></i> </div>
                         <br>
@@ -166,7 +166,7 @@
                         <div class="media">
                             <div class="media-body">
                                 <h5>#<span class="spincreament">{{ inactivos }}</span></h5>
-                                <p>{{ 'Usuarios inactivos'|trans }}</p>
+                                <p>{{ 'Participantes inactivos'|trans }}</p>
                             </div>
                             <i class="fa fa-user-times"></i> </div>
                         <br>
@@ -189,11 +189,11 @@
                                         <th class="hd__title">{{ 'Nombre'|trans }}</th>
                                         <th class="hd__title">{{ 'Fecha inicio'|trans }}</th>
                                         <th class="hd__title">{{ 'Fecha fin'|trans }}</th>
-                                        <th class="hd__title text-center">{{ 'Usuarios no iniciados'|trans }}</th>
-                                        <th class="hd__title text-center">{{ 'Usuarios cursando'|trans }}</th>
-                                        <th class="hd__title text-center">{{ 'Usuarios culminados'|trans }}</th>
-                                        <th class="hd__title text-center">{{ 'Usuarios activos'|trans }}</th>
-                                        <th class="hd__title text-center">{{ 'Usuarios registrados'|trans }}</th>                                  
+                                        <th class="hd__title text-center">{{ 'Participantes no iniciados'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Participantes cursando'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Participantes culminados'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Participantes activos'|trans }}</th>
+                                        <th class="hd__title text-center">{{ 'Participantes registrados'|trans }}</th>                                  
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -225,8 +225,8 @@
                 <div class="col-md-14 col-sm-14 col-lg-14 col-xl-14 offset-md-1 offset-sm-1 offset-lg-1 offset-xl-1">
                     <div class="card">
                         <div class="card-header gradiente">
-                            <div class="card-title" id="labelConectados" style="display:none;">{{ 'Usuarios conectados'|trans }}: <span id="totalConectados"></span></div>
-                            <div class="card-title" id="labelConectadosLoading" style="display:none;">{{ 'Actualizando la lista de usuarios conectados'|trans}}..</div>
+                            <div class="card-title" id="labelConectados" style="display:none;">{{ 'Participantes conectados'|trans }}: <span id="totalConectados"></span></div>
+                            <div class="card-title" id="labelConectadosLoading" style="display:none;">{{ 'Actualizando la lista de participantes conectados'|trans}}..</div>
                         </div>
                         <div class="card-block" id="tablaConectados">
                         </div>

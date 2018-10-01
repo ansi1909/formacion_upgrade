@@ -2124,7 +2124,7 @@ class Functions
 	                                $session->set('empresa', $datos['empresa']);
 	                                $session->set('paginas', $paginas);
 
-	                                if ($datos['recordar_datos']==1)
+	                                if ($datos['recordar_datos'] == 1)
 	                                {
 	                                    //alimentamos el generador de aleatorios
 	                                    mt_srand (time());
