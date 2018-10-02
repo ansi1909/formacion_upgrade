@@ -2554,7 +2554,7 @@ class Functions
 	  	}
 	}*/
 
-	function delete_folder($directory, $delete_parent = 1)
+	function delete_folder($directory, $delete_parent = null)
   	{
     	$files = glob($directory . '/{,.}[!.,!..]*',GLOB_MARK|GLOB_BRACE);
     	foreach ($files as $file) 
