@@ -2223,16 +2223,25 @@ class Functions
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
                                                                                        'clave' => $datos['clave']));
+       
 
 		if (!$usuario)
         {
         	$error = $this->translator->trans('Usuario o clave incorrecta.');
         }
         else {
-            
+
+             $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(
+        	                                                         array('usuario'=>$usuario,
+        	                                                         	   'disponible'=>TRUE
+        	                                                         	  ));
             if (!$usuario->getActivo())
             {
                 $error = $this->translator->trans('Usuario inactivo. Contacte al administrador del sistema.');
+            }
+            else if($sesionActiva)
+            {
+                $error = $this->translator->trans('Este usuario tiene una sesión activa');
             }
             else {
 
