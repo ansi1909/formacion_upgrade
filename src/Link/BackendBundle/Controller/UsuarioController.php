@@ -1319,7 +1319,7 @@ class UsuarioController extends Controller
         if (file_exists($csv))
         {
 
-            chmod($csv,0755);
+            chmod($csv,0750);
             // Llamada a la función que importa el CSV a la BD
             $query = $em->getConnection()->prepare('SELECT
                                                     fnimportar_participantes(:pcsv) as
