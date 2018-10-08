@@ -2416,6 +2416,9 @@ p.up {
 
 .tabs {
   position: relative; }
+  @media (max-width: 991.98px) {
+    .tabs .tabsli {
+      margin: 0 1.7rem; } }
   .tabs li {
     display: inline-block;
     list-style: none;
@@ -2427,6 +2430,9 @@ p.up {
     color: #adb5bd;
     text-align: center;
     border-bottom: 3px solid transparent; }
+    @media (max-width: 1199.98px) {
+      .tabs li {
+        margin: 0 1.7rem; } }
     .tabs li i {
       position: relative;
       top: .425rem;
@@ -2436,6 +2442,9 @@ p.up {
       font-family: "Roboto";
       font-weight: 500;
       line-height: calc($font-size-base + 3px); }
+      @media (max-width: 991.98px) {
+        .tabs li span {
+          font-size: .85rem; } }
       .tabs li span:hover {
         border-bottom: 3px solid #CFE65C;
         color: #5CAEE6; }
