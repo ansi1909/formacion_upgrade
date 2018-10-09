@@ -425,8 +425,8 @@ class DefaultController extends Controller
                     if(!$usuario->getEmpresa())
                     {
                         $error = $this->get('translator')->trans('El usuario no tiene empresa asignada. Contacte al administrador del sistema.');
-                    }else
-                    {
+                    }
+                    else {
                         
                         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
                         
@@ -445,7 +445,7 @@ class DefaultController extends Controller
                             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                                'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] ),
+                                                'remitente'=>array($this->container->getParameter('mailer_user')),
                                                 'destinatario' => $correo,
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
@@ -549,13 +549,34 @@ class DefaultController extends Controller
                     
                     if ($usuario)
                     {
-                        $recordar_datos=1;
+
+                        // Si tiene una sesión abierta se cierra, ya que lo respalda la Cookie
+                        if ($session->get('iniFront'))
+                        {
+                            if (!$f->sesionBloqueda($session->get('sesion_id')))
+                            {
+                                $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
+                                if ($sesion)
+                                {
+                                    $sesion->setDisponible(false);
+                                    $em->persist($sesion);
+                                    $em->flush();
+                                }
+                                $session->invalidate();
+                                $session->clear();
+                            }
+                        }
+
+                        $recordar_datos = 1;
                         $login = $usuario->getLogin();
                         $clave = $usuario->getClave(); 
                         $verificacion = 1;
                     }
                     else {
-                        $error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
+                        // Eliminamos las cookies almacenada
+                        setcookie('id_usuario', '', time() - 42000, '/'); 
+                        setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
+                        //$error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
                     }
                 }
                 else {
@@ -566,11 +587,24 @@ class DefaultController extends Controller
                         $clave = $request->request->get('password');
                         $verificacion = 1;
                     }
+                    else {
+                        if ($session->get('iniFront'))
+                        {
+                            if (!$f->sesionBloqueda($session->get('sesion_id')))
+                            {
+                                return $this->redirectToRoute('_inicio');
+                            }
+                        }
+                    }
                 }
 
                 if ($verificacion)
                 {
-                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,'login' => $login,'clave' => $clave,'empresa' => $empresa,'yml' => $yml['parameters'] ));
+                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
+                                                             'login' => $login,
+                                                             'clave' => $clave,
+                                                             'empresa' => $empresa,
+                                                             'yml' => $yml['parameters']));
 
                     if ($iniciarSesion['exito'] == true)
                     {

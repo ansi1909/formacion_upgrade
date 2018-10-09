@@ -26,13 +26,8 @@
 	    		<div class="container">
                     <div class="row mt-4">
                       
-                            <div class="col-2 text-center" style="">
-                                  <a href="{{path('_indexTutoriales')}}">
-                                    <div class="btn-warning btn before_lesson" data="109-113-2-0" >{{ 'Volver'|trans }}</div>
-                                  </a>
-                            </div>
                        
-                        <div class="col-10 text-center" style="">
+                        <div class="col-12 text-center" style="">
                             <h3 class="titulo_faqs">Tutoriales</h3>
                         </div>
 
@@ -73,7 +68,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-xs-2 col-2 text-right botonTut">
-                                         <button class="btn btn-primary btn-sm btn-dlt descargaTutorial" id="{{tutorial.id}}"  type="button" data-ruta="{{path('_descargarPdf')~'/'~tutorial.id}}" >Descargar</button>
+                                        {% if tutorial.pdf %}
+                                         <a href="{{path('_descargarPdf')~'/'~tutorial.id}}">
+                                            <button type="button" class="btn btn-primary bttnDownl " id="{{tutorial.id}}"><i class="material-icons" >cloud_download</i></button>
+                                            <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargar'|trans }}&nbsp;:&nbsp;{{tutorial.pdf}}</p></div>
+                                        </a>
+                                        {% endif %}
                                     </div>
 
                                 </div>
@@ -86,6 +86,13 @@
                                 </div>
                             </div>
                         </div>
+                       <div class="row justify-content-center">
+                        <div class="col-auto text-center">
+                                  <a href="{{path('_indexTutoriales')}}">
+                                    <div class="btn-warning btn before_lesson" data="109-113-2-0" >{{ 'Volver'|trans }}</div>
+                                  </a>
+                        </div>
+                    </div>
                     </section>
                 </div>
             </div>        

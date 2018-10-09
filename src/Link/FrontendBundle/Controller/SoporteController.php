@@ -50,7 +50,8 @@ class SoporteController extends Controller
 				'mensaje' => $datosAjax['mensaje'],
 				'background' => $background,
 				'logo' => $logo,
-				'link_plataforma' => $link_plataforma
+				'link_plataforma' => $link_plataforma,
+				'empresa'=>$session->get('empresa')['nombre']
 			]
 		];
 

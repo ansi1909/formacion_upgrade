@@ -42,13 +42,14 @@ class DefaultController extends Controller
                     $em->flush();
 
                     setcookie('id_usuario', '', time() - 42000, '/'); 
-                    setcookie('marca_aleatoria_usuario', '', time() - 42000, '/'); 
+                    setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
                 }
 
                 $sesion->setDisponible(false);
                 $em->persist($sesion);
                 $em->flush();
                 $f->setRequest($session->get('sesion_id'));
+                
             }
 
         }

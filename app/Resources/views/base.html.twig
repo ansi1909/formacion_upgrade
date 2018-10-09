@@ -144,7 +144,7 @@
                     {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
                     <div class="d-flex flex-column">
                         <div class="wrapperDdMenu" >
-                            <a href="#" class="perfil no-decorate" id="config" title="{{ 'Perfil de usuario'|trans }}" data-toggle="tooltip" data-placement="bottom">
+                            <a href="#" class="perfil no-decorate" id="config" title="{{ 'Perfil de participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
                                 {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
                                 <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown" >expand_more</span>
                             </a>
@@ -152,7 +152,7 @@
                                 <li class="mark"></li>
                                 <a href="{{ path('_usuariop') }}">
                                     <li class="opcList">
-                                        <span>{{ 'Perfil de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
+                                        <span>{{ 'Perfil de participante'|trans }} <i class="material-icons icMenu">style</i></span>
                                     </li>
                                 </a>
                                 <a href="#" data-toggle="modal" data-target="#modalCs">
@@ -177,7 +177,7 @@
                 <nav>
                     <div id="mainSidenav" class="main-sidenav ">
                         <a href="javascript:void(0)" class="justify-content-end text-right" onclick="closeNav()"><i id="menuArrow" class="arrow mr-2"></i></a>
-                        <a class="d-flex mt-1 mb-3 text-nowrap modulo" id="dashBoard" href="{{ path('_inicio') }}"> <i class="material-icons mr-2">home</i> {{ 'Inicio'|trans }} </a>
+                        <a class="d-flex mt-1 mt-sm-4 mb-3 text-nowrap modulo" id="dashBoard" href="{{ path('_inicio') }}"> <i class="material-icons mr-2">home</i> {{ 'Inicio'|trans }} </a>
                         <a class="d-flex mb-3 text-nowrap modulo" id="proG" href="{{ path('_programas') }}"> <i class="material-icons mr-2">dashboard</i> {{ 'Plan de estudio'|trans }} </a>
                         <a class="d-flex mb-3 text-nowrap modulo" id="misProg" href="{{ path('_misProgramas') }}"> <i class="material-icons mr-2">bookmark</i> {{ 'Mi avance'|trans }} </a>
                         <a class="d-flex mb-3 text-nowrap modulo" id="biBlio" href="{{ path('_biblioteca')}}"> <i class="material-icons mr-2">import_contacts</i>  {{ 'Biblioteca'|trans }} </a>
@@ -200,12 +200,12 @@
                             <img src="{{ asset('front/assets/img/formacion2.0.svg') }}" class="imgForm" alt="">
                         </div>
                         <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3 text-center">
-                            <a href="https://linkgerencial.com" class="links">Link Gerencial Consultores</a>
+                            <a href="https://www.formacion2puntocero.com" class="links" target="_blank">Formación 2.0 Web Site</a>
                         </div>
                         <div class="col-3 col-lg-3 col-xl-3 col-md-3 col-sm-3 col-xs-3">
                             <ul class="ayudaForm">
                                 <li>
-                                    <a href="" data-toggle="modal" data-target="#modalSv" class="links abrir_modal_soporte">Reportar un problema</a>
+                                    <a href="" data-toggle="modal" data-target="#modalSv" class="links abrir_modal_soporte">{{ 'Reportar un problema'|trans }}</a>
                                 </li>
                                 <li>
                                     <a href="{{ path('_indexTutoriales') }}" class="links">Ayuda</a>
@@ -215,7 +215,7 @@
                     </div>
                     <div class="row justify-content-center align-items-center">
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 text-center">
-                            <span class="cpyR">Copyright &copy; 2018 Formación2.0 Todos los derechos reservados</span>
+                            <span class="cpyR">Copyright &copy; 2018 Formación2.0 {{ 'Todos los derechos reservados'|trans }}</span>
                         </div>
                     </div>
                 </footer>

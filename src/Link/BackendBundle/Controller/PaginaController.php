@@ -625,6 +625,9 @@ class PaginaController extends Controller
                     $em->persist($pagina_empresa);
                     $em->flush();
 
+                    // Asignación de sub-páginas, en caso de que existan nuevas sub'páginas
+                    $f->asignacionSubPaginas($pagina_empresa, $yml);
+
                 }
 
             }

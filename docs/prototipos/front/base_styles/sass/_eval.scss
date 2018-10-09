@@ -486,6 +486,9 @@
     color: $gray-700;
     position: relative;
     font-weight: $font-weight-normal;
+    @include media-breakpoint-down(md){
+        margin-right: calc(1rem + 7px);
+    }
 }
 
 %pregunta{

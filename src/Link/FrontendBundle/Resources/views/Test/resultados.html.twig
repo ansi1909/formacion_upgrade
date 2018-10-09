@@ -86,6 +86,24 @@
                             <h2 class="titulo-resul">{{ 'FELICITACIONES'|trans }}</h2>
                             <h3>{{ 'Has aprobado con éxito la evaluación'|trans }}</h3>
                         </div>
+                        {% if not try_button and continue_button.evaluacion == 0 and continue_button.next_lesson == 0 %}
+                            <ul class="panelBtn">
+                                <li class="seccBtn">
+                                    <a href="{{ path('_generarCertificado', { 'programa_id': programa_id }) }}" target="_blank">
+                                        <button class="btn btnC text-center" data-toggle="tooltip" data-placement="bottom" title="{{ 'Imprimir certificado'|trans }}">
+                                            <img src="{{ asset('front/assets/img/certificado.svg') }}" alt="" class="certi">
+                                        </button>
+                                    </a>
+                                </li>
+                                <li class="seccBtn">
+                                    <a href="{{ path('_generarNotas', { 'programa_id': programa_id }) }}" target="_blank">
+                                        <button class="btn btnC text-center" data-toggle="tooltip" data-placement="bottom" title="{{ 'Imprimir constancia de notas'|trans }}">
+                                            <img src="{{ asset('front/assets/img/certi_notas.svg') }}" alt="" class="notas">
+                                        </button>
+                                    </a>
+                                </li>
+                            </ul>
+                        {% endif %}
                     </div>
                     <div class="row align-items-center justify-content-center">
                         <div class="col-10 my-3 text-center">
@@ -135,15 +153,12 @@
                             {% else %}
                                 {# Ir a la pantalla de imprimir certificado y constancia de notas #}
                                 <div class="row mt-5 align-items-center justify-content-center">
-                                    <div class="col-3 text-center">
+                                    <div class="col-auto text-center">
                                         <button type="button" class="btn btn-warning bttn_fm continuar" id="content" title="{{ 'Volver al inicio del contenido'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Volver al inicio'|trans }} </button>
                                     </div>
-                                    <div class="col-3 text-center">
+                                    <div class="col-auto text-center">
                                         <button type="button" class="btn" id="btnShowResul" title="{{ 'Mostrar los resultados de la evaluación'|trans }}" data-toggle="tooltip" data-placement="bottom">{{ 'Mostrar resultados'|trans }}</button>
                                     </div>
-                                    {#<div class="col-3 text-center">
-                                        <button type="button" class="btn btn-primary continuar" id="next" title="{{ 'Continuar al siguiente contenido'|trans }}" data-toggle="tooltip" data-placement="bottom"> {{ 'Continuar'|trans }} </button>
-                                    </div>#}
                                 </div>
                             {% endif %}
                         {% endif %}
@@ -219,6 +234,7 @@
         </div>
 
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('front/js/custom.js') }}"></script>
         <script src="{{ asset('js/front/expireSession.js') }}"></script>

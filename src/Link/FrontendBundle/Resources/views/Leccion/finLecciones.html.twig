@@ -7,6 +7,10 @@
             width: 60%;
             height: 300px;
         }
+        .btn-primary {
+            font-weight: 500;
+            color: #797D80;
+        }
     </style>
 {% endblock %}
 
@@ -25,13 +29,13 @@
                 <div class="wrapperDdMenu">
                     <a href="#" class="perfil no-decorate" id="config">
                         {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
-                        <img class="img-fluid mx-auto avatar-img" src="{{img}}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
+                        <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
                     </a>
                     <ul class="dropDownMenu">
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>{{ 'Preferencias de usuario'|trans }} <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Preferencias de participante'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
@@ -73,7 +77,7 @@
                 {% else %}
                     {% set articulo = 'del'|trans %}
                 {% endif %}
-                <h3>{{ ' Has completado con éxito los contenidos'|trans }} {{ articulo~' '~categoria }}:</h3>
+                <h3>{{ 'Has completado con éxito los contenidos'|trans }} {{ articulo~' '~categoria }}:</h3>
                 <h3><strong>{{ nombre_pagina }}</strong>.</h3>
             </div>
         </div>
@@ -130,7 +134,7 @@
             </div>
             <div class="row mt-4 justify-content-center align-items-center">
                 <div class="col-10 col-md-10 col-sm-10 col-xs-10 col-lg-10 col-xl-10 text-center">
-                    <h4 class="tituloVc">{{ '¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?'|trans }}</h4>
+                    <h4 class="tituloVc">{{ '¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?'|trans }}</h4>
                 </div>
             </div>
             <div class="row mt-3 align-items-center justify-content-center">

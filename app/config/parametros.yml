@@ -75,7 +75,7 @@ parameters:
         bienvenida: 1
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
-        remitente: 'tutorvirtual@formacion2puntocero.com'
+        remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
         asunto: 'Formación2.0 - Solicitud de soporte virtual. '
         remitente: 'soporte@formacion2puntocero.com'

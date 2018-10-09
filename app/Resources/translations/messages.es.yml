@@ -59,12 +59,12 @@ Asignar página al grupo: Asignar página al grupo
 Asignar página al nivel: Asignar página al nivel
 Asunto: Asunto
 Atrás: Atrás
-Autor: Autor
-Avance en programas: Avance en programas
 Aún no has respondido las preguntas: Aún no has respondido las preguntas
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
 Aún sin publicar: Aún sin publicar
+Autor: Autor
+Avance en programas: Avance en programas
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Avisos programados de: Avisos programados de
 Ayer: Ayer
@@ -120,6 +120,7 @@ Competencia debe tener como valor 0 o 1: Competencia debe tener como valor 0 o 1
 Competencia requerida. Valores válidos 0 o 1.: Competencia requerida. Valores válidos 0 o 1.
 Conceder: Conceder
 Conexiones por usuario: Conexiones por usuario
+Conexiones por participante: Conexiones por participante 
 Conceder Permisos: Conceder Permisos
 Conceder permisos de acceso: Conceder permisos de acceso
 Configuración de asignación: Configuración de asignación
@@ -128,6 +129,7 @@ Configuración de la evaluación: Configuración de la evaluación
 Configuración de páginas: Configuración de páginas
 Configuración de preguntas: Configuración de preguntas
 Configuración del usuario: Configuración del usuario
+Configuración del participante: Configuración del participante
 Configurar: Configurar
 Configurar asignación de sub-páginas: Configurar asignación de sub-páginas
 Configurar evaluación: Configurar evaluación
@@ -140,6 +142,7 @@ Constancia de Notas: Constancia de Notas
 Consultar: Consultar
 Contenido: Contenido
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
+Contenido Relacionado: Contenido Relacionado
 Continuar: Continuar
 Continuar al siguiente contenido: Continuar al siguiente contenido
 Continuar en la Evaluación: Continuar en la Evaluación
@@ -171,6 +174,7 @@ Datos del grupo: Datos del grupo
 Datos del nivel de la empresa: Datos del nivel de la empresa
 Datos del Rol: Datos del Rol
 Datos del usuario: Datos del usuario
+Datos del participante: Datos del participante
 Datos del Tipo de Notificación: Datos del Tipo de Notificación
 Datos del Tipo de Destino: Datos del Tipo de Destino
 Datos del tutorial: Datos del tutorial
@@ -194,12 +198,12 @@ Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publi
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
 del: del
-Descripción: Descripción
 Descarga el archivo a través del siguiente enlace: Descarga el archivo a través del siguiente enlace
 Descargar: Descargar
 Descargas: Descargas
 Descargar archivo: Descargar archivo
 Descargue material complementario: Descargue material complementario
+Descripción: Descripción
 Desde: Desde
 ¿Desea eliminar el registro?: ¿Desea eliminar el registro?
 Destinado a: Destinado a
@@ -355,8 +359,8 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 ¿Estás list@?: ¿Estás list@?
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
-¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
-¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?: ¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?
+¿Estás Segur@ que deseas salir de la evaluación?: ¿Estás Segur@ que deseas salir de la evaluación?
+¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?: ¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?
 Estado: Estado
 Estatus: Estatus
 Estatus del programa: Estatus del programa
@@ -400,6 +404,7 @@ filtrado de un total de: filtrado de un total de
 Filtrar comentarios del foro: Filtrar comentarios del foro
 Filtrar comentarios del muro: Filtrar comentarios del muro
 Filtrar usuarios: Filtrar usuarios
+Filtrar participantes: Filtrar participantes
 Filtro: Filtro
 Fin del programa: Fin del programa
 Finaliza en: Finaliza en
@@ -428,7 +433,7 @@ Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error e
 Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
-Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.: Ha ocurrido un error al cargar los usuarios conectados, verifique su conexión a internet o contacte al administrador del sistema.
+Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.: Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.
 Ha sido publicado: Ha sido publicado
 Ha sido publicado el evento: Ha sido publicado el evento
 ha subido un archivo en el espacio colaborativo de: ha subido un archivo en el espacio colaborativo de
@@ -471,6 +476,8 @@ tu usuario y clave. Ingresa tu correo.: tu usuario y clave. Ingresa tu correo.
 Interacción: Interacción
 Interacción en los muros: Interacción en los muros
 Interacción en los muros por empresa: Interacción en los muros por empresa
+Imprimir certificado: Imprimir certificado
+Imprimir constancia de notas: Imprimir constancia de notas
 Ir a detalles de la página: Ir a detalles de la página
 Ir al inicio: Ir al inicio
 Ir al listado: Ir al listado
@@ -627,6 +634,7 @@ Nombre: Nombre
 Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
+Nombre del participante: Nombre del partcipante
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Nota: Nota
 Notas: Notas
@@ -651,6 +659,7 @@ Opción correcta (Lado B): Opción correcta (Lado B)
 Opciones: Opciones
 Opciones de la pregunta: Opciones de la pregunta
 Orden: Orden
+Otras noticias: Otras noticias
 Página: Página
 Página asociada: Página asociada
 Página a mover: Página a mover
@@ -668,8 +677,16 @@ País: País
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
 participantes: participantes
-particpante: participante
+Participantes: Participantes
+Particpante: participante
+Participantes activos: Participantes activos
+Participantes inactivos: Participantes inactivos
+Participantes no iniciados: Participantes no iniciados
+Participantes registrados: Participantes registrados
 Participantes de la empresa: Participantes de la empresa
+Participantes cursando: Participants taking part
+Participantes culminados: Finished participants
+Participantes conectados: Connected participants
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma
 Participantes que han aprobado el último módulo del programa o curso: Participantes que han aprobado el último módulo del programa o curso
 Participantes que han ingresado al programa o curso asignado: Participantes que han ingresado al programa o curso asignado
@@ -681,6 +698,7 @@ Participantes seleccionados: Participantes seleccionados
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
+Perfil de participante: Perfil de participante
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
 Permisos: Permisos
@@ -695,6 +713,7 @@ Por medio de la presente se certifica que el participante arriba indicado ha cur
 Preferencias de la empresa: Preferencias de la empresa
 Preferencia de plantillas de las empresas: Preferencia de plantillas de las empresas
 Preferencias de usuario: Preferencias de usuario
+Preferencias de participante: Preferencias de participante
 Pregunta: Pregunta
 Preguntas: Preguntas
 Preguntas frecuentes: Preguntas frecuentes
@@ -724,13 +743,14 @@ Puntaje con que se aprueba: Puntaje con que se aprueba
 Puntaje definitivo del programa: Puntaje definitivo del programa
 que aún no han ingresado a la plataforma: que aún no han ingresado a la plataforma
 QR: QR
-Realizo una publicación en el muro de : Realizo una publicación en el muro de 
+realizó una publicación en el muro de: realizó una publicación en el muro de
 Recordarme: Recordarme
 Recordar mi contaseña: Recordar mi contaseña
 Recursos: Recursos
 Recursos del programa: Recursos del programa
 Registrar Empresa: Registrar Empresa
 Registrar Usuario: Registrar Usuario
+Registrar participante: Registrar participante
 registros: registros
 Registros actualizados: Registros actualizados
 Registros nuevos: Registros nuevos
@@ -743,9 +763,10 @@ Reporte de participantes cursando por programas: Reporte de participantes cursan
 Reporte de participantes no iniciados en programas: Reporte de participantes no iniciados en programas
 Reporte de participantes registrados por programas: Reporte de participantes registrados por programas
 Reporte de participantes por empresa: Reporte de participantes por empresa
+Reportar un problema: Reportar un problema
 Responder: Responder
 Responder publicación: Responder publicación
-Respondió en el muro al comentario de : Respondió en el muro al comentario de 
+respondió en el muro al comentario de: Respondió en el muro al comentario de
 respondió a tu comentario en el muro de: respondió a tu comentario en el muro de
 Respuesta: Respuesta
 Respuestas comentario seleccionado: Respuestas comentario seleccionado
@@ -781,12 +802,14 @@ Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas,
 Si deseas volver a intentarlo haz clic aquí: Si deseas volver a intentarlo haz clic aquí
 Si deseas volver a ver el contenido, haz clic en el botón: Si deseas volver a ver el contenido, haz clic en el botón
 Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.: Si marca SI, el programa tendrá una sección en el que el tutor virtual podrá anexar contenido adicional.
-Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los usuarios podrán escribir en el muro.
+Si marca SI, la página tendrá una sección en el que los particiantes podrán escribir en el muro.: Si marca SI, la página tendrá una sección en el que los participantes podrán escribir en el muro.
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
 Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
 Si presionas: Si presionas
+Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.
+Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si un nivel ya está registrado en la base de datos no se tomará en cuenta: Si un nivel ya está registrado en la base de datos no se tomará en cuenta
 Si un participante ya está registrado en la base de datos solo se actualizarán sus datos: Si un participante ya está registrado en la base de datos solo se actualizarán sus datos
 Sigue aprendiendo: Sigue aprendiendo
@@ -833,6 +856,7 @@ Título: Título
 Título en la ventana del navegador: Título en la ventana del navegador
 Todas: Todas
 Todos: Todos
+Todos los derechos reservados: Todos los derechos reservados
 Todos los empleados de la empresa: Todos los empleados de la empresa
 Todos los niveles: Todos los niveles
 Tomar evaluación: Tomar evaluación
@@ -881,6 +905,8 @@ Viernes: Viernes
 Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard
 Volver: Volver
+Volver a biblioteca: Volver a biblioteca
+Volver a noticias: Volver a noticias
 Volver al contenido: Volver al contenido
 Volver al inicio del contenido: Volver al inicio del contenido
 Volver al programa: Volver al programa
