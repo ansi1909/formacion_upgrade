@@ -1313,9 +1313,10 @@ class UsuarioController extends Controller
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
-        $csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
+        //$csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
+        $csv = $this->container->getParameter('folders')['tmp'].$transaccion.'.csv';
         $writer->save($csv);
-
+        
         if (file_exists($csv))
         {
 
