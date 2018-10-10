@@ -1315,7 +1315,7 @@ class UsuarioController extends Controller
         $writer->setUseBOM(true);
         $csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
         $writer->save($csv);
-
+        
         if (file_exists($csv))
         {
 
