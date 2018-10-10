@@ -1313,13 +1313,14 @@ class UsuarioController extends Controller
                                         ->setDelimiter('|')
                                         ->setEnclosure('');
         $writer->setUseBOM(true);
-        $csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
+        //$csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
+        $csv = $this->container->getParameter('folders')['tmp'].$transaccion.'.csv';
         $writer->save($csv);
 
         if (file_exists($csv))
         {
 
-            chmod($csv,0777);
+            chmod($csv,0755);
             // Llamada a la función que importa el CSV a la BD
             $query = $em->getConnection()->prepare('SELECT
                                                     fnimportar_participantes(:pcsv) as

@@ -2232,7 +2232,7 @@ class Functions
         else {
 
              $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(
-        	                                                         array('usuario'=>$usuario,
+        	                                                         array('usuario'=>$usuario->getId(),
         	                                                         	   'disponible'=>TRUE
         	                                                         	  ));
             if (!$usuario->getActivo())
