@@ -1316,7 +1316,7 @@ class UsuarioController extends Controller
         //$csv = $this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/'.$transaccion.'.csv';
         $csv = $this->container->getParameter('folders')['tmp'].$transaccion.'.csv';
         $writer->save($csv);
-
+        
         if (file_exists($csv))
         {
 
