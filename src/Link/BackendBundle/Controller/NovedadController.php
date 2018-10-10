@@ -61,6 +61,8 @@ class NovedadController extends Controller
                                 'tipoBiblioteca' => $noticia->getTipoBiblioteca() ? $noticia->getTipoBiblioteca()->getNombre() : '',
                                 'titulo' => $noticia->getTitulo(),
                                 'fechaRegistro' => $noticia->getFechaRegistro()->format('d/m/Y'),
+                                'fechaPublicacion' => $noticia->getFechaPublicacion()->format('d/m/Y'),
+                                'fechaVencimiento' => $noticia->getFechaVencimiento()->format('d/m/Y'),
                                 'delete_disabled' => $f->linkEliminar($noticia->getId(),'AdminNoticia'));
         }
 
