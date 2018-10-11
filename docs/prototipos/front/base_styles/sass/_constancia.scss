@@ -17,6 +17,7 @@
         background: $gray-100;
         .tituloPart{
             @extend %title;
+            font-size: $h5-font-size;
         }
     }
     .textConst{
@@ -29,13 +30,44 @@
     .tituloPart{
         padding: 1rem;
         @extend %title;
+        font-size: $h5-font-size;
+    }
+    
+    &__img{
+        width: 15rem;
+        height: auto;
+    }
+    &__titulo{
+        padding: 1rem;
+        margin-top: 2rem;
+        border-radius: 1rem 1rem 0 0;
+        background: $blue;
+        span{
+            @extend %title;
+            font-size: $h3-font-size;
+            color: $white !important;
+        }
+    }
+    &__contenido{
+        text-indent: 5%;
+        padding: 1rem 0;
+        span{
+            @extend %title;
+            font-size: $h4-font-size;
+        }
     }
 }
 
+.constancia__contenido--bckgI{
+    background: $gray-200;
+}
+
+.constancia__contenido--bckgP{
+    background: $gray-400;
+}
 //Extend
 %title{
     color: $gray-800;
-    font-size: $h5-font-size;
     font-weight: $font-weight-normal;
     line-height: 2rem;
 }

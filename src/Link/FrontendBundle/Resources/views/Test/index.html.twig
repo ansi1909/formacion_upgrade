@@ -47,9 +47,10 @@
                     </a>
                     <span class="txt_eval_header">{{ 'Salir de la evaluación'|trans }}</span>
                 </div>
+                {% set curso = prueba_log.prueba.nombre |split('|') %}
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
-                    <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
-                    <h5 class="sub_titulo_eval pl-5">{{ prueba_log.prueba.pagina.nombre }}</h5>
+                    <h2 class="titulo_eval pl-5">{{ curso[0]}}</h2>
+                    <h5 class="sub_titulo_eval pl-5">{{ 'Evaluación'|trans }}:&nbsp; {{prueba_log.prueba.pagina.categoria.nombre}}&nbsp;{{ prueba_log.prueba.pagina.nombre }}</h5>
                 </div>
                 <div class="countDownHMS" id="divCountD">
                     <div class="countDownC classCountD"></div>
