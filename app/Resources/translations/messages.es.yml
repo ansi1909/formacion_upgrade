@@ -80,6 +80,7 @@ Búsqueda de participantes por empresa: Búsqueda de participantes por empresa
 Búsqueda de notificaciones empresa: Búsqueda de notificaciones empresa
 Búsqueda de notificaciones por empresa: Búsqueda de notificaciones por empresa
 Calendario: Calendario
+Calificación: Calificación
 Cambiar contraseña: Cambiar contraseña
 Cambiar imagen: Cambiar imagen
 Cancelar: Cancelar
@@ -327,6 +328,7 @@ Enunciado: Enunciado
 Enunciado (Lado A): Enunciado (Lado A)
 Entidad: Entidad
 Entrar: Entrar
+Evaluación: Evaluación
 Enviado: Enviado
 Enviar: Enviar
 Equivalente a: Equivalente a
@@ -359,8 +361,8 @@ Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee 
 ¿Estás list@?: ¿Estás list@?
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
-¿Estás Segur@ que desea salir de la evaluación?: ¿Estás Segur@ que desea salir de la evaluación?
-¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?: ¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?
+¿Estás Segur@ que deseas salir de la evaluación?: ¿Estás Segur@ que deseas salir de la evaluación?
+¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?: ¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?
 Estado: Estado
 Estatus: Estatus
 Estatus del programa: Estatus del programa
@@ -699,6 +701,7 @@ Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
 Perfil de participante: Perfil de participante
+Perfil del participante: Perfil del participante
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
 Permisos: Permisos

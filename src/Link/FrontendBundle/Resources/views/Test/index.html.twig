@@ -47,9 +47,10 @@
                     </a>
                     <span class="txt_eval_header">{{ 'Salir de la evaluación'|trans }}</span>
                 </div>
+                {% set curso = prueba_log.prueba.nombre |split('|') %}
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
-                    <h2 class="titulo_eval pl-5">{{ prueba_log.prueba.nombre }}</h2>
-                    <h5 class="sub_titulo_eval pl-5">{{ prueba_log.prueba.pagina.nombre }}</h5>
+                    <h2 class="titulo_eval pl-5">{{ curso[0]}}</h2>
+                    <h5 class="sub_titulo_eval pl-5">{{ 'Evaluación'|trans }}:&nbsp; {{prueba_log.prueba.pagina.categoria.nombre}}&nbsp;{{ prueba_log.prueba.pagina.nombre }}</h5>
                 </div>
                 <div class="countDownHMS" id="divCountD">
                     <div class="countDownC classCountD"></div>
@@ -140,7 +141,7 @@
                 </div>
                 <div class="row mt-4 justify-content-center align-items-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <h4 class="titulo" id="msgTitulo1">{{ '¿Estás Segur@ que desea salir de la evaluación?'|trans }}</h4>
+                        <h4 class="titulo" id="msgTitulo1">{{ '¿Estás Segur@ que deseas salir de la evaluación?'|trans }}</h4>
                         <h4 class="titulo" id="msgTitulo2" style="display:none;">{{ 'Tiempo expirado de la evaluación'|trans }}</h4>
                     </div>
                 </div>

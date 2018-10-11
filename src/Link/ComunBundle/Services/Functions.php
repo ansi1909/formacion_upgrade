@@ -2223,16 +2223,25 @@ class Functions
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
                                                                                        'clave' => $datos['clave']));
+       
 
 		if (!$usuario)
         {
         	$error = $this->translator->trans('Usuario o clave incorrecta.');
         }
         else {
-            
+
+             $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(
+        	                                                         array('usuario'=>$usuario->getId(),
+        	                                                         	   'disponible'=>TRUE
+        	                                                         	  ));
             if (!$usuario->getActivo())
             {
                 $error = $this->translator->trans('Usuario inactivo. Contacte al administrador del sistema.');
+            }
+            else if($sesionActiva)
+            {
+                $error = $this->translator->trans('Este usuario tiene una sesión activa');
             }
             else {
 
@@ -2532,10 +2541,10 @@ class Functions
 
 	}
 
-	function delete_folder($dir) {
+	/*function delete_folder($dir) {
 		if (is_dir($dir)) 
 		{
-	    	$objects = scandir($dir);
+	    	$objects = opendir($dir);
 	    	foreach ($objects as $object) 
 	    	{
 	      		if ($object != "." && $object != "..")
@@ -2552,7 +2561,26 @@ class Functions
 	    	reset($objects);
 	    	rmdir($dir);
 	  	}
-	}
+	}*/
+
+	function delete_folder($directory, $delete_parent = null)
+  	{
+    	$files = glob($directory . '/{,.}[!.,!..]*',GLOB_MARK|GLOB_BRACE);
+    	foreach ($files as $file) 
+    	{
+      		if (is_dir($file)) 
+      		{
+        		$this->delete_folder($file, 1);
+      		} 
+      		else {
+        		unlink($file);
+      		}
+    	}
+    	if ($delete_parent) 
+    	{
+      		rmdir($directory);
+    	}
+  	}
 
 	public function nextLesson($indexedPages, $pagina_id, $usuario_id, $empresa_id, $yml, $programa_id)
 	{

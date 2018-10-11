@@ -1,5 +1,10 @@
 .tabs{
     position: relative;
+    .tabsli{
+        @include media-breakpoint-down(md) {
+            margin: 0 1.7rem;    
+        }
+    }
     li{
         display: inline-block;
         list-style: none;
@@ -11,6 +16,9 @@
         color: $gray-500;
         text-align: center;
         border-bottom: 3px solid transparent;
+        @include media-breakpoint-down(lg) {
+            margin: 0 1.7rem;    
+        }
         i {
             position: relative;
             top: .425rem;
@@ -21,6 +29,9 @@
             font-family: $primary-font;
             font-weight: $font-weight-normal-hard;
             line-height: calc($font-size-base + 3px);
+            @include media-breakpoint-down(md) {
+                font-size: .85rem;    
+            }
             &:hover{
                 border-bottom: 3px solid $green;
                 color: $primary;

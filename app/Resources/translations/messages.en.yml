@@ -80,6 +80,7 @@ Búsqueda de participantes por empresa: Search participants by company
 Búsqueda de notificaciones empresa: Search notifications company
 Búsqueda de notificaciones por empresa: Search notifications by company
 Calendario: Calendar
+Calificación: Qualification
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
 Cancelar: Cancel
@@ -327,6 +328,7 @@ Enunciado: Statement
 Enunciado (Lado A): Statement (Side A)
 Entidad: Entity
 Entrar: Get in
+Evaluación: Evaluation
 Enviado: Sent
 Enviar: Send
 Equivalente a: Equivalent to
@@ -359,8 +361,8 @@ Esta plantilla no posee thumbnails en la base de datos: This template does not h
 ¿Estás list@?: Are you ready?
 ¿Estás segur@ de que deseas cerrar la sesión?: Are you sure of loging out?
 ¿Estás segur@ de que deseas eliminar este registro?: Are you sure of deleting this item?
-¿Estás Segur@ que desea salir de la evaluación?: Are you sure of leaving the evaluation?
-¿Estás Segur@ que desea volver al contenido sin realizar la evaluación?: Are you sure of returning to the start without taking the evaluation?
+¿Estás Segur@ que deseas salir de la evaluación?: You are sure you want to exit the evaluation
+¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?: Are you sure of returning to the start without taking the evaluation?
 Estado: Status
 Estatus: Status
 Estatus del programa: Program status
@@ -699,6 +701,7 @@ Pdf: Pdf
 PDF requerido: PDF is required
 Perfil de usuario: User profile
 Perfil de participante: Participant profile
+Perfil del participante: Participant profile
 Perfil Empresarial: Company Profile
 Periodo: Period
 Permisos: Permissions
