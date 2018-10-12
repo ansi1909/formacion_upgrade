@@ -642,6 +642,13 @@ class NotificacionController extends Controller
                                                    'destinatario' => $correo);
                         $correo = $f->sendEmail($parametros_correo);
 
+                        /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
+                                                                    'apellido' => $apellido,
+                                                                    'mensaje' => $mensaje,
+                                                                    'background' => $background,
+                                                                    'logo' => $logo,
+                                                                    'link_plataforma' => $link_plataforma));*/
+
                         $notificacion_programada->setEnviado(true);
                         $em->persist($notificacion_programada);
                         $em->flush();

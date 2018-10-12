@@ -13,7 +13,7 @@
             <tbody>
                 <tr>
                     <td align="center" style="font-family: Arial,sans-serif;"> 
-                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px; border-radius: 25px; background: #fff; margin: 2% auto; box-shadow: 5px 5px 20px rgba(121, 125, 128, .3)">
+                        <table border="0" cellpadding="0" cellspacing="0" style="width: 90%; border-radius: 25px; background: #fff; margin: 2% auto; box-shadow: 5px 5px 20px rgba(121, 125, 128, .3)">
                             <tbody>
                                 <tr>
                                     <td  style="padding-top: 20px; padding-bottom: 20px; background: rgba(92, 174, 230, .5); border-radius: 25px 25px 0 0">
@@ -24,21 +24,15 @@
                                 </tr>
                                 <tr style="background: url({{ background }}) no-repeat top right;">
                                     <td align="justify" style="padding: 10% 5%;">
-                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 70%; color: #383838; line-height: 22px; font-weight: 100;text-align: left;">
-                                        	
-													Cordial saludo, tienes una solicitud de soporte técnico  proveniente de la plataforma:  formación2.0, a continuación te presento los detalles:, 
-													<BR><BR><BR>
-													<B>Correo del participante:</B>&nbsp;&nbsp;{{ correoUsuario }}
-													<BR>
-                                                    <B>Empresa:</B>&nbsp;&nbsp;{{ empresa }}
-                                                    <BR>
-													<B>Asunto:</B>&nbsp;&nbsp;{{ asuntoMensaje }}
-													<BR><BR><BR>
-													{{ mensaje }}		
+                                        <p style="font-size: 14px; padding-top: 25px; padding-bottom: 25px; width: 90%; color: #383838; line-height: 22px; font-weight: 100;text-align: left;">
+											{{ 'Cordial saludo, tienes una solicitud de soporte técnico proveniente de la plataforma Formación 2.0, a continuación te presento los detalles'|trans }}:<br><br>
+											<b>{{ 'Correo del participante'|trans }}:</b>&nbsp;&nbsp;{{ correoUsuario }}<br>
+                                            <b>{{ 'Empresa'|trans }}:</b>&nbsp;&nbsp;{{ empresa }}
+											<b>{{ 'Asunto'|trans }}:</b>&nbsp;&nbsp;{{ asuntoMensaje }}<br><br>
+											{{ mensaje }}
                                         </p>
                                     </td>
                                 </tr>
-                                
                             </tbody>
                         </table>
                     </td>

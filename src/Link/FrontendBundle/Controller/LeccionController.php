@@ -363,8 +363,6 @@ class LeccionController extends Controller
                                                             'categoria' => $categoria['categoria'],
                                                             'pagina' => $categoria['nombre'],
                                                             'empresa' => $empresa->getNombre()),
-
-                                                            
                                            'asunto' => 'Formación 2.0: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
