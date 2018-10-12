@@ -231,6 +231,7 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (40, 'Evaluaciones por módulo', '_evaluacionesModulo', 'fa-certificate', TRUE, 18, 10);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (41, 'Interacción en el espacio colaborativo', '_interaccionColaborativo', 'fa-code-fork', TRUE, 18, 11);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (42, 'Interacción en los muros', '_interaccionMuro', 'fa-comments', TRUE, 18, 12);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (43, 'Detalle del participante', '_detalleParticipante', 'fa-eye', TRUE, 18, 13);
 
 
 ------------------------------------------------------------------------------------------------------------------------

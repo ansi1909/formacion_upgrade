@@ -21,3 +21,10 @@ _ajaxUsuariosConectados:
     defaults: { _controller:  LinkBackendBundle:Default:ajaxUsuariosConectados }
     requirements:
         _method: POST
+
+_detalleParticipante:
+    path: /ajaxDetalleParticipante
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxdetalleParticipante }
+    requirements: 
+        _method: POST
+        

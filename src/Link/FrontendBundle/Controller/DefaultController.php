@@ -445,16 +445,16 @@ class DefaultController extends Controller
                             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                                'remitente'=>array($this->container->getParameter('mailer_user')),
+                                                'remitente' => array($this->container->getParameter('mailer_user')),
                                                 'destinatario' => $correo,
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave(),
-                                                                 'nombre'=> $usuario->getNombre().' '.$usuario->getApellido(),
+                                                                 'nombre' => $usuario->getNombre().' '.$usuario->getApellido(),
+                                                                 'correo_soporte' => $yml['parameters']['correo_soporte']['remitente'],
                                                                  'background' => $background,
-                                                                'logo'=>$logo,
-                                                                'link_plataforma'=>$link_plataforma) );
-                          
+                                                                 'logo' => $logo,
+                                                                 'link_plataforma' => $link_plataforma));
                             $correoRecuperacion = $f->sendEmail($parametros);
                             //return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
                         }

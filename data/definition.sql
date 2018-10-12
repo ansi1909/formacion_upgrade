@@ -494,7 +494,7 @@ CREATE TABLE admin_faqs(
 id serial,
 tipo_pregunta_id integer,
 pregunta varchar(500),
-respuesta varchar(500),
+respuesta varchar(2000),
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_pregunta_id) REFERENCES admin_tipo_pregunta (id));
 
