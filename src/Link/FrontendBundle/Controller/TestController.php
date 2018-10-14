@@ -28,6 +28,7 @@ class TestController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina_id);
+        $programa = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         // Duración en segundos
         $duracion = intval($prueba->getDuracion()->format('G'))*3600;
@@ -200,7 +201,7 @@ class TestController extends Controller
         return $this->render('LinkFrontendBundle:Test:index.html.twig', array('prueba_log' => $prueba_log,
                                                                               'preguntas' => $preguntas,
                                                                               'preguntas_str' => $preguntas_str,
-                                                                              'programa_id' => $programa_id,
+                                                                              'programa' => $programa,
                                                                               'pagina_id' => $pagina_id,
                                                                               'tipo_pregunta' => $yml['parameters']['tipo_pregunta'],
                                                                               'tipo_elemento' => $yml['parameters']['tipo_elemento'],
@@ -641,6 +642,7 @@ class TestController extends Controller
                                  'nombre_pagina' => '');
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->find($prueba_log_id);
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
 
         if (trim($prueba_log->getPreguntasErradas()))
         {
@@ -709,7 +711,6 @@ class TestController extends Controller
             $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
 
             // También se anexa a la indexación el programa
-            $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
             $pagina = $session->get('paginas')[$programa_id];
             $pagina['padre'] = 0;
             $pagina['sobrinos'] = 0;
@@ -730,7 +731,7 @@ class TestController extends Controller
 
         return $this->render('LinkFrontendBundle:Test:resultados.html.twig', array('prueba_log' => $prueba_log,
                                                                                    'preguntas' => $preguntas,
-                                                                                   'programa_id' => $programa_id,
+                                                                                   'programa' => $programa,
                                                                                    'try_button' => $try_button,
                                                                                    'continue_button' => $continue_button,
                                                                                    'estados' => $yml['parameters']['estado_prueba'],
