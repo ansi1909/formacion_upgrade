@@ -57,37 +57,28 @@ class LoginController extends Controller
 							$f = $this->get('funciones');
 
 	   			            // Envío de correo con los datos de acceso, usuario y clave
-				            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-	                             				'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] => 'Formación 2.0'),
-				                                'destinatario' => $correo,
-				                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
-				                                'datos' => array('usuario' => $usuario->getLogin(),
-				                                                 'clave' => $usuario->getClave()) );
+	   			            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
+                                                'remitente' => array($this->container->getParameter('mailer_user')),
+                                                'destinatario' => $correo,
+                                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
+                                                'datos' => array('usuario' => $usuario->getLogin(),
+                                                                 'clave' => $usuario->getClave(),
+                                                                 'nombre' => $usuario->getNombre().' '.$usuario->getApellido(),
+                                                                 'correo_soporte' => $yml['parameters']['correo_soporte']['remitente'],
+                                                                 'background' => $background,
+                                                                 'logo' => $logo,
+                                                                 'link_plataforma' => $link_plataforma));
 				            $correoRecuperacion = $f->sendEmail($parametros, $this);
 	               			return $this->redirectToRoute('_login');
 		                }
 		            }
 	            }
 			}
-		}else
-		{
+		}
+		else {
             $error = $this->get('translator')->trans('Debe ingresar el correo electrónico.');
 		}
 
-      /*  if ($ok == 1)
-        {
-
-            // Envío de correo con el usuario y clave provisional
-            $f = $this->get('funciones');
-            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                 				'remitente'=>array($yml['parameters']['correo_recuperacion']['remitente'] => 'Formación 2.0'),
-                                'destinatario' => $correo,
-                                'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
-                                'datos' => array('usuario' => $usuario->getLogin(),
-                                                 'clave' => $usuario->getClave()) );
-            $correoRecuperacion = $f->sendEmail($parametros, $this);
-        }**/
-        
         $return = array('ok' => $ok, 'error' => $error);
 
         $return = json_encode($return);

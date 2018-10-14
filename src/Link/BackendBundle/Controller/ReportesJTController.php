@@ -426,6 +426,13 @@ class ReportesJTController extends Controller
 
     }
 
+    public function ajaxdetalleParticipanteAction(Request $request)
+    {
+        $session = new Session();
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+    }
+
    
 
 }

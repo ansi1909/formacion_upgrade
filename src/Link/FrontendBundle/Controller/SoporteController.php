@@ -51,7 +51,7 @@ class SoporteController extends Controller
 				'background' => $background,
 				'logo' => $logo,
 				'link_plataforma' => $link_plataforma,
-				'empresa'=>$session->get('empresa')['nombre']
+				'empresa' => $session->get('empresa')['nombre']
 			]
 		];
 

@@ -1,3 +1,5 @@
+a continuación te presento los detalles: these are the details
+A la publicación de: In response of
 académicas: academics
 Acceso: Access
 Acceso a la página: Access to this page
@@ -12,6 +14,7 @@ Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
+Actividad en muro: Wall activity
 Actividades en curso: Activities in progress
 Actividades Recientes: Recents Activities
 Activo: Active
@@ -149,9 +152,11 @@ Continuar al siguiente contenido: Continue to next content
 Continuar en la Evaluación: Continue in the Evaluation
 Contraseña: Password
 Copia: Copy
+Cordial saludo, tienes una solicitud de soporte técnico proveniente de la plataforma Formación 2.0, a continuación te presento los detalles: Best regards, you have a request for technical support from platform Formación 2.0, these are the details
 Correcta: Correct
 Correo: Email
 Correo adicional: Additional email
+Correo del participante: Participant email
 Correo electrónico: Email
 Correo electrónico repetido: Email repeated
 Correo electrónico requerido: Email required
@@ -278,6 +283,7 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must ha
 El nombre del usuario es requerido.: User first name is required.
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
+El participante: The participant
 El programa es requerido: Program is required
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
 El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: The server has been slow to respond, verify your internet connection or contact the system administrator
@@ -363,6 +369,7 @@ Esta plantilla no posee thumbnails en la base de datos: This template does not h
 ¿Estás segur@ de que deseas eliminar este registro?: Are you sure of deleting this item?
 ¿Estás Segur@ que deseas salir de la evaluación?: You are sure you want to exit the evaluation
 ¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?: Are you sure of returning to the start without taking the evaluation?
+Estas son tus credenciales de acceso a la plataforma: These are your access credentials
 Estado: Status
 Estatus: Status
 Estatus del programa: Program status
@@ -373,6 +380,7 @@ Este campo es requerido.: This field is required.
 Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Este usuario tiene una sesión activa: This user has an active session
+Estimado: Dear
 ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: Dear participant! Post your comments or doubts about any subject related to certification programs.
 Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora: Dear participant, if you decide to leave the evaluation at this time, you will lose the answers you have marked so far
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Dear participant, if you decide leave the page before finish the evaluation, you will lose all answers
@@ -385,6 +393,7 @@ Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
 Excelente: Excelent
+Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles: There is an activity in one of the walls monitored by you, these are the details
 Experimenta la potencialidad de la capacitación online: Experience the potential of online training
 Extensiones aceptadas: Allowed extensions
 Extensiones aceptadas para el campo PDF: Allowed extensions for PDF file
@@ -536,6 +545,7 @@ La recuperación de tus credenciales se realizó correctamente, revisa tu correo
 La respuesta es requerida: Answer is required
 La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
+Lección: Lesson
 Lecciones: Lessons
 Leidos: Read
 Libro: Book
@@ -749,6 +759,7 @@ QR: QR
 realizó una publicación en el muro de: make a publication on the wall of 
 Recordarme: Remember me
 Recordar mi contaseña: Remember my password
+Recuperación de contraseña: Password recovery
 Recursos: Resources
 Recursos del programa: Program resources
 Registrar Empresa: Add/Edit Company
@@ -771,6 +782,7 @@ Responder: Answer
 Responder publicación: Answering post
 respondió en el muro al comentario de: answered the comment on the wall
 respondió a tu comentario en el muro de: answered to your comment on wall
+respondió a uno de tus comentarios en el muro de: answered to one of your comments on wall of
 Respuesta: Answer
 Respuestas comentario seleccionado: Answers selected comment
 Resultado del archivo procesado: Result of the processed file
@@ -810,6 +822,7 @@ Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta pá
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
 Si necesitas ayuda escribenos a: If you need help email us to
+Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: If you did not make the credential request, contact the support team through
 Si presionas: If you press
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: If you check YES, company participants can view the link on this page.
 Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If you check YES, the participants of the company can access the content of this page, even if they have approved.

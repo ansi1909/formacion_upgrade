@@ -609,7 +609,8 @@ class NotificacionController extends Controller
                 $r = $query->fetchAll();
 
                 $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-                $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                //$logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                $logo = ''; // Por ahora no se colocará el logo de formación en el header del correo
                 $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
 
                 for ($i = 0; $i < count($r); $i++) 
@@ -626,8 +627,8 @@ class NotificacionController extends Controller
                     {
 
                         // Sustitución de variables en el texto
-                        $comodines = array('%%usuario%%', '%%clave%%');
-                        $reemplazos = array($login, $clave);
+                        $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
+                        $reemplazos = array($login, $clave, $nombre, $apellido);
                         $mensaje = str_replace($comodines, $reemplazos, $mensaje);
 
                         $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
@@ -641,6 +642,13 @@ class NotificacionController extends Controller
                                                    'remitente' => $this->container->getParameter('mailer_user'),
                                                    'destinatario' => $correo);
                         $correo = $f->sendEmail($parametros_correo);
+
+                        /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
+                                                                    'apellido' => $apellido,
+                                                                    'mensaje' => $mensaje,
+                                                                    'background' => $background,
+                                                                    'logo' => $logo,
+                                                                    'link_plataforma' => $link_plataforma));*/
 
                         $notificacion_programada->setEnviado(true);
                         $em->persist($notificacion_programada);
