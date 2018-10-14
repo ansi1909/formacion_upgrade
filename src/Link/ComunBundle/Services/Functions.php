@@ -2236,14 +2236,13 @@ class Functions
 	public function iniciarSesionAdmin($datos)
     {
 
-        $exito=false;
-        $error='';
+        $exito = false;
+        $error = '';
 
 		$em = $this->em;
 
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
                                                                                        'clave' => $datos['clave']));
-       
 
 		if (!$usuario)
         {
@@ -2251,15 +2250,32 @@ class Functions
         }
         else {
 
-             $sesionActiva = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(
-        	                                                         array('usuario'=>$usuario->getId(),
-        	                                                         	   'disponible'=>TRUE
-        	                                                         	  ));
+        	// Si tiene sessiones activas por más de 60 min, se cierra automáticamente.
+        	$sesiones_activas = $em->getRepository('LinkComunBundle:AdminSesion')->findBy(array('usuario' => $usuario->getId(),
+                                                                       							'disponible' => true));
+        	$is_active = false;
+        	foreach ($sesiones_activas as $sesion_activa)
+        	{
+        		$timeFirst  = strtotime($sesion_activa->getFechaRequest()->format('Y-m-d H:i:s'));
+				$timeSecond = strtotime(date('Y-m-d H:i:s'));
+				$differenceInSeconds = $timeSecond - $timeFirst;
+				$differenceInMinutes = number_format($differenceInSeconds/60, 0);
+				if ($differenceInMinutes < 60)
+				{
+					$is_active = true;
+				}
+				else {
+					$sesion_activa->setDisponible(false);
+					$em->persist($sesion_activa);
+                    $em->flush();
+				}
+        	}
+
             if (!$usuario->getActivo())
             {
                 $error = $this->translator->trans('Usuario inactivo. Contacte al administrador del sistema.');
             }
-            else if($sesionActiva)
+            else if ($is_active)
             {
                 $error = $this->translator->trans('Este usuario tiene una sesión activa');
             }
