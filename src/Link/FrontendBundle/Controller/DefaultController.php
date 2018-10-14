@@ -571,6 +571,7 @@ class DefaultController extends Controller
                         $login = $usuario->getLogin();
                         $clave = $usuario->getClave(); 
                         $verificacion = 1;
+                        
                     }
                     else {
                         // Eliminamos las cookies almacenada
