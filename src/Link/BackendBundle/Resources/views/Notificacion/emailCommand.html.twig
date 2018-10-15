@@ -14,9 +14,13 @@
                             <tbody>
                                 <tr>
                                     <td align="left" style="padding-top: 20px; padding-bottom: 20px; background: rgba(92, 174, 230, .5); border-radius: 25px 25px 0 0">
-                                        <a href="{{ link_plataforma }}" style="padding: 0;">
-                                            <img src="{{ logo }}" style="height: auto; width: 175px; position: relative; left: 1rem" alt="">
-                                        </a>
+                                        {% if logo == '' %}
+                                            &nbsp;
+                                        {% else %}
+                                            <a href="{{ link_plataforma }}" style="padding: 0;">
+                                                <img src="{{ logo }}" style="height: auto; width: 175px; position: relative; left: 1rem" alt="">
+                                            </a>
+                                        {% endfif %}
                                     </td>
                                 </tr>
                                 <tr style="background: url('{{ background }}') no-repeat top right;">
