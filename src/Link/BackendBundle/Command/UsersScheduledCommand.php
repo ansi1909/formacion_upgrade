@@ -39,7 +39,8 @@ class UsersScheduledCommand extends ContainerAwareCommand
         $output->writeln('CANTIDAD: '.count($r));
 
         $background = $yml['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
-        $logo = $yml['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        //$logo = $yml['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        $logo = ''; // Solo por requerimiento para BANFONDESA
 
         for ($i = 0; $i < count($r); $i++) 
         {
@@ -57,8 +58,8 @@ class UsersScheduledCommand extends ContainerAwareCommand
             {
 
                 // Sustitución de variables en el texto
-                $comodines = array('%%usuario%%', '%%clave%%');
-                $reemplazos = array($login, $clave);
+                $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
+                $reemplazos = array($login, $clave, $nombre, $apellido);
                 $mensaje = str_replace($comodines, $reemplazos, $mensaje);
 
                 $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
