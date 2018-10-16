@@ -239,13 +239,15 @@ class Functions
                             			 ];
 
                     $correo = $this->sendEmail($parametros_correo);
-
-                }
-
-               	//crea la notificacion para el usuario cuando el usuario que publica 
+                    	//crea la notificacion para el usuario cuando el usuario que publica 
+               	
                	$descripcion = $this->tipoDescripcion($tipoMensaje, $muro->getUsuario(), $pagina, $parametros_correo['datos']['usuarioPadre']);
                	$tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
                	$this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
+
+                }
+
+               
 
            	}
 

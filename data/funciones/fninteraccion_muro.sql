@@ -26,6 +26,7 @@ begin
              ON u.empresa_id = e.id ) 
     ON m.usuario_id = u.id
     WHERE m.empresa_id = pempresa_id 
+    AND u.login NOT LIKE 'temp%'
     AND m.pagina_id = ppagina_id 
     AND m.fecha_registro BETWEEN pdesde AND phasta
     ORDER BY u.login ASC, m.fecha_registro ASC;
