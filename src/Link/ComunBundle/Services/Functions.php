@@ -2131,6 +2131,7 @@ class Functions
 	                                // Se crea la sesión en BD
 	                                $admin_sesion = new AdminSesion();
 	                                $admin_sesion->setFechaIngreso(new \DateTime('now'));
+	                                $admin_sesion->setFechaRequest(new \DateTime('now'));
 	                                $admin_sesion->setUsuario($usuario);
 	                                $admin_sesion->setDisponible(true);
 	                                $em->persist($admin_sesion);
@@ -2421,6 +2422,7 @@ class Functions
                             // Se crea la sesión en BD
                             $admin_sesion = new AdminSesion();
                             $admin_sesion->setFechaIngreso(new \DateTime('now'));
+                            $admin_sesion->setFechaRequest(new \DateTime('now'));
                             $admin_sesion->setUsuario($usuario);
                             $admin_sesion->setDisponible(true);
                             $em->persist($admin_sesion);
