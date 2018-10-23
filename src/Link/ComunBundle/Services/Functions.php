@@ -1966,11 +1966,21 @@ class Functions
 
         $exito = false;
         $error = '';
+        $usuario = 0;
 
 		$em = $this->em;
 
-        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
-                                                                                       'clave' => $datos['clave']));
+		$query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+									WHERE LOWER(u.login) = :login AND u.clave = :clave')
+                    ->setParameters(array('login' => strtolower($datos['login']),
+                    					  'clave' => $datos['clave']));
+        $usuarios = $query->getResult();
+
+        if ($usuarios)
+        {
+        	$usuario = $usuarios[0];
+        }
+
         if (!$usuario)//validamos que el usuario exista
         {
             $error = $this->translator->trans('Usuario o clave incorrecta.');
@@ -2241,11 +2251,20 @@ class Functions
 
         $exito = false;
         $error = '';
+        $usuario = 0;
 
 		$em = $this->em;
 
-        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
-                                                                                       'clave' => $datos['clave']));
+		$query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+									WHERE LOWER(u.login) = :login AND u.clave = :clave')
+                    ->setParameters(array('login' => strtolower($datos['login']),
+                    					  'clave' => $datos['clave']));
+        $usuarios = $query->getResult();
+
+        if ($usuarios)
+        {
+        	$usuario = $usuarios[0];
+        }
 
 		if (!$usuario)
         {
