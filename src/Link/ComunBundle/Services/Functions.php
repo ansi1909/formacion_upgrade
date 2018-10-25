@@ -2059,7 +2059,7 @@ class Functions
 
                         	if ($is_active) 
                         	{
-                        		$error = $this->translator->trans('Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.');
+                        		$error = $this->translator->trans('Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.');
                         	}
                         	else {
 
@@ -2299,7 +2299,7 @@ class Functions
             }
             else if ($is_active)
             {
-                $error = $this->translator->trans('Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.');
+                $error = $this->translator->trans('Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.');
             }
             else {
 
