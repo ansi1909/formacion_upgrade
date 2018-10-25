@@ -20,11 +20,13 @@ begin
     WHERE np.pagina_empresa_id = pe.id
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.activo = true
+    AND u.login NOT LIKE 'temp%'
     ) as registrados,
     (SELECT COUNT(u.id) AS cursando FROM admin_usuario u INNER JOIN 
       (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
     ON u.nivel_id = n.id 
     WHERE np.pagina_empresa_id = pe.id
+        AND u.login NOT LIKE 'temp%'
         AND u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id
             AND pl.estatus_pagina_id != 3)
         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
@@ -34,6 +36,7 @@ begin
       (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
     ON u.nivel_id = n.id 
     WHERE np.pagina_empresa_id = pe.id
+        AND u.login NOT LIKE 'temp%'
         AND u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id
             AND pl.estatus_pagina_id = 3)
         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
@@ -44,12 +47,14 @@ begin
     ON u.nivel_id = n.id 
     WHERE np.pagina_empresa_id = pe.id 
     AND u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.id NOT IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id)
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s) 
     ) as no_iniciados,
     (SELECT COUNT(u.id) AS activos FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id 

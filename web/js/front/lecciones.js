@@ -213,8 +213,10 @@ $(document).ready(function() {
 					//clearTimeout( timerId );
 				},
 				error: function(){
+					$('#comentario').val('');
 					console.log('Error comentando el muro'); // Hay que implementar los mensajes de error para el frontend
 					$('#button-comment').show();
+
 				}
 			});
 		}

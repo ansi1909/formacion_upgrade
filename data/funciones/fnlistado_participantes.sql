@@ -39,6 +39,7 @@ begin
         FROM admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id
         LEFT JOIN admin_sesion a ON u.id = a.usuario_id
         WHERE u.empresa_id = pempresa_id 
+        AND u.login NOT LIKE 'temp%'
         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
         GROUP BY u.competencia,u.clave,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
 
@@ -67,6 +68,7 @@ begin
         LEFT JOIN admin_sesion a ON u.id = a.usuario_id
         WHERE u.empresa_id = pempresa_id AND u.nivel_id = pnivel_id 
         AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+        AND u.login NOT LIKE 'temp%'
         GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
 
     ElsIf pnivel_id = 0 AND ppagina_id > 0 Then 
@@ -98,6 +100,7 @@ begin
             ON u.nivel_id = n.id 
             LEFT JOIN admin_sesion a ON u.id = a.usuario_id
             WHERE u.empresa_id = pempresa_id AND pe.pagina_id = ppagina_id 
+            AND u.login NOT LIKE 'temp%'
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
 
@@ -129,6 +132,7 @@ begin
                 (SELECT pl.usuario_id FROM certi_pagina_log pl 
                     WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id != 3 ) 
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+            AND u.login NOT LIKE 'temp%'
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
 
     ElsIf preporte = 4 Then
@@ -157,6 +161,7 @@ begin
             AND u.id IN 
                 (SELECT pl.usuario_id FROM certi_pagina_log pl 
                     WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 ) 
+            AND u.login NOT LIKE 'temp%'
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
 
@@ -191,6 +196,7 @@ begin
             AND NOT EXISTS 
                 (SELECT * FROM certi_pagina_log pl 
                     WHERE  pl.usuario_id = u.id AND pl.pagina_id = ppagina_id ) 
+            AND u.login NOT LIKE 'temp%'
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
             AND pe.pagina_id = ppagina_id
