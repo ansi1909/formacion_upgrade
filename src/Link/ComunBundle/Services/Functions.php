@@ -2046,7 +2046,7 @@ class Functions
 								$timeSecond = strtotime(date('Y-m-d H:i:s'));
 								$differenceInSeconds = $timeSecond - $timeFirst;
 								$differenceInMinutes = number_format($differenceInSeconds/60, 0);
-								if ($differenceInMinutes < 60)
+								if ($differenceInMinutes < 5)
 								{
 									$is_active = true;
 								}
@@ -2059,7 +2059,7 @@ class Functions
 
                         	if ($is_active) 
                         	{
-                        		$error = $this->translator->trans('Este usuario tiene una sesión activa').'.';
+                        		$error = $this->translator->trans('Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.').'.';
                         	}
                         	else {
 
@@ -2282,7 +2282,7 @@ class Functions
 				$timeSecond = strtotime(date('Y-m-d H:i:s'));
 				$differenceInSeconds = $timeSecond - $timeFirst;
 				$differenceInMinutes = number_format($differenceInSeconds/60, 0);
-				if ($differenceInMinutes < 60)
+				if ($differenceInMinutes < 5)
 				{
 					$is_active = true;
 				}
@@ -2299,7 +2299,7 @@ class Functions
             }
             else if ($is_active)
             {
-                $error = $this->translator->trans('Este usuario tiene una sesión activa');
+                $error = $this->translator->trans('Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.');
             }
             else {
 

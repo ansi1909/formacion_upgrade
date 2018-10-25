@@ -219,7 +219,7 @@ class DefaultController extends Controller
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha Fin').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios no iniciados').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios cursando').'</th>
-                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminado').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminados').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
                     </tr>
