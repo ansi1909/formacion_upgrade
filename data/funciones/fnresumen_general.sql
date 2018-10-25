@@ -22,6 +22,7 @@ begin
     -- Ingresados
     SELECT COUNT(u.id) INTO ingresados FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha)
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id;
@@ -29,6 +30,7 @@ begin
     -- No ingresados
     SELECT COUNT(u.id) INTO no_ingresados FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id NOT IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha)
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id;
@@ -36,6 +38,7 @@ begin
     -- Activos
     SELECT COUNT(u.id) INTO activos FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha)
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id 
@@ -47,6 +50,7 @@ begin
     -- Inactivos
     SELECT COUNT(u.id) INTO inactivos FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id NOT IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha) 
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id 
@@ -58,6 +62,7 @@ begin
     -- No iniciados en el programa
     SELECT COUNT(u.id) INTO no_iniciados FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha) 
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id 
@@ -70,6 +75,7 @@ begin
     -- En curso del programa
     SELECT COUNT(u.id) INTO en_curso FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha) 
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id 
@@ -82,6 +88,7 @@ begin
     -- Aprobados en el programa
     SELECT COUNT(u.id) INTO aprobados FROM admin_usuario u 
     WHERE u.activo = true 
+    AND u.login NOT LIKE 'temp%'
     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s WHERE s.fecha_ingreso <= pfecha) 
     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
     AND u.empresa_id = pempresa_id 

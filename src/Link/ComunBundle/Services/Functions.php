@@ -239,13 +239,15 @@ class Functions
                             			 ];
 
                     $correo = $this->sendEmail($parametros_correo);
-
-                }
-
-               	//crea la notificacion para el usuario cuando el usuario que publica 
+                    	//crea la notificacion para el usuario cuando el usuario que publica 
+               	
                	$descripcion = $this->tipoDescripcion($tipoMensaje, $muro->getUsuario(), $pagina, $parametros_correo['datos']['usuarioPadre']);
                	$tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
                	$this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
+
+                }
+
+               
 
            	}
 
@@ -1964,11 +1966,21 @@ class Functions
 
         $exito = false;
         $error = '';
+        $usuario = 0;
 
 		$em = $this->em;
 
-        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
-                                                                                       'clave' => $datos['clave']));
+		$query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+									WHERE LOWER(u.login) = :login AND u.clave = :clave')
+                    ->setParameters(array('login' => strtolower($datos['login']),
+                    					  'clave' => $datos['clave']));
+        $usuarios = $query->getResult();
+
+        if ($usuarios)
+        {
+        	$usuario = $usuarios[0];
+        }
+
         if (!$usuario)//validamos que el usuario exista
         {
             $error = $this->translator->trans('Usuario o clave incorrecta.');
@@ -2034,7 +2046,7 @@ class Functions
 								$timeSecond = strtotime(date('Y-m-d H:i:s'));
 								$differenceInSeconds = $timeSecond - $timeFirst;
 								$differenceInMinutes = number_format($differenceInSeconds/60, 0);
-								if ($differenceInMinutes < 60)
+								if ($differenceInMinutes < 5)
 								{
 									$is_active = true;
 								}
@@ -2047,7 +2059,7 @@ class Functions
 
                         	if ($is_active) 
                         	{
-                        		$error = $this->translator->trans('Este usuario tiene una sesión activa').'.';
+                        		$error = $this->translator->trans('Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.').'.';
                         	}
                         	else {
 
@@ -2239,11 +2251,20 @@ class Functions
 
         $exito = false;
         $error = '';
+        $usuario = 0;
 
 		$em = $this->em;
 
-        $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $datos['login'],
-                                                                                       'clave' => $datos['clave']));
+		$query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+									WHERE LOWER(u.login) = :login AND u.clave = :clave')
+                    ->setParameters(array('login' => strtolower($datos['login']),
+                    					  'clave' => $datos['clave']));
+        $usuarios = $query->getResult();
+
+        if ($usuarios)
+        {
+        	$usuario = $usuarios[0];
+        }
 
 		if (!$usuario)
         {
@@ -2261,7 +2282,7 @@ class Functions
 				$timeSecond = strtotime(date('Y-m-d H:i:s'));
 				$differenceInSeconds = $timeSecond - $timeFirst;
 				$differenceInMinutes = number_format($differenceInSeconds/60, 0);
-				if ($differenceInMinutes < 60)
+				if ($differenceInMinutes < 5)
 				{
 					$is_active = true;
 				}
@@ -2278,7 +2299,7 @@ class Functions
             }
             else if ($is_active)
             {
-                $error = $this->translator->trans('Este usuario tiene una sesión activa');
+                $error = $this->translator->trans('Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.');
             }
             else {
 
