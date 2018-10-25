@@ -22,6 +22,7 @@ begin
             AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             AND CAST(fecha_ingreso AS TIME) BETWEEN phora1 and phora2 
             AND fecha_ingreso BETWEEN pdesde AND phasta 
+            AND u.login NOT LIKE 'temp%'
             AND date_part('dow', fecha_ingreso) = i;
 
     If i = 0 Then 
