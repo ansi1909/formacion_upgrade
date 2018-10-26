@@ -643,27 +643,20 @@ class NotificacionController extends Controller
                                                    'destinatario' => $correo);
                         $correo = $f->sendEmail($parametros_correo);
 
+                        if ($correo)
+                        {
+                            $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                            $r_np->setEnviado(true);
+                            $em->persist($r_np);
+                            $em->flush();
+                        }
+
                         /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
                                                                     'apellido' => $apellido,
                                                                     'mensaje' => $mensaje,
                                                                     'background' => $background,
                                                                     'logo' => $logo,
                                                                     'link_plataforma' => $link_plataforma));*/
-
-                        $notificacion_programada->setEnviado(true);
-                        $em->persist($notificacion_programada);
-                        $em->flush();
-
-                        if ($notificacion_programada->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
-                        {
-                            $npgs = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
-                            foreach ($npgs as $npg)
-                            {
-                                $npg->setEnviado(true);
-                                $em->persist($npg);
-                                $em->flush();
-                            }
-                        }
 
                     }
                     
