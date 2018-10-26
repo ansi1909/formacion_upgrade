@@ -80,7 +80,7 @@ BEGIN
     -- En caso de ser una programacion dirigida a un grupo de participantes
     ELSIF reg.tipo_destino_id = 4 THEN
         FOR rst IN 
-            SELECT u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo  
+            SELECT np.id as np_id, u.id as id, u.login as login, u.clave as clave, u.nombre as nombre, u.apellido as apellido, u.correo_personal as correo_personal, u.correo_corporativo as correo_corporativo  
             FROM admin_usuario u, admin_notificacion_programada np 
             WHERE np.grupo_id = reg.id 
                 AND np.entidad_id = u.id 
@@ -88,7 +88,7 @@ BEGIN
                 AND u.login NOT LIKE 'temp%'
                 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
             ORDER BY u.id ASC LOOP
-            str = reg.id || '__' || rst.id || '__' || rst.login || '__' || rst.clave || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje;
+            str = rst.np_id || '__' || rst.id || '__' || rst.login || '__' || rst.clave || '__' || rst.nombre || '__' || rst.apellido || '__' || CASE WHEN rst.correo_corporativo Is Null OR rst.correo_corporativo = '' THEN rst.correo_personal ELSE rst.correo_corporativo END || '__' || reg.asunto || '__' || reg.mensaje;
             arr = '{}';
             arr[i] = str;
             RETURN NEXT arr;

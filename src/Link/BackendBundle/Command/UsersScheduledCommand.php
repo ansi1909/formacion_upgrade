@@ -36,20 +36,26 @@ class UsersScheduledCommand extends ContainerAwareCommand
         $query->execute();
         $r = $query->fetchAll();
 
+        error_log('-------------------CRON JOB DEL DIA '.date('d/m/Y H:i').'---------------------------------------------------');
         $output->writeln('CANTIDAD: '.count($r));
 
         $background = $yml['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
         //$logo = $yml['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
         $logo = ''; // Solo por requerimiento para BANFONDESA
+        $j = 0; // Contador de correos exitosos
 
         for ($i = 0; $i < count($r); $i++) 
         {
 
+            if ($j == 100)
+            {
+                // Cantidad tope de correos en una corrida
+                break;
+            }
+
             // Limpieza de resultados
             $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
             $reg = str_replace('"}', '', $reg);
-
-            $output->writeln(var_dump($reg));
 
             // Se descomponen los elementos del resultado
             list($np_id, $usuario_id, $login, $clave, $nombre, $apellido, $correo, $asunto, $mensaje, $empresa_id) = explode("__", $reg);
@@ -75,23 +81,25 @@ class UsersScheduledCommand extends ContainerAwareCommand
                 $ok = $f->sendEmail($parametros_correo);
                 if ($ok)
                 {
+                    $j++;
+                    $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+                    $notificacion_programada->setEnviado(true);
+                    $em->persist($notificacion_programada);
+                    $em->flush();
+                    $output->writeln($j.' .----------------------------------------------------------------------------------------------');
+                    $output->writeln($reg);
                 	$output->writeln('Correo enviado a '.$correo);
+                    
+                    // ERROR LOG
+                    error_log($j.' .----------------------------------------------------------------------------------------------');
+                    error_log($reg);
+                    error_log('Correo enviado a '.$correo);
+
                 }
-
-                $notificacion_programada = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-                $notificacion_programada->setEnviado(true);
-                $em->persist($notificacion_programada);
-                $em->flush();
-
-                if ($notificacion_programada->getTipoDestino()->getId() == $yml2['parameters']['tipo_destino']['grupo'])
-                {
-                    $npgs = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
-                    foreach ($npgs as $npg)
-                    {
-                        $npg->setEnviado(true);
-                        $em->persist($npg);
-                        $em->flush();
-                    }
+                else {
+                    error_log(' .----------------------------------------------------------------------------------------------');
+                    error_log($reg);
+                    error_log('NO SE ENVIO '.$correo);
                 }
 
             }
