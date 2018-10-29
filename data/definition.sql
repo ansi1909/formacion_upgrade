@@ -645,3 +645,21 @@ fecha_creacion timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_alarma_id) REFERENCES admin_tipo_alarma (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_tipo_correo(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_correo(
+-- Attributes --
+id serial,
+tipo_correo_id integer,
+entidad_id integer,
+usuario_id integer,
+correo varchar(100),
+fecha timestamp without time zone,
+ PRIMARY KEY (id),
+ FOREIGN KEY (tipo_correo_id) REFERENCES admin_tipo_correo (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
