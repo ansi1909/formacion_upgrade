@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNotificacion;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
 use Link\ComunBundle\Entity\AdminNotificacionProgramada;
+use Link\ComunBundle\Entity\AdminCorreo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -596,6 +597,15 @@ class NotificacionController extends Controller
                         $em->persist($np);
                         $em->flush();
                     }
+                    else {
+                        $np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findOneBy(array('notificacion' => $notificacion_programada->getNotificacion()->getId(),
+                                                                                                                 'entidadId' => $entidad,
+                                                                                                                 'grupo' => $notificacion_programada->getId()));
+                        $np->setFechaDifusion(new \DateTime($fecha_difusion));
+                        $np->setEnviado(false);
+                        $em->persist($np);
+                        $em->flush();
+                    }
                 }
             }
 
@@ -612,9 +622,17 @@ class NotificacionController extends Controller
                 //$logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
                 $logo = ''; // Por ahora no se colocará el logo de formación en el header del correo
                 $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
+                $j = 0; // Contador de correos exitosos
+                $np_id = 0; // notificacion_programada_id
 
                 for ($i = 0; $i < count($r); $i++) 
                 {
+
+                    if ($j == 100)
+                    {
+                        // Cantidad tope de correos en una corrida
+                        break;
+                    }
 
                     // Limpieza de resultados
                     $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
@@ -626,38 +644,92 @@ class NotificacionController extends Controller
                     if ($correo != '')
                     {
 
-                        // Sustitución de variables en el texto
-                        $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
-                        $reemplazos = array($login, $clave, $nombre, $apellido);
-                        $mensaje = str_replace($comodines, $reemplazos, $mensaje);
+                        // Validar que no se haya enviado el correo a este destinatario
+                        $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
+                                                                                                        'entidadId' => $np_id,
+                                                                                                        'usuario' => $usuario_id,
+                                                                                                        'correo' => $correo));
 
-                        $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
-                                                   'datos' => array('nombre' => $nombre,
-                                                                    'apellido' => $apellido,
-                                                                    'mensaje' => $mensaje,
-                                                                    'background' => $background,
-                                                                    'logo' => $logo,
-                                                                    'link_plataforma' => $link_plataforma),
-                                                   'asunto' => $asunto,
-                                                   'remitente' => $this->container->getParameter('mailer_user'),
-                                                   'destinatario' => $correo);
-                        $correo = $f->sendEmail($parametros_correo);
-
-                        if ($correo)
+                        if (!$correo_bd)
                         {
-                            $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
-                            $r_np->setEnviado(true);
-                            $em->persist($r_np);
-                            $em->flush();
+
+                            // Sustitución de variables en el texto
+                            $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
+                            $reemplazos = array($login, $clave, $nombre, $apellido);
+                            $mensaje = str_replace($comodines, $reemplazos, $mensaje);
+
+                            $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
+                                                       'datos' => array('nombre' => $nombre,
+                                                                        'apellido' => $apellido,
+                                                                        'mensaje' => $mensaje,
+                                                                        'background' => $background,
+                                                                        'logo' => $logo,
+                                                                        'link_plataforma' => $link_plataforma),
+                                                       'asunto' => $asunto,
+                                                       'remitente' => $this->container->getParameter('mailer_user'),
+                                                       'destinatario' => $correo);
+                            $ok = $f->sendEmail($parametros_correo);
+
+                            if ($ok)
+                            {
+
+                                $j++;
+
+                                // Si es una notificación para un grupo de participantes, se marca como enviado
+                                $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+
+                                if ($r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
+                                {
+                                    $r_np->setEnviado(true);
+                                    $em->persist($r_np);
+                                    $em->flush();
+                                }
+
+                                // Registro del correo recien enviado
+                                $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['notificacion_programada']);
+                                $r_usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+                                $email = new AdminCorreo();
+                                $email->setTipoCorreo($tipo_correo);
+                                $email->setEntidadId($np_id);
+                                $email->setUsuario($r_usuario);
+                                $email->setCorreo($correo);
+                                $email->setFecha(new \DateTime('now'));
+                                $em->persist($email);
+                                $em->flush();
+
+                            }
+
+                            /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
+                                                                        'apellido' => $apellido,
+                                                                        'mensaje' => $mensaje,
+                                                                        'background' => $background,
+                                                                        'logo' => $logo,
+                                                                        'link_plataforma' => $link_plataforma));*/
+
                         }
 
-                        /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
-                                                                    'apellido' => $apellido,
-                                                                    'mensaje' => $mensaje,
-                                                                    'background' => $background,
-                                                                    'logo' => $logo,
-                                                                    'link_plataforma' => $link_plataforma));*/
+                    }
+                    
+                }
 
+                // Si se enviaron todos los correos, se coloca la notificación como enviada
+                if ($np_id)
+                {
+
+                    $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+
+                    $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c 
+                                                WHERE c.tipoCorreo = :notificacion_programada 
+                                                AND c.entidadId = :np_id')
+                                ->setParameters(array('notificacion_programada' => $yml['parameters']['tipo_correo']['notificacion_programada'],
+                                                      'np_id' => $np_id));
+                    $emails = $query->getSingleScalarResult();
+
+                    if ($np_main->getTipoDestino()->getId() != $yml['parameters']['tipo_destino']['grupo'] && $emails >= count($r))
+                    {
+                        $np_main->setEnviado(true);
+                        $em->persist($np_main);
+                        $em->flush();
                     }
                     
                 }

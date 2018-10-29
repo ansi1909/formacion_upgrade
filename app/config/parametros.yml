@@ -55,6 +55,8 @@ parameters:
         novedad : 6
         biblioteca : 7
         aporte_muro: 8
+    tipo_correo:
+        notificacion_programada: 1
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2
@@ -75,11 +77,11 @@ parameters:
         bienvenida: 1
     correo_recuperacion:
         asunto: 'Formación2.0 - Recuperación de usuario y clave.'
-        remitente: 'soporte@formacion2puntocero.com'
+        remitente: 'soporte@formacionsmart.com'
     correo_soporte:
         asunto: 'Formación2.0 - Solicitud de soporte virtual. '
-        remitente: 'soporte@formacion2puntocero.com'
-        destinatario: 'soporte@formacion2puntocero.com'
+        remitente: 'soporte@formacionsmart.com'
+        destinatario: 'soporte@formacionsmart.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2
@@ -93,4 +95,4 @@ parameters:
         espacio_colaborativo: 100
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
     search_locale: 0
-    mailer_user: tutorvirtual@formacion2puntocero.com
+    mailer_user: soporte@formacionsmart.com

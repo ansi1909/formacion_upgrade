@@ -1,0 +1,57 @@
+Link\ComunBundle\Entity\AdminCorreo:
+    type: entity
+    table: admin_correo
+    indexes:
+        IDX_2ACC3A30FEC8CA14:
+            columns:
+                - tipo_correo_id
+        IDX_2ACC3A30DB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        entidadId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: entidad_id
+        correo:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        fecha:
+            type: datetime
+            nullable: true
+    manyToOne:
+        tipoCorreo:
+            targetEntity: AdminTipoCorreo
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                tipo_correo_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
