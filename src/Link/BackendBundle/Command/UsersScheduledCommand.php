@@ -37,7 +37,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
         $query->execute();
         $r = $query->fetchAll();
 
-        error_log('-------------------CRON JOB DEL DIA '.date('d/m/Y H:i').'---------------------------------------------------');
+        //error_log('-------------------CRON JOB DEL DIA '.date('d/m/Y H:i').'---------------------------------------------------');
         $output->writeln('CANTIDAD: '.count($r));
 
         $background = $yml['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
@@ -122,15 +122,15 @@ class UsersScheduledCommand extends ContainerAwareCommand
                         $em->flush();
                         
                         // ERROR LOG
-                        error_log($j.' .----------------------------------------------------------------------------------------------');
-                        error_log($reg);
-                        error_log('Correo enviado a '.$correo);
+                        //error_log($j.' .----------------------------------------------------------------------------------------------');
+                        //error_log($reg);
+                        //error_log('Correo enviado a '.$correo);
 
                     }
                     else {
-                        error_log(' .----------------------------------------------------------------------------------------------');
-                        error_log($reg);
-                        error_log('NO SE ENVIO '.$correo);
+                        //error_log(' .----------------------------------------------------------------------------------------------');
+                        //error_log($reg);
+                        //error_log('NO SE ENVIO '.$correo);
                     }
 
                 }
