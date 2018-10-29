@@ -374,3 +374,16 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_logo', 'i
 INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (1, 'Horizontal', 'imgLogoHor');
 INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (2, 'Vertical', 'imgLogoVer');
 INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (3, 'Circular/Cuadrado', 'imgLogoCC');
+
+
+------------------------------------------------------------------------------------------------------------------------
+-- Name: idadmin_tipo_correo_seq;; Type: SEQUENCE SET; Schema: public;
+--
+
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_correo', 'id'), 2, false);
+
+--
+-- Data for Name: admin_social; Type: TABLE DATA; Schema: public;
+--
+
+INSERT INTO admin_tipo_correo (id, nombre) VALUES (1, 'Notificación programada');
