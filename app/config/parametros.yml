@@ -55,6 +55,8 @@ parameters:
         novedad : 6
         biblioteca : 7
         aporte_muro: 8
+    tipo_correo:
+        notificacion_programada: 1
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2
