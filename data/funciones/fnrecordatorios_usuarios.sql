@@ -14,7 +14,7 @@ DECLARE
 BEGIN
 
   FOR reg IN 
-    SELECT np.id as id, np.tipo_destino_id as tipo_destino_id, np.entidad_id as entidad_id, n.asunto as asunto, n.mensaje as mensaje, n.empresa_id as empresa_id 
+    SELECT np.id as id, np.tipo_destino_id as tipo_destino_id, np.entidad_id as entidad_id, n.asunto as asunto, n.mensaje as mensaje, n.empresa_id as empresa_id, np.enviado as enviado
     FROM admin_notificacion_programada np 
     JOIN admin_notificacion n ON np.notificacion_id = n.id 
     JOIN admin_empresa e ON n.empresa_id = e.id 
