@@ -23,6 +23,7 @@ class DefaultController extends Controller
         $f = $this->get('funciones');
 
         $empresa_id = isset($session->get('empresa')['id']) ? $session->get('empresa')['id'] : 0;
+        $empresa_id = !$empresa_id ? ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0 : $empresa_id;
 
         if ($session->get('sesion_id'))
         {
