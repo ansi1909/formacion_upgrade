@@ -233,6 +233,8 @@ Editar perfil: Edit profile
 Editar tema: Edit topic
 El archivo seleccionado no se cargo correctamente.: The selected file is not loaded correctly.
 Elegir empresa: Choose company
+Elementos seleccionados: Selected items
+Elementos sin seleccionar: Unselected items
 Elija el destino de la página: Choose target of the page
 Eliminado: Deleted
 Eliminar: Remove
@@ -617,19 +619,19 @@ Nivel no existente para esta empresa: No level for this company
 Niveles: Levels
 Niveles por empresas: Levels by companies
 no existe: does not exit
-No has elegido el tipo de pregunta: You have not chosen the question type
-no posee participantes registrados: does not have registered participants
 No existe destino al que se pueda mover la página: There is not destination in which the page can be moved
 No existe evaluación para esta página: There is not test for this page
 No existen páginas: There are no pages
 No existen registros para esta consulta: No records for this query
 No existen usuarios conectados en este momento: There are no users connected at this time
-No hay problema, te enviaremos un correo con: No problem, we send you an email with
-No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No has alcanzado la aprobación de la evaluación: You have not reached the evaluation approval
 No has alcanzado la calificación para la aprobación de: You have not reached the qualification for the approval of
+No has elegido el tipo de pregunta: You have not chosen the question type
+No hay problema, te enviaremos un correo con: No problem, we send you an email with
+No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: There are no Programs available for the company. Contact the system administrator.
 No iniciados: Without starting
 No Iniciado: Not started
+no posee participantes registrados: does not have registered participants
 No se encontraron resultados: No found results
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No activity has been recorded ... Your session will be closed in the next 5 seconds
 No se mostrará en la página de login: It will not be shown in login page
@@ -696,7 +698,6 @@ Participantes activos: Active participants
 Participantes inactivos: Inactive participants
 Participantes no iniciados: Uninitiated participants
 Participantes registrados: Registered participants
-Participantes de la empresa: Company participants
 Participantes cursando: Participantes cursando
 Participantes culminados: Participantes culminados
 Participantes conectados: Participantes conectados
@@ -832,6 +833,7 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Sigue aprendiendo: Keep learning
 Sigue intentándolo: Keep trying
 Siguiente: Next
+Sin correo: Without email
 Sin leer: Unread
 Sistema Formación: System Training
 Sólo archivo en PDF: Only PDF file

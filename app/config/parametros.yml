@@ -46,6 +46,7 @@ parameters:
         no_ingresado: 5
         no_ingresado_programa: 6
         aprobados: 7
+        en_curso: 8
     tipo_alarma:
         respuesta_muro: 1
         espacio_colaborativo: 2
