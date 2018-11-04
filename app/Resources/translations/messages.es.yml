@@ -233,6 +233,8 @@ Editar perfil: Editar perfil
 Editar tema: Editar tema
 El archivo seleccionado no se cargo correctamente.: El archivo seleccionado no se cargo correctamente.
 Elegir empresa: Elegir empresa
+Elementos seleccionados: Elementos seleccionados
+Elementos sin seleccionar: Elementos sin seleccionar
 Elija el destino de la página: Elija el destino de la página
 Eliminado: Eliminado
 Eliminar: Eliminar
@@ -617,19 +619,19 @@ Nivel no existente para esta empresa: Nivel no existente para esta empresa
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
-No has elegido el tipo de pregunta: No has elegido el tipo de pregunta
-no posee participantes registrados: no posee participantes registrados
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
 No existen páginas: No existen páginas
 No existen registros para esta consulta: No existen registros para esta consulta
 No existen usuarios conectados en este momento: No existen usuarios conectados en este momento
-No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
-No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No has alcanzado la aprobación de la evaluación: No has alcanzado la aprobación de la evaluación
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
+No has elegido el tipo de pregunta: No has elegido el tipo de pregunta
+No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
+No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No iniciados: No iniciados
 No Iniciado: No Iniciado
+no posee participantes registrados: no posee participantes registrados
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se mostrará en la página de login: No se mostrará en la página de login
@@ -696,7 +698,6 @@ Participantes activos: Participantes activos
 Participantes inactivos: Participantes inactivos
 Participantes no iniciados: Participantes no iniciados
 Participantes registrados: Participantes registrados
-Participantes de la empresa: Participantes de la empresa
 Participantes cursando: Participants taking part
 Participantes culminados: Finished participants
 Participantes conectados: Connected participants
@@ -832,6 +833,7 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Sigue aprendiendo: Sigue aprendiendo
 Sigue intentándolo: Sigue intentándolo
 Siguiente: Siguiente
+Sin correo: Sin correo
 Sin leer: Sin leer
 Sistema Formación: Sistema Formación
 Sólo archivo en PDF: Sólo archivo en PDF
