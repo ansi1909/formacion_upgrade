@@ -12,7 +12,7 @@
             font-weight: bold;
         }
         .ms-container {
-            width: 80%;
+            width: 100%;
         }
     </style>
 {% endblock %}
@@ -67,11 +67,11 @@
                     <br>
                     <div class="row" id="div-entidades">
                         {% if notificacion_programada.id and entidades|length > 0 %}
-                            <div class="col-sm-10 col-md-10 col-lg-10" id="div-grupo">
+                            <div class="col-sm-16 col-md-16 col-lg-16" id="div-grupo">
                                 <label for="entidades" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Grupo seleccionado'|trans }}</label>
                                 <div class="col-sm-16 col-md-16 col-lg-16">
                                     {% if entidades.tipo == 'text' %}
-                                        <input type="text" id="entidades" name="entidades"  class="form-control form_sty1" value="{{ entidades.valor }}" disabled="disabled">
+                                        <input type="text" id="entidades" name="entidades" class="form-control form_sty1" value="{{ entidades.valor }}" disabled="disabled">
                                     {% else %}
                                         {% if entidades.multiple %}
                                             <select name="entidades[]" id="entidades" class="form-control multiple" multiple="multiple">
@@ -127,8 +127,8 @@
         function observeMultiSelect()
         {
             $('.multiple').multiSelect({
-                selectableHeader: "<div class='sty__title'>{{ 'Participantes de la empresa'|trans }}</div>",
-                selectionHeader: "<div class='sty__title'>{{ 'Participantes seleccionados'|trans }}</div>"
+                selectableHeader: "<div class='sty__title'>{{ 'Elementos sin seleccionar'|trans }}</div>",
+                selectionHeader: "<div class='sty__title'>{{ 'Elementos seleccionados'|trans }}</div>"
             });
         }
 
@@ -143,7 +143,7 @@
                 var entidades = $('#entidades').val();
                 var tipo_destino_id = $('#tipo_destino_id').val();
                 
-                if (tipo_destino_id == 4)
+                if (tipo_destino_id == 3 || tipo_destino_id == 4 || tipo_destino_id == 7 || tipo_destino_id == 8)
                 {
                     if (entidades == null)
                     {
@@ -156,7 +156,7 @@
                         }
                     }
                 }
-                else if (tipo_destino_id == 2 || tipo_destino_id == 3 || tipo_destino_id == 6 || tipo_destino_id == 7)
+                else if (tipo_destino_id == 2 || tipo_destino_id == 6)
                 {
                     if (entidades == '')
                     {
