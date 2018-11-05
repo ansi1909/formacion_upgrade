@@ -252,7 +252,7 @@ INSERT INTO admin_tipo_noticia (id, nombre) VALUES (3, 'Biblioteca Virtual');
 -- Name: idadmin_tipo_destino_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_destino', 'id'), 8, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_destino', 'id'), 9, false);
 
 --
 -- Data for Name: admin_tipo_destino; Type: TABLE DATA; Schema: public;
@@ -260,11 +260,12 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_destino',
 
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (1, 'Todos');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (2, 'Nivel');
-INSERT INTO admin_tipo_destino (id, nombre) VALUES (3, 'Programa');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (3, 'Participantes asignados a uno o más programas');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (4, 'Grupo de participantes');
-INSERT INTO admin_tipo_destino (id, nombre) VALUES (5, 'Usuarios que no han ingresado');
-INSERT INTO admin_tipo_destino (id, nombre) VALUES (6, 'Usuarios que no han ingresado a un programa');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (5, 'Participantes que no han ingresado');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (6, 'Participantes que no han ingresado a un programa');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (7, 'Usuarios aprobados');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (8, 'Usuarios en curso');
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Name: idcerti_tipo_certificado_seq;; Type: SEQUENCE SET; Schema: public;

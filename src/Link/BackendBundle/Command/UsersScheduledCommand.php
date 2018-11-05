@@ -32,8 +32,9 @@ class UsersScheduledCommand extends ContainerAwareCommand
         $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
         $base = $yml['parameters']['link_plataforma'];
         
+        $hoy = date('Y-m-d');
         $query = $em->getConnection()->prepare('SELECT fnrecordatorios_usuarios(:pfecha) AS resultado;');
-        $query->bindValue(':pfecha', date('Y-m-d'), \PDO::PARAM_STR);
+        $query->bindValue(':pfecha', $hoy, \PDO::PARAM_STR);
         $query->execute();
         $r = $query->fetchAll();
 
@@ -106,7 +107,9 @@ class UsersScheduledCommand extends ContainerAwareCommand
                         }
 
                         $output->writeln($j.' .----------------------------------------------------------------------------------------------');
-                        $output->writeln($reg);
+                        $output->writeln('np_id: '.$np_id);
+                        $output->writeln('usuario_id: '.$usuario_id);
+                        $output->writeln('Usuario: '.$nombre.' '.$apellido);
                         $output->writeln('Correo enviado a '.$correo);
 
                         // Registro del correo recien enviado
