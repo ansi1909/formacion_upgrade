@@ -262,7 +262,7 @@ INSERT INTO admin_tipo_destino (id, nombre) VALUES (1, 'Todos');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (2, 'Nivel');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (3, 'Participantes asignados a uno o más programas');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (4, 'Grupo de participantes');
-INSERT INTO admin_tipo_destino (id, nombre) VALUES (5, 'Particpantes que no han ingresado');
+INSERT INTO admin_tipo_destino (id, nombre) VALUES (5, 'Participantes que no han ingresado');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (6, 'Participantes que no han ingresado a un programa');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (7, 'Usuarios aprobados');
 INSERT INTO admin_tipo_destino (id, nombre) VALUES (8, 'Usuarios en curso');
