@@ -171,7 +171,7 @@
                 </div>
                 <div class="row mt-4 justify-content-center align-items-center">
                     <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
-                        <p class="txt-modal">{{ 'Para una correcta visualización de los recursos disponbles en'|trans }}<br/>{{ 'formación2.0 ,recomendamos utilizar la ultima versión del'|trans }} </br>{{ 'navegador Google Chrome'|trans }}</p>
+                        <p class="txt-modal">{{ 'Para una correcta visualización de los recursos disponbles en'|trans }}<br/>{{ 'formación2.0, recomendamos utilizar la ultima versión del'|trans }} </br>{{ 'navegador Google Chrome o Mozilla Firefox'|trans }}.</p>
                     </div>
                 </div>
             </div>
@@ -322,10 +322,7 @@
                                 $('.aviso_ajax').html(data.error);
                                 $('#recuperar_clave').show();
                                 $('#correo').val('');
-                                // setTimeout(function(){
-                                //     $('.aviso_ajax').hide();
-                                //     $('.aviso_ajax').html('');
-                                // }, 3000); // 3 segundos 
+                               
 
                             }
 
@@ -350,14 +347,16 @@
             {
                 var googleChrome = !!window.chrome && !!window.chrome.webstore;
 
+                var firefox = typeof InstallTrigger !== 'undefined';
+
                 var Safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
 
-                if (!googleChrome) 
+                if (!googleChrome && !firefox) 
                 {
                     
                     if (Safari) 
                     {
-                      alert("{{ 'Para una correcta visualización de los recursos disponbles en'|trans }}"+"\n"+"{{ 'formación2.0 ,recomendamos utilizar la ultima versión del'|trans }}"+"\n"+" {{ 'navegador Google Chrome'|trans }}.");
+                      alert("{{ 'Para una correcta visualización de los recursos disponbles en'|trans }}"+"\n"+"{{ 'formación2.0, recomendamos utilizar la ultima versión del'|trans }}"+"\n"+" {{ 'navegador Google Chrome o Mozilla Firefox'|trans }}.");
                     }
                     else
                     {
