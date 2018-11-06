@@ -15,7 +15,7 @@
         <style>
             .ancho{
 
-                height: 250px;"
+                height: 450px;"
             }
 
             .error__style{
@@ -166,12 +166,14 @@
                 </div>
                 <div class="row mt-6 justify-content-center align-items-center">
                     <div class="col-10 col-md-10 col-sm-12 col-xs-12 col-lg-10 col-xl-10 text-center">
-                        <h4 class="titulo">{{ 'Recomendación'|trans }}</h4>
+                        <h4 class="titulo">{{ 'Notificación'|trans }}</h4>
                     </div>
                 </div>
                 <div class="row mt-4 justify-content-center align-items-center">
                     <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
-                        <p class="txt-modal">{{ 'Para una correcta visualización de los recursos disponbles en'|trans }}<br/>{{ 'formación2.0, recomendamos utilizar la ultima versión del'|trans }} </br>{{ 'navegador Google Chrome o Mozilla Firefox'|trans }}.</p>
+                        <p class="txt-modal">
+                            {{ 'Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma'|trans }}. 
+                        </p>
                     </div>
                 </div>
             </div>
@@ -349,14 +351,18 @@
 
                 var firefox = typeof InstallTrigger !== 'undefined';
 
+                var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+                var edge = !isIE && !!window.StyleMedia;
+
                 var Safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
 
-                if (!googleChrome && !firefox) 
+                if (!googleChrome && !firefox && !edge) 
                 {
                     
                     if (Safari) 
                     {
-                      alert("{{ 'Para una correcta visualización de los recursos disponbles en'|trans }}"+"\n"+"{{ 'formación2.0, recomendamos utilizar la ultima versión del'|trans }}"+"\n"+" {{ 'navegador Google Chrome o Mozilla Firefox'|trans }}.");
+                      alert("{{ 'Usted ingreso a Formación 2.0 utilizando un navegador no'|trans }}"+"\n"+"{{ 'recomendado, para una correcta visualización de los recursos'|trans }}"+"\n"+" {{ 'disponibles en Formación 2.0, recomendamos utilizar la última'|trans }}."+"\n"+"{{'versión de los siguientes navegadores Google Chrome,'|trans }}"+"\n"+"{{'Mozilla Firefox o Microsoft Edge'|trans }}.");
                     }
                     else
                     {
