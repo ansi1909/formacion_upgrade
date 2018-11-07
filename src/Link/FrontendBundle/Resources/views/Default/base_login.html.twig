@@ -35,6 +35,15 @@
             #contCorreoRecu{
                 margin-left: 14px;
             }
+
+            .field-icon{
+                          float: right;
+                          
+                          margin-top: -48px;
+                          position: relative;
+                          z-index: 2;
+                        }
+
            
         </style>
     </head>
@@ -67,15 +76,19 @@
                                     <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
                                     <input type="text" class="form-control mb-4" id="usuario" name="usuario" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
                                 </div>
-                                <div class="form-group text-left pwdLogin">
-                                    <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
-                                    <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
-                                    <span class="error error__style">{{ error }}</span>
+                                 <div class="form-group text-left pwdLogin">
+                                     <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
+                                    
+                                       
+                                        <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
+                                        <a href="#" id="check_mostrar" class="field-icon" style="border:solid 2px #000000;height: 44px;border-top-right-radius: 7px;border-bottom-right-radius: 7px;border-color:#80ccff;">
+                                         <i class="material-icons" style="margin-top: 7px;">visibility</i>
+                                        </a>
+                                  
+                                        <span class="error error__style">{{ error }}</span>
+                                    
                                 </div>
-                                <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start checkLogin">
-                                    <input type="checkbox" id="check_mostrar" class="mr-2">
-                                    <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Mostrar contraseña'|trans }}</label>
-                                </div>
+                               
                                 <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start checkLogin">
                                     <input type="checkbox" id="check_recordar" class="mr-2">
                                     <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contraseña'|trans }}</label>
@@ -188,8 +201,9 @@
 
             
             is_chrome();
-            $('#check_mostrar').change(function()
+            $('#check_mostrar').click(function(event)
                 {
+                     event.preventDefault();
                      var check= document.getElementById('password');
                      if(check.type=="password")
                      {
