@@ -13,6 +13,11 @@
         {% set css = empresa.css is not null and empresa.css != '' ? asset(empresa.css) : asset('front/client_styles/formacion/css/main.css') %}
         <link rel="stylesheet" href="{{ css }}">
         <style>
+            .ancho{
+
+                height: 350px;"
+            }
+
             .error__style{
                 color: #fd5c63; 
                 margin: 5px 10px 0px 0px; 
@@ -30,6 +35,15 @@
             #contCorreoRecu{
                 margin-left: 14px;
             }
+
+            .field-icon{
+                          float: right;
+                          
+                          margin-top: -48px;
+                          position: relative;
+                          z-index: 2;
+                        }
+
            
         </style>
     </head>
@@ -62,16 +76,25 @@
                                     <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
                                     <input type="text" class="form-control mb-4" id="usuario" name="usuario" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
                                 </div>
-                                <div class="form-group text-left pwdLogin">
-                                    <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
-                                    <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
-                                    <span class="error error__style">{{ error }}</span>
+                                 <div class="form-group text-left pwdLogin">
+                                     <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
+                                    
+                                       
+                                        <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
+                                        <a href="#" id="check_mostrar" class="field-icon" style="border:solid 2px #000000;height: 44px;border-top-right-radius: 7px;border-bottom-right-radius: 7px;border-color:#80ccff;">
+                                         <i class="material-icons" style="margin-top: 7px;">visibility</i>
+                                        </a>
+                                  
+                                        <span class="error error__style">{{ error }}</span>
+                                    
                                 </div>
+                               
                                 <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start checkLogin">
                                     <input type="checkbox" id="check_recordar" class="mr-2">
                                     <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contraseña'|trans }}</label>
                                     <input type="hidden" id="recordar_datos" name="recordar_datos" value="0">
                                 </div>
+
                                 <button type="submit" class="btn btn-primary mb-5 btnLogin" id="entrar">{{ 'Entrar'|trans }}</button>
                             </div>
                         </form>                      
@@ -144,11 +167,54 @@
                 </div>
             </div>
         </div>
+		
+		 <div class="modal modal-recuperacion ancho" id="modalExplorador" tabindex="-1" role="dialog"  aria-hidden="true" >
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 text-right offset-9">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-12 col-xs-12 col-lg-10 col-xl-10 text-center">
+                        <h4 class="titulo">{{ 'Notificación'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
+                        <p class="txt-modal">
+                            {{ 'Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma'|trans }}. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		
 
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
         <script type="text/javascript">
+
+            
+            is_chrome();
+            $('#check_mostrar').click(function(event)
+                {
+                     event.preventDefault();
+                     var check= document.getElementById('password');
+                     if(check.type=="password")
+                     {
+                        check.type="text";
+                     }
+                     else
+                    {
+                        check.type="password";
+                    }
+                });
+
 
             $("#form_inicio").validate({
                 rules: {
@@ -272,10 +338,7 @@
                                 $('.aviso_ajax').html(data.error);
                                 $('#recuperar_clave').show();
                                 $('#correo').val('');
-                                // setTimeout(function(){
-                                //     $('.aviso_ajax').hide();
-                                //     $('.aviso_ajax').html('');
-                                // }, 3000); // 3 segundos 
+                               
 
                             }
 
@@ -293,6 +356,34 @@
                     });
                 }else{
                     $('#correo').val('');
+                }
+            }
+
+            function is_chrome()
+            {
+                var googleChrome = !!window.chrome && !!window.chrome.webstore;
+
+                var firefox = typeof InstallTrigger !== 'undefined';
+
+                var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+                var edge = !isIE && !!window.StyleMedia;
+
+                var Safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+
+                if (!googleChrome && !firefox && !edge) 
+                {
+                    
+                    if (Safari) 
+                    {
+                      alert("{{ 'Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma'|trans }}.");
+                    }
+                    else
+                    {
+                        $('#modalExplorador').modal('show');//desplegar modal de notificacion
+                    }
+                    
+                    
                 }
             }
         </script>
