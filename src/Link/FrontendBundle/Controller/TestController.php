@@ -43,9 +43,6 @@ class TestController extends Controller
         $status_pagina = $em->getRepository('LinkComunBundle:CertiEstatusPagina')->find($yml['parameters']['estatus_pagina']['en_evaluacion']);
         $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                             'pagina' => $pagina_id));
-        $pagina_log->setEstatusPagina($status_pagina);
-        $em->persist($pagina_log);
-        $em->flush();
 
         $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba' => $prueba->getId(),
                                                                                             'usuario' => $session->get('usuario')['id'],
@@ -72,6 +69,15 @@ class TestController extends Controller
                 $prueba_log->setFechaInicio(new \DateTime('now'));
                 $prueba_log->setEstado($yml['parameters']['estado_prueba']['curso']);
             }
+        }
+
+        if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada']){
+            return $this->redirectToRoute('_inicio');
+        }
+        else {
+            $pagina_log->setEstatusPagina($status_pagina);
+            $em->persist($pagina_log);
+            $em->flush();
         }
 
         // Reseteo de valores
