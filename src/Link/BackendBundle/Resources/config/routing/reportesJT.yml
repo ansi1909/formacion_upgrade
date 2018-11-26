@@ -27,4 +27,16 @@ _detalleParticipante:
     defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxdetalleParticipante }
     requirements: 
         _method: POST
-        
+
+_ajaxUsernamesEmpresa:
+    path: /ajaxUsernamesEmpresa
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxUsernamesEmpresa}
+    requirements: 
+        _method: GET
+
+_ajaxUsernamesInfoUsuario:
+    path: /ajaxInfoUsuario
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxInfoUsuario }
+    requirements:
+        _method: GET
+

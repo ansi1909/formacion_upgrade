@@ -89,13 +89,17 @@ class ReportesJTController extends Controller
 
     }
 
+ 
+    
+
     public function ajaxAvanceProgramasAction(Request $request)
     {
         $estatusProragama=['No Iniciado','Iniciado','En evaluación','Finalizado'];
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
-        
+        $fun = $this->get('funciones');
+
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desdef = $request->request->get('desde');
@@ -192,7 +196,8 @@ class ReportesJTController extends Controller
                 }
             }
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/avanceProgramas'.$session->get('sesion_id').'.xls';
+            $paginaName =  $fun->eliminarAcentos($pagina->getNombre());
+            $path = 'recursos/reportes/avanceProgramas_'.$paginaName.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -261,7 +266,7 @@ class ReportesJTController extends Controller
                         'html' => $html);
 
 
-        $return = json_encode($return);
+        $return =  json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
 
@@ -273,6 +278,7 @@ class ReportesJTController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fun = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
         $desdef = $request->request->get('desde');
@@ -363,8 +369,9 @@ class ReportesJTController extends Controller
                     $row++;
                 }
             }
+            $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/conexionesUsuario'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/conexionesUsuario_'.$empresaName.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -420,7 +427,8 @@ class ReportesJTController extends Controller
                         'html' => $html);
 
 
-        $return = json_encode($return);
+        $return = json_encode($return,JSON_UNESCAPED_UNICODE);
+
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
 
@@ -431,7 +439,115 @@ class ReportesJTController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+
+         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:detalleParticipante.html.twig', array(
+                                                                                                'usuario' => $usuario,
+                                                                                                'empresas' => $empresas));
     }
+
+    public function ajaxUsernamesEmpresaAction(Request $request)
+    {
+        $session = new Session();
+        $data = [];
+        $empresa_id = $request->query->get('empresa_id');
+        $buscar =  $request->query->get('term');
+        $buscar = '%'.$buscar.'%';
+        
+
+       $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+                                    WHERE u.login LIKE :term AND u.empresa = :empresa_id')
+                    ->setParameters(array('term'=>$buscar,'empresa_id'=>$empresa_id));
+        $usuarios = $query->getResult();
+
+      
+        foreach ($usuarios as $usuario) {
+             array_push($data,$usuario->getLogin());
+        }
+        $return = json_encode($data);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function buscarHijos($padreId,$em)
+    {
+        $llave = (string)$padreId;
+        $hijos =[$padreId=> $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$padreId))];
+        
+    }
+
+    public function ajaxInfoUsuarioAction(Request $request)
+    {
+        $estructuraPagina = [];
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        $login =  $request->query->get('login');
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findBy(array('login'=>$login,'empresa'=>$empresa_id));
+
+      // obtenemos la informacion de la priera parte del reporte 
+      $query = $em->getConnection()->prepare('SELECT
+                                                fndatos_usuario(:re,:pusername,:pempresaid) as
+                                                resultado; fetch all from re;');
+
+      $re = 're';
+      $query->bindValue(':re', $re, \PDO::PARAM_STR);
+      $query->bindValue(':pusername', $login, \PDO::PARAM_STR);
+      $query->bindValue(':pempresaid', $empresa_id, \PDO::PARAM_INT);
+      $query->execute();
+      $infoUsuario = $query->fetchAll();
+      $infoUsuario = $infoUsuario[0];
+      
+
+      //obtenemos los programas asociados al usuario
+      $query =  $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
+             INNER JOIN LinkComunBundle:CertiPaginaEmpresa cpe WITH cp.id = cpe.pagina
+             INNER JOIN LinkComunBundle:CertiNivelPagina cnp WITH cpe.id = cnp.paginaEmpresa
+             WHERE cnp.nivel =:usuarioId AND cpe.empresa =:usuarioEmpresa')
+         ->setParameters(array('usuarioId'=>$infoUsuario['id_nivel'],'usuarioEmpresa'=>$empresa_id));
+      $programas = $query->getResult();
+
+      // /// obtenemos los modulos de un programa 
+      // foreach ($programas  as $programa) 
+      // {
+      //     $modulos = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$programa->getId()));
+      //     //obtenemos las materias vistas para un modulo
+      //     foreach ($modulos as $modulo) 
+      //     {
+      //         $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
+      //                                    INNER JOIN LinkComunBundle:CertiPaginaLog AS cpl WITH cp.id = cpl.pagina
+      //                                    WHERE cpl.estatusPagina =:statusPagina  AND cp.pagina=:moduloId  AND cpl.usuario=:usuarioId')
+      //                                   ->setParameters(array('statusPagina'=>3,'moduloId'=>$modulo->getId(),'usuarioId'=>$infoUsuario['id_usuario']));
+      //         $materiasVistas = $query->getResult();
+
+      //         foreach ($materiasVistas as $materia) 
+      //         {
+      //              $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
+      //                                    INNER JOIN LinkComunBundle:CertiPaginaLog AS cpl WITH cp.id = cpl.pagina
+      //                                    WHERE cpl.estatusPagina =:statusPagina  AND cp.pagina=:materiaId  AND cpl.usuario=:usuarioId')
+      //                                   ->setParameters(array('statusPagina'=>3,'materiaId'=>$materia->getId(),'usuarioId'=>$infoUsuario['id_usuario']));
+
+      //              $leccionesVistas = $query->getResult();
+      //         }
+      //     }
+      // }
+      
+      
+      
+      $return = json_encode($programas);
+      return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+   
 
    
 
