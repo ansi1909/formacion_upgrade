@@ -1,0 +1,373 @@
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+     <style>
+        .input-group-addon{
+            padding:0px;
+            border-radius: 50px !important;
+        }
+        .input-group .form-control {
+            z-index: 1;
+        }
+        .input-group {
+            margin-top: 35px;
+            margin-left: 20px;
+        }
+        .fileinput-button {
+            position: absolute;
+        }
+        #btn_foto {
+            padding-top: 17px;
+        }
+        .social-profile-pic img {
+            width: 10rem;
+            height: auto;
+            overflow: hidden;
+            border: 0;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            -ms-border-radius: 1rem;
+            border-radius: 1rem;
+            -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+            margin: -1rem 0 0 .8rem;
+        }
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+		{% set encabezado = 'Detalle del participante'|trans %}
+
+		{{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 0 ,'filtro_tema': 0 ,'filtro_fecha': 0 , 'filtro_username': 1 }) }}
+
+		{# Sección de resultados del reporte #}
+		 <input type="hidden" name="hiddenEmpresa" id="hiddenEmpresa" value="">
+         <input type="hidden" name="url_infoUsuario" id="url_infoUsuario" value="{{ path('_ajaxUsernamesInfoUsuario')}}">
+		 
+
+<div class="row">
+	<div class="col-sm-16">
+		<div class="card">
+			<div class="card-header gradiente">
+                <div class="card-title">
+                    <h6>{{ 'Registrar Empresa'|trans }}</h6>
+                </div>
+            </div>
+           	<div class="card-block">
+                <div class="container_wizard wizard-thin">
+                	<div class="stepwizard">
+                		<div class="stepwizard-row setup-panel d-flex">
+            				<div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Datos Básicos'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Bienvenida'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Interacción'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det3" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">4</span>
+                                    <p>{{ 'Confirmar'|trans }}</p>
+                                </a>
+                            </div>
+                		</div>
+                	</div>
+                	<form id="form" name="form" action="" class="container-fluid p-0" method="POST">
+                        <input type="hidden" name="empresa_id" id="empresa_id" value="">
+                		<div class="row setup-content" id="det0">	
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                      
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4" >
+                                        <div class="row" id="start_img">
+                                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                                {% set img = asset('img/user.png') %}
+                                                <figure class="social-profile-pic" id="figure"><img id="foto_img" src="{{ img }}" alt="" class="img_figure"></figure>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12" >
+                                    	<div class="row" >
+                                    			<div class="col-sm-16">
+                                        			<h3 class="mb-2">Datos del Participante</h3>
+                                    			</div>
+                                    	</div>
+                                        <div class="row">
+                                           
+                                           <div class="col-sm-7 col-md-7 col-lg-7">
+                                           	     <label  class="col-sm-4 col-md-4 col-lg-4 col-form-label"><b>{{ 'Nombre'|trans }}:</b></label>
+                                           	      <label  id="nombre" class="col-sm-8 col-md-8 col-lg-8" > </label>
+                                           </div>
+                                           <div class="col-sm-7 col-md-7 col-lg-7" >
+                                           	     <label  class="col-sm-4 col-md-4 col-lg-4 col-form-label" ><b>{{ 'Username'|trans }}:</b></label>
+                                           	      <label  id="login" class="col-sm-8 col-md-8 col-lg-8" > </label>
+                                           </div>
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+                                       
+                                        <div class="row">
+                                           
+                                            <div class="col-sm-7 col-md-7 col-lg-7">
+                                           	     <label  class="col-sm-4 col-md-4 col-lg-4 col-form-label"><b>{{ 'Correo'|trans }}:</b></label>
+                                           	      <label  id="correo" class="col-sm-8 col-md-8 col-lg-8"> </label>
+                                           </div>
+                                            <div class="col-sm-7 col-md-7 col-lg-7">
+                                           	     <label  class="col-sm-4 col-md-4 col-lg-4 col-form-label" ><b>{{ 'Empresa '|trans }}:</b></label>
+                                           	      <label  id="empresa" class="col-sm-10 col-md-10 col-lg-10" > </label>
+                                           </div>
+                                          
+                                                
+                                            </div>
+                                            <div class="row">
+                                            	 <div class="col-sm-7 col-md-7 col-lg-7" >
+                                           	     <label  class="col-sm-4 col-md-4 col-lg-4 col-form-label" ><b>{{ 'Nivel'|trans }}:</b></label>
+                                           	      <label  id="nivel" class="col-sm-8 col-md-8 col-lg-8" > </label>
+                                           </div>
+                                            <div class="col-sm-7 col-md-7 col-lg-7">
+                                           	     <label  class="col-sm-4 col-md-4 col-lg-4 col-form-label"><b>{{ 'Status'|trans }}:</b></label>
+                                           	      <label  id="status" class="col-sm-8 col-md-8 col-lg-8"> </label>
+                                           </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>  <!-- fin del row setup -->
+                               
+                               
+                               <div class="col-sm-16" style="margin-top: 30px;">
+                				
+                            
+                                <div class="row">
+
+                                    <div class="col-sm-8 col-md-8 col-lg-8" >
+                                        <div class="row" >
+                                    			<div class="col-sm-16">
+                                        			<h3 class="mb-2">Ingresos al Sistema</h3>
+                                    			</div>
+                                    	</div>
+                                    	<div class="row">
+                                    		<div class="col-sm-8 col-md-8 col-lg-8">
+                                           	     <label  class="col-sm-12 col-md-12 col-lg-12 col-form-label" ><b>Primera conexion:</b></label>
+                                           	      <label  id="priConex" class="col-sm-12 col-md-12 col-lg-12" > </label>
+                                           </div>
+                                           <div class="col-sm-8 col-md-8 col-lg-8 col-form-label">
+                                           	     <label  class="col-sm-12 col-md-12 col-lg-12" ><b>Ultima conexion:</b></label>
+                                           	      <label  id="ultConex" class="col-sm-12 col-md-12 col-lg-12"> </label>
+                                           </div>
+                                           <div class="col-sm-8 col-md-8 col-lg-8" >
+                                           	     <label  class="col-sm-12 col-md-12 col-lg-12 col-form-label" ><b>Cantidad de conexiones: </b></label>
+                                           	      <label  id="cntdConex" class="col-sm-12 col-md-12 col-lg-12" ></label>
+                                           </div>
+                                           <div class="col-sm-8 col-md-8 col-lg-8 col-form-label" >
+                                           	     <label  class="col-sm-12 col-md-12 col-lg-12" ><b>Promedio de conexión:</b></label>
+                                           	      <label  id="prmConex" class="col-sm-12 col-md-12 col-lg-12"> </label>
+                                           </div>
+                                    		
+                                            
+                                    	</div>
+                                    </div>
+                                    <div class="col-sm-8 col-md-8 col-lg-8" >
+                                    	<div class="row" >
+                                    			<div class="col-sm-16">
+                                        			<h3 class="mb-2">Estatus de programas asignados</h3> 
+                                    			</div>
+                                    	</div>
+                                    	
+                                        <div class="row">
+                                        	<div class="col-sm-8 col-md-8 col-lg-8">
+                                           	     <label  class="col-sm-12 col-md-12 col-lg-12 col-form-label" ><b>Programas no iniciados:</b></label>
+                                           	      <label  id="proNoinic" class="col-sm-12 col-md-12 col-lg-12" > </label>
+                                           </div>
+                                           <div class="col-sm-8 col-md-8 col-lg-8 col-form-label">
+                                           	     <label  class="col-sm-12 col-md-12 col-lg-12" ><b>Programas En Curso:</b></label>
+                                           	      <label  id="proEncurs" class="col-sm-12 col-md-12 col-lg-12"> </label>
+                                           </div>
+                                           <div class="col-sm-8 col-md-8 col-lg-8" >
+                                           	     <label  class="col-sm-12 col-md-12 col-lg-12 col-form-label" ><b>Programas Finalizados:</b></label>
+                                           	      <label  id="proFinal" class="col-sm-12 col-md-12 col-lg-12" ></label>
+                                           </div>
+                                           
+                                            
+                                            
+                                        </div>
+                                       
+                                        
+                                       </div>
+									</div>
+									</div>
+									</div>
+
+                        
+                               
+                                    
+                                    
+                                   
+
+
+                           
+                        <div class="row setup-content" id="det1">
+                            <div class="col-sm-16">
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 2</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                        <div class="form-group">
+                                            <label for="texto" class="col-2 col-form-label">{{ 'Bienvenida'|trans }}</label>
+                                            <div class="col-16">
+                                                <textarea class="ckeditor" rows="3" id="bienvenida" name="bienvenida" cols="30" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                		<div class="row setup-content" id="det2">
+                			<div class="col-sm-16">
+                				<div class="row">
+	                                <div class="col-sm-16">
+	                                    <h3 class="mb-2">{{ 'Paso'|trans }} 3</h3>
+	                                </div>
+	                            </div>
+	                            <br>
+	                            <div class="row">
+                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="texto" class="col-4 col-form-label">{{ 'Activar chat'|trans }}</label>
+                                            <div class="col-4">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f2" id="activo2" name="activo2" type="checkbox">
+                                                    <label for="f2">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-16 col-md-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="texto" class="col-6 col-form-label">{{ 'Activar webinar'|trans }}</label>
+                                            <div class="col-4">
+                                                <div class="can-toggle demo-rebrand-2 small">
+                                                    <input id="f3" id="activo3" name="activo3" type="checkbox" >
+                                                    <label for="f3">
+                                                        <div class="can-toggle__switch" data-checked="{{ 'Si'|trans }}" data-unchecked="No"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="row setup-content" id="det3">
+                			<div class="col-sm-16">
+                				<div class="row">
+                                    <div class="col-sm-16">
+                                        <h3 class="mb-2">{{ 'Paso'|trans }} 4</h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-16">
+                                    	<div class="alert alert-success" role="alert">
+				                            <h4 class="alert-heading">{{ 'Buen trabajo'|trans }}!</h4>
+				                            <p>{{ 'Presiona el botón finalizar para completar'|trans }}.</p>
+				                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <div class="col-sm-16 text-right">
+                                        <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Finalizar'|trans }}</span><span class="fa fa-check"></span></button>
+                                    </div>
+                                </div>
+                			</div>
+                		</div>
+                	</form>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/detalleParticipante.js') }}"></script>
+    <script type="text/javascript">
+
+	    	 $('#username').autocomplete
+		          ({ source: function(request,response){
+		          	$.ajax({
+		          		url: "{{ path('_ajaxUsernamesEmpresa')}}",
+		          		dataType: "json",
+		          		data:{term:request.term, empresa_id: $('#hiddenEmpresa').val()},
+		          		type:'GET',
+		          		beforeSend:function (){
+		          			$('#user-loader').show();
+		          		},
+		          		success:function(data){
+		          			$('#user-loader').hide();
+		          			response(data);
+		          		}
+		          	});
+		          },
+		          minLength:1
+		          // select: function(evenet, ui){
+		          // 	alert("selecciono: "+ui.item.label)
+		          // }
+		          	
+		          	 }); 
+		
+
+    </script>
+    
+{% endblock %}
