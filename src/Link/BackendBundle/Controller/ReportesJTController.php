@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
+use Link\ComunBundle\Entity\CertiPagina;
 
 class ReportesJTController extends Controller
 {
@@ -478,12 +479,59 @@ class ReportesJTController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function buscarHijos($padreId,$em)
+    public function buscarVistos($padreId,$usuarioId)
     {
-        $llave = (string)$padreId;
-        $hijos =[$padreId=> $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$padreId))];
-        
+
+       $em = $this->getDoctrine()->getManager();
+
+       $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
+                                 INNER JOIN LinkComunBundle:CertiPaginaLog cpl WITH cp.id = cpl.pagina
+                                 WHERE cp.pagina =:paginaId AND cpl.usuario =:usuarioId AND cpl.estatusPagina =:status')
+                   ->setParameters(array('paginaId'=>$padreId,'usuarioId'=>$usuarioId,'status'=>3));
+
+      $registros = $query->getResult();
+
+      return $registros;
+
+          
     }
+
+   protected function buscarEvaluacion($paginaId,$usuarioId)
+   {
+      $em = $this->getDoctrine()->getManager();
+      $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$paginaId));
+      $retorno = $prueba->getNombre();
+
+
+
+
+      $query =  $em->createQuery('SELECT cpl FROM LinkComunBundle:CertiPruebaLog cpl
+                                  WHERE cpl.prueba =:prueba AND cpl.usuario =:usuario
+                                  ORDER BY cpl.nota DESC')
+                   ->setParameters(array('prueba'=>$prueba->getId(),'usuario'=>$usuarioId));
+
+      $pruebaLog = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY); 
+      
+
+
+      if($pruebaLog)
+      {
+        $pruebaLog = $pruebaLog[0];
+        $nota = $pruebaLog['nota'];
+        $status = ($pruebaLog['estado'] == 'APROBADO' OR $pruebaLog['estado'] == 'APROBADO')? ',Status: '.$pruebaLog['estado'].' Nota: '.$nota : 'EN CURSO';
+        $retorno = $retorno.$status;
+      }
+      else
+      {
+        $retorno = $retorno.', Status: No iniciada';
+      }
+     
+      return $retorno;
+
+
+   }
+
+
 
     public function ajaxInfoUsuarioAction(Request $request)
     {
@@ -494,7 +542,7 @@ class ReportesJTController extends Controller
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findBy(array('login'=>$login,'empresa'=>$empresa_id));
 
-      // obtenemos la informacion de la priera parte del reporte 
+      // obtenemos la informacion de la primera parte del reporte
       $query = $em->getConnection()->prepare('SELECT
                                                 fndatos_usuario(:re,:pusername,:pempresaid) as
                                                 resultado; fetch all from re;');
@@ -506,8 +554,7 @@ class ReportesJTController extends Controller
       $query->execute();
       $infoUsuario = $query->fetchAll();
       $infoUsuario = $infoUsuario[0];
-      
-
+     
       //obtenemos los programas asociados al usuario
       $query =  $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
              INNER JOIN LinkComunBundle:CertiPaginaEmpresa cpe WITH cp.id = cpe.pagina
@@ -516,34 +563,61 @@ class ReportesJTController extends Controller
          ->setParameters(array('usuarioId'=>$infoUsuario['id_nivel'],'usuarioEmpresa'=>$empresa_id));
       $programas = $query->getResult();
 
-      // /// obtenemos los modulos de un programa 
-      // foreach ($programas  as $programa) 
-      // {
-      //     $modulos = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$programa->getId()));
-      //     //obtenemos las materias vistas para un modulo
-      //     foreach ($modulos as $modulo) 
-      //     {
-      //         $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
-      //                                    INNER JOIN LinkComunBundle:CertiPaginaLog AS cpl WITH cp.id = cpl.pagina
-      //                                    WHERE cpl.estatusPagina =:statusPagina  AND cp.pagina=:moduloId  AND cpl.usuario=:usuarioId')
-      //                                   ->setParameters(array('statusPagina'=>3,'moduloId'=>$modulo->getId(),'usuarioId'=>$infoUsuario['id_usuario']));
-      //         $materiasVistas = $query->getResult();
+      $usuarioId = $infoUsuario['id_usuario'];
 
-      //         foreach ($materiasVistas as $materia) 
-      //         {
-      //              $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
-      //                                    INNER JOIN LinkComunBundle:CertiPaginaLog AS cpl WITH cp.id = cpl.pagina
-      //                                    WHERE cpl.estatusPagina =:statusPagina  AND cp.pagina=:materiaId  AND cpl.usuario=:usuarioId')
-      //                                   ->setParameters(array('statusPagina'=>3,'materiaId'=>$materia->getId(),'usuarioId'=>$infoUsuario['id_usuario']));
+      $programasArray=[];
+      foreach ($programas as $programa) 
+      {
+          
+          $modulos = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$programa->getId()));
+          $programaLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$programa->getId()));
 
-      //              $leccionesVistas = $query->getResult();
-      //         }
-      //     }
-      // }
+          $programaStatus = ($programaLog)? $programaLog->getEstatusPagina()->getNombre() : 'No iniciado';
+          $programaArray = ['programa'=>$programa->getNombre(),'inicio'=>$programaLog->getFechaInicio(),'fin'=>$programaLog->getFechaFin(),'status'=>$programaStatus,'modulos'=>''];
+          $moduloArray = [];
+
+          
+          foreach ($modulos as $key => $modulo) 
+          {
+             $evaluacionesArray = [];
+             $materiasVistas = 0;
+             $leccionesVistas = 0;
+
+             $moduloLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$modulo->getId(),'usuario'=>$usuarioId));
+
+             $moduloStatus = ($moduloLog)? $moduloLog->getEstatusPagina()->getNombre():'No iniciado';
+
+             
+
+             $materias = $this->buscarVistos($modulo->getId(),$usuarioId);
+             $materiasVistas = count($materias);
+             foreach ($materias as $materia) 
+             {
+                 $leccionesVistas = count($this->buscarVistos($materia->getId(),$usuarioId));
+                 array_push($evaluacionesArray,$this->buscarEvaluacion($materia->getId(),$usuarioId));
+                 
+             }
+             
+             array_push($evaluacionesArray,$this->buscarEvaluacion($modulo->getId(),$usuarioId));
+             
+             array_push($moduloArray,['modulo'=>$modulo->getNombre(),'materias'=>$materiasVistas,'lecciones'=>$leccionesVistas,'status'=>$moduloStatus,'evaluaciones'=>$evaluacionesArray]);
+
+             
+
+          }
+          $programaArray['modulos'] = $moduloArray;
+          array_push($programasArray,$programaArray);
+
+          
+      }
       
+
+      //print_r($programasArray);exit();
       
+
+    
       
-      $return = json_encode($programas);
+      $return = json_encode($programasArray);
       return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
