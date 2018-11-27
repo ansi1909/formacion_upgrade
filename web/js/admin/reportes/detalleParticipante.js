@@ -29,8 +29,8 @@ $(document).ready(function() {
 		          $('#user-loader').show();
 		          },
 		          success:function(data){
-
-		          	console.log(data);
+                    $('#programasAsignados').append(data.html);
+		          	console.log(data.html);
 		          	
 		          	// $('#user-loader').hide();
 		          	// $('#nombre').text(data.usuario_nombre+' '+data.apellido);

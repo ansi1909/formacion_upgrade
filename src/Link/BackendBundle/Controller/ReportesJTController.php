@@ -479,7 +479,7 @@ class ReportesJTController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function buscarVistos($padreId,$usuarioId)
+    protected function buscarVistos($padreId,$usuarioId)
     {
 
        $em = $this->getDoctrine()->getManager();
@@ -495,6 +495,18 @@ class ReportesJTController extends Controller
 
           
     }
+   protected function generarHtml($programasArray)
+   {
+     $html='<table>';
+     foreach ($programasArray as $programa) 
+     {
+        $html.='<tr><td>'.$programa['programa'].'<td><tr>';
+     }
+
+     $html.='</table>';
+
+     return $html;
+   }
 
    protected function buscarEvaluacion($paginaId,$usuarioId)
    {
@@ -612,12 +624,12 @@ class ReportesJTController extends Controller
       }
       
 
-      //print_r($programasArray);exit();
+      
       
 
     
-      
-      $return = json_encode($programasArray);
+      $html = $this->generarHtml($programasArray);
+      $return = json_encode(['usuario'=>$infoUsuario,'html'=>$html]);
       return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
