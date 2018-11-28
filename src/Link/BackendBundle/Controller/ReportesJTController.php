@@ -501,14 +501,14 @@ class ReportesJTController extends Controller
      foreach ($programasArray as $programa) 
      {
         $html.='<tr  style="background-color: #0065ad;text-align:center;font-weight: bold;color:#FFFFFF;">
-                <td colspan="4" style="padding:5px;"> Programa: '.$programa['programa'].'<td>
+                <td colspan="4" style="padding:5px;"> Programa: '.$programa['programa'].' - '.$programa['status'].'<td>
                <tr>';
 
         foreach ($programa['modulos'] as $modulo) 
         {
             $html .='<tr style="background-color: #C8DCEE;text-align:center;font-weight: bold;color:#000000;"><td colspan="4" style="padding:5px;">Modulo: '.$modulo['modulo'].'</td></tr>';
-            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Estatus </td><td style="width:10%px;text-align:center;font-weight:bold;padding:5px;">Materias vistas</td><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Lecciones vistas</td><td style="width:70%;text-align:left;font-weight:bold;padding:5px;">Evaluaciones</td></tr>';
-            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;padding:5px;">'.$modulo['status'].'</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['materias'].'</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['lecciones'].'</td><td style="width:10%;text-align:left;padding:5px;" ><ol class="_liNueva_">';
+            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Avance </td><td style="width:10%px;text-align:center;font-weight:bold;padding:5px;">Materias vistas</td><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Lecciones vistas</td><td style="width:70%;text-align:left;font-weight:bold;padding:5px;">Evaluaciones</td></tr>';
+            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;padding:5px;">'.$modulo['status'].' %</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['materias'].'</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['lecciones'].'</td><td style="width:10%;text-align:left;padding:5px;" ><ol class="_liNueva_">';
             $c=1;
             foreach ($modulo['evaluaciones'] as $evaluacion) 
             {
@@ -530,9 +530,10 @@ class ReportesJTController extends Controller
 
    protected function buscarEvaluacion($paginaId,$usuarioId)
    {
+      $listaStatus = ['APROBADO'=>['color'=>'#04aa49','status'=>'Aprobada'],'EN CURSO'=>['color'=>'#0065ad','status'=>'En curso'],'REPROBADO'=>['color'=>'#aa0000','status'=>'Reprobada']];
       $em = $this->getDoctrine()->getManager();
       $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$paginaId));
-      $retorno = $prueba->getNombre();
+      $retorno = $prueba->getNombre().'.';
      // $nombrePrueba = explode($nombrePrueba);
 
 
@@ -552,13 +553,17 @@ class ReportesJTController extends Controller
       if($pruebaLog)
       {
         $pruebaLog = $pruebaLog[0];
-        $nota = $pruebaLog['nota'];
-        $status = ($pruebaLog['estado'] == 'APROBADO' OR $pruebaLog['estado'] == 'APROBADO')? '.<BR><label style="font-weight:bold;">Status:</label> <label style="color:#04aa49;font-weight:bold;">'.$pruebaLog['estado'].'</label> <label style="font-weight:bold;">Nota:</label> '.$nota : 'EN CURSO';
+        $nota = ($pruebaLog['estado']=='APROBADO' OR $pruebaLog['estado'] =='REPROBADO')? '<label style="font-weight:bold">Nota:&nbsp;</label>'.$pruebaLog['nota']:'';
+        $status = '<BR><label style="font-weight:bold">Status:&nbsp;</label><label style="font-weight:bold;color:'.$listaStatus[$pruebaLog['estado']]['color'].'">'.$listaStatus[$pruebaLog['estado']]['status'].'</label>&nbsp;&nbsp;'.$nota;
+
         $retorno = $retorno.$status;
+
+        // $status = ($pruebaLog['estado'] == 'APROBADO' OR $pruebaLog['estado'] == 'APROBADO')? '.<BR><label style="font-weight:bold;">Status:</label> <label style="color:#04aa49;font-weight:bold;">'.$pruebaLog['estado'].'</label> <label style="font-weight:bold;">Nota:</label> '.$nota : 'EN CURSO';
+        // $retorno = $retorno.$status;
       }
       else
       {
-        $retorno = $retorno.'.<BR><label style="font-weight:bold;">Status:</label><label style="color:#aa0000;font-weight:bold;">&nbsp;Pendiente</label>';
+        $retorno = $retorno.'<BR><label style="font-weight:bold;">Status:</label><label style="color:#ea8c1d;font-weight:bold;">&nbsp;No iniciada</label>';
       }
      
       return $retorno;
@@ -620,12 +625,12 @@ class ReportesJTController extends Controller
 
              $moduloLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$modulo->getId(),'usuario'=>$usuarioId));
 
-             $moduloStatus = ($moduloLog)? $moduloLog->getEstatusPagina()->getNombre():'No iniciado';
+             $moduloStatus = ($moduloLog)? $moduloLog->getPorcentajeAvance():'0';
 
              
 
-             $materias = $this->buscarVistos($modulo->getId(),$usuarioId);
-             $materiasVistas = count($materias);
+             $materias = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$modulo->getId()));
+             $materiasVistas = count($this->buscarVistos($modulo->getId(),$usuarioId));
              foreach ($materias as $materia) 
              {
                  $leccionesVistas = count($this->buscarVistos($materia->getId(),$usuarioId));
