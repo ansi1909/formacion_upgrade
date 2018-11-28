@@ -497,15 +497,35 @@ class ReportesJTController extends Controller
     }
    protected function generarHtml($programasArray)
    {
-     $html='<table>';
+     $html='<table style="width:100%;">';
      foreach ($programasArray as $programa) 
      {
-        $html.='<tr><td>'.$programa['programa'].'<td><tr>';
+        $html.='<tr  style="background-color: #0065ad;text-align:center;font-weight: bold;color:#FFFFFF;">
+                <td colspan="4" style="padding:5px;"> Programa: '.$programa['programa'].'<td>
+               <tr>';
+
+        foreach ($programa['modulos'] as $modulo) 
+        {
+            $html .='<tr style="background-color: #C8DCEE;text-align:center;font-weight: bold;color:#000000;"><td colspan="4" style="padding:5px;">Modulo: '.$modulo['modulo'].'</td></tr>';
+            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Estatus </td><td style="width:10%px;text-align:center;font-weight:bold;padding:5px;">Materias vistas</td><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Lecciones vistas</td><td style="width:70%;text-align:left;font-weight:bold;padding:5px;">Evaluaciones</td></tr>';
+            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;padding:5px;">'.$modulo['status'].'</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['materias'].'</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['lecciones'].'</td><td style="width:10%;text-align:left;padding:5px;" ><ol class="_liNueva_">';
+            $c=1;
+            foreach ($modulo['evaluaciones'] as $evaluacion) 
+            {
+                $html.='<li value="1"><label style="font-weight:bold;">'.$c.'.</label> '.$evaluacion.'</li>';
+                $c+=1;
+            }
+            $html .='</ol></td></tr>';
+        }
+
+        //$html='<tr><td>'.$programas['modulos'].'</td></tr>';
      }
 
      $html.='</table>';
 
      return $html;
+
+    // return 'Hola';
    }
 
    protected function buscarEvaluacion($paginaId,$usuarioId)
@@ -513,6 +533,9 @@ class ReportesJTController extends Controller
       $em = $this->getDoctrine()->getManager();
       $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$paginaId));
       $retorno = $prueba->getNombre();
+     // $nombrePrueba = explode($nombrePrueba);
+
+
 
 
 
@@ -530,12 +553,12 @@ class ReportesJTController extends Controller
       {
         $pruebaLog = $pruebaLog[0];
         $nota = $pruebaLog['nota'];
-        $status = ($pruebaLog['estado'] == 'APROBADO' OR $pruebaLog['estado'] == 'APROBADO')? ',Status: '.$pruebaLog['estado'].' Nota: '.$nota : 'EN CURSO';
+        $status = ($pruebaLog['estado'] == 'APROBADO' OR $pruebaLog['estado'] == 'APROBADO')? '.<BR><label style="font-weight:bold;">Status:</label> <label style="color:#04aa49;font-weight:bold;">'.$pruebaLog['estado'].'</label> <label style="font-weight:bold;">Nota:</label> '.$nota : 'EN CURSO';
         $retorno = $retorno.$status;
       }
       else
       {
-        $retorno = $retorno.', Status: No iniciada';
+        $retorno = $retorno.'.<BR><label style="font-weight:bold;">Status:</label><label style="color:#aa0000;font-weight:bold;">&nbsp;Pendiente</label>';
       }
      
       return $retorno;

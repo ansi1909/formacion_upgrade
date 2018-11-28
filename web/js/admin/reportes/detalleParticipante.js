@@ -29,23 +29,23 @@ $(document).ready(function() {
 		          $('#user-loader').show();
 		          },
 		          success:function(data){
-                    $('#programasAsignados').append(data.html);
+                    $('#programasAsignados').html(data.html);
 		          	console.log(data.html);
 		          	
-		          	// $('#user-loader').hide();
-		          	// $('#nombre').text(data.usuario_nombre+' '+data.apellido);
-		          	// $('#login').text(data.username);
-		          	// $('#correo').text((data.correo_personal)? data.correo_personal:data.correo_corporativo);
-		          	// $('#empresa').text(data.empresa_nombre);
-		          	// $('#nivel').text(data.nivel_nombre);
-		          	// $('#status').text((data.status)? 'Activo':'Inactivo');
-		          	// $('#priConex').text(data.fecha_primer_acceso);
-		          	// $('#ultConex').text(data.fecha_ultimo_acceso);
-		          	// $('#cntdConex').text(data.cantidad_accesos);
-		          	// $('#prmConex').text(data.promedio_conexiones+' (HH:MM:SS)');
-		          	// $('#proNoinic').text(data.programas_sin_iniciar);
-		          	// $('#proEncurs').text(data.programas_iniciados);
-		          	// $('#proFinal').text(data.programas_culminados);
+		          	$('#user-loader').hide();
+		          	$('#nombre').text(data.usuario.usuario_nombre+' '+data.usuario.apellido);
+		          	$('#login').text(data.usuario.username);
+		          	$('#correo').text((data.usuario.correo_personal)? data.usuario.correo_personal:data.usuario.correo_corporativo);
+		          	$('#empresa').text(data.usuario.empresa_nombre);
+		          	$('#nivel').text(data.usuario.nivel_nombre);
+		          	$('#status').text((data.usuario.status)? 'Activo':'Inactivo');
+		          	$('#priConex').text(data.usuario.fecha_primer_acceso);
+		          	$('#ultConex').text(data.usuario.fecha_ultimo_acceso);
+		          	$('#cntdConex').text(data.usuario.cantidad_accesos);
+		          	$('#prmConex').text(data.usuario.promedio_conexiones+' (HH:MM:SS)');
+		          	$('#proNoinic').text(data.usuario.programas_sin_iniciar);
+		          	$('#proEncurs').text(data.usuario.programas_iniciados);
+		          	$('#proFinal').text(data.usuario.programas_culminados);
 
 		          
 		         }
