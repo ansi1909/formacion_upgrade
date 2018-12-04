@@ -501,7 +501,7 @@ class ReportesJTController extends Controller
      foreach ($programasArray as $programa) 
      {
         $html.='<tr  style="background-color: #0065ad;text-align:center;font-weight: bold;color:#FFFFFF;">
-                <td colspan="4" style="padding:5px;"> Programa: '.$programa['programa'].' - '.$programa['status'].'<td>
+                <td colspan="4" style="padding:5px;"> Programa: '.$programa['programa'].' - '.$programa['status'].' %<td>
                <tr>';
 
         foreach ($programa['modulos'] as $modulo) 
@@ -558,8 +558,6 @@ class ReportesJTController extends Controller
 
         $retorno = $retorno.$status;
 
-        // $status = ($pruebaLog['estado'] == 'APROBADO' OR $pruebaLog['estado'] == 'APROBADO')? '.<BR><label style="font-weight:bold;">Status:</label> <label style="color:#04aa49;font-weight:bold;">'.$pruebaLog['estado'].'</label> <label style="font-weight:bold;">Nota:</label> '.$nota : 'EN CURSO';
-        // $retorno = $retorno.$status;
       }
       else
       {
@@ -610,10 +608,15 @@ class ReportesJTController extends Controller
       {
           
           $modulos = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$programa->getId()));
-          $programaLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$programa->getId()));
+          $programaLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$programa->getId(),'usuario'=>$usuarioId));
 
-          $programaStatus = ($programaLog)? $programaLog->getEstatusPagina()->getNombre() : 'No iniciado';
-          $programaArray = ['programa'=>$programa->getNombre(),'inicio'=>$programaLog->getFechaInicio(),'fin'=>$programaLog->getFechaFin(),'status'=>$programaStatus,'modulos'=>''];
+         
+
+          $programaStatus = ($programaLog)? $programaLog->getPorcentajeAvance() : '0';
+          $fechaInicioP = ($programaLog)? $programaLog->getFechaInicio() : 'Por iniciar';
+          $fechaFinP = ($programaLog)? $programaLog->getFechaFin() : 'Por iniciar';
+
+          $programaArray = ['programa'=>$programa->getNombre(),'inicio'=>$fechaInicioP,'fin'=>$fechaFinP,'status'=>$programaStatus,'modulos'=>''];
           $moduloArray = [];
 
           

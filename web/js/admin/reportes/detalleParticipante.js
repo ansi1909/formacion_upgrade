@@ -30,7 +30,6 @@ $(document).ready(function() {
 		          },
 		          success:function(data){
                     $('#programasAsignados').html(data.html);
-		          	console.log(data.html);
 		          	
 		          	$('#user-loader').hide();
 		          	$('#nombre').text(data.usuario.usuario_nombre+' '+data.usuario.apellido);
@@ -46,6 +45,7 @@ $(document).ready(function() {
 		          	$('#proNoinic').text(data.usuario.programas_sin_iniciar);
 		          	$('#proEncurs').text(data.usuario.programas_iniciados);
 		          	$('#proFinal').text(data.usuario.programas_culminados);
+		          	
 
 		          
 		         }
