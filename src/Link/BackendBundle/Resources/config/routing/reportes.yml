@@ -26,6 +26,10 @@ _participantesAprobados:
     path:     /participantesAprobados/{app_id}/{pagina_id}/{r}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 4, empresa_id: 0 }
 
+_ajaxListadoAprobados:
+    path:     /ajaxListadoAprobados/
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxListadoParticipantesA }
+
 _participantesNoIniciados:
     path:     /participantesNoIniciados/{app_id}/{pagina_id}/{r}/{empresa_id}
     defaults: { _controller: LinkBackendBundle:Reportes:index, pagina_id: 0 , r: 5, empresa_id: 0 }
@@ -81,3 +85,9 @@ _ajaxFiltroTemas:
     defaults: { _controller: LinkBackendBundle:Reportes:ajaxFiltroTemas }
     requirements:
         method: GET
+
+_ajaxGrupoSeleccionA:
+    path:     /ajaxGrupoSeleccionA
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxProgramasA }
+    requirements:
+        _method: GET

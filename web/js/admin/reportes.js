@@ -113,7 +113,7 @@ $(document).ready(function() {
 
 					$('#empresa_id').change(function(){
 		    			var empresa_id = $(this).val();
-						getProgramas(empresa_id,pagina_id);
+						getProgramasA(empresa_id,pagina_id);
 					});
 
 					$('#programa_id').change(function(){
@@ -121,6 +121,10 @@ $(document).ready(function() {
 						var pagina_id = $(this).val();
 						var empresa_id = $('#empresa_id').val();
 						getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte);
+					});
+
+					$('#finish').click(function(){
+						getParticipantesA();
 					});
 				}
 				else if (reporte == '5') 
@@ -188,6 +192,26 @@ function getNiveles(empresa_id){
 	});
 }
 
+function getParticipantesA(){
+	var empresa_id = $('#empresa_id').val();
+	var entidades = $('#entidades').val();
+	$.ajax({
+		type: "GET",
+		url: $('#url_participantesA').val(),
+		async: true,
+		data: { empresa_id: empresa_id, entidades: entidades },
+		dataType: "json",
+		success: function(data) {
+			$('#usuarios').show();
+			$('#usuarios').html(data.entidades);
+		},
+		error: function(){
+			$('#active-error').html($('#error_msg-filter').val());
+			$('#div-active-alert').show();
+		}
+	});
+}
+
 function getLecciones(empresa_id){
 	$.ajax({
 		type: "GET",
@@ -219,6 +243,33 @@ function getProgramas(empresa_id,pagina_previa){
 			$('#programa_id').html(data.options);
 			$('#programa_id').show();
 			$('#pagina-loader').hide();
+		},
+		error: function(){
+			$('#active-error').html($('#error_msg-filter').val());
+			$('#div-active-alert').show();
+		}
+	});
+}
+
+function getProgramasA(empresa_id,pagina_previa){
+	$('#programa_id').hide();
+	$('#change').show();
+	$('.load1').show();
+	$('#div-entidades-alert').hide();
+	$('#div-grupo').hide();
+	
+	$.ajax({
+		type: "GET",
+		url: $('#url_grupoA').val(),
+		async: true,
+		data: { empresa_id: empresa_id,pagina_previa: pagina_previa },
+		dataType: "json",
+		success: function(data) {
+			$('#change').hide();
+			$('#div-grupo').show();
+			$('.load1').hide();
+			$('#div-entidades').html(data.html);
+			observeMultiSelect();
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());

@@ -1,0 +1,33 @@
+{% if entidades|length > 0 %}
+    <div class="col-sm-16 col-md-16 col-lg-16" id="div-grupo">
+        <label for="entidades" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Grupo seleccionado'|trans }}</label>
+        <div class="col-sm-16 col-md-16 col-lg-16">
+            {% if entidades.tipo == 'text' %}
+                <input type="text" id="entidades" name="entidades" class="form-control form_sty1" value="{{ entidades.valor }}" disabled="disabled">
+            {% else %}
+                {% if entidades.multiple %}
+                    <select name="entidades[]" id="entidades" class="form-control multiple" multiple="multiple">
+                {% else %}
+                    <select name="entidades" id="entidades" class="form-control form_sty_select">
+                {% endif %}
+                    {% for valor in entidades.valores %}
+                        <option value="{{ valor.id }}" {{ valor.selected }}>{{ valor.nombre }}</option>
+                    {% endfor %}
+                </select>
+                {% if not entidades.multiple %}
+                    <span class="fa fa-group"></span>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+<div class="col-sm-12" id="change" style="display:none;">
+    <div class="load1 load-wrapper">
+        <div class="loader">
+            Loading...
+        </div>  
+    </div>
+    <div class="alert alert-danger" role="alert" id="div-entidades-alert" style="display:none;"> 
+        <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener el grupo de selección'|trans }}.</span>
+    </div>
+</div>

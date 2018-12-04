@@ -1,5 +1,22 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
+    <style>
+        .sty__title {
+            padding: 2px 5px;
+            box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
+            font-weight: bold;
+        }
+        .ms-container {
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 {% if reporte == '1'%}
 
@@ -282,6 +299,8 @@
         <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="reporte" name="reporte" value="{{ reporte }}">
+        <input type="hidden" id="url_grupoA" name="url_grupoA" value="{{ path('_ajaxGrupoSeleccionA') }}">
+        <input type="hidden" id="url_participantesA" name="url_participantesA" value="{{ path('_ajaxListadoAprobados') }}">
         <div class="row">
             <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
                 <div class="card">
@@ -309,17 +328,23 @@
                         {% else %}
                             <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
                         {% endif %}
-                        <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
-                        <div class="row">
-                            <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
-                                </select>
-                                <span class="fa fa-industry"></span>
-                                <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                                <img id="pagina-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                        <div class="row" id="div-entidades">
+                            <div class="col-sm-12 load1" id="change" style="display:none;">
+                                <div class=" load-wrapper" >
+                                    <div class="loader">
+                                        Loading...
+                                    </div>  
+                                </div>
+                                <div class="alert alert-danger" role="alert" id="div-entidades-alert" style="display:none;"> 
+                                    <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener el grupo de selección'|trans }}.</span>
+                                </div>
                             </div>
                         </div>
-                        <br>
+                        <div class="card-footer">
+                            <div class="col-sm-16 col-md-16 text-right">
+                                <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Buscar'|trans }}</span><span class="fa fa-search"></span></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -460,5 +485,18 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
     {#<script src="{{ asset('jq/jquery-validation-1.15.0/dist/localization/messages_es.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/reportes.js') }}"></script>
+
+   <script type="text/javascript">
+
+        function observeMultiSelect()
+        {
+            $('.multiple').multiSelect({
+                selectableHeader: "<div class='sty__title'>{{ 'Elementos sin seleccionar'|trans }}</div>",
+                selectionHeader: "<div class='sty__title'>{{ 'Elementos seleccionados'|trans }}</div>"
+            });
+        }
+    </script>
 {% endblock %}

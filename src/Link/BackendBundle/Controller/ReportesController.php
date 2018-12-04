@@ -11,6 +11,7 @@ use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
 
+
 class ReportesController extends Controller
 {
     public function indexAction($app_id,$r,$pagina_id,$empresa_id,Request $request)
@@ -211,6 +212,102 @@ class ReportesController extends Controller
         
         $return = array('options' => $options);
         
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function ajaxProgramasAAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa_id = $request->query->get('empresa_id');
+        $pagina_id = $request->query->get('pagina_previa');
+
+        $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
+                                   JOIN pe.pagina p
+                                   WHERE pe.empresa = :empresa_id
+                                   AND p.pagina IS NULL')
+                    ->setParameter('empresa_id', $empresa_id);
+        $paginas = $query->getResult();
+
+        $valores = array();
+        foreach ($paginas as $pe)
+        {
+            $valores[] = array('id' => $pe->getPagina()->getId(),
+                               'nombre' => $pe->getPagina()->getNombre(),
+                               'selected' => $pe->getPagina()->getId() );
+        }
+        $entidades = array('tipo' => 'select',
+                           'multiple' => true,
+                           'valores' => $valores);
+        
+        $html = $this->renderView('LinkBackendBundle:Notificacion:grupoSeleccion.html.twig', array('entidades' => $entidades));
+
+        $return = array('html' => $html);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function ajaxListadoParticipantesAAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $f = $this->get('funciones');
+
+        $empresa_id = $request->query->get('empresa_id');
+        $pagina_id = array();
+        $pagina_id[] = $request->query->get('entidades');
+
+        $pagina = 83;
+
+        // Llamada a la función de BD que trae el listado de participantes
+       /* $query = $em->getConnection()->prepare('SELECT
+                                                fnlistado_participantesa(:pempresa_id, :ppagina_id) as
+                                                resultado;');
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina, \PDO::PARAM_INT);
+        $query->execute();
+        $r = $query->fetchAll();
+        if($r)
+        {
+            $pagina_id = 'trajo algo';
+        }*/
+        
+       /* $html = '<table class="table" id="dt">
+                    <thead class="sty__title">
+                        <tr>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Apellido').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Login').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('País').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: .7rem;">';
+        
+        foreach ($r as $ru)
+        {
+            $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
+            $html .= '<tr>
+                        <td>'.$ru['nombre'].'</td>
+                        <td>'.$ru['apellido'].'</td>
+                        <td>'.$ru['login'].'</td>
+                        <td>'.$ru['correo'].'</td>
+                        <td>'.$activo.'</td>
+                        <td>'.$ru['fecha_registro'].'</td>
+                        <td>'.$ru['pais'].'</td>
+                        <td>'.$ru['nivel'].'</td>
+                    </tr>';
+        }
+
+        $html .= '</tbody>
+                </table>';*/
+        
+        $return = array('entidades' => $pagina_id);
+ 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
