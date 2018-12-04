@@ -178,9 +178,9 @@ class ReportesController extends Controller
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
                                                                                  'usuario_empresa' => $usuario_empresa,
                                                                                  'usuario' => $usuario,
-                                                                                 'reporte'=>$r,
-                                                                                 'pagina_id'=>$pagina_id,
-                                                                                 'empresa_dashboard'=>$empresa_id));    
+                                                                                 'reporte' => $r,
+                                                                                 'pagina_id' => $pagina_id,
+                                                                                 'empresa_dashboard' => $empresa_id));    
     }
 
     public function ajaxProgramasEAction(Request $request)

@@ -1,6 +1,6 @@
 _participantesEmpresa:
     path:     /participantesEmpresa/{app_id}/{r}/{empresa_id}
-    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 1,pagina_id: 0, empresa_id: 0 }
+    defaults: { _controller: LinkBackendBundle:Reportes:index, r: 1, pagina_id: 0, empresa_id: 0 }
 
 _ajaxListadoParticipantes:
     path:     /ajaxListadoParticipantes
