@@ -428,7 +428,7 @@ class ReportesJTController extends Controller
                         'html' => $html);
 
 
-        $return = json_encode($return,JSON_UNESCAPED_UNICODE);
+        $return = json_encode($return);
 
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
