@@ -362,22 +362,14 @@
             function is_chrome()
             {
                 var googleChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1; //!!window.chrome && !!window.chrome.webstore;
-
                 var firefox = typeof InstallTrigger !== 'undefined';
-
                 var isIE = /*@cc_on!@*/false || !!document.documentMode;
-
                 var edge = !isIE && !!window.StyleMedia;
-
                 var safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-
                 if (!googleChrome && !firefox && !edge && !safari) 
                 {
                     
-                
                         $('#modalExplorador').modal('show');//desplegar modal de notificacion
-                        
-                    
                 }
             }
         </script>
