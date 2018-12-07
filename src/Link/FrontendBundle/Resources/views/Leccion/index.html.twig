@@ -183,7 +183,7 @@
         <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
         <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
             <div class="form-group">
-                <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="340" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
+                <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="500" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
             </div>
             <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-comment">{{ 'Comentar'|trans }}</button>
         </form>
