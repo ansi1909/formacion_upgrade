@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class ReportesController extends Controller
 {
-    public function indexAction($app_id,$r,$pagina_id,$empresa_id,Request $request)
+    public function indexAction($app_id, $r, $pagina_id, $empresa_id, Request $request)
     {
         $session = new Session();
         $f = $this->get('funciones');
@@ -248,7 +248,7 @@ class ReportesController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function ajaxListadoParticipantesAAction(Request $request)
+    public function ajaxListadoAprobadosAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();

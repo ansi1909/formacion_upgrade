@@ -28,7 +28,7 @@ _participantesAprobados:
 
 _ajaxListadoAprobados:
     path:     /ajaxListadoAprobados/
-    defaults: { _controller: LinkBackendBundle:Reportes:ajaxListadoParticipantesA }
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxListadoAprobados }
 
 _participantesNoIniciados:
     path:     /participantesNoIniciados/{app_id}/{pagina_id}/{r}/{empresa_id}

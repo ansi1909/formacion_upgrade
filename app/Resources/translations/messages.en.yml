@@ -347,6 +347,7 @@ Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener la repuesta: Error getting the answer
 Error al obtener las notificaciones programadas: Error ocurred retrieving the programmed notifications
 Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
+Error al obtener los programas: Error ocurred retrieving programs
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
