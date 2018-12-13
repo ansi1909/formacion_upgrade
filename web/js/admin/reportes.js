@@ -103,10 +103,11 @@ $(document).ready(function() {
 		
 		if (empresa_id != '0') 
 		{
-			getProgramas(empresa_id, pagina_selected);
-			if (pagina_selected!=0) 
+			getProgramasA(empresa_id, pagina_selected);
+			if (pagina_selected != 0) 
 			{
-				getListadoParticipantes(empresa_id, nivel_id, pagina_selected, reporte);
+				$('#preseleccion').val(1);
+				getListadoParticipantesA();
 			}
 		}
 
@@ -259,10 +260,10 @@ function getProgramas(empresa_id,pagina_selected){
 	});
 }
 
-function getProgramasA(empresa_id,pagina_selected){
-	$('#programa_id').hide();
+function getProgramasA(empresa_id, pagina_selected){
+	
 	$('#change').show();
-	$('.load1').show();
+	$('#usuarios').hide();
 	$('#div-entidades-alert').hide();
 	$('#div-grupo').hide();
 	
@@ -270,18 +271,17 @@ function getProgramasA(empresa_id,pagina_selected){
 		type: "GET",
 		url: $('#url_grupoA').val(),
 		async: true,
-		data: { empresa_id: empresa_id,pagina_selected: pagina_selected },
+		data: { empresa_id: empresa_id, pagina_selected: pagina_selected },
 		dataType: "json",
 		success: function(data) {
-			$('#change').hide();
 			$('#div-grupo').show();
 			$('.load1').hide();
 			$('#div-entidades').html(data.html);
 			observeMultiSelect();
 		},
 		error: function(){
-			$('#active-error').html($('#error_msg-filter').val());
-			$('#div-active-alert').show();
+			$('.load1').hide();
+			$('#div-entidades-alert').show();
 		}
 	});
 }
@@ -308,4 +308,58 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 			$('#div-active-alert').show();
 		}
 	});
+}
+
+function getListadoParticipantesA(){
+	$('#loader').show();
+	$('#usuarios').hide();
+	$('#search').hide();
+	$.ajax({
+		type: "POST",
+		url: $('#form').attr('action'),
+		async: true,
+		data: $("#form").serialize()+'&excel=0',
+		dataType: "json",
+		success: function(data) {
+			$('.load1').hide();
+        	$('#search').show();
+        	$('#usuarios').show();
+			$('#usuarios').html(data.html);
+			$("#excel_contenedor").show();
+			applyDataTable();
+			observe();
+		},
+		error: function(){
+			$('#div-error-server').html($('#error-msg').val());
+			notify($('#div-error-server').html());
+			$('.descargable').hide();
+			$('.generable').show();
+		}
+	});
+}
+
+function observe()
+{
+	$('#excel').click(function(){
+    	$('#excel').hide();
+    	$('#excel-loader').show();
+    	$.ajax({
+			type: "POST",
+			url: $('#form').attr('action'),
+			async: true,
+			data: $("#form").serialize()+'&excel=1',
+			dataType: "json",
+			success: function(data) {
+				$('#excel-loader').hide();
+	        	$("#excel-link").attr("href", data.archivo);
+	        	$('#excel-link').show();
+			},
+			error: function(){
+				$('#div-error-server').html($('#error-msg').val());
+				notify($('#div-error-server').html());
+				$('.descargable').hide();
+    			$('.generable').show();
+			}
+		});
+    });
 }

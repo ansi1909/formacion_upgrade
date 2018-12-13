@@ -1,7 +1,5 @@
 jQuery(document).ready(function($) {
 	
-	
-   
     $('#search').click(function(){
     	$("#excel_contenedor").hide();
     	$('#label_filtro').hide();
@@ -14,15 +12,15 @@ jQuery(document).ready(function($) {
 
 function mostrarReporte(data)
 {
-		console.log(data);
-		$('#label_desde').html($('#desde').val());
-		$('#label_hasta').html($('#hasta').val());
-		$('#label_filtro').show();
-		$('#resultado').html(data.html);
-		$('#resultado').show();
-		$("#excel_contenedor").show();
-		applyDataTable();
-		observe();
+	console.log(data);
+	$('#label_desde').html($('#desde').val());
+	$('#label_hasta').html($('#hasta').val());
+	$('#label_filtro').show();
+	$('#resultado').html(data.html);
+	$('#resultado').show();
+	$("#excel_contenedor").show();
+	applyDataTable();
+	observe();
 }
 
 function observe()

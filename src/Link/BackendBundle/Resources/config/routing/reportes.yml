@@ -88,6 +88,6 @@ _ajaxFiltroTemas:
 
 _ajaxGrupoSeleccionA:
     path:     /ajaxGrupoSeleccionA
-    defaults: { _controller: LinkBackendBundle:Reportes:ajaxProgramasA }
+    defaults: { _controller: LinkBackendBundle:Reportes:ajaxGrupoSeleccionA }
     requirements:
         _method: GET

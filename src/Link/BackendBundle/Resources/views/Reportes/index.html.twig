@@ -22,8 +22,13 @@
 {% set empresa_id = usuario_empresa ? usuario.empresa.id : 0 %}
 <input type="hidden" id="reporte" name="reporte" value="{{ reporte }}">
 <input type="hidden" id="usuario_empresa" name="usuario_empresa" value="{{ empresa_id }}">
-<input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
-<input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
+<input type="hidden" id="error-msg" name="error-msg" value="{{ 'Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.'|trans }}">
+
+<div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error" style="display:none;">
+    <ul></ul>
+</div>
+<div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-server" style="display:none;">
+</div>
 
 {% if reporte == '1'%}
 
@@ -32,6 +37,8 @@
         <br><br>
         <input type="hidden" id="url_niveles" name="url_niveles" value="{{ path('_ajaxNiveles') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
+        <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
         <div class="row">
             <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
                 <div class="card">
@@ -40,8 +47,7 @@
                     </div>
                     <div class="card-block">
                         {% if not usuario_empresa %}
-                         <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
-
+                            <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
                             <div class="row">
                                 <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
@@ -108,13 +114,20 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
     </form>
+
 {% elseif reporte == '2' %}
+
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
         {% set encabezado =  'Reporte de participantes registrados por programas'|trans %}
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
+        <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
         <div class="row">
             <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
                 <div class="card">
@@ -123,8 +136,7 @@
                     </div>
                     <div class="card-block">
                         {% if not usuario_empresa %}
-                         <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
-
+                            <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
                             <div class="row">
                                 <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
@@ -191,15 +203,20 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
     </form>           
+
 {% elseif reporte == '3' %}
 
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
         {% set encabezado =  'Reporte de participantes cursando por programas'|trans %}
-
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
+        <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
         <div class="row">
             <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
                 <div class="card">
@@ -208,8 +225,7 @@
                     </div>
                     <div class="card-block">
                         {% if not usuario_empresa %}
-                         <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
-
+                            <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
                             <div class="row">
                                 <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
@@ -276,19 +292,24 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
     </form>
 
 {% elseif reporte == '4' %}
 
     {% set encabezado =  'Reporte de participantes aprobados por programas'|trans %}
     <form id="form" name="form" action="{{ path ('_ajaxListadoAprobados') }}" method="POST">
-    {#<form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">#}
 
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="url_grupoA" name="url_grupoA" value="{{ path('_ajaxGrupoSeleccionA') }}">
         <input type="hidden" id="url_participantesA" name="url_participantesA" value="{{ path('_ajaxListadoAprobados') }}">
+        <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
+        <input type="hidden" id="preseleccion" name="preseleccion" value="0">
         <div class="row">
             <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
                 <div class="card">
@@ -316,20 +337,20 @@
                             <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
                         {% endif %}
                         <div class="row" id="div-entidades">
-                            <div class="col-sm-12 load1" style="display:none;">
-                                <div class="load-wrapper" >
-                                    <div class="loader">
-                                        Loading...
-                                    </div>  
-                                </div>
-                                <div class="alert alert-danger" role="alert" id="div-entidades-alert" style="display:none;"> 
-                                    <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener los programas'|trans }}.</span>
-                                </div>
+                        </div>
+                        <div class="col-sm-12" id="change" style="display:none;">
+                            <div class="load1 load-wrapper">
+                                <div class="loader">
+                                    Loading...
+                                </div>  
+                            </div>
+                            <div class="alert alert-danger" role="alert" id="div-entidades-alert" style="display:none;"> 
+                                <strong>{{ 'Error en el servidor'|trans }}!</strong> {{ 'Error al obtener los programas'|trans }}.
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="col-sm-16 col-md-16 text-right">
-                                <button type="button" class="bttn__end" id="finish"><span class="text__end">{{ 'Buscar'|trans }}</span><span class="fa fa-search"></span></button>
+                                <button type="button" id="search" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Buscar'|trans }}"><span class="fa fa-search"></span></button>
                             </div>
                         </div>
                     </div>
@@ -343,19 +364,6 @@
                         <h5 class="card-title">{{ 'Listado de participantes'|trans }}</h5>
                     </div>
                     <div class="card-block">
-                        <div class="row" id="div-active-alert" style="display:none;">
-                            <div class="col-sm-2">
-                                &nbsp;
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="alert alert-danger" role="alert"> 
-                                    <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                &nbsp;
-                            </div>
-                        </div>
                         <div class="load1 load-wrapper" id="loader" style="display: none;">
                             <div class="loader">
                                 Loading...
@@ -364,12 +372,17 @@
                         <div id="usuarios">
                             
                         </div>
-                        <div class="card-footer" id="excel" style="display: none;">
+                        <div class="card-footer" style="display:none;" id="excel_contenedor">
                             <div class="col-sm-16 col-md-16 text-right">
-                                <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                                <button id="excel" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} Excel"><span class="fa fa-file-excel-o"></span></button>
+                                <a id="excel-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} Excel"><span class="fa fa-download"></span></button></a>
+                                <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
     </form>
 {% elseif reporte == '5' %}
 
@@ -379,6 +392,8 @@
     <br><br>
     <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
     <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
+    <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
+    <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
     <div class="row">
         <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
             <div class="card">

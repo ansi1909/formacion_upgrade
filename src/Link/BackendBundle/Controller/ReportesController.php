@@ -216,11 +216,11 @@ class ReportesController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function ajaxProgramasAAction(Request $request)
+    public function ajaxGrupoSeleccionAAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-        $pagina_id = $request->query->get('pagina_previa');
+        $pagina_selected = $request->query->get('pagina_selected');
 
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
@@ -234,13 +234,10 @@ class ReportesController extends Controller
         {
             $valores[] = array('id' => $pe->getPagina()->getId(),
                                'nombre' => $pe->getPagina()->getNombre(),
-                               'selected' => $pe->getPagina()->getId() );
+                               'selected' => $pe->getPagina()->getId() == $pagina_selected ? 'selected' : '');
         }
-        $entidades = array('tipo' => 'select',
-                           'multiple' => true,
-                           'valores' => $valores);
         
-        $html = $this->renderView('LinkBackendBundle:Notificacion:grupoSeleccion.html.twig', array('entidades' => $entidades));
+        $html = $this->renderView('LinkBackendBundle:Reportes:grupoSeleccion.html.twig', array('valores' => $valores));
 
         $return = array('html' => $html);
 
