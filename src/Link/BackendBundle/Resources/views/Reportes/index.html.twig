@@ -306,7 +306,6 @@
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="url_grupoA" name="url_grupoA" value="{{ path('_ajaxGrupoSeleccionA') }}">
-        <input type="hidden" id="url_participantesA" name="url_participantesA" value="{{ path('_ajaxListadoAprobados') }}">
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
         <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
         <input type="hidden" id="preseleccion" name="preseleccion" value="0">
@@ -322,7 +321,7 @@
                             <div class="row">
                                 <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                        <option value="0"></option>
+                                        <option value=""></option>
                                         {% for empresa in empresas %}
                                             {% set selected = empresa.id == empresa_dashboard ? 'selected' : " "  %}
                                             <option value="{{ empresa.id }}" {{ selected }} >{{ empresa.nombre }}</option>
@@ -338,8 +337,8 @@
                         {% endif %}
                         <div class="row" id="div-entidades">
                         </div>
-                        <div class="col-sm-12" id="change" style="display:none;">
-                            <div class="load1 load-wrapper">
+                        <div class="col-sm-12">
+                            <div class="load1 load-wrapper" id="change" style="display:none;">
                                 <div class="loader">
                                     Loading...
                                 </div>  
@@ -369,14 +368,17 @@
                                 Loading...
                             </div>  
                         </div>
-                        <div id="usuarios">
-                            
-                        </div>
-                        <div class="card-footer" style="display:none;" id="excel_contenedor">
-                            <div class="col-sm-16 col-md-16 text-right">
-                                <button id="excel" type="button" class="bttn__saved generable" data-toggle="tooltip" data-placement="bottom" title="{{ 'Generar'|trans }} Excel"><span class="fa fa-file-excel-o"></span></button>
-                                <a id="excel-link" class="descargable" href="#" target="_blank" style="display:none;"><button type="button" class="bttn__saved" data-toggle="tooltip" data-placement="bottom" title="{{ 'Descargar'|trans }} Excel"><span class="fa fa-download"></span></button></a>
-                                <img id="excel-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                        <div id="resultado" style="display:none; cursor:pointer">
+                            <div class="list-unstyled member-list row">
+                                <div class="col-lg-4 col-sm-8 col-xs-16 offset-sm-4 offset-md-4 offset-lg-6">
+                                    <div class="media flex-column"> <span class="message_userpic text-success"><i class="fa fa-file-excel-o"></i></span>
+                                      <div class="media-body">
+                                        <h6 class="mt-0 mb-1" id="document_name">My_Document_2.xls</h6>
+                                        <span id="document_size">25.5mb</span> | 
+                                        <button type="button" class="btn btn-link btn-sm"><i class="fa fa-download m-0"></i> {{ 'Descargar'|trans }}</button>
+                                      </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -384,92 +386,96 @@
             </div>
         </div>
     </form>
+
 {% elseif reporte == '5' %}
 
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
-    {% set encabezado =  'Reporte de participantes no iniciados en programas'|trans %}
+        {% set encabezado =  'Reporte de participantes no iniciados en programas'|trans %}
 
-    <br><br>
-    <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
-    <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
-    <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
-    <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
-    <div class="row">
-        <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
-            <div class="card">
-                <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
-                    <h5 class="card-title">{{ encabezado }}</h5>
-                </div>
-                <div class="card-block">
-                    {% if not usuario_empresa %}
-                     <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
+        <br><br>
+        <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
+        <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
+        <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
+        <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
+        <div class="row">
+            <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16">
+                <div class="card">
+                    <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                        <h5 class="card-title">{{ encabezado }}</h5>
+                    </div>
+                    <div class="card-block">
+                        {% if not usuario_empresa %}
+                         <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
 
+                            <div class="row">
+                                <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
+                                    <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
+                                        <option value="0"></option>
+                                        {% for empresa in empresas %}
+                                           {% set select = empresa.id == empresa_dashboard ? 'selected' : " "  %}
+                                                <option value="{{ empresa.id }}" {{select}} >{{ empresa.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="fa fa-industry"></span>
+                                    <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                                </div>
+                            </div>
+                            <br>
+                        {% else %}
+                            <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+                        {% endif %}
+                        <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
                         <div class="row">
                             <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">
-                                    <option value="0"></option>
-                                    {% for empresa in empresas %}
-                                       {% set select = empresa.id == empresa_dashboard ? 'selected' : " "  %}
-                                            <option value="{{ empresa.id }}" {{select}} >{{ empresa.nombre }}</option>
-                                    {% endfor %}
+                                <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
                                 </select>
                                 <span class="fa fa-industry"></span>
                                 <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                                <img id="pagina-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
                             </div>
                         </div>
                         <br>
-                    {% else %}
-                        <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
-                    {% endif %}
-                    <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Programas' |trans}}</label>
-                    <div class="row">
-                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
-                            <select class="form_sty_sel form-control" style="border-radius: 5px" id="programa_id" name="programa_id">
-                            </select>
-                            <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
-                            <img id="pagina-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
-                        </div>
                     </div>
-                    <br>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-16">
-            <div class="card">
-                <div class="card-header gradiente">
-                    <h5 class="card-title">{{ 'Listado de participantes'|trans }}</h5>
-                </div>
-                <div class="card-block">
-                    <div class="row" id="div-active-alert" style="display:none;">
-                        <div class="col-sm-2">
-                            &nbsp;
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="alert alert-danger" role="alert"> 
-                                <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+        <div class="row">
+            <div class="col-sm-16">
+                <div class="card">
+                    <div class="card-header gradiente">
+                        <h5 class="card-title">{{ 'Listado de participantes'|trans }}</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row" id="div-active-alert" style="display:none;">
+                            <div class="col-sm-2">
+                                &nbsp;
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger" role="alert"> 
+                                    <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="active-error">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                &nbsp;
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            &nbsp;
+                        <div class="load1 load-wrapper" id="loader" style="display: none;">
+                                <div class="loader">
+                                    Loading...
+                                </div>  
+                            </div>
+                        <div id="usuarios">
+                            
                         </div>
-                    </div>
-                    <div class="load1 load-wrapper" id="loader" style="display: none;">
-                            <div class="loader">
-                                Loading...
-                            </div>  
-                        </div>
-                    <div id="usuarios">
-                        
-                    </div>
-                    <div class="card-footer" id="excel" style="display: none;">
-                        <div class="col-sm-16 col-md-16 text-right">
-                            <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                        <div class="card-footer" id="excel" style="display: none;">
+                            <div class="col-sm-16 col-md-16 text-right">
+                                <button type="submit" class="bttn__edit" data-toggle="tooltip" data-placement="bottom" title="{{'Descargar' |trans}}"><span class="fa fa-download"></span></button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
     </form>
 {% endif %}
 
@@ -493,5 +499,59 @@
                 selectionHeader: "<div class='sty__title'>{{ 'Elementos seleccionados'|trans }}</div>"
             });
         }
+
+        $('#search').click(function(){
+            var valid = $("#form").valid();
+            if (!valid) 
+            {
+                notify($('#div-error').html());
+            }
+            else {
+                
+                // Validaciones adicionales
+                var programas = $('#programas').val();
+                var tipo_destino_id = $('#tipo_destino_id').val();
+                
+                if (programas == null)
+                {
+                    valid = false;
+                }
+                else {
+                    if (programas.length < 1)
+                    {
+                        valid = false;
+                    }
+                }
+                
+                if (!valid){
+                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar al menos un programa'|trans }}.</li>");
+                    $('#div-error ul').show();
+                    notify($('#div-error').html());
+                    $('#search').show();
+                }
+                else {
+                    // Submit para mostrar el listado
+                    $('#preseleccion').val(0);
+                    getListadoParticipantesA();
+                }
+
+            }
+        });
+
+        $("#form").validate({
+            errorLabelContainer: "#div-error ul",
+            wrapper: "li",
+            ignore: "",
+            rules: {
+                'empresa_id': {
+                    required: true
+                }
+            },
+            messages: {
+                'empresa_id': {
+                    required: "- {{ 'La empresa es requerida.'|trans }}"
+                }
+            }
+        });
     </script>
 {% endblock %}

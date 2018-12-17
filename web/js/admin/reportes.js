@@ -109,27 +109,15 @@ $(document).ready(function() {
 				$('#preseleccion').val(1);
 				getListadoParticipantesA();
 			}
-		}
-
-		if (empresa_selected != '0') {
-			getProgramas(empresa_selected,pagina_selected);
-			getListadoParticipantes(empresa_selected, nivel_id, pagina_selected, reporte);
+		} else if (empresa_selected != '0') {
+			getProgramasA(empresa_selected, pagina_selected);
+			$('#preseleccion').val(1);
+			getListadoParticipantesA();
 		}
 
 		$('#empresa_id').change(function(){
 			var empresa_id = $(this).val();
-			getProgramasA(empresa_id, pagina_id);
-		});
-
-		$('#programa_id').change(function(){
-			$('#div-active-alert').hide();
-			var pagina_id = $(this).val();
-			var empresa_id = $('#empresa_id').val();
-			getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte);
-		});
-
-		$('#finish').click(function(){
-			getParticipantesA();
+			getProgramasA(empresa_id, pagina_selected);
 		});
 
 	} else if (reporte == '5') {
@@ -201,26 +189,6 @@ function getNiveles(empresa_id){
 	});
 }
 
-function getParticipantesA(){
-	var empresa_id = $('#empresa_id').val();
-	var entidades = $('#entidades').val();
-	$.ajax({
-		type: "GET",
-		url: $('#url_participantesA').val(),
-		async: true,
-		data: { empresa_id: empresa_id, entidades: entidades },
-		dataType: "json",
-		success: function(data) {
-			$('#usuarios').show();
-			$('#usuarios').html(data.entidades);
-		},
-		error: function(){
-			$('#active-error').html($('#error_msg-filter').val());
-			$('#div-active-alert').show();
-		}
-	});
-}
-
 function getLecciones(empresa_id){
 	$.ajax({
 		type: "GET",
@@ -263,7 +231,7 @@ function getProgramas(empresa_id,pagina_selected){
 function getProgramasA(empresa_id, pagina_selected){
 	
 	$('#change').show();
-	$('#usuarios').hide();
+	$('#resultado').hide();
 	$('#div-entidades-alert').hide();
 	$('#div-grupo').hide();
 	
@@ -274,9 +242,9 @@ function getProgramasA(empresa_id, pagina_selected){
 		data: { empresa_id: empresa_id, pagina_selected: pagina_selected },
 		dataType: "json",
 		success: function(data) {
+			$('#div-entidades').html(data.html);
 			$('#div-grupo').show();
 			$('.load1').hide();
-			$('#div-entidades').html(data.html);
 			observeMultiSelect();
 		},
 		error: function(){
@@ -312,28 +280,28 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 
 function getListadoParticipantesA(){
 	$('#loader').show();
-	$('#usuarios').hide();
+	$('#resultado').hide();
 	$('#search').hide();
 	$.ajax({
 		type: "POST",
 		url: $('#form').attr('action'),
 		async: true,
-		data: $("#form").serialize()+'&excel=0',
+		data: $("#form").serialize(),
 		dataType: "json",
 		success: function(data) {
+			console.log(data);
 			$('.load1').hide();
         	$('#search').show();
-        	$('#usuarios').show();
-			$('#usuarios').html(data.html);
-			$("#excel_contenedor").show();
-			applyDataTable();
-			observe();
+        	/*$('#archivo').val(data.archivo);
+			$('#document_name').html(data.document_name);
+			$('#document_size').html(data.document_size);
+			$('#resultado').show();
+			observeArchivo();*/
 		},
 		error: function(){
 			$('#div-error-server').html($('#error-msg').val());
 			notify($('#div-error-server').html());
-			$('.descargable').hide();
-			$('.generable').show();
+			$('#search').show();
 		}
 	});
 }
@@ -361,5 +329,12 @@ function observe()
     			$('.generable').show();
 			}
 		});
+    });
+}
+
+function observeArchivo()
+{
+	$('#resultado').click(function(){
+    	window.open($('#archivo').val(), '_blank');
     });
 }

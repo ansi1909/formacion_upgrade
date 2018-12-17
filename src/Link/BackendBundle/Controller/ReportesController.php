@@ -218,6 +218,7 @@ class ReportesController extends Controller
 
     public function ajaxGrupoSeleccionAAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
         $pagina_selected = $request->query->get('pagina_selected');
@@ -243,6 +244,7 @@ class ReportesController extends Controller
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
     public function ajaxListadoAprobadosAction(Request $request)
@@ -250,12 +252,14 @@ class ReportesController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
+        $rs = $this->get('reportes');
 
-        $empresa_id = $request->query->get('empresa_id');
-        $pagina_id = array();
-        $pagina_id[] = $request->query->get('entidades');
+        $empresa_id = $request->request->get('empresa_id');
+        $paginas_id = $request->request->get('programas');
 
-        $pagina = 83;
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        $listado = $rs->participantesAprobados($empresa_id, $paginas_id);
 
         // Llamada a la función de BD que trae el listado de participantes
        /* $query = $em->getConnection()->prepare('SELECT
@@ -303,7 +307,7 @@ class ReportesController extends Controller
         $html .= '</tbody>
                 </table>';*/
         
-        $return = array('entidades' => $pagina_id);
+        $return = array('paginas_id' => $paginas_id);
  
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

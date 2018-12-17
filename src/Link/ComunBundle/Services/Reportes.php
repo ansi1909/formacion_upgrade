@@ -507,4 +507,168 @@ class Reportes
 		return $resultados;
 
 	}
+
+    // Cálculo del reporte Evaluaciones por Módulo de una Empresa en un período determinado
+    public function participantesAprobados($empresa_id, $paginas_id)
+    {
+
+        $em = $this->em;
+        $listado = array();
+        $paginas = array();
+        $participantes = array();
+
+        foreach ($paginas_id as $pagina_id)
+        {
+
+            $query = $em->getConnection()->prepare('SELECT
+                                                    fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
+                                                    resultado; fetch all from re;');
+            $re = 're';
+            $query->bindValue(':re', $re, \PDO::PARAM_STR);
+            $query->bindValue(':preporte', 4, \PDO::PARAM_INT);
+            $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+            $query->bindValue(':pnivel_id', 0, \PDO::PARAM_INT);
+            $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+            $query->execute();
+            $rs = $query->fetchAll();
+
+            $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+            $paginas[$pagina_id] = array($pagina->getNombre());
+
+            foreach ($rs as $r)
+            {
+
+                if (!array_key_exists($r['id'], $participantes))
+                {
+                    $participantes[$r['id']] = array('id' => $r['id'],
+                                                     'codigo' => $r['codigo'],
+                                                     'login' => $r['login'],
+                                                     'nombre' => $r['nombre'],
+                                                     'apellido' => $r['apellido'],
+                                                     'fecha_registro' => $r['fecha_registro'],
+                                                     'correo' => trim($r['correo']) ? trim($r['correo']) : trim($r['correo2']),
+                                                     'activo' => $r['activo'] ? 'Sí', 'No',
+                                                     'logueado' => $r['logueado']>0 ? 'Sí' : 'No',
+                                                     'pais' => $r['pais'],
+                                                     'nivel' => $r['nivel'],
+                                                     'campo1' => $r['campo1'],
+                                                     'campo2' => $r['campo2'],
+                                                     'campo3' => $r['campo3'],
+                                                     'campo4' => $r['campo4'],
+                                                     'paginas' => array($pagina_id => array('id' => $pagina_id,
+                                                                                            'promedio' => $r['promedio'],
+                                                                                            'fecha_inicio' => $r['fecha_inicio_programa'].' '.$r['hora_inicio_programa'],
+                                                                                            'fecha_fin' => $r['fecha_fin_programa'].' '.$r['hora_fin_programa'])));
+                }
+                else {
+                    $participantes[$r['id']]['paginas'][$pagina_id] = array('id' => $pagina_id,
+                                                                            'promedio' => $r['promedio'],
+                                                                            'fecha_inicio' => $r['fecha_inicio_programa'].' '.$r['hora_inicio_programa'],
+                                                                            'fecha_fin' => $r['fecha_fin_programa'].' '.$r['hora_fin_programa']);
+                }
+
+            }
+
+        }
+        
+        // Cálculos desde la función de BD
+        $query = $em->getConnection()->prepare('SELECT
+                                                fnevaluaciones_modulo(:re, :pempresa_id, :ppagina_id, :pdesde, :phasta) as
+                                                resultado; fetch all from re;');
+        $re = 're';
+        $query->bindValue(':re', $re, \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
+        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
+        $query->execute();
+        $rs = $query->fetchAll();
+
+        $listado = array();
+        $login = '';
+        $i = 0;
+
+        foreach ($rs as $r)
+        {
+
+            $i++;
+
+            if ($i == 1)
+            {
+                $participante = array('codigo' => $r['codigo'],
+                                      'login' => $r['login'],
+                                      'nombre' => $r['nombre'],
+                                      'apellido' => $r['apellido'],
+                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                      'empresa' => $r['empresa'],
+                                      'pais' => $r['pais'],
+                                      'nivel' => $r['nivel'],
+                                      'fecha_registro' => $r['fecha_registro'],
+                                      'campo1' => $r['campo1'],
+                                      'campo2' => $r['campo2'],
+                                      'campo3' => $r['campo3'],
+                                      'campo4' => $r['campo4'],
+                                      'fecha_inicio_programa' => $r['fecha_inicio_programa'],
+                                      'hora_inicio_programa' => $r['hora_inicio_programa']);
+                $evaluaciones = array();
+                $evaluaciones[] = array('evaluacion' => $r['evaluacion'],
+                                        'estado' => $r['estado'],
+                                        'nota' => $r['nota'],
+                                        'fecha_inicio_prueba' => $r['fecha_inicio_prueba'],
+                                        'hora_inicio_prueba' => $r['hora_inicio_prueba']);
+            }
+
+            if ($r['login'] != $login)
+            {
+
+                $login = $r['login'];
+
+                if ($i > 1)
+                {
+                    $participante['evaluaciones'] = $evaluaciones;
+                    $listado[] = $participante;
+                    $participante = array('codigo' => $r['codigo'],
+                                          'login' => $r['login'],
+                                          'nombre' => $r['nombre'],
+                                          'apellido' => $r['apellido'],
+                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
+                                          'empresa' => $r['empresa'],
+                                          'pais' => $r['pais'],
+                                          'nivel' => $r['nivel'],
+                                          'fecha_registro' => $r['fecha_registro'],
+                                          'campo1' => $r['campo1'],
+                                          'campo2' => $r['campo2'],
+                                          'campo3' => $r['campo3'],
+                                          'campo4' => $r['campo4'],
+                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
+                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
+                    $evaluaciones = array();
+                    $evaluaciones[] = array('evaluacion' => $r['evaluacion'],
+                                            'estado' => $r['estado'],
+                                            'nota' => $r['nota'],
+                                            'fecha_inicio_prueba' => $r['fecha_inicio_prueba'],
+                                            'hora_inicio_prueba' => $r['hora_inicio_prueba']);
+                }
+
+            }
+            else {
+                $evaluaciones[] = array('evaluacion' => $r['evaluacion'],
+                                        'estado' => $r['estado'],
+                                        'nota' => $r['nota'],
+                                        'fecha_inicio_prueba' => $r['fecha_inicio_prueba'],
+                                        'hora_inicio_prueba' => $r['hora_inicio_prueba']);
+            }
+
+            if ($i == count($rs))
+            {
+                $participante['evaluaciones'] = $evaluaciones;
+                $listado[] = $participante;
+            }
+
+        }
+
+        return $listado;
+
+    }
+
 }
