@@ -535,8 +535,12 @@ class Reportes
             $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
             $paginas[$pagina_id] = array($pagina->getNombre());
 
+            $i = 0;
+
             foreach ($rs as $r)
             {
+
+                $i++;
 
                 if (!array_key_exists($r['id'], $participantes))
                 {
@@ -547,7 +551,7 @@ class Reportes
                                                      'apellido' => $r['apellido'],
                                                      'fecha_registro' => $r['fecha_registro'],
                                                      'correo' => trim($r['correo']) ? trim($r['correo']) : trim($r['correo2']),
-                                                     'activo' => $r['activo'] ? 'Sí', 'No',
+                                                     'activo' => $r['activo'] ? 'Sí' : 'No',
                                                      'logueado' => $r['logueado']>0 ? 'Sí' : 'No',
                                                      'pais' => $r['pais'],
                                                      'nivel' => $r['nivel'],
@@ -567,106 +571,18 @@ class Reportes
                                                                             'fecha_fin' => $r['fecha_fin_programa'].' '.$r['hora_fin_programa']);
                 }
 
-            }
-
-        }
-        
-        // Cálculos desde la función de BD
-        $query = $em->getConnection()->prepare('SELECT
-                                                fnevaluaciones_modulo(:re, :pempresa_id, :ppagina_id, :pdesde, :phasta) as
-                                                resultado; fetch all from re;');
-        $re = 're';
-        $query->bindValue(':re', $re, \PDO::PARAM_STR);
-        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-        $query->bindValue(':pdesde', $desde, \PDO::PARAM_STR);
-        $query->bindValue(':phasta', $hasta, \PDO::PARAM_STR);
-        $query->execute();
-        $rs = $query->fetchAll();
-
-        $listado = array();
-        $login = '';
-        $i = 0;
-
-        foreach ($rs as $r)
-        {
-
-            $i++;
-
-            if ($i == 1)
-            {
-                $participante = array('codigo' => $r['codigo'],
-                                      'login' => $r['login'],
-                                      'nombre' => $r['nombre'],
-                                      'apellido' => $r['apellido'],
-                                      'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                      'empresa' => $r['empresa'],
-                                      'pais' => $r['pais'],
-                                      'nivel' => $r['nivel'],
-                                      'fecha_registro' => $r['fecha_registro'],
-                                      'campo1' => $r['campo1'],
-                                      'campo2' => $r['campo2'],
-                                      'campo3' => $r['campo3'],
-                                      'campo4' => $r['campo4'],
-                                      'fecha_inicio_programa' => $r['fecha_inicio_programa'],
-                                      'hora_inicio_programa' => $r['hora_inicio_programa']);
-                $evaluaciones = array();
-                $evaluaciones[] = array('evaluacion' => $r['evaluacion'],
-                                        'estado' => $r['estado'],
-                                        'nota' => $r['nota'],
-                                        'fecha_inicio_prueba' => $r['fecha_inicio_prueba'],
-                                        'hora_inicio_prueba' => $r['hora_inicio_prueba']);
-            }
-
-            if ($r['login'] != $login)
-            {
-
-                $login = $r['login'];
-
-                if ($i > 1)
+                if ($i == 10)
                 {
-                    $participante['evaluaciones'] = $evaluaciones;
-                    $listado[] = $participante;
-                    $participante = array('codigo' => $r['codigo'],
-                                          'login' => $r['login'],
-                                          'nombre' => $r['nombre'],
-                                          'apellido' => $r['apellido'],
-                                          'correo' => trim($r['correo_personal']) ? trim($r['correo_personal']) : trim($r['correo_corporativo']),
-                                          'empresa' => $r['empresa'],
-                                          'pais' => $r['pais'],
-                                          'nivel' => $r['nivel'],
-                                          'fecha_registro' => $r['fecha_registro'],
-                                          'campo1' => $r['campo1'],
-                                          'campo2' => $r['campo2'],
-                                          'campo3' => $r['campo3'],
-                                          'campo4' => $r['campo4'],
-                                          'fecha_inicio_programa' => $r['fecha_inicio_programa'],
-                                          'hora_inicio_programa' => $r['hora_inicio_programa']);
-                    $evaluaciones = array();
-                    $evaluaciones[] = array('evaluacion' => $r['evaluacion'],
-                                            'estado' => $r['estado'],
-                                            'nota' => $r['nota'],
-                                            'fecha_inicio_prueba' => $r['fecha_inicio_prueba'],
-                                            'hora_inicio_prueba' => $r['hora_inicio_prueba']);
+                    break;
                 }
 
             }
-            else {
-                $evaluaciones[] = array('evaluacion' => $r['evaluacion'],
-                                        'estado' => $r['estado'],
-                                        'nota' => $r['nota'],
-                                        'fecha_inicio_prueba' => $r['fecha_inicio_prueba'],
-                                        'hora_inicio_prueba' => $r['hora_inicio_prueba']);
-            }
-
-            if ($i == count($rs))
-            {
-                $participante['evaluaciones'] = $evaluaciones;
-                $listado[] = $participante;
-            }
 
         }
 
+        $listado = array('participantes' => $participantes,
+                         'paginas' => $paginas);
+        
         return $listado;
 
     }

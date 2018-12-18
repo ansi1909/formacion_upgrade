@@ -307,7 +307,7 @@ class ReportesController extends Controller
         $html .= '</tbody>
                 </table>';*/
         
-        $return = array('paginas_id' => $paginas_id);
+        $return = array('listado' => $listado);
  
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
