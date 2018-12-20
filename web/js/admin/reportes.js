@@ -289,14 +289,14 @@ function getListadoParticipantesA(){
 		data: $("#form").serialize(),
 		dataType: "json",
 		success: function(data) {
-			console.log(data);
+			//console.log(data);
 			$('.load1').hide();
         	$('#search').show();
-        	/*$('#archivo').val(data.archivo);
+        	$('#archivo').val(data.archivo);
 			$('#document_name').html(data.document_name);
 			$('#document_size').html(data.document_size);
 			$('#resultado').show();
-			observeArchivo();*/
+			observeArchivo();
 		},
 		error: function(){
 			$('#div-error-server').html($('#error-msg').val());
@@ -308,6 +308,7 @@ function getListadoParticipantesA(){
 
 function observe()
 {
+	$('#excel').unbind('click');
 	$('#excel').click(function(){
     	$('#excel').hide();
     	$('#excel-loader').show();

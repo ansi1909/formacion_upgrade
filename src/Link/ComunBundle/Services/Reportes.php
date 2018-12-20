@@ -516,6 +516,9 @@ class Reportes
         $listado = array();
         $paginas = array();
         $participantes = array();
+        $bgColors = array('c5d9f1', 'f2dcdb', 'd8e4bc', 'ccc0da', '92cddc', 'fcd5b4', 'ddd9c4', 'd9d9d9', 'b8cce4', 'e6b8b7');
+
+        $colorIndex = 0;
 
         foreach ($paginas_id as $pagina_id)
         {
@@ -533,7 +536,14 @@ class Reportes
             $rs = $query->fetchAll();
 
             $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-            $paginas[$pagina_id] = array($pagina->getNombre());
+            $paginas[$pagina_id] = array('nombre' => $pagina->getNombre(),
+                                         'bgcolor' => $bgColors[$colorIndex],
+                                         'total' => count($rs));
+
+            $colorIndex++;
+            $mod = $colorIndex % 10; // Décimo color
+            $colorIndex = $mod == 0 ? 0 : $colorIndex;
+
 
             $i = 0;
 
@@ -569,11 +579,6 @@ class Reportes
                                                                             'promedio' => $r['promedio'],
                                                                             'fecha_inicio' => $r['fecha_inicio_programa'].' '.$r['hora_inicio_programa'],
                                                                             'fecha_fin' => $r['fecha_fin_programa'].' '.$r['hora_fin_programa']);
-                }
-
-                if ($i == 10)
-                {
-                    break;
                 }
 
             }

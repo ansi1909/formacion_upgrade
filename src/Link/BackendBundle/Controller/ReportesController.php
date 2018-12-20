@@ -250,67 +250,227 @@ class ReportesController extends Controller
     public function ajaxListadoAprobadosAction(Request $request)
     {
 
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $rs = $this->get('reportes');
 
         $empresa_id = $request->request->get('empresa_id');
         $paginas_id = $request->request->get('programas');
+        $pagina_selected = $request->request->get('pagina_selected');
+        $preseleccion = $request->request->get('preseleccion');
+
+        if ($preseleccion == '1')
+        {
+            $paginas_id = array($pagina_selected);
+        }
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
         $listado = $rs->participantesAprobados($empresa_id, $paginas_id);
 
-        // Llamada a la función de BD que trae el listado de participantes
-       /* $query = $em->getConnection()->prepare('SELECT
-                                                fnlistado_participantesa(:pempresa_id, :ppagina_id) as
-                                                resultado;');
-        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':ppagina_id', $pagina, \PDO::PARAM_INT);
-        $query->execute();
-        $r = $query->fetchAll();
-        if($r)
+        $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantesAprobados.xlsx';
+        $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+        $abecederario = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+        // Carga inicial de los nombres de las columnas
+        $columnNames = $abecederario;
+        $maxV = 1; // Cantidad de vueltas adicionales sobre el alfabeto para cargar el arreglo de columnNames
+        $v = 0;
+        while ($v < $maxV)
         {
-            $pagina_id = 'trajo algo';
-        }*/
-        
-       /* $html = '<table class="table" id="dt">
-                    <thead class="sty__title">
-                        <tr>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Apellido').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Login').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('País').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: .7rem;">';
-        
-        foreach ($r as $ru)
-        {
-            $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
-            $html .= '<tr>
-                        <td>'.$ru['nombre'].'</td>
-                        <td>'.$ru['apellido'].'</td>
-                        <td>'.$ru['login'].'</td>
-                        <td>'.$ru['correo'].'</td>
-                        <td>'.$activo.'</td>
-                        <td>'.$ru['fecha_registro'].'</td>
-                        <td>'.$ru['pais'].'</td>
-                        <td>'.$ru['nivel'].'</td>
-                    </tr>';
+            foreach ($abecederario as $abc)
+            {
+                $columnNames[] = $abecederario[$v].$abc;
+            }
+            $v++;
         }
 
-        $html .= '</tbody>
-                </table>';*/
+        $programCells = count($paginas_id)*3;
+        $lastColumnIndex = 13 + $programCells; // 13 es el índice de la columna N
+        $lastColumn = $columnNames[$lastColumnIndex];
+
+        // Encabezado
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre());
+
+        $font_size = 11;
+        $font = 'Arial';
+        $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+        $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+        $horizontal_left = \PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
+
+        // Fila de nombres de programas
+        $row = 3;
+        $styleProgramHeader = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('argb' => 'FF000000'),
+                )
+            ),
+            'font' => array('bold' => true)
+        );
+
+        // Estilizar las celdas de los nombres de los programas antes del merge
+        $p = 0;
+        $col = 14; // Columna O
+
+        foreach ($listado['paginas'] as $pagina_id => $pagina)
+        {
+            if ($p == 0)
+            {
+                $objWorksheet->setCellValue($columnNames[$col].$row, $pagina['nombre']);
+            }
+            else {
+
+                $col += 3;
+
+                // Ancho de las columnas
+                $objWorksheet->getColumnDimension($columnNames[$col])->setWidth(12);
+                $objWorksheet->getColumnDimension($columnNames[$col+1])->setWidth(21);
+                $objWorksheet->getColumnDimension($columnNames[$col+2])->setWidth(21);
+
+                // Fila de nombre de programas
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->applyFromArray($styleProgramHeader); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                $objWorksheet->mergeCells($columnNames[$col].$row.":".$columnNames[$col+2].$row);
+                $objWorksheet->setCellValue($columnNames[$col].$row, $pagina['nombre']);
+
+                // Header interno de cada programa
+                $inHeaderRow = $row+1;
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+2].$inHeaderRow)->applyFromArray($styleProgramHeader); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+2].$inHeaderRow)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+2].$inHeaderRow)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+2].$inHeaderRow)->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+2].$inHeaderRow)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle($columnNames[$col].$inHeaderRow.":".$columnNames[$col+2].$inHeaderRow)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                $objWorksheet->setCellValue($columnNames[$col].$inHeaderRow, $this->get('translator')->trans('Promedio'));
+                $objWorksheet->setCellValue($columnNames[$col+1].$inHeaderRow, $this->get('translator')->trans('Fecha inicio'));
+                $objWorksheet->setCellValue($columnNames[$col+2].$inHeaderRow, $this->get('translator')->trans('Fecha fin'));
+
+            }
+            $p++;
+        }
+
+        if (!count($listado['participantes']))
+        {
+            $objWorksheet->mergeCells('A5:'.$lastColumn.'5');
+            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+        }
+        else {
+
+            $i = 0;
+            $styleThinBlackBorderOutline = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
+                    ),
+                ),
+            );
+
+            $row = 5;
+
+            foreach ($listado['participantes'] as $participante)
+            {
+
+                // Estilizar toda la fila, excepto el bgcolor de las celdas de los programas
+                $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getRowDimension($row)->setRowHeight(35); // Altura de la fila
+
+                // Datos del listado
+                $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
+                $objWorksheet->setCellValue('B'.$row, $participante['login']);
+                $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
+                $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
+                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('G'.$row, $participante['activo']);
+                $objWorksheet->setCellValue('H'.$row, $participante['logueado']);
+                $objWorksheet->setCellValue('I'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
+                
+                // Datos de cada programa
+                $col = 14; // Columna O
+                foreach ($listado['paginas'] as $pagina_id => $pagina)
+                {
+                    $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                    if (array_key_exists($pagina_id, $participante['paginas']))
+                    {
+                        $objWorksheet->setCellValue($columnNames[$col].$row, $participante['paginas'][$pagina_id]['promedio']);
+                        $objWorksheet->setCellValue($columnNames[$col+1].$row, $participante['paginas'][$pagina_id]['fecha_inicio']);
+                        $objWorksheet->setCellValue($columnNames[$col+2].$row, $participante['paginas'][$pagina_id]['fecha_fin']);
+                    }
+                    $col += 3;
+                }
+
+                $row++;
+
+            }
+
+            // Fila de totales
+            $styleProgramTotal = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
+                    )
+                ),
+                'font' => array('bold' => true)
+            );
+
+            // Estilizar las celdas de los totales de los programas antes del merge
+            $col = 14; // Columna O
+
+            foreach ($listado['paginas'] as $pagina_id => $pagina)
+            {
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->applyFromArray($styleProgramTotal); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getAlignment()->setHorizontal($horizontal_left); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+2].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
+                $objWorksheet->mergeCells($columnNames[$col].$row.":".$columnNames[$col+2].$row);
+                $objWorksheet->setCellValue($columnNames[$col].$row, $this->get('translator')->trans('Total aprobados').': '.$pagina['total']);
+                $col += 3;
+            }
+
+        }
+
+        // Crea el writer
+        $empresaName = $f->eliminarAcentos($empresa->getNombre());
+        $longitud = strlen($empresaName);
+        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);
+        $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+        $path = 'recursos/reportes/listadoAprobados_'.$empresaName.'_'.$session->get('sesion_id').'.xls';
+        $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
+        $writer->save($xls);
+
+        $archivo = $this->container->getParameter('folders')['uploads'].$path;
+        $document_name = 'listadoAprobados_'.$empresaName.'_'.$session->get('sesion_id').'.xls';
+        $bytes = filesize($xls);
+        $document_size = $f->fileSizeConvert($bytes);
         
-        $return = array('listado' => $listado);
- 
-        $return = json_encode($return);
+        $return = array('archivo' => $archivo,
+                        'document_name' => $document_name,
+                        'document_size' => $document_size);
+
+        $return =  json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
     public function ajaxListadoParticipantesAction(Request $request)
