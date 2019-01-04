@@ -80,41 +80,5 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/utils.js') }}"></script>
     {{ include('LinkBackendBundle:Reportes:validacionFiltro.html.twig') }}
     <script type="text/javascript" src="{{ asset('js/admin/reportes/conexionesUsuario.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>
-
-<script type="text/javascript" >
-    function applyDataTable()
-    {
-        $('#conexionesUsuarioTable').DataTable({
-            responsive: true,
-            pageLength:10,
-            sPaginationType: "full_numbers",
-            oLanguage: {
-                "sProcessing":    "{{ 'Procesando'|trans }}...",
-                "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
-                "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
-                "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
-                "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
-                "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
-                "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
-                "sInfoPostFix":   "",
-                "sSearch":        "{{ 'Buscar'|trans }}:",
-                "sUrl":           "",
-                "sInfoThousands":  ",",
-                "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
-                oPaginate: {
-                    sFirst: "<<",
-                    sPrevious: "<",
-                    sNext: ">", 
-                    sLast: ">>" 
-                },
-                "oAria": {
-                    "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
-                    "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
-                }
-            }
-        });
-    }
-</script>
-    
+    <script type="text/javascript" src="{{ asset('js/admin/reportes/filtro.js') }}"></script>    
 {% endblock %}

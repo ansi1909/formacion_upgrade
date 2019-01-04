@@ -1063,7 +1063,7 @@ class Functions
                                    	AND p.estatusContenido = :estatus_activo 
                                    	AND pe.activo = :activo 
                                    	AND pe.fechaInicio <= :hoy 
-                                   ORDER BY pe.orden')
+                                   ORDER BY p.orden')
                     ->setParameters(array('empresa' => $empresa_id,
                     					  'pagina_id' => $pagina_id,
                                           'estatus_activo' => $estatus_contenido,

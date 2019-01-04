@@ -516,7 +516,7 @@ class ReportesController extends Controller
         {
             $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
             $html .= '<tr>
-                        <td>'.$ru['nombre'].'</td>
+                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$ru['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$ru['nombre'].'</a></td>
                         <td>'.$ru['apellido'].'</td>
                         <td>'.$ru['login'].'</td>
                         <td>'.$ru['correo'].'</td>

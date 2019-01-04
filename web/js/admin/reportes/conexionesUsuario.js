@@ -19,7 +19,8 @@ function mostrarReporte(data)
 	$('#resultado').html(data.html);
 	$('#resultado').show();
 	$("#excel_contenedor").show();
-	applyDataTable();
+	applyDataTableDetail();
+	observeList();
 	observe();
 }
 

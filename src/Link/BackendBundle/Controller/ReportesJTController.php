@@ -213,7 +213,7 @@ class ReportesJTController extends Controller
         $archivo = '';
         
 
-                  $html = '<table class="table" id="avanceProgramasTable">
+                  $html = '<table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
                             
@@ -241,7 +241,7 @@ class ReportesJTController extends Controller
             $promedio=($registro['promedio'])? $registro['promedio']:0;
             $html .= '<tr>
                        
-                        <td>'.$registro['login'].'</td>
+                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['login'].'</a></td>
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
                         <td>'.$registro['nivel'].'</td>
                         <td>'.$registro['fecha_registro'].'</td>
@@ -386,7 +386,7 @@ class ReportesJTController extends Controller
 
                
 
-                  $html = '<table class="table" id="conexionesUsuarioTable">
+                  $html = '<table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">'.$this->get('translator')->trans('Código').'</th>
@@ -406,7 +406,7 @@ class ReportesJTController extends Controller
            
             $html .= '<tr>
                         <td>'.$registro['codigo'].'</td>
-                        <td>'.$registro['login'].'</td>
+                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['login'].'</a></td>
                         <td>'.$registro['nombre'].'</td>
                         <td>'.$registro['correo_corporativo'].'</td>
                         <td>'.$registro['nivel'].'</td>
@@ -435,13 +435,14 @@ class ReportesJTController extends Controller
 
     }
 
-    public function ajaxdetalleParticipanteAction(Request $request)
+    public function detalleParticipanteAction(Request $request)
     {
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
 
-         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $empresas = array();
         if (!$usuario->getEmpresa())
@@ -450,218 +451,73 @@ class ReportesJTController extends Controller
                                                                                                     array('nombre' => 'ASC'));
         }
 
-        return $this->render('LinkBackendBundle:Reportes:detalleParticipante.html.twig', array(
-                                                                                                'usuario' => $usuario,
-                                                                                                'empresas' => $empresas));
+        return $this->render('LinkBackendBundle:Reportes:detalleParticipante.html.twig', array('usuario' => $usuario,
+                                                                                               'empresas' => $empresas));
+
     }
 
     public function ajaxUsernamesEmpresaAction(Request $request)
     {
-        $session = new Session();
+
         $data = [];
         $empresa_id = $request->query->get('empresa_id');
-        $buscar =  $request->query->get('term');
-        $buscar = '%'.$buscar.'%';
+        $term =  $request->query->get('term');
+        $term = '%'.$term.'%';
         
-
-       $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
                                     WHERE u.login LIKE :term AND u.empresa = :empresa_id')
-                    ->setParameters(array('term'=>$buscar,'empresa_id'=>$empresa_id));
+                    ->setParameters(array( 'term' => $term, 'empresa_id' => $empresa_id));
         $usuarios = $query->getResult();
 
-      
         foreach ($usuarios as $usuario) {
-             array_push($data,$usuario->getLogin());
+            array_push($data, $usuario->getLogin());
         }
+
         $return = json_encode($data);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
-    protected function buscarVistos($padreId,$usuarioId)
+    public function ajaxDetalleParticipanteAction(Request $request)
     {
 
-       $em = $this->getDoctrine()->getManager();
-
-       $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
-                                 INNER JOIN LinkComunBundle:CertiPaginaLog cpl WITH cp.id = cpl.pagina
-                                 WHERE cp.pagina =:paginaId AND cpl.usuario =:usuarioId AND cpl.estatusPagina =:status')
-                   ->setParameters(array('paginaId'=>$padreId,'usuarioId'=>$usuarioId,'status'=>3));
-
-      $registros = $query->getResult();
-
-      return $registros;
-
-          
-    }
-   protected function generarHtml($programasArray)
-   {
-     $html='<table style="width:100%;">';
-     foreach ($programasArray as $programa) 
-     {
-        $html.='<tr  style="background-color: #0065ad;text-align:center;font-weight: bold;color:#FFFFFF;">
-                <td colspan="4" style="padding:5px;"> Programa: '.$programa['programa'].' - '.$programa['status'].' %<td>
-               <tr>';
-
-        foreach ($programa['modulos'] as $modulo) 
-        {
-            $html .='<tr style="background-color: #C8DCEE;text-align:center;font-weight: bold;color:#000000;"><td colspan="4" style="padding:5px;">Modulo: '.$modulo['modulo'].'</td></tr>';
-            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Avance </td><td style="width:10%px;text-align:center;font-weight:bold;padding:5px;">Materias vistas</td><td style="width:10%;text-align:center;font-weight:bold;padding:5px;">Lecciones vistas</td><td style="width:70%;text-align:left;font-weight:bold;padding:5px;">Evaluaciones</td></tr>';
-            $html .='<tr style="background-color: #FFFFFF;"><td style="width:10%;text-align:center;padding:5px;">'.$modulo['status'].' %</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['materias'].'</td><td style="width:10%;text-align:center;padding:5px;">'.$modulo['lecciones'].'</td><td style="width:10%;text-align:left;padding:5px;" ><ol class="_liNueva_">';
-            $c=1;
-            foreach ($modulo['evaluaciones'] as $evaluacion) 
-            {
-                $html.='<li value="1"><label style="font-weight:bold;">'.$c.'.</label> '.$evaluacion.'</li>';
-                $c+=1;
-            }
-            $html .='</ol></td></tr>';
-        }
-
-        //$html='<tr><td>'.$programas['modulos'].'</td></tr>';
-     }
-
-     $html.='</table>';
-
-     return $html;
-
-    // return 'Hola';
-   }
-
-   protected function buscarEvaluacion($paginaId,$usuarioId)
-   {
-      $listaStatus = ['APROBADO'=>['color'=>'#04aa49','status'=>'Aprobada'],'EN CURSO'=>['color'=>'#0065ad','status'=>'En curso'],'REPROBADO'=>['color'=>'#aa0000','status'=>'Reprobada']];
-      $em = $this->getDoctrine()->getManager();
-      $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina'=>$paginaId));
-      $retorno = $prueba->getNombre().'.';
-     // $nombrePrueba = explode($nombrePrueba);
-
-
-
-
-
-
-      $query =  $em->createQuery('SELECT cpl FROM LinkComunBundle:CertiPruebaLog cpl
-                                  WHERE cpl.prueba =:prueba AND cpl.usuario =:usuario
-                                  ORDER BY cpl.nota DESC')
-                   ->setParameters(array('prueba'=>$prueba->getId(),'usuario'=>$usuarioId));
-
-      $pruebaLog = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY); 
-      
-
-
-      if($pruebaLog)
-      {
-        $pruebaLog = $pruebaLog[0];
-        $nota = ($pruebaLog['estado']=='APROBADO' OR $pruebaLog['estado'] =='REPROBADO')? '<label style="font-weight:bold">Nota:&nbsp;</label>'.$pruebaLog['nota']:'';
-        $status = '<BR><label style="font-weight:bold">Status:&nbsp;</label><label style="font-weight:bold;color:'.$listaStatus[$pruebaLog['estado']]['color'].'">'.$listaStatus[$pruebaLog['estado']]['status'].'</label>&nbsp;&nbsp;'.$nota;
-
-        $retorno = $retorno.$status;
-
-      }
-      else
-      {
-        $retorno = $retorno.'<BR><label style="font-weight:bold;">Status:</label><label style="color:#ea8c1d;font-weight:bold;">&nbsp;No iniciada</label>';
-      }
-     
-      return $retorno;
-
-
-   }
-
-
-
-    public function ajaxInfoUsuarioAction(Request $request)
-    {
-        $estructuraPagina = [];
         $em = $this->getDoctrine()->getManager();
-        $empresa_id = $request->query->get('empresa_id');
-        $login =  $request->query->get('login');
+        $rs = $this->get('reportes');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findBy(array('login'=>$login,'empresa'=>$empresa_id));
+        $empresa_id = $request->request->get('empresa_id');
+        $login = $request->request->get('username');
 
-      // obtenemos la informacion de la primera parte del reporte
-      $query = $em->getConnection()->prepare('SELECT
-                                                fndatos_usuario(:re,:pusername,:pempresaid) as
-                                                resultado; fetch all from re;');
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login, 
+                                                                                                        'empresa' => $empresa_id));
 
-      $re = 're';
-      $query->bindValue(':re', $re, \PDO::PARAM_STR);
-      $query->bindValue(':pusername', $login, \PDO::PARAM_STR);
-      $query->bindValue(':pempresaid', $empresa_id, \PDO::PARAM_INT);
-      $query->execute();
-      $infoUsuario = $query->fetchAll();
-      $infoUsuario = $infoUsuario[0];
-     
-      //obtenemos los programas asociados al usuario
-      $query =  $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp 
-             INNER JOIN LinkComunBundle:CertiPaginaEmpresa cpe WITH cp.id = cpe.pagina
-             INNER JOIN LinkComunBundle:CertiNivelPagina cnp WITH cpe.id = cnp.paginaEmpresa
-             WHERE cnp.nivel =:usuarioId AND cpe.empresa =:usuarioEmpresa')
-         ->setParameters(array('usuarioId'=>$infoUsuario['id_nivel'],'usuarioEmpresa'=>$empresa_id));
-      $programas = $query->getResult();
+        $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
+        $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml);
 
-      $usuarioId = $infoUsuario['id_usuario'];
+        $dataUsuario = array('foto' => trim($usuario->getFoto()) ? trim($usuario->getFoto()) : 0,
+                             'login' => $usuario->getLogin(),
+                             'nombre' => $usuario->getNombre(),
+                             'apellido' => $usuario->getApellido(),
+                             'correoPersonal' => $usuario->getCorreoPersonal(),
+                             'fechaNacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
+                             'activo' => $usuario->getActivo() ? $this->get('translator')->trans('Sí') : 'No',
+                             'correoCorporativo' => $usuario->getCorreoCorporativo(),
+                             'campo1' => $usuario->getCampo1(),
+                             'campo2' => $usuario->getCampo2(),
+                             'campo3' => $usuario->getCampo3(),
+                             'campo4' => $usuario->getCampo4(),
+                             'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
+                             'ingresos' => $reporte['ingresos']);
 
-      $programasArray=[];
-      foreach ($programas as $programa) 
-      {
-          
-          $modulos = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$programa->getId()));
-          $programaLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$programa->getId(),'usuario'=>$usuarioId));
+        $return = array('usuario' => $dataUsuario);
 
-         
+        $html = $this->renderView('LinkBackendBundle:Reportes:detalleParticipanteProgramas.html.twig', array('programas' => $reporte['programas']));
 
-          $programaStatus = ($programaLog)? $programaLog->getPorcentajeAvance() : '0';
-          $fechaInicioP = ($programaLog)? $programaLog->getFechaInicio() : 'Por iniciar';
-          $fechaFinP = ($programaLog)? $programaLog->getFechaFin() : 'Por iniciar';
-
-          $programaArray = ['programa'=>$programa->getNombre(),'inicio'=>$fechaInicioP,'fin'=>$fechaFinP,'status'=>$programaStatus,'modulos'=>''];
-          $moduloArray = [];
-
-          
-          foreach ($modulos as $key => $modulo) 
-          {
-             $evaluacionesArray = [];
-             $materiasVistas = 0;
-             $leccionesVistas = 0;
-
-             $moduloLog = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina'=>$modulo->getId(),'usuario'=>$usuarioId));
-
-             $moduloStatus = ($moduloLog)? $moduloLog->getPorcentajeAvance():'0';
-
-             
-
-             $materias = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina'=>$modulo->getId()));
-             $materiasVistas = count($this->buscarVistos($modulo->getId(),$usuarioId));
-             foreach ($materias as $materia) 
-             {
-                 $leccionesVistas = count($this->buscarVistos($materia->getId(),$usuarioId));
-                 array_push($evaluacionesArray,$this->buscarEvaluacion($materia->getId(),$usuarioId));
-                 
-             }
-             
-             array_push($evaluacionesArray,$this->buscarEvaluacion($modulo->getId(),$usuarioId));
-             
-             array_push($moduloArray,['modulo'=>$modulo->getNombre(),'materias'=>$materiasVistas,'lecciones'=>$leccionesVistas,'status'=>$moduloStatus,'evaluaciones'=>$evaluacionesArray]);
-
-             
-
-          }
-          $programaArray['modulos'] = $moduloArray;
-          array_push($programasArray,$programaArray);
-
-          
-      }
-      
-
-      
-      
-
-    
-      $html = $this->generarHtml($programasArray);
-      $return = json_encode(['usuario'=>$infoUsuario,'html'=>$html]);
-      return new Response($return, 200, array('Content-Type' => 'application/json'));
+        $return['html'] = $html;
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
    

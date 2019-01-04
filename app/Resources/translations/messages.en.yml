@@ -65,8 +65,11 @@ Atrás: Back
 Aún no has respondido las preguntas: You have not answered the questions yet
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
+Aún sin presentar la evaluación: Has not yet presented the evaluation
 Aún sin publicar: Not yet published
 Autor: Author
+Avance en el módulo: Module avance
+Avance en el programa: Program avance
 Avance en programas: Advance in programs
 Aviso de cierre de sesión: Notice of session closure
 Avisos programados de: Programmed notifications of
@@ -393,7 +396,9 @@ Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
+Evaluación del módulo: Module evaluation
 Evaluación no encontrada: Evaluation not found
+Evaluaciones de las materias: Evaluations of the subjects
 Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
@@ -473,6 +478,8 @@ Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
 Imagen lado: Image side
+Imprimir certificado: Print certificate
+Imprimir constancia de notas: Print proof of notes
 Inactivos: Inactive
 Índice: Index
 Ingrese un correo valido: Enter a valid email
@@ -483,6 +490,7 @@ Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
 Ingrese lo que desea buscar: Enter what you want to search
+Ingresos al sistema: System entries
 Iniciado: Initiated
 Inicia el: Starts at
 Iniciar: Start
@@ -494,8 +502,6 @@ tu usuario y clave. Ingresa tu correo.: your username and password. Enter your e
 Interacción: Interaction
 Interacción en los muros: Wall interactions
 Interacción en los muros por empresa: Wall interactions per company
-Imprimir certificado: Print certificate
-Imprimir constancia de notas: Print proof of notes
 Ir a detalles de la página: Go to page details
 Ir al inicio: Go to home
 Ir al listado: Go to list
@@ -554,6 +560,7 @@ La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lección: Lesson
 Lecciones: Lessons
+Lecciones vistas: Lessons seen
 Leidos: Read
 Libro: Book
 Libros: Books
@@ -597,7 +604,7 @@ Martes: Tuesday
 Más recientes: Most recent
 Más valorados: Most valued
 Material complementario: Complementary content
-Materias vistas: Matter seen
+Materias vistas: Subjects seen
 Mensaje: Message
 Mensaje del servidor: Server message
 Mi avance: My progress
@@ -608,6 +615,7 @@ Mis Programas: My Programs
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
+Módulo: Module
 Módulos: Modules
 Módulos vistos: Modules seen
 Mostrando registros del: Showing items of
@@ -650,6 +658,7 @@ No se pudo filtrar el listado.: It could not filter the list.
 No se pudo guardar el evento. Inténtalo de nuevo.: The event could not be saved. Try again.
 No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/deny the access to this page.
 No te rindas: Do not give up
+No tiene evaluación: It does not have evaluation
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nombre de usuario: Username
@@ -744,6 +753,7 @@ Preguntas no encontradas: Questions not found
 Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
+Primera conexión: First connection
 Procesando: Processing
 Procesar: Process
 Programa: Program
@@ -752,10 +762,12 @@ Programado para: scheduled at
 Programar nuevo aviso: Program new notice
 Programas: Programs
 Programas asignados: Assigned programs
+Programas en curso: Programs in progress
 Programas Finalizados: Finished programs
+Programas no iniciados: Programs not started
 Prog. asociados: Associated Prog.
 Promedio: Average
-Promedio de conexiones: Average connections
+Promedio de conexión: Connection average
 Promedio evaluación módulo: Average evaluation module
 Publicar: Publish
 Puede acceder a este espacio a través del siguiente enlace: You can access through following link
@@ -896,6 +908,7 @@ Tu calificación: Your score
 Tu comentario: Your comment
 Tu respuesta: Your answer
 Tutoriales: Tutorials
+Última conexión: Last connection
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found
 Url no encontrada: Url not found

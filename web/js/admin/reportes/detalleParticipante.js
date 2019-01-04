@@ -1,60 +1,113 @@
 $(document).ready(function() {
-      $('#username').prop('readonly',true);
-	  $('#empresa_id').change(function(event) 
-	  {
-           var empresa_id = $(this).val();
-           if(empresa_id>0)
-           {
-           	  $('#hiddenEmpresa').val(empresa_id);
-           	  $('#username').prop('readonly',false);
-           }
-           else
-           {
-           	 $('#username').prop('readonly',true);
-           }
-          
-	  });
 
-	  $('#search').click(function()
-	  {
-         var empresa_id = $('#empresa_id').val();
-         var username = $('#username').val();
+	var empresa_id = $('#empresa_id').val();
+	readonlyUsername(empresa_id);
 
-         $.ajax({
-		          url: $('#url_infoUsuario').val(),
-		          dataType: "json",
-		          data:{login:username, empresa_id: empresa_id},
-		          type:'GET',
-		          beforeSend:function (){
-		          $('#user-loader').show();
-		          },
-		          success:function(data){
-                    $('#programasAsignados').html(data.html);
-		          	
-		          	$('#user-loader').hide();
-		          	$('#nombre').text(data.usuario.usuario_nombre+' '+data.usuario.apellido);
-		          	$('#login').text(data.usuario.username);
-		          	$('#correo').text((data.usuario.correo_personal)? data.usuario.correo_personal:data.usuario.correo_corporativo);
-		          	$('#empresa').text(data.usuario.empresa_nombre);
-		          	$('#nivel').text(data.usuario.nivel_nombre);
-		          	$('#status').text((data.usuario.status)? 'Activo':'Inactivo');
-		          	$('#priConex').text(data.usuario.fecha_primer_acceso);
-		          	$('#ultConex').text(data.usuario.fecha_ultimo_acceso);
-		          	$('#cntdConex').text(data.usuario.cantidad_accesos);
-		          	$('#prmConex').text(data.usuario.promedio_conexiones+' (HH:MM:SS)');
-		          	$('#proNoinic').text(data.usuario.programas_sin_iniciar);
-		          	$('#proEncurs').text(data.usuario.programas_iniciados);
-		          	$('#proFinal').text(data.usuario.programas_culminados);
-		          	
+    $('#form').submit(function(e) {
+		e.preventDefault();
+	});
 
-		          
-		         }
-		       });
-	  });
-	  
+	$('#search').click(function(){
+		var valid = $("#form").valid();
+        if (!valid) 
+        {
+            notify($('#div-error').html());
+        }
+        else {
+        	$('#form').submit();
+			return false;
+        }
+	});
+
+	$('#form').safeform({
+		submit: function(e) {
+			$('#reporteDetail').show();
+			$('#contenidoDetail').hide();
+        	$('#loadDetail').show();
+        	$('#search').hide();
+        	$('#participante').html($('#username').val());
+			$.ajax({
+				type: "POST",
+				url: $('#form').attr('action'),
+				async: true,
+				data: $("#form").serialize(),
+				dataType: "json",
+				success: function(data) {
+					$('#search').show();
+					setDetails(data);
+					$('#form').safeform('complete');
+					return false;
+				},
+				error: function(){
+					$('#div-error-server').html($('#error-msg').val());
+					notify($('#div-error-server').html());
+					$('#reporteDetail').hide();
+		        	$('#loadDetail').hide();
+		        	$('#search').show();
+					$('#form').safeform('complete');
+                    return false;
+				}
+			});
+		}
+	});
+      
+	$('#empresa_id').change(function(event){
+		readonlyUsername($(this).val());
+	});
+
+	$('#username').autocomplete({ 
+        source: function(request,response){
+          	$.ajax({
+          		url: $('#url_username').val(),
+          		dataType: "json",
+          		data: { term:request.term, empresa_id: $('#empresa_id').val() },
+          		type:'GET',
+          		beforeSend:function (){
+          			$('#user-loader').show();
+          		},
+          		success:function(data){
+          			$('#user-loader').hide();
+          			response(data);
+          		}
+          	});
+        },
+        minLength: 1
+    });
 	  
 });
 
-var empresa_id =0;
-var lista_usuarios='';
-var empresa_id_global=0;
+function readonlyUsername(empresa_id)
+{
+	if (empresa_id > 0)
+   	{
+   		$('#username').prop('readonly',false);
+   	}
+   	else {
+   		$('#username').prop('readonly',true);
+   	}
+}
+
+function progressCircle()
+{
+
+	$('.progress-success').circleProgress({ 
+		fill: {gradient: ["#2dc1c9", "#0d769f"]},
+		lineCap: 'butt'
+	}).on('circle-animation-progress', function(event, progress,stepValue) {
+		$(this).find('strong').html(Math.round(100 * progress * stepValue) + '<i>%</i>');
+	});
+
+	$('.progress-danger').circleProgress({
+     	fill: {gradient:["#f6775a", "#ed5a7c"]},
+	}).on('circle-animation-progress', function(event, progress,stepValue) {
+    	$(this).find('strong').html(Math.round(100 * progress * stepValue) + '<i>%</i>');
+  	});
+
+	$('.progress-warning').circleProgress({ 
+    	fill: {gradient: ["#ff9300", "#ff5800"]},
+    	lineCap: 'butt'
+	}).on('circle-animation-progress', function(event, progress,stepValue) {
+    	$(this).find('strong').html(Math.round(100 * progress * stepValue) + '<i>%</i>');
+  	});
+  	
+}

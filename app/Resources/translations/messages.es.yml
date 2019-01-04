@@ -65,8 +65,11 @@ Atrás: Atrás
 Aún no has respondido las preguntas: Aún no has respondido las preguntas
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
+Aún sin presentar la evaluación: Aún sin presentar la evaluación
 Aún sin publicar: Aún sin publicar
 Autor: Autor
+Avance en el módulo: Avance en el módulo
+Avance en el programa: Avance en el programa
 Avance en programas: Avance en programas
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Avisos programados de: Avisos programados de
@@ -393,7 +396,9 @@ Estos son los resultados que has obtenido: Estos son los resultados que has obte
 Estructura: Estructura
 Evaluación: Evaluación
 Evaluación activa: Evaluación activa
+Evaluación del módulo: Evaluación del módulo
 Evaluación no encontrada: Evaluación no encontrada
+Evaluaciones de las materias: Evaluaciones de las materias
 Evaluaciones por módulo: Evaluaciones por módulo
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
@@ -473,6 +478,8 @@ Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen lado: Imagen lado
+Imprimir certificado: Imprimir certificado
+Imprimir constancia de notas: Imprimir constancia de notas
 Inactivos: Inactivos
 Índice: Índice
 Ingrese un correo valido: Ingrese un correo valido
@@ -483,6 +490,7 @@ Ingrese el mensaje que desea enviar: Ingrese el mensaje que desea enviar
 Ingresa tu usuario: Ingresa tu usuario
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa
 Ingrese lo que desea buscar: Ingrese lo que desea buscar
+Ingresos al sistema: Ingresos al sistema
 Iniciado: Iniciado
 Inicia el: Inicia el
 Iniciar: Iniciar
@@ -494,8 +502,6 @@ tu usuario y clave. Ingresa tu correo.: tu usuario y clave. Ingresa tu correo.
 Interacción: Interacción
 Interacción en los muros: Interacción en los muros
 Interacción en los muros por empresa: Interacción en los muros por empresa
-Imprimir certificado: Imprimir certificado
-Imprimir constancia de notas: Imprimir constancia de notas
 Ir a detalles de la página: Ir a detalles de la página
 Ir al inicio: Ir al inicio
 Ir al listado: Ir al listado
@@ -554,6 +560,7 @@ La sesión se cerrará automáticamente en: La sesión se cerrará automáticame
 Lado: Lado
 Lección: Lección
 Lecciones: Lecciones
+Lecciones vistas: Lecciones vistas
 Leidos: Leidos
 Libro: Libro
 Libros: Libros
@@ -608,6 +615,7 @@ Mis Programas: Mis Programas
 Modificado el: Modificado el
 Modificado por: Modificado por
 Modificar evento: Modificar evento
+Módulo: Módulo
 Módulos: Módulos
 Módulos vistos: Módulos vistos
 Mostrando registros del: Mostrando registros del
@@ -650,6 +658,7 @@ No se pudo filtrar el listado.: No se pudo filtrar el listado.
 No se pudo guardar el evento. Inténtalo de nuevo.: No se pudo guardar el evento. Inténtalo de nuevo.
 No se pudo habilitar/inhabilitar el acceso a esta página.: No se pudo habilitar/inhabilitar el acceso a esta página.
 No te rindas: No te rindas
+No tiene evaluación: No tiene evaluación
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
 Nombre de usuario: Nombre de usuario
@@ -744,6 +753,7 @@ Preguntas no encontradas: Preguntas no encontradas
 Prelación: Prelación
 Prelada por: Prelada por
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
+Primera conexión: Primera conexión
 Procesando: Procesando
 Procesar: Procesar
 Programa: Programa
@@ -751,12 +761,14 @@ Programación del aviso: Programación del aviso
 Programado para: Programado para
 Programar nuevo aviso: Programar nuevo aviso
 Programas: Programas
-Programas asignados: Programas asignados 
+Programas asignados: Programas asignados
+Programas en curso: Programas en curso
 Programas Finalizados: Programas Finalizados
+Programas no iniciados: Programas no iniciados
 Prog. asociados: Prog. asociados
 Promedio: Promedio
+Promedio de conexión: Promedio de conexión
 Promedio evaluación módulo: Promedio evaluación módulo
-Promedio de conexiones: Promedio de conexiones
 Publicar: Publicar
 Puede acceder a este espacio a través del siguiente enlace: Puede acceder a este espacio a través del siguiente enlace
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
@@ -896,6 +908,7 @@ Tu calificación: Tu calificación
 Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
 Tutoriales: Tutoriales
+Última conexión: Última conexión
 Últimos 12: Últimos 12
 Url de la empresa no existe: Url de la empresa no existe
 Url no encontrada: Url no encontrada

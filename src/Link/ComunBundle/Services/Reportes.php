@@ -592,4 +592,190 @@ class Reportes
 
     }
 
+    // Interacciones del usuario con los programas asignados
+    public function detalleParticipanteProgramas($usuario_id, $empresa_id, $nivel_id, $yml)
+    {
+
+        $em = $this->em;
+        $resultados = array();
+
+        // INGRESOS AL SISTEMA
+        $query = $em->getConnection()->prepare('SELECT
+                                                fningresos_sistema(:pusuario_id) as
+                                                resultado;');
+        $query->bindValue(':pusuario_id', $usuario_id, \PDO::PARAM_INT);
+        $query->execute();
+        $r = $query->fetchAll();
+
+        // La respuesta viene separada por __
+        $r_arr = explode("__", $r[0]['resultado']);
+        $resultados['ingresos']['primeraConexion'] = $r_arr[0];
+        $resultados['ingresos']['ultimaConexion'] = $r_arr[1];
+        $resultados['ingresos']['cantidadConexiones'] = (int) $r_arr[2];
+        $resultados['ingresos']['promedioConexion'] = $r_arr[3];
+        $resultados['ingresos']['noIniciados'] = (int) $r_arr[4];
+        $resultados['ingresos']['enCurso'] = (int) $r_arr[5];
+        $resultados['ingresos']['finalizados'] = (int) $r_arr[6];
+
+        //obtenemos los programas asociados al usuario
+        $query =  $em->createQuery('SELECT p FROM LinkComunBundle:CertiPagina p 
+                                    INNER JOIN LinkComunBundle:CertiPaginaEmpresa pe WITH p.id = pe.pagina 
+                                    INNER JOIN LinkComunBundle:CertiNivelPagina np WITH pe.id = np.paginaEmpresa 
+                                    WHERE np.nivel = :nivel_id 
+                                        AND pe.empresa = :empresa_id 
+                                        AND p.pagina IS NULL 
+                                    ORDER BY pe.orden ASC')
+                     ->setParameters(array('nivel_id' => $nivel_id,
+                                           'empresa_id' => $empresa_id));
+        $programas = $query->getResult();
+
+        $programas_arr = array();
+      
+        foreach ($programas as $programa) 
+        {
+
+            $programa_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $programa->getId(),
+                                                                                                  'usuario' => $usuario_id));
+
+            // Módulos
+            $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                        JOIN pe.pagina p 
+                                        WHERE pe.empresa = :empresa_id 
+                                            AND p.pagina = :pagina_id  
+                                        ORDER BY pe.orden ASC')
+                         ->setParameters(array('empresa_id' => $empresa_id,
+                                               'pagina_id' => $programa->getId()));
+            $modulos = $query->getResult();
+
+            $modulos_arr = array();
+
+            foreach ($modulos as $modulo)
+            {
+
+                $modulo_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $modulo->getPagina()->getId(),
+                                                                                                    'usuario' => $usuario_id));
+
+                // Materias
+                $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                            JOIN pe.pagina p 
+                                            WHERE pe.empresa = :empresa_id 
+                                                AND p.pagina = :pagina_id  
+                                            ORDER BY pe.orden ASC')
+                             ->setParameters(array('empresa_id' => $empresa_id,
+                                                   'pagina_id' => $modulo->getPagina()->getId()));
+                $materias = $query->getResult();
+
+                $materias_asignadas = count($materias);
+                $materias_vistas = 0;
+                $lecciones_asignadas = 0;
+                $lecciones_vistas = 0;
+                $evaluaciones_materias = array();
+                foreach ($materias as $materia)
+                {
+
+                    $materia_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $materia->getPagina()->getId(),
+                                                                                                         'usuario' => $usuario_id,
+                                                                                                         'estatusPagina' => $yml['parameters']['estatus_pagina']['completada']));
+                    if ($materia_log)
+                    {
+                        $materias_vistas++;
+                    }
+
+                    // Lecciones
+                    $query =  $em->createQuery('SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                JOIN pe.pagina p 
+                                                WHERE pe.empresa = :empresa_id 
+                                                    AND p.pagina = :pagina_id  
+                                                ORDER BY pe.orden ASC')
+                                 ->setParameters(array('empresa_id' => $empresa_id,
+                                                       'pagina_id' => $materia->getPagina()->getId()));
+                    $lecciones = $query->getResult();
+
+                    $lecciones_asignadas += count($lecciones);
+                    foreach ($lecciones as $leccion)
+                    {
+                        $leccion_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('pagina' => $leccion->getPagina()->getId(),
+                                                                                                             'usuario' => $usuario_id,
+                                                                                                             'estatusPagina' => $yml['parameters']['estatus_pagina']['completada']));
+                        if ($leccion_log)
+                        {
+                            $lecciones_vistas++;
+                        }
+                    }
+
+                    // Evaluación de la materia
+                    $evaluaciones_materias[] = $this->statusEvaluacion($materia->getPagina()->getId(), $usuario_id);
+
+                }
+
+                // Evaluación del módulo
+                $evaluacion = $this->statusEvaluacion($modulo->getPagina()->getId(), $usuario_id);
+
+                $modulos_arr[] = array('id' => $modulo->getPagina()->getId(),
+                                       'nombre' => $modulo->getPagina()->getNombre(),
+                                       'avance' => $modulo_log ? number_format($modulo_log->getPorcentajeAvance(), 0) : 0,
+                                       'materias' => $materias_vistas.'/'.$materias_asignadas,
+                                       'lecciones' => $lecciones_vistas.'/'.$lecciones_asignadas,
+                                       'evaluacion' => $evaluacion,
+                                       'evaluaciones_materias' => $evaluaciones_materias);
+
+            }
+
+            $programas_arr[] = array('id' => $programa->getId(),
+                                     'nombre' => $programa->getNombre(),
+                                     'avance' => $programa_log ? number_format($programa_log->getPorcentajeAvance(), 0) : 0,
+                                     'modulos' => $modulos_arr);
+
+        }
+
+        $resultados['programas'] = $programas_arr;
+        
+        return $resultados;
+
+    }
+
+    public function statusEvaluacion($pagina_id, $usuario_id)
+    {
+
+        $em = $this->em;
+        $evaluacion = array();
+
+        $prueba = $em->getRepository('LinkComunBundle:CertiPrueba')->findOneByPagina($pagina_id);
+
+        if (!$prueba)
+        {
+            $evaluacion = array('tiene' => 0,
+                                'nombre' => '',
+                                'status' => $this->translator->trans('No tiene evaluación'),
+                                'class' => '',
+                                'clase' => '',
+                                'nota' => '');
+        }
+        else {
+            $prueba_log = $em->getRepository('LinkComunBundle:CertiPruebaLog')->findOneBy(array('prueba' => $prueba->getId(),
+                                                                                                'usuario' => $usuario_id),
+                                                                                          array('id' => 'DESC'));
+            if (!$prueba_log)
+            {
+                $evaluacion = array('tiene' => 1,
+                                    'nombre' => $prueba->getNombre(),
+                                    'status' => $this->translator->trans('Aún sin presentar la evaluación'),
+                                    'class' => 'warning',
+                                    'clase' => 'naranja',
+                                    'nota' => 0);
+            }
+            else {
+                $evaluacion = array('tiene' => 1,
+                                    'nombre' => $prueba->getNombre(),
+                                    'status' => $prueba_log->getEstado() ? $prueba_log->getEstado() : $this->translator->trans('En curso'),
+                                    'class' => $prueba_log->getEstado() ? $prueba_log->getEstado()=='APROBADO' ? 'success' : 'danger' : 'warning',
+                                    'clase' => $prueba_log->getEstado() ? $prueba_log->getEstado()=='APROBADO' ? 'verde' : 'rojo' : 'naranja',
+                                    'nota' => $prueba_log->getEstado() ? number_format($prueba_log->getNota(), 0) : 0);
+            }
+        }
+
+        return $evaluacion;
+
+    }
+
 }

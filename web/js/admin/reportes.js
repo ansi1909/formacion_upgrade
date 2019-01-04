@@ -34,10 +34,6 @@ $(document).ready(function() {
 			getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte);
 		});
 
-		$('.paginate_button').click(function(){
-	        afterPaginate();
-	    });
-
 	}
 	else if (reporte == '2') {
 		
@@ -268,7 +264,8 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 			$('#usuarios').show();
 			$('#usuarios').html(data.html);
 			$('#excel').show();
-			applyDataTable();
+			applyDataTableDetail();
+			observeList();
 			clearTimeout( timerId );
 		},
 		error: function(){

@@ -1,0 +1,258 @@
+<style>
+    .social-profile-pic img {
+        width: 10rem;
+        height: auto;
+        overflow: hidden;
+        border: 0;
+        -webkit-border-radius: 1rem;
+        -moz-border-radius: 1rem;
+        -ms-border-radius: 1rem;
+        border-radius: 1rem;
+        -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4) ;
+        margin: -1rem 0 0 .8rem;
+    }
+    .rojo {
+        color: #ff6262;
+    }
+    .naranja {
+        color: #f0ad4e;
+    }
+    .verde {
+        color: #15d4be;
+    }
+</style>
+
+<input type="hidden" id="profilePhoto" name="profilePhoto" value="{{ asset('img/user.png') }}">
+<div class="row" id="reporteDetail" style="display:none;">
+    <div class="col-sm-16 col-md-16 col-lg-16">
+        <div class="card">
+            <div class="card-header gradiente" id="headerDetail">
+                <div class="card-title">
+                    <h6>{{ 'Detalle del participante'|trans }} <span id="participante"></span></h6>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="container_wizard wizard-thin" id="contenidoDetail" style="display:none;">
+                    <div class="stepwizard">
+                        <div class="stepwizard-row setup-panel d-flex">
+                            <div class="stepwizard-step col">
+                                <a href="#det0" class="btn bttn__fndo pass">
+                                    <span class="btn-round">1</span>
+                                    <p>{{ 'Perfil del participante'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det1" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">2</span>
+                                    <p>{{ 'Ingresos al sistema'|trans }}</p>
+                                </a>
+                            </div>
+                            <div class="stepwizard-step col">
+                                <a href="#det2" class="btn btn-secondary pass disabled">
+                                    <span class="btn-round">3</span>
+                                    <p>{{ 'Programas asignados'|trans }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det0">  
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-10 col-lg-10">
+                                            <figure class="social-profile-pic" id="figure"><img id="foto" src="{{ asset('img/user.png') }}" alt=""></figure>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <label for="login" class="col-sm-2 col-md-2 col-lg-2 col-form-label">{{ 'Participante'|trans }}</label>
+                                    <div class="col-sm-14 col-md-14 col-lg-14">
+                                        <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="login">
+                                    </div>
+                                </div>
+                                <div class="col-sm-9 col-md-9 col-lg-9">
+                                    <div class="row">
+                                        <label for="nombre" class="col-sm-2 col-md-2 col-lg-2 offset-sm-4 offset-md-4 offset-lg-4 col-form-label">{{ 'Nombre'|trans }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="nombre">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <label for="apellido" class="col-sm-2 col-md-2 col-lg-2 offset-sm-4 offset-md-4 offset-lg-4 col-form-label">{{ 'Apellido'|trans }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="apellido">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="correoPersonal" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Correo personal'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="email" class="form-control form_sty1" value="" disabled="disabled" id="correoPersonal">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5 justify-content-end">
+                                    <label for="fechaNacimiento" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Fecha de nacimiento'|trans }}</label>
+                                    <div class="col-sm-16 col-md-16 col-lg-16">
+                                        <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="fechaNacimiento">
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <div class="form-group">
+                                        <label for="activo" class="col-16 col-form-label">{{ 'Activo'|trans }}</label>
+                                        <div class="col-16" id="activo" style="font-weight: bold;">No</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="correoCorporativo" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Correo corporativo'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="email" class="form-control form_sty1" value="" disabled="disabled" id="correoCorporativo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <div class="form-group">
+                                        <label for="campo1" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo1'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="campo1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <div class="form-group">
+                                        <label for="campo2" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo2'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="campo2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <label for="nivel" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Nivel'|trans }}</label>
+                                    <div class="col-sm-16 col-md-16 col-lg-16">
+                                        <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="nivel">
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <div class="form-group">
+                                        <label for="campo3" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo3'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="campo3">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                    <div class="form-group">
+                                        <label for="campo4" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo4'|trans }}</label>
+                                        <div class="col-sm-16 col-md-16 col-lg-16">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="campo4">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 col-md-16 col-lg-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det1">  
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="primeraConexion" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Primera conexión'|trans }}</label>
+                                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="primeraConexion">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="ultimaConexion" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Última conexión'|trans }}</label>
+                                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="ultimaConexion">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="cantidadConexiones" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Cantidad de conexiones'|trans }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="cantidadConexiones">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="promedioConexion" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Promedio de conexión'|trans }}</label>
+                                        <div class="col-sm-10 col-md-10 col-lg-10">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="promedioConexion">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <label for="noIniciados" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Programas no iniciados'|trans }}</label>
+                                    <div class="col-sm-8 col-md-8 col-lg-8">
+                                        <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="noIniciados">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="enCurso" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Programas en curso'|trans }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="enCurso">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="finalizados" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Programas finalizados'|trans }}</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <input type="text" class="form-control form_sty1" value="" disabled="disabled" id="finalizados">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <div class="col-sm-16 col-md-16 col-lg-16 text-right">
+                                    <button type="button" class="bttn__nxt nextBtn"><span class="text__nxt">{{ 'Siguiente'|trans }}</span><span class="fa fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="det2">
+                        <div class="col-sm-16 col-md-16 col-lg-16">
+                            <br>
+                            <div id="programasAsignados">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="load1 load-wrapper" id="loadDetail">
+                    <div class="loader">
+                        Loading...
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

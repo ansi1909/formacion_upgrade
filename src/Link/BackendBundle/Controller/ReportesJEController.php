@@ -443,7 +443,6 @@ class ReportesJEController extends Controller
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
 
-        
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desde = $request->request->get('desde');
