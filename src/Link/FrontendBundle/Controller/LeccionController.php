@@ -464,7 +464,7 @@ class LeccionController extends Controller
                     <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
                     <form class="mt-3" method="POST">
                         <div class="form-group">
-                            <textarea class="form-control" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="340" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                            <textarea class="form-control" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="1000" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
                         </div>
                         <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="'.$prefix.'_button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
                     </form>

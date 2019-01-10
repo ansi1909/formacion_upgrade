@@ -23,8 +23,20 @@ _ajaxUsuariosConectados:
         _method: POST
 
 _detalleParticipante:
-    path: /ajaxDetalleParticipante
-    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxdetalleParticipante }
+    path: /detalleParticipante
+    defaults: { _controller: LinkBackendBundle:ReportesJT:detalleParticipante }
     requirements: 
         _method: POST
-        
+
+_ajaxUsernamesEmpresa:
+    path: /ajaxUsernamesEmpresa
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxUsernamesEmpresa }
+    requirements: 
+        _method: GET
+
+_ajaxDetalleParticipante:
+    path: /ajaxDetalleParticipante
+    defaults: { _controller: LinkBackendBundle:ReportesJT:ajaxDetalleParticipante }
+    requirements:
+        _method: POST
+

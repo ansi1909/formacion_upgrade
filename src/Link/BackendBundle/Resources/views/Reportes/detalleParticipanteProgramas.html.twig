@@ -1,0 +1,120 @@
+<ul class="nav nav-tabs" role="tablist">
+    {% for programa in programas %}
+        <li class="nav-item"> <a class="nav-link {% if loop.index==1 %}active{% endif %}" data-toggle="tab" href="#programa{{ programa.id }}" role="tab">{{ programa.nombre }}</a> </li>
+    {% endfor %}
+</ul>
+
+<div class="tab-content">
+    {% for programa in programas %}
+        <div class="tab-pane {% if loop.index==1 %}active{% endif %}" id="programa{{ programa.id }}" role="tabpanel">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title">{{ 'Avance en el programa'|trans }}</h6>
+                </div>
+                <div class="card-block">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ programa.avance }}%" aria-valuenow="{{ programa.avance }}" aria-valuemin="0" aria-valuemax="100">{{ programa.avance }}%</div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            {% for modulo in programa.modulos %}
+                <div class="card">
+                    <div class="card-header"  style=" background: linear-gradient(to right, #d5ff00 0%, #A3C300 100%); ">
+                        <h5 class="card-title">{{ 'Módulo'|trans }}: {{ modulo.nombre }}</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-10 col-md-10 col-xl-10 text-center">
+                                <div class="row">
+                                    <div class="col-8 col-md-8 col-xl-8 text-center">
+                                        {% set pct = modulo.avance/100 %}
+                                        <div class="progress-circle progress-success" data-value="{{ pct }}"  data-size="140"  data-thickness="4"  data-animation-start-value="0" data-reverse="false" ><strong>{{ modulo.avance }} %</strong></div>
+                                        <br>
+                                        <p class="text-uppercase">{{ 'Avance en el módulo'|trans }}</p>
+                                    </div>
+                                    <div class="col-8 col-md-8 col-xl-8 text-center">
+                                        {% if modulo.evaluacion.tiene %}
+                                            {% set pct = modulo.evaluacion.nota/100 %}
+                                            <div class="progress-circle progress-{{ modulo.evaluacion.class }}" data-value="{{ pct }}"  data-size="140"  data-thickness="4"  data-animation-start-value="0" data-reverse="false" ><strong>{{ modulo.evaluacion.nota }}</strong></div>
+                                            <br>
+                                            <p>{{ 'Evaluación del módulo'|trans }}</p>
+                                            <p class="text-uppercase">{{ modulo.evaluacion.status }}</p>
+                                        {% else %}
+                                            {{ modulo.evaluacion.status }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-8 col-md-8 col-xl-8 text-center">
+                                        <div class="activity-block">
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <h5><span class="spincreament">{{ modulo.materias }}</span></h5>
+                                                    <p>{{ 'Materias vistas'|trans }}</p>
+                                                </div>
+                                                <i class="fa fa-hand-o-right text-success"></i> 
+                                            </div>
+                                            <br>
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <span class="progress-heading">&nbsp;</span>
+                                                </div>
+                                                <span>
+                                                    <span class="dynamicsparkline">&nbsp;</span> 
+                                                </span> 
+                                            </div>
+                                            <i class="bg-icon text-right fa fa-hand-o-right text-success"></i> 
+                                        </div>
+                                    </div>
+                                    <div class="col-8 col-md-8 col-xl-8 text-center">
+                                        <div class="activity-block">
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <h5><span class="spincreament">{{ modulo.lecciones }}</span></h5>
+                                                    <p>{{ 'Lecciones vistas'|trans }}</p>
+                                                </div>
+                                                <i class="fa fa-hand-o-right text-success"></i> 
+                                            </div>
+                                            <br>
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <span class="progress-heading">&nbsp;</span>
+                                                </div>
+                                                <span>
+                                                    <span class="dynamicsparkline">&nbsp;</span> 
+                                                </span> 
+                                            </div>
+                                            <i class="bg-icon text-right fa fa-hand-o-right text-success"></i> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6 col-xl-6">
+                                <div class="page_subtitles">{{ 'Evaluaciones de las materias'|trans }}</div>
+                                <div class="list-unstyled comment-list timeline">
+                                    {% for evaluacion_materia in modulo.evaluaciones_materias %}
+                                        <div class="media">
+                                            {% if evaluacion_materia.tiene %}
+                                                <div class="indication text-{{ evaluacion_materia.class }}"><i class="fa fa-dot-circle-o"></i></div>
+                                                <div class="media-body">
+                                                    <h6 class="mb-1">{{ evaluacion_materia.nombre }}<small> - {{ evaluacion_materia.status }}</small></h6>
+                                                    {{ 'Nota'|trans }}: {{ evaluacion_materia.nota }} 
+                                                </div>
+                                            {% else %}
+                                                <div class="indication text-danger"><i class="fa fa-dot-circle-o"></i></div>
+                                                <div class="media-body">
+                                                    <h6 class="mb-1">{{ evaluacion_materia.status }}</h6>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

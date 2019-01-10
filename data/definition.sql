@@ -359,7 +359,7 @@ tipo_biblioteca_id integer,
 CREATE TABLE certi_muro(
 -- Attributes --
 id serial,
-mensaje varchar(350),
+mensaje varchar(1100),
 pagina_id integer,
 usuario_id integer,
 muro_id integer,
