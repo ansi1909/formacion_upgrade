@@ -571,14 +571,18 @@ class Reportes
                                                      'campo4' => $r['campo4'],
                                                      'paginas' => array($pagina_id => array('id' => $pagina_id,
                                                                                             'promedio' => $r['promedio'],
-                                                                                            'fecha_inicio' => $r['fecha_inicio_programa'].' '.$r['hora_inicio_programa'],
-                                                                                            'fecha_fin' => $r['fecha_fin_programa'].' '.$r['hora_fin_programa'])));
+                                                                                            'fecha_inicio' => $r['fecha_inicio_programa'],
+                                                                                            'hora_inicio' => $r['hora_inicio_programa'],
+                                                                                            'fecha_fin' => $r['fecha_fin_programa'],
+                                                                                            'hora_fin' => $r['hora_fin_programa'])));
                 }
                 else {
                     $participantes[$r['id']]['paginas'][$pagina_id] = array('id' => $pagina_id,
                                                                             'promedio' => $r['promedio'],
-                                                                            'fecha_inicio' => $r['fecha_inicio_programa'].' '.$r['hora_inicio_programa'],
-                                                                            'fecha_fin' => $r['fecha_fin_programa'].' '.$r['hora_fin_programa']);
+                                                                            'fecha_inicio' => $r['fecha_inicio_programa'],
+                                                                            'hora_inicio' => $r['hora_inicio_programa'],
+                                                                            'fecha_fin' => $r['fecha_fin_programa'],
+                                                                            'hora_fin' => $r['hora_fin_programa']);
                 }
 
             }
