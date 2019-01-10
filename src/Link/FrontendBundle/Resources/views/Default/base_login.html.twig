@@ -361,29 +361,15 @@
 
             function is_chrome()
             {
-                var googleChrome = !!window.chrome && !!window.chrome.webstore;
-
+                var googleChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1; //!!window.chrome && !!window.chrome.webstore;
                 var firefox = typeof InstallTrigger !== 'undefined';
-
                 var isIE = /*@cc_on!@*/false || !!document.documentMode;
-
                 var edge = !isIE && !!window.StyleMedia;
-
-                var Safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-
-                if (!googleChrome && !firefox && !edge) 
+                var safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+                if (!googleChrome && !firefox && !edge && !safari) 
                 {
                     
-                    if (Safari) 
-                    {
-                      alert("{{ 'Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma'|trans }}.");
-                    }
-                    else
-                    {
                         $('#modalExplorador').modal('show');//desplegar modal de notificacion
-                    }
-                    
-                    
                 }
             }
         </script>
