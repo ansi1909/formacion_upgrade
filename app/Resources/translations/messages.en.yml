@@ -65,8 +65,11 @@ Atrás: Back
 Aún no has respondido las preguntas: You have not answered the questions yet
 Aún no se han creado las opciones: No options added yet
 Aún no se han creado las preguntas: No questions added yet
+Aún sin presentar la evaluación: Has not yet presented the evaluation
 Aún sin publicar: Not yet published
 Autor: Author
+Avance en el módulo: Module avance
+Avance en el programa: Program avance
 Avance en programas: Advance in programs
 Aviso de cierre de sesión: Notice of session closure
 Avisos programados de: Programmed notifications of
@@ -192,6 +195,7 @@ de un total de: of total of
 Debe coincidir con la contraseña: It must be equal to password
 Debe escribir su respuesta: You must write your response
 Debe ingresar el correo electrónico.: You must enter the email.
+Debe seleccionar al menos un programa: You must select at least one program
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar el grupo: You must select the group
 Debe seleccionar el tipo de pregunta o agregar una nueva: You must select the question type or add a new one
@@ -219,6 +223,7 @@ Detalle de la Biblioteca Virtual: Detail of the Virtual Library
 Detalle de la Noticia y Novedad: Detail of the News and New
 Detalles de la página: Page details
 Detalle del Certificado y Constancia: Certificate and Certificate Detail
+Detalle del participante: Participant detail
 Día/Hora: Day/Time
 días: days
 Dimensiones recomendadas: Recommended dimensions
@@ -346,6 +351,7 @@ Error al obtener el historial.: Error ocurred retrieving history.
 Error al obtener la repuesta: Error getting the answer
 Error al obtener las notificaciones programadas: Error ocurred retrieving the programmed notifications
 Error al obtener las páginas asignadas.: Error ocurred retrieving assigned pages.
+Error al obtener los programas: Error ocurred retrieving programs
 Error al obtener las subaplicaciones.: Error ocurred retrieving subapps.
 Error al obtener los thumbnails: Error ocurred retrieving thumbnails
 Error de Excepción: Exception Error
@@ -390,7 +396,9 @@ Estos son los resultados que has obtenido: This are the results you got
 Estructura: Structure
 Evaluación: Test
 Evaluación activa: Enabled test
+Evaluación del módulo: Module evaluation
 Evaluación no encontrada: Evaluation not found
+Evaluaciones de las materias: Evaluations of the subjects
 Evaluaciones por módulo: Evaluations per module
 Evento guardado: Saved event
 Evento no guardado: Unsaved event
@@ -470,6 +478,8 @@ Icono: Icon
 Icono de la empresa: Company icon
 Imagen: Image
 Imagen lado: Image side
+Imprimir certificado: Print certificate
+Imprimir constancia de notas: Print proof of notes
 Inactivos: Inactive
 Índice: Index
 Ingrese un correo valido: Enter a valid email
@@ -480,6 +490,7 @@ Ingrese el mensaje que desea enviar: Enter the message you want to send
 Ingresa tu usuario: Enter your username
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Enter the access Url received by the authorized user of your company
 Ingrese lo que desea buscar: Enter what you want to search
+Ingresos al sistema: System entries
 Iniciado: Initiated
 Inicia el: Starts at
 Iniciar: Start
@@ -491,8 +502,6 @@ tu usuario y clave. Ingresa tu correo.: your username and password. Enter your e
 Interacción: Interaction
 Interacción en los muros: Wall interactions
 Interacción en los muros por empresa: Wall interactions per company
-Imprimir certificado: Print certificate
-Imprimir constancia de notas: Print proof of notes
 Ir a detalles de la página: Go to page details
 Ir al inicio: Go to home
 Ir al listado: Go to list
@@ -551,6 +560,7 @@ La sesión se cerrará automáticamente en: Session will finish automatically in
 Lado: Side
 Lección: Lesson
 Lecciones: Lessons
+Lecciones vistas: Lessons seen
 Leidos: Read
 Libro: Book
 Libros: Books
@@ -579,6 +589,7 @@ Listado de temas: List of topics
 Listado de Tipos de Notificaciones: List of Types of Notifications
 Listado de tutoriales: List of tutorials
 Listado de usuarios: List of users
+Listado de participantes por empresa: List of participants per company
 Lo sentimos. Sesión expirada.: We are sorry. Session is expired.
 Login repetido: Login repeated
 Login requerido: Login required
@@ -593,7 +604,7 @@ Martes: Tuesday
 Más recientes: Most recent
 Más valorados: Most valued
 Material complementario: Complementary content
-Materias vistas: Matter seen
+Materias vistas: Subjects seen
 Mensaje: Message
 Mensaje del servidor: Server message
 Mi avance: My progress
@@ -604,6 +615,7 @@ Mis Programas: My Programs
 Modificado el: Modified at
 Modificado por: Modified by
 Modificar evento: Modify event
+Módulo: Module
 Módulos: Modules
 Módulos vistos: Modules seen
 Mostrando registros del: Showing items of
@@ -646,6 +658,7 @@ No se pudo filtrar el listado.: It could not filter the list.
 No se pudo guardar el evento. Inténtalo de nuevo.: The event could not be saved. Try again.
 No se pudo habilitar/inhabilitar el acceso a esta página.: It could not allow/deny the access to this page.
 No te rindas: Do not give up
+No tiene evaluación: It does not have evaluation
 No tiene sub-páginas: It has not sub-pages
 Nombre: Name
 Nombre de usuario: Username
@@ -695,6 +708,7 @@ País: Country
 Para una correcta visualización de los recursos disponbles en : For a correct visualization of the resources available in 
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Para ver el detalle del evento puede entrar al siguiente enlace: To see the detail of the event you can enter the following link
+Participante: Participant
 participantes: participants
 Participantes: Participants
 participante: participant
@@ -740,6 +754,7 @@ Preguntas no encontradas: Questions not found
 Prelación: Prelation
 Prelada por: Preached by
 Presiona el botón finalizar para completar: Press finish button to complete
+Primera conexión: First connection
 Procesando: Processing
 Procesar: Process
 Programa: Program
@@ -747,9 +762,13 @@ Programación del aviso: Notification schedule
 Programado para: scheduled at
 Programar nuevo aviso: Program new notice
 Programas: Programs
+Programas asignados: Assigned programs
+Programas en curso: Programs in progress
 Programas Finalizados: Finished programs
+Programas no iniciados: Programs not started
 Prog. asociados: Associated Prog.
-Promedio de conexiones: Average connections
+Promedio: Average
+Promedio de conexión: Connection average
 Promedio evaluación módulo: Average evaluation module
 Publicar: Publish
 Puede acceder a este espacio a través del siguiente enlace: You can access through following link
@@ -885,10 +904,12 @@ Todos los derechos reservados: All rights reserved
 Todos los empleados de la empresa: All of the employees of the company
 Todos los niveles: All levels
 Tomar evaluación: Take test
+Total aprobados: Total approved
 Tu calificación: Your score
 Tu comentario: Your comment
 Tu respuesta: Your answer
 Tutoriales: Tutorials
+Última conexión: Last connection
 Últimos 12: Last 12
 Url de la empresa no existe: Url for this company not found
 Url no encontrada: Url not found

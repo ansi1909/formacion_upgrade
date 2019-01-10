@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Link\ComunBundle\Entity\AdminSesion;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
+use Link\ComunBundle\Entity\CertiPagina;
 
 class ReportesJTController extends Controller
 {
@@ -89,13 +90,17 @@ class ReportesJTController extends Controller
 
     }
 
+ 
+    
+
     public function ajaxAvanceProgramasAction(Request $request)
     {
         $estatusProragama=['No Iniciado','Iniciado','En evaluación','Finalizado'];
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
-        
+        $fun = $this->get('funciones');
+
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desdef = $request->request->get('desde');
@@ -192,7 +197,8 @@ class ReportesJTController extends Controller
                 }
             }
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/avanceProgramas'.$session->get('sesion_id').'.xls';
+            $paginaName =  $fun->eliminarAcentos($pagina->getNombre());
+            $path = 'recursos/reportes/avanceProgramas_'.$paginaName.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -207,7 +213,7 @@ class ReportesJTController extends Controller
         $archivo = '';
         
 
-                  $html = '<table class="table" id="avanceProgramasTable">
+                  $html = '<table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
                             
@@ -235,7 +241,7 @@ class ReportesJTController extends Controller
             $promedio=($registro['promedio'])? $registro['promedio']:0;
             $html .= '<tr>
                        
-                        <td>'.$registro['login'].'</td>
+                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['login'].'</a></td>
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
                         <td>'.$registro['nivel'].'</td>
                         <td>'.$registro['fecha_registro'].'</td>
@@ -261,7 +267,7 @@ class ReportesJTController extends Controller
                         'html' => $html);
 
 
-        $return = json_encode($return);
+        $return =  json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
 
@@ -273,6 +279,7 @@ class ReportesJTController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fun = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
         $desdef = $request->request->get('desde');
@@ -363,8 +370,9 @@ class ReportesJTController extends Controller
                     $row++;
                 }
             }
+            $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/conexionesUsuario'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/conexionesUsuario_'.$empresaName.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -378,7 +386,7 @@ class ReportesJTController extends Controller
 
                
 
-                  $html = '<table class="table" id="conexionesUsuarioTable">
+                  $html = '<table class="table" id="dt">
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">'.$this->get('translator')->trans('Código').'</th>
@@ -398,7 +406,7 @@ class ReportesJTController extends Controller
            
             $html .= '<tr>
                         <td>'.$registro['codigo'].'</td>
-                        <td>'.$registro['login'].'</td>
+                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['login'].'</a></td>
                         <td>'.$registro['nombre'].'</td>
                         <td>'.$registro['correo_corporativo'].'</td>
                         <td>'.$registro['nivel'].'</td>
@@ -421,17 +429,98 @@ class ReportesJTController extends Controller
 
 
         $return = json_encode($return);
+
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
 
     }
 
-    public function ajaxdetalleParticipanteAction(Request $request)
+    public function detalleParticipanteAction(Request $request)
     {
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+        $empresas = array();
+        if (!$usuario->getEmpresa())
+        {
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                    array('nombre' => 'ASC'));
+        }
+
+        return $this->render('LinkBackendBundle:Reportes:detalleParticipante.html.twig', array('usuario' => $usuario,
+                                                                                               'empresas' => $empresas));
+
     }
+
+    public function ajaxUsernamesEmpresaAction(Request $request)
+    {
+
+        $data = [];
+        $empresa_id = $request->query->get('empresa_id');
+        $term =  $request->query->get('term');
+        $term = '%'.$term.'%';
+        
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT u FROM LinkComunBundle:AdminUsuario u 
+                                    WHERE u.login LIKE :term AND u.empresa = :empresa_id')
+                    ->setParameters(array( 'term' => $term, 'empresa_id' => $empresa_id));
+        $usuarios = $query->getResult();
+
+        foreach ($usuarios as $usuario) {
+            array_push($data, $usuario->getLogin());
+        }
+
+        $return = json_encode($data);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxDetalleParticipanteAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $empresa_id = $request->request->get('empresa_id');
+        $login = $request->request->get('username');
+
+        $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login, 
+                                                                                                        'empresa' => $empresa_id));
+
+        $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
+        $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml);
+
+        $dataUsuario = array('foto' => trim($usuario->getFoto()) ? trim($usuario->getFoto()) : 0,
+                             'login' => $usuario->getLogin(),
+                             'nombre' => $usuario->getNombre(),
+                             'apellido' => $usuario->getApellido(),
+                             'correoPersonal' => $usuario->getCorreoPersonal(),
+                             'fechaNacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
+                             'activo' => $usuario->getActivo() ? $this->get('translator')->trans('Sí') : 'No',
+                             'correoCorporativo' => $usuario->getCorreoCorporativo(),
+                             'campo1' => $usuario->getCampo1(),
+                             'campo2' => $usuario->getCampo2(),
+                             'campo3' => $usuario->getCampo3(),
+                             'campo4' => $usuario->getCampo4(),
+                             'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
+                             'ingresos' => $reporte['ingresos']);
+
+        $return = array('usuario' => $dataUsuario);
+
+        $html = $this->renderView('LinkBackendBundle:Reportes:detalleParticipanteProgramas.html.twig', array('programas' => $reporte['programas']));
+
+        $return['html'] = $html;
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+   
 
    
 

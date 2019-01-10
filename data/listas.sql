@@ -183,7 +183,7 @@ INSERT INTO admin_tipo_biblioteca (id, nombre) VALUES (4, 'Libro');
 -- Name: idadmin_aplicacion_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 43, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_aplicacion', 'id'), 44, false);
 
 --
 -- Data for Name: admin_aplicacion; Type: TABLE DATA; Schema: public;
