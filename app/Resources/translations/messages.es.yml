@@ -90,6 +90,7 @@ Calificación: Calificación
 Cambiar contraseña: Cambiar contraseña
 Cambiar imagen: Cambiar imagen
 Cancelar: Cancelar
+Cantidad: Cantidad
 Cantidad de conexiones: Cantidad de conexiones
 Cantidad de filas: Cantidad de filas
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
@@ -296,6 +297,7 @@ El puntaje con que se aprueba es requerido.: El puntaje con que se aprueba es re
 El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema
 El recurso es requerido: El recurso es requerido
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
+El tema es requerido: El tema es requerido
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión
 El Tipo de Certificado es requerido.: El Tipo de Certificado es requerido.
@@ -806,15 +808,19 @@ Reporte de participantes registrados por programas: Reporte de participantes reg
 Reporte de participantes por empresa: Reporte de participantes por empresa
 Reportar un problema: Reportar un problema
 Responder: Responder
+Responder comentario: Responder comentario
 Responder publicación: Responder publicación
 respondió en el muro al comentario de: Respondió en el muro al comentario de
 respondió a tu comentario en el muro de: respondió a tu comentario en el muro de
 respondió a uno de tus comentarios en el muro de: respondió a uno de tus comentarios en el muro de
 Respuesta: Respuesta
+Respuesta creada con éxito: Respuesta creada con éxito
+Respuestas: Respuestas
 Respuestas comentario seleccionado: Respuestas comentario seleccionado
 Resultado del archivo procesado: Resultado del archivo procesado
 Resultados: Resultados
 Resumen: Resumen
+Resumen de registros de participantes del: Resumen de registros de participantes del
 Resumen de registros de participantes en el: Resumen de registros de participantes en el
 Resumen general de registros: Resumen general de registros
 Resumen general de registros por empresa: Resumen general de registros por empresa

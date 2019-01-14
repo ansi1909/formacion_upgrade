@@ -95,7 +95,8 @@ class ReportesJTController extends Controller
 
     public function ajaxAvanceProgramasAction(Request $request)
     {
-        $estatusProragama=['No Iniciado','Iniciado','En evaluación','Finalizado'];
+
+        $estatusProragama = ['No Iniciado','En curso','En evaluación','Finalizado'];
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
@@ -118,8 +119,9 @@ class ReportesJTController extends Controller
 
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
         
-        if($excel==1) 
+        if ($excel==1) 
         {
+
            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceProgramas.xlsx';
            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
@@ -134,8 +136,7 @@ class ReportesJTController extends Controller
                 $objWorksheet->mergeCells('A5:S5');
                 $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
             }
-            else
-            {
+            else {
                 $row = 5;
                 $last_row=($row+count($listado))-1;
                 $i = 0;
@@ -167,8 +168,22 @@ class ReportesJTController extends Controller
                 
                 foreach ($listado as $participante)
                 {
-                    $status=($participante['status'])? $participante['status']:0;
-                    $promedio=($participante['promedio'])? $participante['promedio']:0;
+
+                    if ($participante['status'])
+                    {
+                        $status = $participante['status'];
+                    }
+                    else {
+                        if (trim($participante['fecha_inicio_programa']))
+                        {
+                            $status = 1;
+                        }
+                        else {
+                            $status = 0;
+                        }
+                    }
+
+                    $promedio = $participante['promedio'] ? $participante['promedio'] : 0;
 
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -192,13 +207,18 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('S'.$row, $participante['fecha_fin_programa']);
                     $objWorksheet->setCellValue('T'.$row, $participante['hora_fin_programa']);
 
-                  
                     $row++;
+
                 }
             }
+
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+            $longitud = strlen($empresaName);
+            $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
+            $hoy = date('d-m-Y');
             $paginaName =  $fun->eliminarAcentos($pagina->getNombre());
-            $path = 'recursos/reportes/avanceProgramas_'.$paginaName.'.xls';
+            $path = 'recursos/reportes/avance_'.$paginaName.'_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -207,40 +227,47 @@ class ReportesJTController extends Controller
 
            
         }
-        else
-        {
+        else {
 
         $archivo = '';
-        
 
-                  $html = '<table class="table" id="dt">
-                    <thead class="sty__title">
-                        <tr>
-                            
-                            <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Estatus del programa').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
-                            
-
-
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: .7rem;">';
+        $html = '<table class="table" id="dt">
+            <thead class="sty__title">
+                <tr>
+                    <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Estatus del programa').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
+                    <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
+                </tr>
+            </thead>
+            <tbody style="font-size: .7rem;">';
         
         foreach ($listado as $registro)
         {
            
-            $status=($registro['status'])? $registro['status']:0;
+            if ($registro['status'])
+            {
+                $status = $registro['status'];
+            }
+            else {
+                if (trim($registro['fecha_inicio_programa']))
+                {
+                    $status = 1;
+                }
+                else {
+                    $status = 0;
+                }
+            }
+            //$status = $registro['status'] ? $registro['status'] : 0;
+            //$status = $registro['status'] ? $registro['status'] : $registro['fecha_inicio_programa'] ? 1 : 0;
             $promedio=($registro['promedio'])? $registro['promedio']:0;
             $html .= '<tr>
-                       
                         <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['login'].'</a></td>
                         <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
                         <td>'.$registro['nivel'].'</td>
@@ -251,7 +278,6 @@ class ReportesJTController extends Controller
                         <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
                         <td>'.$registro['fecha_inicio_programa'].'</td>
                         <td>'.$registro['fecha_fin_programa'].'</td>
-
                     </tr>';
         }
 
@@ -276,6 +302,7 @@ class ReportesJTController extends Controller
 
     public function ajaxConexionesUsuarioAction(Request $request)
     {
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
@@ -301,10 +328,11 @@ class ReportesJTController extends Controller
       
         if($excel==1) 
         {
-           $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/conexionesUsuarios.xlsx';
-           $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-           $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-           $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/conexionesUsuarios.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
             $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Conexiones por usuario').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
@@ -370,9 +398,11 @@ class ReportesJTController extends Controller
                     $row++;
                 }
             }
+
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+            $hoy = date('d-m-Y');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/conexionesUsuario_'.$empresaName.'.xls';
+            $path = 'recursos/reportes/conexionesUsuario_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 

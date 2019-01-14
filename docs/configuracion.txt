@@ -22,7 +22,7 @@
 			thumbnails/					# Aquí se almacenan los archivos para los thumbnails de las plantillas
 										# 	OJO: Podemos importar las imágenes iniciales a este directorio desde docs/prototipos/front/thumbnails
 			decorate_certificado.png	# Tomar la imagen de web/front/assets/img/
-			logo_formacion.png			# Tomar la imagen de web/img/
+			logo_formacion_smart.png	# Tomar la imagen de web/img/
 
 4. Las constantes globales para twig están seteadas en app/config/config.yml:
 	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida

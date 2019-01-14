@@ -36,6 +36,7 @@ class ReportesController extends Controller
 
         if ($request->getMethod() == 'POST')
         {
+
             $empresa_id = $request->request->get('empresa_id');
             $reporte = $request->request->get('reporte');
             $pagina_id = $request->request->get('programa_id');
@@ -60,7 +61,6 @@ class ReportesController extends Controller
             $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
             $query->execute();
             $r = $query->fetchAll();
-
 
             // Solicita el servicio de excel
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantes.xlsx';
@@ -138,16 +138,15 @@ class ReportesController extends Controller
 
             // Crea el writer
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
-            //$writer->setUseBOM(true);
-            //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-            //$writer->save($this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/data.csv');
+            $empresaName = $f->eliminarAcentos($empresa->getNombre());
+            $hoy = date('d-m-Y');
             
             // Envia la respuesta del controlador
             $response = $this->get('phpexcel')->createStreamedResponse($writer);
             // Agrega los headers requeridos
             $dispositionHeader = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                'ListadoDeParticipantes.xlsx'
+                'ListadoDeParticipantes_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xlsx'
             );
 
             $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
@@ -156,11 +155,6 @@ class ReportesController extends Controller
             $response->headers->set('Content-Disposition', $dispositionHeader);
 
             return $response;
-
-
-                //return new Response('Archivo creado...');
-
-            //return new Response (var_dump($r));
 
         }
 
@@ -688,13 +682,18 @@ class ReportesController extends Controller
         }
 
         // Crea el writer
+        $empresaName = $fn->eliminarAcentos($empresa->getNombre());
+        $longitud = strlen($empresaName);
+        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);
+        $paginaName = $fn->eliminarAcentos($pagina->getNombre());
+        $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/interaccionColaborativo'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/interaccionColaborativo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'interaccionColaborativo'.$session->get('sesion_id').'.xls';
+        $document_name = 'interaccionColaborativo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         
@@ -877,13 +876,18 @@ class ReportesController extends Controller
         }
 
         // Crea el writer
+        $empresaName = $fn->eliminarAcentos($empresa->getNombre());
+        $longitud = strlen($empresaName);
+        $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
+        $paginaName = $fn->eliminarAcentos($pagina->getNombre());
+        $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/interaccionMuro'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/interaccionMuro_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'interaccionMuro'.$session->get('sesion_id').'.xls';
+        $document_name = 'interaccionMuro_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         
@@ -1011,16 +1015,15 @@ class ReportesController extends Controller
 
         // Crea el writer
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
-        //$writer->setUseBOM(true);
-        //$yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
-        //$writer->save($this->container->getParameter('folders')['dir_uploads'].'recursos/participantes/data.csv');
+        $empresaName = $f->eliminarAcentos($empresa->getNombre());
+        $hoy = date('d-m-Y');
         
         // Envia la respuesta del controlador
         $response = $this->get('phpexcel')->createStreamedResponse($writer);
         // Agrega los headers requeridos
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'ListadoDeParticipantes.xlsx'
+            'ReporteGeneral_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xlsx'
         );
 
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
