@@ -253,7 +253,7 @@ class CertificadoController extends Controller
             	$file = $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
 	        }
             else {
-            	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion.png'; 
+            	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion_smart.png'; 
             }
 
 		    $constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 10, 15, 5));

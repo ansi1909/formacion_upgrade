@@ -51,7 +51,7 @@
 
 {% set uri = app.request.getbasepath %}
 <form id="form" name="form" action="{{ path('_preferencia', { 'empresa_id': preferencia.empresa.id, 'preferencia_id': preferencia.id }) }}" method="POST">
-<input type="hidden" id="default_logo" name="default_logo" value="{{ asset('front/assets/img/logo_formacion.png') }}">
+<input type="hidden" id="default_logo" name="default_logo" value="{{ asset('front/assets/img/logo_formacion_smart.png') }}">
 <input type="hidden" id="default_favicon" name="default_favicon" value="{{ asset('img/icono.png') }}">
 <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadLogo') }}">
 <input type="hidden" id="base_upload" name="base_upload" value="recursos/empresas/{{ preferencia.empresa.id }}/">
