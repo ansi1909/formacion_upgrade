@@ -12,7 +12,7 @@
                 {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
                     {{ app.session.get('empresa').titulo }}
                 {% else %}
-                    {{ 'Sistema Formación'|trans }} 2.0
+                    {{ 'Sistema Formación Smart'|trans }}
                 {% endif %}
             {% endblock %}
         </title>
@@ -51,7 +51,7 @@
                 <div class="logo d-sm-block d-md-block">
                     <a class="navbar-brand" href="{{ path('_inicio') }}">
                         {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
-                        <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                        <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
                     </a>
                 </div>
                 <div class="navbar-brand d-flex justify-content-center align-items-center">
@@ -215,7 +215,7 @@
                     </div>
                     <div class="row justify-content-center align-items-center">
                         <div class="col-8 col-lg-8 col-xl-8 col-md-8 col-sm-8 col-xs-8 text-center">
-                            <span class="cpyR">Copyright &copy; 2018 Formación2.0 {{ 'Todos los derechos reservados'|trans }}</span>
+                            <span class="cpyR">Copyright &copy; 2018 Formación Smart {{ 'Todos los derechos reservados'|trans }}</span>
                         </div>
                     </div>
                 </footer>

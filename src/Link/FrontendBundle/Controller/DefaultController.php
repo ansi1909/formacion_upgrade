@@ -335,7 +335,7 @@ class DefaultController extends Controller
                 $mensaje = array('principal' => $this->get('translator')->trans('Certificado inexistente para este contenido'),
                                  'indicaciones' => array($this->get('translator')->trans('La empresa debe cargar el modelo de certificado y asociarlo a esta página'),
                                                          $this->get('translator')->trans('En el módulo administrativo de Certificados y Constancias se puede agregar certificados'),
-                                                         $this->get('translator')->trans('También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
+                                                         $this->get('translator')->trans('También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart')));
                 $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
                 $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Certificado no encontrado');
@@ -364,7 +364,7 @@ class DefaultController extends Controller
 
             case 'prueba':
                 $mensaje = array('principal' => $this->get('translator')->trans('No existe evaluación para esta página'),
-                                 'indicaciones' => array($this->get('translator')->trans('Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0')));
+                                 'indicaciones' => array($this->get('translator')->trans('Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart')));
                 $continuar = '<a href="'.$this->generateUrl('_inicio').'"><button class="btn btn-warning btn-continuar continuar">'.$this->get('translator')->trans('Continuar').'</button></a>';
                 $imagen = 'front/assets/img/warning (1).svg';
                 $texto = $this->get('translator')->trans('Evaluación no encontrada');

@@ -308,10 +308,6 @@ class ForoController extends Controller
                                    ORDER BY file.id ASC")
                      ->setParameters(array('foro_id' => $foro_id, 'usuario_id'=> $usuario_id));
        $archivos = $consulta->getResult();
-
-    
-      
-
        
        if($archivos)
        {
@@ -324,7 +320,7 @@ class ForoController extends Controller
          {
             $ruta = $this->container->getParameter('folders')['uploads'].$archivo->getArchivo();
             $extension = explode('.',$archivo->getArchivo());
-            $iconoExtension = '/formacion2.0/web/front/assets/img/'.$extension[1].'.svg';
+            $iconoExtension = $this->getWebDirectory().'/front/assets/img/'.$extension[1].'.svg';
 
             $html .= ($e%2==0)? ($e==0)? '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">':'</div><div class="row" style="margin-top: 15px; border-bottom: 2px solid #EEE8E7;">':'';
 
@@ -334,23 +330,20 @@ class ForoController extends Controller
                       ';
 
             $e++;
-
-
-          
           
          }
          
          $html .= '</div>';
+
        }
-      
-      
        
        $usuario_id = $request->request->get('usuario_id');
        $foro_id = $request->request->get('foro_id');
 
-       $return =['html'=>$html,'usuario'=>$usuario->getNombre().' '.$usuario->getApellido()];
+       $return = ['html'=>$html,'usuario' => $usuario->getNombre().' '.$usuario->getApellido()];
        $return = json_encode($return);
        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
     }
 
     public function ajaxUpdateRespuestaForoAction(Request $request)

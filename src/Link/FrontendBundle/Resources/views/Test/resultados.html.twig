@@ -10,7 +10,7 @@
             {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
                 {{ app.session.get('empresa').titulo }}
             {% else %}
-                {{ 'Sistema Formación'|trans }} 2.0
+                {{ 'Sistema Formación Smart'|trans }}
             {% endif %}
         </title>
         {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
@@ -48,7 +48,7 @@
                 </div>
                 <a class="navbar-brand" href="#">
                     {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
-                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
                 </a>
             </nav>
         </header>
