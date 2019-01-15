@@ -38,3 +38,20 @@ NOTAS:
 9. Subir los cambios:
    git push origin spring6 		(donde spring6 es el nombre del branch)
 
+--------------------------------------------------------------------------------------
+SINCRONIZACIÓN DE AMBIENTE DE QUALITY
+
+1. git checkout spring14
+2. git pull   --> Clave: we4y0g9w
+3. git checkout quality
+4. git merge spring14
+5. git push origin quality
+
+
+SINCRONIZACIÓN DE AMBIENTE DE PROD
+
+1. git checkout quality   (antes probablemente: git checkout --app/config/config.yml)
+2. git pull   --> Clave: we4y0g9w
+3. git checkout master
+4. git merge quality
+5. git push origin master
