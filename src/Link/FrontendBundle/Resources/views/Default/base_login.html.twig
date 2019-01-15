@@ -49,7 +49,7 @@
                             <h3 class="sloganLogin">{{ 'Experimenta la potencialidad de la capacitación online'|trans }}. </h3>
                         </div>
                         <div class="col-12 text-center">
-                            {% set img_logo = logo_login ? uploads~logo_login : asset('front/assets/img/logo_formacion.png') %}
+                            {% set img_logo = logo_login ? uploads~logo_login : asset('front/assets/img/logo_formacion_smart.png') %}
                             <img class="img-fluid" src="{{ img_logo }}" alt="logo formación smart">
                         </div>
                     </div>
@@ -99,7 +99,6 @@
             </div>
         </div>
          
-
         {# Modal #}
         <div class="modal modal-recuperacion" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="container-fluid">
@@ -183,29 +182,24 @@
             </div>
         </div>
 		
-		
-
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
         <script type="text/javascript">
-
-            
             is_chrome();
             $('#check_mostrar').click(function(event)
+            {
+                 event.preventDefault();
+                 var check= document.getElementById('password');
+                 if(check.type=="password")
+                 {
+                    check.type="text";
+                 }
+                 else
                 {
-                     event.preventDefault();
-                     var check= document.getElementById('password');
-                     if(check.type=="password")
-                     {
-                        check.type="text";
-                     }
-                     else
-                    {
-                        check.type="password";
-                    }
-                });
-
+                    check.type="password";
+                }
+            });
 
             $("#form_inicio").validate({
                 rules: {
@@ -253,11 +247,11 @@
             $('.aviso_ajax').html('');
 
             $('#correo').click(function()
-                {
-                    $('.aviso_ajax').html('');
-                    $('.aviso_ajax').removeClass('error__style');
-                    $('.aviso_ajax').hide();
-                });
+            {
+                $('.aviso_ajax').html('');
+                $('.aviso_ajax').removeClass('error__style');
+                $('.aviso_ajax').hide();
+            });
 
             $('#recuperar_clave').click(function()
             {
@@ -286,8 +280,6 @@
                 $('.aviso_ajax').hide();
                 $('#recuperar_clave').show();
             });
-
-
 
             function recuperar()
             {
@@ -322,15 +314,13 @@
                                     $('.aviso_ajax').removeClass('success__style');                                
                                     $('#recuperar_clave').show();
                                 }, 10000); // 10 segundos
-                            }else
-                            {
+                            }
+                            else {
                                 $('.aviso_ajax').addClass('error__style');
                                 $('.aviso_ajax').show();
                                 $('.aviso_ajax').html(data.error);
                                 $('#recuperar_clave').show();
                                 $('#correo').val('');
-                               
-
                             }
 
                         },
@@ -342,10 +332,10 @@
                             $('.aviso_ajax').addClass('error__style');
                             $('.aviso_ajax').html("{{ 'El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema'|trans }}!");
                             $('.aviso_ajax').show();
-                           
                         }
                     });
-                }else{
+                }
+                else {
                     $('#correo').val('');
                 }
             }
@@ -359,8 +349,7 @@
                 var safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
                 if (!googleChrome && !firefox && !edge && !safari) 
                 {
-                    
-                        $('#modalExplorador').modal('show');//desplegar modal de notificacion
+                    $('#modalExplorador').modal('show');//desplegar modal de notificacion
                 }
             }
         </script>

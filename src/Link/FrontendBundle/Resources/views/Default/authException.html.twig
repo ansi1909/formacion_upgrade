@@ -11,7 +11,7 @@
 {% block header %}
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <a class="navbar-brand" href="#">
-            {% set img_logo = preferencia.logo is not null and preferencia.logo != '' ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
+            {% set img_logo = preferencia.logo is not null and preferencia.logo != '' ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion_smart.png') %}
             <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación smart">
         </a>
     </nav>
@@ -41,6 +41,7 @@
         </div>
     </section>
 {% endblock %}
+
 {% block javascripts %}
     <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>

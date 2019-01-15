@@ -95,6 +95,7 @@ class ReportesJTController extends Controller
 
     public function ajaxAvanceProgramasAction(Request $request)
     {
+
         $estatusProragama = ['No Iniciado','En curso','En evaluación','Finalizado'];
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
@@ -118,8 +119,9 @@ class ReportesJTController extends Controller
 
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
         
-        if($excel==1) 
+        if ($excel==1) 
         {
+
            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/avanceProgramas.xlsx';
            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
@@ -134,8 +136,7 @@ class ReportesJTController extends Controller
                 $objWorksheet->mergeCells('A5:S5');
                 $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
             }
-            else
-            {
+            else {
                 $row = 5;
                 $last_row=($row+count($listado))-1;
                 $i = 0;
@@ -167,7 +168,21 @@ class ReportesJTController extends Controller
                 
                 foreach ($listado as $participante)
                 {
-                    $status = $participante['status'] ? $participante['status'] : $participante['fecha_inicio_programa'] ? 1 : 0;
+
+                    if ($participante['status'])
+                    {
+                        $status = $participante['status'];
+                    }
+                    else {
+                        if (trim($participante['fecha_inicio_programa']))
+                        {
+                            $status = 1;
+                        }
+                        else {
+                            $status = 0;
+                        }
+                    }
+
                     $promedio = $participante['promedio'] ? $participante['promedio'] : 0;
 
                     // Datos de las columnas del reporte
@@ -192,13 +207,18 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('S'.$row, $participante['fecha_fin_programa']);
                     $objWorksheet->setCellValue('T'.$row, $participante['hora_fin_programa']);
 
-                  
                     $row++;
+
                 }
             }
+
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
+            $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+            $longitud = strlen($empresaName);
+            $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
+            $hoy = date('d-m-Y');
             $paginaName =  $fun->eliminarAcentos($pagina->getNombre());
-            $path = 'recursos/reportes/avanceProgramas_'.$paginaName.'.xls';
+            $path = 'recursos/reportes/avance_'.$paginaName.'_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -282,6 +302,7 @@ class ReportesJTController extends Controller
 
     public function ajaxConexionesUsuarioAction(Request $request)
     {
+
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
@@ -307,10 +328,11 @@ class ReportesJTController extends Controller
       
         if($excel==1) 
         {
-           $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/conexionesUsuarios.xlsx';
-           $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
-           $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-           $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/conexionesUsuarios.xlsx';
+            $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
             $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Conexiones por usuario').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
@@ -376,9 +398,11 @@ class ReportesJTController extends Controller
                     $row++;
                 }
             }
+
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+            $hoy = date('d-m-Y');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/conexionesUsuario_'.$empresaName.'.xls';
+            $path = 'recursos/reportes/conexionesUsuario_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 

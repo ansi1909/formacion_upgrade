@@ -3,7 +3,7 @@
 {% block header %}
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <a class="navbar-brand" href="#">
-            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
             <img class="img-fluid py-1" src="{{ img_logo }}" width= "200" alt="logo formación smart">
         </a>
         <div class="wraper-title-lesson d-flex flex-column align-items-center">
@@ -76,22 +76,21 @@
 
 {% block body %}
 	
-        <!-- CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL SK-EDITOR -->
-        <div class="lesson-container container py-6 text-center">
-            <h2 class="color-dark-grey"> Cambios personales que requiren actitud</h2>
-            <img src="assets/img/img_art.png" alt="" class="img-fluid my-5 rounded">
-            <p>{{pagina.contenido|raw}}</p>
-            {% if pagina.pdf != '' %}
-                {% set pdf = uploads~pagina.pdf %}
-                <p>
-                    <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
-                </p>
-            {% endif %}
+    <!-- CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL SK-EDITOR -->
+    <div class="lesson-container container py-6 text-center">
+        <h2 class="color-dark-grey"> Cambios personales que requiren actitud</h2>
+        <img src="assets/img/img_art.png" alt="" class="img-fluid my-5 rounded">
+        <p>{{pagina.contenido|raw}}</p>
+        {% if pagina.pdf != '' %}
+            {% set pdf = uploads~pagina.pdf %}
+            <p>
+                <a href="{{ pdf }}" target="_blank">{{ 'Descargue material complementario'|trans }}</a>
+            </p>
+        {% endif %}
 
-            
-        </div>
+        
+    </div>
     
-
     <div id="comments" class="px-3 pt-3"  >
         <h5 class="color-grey text-center">Comentarios del módulo</h5>
         <form class=" mt-4  mb-6" action="index.html" method="post">

@@ -441,7 +441,7 @@ class DefaultController extends Controller
                             $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
                             $f = $this->get('funciones');
                             $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-                            $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                            $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
                             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],

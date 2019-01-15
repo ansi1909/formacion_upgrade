@@ -90,6 +90,7 @@ Calificación: Qualification
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
 Cancelar: Cancel
+Cantidad: Quantity
 Cantidad de conexiones: Number of connections
 Cantidad de filas: Number of rows
 Cantidad de preguntas a mostrar: Number of questions to show
@@ -296,6 +297,7 @@ El puntaje con que se aprueba es requerido.: The score with it is approved is re
 El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: The server has been slow to respond, verify your internet connection or contact the system administrator
 El recurso es requerido: The resource is required
 El rol ha sido almacenada con éxito: The rol has been stored successfully
+El tema es requerido: Subject is required
 El tiempo de duración es requerido.: Duration is required.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: Inactive time has reached the maximum time of connection
 El Tipo de Certificado es requerido.: The Type of Certificate is required.
@@ -806,15 +808,19 @@ Reporte de participantes registrados por programas: Report of participants regis
 Reporte de participantes por empresa: Participant report by company
 Reportar un problema: Report a problem
 Responder: Answer
+Responder comentario: Answer comment
 Responder publicación: Answering post
 respondió en el muro al comentario de: answered the comment on the wall
 respondió a tu comentario en el muro de: answered to your comment on wall
 respondió a uno de tus comentarios en el muro de: answered to one of your comments on wall of
 Respuesta: Answer
+Respuesta creada con éxito: Response created successfully
+Respuestas: Answers
 Respuestas comentario seleccionado: Answers selected comment
 Resultado del archivo procesado: Result of the processed file
 Resultados: Results
 Resumen: Summary
+Resumen de registros de participantes del: Summary of records of participants of the
 Resumen de registros de participantes en el: Summary of records of participants in the
 Resumen general de registros: General summary of records
 Resumen general de registros por empresa: General summary of records per company

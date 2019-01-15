@@ -117,9 +117,10 @@ class ReportesJEController extends Controller
             }
 
             // Crea el writer
-            $paginaName = $fun->eliminarAcentos($empresa->getNombre());
+            $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+            $hoy = date('d-m-Y');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/horasConexion_'.$paginaName.'.xls';
+            $path = 'recursos/reportes/horasConexion_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -206,7 +207,7 @@ class ReportesJEController extends Controller
 
         $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
 
-        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
+        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
         $header_footer = '<page_header> 
                                  <img src="'.$logo.'" width="200" height="50">
                             </page_header>
@@ -381,14 +382,15 @@ class ReportesJEController extends Controller
         $empresaName = $fn->eliminarAcentos($empresa->getNombre());
         $paginaName =  $fn->eliminarAcentos($pagina->getnombre());
         $longitud = strlen($empresaName);
-        $empresaName= ($longitud<=4)?  $empresaName:substr($empresaName,0,4);
+        $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
+        $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/evaluacionesModulo_'.$empresaName.'_'.$paginaName.'.xls';
+        $path = 'recursos/reportes/evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'evaluacionesModulo_'.$empresaName.'_'.$paginaName.'.xls';
+        $document_name = 'evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         
@@ -601,7 +603,7 @@ class ReportesJEController extends Controller
                                                                                                           'src' => array('src3' => $src3,
                                                                                                                          'src4' => $src4)));
 
-        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
+        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
         $header_footer = '<page_header> 
                                  <img src="'.$logo.'" width="200" height="50">
                             </page_header>

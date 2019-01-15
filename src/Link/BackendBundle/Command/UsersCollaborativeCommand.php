@@ -34,7 +34,7 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
         $translator = $this->getContainer()->get('translator');
         $base = $yml2['parameters']['base_url'];
         $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
-        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
 
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
