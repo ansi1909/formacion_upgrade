@@ -77,10 +77,10 @@ parameters:
     notificacion_programada:
         bienvenida: 1
     correo_recuperacion:
-        asunto: 'Formación2.0 - Recuperación de usuario y clave.'
+        asunto: 'Formación Smart - Recuperación de usuario y clave.'
         remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
-        asunto: 'Formación2.0 - Solicitud de soporte virtual. '
+        asunto: 'Formación Smart - Solicitud de soporte virtual. '
         remitente: 'soporte@formacion2puntocero.com'
         destinatario: 'soporte@formacion2puntocero.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'

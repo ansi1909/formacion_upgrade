@@ -372,9 +372,9 @@ class LoginController extends Controller
 
 			        \PHPQRCode\QRcode::png($contenido, "../qr/".$nombre, 'H', $size, 4);
 
-			        $ruta ='<img src="'.'http://'.$_SERVER['HTTP_HOST'].'/formacion2.0/qr/'.$nombre.'">';
+			        $ruta ='<img src="'.$this->container->getParameter('folders')['uploads'].'recursos/qr/'.$nombre.'">';
 			        
-			        $file = 'http://'.$_SERVER['HTTP_HOST'].'/uploads/'.$certificado->getImagen();
+			        $file = $this->container->getParameter('folders')['uploads'].$certificado->getEmpresa()->getId().'/'.$certificado->getImagen();
 
 			        if($certificado->getTipoImagenCertificado()->getId() == $yml['parameters']['tipo_imagen_certificado']['certificado'] )
 			        {
