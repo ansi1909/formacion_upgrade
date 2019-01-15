@@ -39,7 +39,7 @@ class VistaPreviaController extends Controller
         $subtitulo = '';
 
         $empresa_arr = array('id' => 0,
-                             'nombre' => 'Formación 2.0',
+                             'nombre' => 'Formación Smart',
                              'plantilla' => $plantilla,
                              'logo' => $logo,
                              'tipo_logo' => $tipo_logo,

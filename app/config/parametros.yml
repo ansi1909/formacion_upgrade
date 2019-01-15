@@ -77,12 +77,12 @@ parameters:
     notificacion_programada:
         bienvenida: 1
     correo_recuperacion:
-        asunto: 'Formación2.0 - Recuperación de usuario y clave.'
-        remitente: 'soporte@formacionsmart.com'
+        asunto: 'Formación Smart - Recuperación de usuario y clave.'
+        remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
-        asunto: 'Formación2.0 - Solicitud de soporte virtual. '
-        remitente: 'soporte@formacionsmart.com'
-        destinatario: 'soporte@formacionsmart.com'
+        asunto: 'Formación Smart - Solicitud de soporte virtual. '
+        remitente: 'soporte@formacion2puntocero.com'
+        destinatario: 'soporte@formacion2puntocero.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2
@@ -96,4 +96,4 @@ parameters:
         espacio_colaborativo: 100
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
     search_locale: 0
-    mailer_user: soporte@formacionsmart.com
+    mailer_user: tutorvirtual@formacion2puntocero.com

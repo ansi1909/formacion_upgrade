@@ -187,7 +187,7 @@ class PreferenciaController extends Controller
         else {
             $preferencia = new AdminPreferencia();
             $preferencia->setEmpresa($empresa);
-            $preferencia->setTitle($this->get('translator')->trans('Sistema Formación').' 2.0');
+            $preferencia->setTitle($this->get('translator')->trans('Sistema Formación Smart'));
         }
 
         // Tipos de logos

@@ -102,7 +102,7 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
                                                                 'background' => $background,
                                                                 'logo' => $logo,
                                                                 'link_plataforma' => $link_plataforma.$usuario_nivel->getEmpresa()->getId()),
-                                               'asunto' => 'Formación 2.0: '.$translator->trans('Nuevo espacio colaborativo').'.',
+                                               'asunto' => 'Formación Smart: '.$translator->trans('Nuevo espacio colaborativo').'.',
                                                'remitente' => $yml['parameters']['mailer_user'],
                                                'destinatario' => $correo_participante);
                     $correo = $f->sendEmail($parametros_correo);
