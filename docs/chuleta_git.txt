@@ -50,7 +50,7 @@ SINCRONIZACIÓN DE AMBIENTE DE QUALITY
 
 SINCRONIZACIÓN DE AMBIENTE DE PROD
 
-1. git checkout quality   (antes probablemente: git checkout --app/config/config.yml)
+1. git checkout quality   (antes probablemente: git checkout -- app/config/config.yml)
 2. git pull   --> Clave: we4y0g9w
 3. git checkout master
 4. git merge quality

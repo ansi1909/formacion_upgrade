@@ -479,7 +479,7 @@ class DefaultController extends Controller
 
         $f = $this->get('funciones');
         $error = '';
-        $verificacion='';
+        $verificacion = '';
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
@@ -490,149 +490,144 @@ class DefaultController extends Controller
 
         if ($empresa_bd)
         {
-            if ($empresa_bd->getActivo())
+            
+            //se consulta la preferencia de la empresa
+            $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
+
+            if ($preferencia)
             {
-                //se consulta la preferencia de la empresa
-                $preferencia = $em->getRepository('LinkComunBundle:AdminPreferencia')->findOneByEmpresa($empresa_id);
-
-                if ($preferencia)
-                {
-                    $logo = $preferencia->getLogo() ? $preferencia->getLogo() : '';
-                    $tipo_logo = $preferencia->getTipoLogo() ? $preferencia->getTipoLogo()->getCss() : 'imgLogoHor';
-                    $logo_login = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
-                    $favicon = $preferencia->getFavicon();
-                    $layout = explode(".", $preferencia->getLayout()->getTwig());
-                    $layout = $layout[0]."_";
-                    $title = $preferencia->getTitle();
-                    $css = $preferencia->getCss();
-                    $webinar = $empresa_bd->getWebinar();
-                    $chat = $empresa_bd->getChatActivo();
-                    $plantilla = $preferencia->getLayout()->getTwig();
-                }
-                else {
-                    $logo = '';
-                    $tipo_logo = 'imgLogoHor';
-                    $logo_login = '';
-                    $favicon = '';
-                    $layout = 'base_';
-                    $title = '';
-                    $css = '';
-                    $webinar = false;
-                    $chat = false;
-                    $plantilla = 'base.html.twig';
-                }
-
-                // Usar las cookies para las preferencias de la empresa y personalizar la pantalla de excepción
-                setcookie("empresa_id", $empresa_id, time()+(60*60*24*365),'/');
-                setcookie("logo", $logo, time()+(60*60*24*365),'/');
-                setcookie("favicon", $favicon, time()+(60*60*24*365),'/');
-                setcookie("plantilla", $plantilla, time()+(60*60*24*365),'/');
-                setcookie("css", $css, time()+(60*60*24*365),'/');
-
-                $empresa = array('id' => $empresa_id,
-                                 'nombre' => $empresa_bd->getNombre(),
-                                 'chat' => $chat,
-                                 'webinar' => $webinar,
-                                 'plantilla' => $plantilla,
-                                 'logo' => $logo,
-                                 'tipo_logo' => $tipo_logo,
-                                 'favicon' => $favicon,
-                                 'titulo' => $title,
-                                 'css' => $css);
-
-                //validamos que exista una cookie
-                if ($_COOKIE && isset($_COOKIE["id_usuario"]))
-                {
-                    $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
-                                                                                                   'empresa' => $empresa_bd->getId(),
-                                                                                                   'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
-                    
-                    if ($usuario)
-                    {
-
-                        // Si tiene una sesión abierta se cierra, ya que lo respalda la Cookie
-                        if ($session->get('iniFront'))
-                        {
-                            if (!$f->sesionBloqueda($session->get('sesion_id')))
-                            {
-                                $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
-                                if ($sesion)
-                                {
-                                    $sesion->setDisponible(false);
-                                    $em->persist($sesion);
-                                    $em->flush();
-                                }
-                                $session->invalidate();
-                                $session->clear();
-                            }
-                        }
-
-                        $recordar_datos = 1;
-                        $login = $usuario->getLogin();
-                        $clave = $usuario->getClave(); 
-                        $verificacion = 1;
-                        
-                    }
-                    else {
-                        // Eliminamos las cookies almacenada
-                        setcookie('id_usuario', '', time() - 42000, '/'); 
-                        setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
-                        //$error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
-                    }
-                }
-                else {
-                    if ($request->getMethod() == 'POST')
-                    {
-                        $recordar_datos = $request->request->get('recordar_datos');
-                        $login = $request->request->get('usuario');
-                        $clave = $request->request->get('password');
-                        $verificacion = 1;
-                    }
-                    else {
-                        if ($session->get('iniFront'))
-                        {
-                            if (!$f->sesionBloqueda($session->get('sesion_id')))
-                            {
-                                return $this->redirectToRoute('_inicio');
-                            }
-                        }
-                    }
-                }
-
-                if ($verificacion)
-                {
-                    $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
-                                                             'login' => $login,
-                                                             'clave' => $clave,
-                                                             'empresa' => $empresa,
-                                                             'yml' => $yml['parameters']));
-
-                    if ($iniciarSesion['exito'] == true)
-                    {
-                        return $this->redirectToRoute('_inicio');
-                    }
-                    else {
-                        if ($iniciarSesion['error'] == true)
-                        {
-
-                            $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
-                                                                                                                     'logo_login' => $logo_login,
-                                                                                                                     'error' => $iniciarSesion['error']));
-                            return $response;
-                        }
-                    }                    
-                }
-                else {
-                    $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
-                                                                                                             'logo_login' => $logo_login,
-                                                                                                             'error' => $error));
-                    return $response;
-                }
-
+                $logo = $preferencia->getLogo() ? $preferencia->getLogo() : '';
+                $tipo_logo = $preferencia->getTipoLogo() ? $preferencia->getTipoLogo()->getCss() : 'imgLogoHor';
+                $logo_login = $preferencia->getLogoLogin() ? $preferencia->getLogo() : '';
+                $favicon = $preferencia->getFavicon();
+                $layout = explode(".", $preferencia->getLayout()->getTwig());
+                $layout = $layout[0]."_";
+                $title = $preferencia->getTitle();
+                $css = $preferencia->getCss();
+                $webinar = $empresa_bd->getWebinar();
+                $chat = $empresa_bd->getChatActivo();
+                $plantilla = $preferencia->getLayout()->getTwig();
             }
             else {
-                return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'empresa'));
+                $logo = '';
+                $tipo_logo = 'imgLogoHor';
+                $logo_login = '';
+                $favicon = '';
+                $layout = 'base_';
+                $title = '';
+                $css = '';
+                $webinar = false;
+                $chat = false;
+                $plantilla = 'base.html.twig';
             }
+
+            // Usar las cookies para las preferencias de la empresa y personalizar la pantalla de excepción
+            setcookie("empresa_id", $empresa_id, time()+(60*60*24*365),'/');
+            setcookie("logo", $logo, time()+(60*60*24*365),'/');
+            setcookie("favicon", $favicon, time()+(60*60*24*365),'/');
+            setcookie("plantilla", $plantilla, time()+(60*60*24*365),'/');
+            setcookie("css", $css, time()+(60*60*24*365),'/');
+
+            $empresa = array('id' => $empresa_id,
+                             'nombre' => $empresa_bd->getNombre(),
+                             'chat' => $chat,
+                             'webinar' => $webinar,
+                             'plantilla' => $plantilla,
+                             'logo' => $logo,
+                             'tipo_logo' => $tipo_logo,
+                             'favicon' => $favicon,
+                             'titulo' => $title,
+                             'css' => $css);
+
+            //validamos que exista una cookie
+            if ($_COOKIE && isset($_COOKIE["id_usuario"]))
+            {
+                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('id' => $_COOKIE["id_usuario"],
+                                                                                               'empresa' => $empresa_bd->getId(),
+                                                                                               'cookies' => $_COOKIE["marca_aleatoria_usuario"] ) );
+                
+                if ($usuario)
+                {
+
+                    // Si tiene una sesión abierta se cierra, ya que lo respalda la Cookie
+                    if ($session->get('iniFront'))
+                    {
+                        if (!$f->sesionBloqueda($session->get('sesion_id')))
+                        {
+                            $sesion = $em->getRepository('LinkComunBundle:AdminSesion')->find($session->get('sesion_id'));
+                            if ($sesion)
+                            {
+                                $sesion->setDisponible(false);
+                                $em->persist($sesion);
+                                $em->flush();
+                            }
+                            $session->invalidate();
+                            $session->clear();
+                        }
+                    }
+
+                    $recordar_datos = 1;
+                    $login = $usuario->getLogin();
+                    $clave = $usuario->getClave(); 
+                    $verificacion = 1;
+                    
+                }
+                else {
+                    // Eliminamos las cookies almacenada
+                    setcookie('id_usuario', '', time() - 42000, '/'); 
+                    setcookie('marca_aleatoria_usuario', '', time() - 42000, '/');
+                    //$error = $this->get('translator')->trans('La información almacenada en el navegador no es correcta, borre el historial.');
+                }
+            }
+            else {
+                if ($request->getMethod() == 'POST')
+                {
+                    $recordar_datos = $request->request->get('recordar_datos');
+                    $login = $request->request->get('usuario');
+                    $clave = $request->request->get('password');
+                    $verificacion = 1;
+                }
+                else {
+                    if ($session->get('iniFront'))
+                    {
+                        if ($empresa_bd->getActivo() && !$f->sesionBloqueda($session->get('sesion_id')))
+                        {
+                            return $this->redirectToRoute('_inicio');
+                        }
+                    }
+                }
+            }
+
+            if ($verificacion)
+            {
+                $iniciarSesion = $f->iniciarSesion(array('recordar_datos' => $recordar_datos,
+                                                         'login' => $login,
+                                                         'clave' => $clave,
+                                                         'empresa' => $empresa,
+                                                         'yml' => $yml['parameters']));
+
+                if ($iniciarSesion['exito'] == true)
+                {
+                    return $this->redirectToRoute('_inicio');
+                }
+                else {
+                    if ($iniciarSesion['error'] == true)
+                    {
+
+                        $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                                                                                                                 'logo_login' => $logo_login,
+                                                                                                                 'error' => $iniciarSesion['error']));
+                        return $response;
+                    }
+                }                    
+            }
+            else {
+                $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
+                                                                                                         'logo_login' => $logo_login,
+                                                                                                         'error' => $error));
+                return $response;
+            }
+
         }
         else {
             return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'url'));
@@ -834,23 +829,24 @@ class DefaultController extends Controller
                                    'tipo'=>$alarma->getTipoAlarma()->getid(),
                                    'entidad'=>$alarma->getEntidadId());
 
-                if($alarma->getLeido() == TRUE)
+                if ($alarma->getLeido() == TRUE)
                 {
-                    $leidas[] =array('id'=>$alarma->getId(),
-                                   'descripcion'=>$alarma->getDescripcion(),
-                                   'css'=>$alarma->getTipoAlarma()->getCss(),
-                                   'icono'=>$alarma->getTipoAlarma()->getIcono(),
-                                   'tipo'=>$alarma->getTipoAlarma()->getid(),
-                                   'entidad'=>$alarma->getEntidadId());
+                    $leidas[] = array('id'=>$alarma->getId(),
+                                      'descripcion'=>$alarma->getDescripcion(),
+                                      'css'=>$alarma->getTipoAlarma()->getCss(),
+                                      'icono'=>$alarma->getTipoAlarma()->getIcono(),
+                                      'tipo'=>$alarma->getTipoAlarma()->getid(),
+                                      'entidad'=>$alarma->getEntidadId());
 
-                }elseif ($alarma->getLeido() == FALSE) 
+                }
+                elseif ($alarma->getLeido() == FALSE) 
                 {
-                    $no_leidas[] =array('id'=>$alarma->getId(),
-                                   'descripcion'=>$alarma->getDescripcion(),
-                                   'css'=>$alarma->getTipoAlarma()->getCss(),
-                                   'icono'=>$alarma->getTipoAlarma()->getIcono(),
-                                   'tipo'=>$alarma->getTipoAlarma()->getid(),
-                                   'entidad'=>$alarma->getEntidadId());
+                    $no_leidas[] = array('id'=>$alarma->getId(),
+                                         'descripcion'=>$alarma->getDescripcion(),
+                                         'css'=>$alarma->getTipoAlarma()->getCss(),
+                                         'icono'=>$alarma->getTipoAlarma()->getIcono(),
+                                         'tipo'=>$alarma->getTipoAlarma()->getid(),
+                                         'entidad'=>$alarma->getEntidadId());
                 }
             }
 
