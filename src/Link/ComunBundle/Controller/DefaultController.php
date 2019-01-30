@@ -68,4 +68,30 @@ class DefaultController extends Controller
 
     }
 
+    public function ajaxServicioInteractivoAction(Request $request)
+    {
+        
+        $session = new Session();
+        
+        $codigo = $request->request->get('codigo');
+        $visto = $request->request->get('visto');
+
+        if ($visto && ($visto == 1 || $visto == '1'))
+        {
+            $end_msg = 'Recurso visto.';
+        }
+        else {
+            $end_msg = 'Recurso NO visto.';
+        }
+
+        $msg = 'El código recibido es: '.$codigo.'. '.$end_msg;
+
+        $return = array('ok' => 1,
+                        'msg' => $msg);
+
+        $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
 }

@@ -2,6 +2,8 @@
 
 {% block body %}
 
+<input type="hidden" id="url_servicio" name="url_servicio" value="{{ path('_ajaxServicioInteractivo') }}">
+
 <div id="message" class="for-message well-message container py-6 px-6 mb-4 bckgd">
     <i id="equis" class="material-icons mr-2" >close</i>
     {{ bienvenida|raw }}    
@@ -160,6 +162,26 @@
     <script>
         $(document).ready(function(){
             $('#dashBoard').addClass("active");
+
+
+            // OJO: BORRAR
+            $('#message').click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: $('#url_servicio').val(),
+                    async: true,
+                    data: { codigo: '125874128888885', visto: 1 },
+                    dataType: "json",
+                    success: function(data) {
+                        console.log('OK: '+data.ok);
+                        console.log('MSG: '+data.msg);
+                        //clearTimeout( timerId );
+                    },
+                    error: function(){
+                        console.log('Error invocando el servicio');
+                    }
+                });
+            });
         });
     </script>
 {% endblock %}

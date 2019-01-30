@@ -186,12 +186,13 @@ class ReportesJTController extends Controller
                     $promedio = $participante['promedio'] ? $participante['promedio'] : 0;
 
                     // Datos de las columnas del reporte
+                    $correo = trim($participante['correo_corporativo']) != '' ? $participante['correo_corporativo'] : $participante['correo_personal'];
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $participante['login']);
                     $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
                     $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                    $objWorksheet->setCellValue('F'.$row, $participante['correo_corporativo']);
+                    $objWorksheet->setCellValue('F'.$row, $correo);
                     $objWorksheet->setCellValue('G'.$row, $participante['pais']);
                     $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
                     $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
@@ -229,65 +230,62 @@ class ReportesJTController extends Controller
         }
         else {
 
-        $archivo = '';
+            $archivo = '';
 
-        $html = '<table class="table" id="dt">
-            <thead class="sty__title">
-                <tr>
-                    <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Estatus del programa').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
-                    <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
-                </tr>
-            </thead>
-            <tbody style="font-size: .7rem;">';
-        
-        foreach ($listado as $registro)
-        {
-           
-            if ($registro['status'])
+            $html = '<table class="table" id="dt">
+                <thead class="sty__title">
+                    <tr>
+                        <th class="hd__title">'.$this->get('translator')->trans('Usuario').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Módulos vistos').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Materias vistas').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Promedio evaluación módulo').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Estatus del programa').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Fecha inicio').'</th>
+                        <th class="hd__title">'.$this->get('translator')->trans('Fecha fin').'</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: .7rem;">';
+            
+            foreach ($listado as $registro)
             {
-                $status = $registro['status'];
-            }
-            else {
-                if (trim($registro['fecha_inicio_programa']))
+               
+                if ($registro['status'])
                 {
-                    $status = 1;
+                    $status = $registro['status'];
                 }
                 else {
-                    $status = 0;
+                    if (trim($registro['fecha_inicio_programa']))
+                    {
+                        $status = 1;
+                    }
+                    else {
+                        $status = 0;
+                    }
                 }
+                //$status = $registro['status'] ? $registro['status'] : 0;
+                //$status = $registro['status'] ? $registro['status'] : $registro['fecha_inicio_programa'] ? 1 : 0;
+                $promedio=($registro['promedio'])? $registro['promedio']:0;
+                $html .= '<tr>
+                            <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['login'].'</a></td>
+                            <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
+                            <td>'.$registro['nivel'].'</td>
+                            <td>'.$registro['fecha_registro'].'</td>
+                            <td>'.$registro['modulos'].'</td>
+                            <td>'.$registro['materias'].'</td>
+                            <td>'.$promedio.'</td>
+                            <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
+                            <td>'.$registro['fecha_inicio_programa'].'</td>
+                            <td>'.$registro['fecha_fin_programa'].'</td>
+                        </tr>';
             }
-            //$status = $registro['status'] ? $registro['status'] : 0;
-            //$status = $registro['status'] ? $registro['status'] : $registro['fecha_inicio_programa'] ? 1 : 0;
-            $promedio=($registro['promedio'])? $registro['promedio']:0;
-            $html .= '<tr>
-                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$registro['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$registro['login'].'</a></td>
-                        <td>'.$registro['nombre'].' '.$registro['apellido'].'</td>
-                        <td>'.$registro['nivel'].'</td>
-                        <td>'.$registro['fecha_registro'].'</td>
-                        <td>'.$registro['modulos'].'</td>
-                        <td>'.$registro['materias'].'</td>
-                        <td>'.$promedio.'</td>
-                        <td>'.$this->get('translator')->trans($estatusProragama[$status]).'</td>
-                        <td>'.$registro['fecha_inicio_programa'].'</td>
-                        <td>'.$registro['fecha_fin_programa'].'</td>
-                    </tr>';
-        }
 
-        $html .= '</tbody>
-                </table>';
-        $archivo = '';
-        }
-
-
-                                                                                              
+            $html .= '</tbody>
+                    </table>';
+            $archivo = '';
+        }                                                                             
 
         $return = array('archivo' => $archivo,
                         'html' => $html);
