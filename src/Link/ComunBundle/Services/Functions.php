@@ -3078,7 +3078,8 @@ class Functions
 
 		$usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
 		
-		$paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findByPagina($pagina_id);
+		$paginas = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_id),
+                                                                             array('orden' => 'ASC'));
 
 		foreach ($paginas as $pagina)
 		{
