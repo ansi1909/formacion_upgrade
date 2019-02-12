@@ -1043,7 +1043,43 @@ class PaginaController extends Controller
             $pagina_padre_id = $request->request->get('pagina_padre_id');
             $pagina_padre = $em->getRepository('LinkComunBundle:CertiPagina')->find($pagina_padre_id);
 
+            // Reordenar su anterior grupo
+            if ($pagina->getPagina())
+            {
+                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                            WHERE p.pagina = :pagina_id 
+                                            AND p.id != :id
+                                            ORDER BY p.orden ASC")
+                            ->setParameters(array('pagina_id' => $pagina->getPagina()->getId(),
+                                                  'id' => $pagina_id));
+            }
+            else {
+                $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p 
+                                            WHERE p.pagina IS NULL 
+                                            AND p.id != :id
+                                            ORDER BY p.grado ASC, p.orden ASC")
+                            ->setParameter('id', $pagina_id);
+            }
+            $paginas = $query->getResult();
+
+            $orden = 0;
+            foreach ($paginas as $p)
+            {
+                $orden++;
+                $p->setOrden($orden);
+                $em->persist($p);
+                $em->flush();
+            }
+
+            // Quedará de último en el orden
+            $query = $em->createQuery('SELECT MAX(p.orden) FROM LinkComunBundle:CertiPagina p 
+                                        WHERE p.pagina = :pagina_id')
+                        ->setParameter('pagina_id', $pagina_padre_id);
+            $orden = $query->getSingleScalarResult();
+            $orden++;
+
             $pagina->setPagina($pagina_padre);
+            $pagina->setOrden($orden);
             $em->persist($pagina);
             $em->flush();
 
