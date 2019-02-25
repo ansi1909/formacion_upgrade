@@ -108,7 +108,8 @@ class Functions
                                    'CertiPrueba' => 'pagina',
                                    'CertiGrupoPagina' => 'pagina',
                                    'CertiPaginaLog' => 'pagina',
-                                   'CertiForo' => 'pagina');
+                                   'CertiForo' => 'pagina',
+                                   'CertiMuro' => 'pagina');
                 break;
             case 'CertiPrueba':
                 $entidades = array('CertiPregunta' => 'prueba',
