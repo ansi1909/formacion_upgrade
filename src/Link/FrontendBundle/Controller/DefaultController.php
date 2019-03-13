@@ -314,6 +314,8 @@ class DefaultController extends Controller
     public function authExceptionEmpresaAction($tipo)
     {
 
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
         $preferencia = array('logo' => ($_COOKIE && isset($_COOKIE["logo"])) ? $_COOKIE["logo"] : '',
                              'favicon' => ($_COOKIE && isset($_COOKIE["favicon"])) ? $_COOKIE["favicon"] : '',
                              'plantilla' => ($_COOKIE && isset($_COOKIE["plantilla"])) ? $_COOKIE["plantilla"] : 'base.html.twig',
@@ -394,7 +396,8 @@ class DefaultController extends Controller
                                                                                          'preferencia' => $preferencia,
                                                                                          'imagen' => $imagen,
                                                                                          'texto' => $texto,
-                                                                                         'continuar' => $continuar));
+                                                                                         'continuar' => $continuar,
+                                                                                         'servidor_mantenimiento' => $yml['parameters']['servidor_mantenimiento']));
 
     }
 
@@ -486,11 +489,17 @@ class DefaultController extends Controller
 
     public function loginAction($empresa_id, Request $request)
     {
-        //return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'mantenimiento'));
+
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        if ($yml['parameters']['servidor_mantenimiento'])
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'mantenimiento'));
+        }
+        
         $f = $this->get('funciones');
         $error = '';
         $verificacion = '';
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
 
