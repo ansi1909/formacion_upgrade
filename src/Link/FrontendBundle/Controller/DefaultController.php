@@ -378,6 +378,16 @@ class DefaultController extends Controller
                 $texto = $this->get('translator')->trans('Preguntas no encontradas');
                 break;
 
+            case 'mantenimiento':
+                $mensaje = array('principal' => $this->get('translator')->trans('Página en mantenimiento'),
+                                 'indicaciones' => array($this->get('translator')->trans('En estos momentos se están realizando optimizaciones en nuestros servidores'),
+                                                         $this->get('translator')->trans('Ofrecemos disculpas por las molestias ocasionadas')));
+                $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
+                $continuar = '';
+                $imagen = 'front/assets/img/browser (1).svg';
+                $texto = $this->get('translator')->trans('Página en mantenimiento');
+                break;
+
         }
 
         return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje,
@@ -476,7 +486,7 @@ class DefaultController extends Controller
 
     public function loginAction($empresa_id, Request $request)
     {
-
+        //return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'mantenimiento'));
         $f = $this->get('funciones');
         $error = '';
         $verificacion = '';
