@@ -23,7 +23,9 @@
     <section class="mt-22v error_except">
         <div class="row align-content-center">
             <div class="col-8">
-                <h3 class="titulo-error sub-line">{{ 'Error de Excepción'|trans }}</h3>
+                {% if not servidor_mantenimiento %}
+                    <h3 class="titulo-error sub-line">{{ 'Error de Excepción'|trans }}</h3>
+                {% endif %}
                 <h5 class="subtitulo-error">{{ mensaje.principal }}</h5>
                 <ul class="lista-error">
                     {% for indicacion in mensaje.indicaciones %}
@@ -35,7 +37,9 @@
             </div>
             <div class="col-4 text-center">
                 <img class="img-error" src="{{ asset ( imagen ) }}" alt="">
-                <h3 class="titulo-error">{{ texto }}</h3>
+                {% if not servidor_mantenimiento %}
+                    <h3 class="titulo-error">{{ texto }}</h3>
+                {% endif %}
                 {{ continuar|raw }}
             </div>
         </div>
