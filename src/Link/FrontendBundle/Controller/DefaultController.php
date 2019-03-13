@@ -314,6 +314,8 @@ class DefaultController extends Controller
     public function authExceptionEmpresaAction($tipo)
     {
 
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
         $preferencia = array('logo' => ($_COOKIE && isset($_COOKIE["logo"])) ? $_COOKIE["logo"] : '',
                              'favicon' => ($_COOKIE && isset($_COOKIE["favicon"])) ? $_COOKIE["favicon"] : '',
                              'plantilla' => ($_COOKIE && isset($_COOKIE["plantilla"])) ? $_COOKIE["plantilla"] : 'base.html.twig',
@@ -378,13 +380,24 @@ class DefaultController extends Controller
                 $texto = $this->get('translator')->trans('Preguntas no encontradas');
                 break;
 
+            case 'mantenimiento':
+                $mensaje = array('principal' => $this->get('translator')->trans('Página en mantenimiento'),
+                                 'indicaciones' => array($this->get('translator')->trans('En estos momentos se están realizando optimizaciones en nuestros servidores'),
+                                                         $this->get('translator')->trans('Ofrecemos disculpas por las molestias ocasionadas')));
+                $empresa_id = ($_COOKIE && isset($_COOKIE["empresa_id"])) ? $_COOKIE["empresa_id"] : 0;
+                $continuar = '';
+                $imagen = 'front/assets/img/browser (1).svg';
+                $texto = $this->get('translator')->trans('Página en mantenimiento');
+                break;
+
         }
 
         return $this->render('LinkFrontendBundle:Default:authException.html.twig', array('mensaje' => $mensaje,
                                                                                          'preferencia' => $preferencia,
                                                                                          'imagen' => $imagen,
                                                                                          'texto' => $texto,
-                                                                                         'continuar' => $continuar));
+                                                                                         'continuar' => $continuar,
+                                                                                         'servidor_mantenimiento' => $yml['parameters']['servidor_mantenimiento']));
 
     }
 
@@ -477,10 +490,16 @@ class DefaultController extends Controller
     public function loginAction($empresa_id, Request $request)
     {
 
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        if ($yml['parameters']['servidor_mantenimiento'])
+        {
+            return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'mantenimiento'));
+        }
+        
         $f = $this->get('funciones');
         $error = '';
         $verificacion = '';
-        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $em = $this->getDoctrine()->getManager();
 
@@ -1000,4 +1019,5 @@ class DefaultController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
+    
 }
