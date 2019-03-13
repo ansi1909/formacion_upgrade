@@ -1000,5 +1000,4 @@ class DefaultController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    
 }
