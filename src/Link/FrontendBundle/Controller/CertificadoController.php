@@ -468,8 +468,7 @@ class CertificadoController extends Controller
 		    
 		}
 		else {
-			//return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'sesion'));
-        	//return $this->redirectToRoute('_authExceptionEmpresa', array('mensaje' => $this->get('translator')->trans('Lo sentimos, no hay notas disponibles para está página.')));
+			return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'prueba'));
 	    }
 
     }
