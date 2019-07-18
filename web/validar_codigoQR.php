@@ -1,11 +1,13 @@
 <?php
+/*echo var_dump($_SERVER);
+exit;*/
 //$h = $_SERVER["HTTP_HOST"];
 $h = $_SERVER["SERVER_NAME"];
-$b = $_SERVER["REQUEST_URI"];
+$b = $_SERVER["SCRIPT_FILENAME"];
 $dr = $_SERVER["CONTEXT_DOCUMENT_ROOT"];
 $p = strrpos($b, "web");
 $b2 = substr($b, 0, $p);
-$file = $h.$b.'app/config/parameters.yml';
+$file = $b2.'app/config/parameters.yml';
 $fp = fopen($file, 'r');
 
 $host="127.0.0.1";
