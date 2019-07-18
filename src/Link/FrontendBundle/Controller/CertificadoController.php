@@ -142,7 +142,6 @@ class CertificadoController extends Controller
 		                                            <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
 		                                            <div style="text-align:center; margin-top:40px; font-size:14px;">Fecha Inicio:'.$pagina_log->getFechaInicio()->format("d/m/y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin:'.$pagina_log->getFechaFin()->format("d/m/y").' </div>
 		                                            <div style="text-align:center; margin-top:15px; font-size:14px;">Equivalente a: '.$pagina->getHorasAcademicas().' hrs. académicas </div>
-		                                            <div style="text-align:center; font-size:14px; margin-top:20px;">'.$fecha.'</div>
 		                                        </page>');
 
 
@@ -173,7 +172,6 @@ class CertificadoController extends Controller
 		                                                <div style="margin-top:40px; text-align:center; font-size:20px;">'.$certificado->getDescripcion().'</div>
 		                                                <div style="margin-top:30px; text-align:center; color: #00558D; font-size:40px;">'.$pagina->getNombre().'</div>
 		                                                <div style="margin-left:30px; margin-top:30px; text-align:left; font-size:16px; line-height:20px;">'.$certificado->getTitulo().'</div>
-		                                                <div style="margin-top:40px; text-align:center; font-size:14px;">'.$fecha.'</div>
 		                                                <div style="margin-top:50px; margin-left:500px; ">'.$ruta.'</div>
 		                                            </page>');
 		                $constancia_pdf->output('constancia.pdf');
