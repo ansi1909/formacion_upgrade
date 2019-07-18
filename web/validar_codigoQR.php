@@ -60,7 +60,7 @@ if(!$connect)
     $ruta = explode("/", $url);
 
 	$sql = "select u.nombre, u.apellido, p.nombre as programa
-			from pl
+			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
 			where pl.id=".$ruta[4]." limit 1";
