@@ -1,6 +1,4 @@
 <?php
-echo var_dump($_SERVER);
-exit;
 //$h = $_SERVER["HTTP_HOST"];
 $h = $_SERVER["SERVER_NAME"];
 $b = $_SERVER["SCRIPT_FILENAME"];
