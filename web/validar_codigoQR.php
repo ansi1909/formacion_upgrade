@@ -1,6 +1,6 @@
 <?php
 $h = $_SERVER["HTTP_HOST"];
-$b = $_SERVER["BASE"];
+$b = $_SERVER["REQUEST_URI"];
 $dr = $_SERVER["CONTEXT_DOCUMENT_ROOT"];
 $p = strrpos($b, "web");
 $b2 = substr($b, 0, $p);
