@@ -4,8 +4,8 @@ $b = $_SERVER["REQUEST_URI"];
 $dr = $_SERVER["CONTEXT_DOCUMENT_ROOT"];
 $p = strrpos($b, "web");
 $b2 = substr($b, 0, $p);
-$u = $dr.$b2.'app/config/parameters.yml';
-$fp = fopen($u, 'r');
+$file = $h.$b.'app/config/parameters.yml';
+$fp = fopen($file, 'r');
 
 $host="127.0.0.1";
 $port="5432";
