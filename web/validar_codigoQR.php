@@ -1,5 +1,6 @@
 <?php
-$h = $_SERVER["HTTP_HOST"];
+//$h = $_SERVER["HTTP_HOST"];
+$h = $_SERVER["SERVER_NAME"];
 $b = $_SERVER["REQUEST_URI"];
 $dr = $_SERVER["CONTEXT_DOCUMENT_ROOT"];
 $p = strrpos($b, "web");
