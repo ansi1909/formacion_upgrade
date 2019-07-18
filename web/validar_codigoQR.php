@@ -1,6 +1,6 @@
 <?php
-/*echo var_dump($_SERVER);
-exit;*/
+echo var_dump($_SERVER);
+exit;
 //$h = $_SERVER["HTTP_HOST"];
 $h = $_SERVER["SERVER_NAME"];
 $b = $_SERVER["SCRIPT_FILENAME"];
@@ -57,7 +57,9 @@ if(!$connect)
 {
 
 	$url= $_SERVER["REQUEST_URI"];
-    $ruta = explode("/", $url);
+	$url_pos = strrpos($url, "validar_codigoQR");
+	$url_web = substr($url, 0, $url_pos);
+	$ruta = explode("/", $url);
 
 	$sql = "select u.nombre, u.apellido, p.nombre as programa
 			from certi_pagina_log pl 
@@ -83,8 +85,8 @@ if(!$connect)
 	        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 	        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
 	        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	        <link rel="stylesheet" href="<?php echo $b ?>/front/base_styles/css/bootstrap/bootstrap.css">
-	        <link rel="stylesheet" href="<?php echo $b ?>/front/client_styles/formacion/css/main.css">
+	        <link rel="stylesheet" href="<?php echo $url_web ?>front/base_styles/css/bootstrap/bootstrap.css">
+	        <link rel="stylesheet" href="<?php echo $url_web ?>front/client_styles/formacion/css/main.css">
 	        <title>Verificacion del codigoQR</title>
 	    </head>
 	    <body class="codigoQR">
@@ -92,7 +94,7 @@ if(!$connect)
 	            <div class="container">
 	                <div class="row">
 	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
-	                        <img class="imgForm" src="<?php echo $b ?>/front/assets/img/formacion2.0.svg" alt="">
+	                        <img class="imgForm" src="<?php echo $url_web ?>front/assets/img/formacion2.0.svg" alt="">
 	                    </div> 
 	                </div>
 	                <div class="row">
