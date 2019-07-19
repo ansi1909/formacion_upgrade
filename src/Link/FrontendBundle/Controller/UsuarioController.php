@@ -52,7 +52,7 @@ class UsuarioController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
 
-        $clave = $request->request->get('clave');
+        $clave = $request->request->get('password');
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
         $usuario->setClave($clave);

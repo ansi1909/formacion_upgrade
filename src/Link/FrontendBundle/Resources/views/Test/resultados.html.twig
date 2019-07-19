@@ -92,7 +92,7 @@
                 <section class="pb-4">
                     <div class="row align-items-center justify-content-center">
                         <div class="col-10 my-3 text-center">
-                            <h2 class="titulo-resul">{{ 'FELICITACIONES'|trans }}</h2>
+                            <h2 class="titulo-resul">¡{{ 'FELICITACIONES'|trans }}!</h2>
                             <h3>{{ 'Has aprobado con éxito la evaluación'|trans }}</h3>
                         </div>
                         {% if not try_button and continue_button.evaluacion == 0 and continue_button.next_lesson == 0 %}
@@ -131,7 +131,7 @@
                                         {% set articulo = 'del'|trans %}
                                     {% endif %}
                                     <h4 class="color-light-black">{{ 'Es momento de tomar la evaluación'|trans }} {{ articulo~' '~continue_button.nombre_pagina }}.</h4>
-                                    <h4 class="color-light-black">{{ 'Tendrás'|trans }} <strong>{{ continue_button.duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}. {{ '¿Estás list@?'|trans }}</h4>
+                                    <h4 class="color-light-black">{{ 'Tendrás'|trans }} <strong>{{ continue_button.duracion }}</strong> {{ 'minutos para completar la evaluación'|trans }}. {{ '¿Estás listo/a?'|trans }}</h4>
                                 </div>
                             </div>
                             <div class="row mt-5 align-items-center justify-content-center">

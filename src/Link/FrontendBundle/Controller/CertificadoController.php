@@ -358,14 +358,14 @@ class CertificadoController extends Controller
 			                            <thead>
 			                                <tr>
 			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
-			                                    <th style='width: 100;'>".$this->get('translator')->trans('Veces cursadas')."</th>
+			                                    
 			                                    <th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
 			                                </tr>
 			                            </thead>
 			                            <tbody>
 											<tr style='font-size: 14px; font-weight: 300;'>
 								               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-								               <td class='center'>".$cantidad_intentos."</td>
+								               
 								               <td class='center'>".$nota."</td>
 								            </tr>";
 									foreach ($programa_aprobado as $programa)
@@ -399,7 +399,7 @@ class CertificadoController extends Controller
 										}
 	        							$html .= "<tr ".$style.">
 							               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
-									               	<td class='center'>".$programa['cantidad_intentos']."</td>
+									               	
 									               	<td class='center'>".number_format($nota, 2, ',', '.')."</td>
 									            </tr>";
 									}
@@ -428,7 +428,7 @@ class CertificadoController extends Controller
 				                            	<tbody>
 													<tr style='font-size: 14px; font-weight: 300;'>
 									               		<td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-									               		<td class='center'>".$programa_aprobado['cantidad_intentos']."</td>
+									               		
 									               		<td class='center'>".number_format($nota, 2, ',', '.')."</td>
 									            	</tr>
 												</tbody>

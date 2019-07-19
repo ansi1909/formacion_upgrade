@@ -15,6 +15,22 @@
         label.error, label.mensaje-error {
             color: #f00c0c;
         }
+        .margin_container{
+            margin: 1rem 2rem;
+        }
+        .margin1{
+            width: 80%;
+        }
+        .margin2{
+            padding: calc(3rem - 6px) 2rem calc(2rem - 5px) 2rem;
+            width:57.25rem;
+        }
+        .table-card-det .f-card-det {
+            padding: calc(3rem - 6px) 2rem calc(2rem - 5px) 2rem;
+            width: 72.25rem;
+            border-bottom: 1px solid #F0F4F7;
+            width: 57.25rem;
+        }
     </style>
 {% endblock %}
 
@@ -182,15 +198,15 @@
         </div>
     </section>
     
-    <section class="esp_col" id="section-list">
-        <div class="row align-items-center justify-content-between">
+    <section class="esp_col margin_container" id="section-list">
+        <div class="row align-items-center justify-content-between" style="margin-left:75px;">
             <div class="col-4 col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-4 text-left">
-                <a href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}"><button class="btn btn-primary btn-nw-tema">{{ 'Volver al listado'|trans }}</button></a>
+                <a class="" href="{{ path('_espacioColaborativo', { 'programa_id': programa.id, 'subpagina_id': subpagina_id }) }}"><button class="btn btn-primary btn-nw-tema">{{ 'Volver al listado'|trans }}</button></a>
             </div>
         </div>
         <div class="row">
-            <ul class="table-card-det">
-                <li class="f-card-det">
+            <ul class="table-card-det margin1 ">
+                <li class="f-card-det ">
                     <div class="cont-det">
                         <div class="row justify-content-between">
                             <div class="col-auto">
@@ -218,7 +234,7 @@
                     </div>
                 </li>
             </ul>
-            <ul class="table-card-det">
+            <ul class="table-card-det margin1">
                 {% for foro_hijo in foros_hijos %}
                     <li class="f-card-det" id="toDel-{{ foro_hijo.id }}">
                         <div class="cont-det">
