@@ -625,12 +625,12 @@ class DefaultController extends Controller
                                                          'empresa' => $empresa,
                                                          'yml' => $yml['parameters']));
 
-                if ($iniciarSesion['exito'] == true)
+                if ($iniciarSesion['exito'])
                 {
                     return $this->redirectToRoute('_inicio');
                 }
                 else {
-                    if ($iniciarSesion['error'] == true)
+                    if ($iniciarSesion['error'] != '')
                     {
 
                         $response = $this->render('LinkFrontendBundle:Default:'.$layout.'login.html.twig', array('empresa' => $empresa, 
