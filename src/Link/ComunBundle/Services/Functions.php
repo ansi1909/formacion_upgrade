@@ -2298,7 +2298,7 @@ class Functions
 		                						  'pagina' => $subpage));
 		        $cantidad_intentos = $query->getSingleScalarResult();
 			}
-	        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($subpage);
+	        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($subpage);
 			
 			if($nota > 0)
 			{
@@ -3344,5 +3344,79 @@ class Functions
 	    return $vencido;
 
 	}
+
+    // Retorna el certificado de la página, sino de un grupo de página, sino de la empresa
+    public function getCertificado($empresa_id, $tipo_certificado, $pagina_id)
+    {
+
+        $em = $this->em;
+        $certificado = false;
+            
+        //consultamos el certificado por pagina
+        $certificado_pagina = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $empresa_id,
+                                                                                                      'tipoCertificado' => $tipo_certificado['pagina'],
+                                                                                                      'entidadId' => $pagina_id));
+
+        if ($certificado_pagina)
+        {
+            $certificado = $certificado_pagina;
+        }
+        else {
+
+            //consultamos el certificado por grupo de paginas
+            $certificado_grupos = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $empresa_id,
+                                                                                                          'tipoCertificado' => $tipo_certificado['grupo_paginas'],
+                                                                                                          'entidadId' => $pagina_id));
+            if ($certificado_grupos)
+            {
+                $certificado = $certificado_grupos;
+
+            }
+            else {
+                
+                //consultamos el certificado por empresa     'entidadId' => 0
+                $certificado_empresas = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $empresa_id,
+                                                                                                                'tipoCertificado' => $tipo_certificado['empresa']));
+                if ($certificado_empresas)
+                {
+                    $certificado = $certificado_empresas;
+
+                }
+
+            }
+
+        }
+
+        return $certificado;
+
+    }
+
+    // Retorna 1 si dentro de la estructura de la página existe alguna evaluación, sino retorna 0
+    public function hasTest($pagina_sesion)
+    {
+
+        $r = 0;
+
+        if ($pagina_sesion['tiene_evaluacion'])
+        {
+            $r = 1;
+        }
+        else {
+            if (count($pagina_sesion['subpaginas']))
+            {
+                foreach ($pagina_sesion['subpaginas'] as $subpagina_sesion)
+                {
+                    $r = $this->hasTest($subpagina_sesion);
+                    if ($r == 1)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $r;
+
+    }
 
 }

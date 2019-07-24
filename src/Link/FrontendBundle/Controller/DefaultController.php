@@ -34,13 +34,17 @@ class DefaultController extends Controller
 
         // buscando las últimas 3 interacciones del usuario donde la página no esté completada
         $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
-                                    JOIN pl.pagina p  
+                                    JOIN pl.pagina p 
+                                    JOIN LinkComunBundle:CertiPaginaEmpresa pe 
                                     WHERE pl.usuario = :usuario_id
                                         AND pl.estatusPagina != :completada
-                                        AND p.pagina IS NULL
+                                        AND p.pagina IS NULL 
+                                        AND pe.pagina = p.id 
+                                        AND pe.activo = :activo 
                                     ORDER BY pl.id DESC')
                     ->setParameters(array('usuario_id' => $session->get('usuario')['id'],
-                                          'completada' => $yml['parameters']['estatus_pagina']['completada']))
+                                          'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                          'activo' => true))
                     ->setMaxResults(3);
         $actividadreciente_padre = $query->getResult();
 
@@ -116,7 +120,7 @@ class DefaultController extends Controller
                     
                     // buscando registros de la pagina para validar si esta en evaluación
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
-                                                                                                                        'pagina' => $padre_id));
+                                                                                                                         'pagina' => $padre_id));
                     if ($pagina_log && $pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
                     {
                         $avanzar = 2;
@@ -131,7 +135,7 @@ class DefaultController extends Controller
 
                 }
 
-                $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                $porcentaje_finalizacion = $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
                 if ($link_enabled)
                 {
                     if ($porcentaje_finalizacion >= 70)
@@ -166,7 +170,8 @@ class DefaultController extends Controller
                                               'avanzar' => $avanzar,
                                               'evaluacion_pagina' => $evaluacion_pagina,
                                               'evaluacion_programa' => $evaluacion_programa,
-                                              'link_enabled' => $link_enabled);
+                                              'link_enabled' => $link_enabled,
+                                              'porcentaje_finalizacion' => $porcentaje_finalizacion);
 
             }
         
@@ -174,6 +179,8 @@ class DefaultController extends Controller
         else {
             $reciente = 0;
         }
+
+        //return new Response(var_dump($actividad_reciente));
         
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
@@ -235,6 +242,13 @@ class DefaultController extends Controller
 
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
+
+                    $certificado = $f->getCertificado($session->get('empresa')['id'], $yml['parameters']['tipo_certificado'], $grupo->getPagina()->getId());
+                    $tiene_certificado = $certificado ? 1 : 0;
+                    $ver_certificado = 0;
+                    $tiene_notas = $f->hasTest($session->get('paginas')[$grupo->getPagina()->getId()]);
+                    $ver_notas = 0;
+
                     if ($pagina_log)
                     {
                         if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
@@ -248,6 +262,8 @@ class DefaultController extends Controller
                                 // aprobado y sin poder ver solo descargar notas y certificados
                                 $continuar = 3;
                             }
+                            $ver_certificado = $tiene_certificado ? 1 : 0;
+                            $ver_notas = $tiene_notas ? 1 : 0;
                         }
                         else {
                            // cursando actualmente el programa - 1 = continuar, 4 = vencido y sin haber finalizado
@@ -259,7 +275,7 @@ class DefaultController extends Controller
                         $continuar = $link_enabled ? 0 : 4;
                     }
 
-                    $porcentaje_finalizacion = $f->timeAgoPorcentaje($pagina_empresa->getFechaInicio()->format("Y/m/d"), $pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                    $porcentaje_finalizacion = $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
                     if ($link_enabled)
                     {
                         if ($porcentaje_finalizacion >= 70)
@@ -292,7 +308,11 @@ class DefaultController extends Controller
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
-                                       'link_enabled' => $link_enabled);
+                                       'link_enabled' => $link_enabled,
+                                       'tiene_certificado' => $tiene_certificado,
+                                       'ver_certificado' => $ver_certificado,
+                                       'tiene_notas' => $tiene_notas,
+                                       'ver_notas' => $ver_notas);
 
                 }
 
