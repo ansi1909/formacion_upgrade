@@ -58,6 +58,7 @@ parameters:
         aporte_muro: 8
     tipo_correo:
         notificacion_programada: 1
+        espacio_colaborativo: 2
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2

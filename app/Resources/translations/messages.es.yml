@@ -167,7 +167,7 @@ Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
-Correo secundario: Correo Secundario
+Correo secundario: Correo secundario
 Creado el: Creado el
 Crear evento: Crear evento
 Crear nuevo tema: Crear nuevo tema
@@ -196,7 +196,7 @@ de la evaluación: de la evaluación
 de un total de: de un total de
 Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe escribir su respuesta: Debe escribir su respuesta
-Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
+Debes ingresar el correo electrónico: Debes ingresar el correo electrónico
 Debe seleccionar al menos un programa: Debe seleccionar al menos un programa
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar el grupo: Debe seleccionar el grupo
@@ -259,10 +259,10 @@ El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser m�
 El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
 El correo es requerido: El correo es requerido
-El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
+El correo corporativo tiene un formato inválido: El correo corporativo tiene un formato inválido
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.
-El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
+El correo personal tiene un formato inválido: El correo personal tiene un formato inválido
 El Encabezado es requerido.: El Encabezado es requerido.
 El Encabezado debe ser mínimo de 3 caracteres.: El Encabezado debe ser mínimo de 3 caracteres.
 El enlace de la encuesta no es un válido URL: El enlace de la encuesta no es un válido URL
@@ -389,6 +389,7 @@ Estatus de las sub-paginas: Estatus de las sub-paginas
 Estatus de los participantes de la empresa: Estatus de los participantes de la empresa
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
+Este correo no puede ser igual al corporativo: Este correo no puede ser igual al corporativo
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.
@@ -420,7 +421,7 @@ Fecha inicio: Fecha inicio
 Fecha de creación: Fecha de creación
 Fecha de difusión: Fecha de difusión
 Fecha de nacimiento: Fecha de nacimiento
-Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
+Fecha de nacimiento es requerida: Fecha de nacimiento es requerida
 Fecha de Publicación: Fecha de Publicación
 Fecha de registro: Fecha de registro
 Fecha de Vencimiento: Fecha de Vencimiento
@@ -668,7 +669,7 @@ Nombre: Nombre
 Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
-Nombre del participante: Nombre del partcipante
+Nombre del participante: Nombre del participante
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Nota: Nota
 Notas: Notas
