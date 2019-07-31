@@ -265,6 +265,8 @@ class Functions
     public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje, $background, $logo, $link_plataforma)
     {
 
+        $em = $this->em;
+
         foreach ($tutores as $tutor) 
         {
 
@@ -276,7 +278,7 @@ class Functions
                 if ($correo) 
                 {
                     
-                    $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.$tipoMensaje.' lo siguiente: ';
+                    $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.mb_strtolower($tipoMensaje, 'UTF-8').' lo siguiente: ';
 
                     $parametros_correo = ['twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
                                           'datos' => ['leccion' => $pagina->getNombre(),
@@ -298,12 +300,28 @@ class Functions
                                             'destinatario' => $correo
                             			 ];
 
-                    $correo = $this->sendEmail($parametros_correo);
-                    	//crea la notificacion para el usuario cuando el usuario que publica 
-               	
-               	$descripcion = $this->tipoDescripcion($tipoMensaje, $muro->getUsuario(), $pagina, $parametros_correo['datos']['usuarioPadre']);
-               	$tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
-               	$this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
+                    $ok = $this->sendEmail($parametros_correo);
+
+                    if ($ok)
+                    {
+
+                        // Nuevo registro en la tabla de admin_correo
+                        $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['muro']);
+                        $email = new AdminCorreo();
+                        $email->setTipoCorreo($tipo_correo);
+                        $email->setEntidadId($muro->getId());
+                        $email->setUsuario($tutor);
+                        $email->setCorreo($correo);
+                        $email->setFecha(new \DateTime('now'));
+                        $em->persist($email);
+                        $em->flush();
+                            
+                        //crea la notificacion para el usuario cuando el usuario que publica
+                        $descripcion = $this->tipoDescripcion($tipoMensaje, $muro->getUsuario(), $pagina, $parametros_correo['datos']['usuarioPadre']);
+                        $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+                        $this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
+
+                    }
 
                 }
 
