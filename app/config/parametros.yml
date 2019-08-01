@@ -46,6 +46,7 @@ parameters:
         no_ingresado: 5
         no_ingresado_programa: 6
         aprobados: 7
+        en_curso: 8
     tipo_alarma:
         respuesta_muro: 1
         espacio_colaborativo: 2
@@ -55,6 +56,10 @@ parameters:
         novedad : 6
         biblioteca : 7
         aporte_muro: 8
+    tipo_correo:
+        notificacion_programada: 1
+        espacio_colaborativo: 2
+        muro: 3
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2
@@ -74,10 +79,10 @@ parameters:
     notificacion_programada:
         bienvenida: 1
     correo_recuperacion:
-        asunto: 'Formación2.0 - Recuperación de usuario y clave.'
+        asunto: 'Formación Smart - Recuperación de usuario y clave.'
         remitente: 'soporte@formacion2puntocero.com'
     correo_soporte:
-        asunto: 'Formación2.0 - Solicitud de soporte virtual. '
+        asunto: 'Formación Smart - Solicitud de soporte virtual. '
         remitente: 'soporte@formacion2puntocero.com'
         destinatario: 'soporte@formacion2puntocero.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
@@ -94,3 +99,4 @@ parameters:
     secret: 315e95c941de6274d88f8529c9adf0a2c2b6613b
     search_locale: 0
     mailer_user: tutorvirtual@formacion2puntocero.com
+    servidor_mantenimiento: 0

@@ -219,7 +219,7 @@ class DefaultController extends Controller
                         <th class="hd__title">'.$this->get('translator')->trans('Fecha Fin').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios no iniciados').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios cursando').'</th>
-                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminado').'</th>
+                        <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios culminados').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios activos').'</th>
                         <th class="hd__title text-center">'.$this->get('translator')->trans('Usuarios registrados').'</th>
                     </tr>
@@ -402,14 +402,17 @@ class DefaultController extends Controller
         $size = $request->request->get('size');
 
         $nombre = $nombre.'.png';
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
 
-        \PHPQRCode\QRcode::png($contenido, "../qr/".$nombre, 'H', $size, 4);
+        \PHPQRCode\QRcode::png($contenido, $dir_uploads."recursos/qr/".$nombre, 'H', $size, 4);
 
-        $ruta ='<img src="/formacion2.0/qr/'.$nombre.'">';
+        $ruta ='<img src="'.$uploads.'recursos/qr/'.$nombre.'">';
         
         $return = array('ruta' =>$ruta);
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
+        
     }
 
     public function reordenarAsignacionAction($empresa_id, Request $request)

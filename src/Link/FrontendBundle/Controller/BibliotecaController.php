@@ -106,7 +106,7 @@ class BibliotecaController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $biblioteca = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNoticia')->find($biblioteca_id);
-        $anuncios=array();
+        $anuncios = array();
         $hoy = new \DateTime();
         $now = strtotime($hoy->format('d-m-Y'));
         $videos = array();
@@ -114,16 +114,19 @@ class BibliotecaController extends Controller
         $pdfs = array();
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
-        if ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['video']) {
+        if ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['video']) 
+        {
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.tipoBiblioteca = :biblioteca
                                        AND n.tipoNoticia = :noticia_id
                                        AND n.id != :id
-                                       AND n.pdf IS NOT NULL')
+                                       AND n.pdf IS NOT NULL 
+                                       AND n.empresa = :empresa_id')
                         ->setMaxResults(3)
-                        ->setParameters(array('biblioteca'=> $yml['parameters']['tipo_biblioteca']['video'],
-                                              'noticia_id'=> $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
-                                              'id'=> $biblioteca_id));
+                        ->setParameters(array('biblioteca' => $yml['parameters']['tipo_biblioteca']['video'],
+                                              'noticia_id' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
+                                              'id' => $biblioteca_id,
+                                              'empresa_id' => $biblioteca->getEmpresa()->getId()));
             $anuncios = $query->getResult();
 
             foreach($anuncios as $anuncio){
@@ -131,23 +134,27 @@ class BibliotecaController extends Controller
                 $fecha_f = strtotime($anuncio->getFechaVencimiento()->format('d-m-Y'));
                 if ($now >= $fecha_i && $now < $fecha_f) 
                 {
-                    $videos[] =array('id'=>$anuncio->getId(),
-                                     'titulo'=>$anuncio->getTitulo(),
-                                     'tipo'=>$anuncio->getTipoBiblioteca()->getNombre(),
-                                     'tid'=>$anuncio->getTipoBiblioteca()->getId());
+                    $videos[] = array('id' => $anuncio->getId(),
+                                      'titulo' => $anuncio->getTitulo(),
+                                      'tipo' => $anuncio->getTipoBiblioteca()->getNombre(),
+                                      'tid' => $anuncio->getTipoBiblioteca()->getId());
                 }
             }
 
-        }elseif ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['podcast']) {
+        }
+        elseif ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['podcast']) 
+        {
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.tipoBiblioteca = :biblioteca
                                        AND n.tipoNoticia = :noticia_id
                                        AND n.id != :id
-                                       AND n.pdf IS NOT NULL')
+                                       AND n.pdf IS NOT NULL 
+                                       AND n.empresa = :empresa_id')
                         ->setMaxResults(3)
-                        ->setParameters(array('biblioteca'=> $yml['parameters']['tipo_biblioteca']['podcast'],
-                                              'noticia_id'=> $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
-                                              'id'=> $biblioteca_id));
+                        ->setParameters(array('biblioteca' => $yml['parameters']['tipo_biblioteca']['podcast'],
+                                              'noticia_id' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
+                                              'id' => $biblioteca_id,
+                                              'empresa_id' => $biblioteca->getEmpresa()->getId()));
             $anuncios = $query->getResult();
 
             foreach($anuncios as $anuncio){
@@ -155,22 +162,26 @@ class BibliotecaController extends Controller
                 $fecha_f = strtotime($anuncio->getFechaVencimiento()->format('d-m-Y'));
                 if ($now >= $fecha_i && $now < $fecha_f) 
                 {
-                    $audios[] =array('id'=>$anuncio->getId(),
-                                     'titulo'=>$anuncio->getTitulo(),
-                                     'tipo'=>$anuncio->getTipoBiblioteca()->getNombre(),
-                                     'tid'=>$anuncio->getTipoBiblioteca()->getId());
+                    $audios[] =array('id' => $anuncio->getId(),
+                                     'titulo' => $anuncio->getTitulo(),
+                                     'tipo' => $anuncio->getTipoBiblioteca()->getNombre(),
+                                     'tid' => $anuncio->getTipoBiblioteca()->getId());
                 }
             }
-        }elseif ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['articulo'] || $biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['libro']) {
+        }
+        elseif ($biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['articulo'] || $biblioteca->getTipoBiblioteca()->getId() == $yml['parameters']['tipo_biblioteca']['libro']) 
+        {
             $query = $em->createQuery('SELECT n FROM LinkComunBundle:AdminNoticia n
                                        WHERE n.tipoBiblioteca IN (:biblioteca)
                                        AND n.tipoNoticia = :noticia_id
                                        AND n.id != :id
-                                       AND n.pdf IS NOT NULL')
+                                       AND n.pdf IS NOT NULL 
+                                       AND n.empresa = :empresa_id')
                         ->setMaxResults(3)
-                        ->setParameters(array('biblioteca'=> array($yml['parameters']['tipo_biblioteca']['articulo'],$yml['parameters']['tipo_biblioteca']['libro']),
-                                              'noticia_id'=> $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
-                                              'id'=> $biblioteca_id));
+                        ->setParameters(array('biblioteca' => array($yml['parameters']['tipo_biblioteca']['articulo'],$yml['parameters']['tipo_biblioteca']['libro']),
+                                              'noticia_id' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
+                                              'id' => $biblioteca_id,
+                                              'empresa_id' => $biblioteca->getEmpresa()->getId()));
             $anuncios = $query->getResult();
 
             foreach($anuncios as $anuncio){
@@ -178,10 +189,10 @@ class BibliotecaController extends Controller
                 $fecha_f = strtotime($anuncio->getFechaVencimiento()->format('d-m-Y'));
                 if ($now >= $fecha_i && $now < $fecha_f) 
                 {
-                    $pdfs[] =array('id'=>$anuncio->getId(),
-                                     'titulo'=>$anuncio->getTitulo(),
-                                     'tipo'=>$anuncio->getTipoBiblioteca()->getNombre(),
-                                     'tid'=>$anuncio->getTipoBiblioteca()->getId());
+                    $pdfs[] =array('id' => $anuncio->getId(),
+                                     'titulo' => $anuncio->getTitulo(),
+                                     'tipo' => $anuncio->getTipoBiblioteca()->getNombre(),
+                                     'tid' => $anuncio->getTipoBiblioteca()->getId());
                 }
             }
         }

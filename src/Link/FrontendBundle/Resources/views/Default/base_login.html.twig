@@ -6,31 +6,40 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400,400i,600,600i,700|Roboto:300,400,500,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <title>{{ empresa.titulo != '' ? empresa.titulo : 'Sistema Formación'|trans ~ '2.0' }}</title>
+        <title>{{ empresa.titulo != '' ? empresa.titulo : 'Sistema Formación Smart'|trans }}</title>
         {% set img = empresa.favicon is not null and empresa.favicon != '' ? uploads~empresa.favicon : asset('img/icono.png') %}
         <link rel="icon" type="image/x-icon" href="{{ img }}" />
         <link rel="stylesheet" href="{{ asset('front/base_styles/css/bootstrap/bootstrap.css') }}">
         {% set css = empresa.css is not null and empresa.css != '' ? asset(empresa.css) : asset('front/client_styles/formacion/css/main.css') %}
         <link rel="stylesheet" href="{{ css }}">
         <style>
+            .ancho{
+
+                height: 350px;"
+            }
             .error__style{
                 color: #fd5c63; 
                 margin: 5px 10px 0px 0px; 
                 text-align: left;
-
-
             }
-
             .success__style{
                 color: #49A12F; 
                 margin: 5px 10px 0px 0px; 
                 text-align: left;
             }
-
             #contCorreoRecu{
                 margin-left: 14px;
             }
-           
+            .field-icon{
+              float: right;
+              margin-top: -48px;
+              position: relative;
+              z-index: 2;
+            }
+            .modal-recuperacion .txt-modal-footer {
+                position: relative;
+                bottom: calc(-1 * calc(0rem + 0px));
+            }
         </style>
     </head>
     <body class="bg-white bckLogin">
@@ -44,37 +53,50 @@
                             <h3 class="sloganLogin">{{ 'Experimenta la potencialidad de la capacitación online'|trans }}. </h3>
                         </div>
                         <div class="col-12 text-center">
-                            {% set img_logo = logo_login ? uploads~logo_login : asset('front/assets/img/logo_formacion.png') %}
-                            <img class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
+                            {% set img_logo = logo_login ? uploads~logo_login : asset('front/assets/img/logo_formacion_smart.png') %}
+                            <img class="img-fluid" src="{{ img_logo }}" alt="logo formación smart">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-7 col-sm-12 col-5 col-xl-5 col-lg-5 text-center mx-auto d-lg-flex justify-content-center">
                     <div class="d-sm-block d-md-none mt-5 mb-6 imgLogin">
-                        <img width="65%" class="img-fluid" src="{{ img_logo }}" alt="logo formación 2.0">
+                        <img width="65%" class="img-fluid" src="{{ img_logo }}" alt="logo formación smart">
                     </div>
                     <div class="col-12 mt-12v pnlogin">
                         <h3 class="title-grey titleLogin">{{ 'Iniciar Sesión'|trans }}</h3>
                         <p class="mb-4 txtLogin">{{ 'Por favor, ingresa tu usuario y contraseña'|trans }}</p>
-                        <form id="form_inicio" name="form_inicio" action="{{ path('_login', { 'empresa_id': empresa.id }) }}" method="POST">
+                        <form id="form_inicio" name="form_inicio" method="POST">
                             <div class="col-lg-8 col-xl-8 col-8 col-sm-12 col-md-12 mx-auto">
                                 <div class="form-group text-left userLogin">
                                     <label class="mb-2" for="usuario">{{ 'Usuario'|trans }}</label>
-                                    <input type="text" class="form-control mb-4" id="usuario" name="usuario" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
+                                    <input type="text" class="form-control mb-4" id="usuario_pre" name="usuario_pre" aria-describedby="usuarioHelp" placeholder="{{ 'Ingresa tu usuario'|trans }}">
                                 </div>
-                                <div class="form-group text-left pwdLogin">
-                                    <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
-                                    <input type="password" class="form-control mb-1" id="password" name="password" placeholder="{{ 'Contraseña'|trans }}">
-                                    <span class="error error__style">{{ error }}</span>
+                                 <div class="form-group text-left pwdLogin">
+                                     <label class="mb-2" for="password">{{ 'Contraseña'|trans }}</label>
+                                    
+                                       
+                                        <input type="password" class="form-control mb-1" id="password_pre" name="password_pre" placeholder="{{ 'Contraseña'|trans }}">
+                                        <a href="#" id="check_mostrar" class="field-icon" style="border:solid 2px #000000;height: 44px;border-top-right-radius: 7px;border-bottom-right-radius: 7px;border-color:#80ccff;">
+                                         <i class="material-icons" style="margin-top: 7px;">visibility</i>
+                                        </a>
+                                  
+                                        <span class="error error__style">{{ error }}</span>
+                                    
                                 </div>
+                               
                                 <div class="wrap-recordar-check ml-1 mb-5 d-flex align-items-center justify-content-start checkLogin">
                                     <input type="checkbox" id="check_recordar" class="mr-2">
                                     <label class="text-sm py-0 my-0" for="check_recordar">{{ 'Recordar mi contraseña'|trans }}</label>
                                     <input type="hidden" id="recordar_datos" name="recordar_datos" value="0">
                                 </div>
+
                                 <button type="submit" class="btn btn-primary mb-5 btnLogin" id="entrar">{{ 'Entrar'|trans }}</button>
                             </div>
-                        </form>                      
+                        </form>
+                        <form id="form-send" action="{{ path('_login', { 'empresa_id': empresa.id }) }}" method="POST">
+                            <input type="hidden" id="usuario" name="usuario" value="">
+                            <input type="hidden" id="password" name="password" value="">
+                        </form>
                         <div class="row">
                             <div class="col-12 mb-3 text-center recupLogin">
                                 <a href="#" class="links" data-toggle="modal" data-target="#modal1">{{ '¿Olvidaste tu contraseña?'|trans }}</a>
@@ -85,7 +107,6 @@
             </div>
         </div>
          
-
         {# Modal #}
         <div class="modal modal-recuperacion" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="container-fluid">
@@ -144,11 +165,50 @@
                 </div>
             </div>
         </div>
-
+		
+		 <div class="modal modal-recuperacion ancho" id="modalExplorador" tabindex="-1" role="dialog"  aria-hidden="true" >
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 text-right offset-9">
+                        <a class="close btn_close_modal" data-dismiss="modal" aria-label="Close">
+                            <span class="material-icons ic-close-white" aria-hidden="true">close</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-6 justify-content-center align-items-center">
+                    <div class="col-10 col-md-10 col-sm-12 col-xs-12 col-lg-10 col-xl-10 text-center">
+                        <h4 class="titulo">{{ 'Notificación'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center align-items-center">
+                    <div class="col-12 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
+                        <p class="txt-modal">
+                            {{ 'Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma'|trans }}. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
         <script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('jq/jquery.safeform.js') }}"></script>
         <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
         <script type="text/javascript">
+            is_chrome();
+            $('#check_mostrar').click(function(event)
+            {
+                 event.preventDefault();
+                 var check= document.getElementById('password');
+                 if(check.type=="password")
+                 {
+                    check.type="text";
+                 }
+                 else
+                {
+                    check.type="password";
+                }
+            });
 
             $("#form_inicio").validate({
                 rules: {
@@ -178,17 +238,45 @@
                
             });
 
-            $('#entrar').click(function()
+            /*$('#entrar').click(function()
             {
                 var valid = $('#form_inicio').valid();
                 if(!valid)
                 {
                     notify($('#div-error').html());
-                }else
-                {
+                }
+                else {
                     $('#entrar').hide();
                     $('.error').hide();
                     $('#form_inicio').submit();
+                }
+            });*/
+
+            $('#entrar').click(function(){
+                $('#form_inicio').submit();
+                return false;
+            });
+
+            $('#form_inicio').submit(function(e) {
+                e.preventDefault();
+            });
+
+            $('#form_inicio').safeform({
+                submit: function(e) {
+                    if ($("#form_inicio").valid())
+                    {
+                        $('#entrar').hide();
+                        $('.error').hide();
+                        $('#form_inicio').safeform('complete');
+                        $('#usuario').val($('#usuario_pre').val());
+                        $('#password').val($('#password_pre').val());
+                        $('#form-send').submit();
+                    }
+                    else {
+                        notify($('#div-error').html());
+                        $('#form_inicio').safeform('complete');
+                        return false; // revent real submit
+                    }
                 }
             });
 
@@ -196,11 +284,11 @@
             $('.aviso_ajax').html('');
 
             $('#correo').click(function()
-                {
-                    $('.aviso_ajax').html('');
-                    $('.aviso_ajax').removeClass('error__style');
-                    $('.aviso_ajax').hide();
-                });
+            {
+                $('.aviso_ajax').html('');
+                $('.aviso_ajax').removeClass('error__style');
+                $('.aviso_ajax').hide();
+            });
 
             $('#recuperar_clave').click(function()
             {
@@ -229,8 +317,6 @@
                 $('.aviso_ajax').hide();
                 $('#recuperar_clave').show();
             });
-
-
 
             function recuperar()
             {
@@ -265,18 +351,13 @@
                                     $('.aviso_ajax').removeClass('success__style');                                
                                     $('#recuperar_clave').show();
                                 }, 10000); // 10 segundos
-                            }else
-                            {
+                            }
+                            else {
                                 $('.aviso_ajax').addClass('error__style');
                                 $('.aviso_ajax').show();
                                 $('.aviso_ajax').html(data.error);
                                 $('#recuperar_clave').show();
                                 $('#correo').val('');
-                                // setTimeout(function(){
-                                //     $('.aviso_ajax').hide();
-                                //     $('.aviso_ajax').html('');
-                                // }, 3000); // 3 segundos 
-
                             }
 
                         },
@@ -288,11 +369,24 @@
                             $('.aviso_ajax').addClass('error__style');
                             $('.aviso_ajax').html("{{ 'El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema'|trans }}!");
                             $('.aviso_ajax').show();
-                           
                         }
                     });
-                }else{
+                }
+                else {
                     $('#correo').val('');
+                }
+            }
+
+            function is_chrome()
+            {
+                var googleChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1; //!!window.chrome && !!window.chrome.webstore;
+                var firefox = typeof InstallTrigger !== 'undefined';
+                var isIE = /*@cc_on!@*/false || !!document.documentMode;
+                var edge = !isIE && !!window.StyleMedia;
+                var safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+                if (!googleChrome && !firefox && !edge && !safari) 
+                {
+                    $('#modalExplorador').modal('show');//desplegar modal de notificacion
                 }
             }
         </script>

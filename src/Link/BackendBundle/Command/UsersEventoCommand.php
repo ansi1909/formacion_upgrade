@@ -33,7 +33,7 @@ class UsersEventoCommand extends ContainerAwareCommand
         $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
         $base = $yml2['parameters']['base_url'];
         $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
-        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
         $tomorrow_start = date('Y-m-d', strtotime('tomorrow')).' 00:00:00';
         $tomorrow_end = date('Y-m-d', strtotime('tomorrow')).' 23:59:59';
@@ -74,7 +74,7 @@ class UsersEventoCommand extends ContainerAwareCommand
                                                                 'background' => $background,
                                                                 'logo' => $logo,
                                                                 'link_plataforma' => $link_plataforma.$usuario->getEmpresa()->getId()),
-                                               'asunto' => 'Formación 2.0: Recordatorio de evento corporativo.',
+                                               'asunto' => 'Formación Smart: Recordatorio de evento corporativo.',
                                                'remitente' => $yml['parameters']['mailer_user'],
                                                'destinatario' => $correo_usuario);
                     $correo = $f->sendEmail($parametros_correo);

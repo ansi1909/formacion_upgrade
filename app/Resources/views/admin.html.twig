@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Backend Formación 2.0{% endblock %}</title>
+        <title>{% block title %}Backend Formación Smart{% endblock %}</title>
         {% block stylesheets %}
 
             <link rel="icon" type="image/x-icon" href="{{ asset('img/icono.png') }}" />
@@ -16,7 +16,7 @@
             
             {# Bootstrap CSS #}
             <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap4alpha/css/bootstrap.css') }}" type="text/css">
-            <link rel="stylesheet" href="{{ asset('assets/vendor/Bootstrap-selectv-12/dist/css/bootstrap-select.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-selectv-12/dist/css/bootstrap-select.css') }}">
             
             {# DataTables Responsive CSS #}
             <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/css/dataTables.bootstrap4.css') }}">
@@ -38,6 +38,13 @@
 
             <link href="{{ asset('jq/jquery-ui.css') }}" rel="stylesheet">
 
+            <style type="text/css">
+                #detailModal .modal-dialog {
+                    max-width: 1200px;
+                    margin: 30px auto;
+                }
+            </style>
+
         {% endblock %}
     </head>
     <body class="rounded">
@@ -52,13 +59,15 @@
         <input type="hidden" id="timerId" name="timerId" value="">
         <input type="hidden" id="url_logout" name="url_logout" value="{{ path('_logout', { 'ruta': '_loginAdmin' }) }}">
         <input type="hidden" id="url_qr" name="url_qr" value="{{ path('_ajaxQR') }}">
+        <input type="hidden" id="url_detail" name="url_detail" value="{{ path ('_ajaxDetalleParticipante') }}">
+        <input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">
 
         {# Cabecera del area de trabajo #}
         <header class="navbar-fixed">
             <nav class="navbar navbar-toggleable-md navbar-inverse bg-faded">
                 <div class="sidebar-left">
                     <a href="{{ path('_inicioAdmin') }}" class="navbar-brand">
-                        <img src="{{ asset('img/logo_formacion.png') }}" alt="Formación 2.0">
+                        <img src="{{ asset('img/logo_formacion_smart.png') }}" alt="Formación Smart">
                     </a>
                     <button class="btn btn-link icon-header mr-sm-2 pull-right menu-collapse"><span class="fa fa-bars"></span></button>
                 </div>
@@ -111,7 +120,7 @@
                 <div class="list-unstyled btn-group rec_user">
                     <button class="media btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="message_userpic">
-                            <img src="{{ asset('img/1034.png') }}" alt="Usuario" class="d-flex mr-3">
+                            <img src="{{ img }}" alt="Usuario" class="d-flex mr-3">
                         </span>
                         <span class="media-body info_user">
                             <span class="mt-0 mb-1 us1">{{ app.session.get('usuario').nombre }}</span>
@@ -249,6 +258,33 @@
             </div>
         </div>
 
+        <div class="modal dark_bg fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%); color: #fff;">
+                        <h5 class="modal-title" id="formModalLabel">{{ 'Detalle del participante'|trans }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ include('LinkBackendBundle:Reportes:participantDetail.html.twig') }}
+                        <div class="row" id="div-alert-detail" style="display:none;">
+                            <div class="col-sm-2">
+                                &nbsp;
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger" role="alert"> 
+                                    <strong>{{ 'Error en el servidor'|trans }}!</strong> <span id="alert-error-detail">{{ 'Ha ocurrido un error en el servidor. Contacte al administrador del sistema.'|trans }}.</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {% block javascripts %}
             {# Jquery, Tether and Bootstrap JS. #}
             <script src="{{ asset('assets/js/jquery-2.1.1.min.js') }}" type="text/javascript"></script>
@@ -272,6 +308,7 @@
 
             {# custome template js #}
             <script src="{{ asset('assets/js/adminux.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('assets/vendor/cicular_progress/circle-progress.min.js') }}" type="text/javascript"></script>
 
             {# Sweetalert JS #}
             <script src="{{ asset('assets/vendor/sweetalert/dist/sweetalert2.min.js') }}"></script>
@@ -280,6 +317,8 @@
             <script src="{{ asset('js/comun.js') }}" type="text/javascript"></script>
 
             <script src="{{ asset('jq/jquery-ui.js') }}" charset="utf-8"></script>
+
+            <script src="{{ asset('js/admin/reportes/participantDetail.js') }}" type="text/javascript"></script>
 
             <script type="text/javascript">
                 
@@ -412,6 +451,50 @@
                 function applyDataTable()
                 {
                     $('#dt, #dt2, .data_table').DataTable({
+                        responsive: false,
+                        pageLength:10,
+                        sPaginationType: "full_numbers",
+                        lengthChange: false,
+                        info: false,
+                        oLanguage: {
+                            "sProcessing":    "{{ 'Procesando'|trans }}...",
+                            "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                            "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                            "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                            "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                            "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                            "sInfoPostFix":   "",
+                            "sSearch":        "{{ 'Buscar'|trans }}:",
+                            "sUrl":           "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                            oPaginate: {
+                                sFirst: "<<",
+                                sPrevious: "<",
+                                sNext: ">", 
+                                sLast: ">>" 
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                            }
+                        }
+                    });
+                }
+
+                function applyDataTableDetail()
+                {
+
+                    var eventFired = function ( type ) {
+                        observeList();
+                    }
+
+                    $('#dt')
+                    .on( 'order.dt',  function () { eventFired( 'Order' ); } )
+                    .on( 'search.dt', function () { eventFired( 'Search' ); } )
+                    .on( 'page.dt',   function () { eventFired( 'Page' ); } )
+                    .DataTable({
                         responsive: false,
                         pageLength:10,
                         sPaginationType: "full_numbers",

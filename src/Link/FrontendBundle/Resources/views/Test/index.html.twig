@@ -10,7 +10,7 @@
             {% if app.session.started and app.session.get('empresa').titulo is defined and app.session.get('empresa').titulo != '' %}
                 {{ app.session.get('empresa').titulo }}
             {% else %}
-                {{ 'Sistema Formación'|trans }} 2.0
+                {{ 'Sistema Formación Smart'|trans }}
             {% endif %}
         </title>
         {% set img = app.session.get('empresa').favicon is defined ? app.session.get('empresa').favicon is not null and app.session.get('empresa').favicon != '' ? uploads~app.session.get('empresa').favicon : asset('img/icono.png') : asset('img/icono.png') %}
@@ -36,8 +36,17 @@
         <input type="hidden" id="pregunta_str" name="pregunta_str" value="{{ preguntas_str }}">
         <input type="hidden" id="preguntas_sin_contestar" name="preguntas_sin_contestar" value="">
         <input type="hidden" id="url_respuesta" name="url_respuesta" value="{{ path('_ajaxTestResponse') }}">
-        <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length, 'preguntas_str': preguntas_str }) }}">
-        <input type="hidden" id="url_resultados" name="url_resultados" value="{{ path('_resultadosTest', { 'programa_id': programa_id, 'prueba_log_id': prueba_log.id }) }}">
+        <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finTest', { 'programa_id': programa.id, 'prueba_log_id': prueba_log.id, 'cantidad_preguntas': preguntas|length, 'preguntas_str': preguntas_str }) }}">
+        <input type="hidden" id="url_resultados" name="url_resultados" value="{{ path('_resultadosTest', { 'programa_id': programa.id, 'prueba_log_id': prueba_log.id }) }}">
+
+        {% set categoria = prueba_log.prueba.pagina.categoria.nombre %}
+        {% if categoria == 'Materia' %}
+            {% set articulo = 'de la'|trans %}
+        {% elseif categoria == 'Lección' %}
+            {% set articulo = 'de la'|trans %}
+        {% else %}
+            {% set articulo = 'del'|trans %}
+        {% endif %}
 
         <header>
             <nav class="navbar eval_header justify-content-between py-0 fixed-top bg-white">
@@ -47,20 +56,16 @@
                     </a>
                     <span class="txt_eval_header">{{ 'Salir de la evaluación'|trans }}</span>
                 </div>
-                {% set curso = prueba_log.prueba.nombre |split('|') %}
                 <div class="navbar-brand justify-content-center align-items-center " href="#">
-                    <h2 class="titulo_eval pl-5">{{ curso[0]}}</h2>
-                    <h5 class="sub_titulo_eval pl-5">{{ 'Evaluación'|trans }}:&nbsp; {{prueba_log.prueba.pagina.categoria.nombre}}&nbsp;{{ prueba_log.prueba.pagina.nombre }}</h5>
+                    <h2 class="titulo_eval pl-5">{{ programa.categoria.nombre }}: {{ programa.nombre }}</h2>
+                    <h5 class="sub_titulo_eval pl-5">{{ 'Evaluación'|trans }} {{ articulo }} {{ categoria }}: {{ prueba_log.prueba.pagina.nombre }}</h5>
                 </div>
                 <div class="countDownHMS" id="divCountD">
                     <div class="countDownC classCountD"></div>
                 </div>
-                <!--<div class="countDown">
-                    <div class="clock"></div>
-                </div>-->
                 <a class="navbar-brand" href="#">
-                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                    {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
+                    <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
                 </a>
             </nav>
         </header>
@@ -153,7 +158,7 @@
                 </div>
                 <div class="row mt-3 align-items-center justify-content-center toHide">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <a href="{{ path('_finLecciones', { 'programa_id': programa_id, 'subpagina_id': pagina_id }) }}"><button type="button" class="btn btn-danger btn-Cs">{{ 'Salir de la evaluación'|trans }}</button></a>
+                        <a href="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': pagina_id }) }}"><button type="button" class="btn btn-danger btn-Cs">{{ 'Salir de la evaluación'|trans }}</button></a>
                     </div>
                 </div>
                 <div class="row mt-3 align-items-end justify-content-center toHide">

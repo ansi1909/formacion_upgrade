@@ -17,6 +17,7 @@ begin
         LEFT JOIN admin_sesion a ON u.id = a.usuario_id
         INNER JOIN admin_rol_usuario ru ON u.id = ru.usuario_id
         WHERE u.empresa_id = pempresa_id 
+        AND u.login NOT LIKE 'temp%'
         AND ru.rol_id = 2
         GROUP BY u.login;
    

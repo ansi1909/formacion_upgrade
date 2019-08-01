@@ -316,7 +316,7 @@ class LeccionController extends Controller
         $muro->setUsuario($usuario);
 
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
 
         if ($muro_id)
@@ -363,9 +363,7 @@ class LeccionController extends Controller
                                                             'categoria' => $categoria['categoria'],
                                                             'pagina' => $categoria['nombre'],
                                                             'empresa' => $empresa->getNombre()),
-
-                                                            
-                                           'asunto' => 'Formación 2.0: '.$descripcion,
+                                           'asunto' => 'Formación Smart: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
                 $correo = $f->sendEmail($parametros_correo);
@@ -380,7 +378,7 @@ class LeccionController extends Controller
 
         /////////// Enviar notificacion al tutor o tutores de actividad en el muro ///////////
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+        $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
         $categoria = $this->obtenerProgramaCurso($pagina->getId());
         $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
@@ -466,7 +464,7 @@ class LeccionController extends Controller
                     <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
                     <form class="mt-3" method="POST">
                         <div class="form-group">
-                            <textarea class="form-control" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="340" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
+                            <textarea class="form-control" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="1000" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
                         </div>
                         <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="'.$prefix.'_button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
                     </form>

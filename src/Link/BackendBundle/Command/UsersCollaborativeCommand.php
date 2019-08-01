@@ -34,7 +34,7 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
         $translator = $this->getContainer()->get('translator');
         $base = $yml2['parameters']['base_url'];
         $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
-        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
 
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
@@ -87,27 +87,80 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
                 }
             }
 
+            // Solo se enviarán 100 notificaciones por corrida
+            $j = 0;
+
             foreach ($usuarios_arr as $usuario_nivel)
             {
 
-                $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'], $descripcion, $usuario_nivel, $foro->getId());
+                if ($j == 100)
+                {
+                    // Cantidad tope de correos en una corrida
+                    break;
+                }
+
+                // Validar que no se haya creado la alarma a este usuario
+                $alarma = $em->getRepository('LinkComunBundle:AdminAlarma')->findOneBy(array('tipoAlarma' => $yml['parameters']['tipo_alarma']['espacio_colaborativo'],
+                                                                                             'usuario' => $usuario_nivel->getId(),
+                                                                                             'entidadId' => $foro->getId()));
+                if (!$alarma)
+                {
+                    $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'], $descripcion, $usuario_nivel, $foro->getId());
+                }
 
                 $correo_participante = (!$usuario_nivel->getCorreoPersonal() || $usuario_nivel->getCorreoPersonal() == '') ? (!$usuario_nivel->getCorreoCorporativo() || $usuario_nivel->getCorreoCorporativo() == '') ? 0 : $usuario_nivel->getCorreoCorporativo() : $usuario_nivel->getCorreoPersonal();
+
                 if ($correo_participante)
                 {
-                    $ruta = $this->getContainer()->get('router')->generate('_detalleColaborativo', array('foro_id' => $foro->getId()));
-                    $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativoParticipantes.html.twig',
-                                               'datos' => array('descripcion' => $descripcion,
-                                                                'href' => $base.$ruta,
-                                                                'background' => $background,
-                                                                'logo' => $logo,
-                                                                'link_plataforma' => $link_plataforma.$usuario_nivel->getEmpresa()->getId()),
-                                               'asunto' => 'Formación 2.0: '.$translator->trans('Nuevo espacio colaborativo').'.',
-                                               'remitente' => $yml['parameters']['mailer_user'],
-                                               'destinatario' => $correo_participante);
-                    $correo = $f->sendEmail($parametros_correo);
-                    $output->writeln(var_dump($parametros_correo));
-                    $output->writeln(var_dump($correo));
+
+                    // Validar que no se haya enviado el correo a este destinatario
+                    $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['espacio_colaborativo'],
+                                                                                                    'entidadId' => $foro->getId(),
+                                                                                                    'usuario' => $usuario_nivel->getId(),
+                                                                                                    'correo' => $correo_participante));
+
+                    if (!$correo_bd)
+                    {
+
+                        $ruta = $this->getContainer()->get('router')->generate('_detalleColaborativo', array('foro_id' => $foro->getId()));
+                        $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativoParticipantes.html.twig',
+                                                   'datos' => array('descripcion' => $descripcion,
+                                                                    'href' => $base.$ruta,
+                                                                    'background' => $background,
+                                                                    'logo' => $logo,
+                                                                    'link_plataforma' => $link_plataforma.$usuario_nivel->getEmpresa()->getId()),
+                                                   'asunto' => 'Formación Smart: '.$translator->trans('Nuevo espacio colaborativo').'.',
+                                                   'remitente' => $yml['parameters']['mailer_user'],
+                                                   'destinatario' => $correo_participante);
+                        $correo = $f->sendEmail($parametros_correo);
+                        $output->writeln(var_dump($parametros_correo));
+                        $output->writeln(var_dump($correo));
+
+                        if ($correo)
+                        {
+
+                            $j++;
+
+                            // Registro del correo recien enviado
+                            $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['espacio_colaborativo']);
+                            $email = new AdminCorreo();
+                            $email->setTipoCorreo($tipo_correo);
+                            $email->setEntidadId($foro->getId());
+                            $email->setUsuario($usuario_nivel);
+                            $email->setCorreo($correo_participante);
+                            $email->setFecha(new \DateTime('now'));
+                            $em->persist($email);
+                            $em->flush();
+                            
+                            // ERROR LOG
+                            //error_log($j.' .----------------------------------------------------------------------------------------------');
+                            //error_log($reg);
+                            //error_log('Correo enviado a '.$correo);
+
+                        }
+
+                    }
+
                 }
 
             }

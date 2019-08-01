@@ -22,7 +22,7 @@
 			thumbnails/					# Aquí se almacenan los archivos para los thumbnails de las plantillas
 										# 	OJO: Podemos importar las imágenes iniciales a este directorio desde docs/prototipos/front/thumbnails
 			decorate_certificado.png	# Tomar la imagen de web/front/assets/img/
-			logo_formacion.png			# Tomar la imagen de web/img/
+			logo_formacion_smart.png	# Tomar la imagen de web/img/
 
 4. Las constantes globales para twig están seteadas en app/config/config.yml:
 	minlenght_bienvenida: Cantidad mínima de caracteres que debe tener el mensaje de bienvenida
@@ -53,12 +53,14 @@
 	- listas.sql
 	- data_prueba.sql
 	- funciones/fnavance_programa.sql
+	- funciones/fncantidad_programados.sql
 	- funciones/fncarga_participantes.sql
 	- funciones/fncerrar_sesiones.sql
 	- funciones/fnconexion_usuario.sql
 	- funciones/fnevaluaciones_modulo.sql
 	- funciones/fnhoras_conexion.sql
 	- funciones/fnimportar_participantes.sql
+	- funciones/fningresos_sistema.sql
 	- funciones/fninteraccion_espacio_colaborativo.sql
 	- funciones/fninteraccion_muro.sql
 	- funciones/fnlistado_participantes.sql

@@ -1,6 +1,17 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .disabled {
+            cursor: default;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
+
+<input type="hidden" id="url_servicio" name="url_servicio" value="{{ path('_ajaxServicioInteractivo') }}">
 
 <div id="message" class="for-message well-message container py-6 px-6 mb-4 bckgd">
     <i id="equis" class="material-icons mr-2" >close</i>
@@ -122,27 +133,37 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                    {% if pagina.continuar in [2, 3] %}
-                                        <a id="iconos"></a>
-                                        <div class="card-footer d-flex justify-content-around">
-                                            <a href="{{ path('_generarCertificado', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
+                                    <a id="iconos"></a>
+                                    <div class="card-footer d-flex justify-content-around">
+                                        {% if pagina.tiene_certificado == 1 %}
+                                            {% if pagina.ver_certificado == 1 %}
+                                                <a href="{{ path('_generarCertificado', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-certificado">
+                                            {% else %}
+                                                <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-certificado disabled">
+                                            {% endif %}
                                                 <i class="material-icons d-block">aspect_ratio</i>
                                                 <small class="d-block">{{ 'Certificado'|trans }}</small>
                                             </a>
-                                            <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
+                                        {% endif %}
+                                        {% if pagina.tiene_notas == 1 %}
+                                            {% if pagina.ver_notas == 1 %}
+                                                <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
+                                            {% else %}
+                                                <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-notas disabled">
+                                            {% endif %}
                                                 <i class="material-icons d-block">content_copy</i>
                                                 <small class=" d-block">{{ 'Notas'|trans }}</small>
                                             </a>
-                                            {% if pagina.continuar == 2 %}
-                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
-                                            {% else %}
-                                                <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-ver disabled">
-                                            {% endif %}
-                                                <i class="material-icons d-block">visibility</i>
-                                                <small class=" d-block">{{ 'Ver'|trans }}</small>
-                                            </a>
-                                        </div>
-                                    {% endif %}
+                                        {% endif %}
+                                        {% if pagina.continuar in [0,1,2] %}
+                                            <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
+                                        {% else %}
+                                            <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-ver disabled">
+                                        {% endif %}
+                                            <i class="material-icons d-block">visibility</i>
+                                            <small class=" d-block">{{ 'Ver'|trans }}</small>
+                                        </a>
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -160,6 +181,26 @@
     <script>
         $(document).ready(function(){
             $('#dashBoard').addClass("active");
+
+
+            // OJO: BORRAR
+            $('#message').click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: $('#url_servicio').val(),
+                    async: true,
+                    data: { codigo: '125874128888885', visto: 1 },
+                    dataType: "json",
+                    success: function(data) {
+                        console.log('OK: '+data.ok);
+                        console.log('MSG: '+data.msg);
+                        //clearTimeout( timerId );
+                    },
+                    error: function(){
+                        console.log('Error invocando el servicio');
+                    }
+                });
+            });
         });
     </script>
 {% endblock %}

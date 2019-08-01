@@ -55,6 +55,7 @@ class ReportesJEController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fun = $this->get('funciones');
         
         $empresa_id = $request->request->get('empresa_id');
         $desdef = $request->request->get('desde');
@@ -116,8 +117,10 @@ class ReportesJEController extends Controller
             }
 
             // Crea el writer
+            $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+            $hoy = date('d-m-Y');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/horasConexion_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -175,6 +178,7 @@ class ReportesJEController extends Controller
         
         $rs = $this->get('reportes');
         $session = new Session();
+        $fun = $this->get('funciones');
         
         $reporte = $rs->horasConexion($empresa_id, $desde, $hasta);
         $conexiones = $reporte['conexiones'];
@@ -203,7 +207,7 @@ class ReportesJEController extends Controller
 
         $grafica = $this->renderView('LinkBackendBundle:Reportes:horasConexionGrafica.html.twig', array('src' => $src));
 
-        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
+        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
         $header_footer = '<page_header> 
                                  <img src="'.$logo.'" width="200" height="50">
                             </page_header>
@@ -219,9 +223,10 @@ class ReportesJEController extends Controller
         $pdf->pdf->SetDisplayMode('fullpage');
         $pdf->writeHtml('<page>'.$header_footer.$tabla.'</page>');
         $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
+        $empresaName = $fun->eliminarAcentos($empresa->getNombre());
 
         //Generamos el PDF
-        $pdf->output('horas_conexion.pdf');
+        $pdf->output('horasConexion_'.$empresaName.'.pdf');
 
     }
 
@@ -374,13 +379,18 @@ class ReportesJEController extends Controller
         }
 
         // Crea el writer
+        $empresaName = $fn->eliminarAcentos($empresa->getNombre());
+        $paginaName =  $fn->eliminarAcentos($pagina->getnombre());
+        $longitud = strlen($empresaName);
+        $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
+        $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/evaluacionesModulo'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'evaluacionesModulo'.$session->get('sesion_id').'.xls';
+        $document_name = 'evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         
@@ -388,7 +398,7 @@ class ReportesJEController extends Controller
                         'document_name' => $document_name,
                         'document_size' => $document_size);
 
-        $return = json_encode($return);
+        $return =  json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
     }
@@ -434,7 +444,7 @@ class ReportesJEController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
-        
+
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desde = $request->request->get('desde');
@@ -552,6 +562,7 @@ class ReportesJEController extends Controller
         
         $rs = $this->get('reportes');
         $session = new Session();
+        $fun = $this->get('funciones');
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
@@ -592,7 +603,7 @@ class ReportesJEController extends Controller
                                                                                                           'src' => array('src3' => $src3,
                                                                                                                          'src4' => $src4)));
 
-        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion.png';
+        $logo = $this->container->getParameter('folders')['dir_project'].'web/img/logo_formacion_smart.png';
         $header_footer = '<page_header> 
                                  <img src="'.$logo.'" width="200" height="50">
                             </page_header>
@@ -610,7 +621,8 @@ class ReportesJEController extends Controller
         $pdf->writeHtml('<page pageset="old">'.$html2.'</page>');
 
         //Generamos el PDF
-        $pdf->output('resumen_registros.pdf');
+        $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+        $pdf->output('resumen_registros_'.$empresa->getNombre().'.pdf');
 
     }
 

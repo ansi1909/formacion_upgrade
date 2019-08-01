@@ -21,8 +21,8 @@
 {% block header %}
      <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <a class="navbar-brand" href="{{ path('_inicio') }}">
-            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-            <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+            {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
+            <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
         </a>
         <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
             <div class=" d-flex flex-column ">
@@ -35,7 +35,7 @@
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>{{ 'Preferencias de participante'|trans }} <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Perfil del participante'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">

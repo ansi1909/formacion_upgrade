@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var tipo_destino_id = $('#tipo_destino_id').val();
-	if (tipo_destino_id == 4)
+	if (tipo_destino_id == 3 || tipo_destino_id == 4 || tipo_destino_id == 7 || tipo_destino_id == 8)
 	{
 		observeMultiSelect();
 	}
@@ -31,7 +31,7 @@ $(document).ready(function() {
 				dataType: "json",
 				success: function(data) {
 					$('#div-entidades').html(data.html);
-					if (tipo_destino_id == 4)
+					if (tipo_destino_id == 3 || tipo_destino_id == 4 || tipo_destino_id == 7 || tipo_destino_id == 8)
 					{
 						observeMultiSelect();
 					}

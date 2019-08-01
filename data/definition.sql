@@ -359,7 +359,7 @@ tipo_biblioteca_id integer,
 CREATE TABLE certi_muro(
 -- Attributes --
 id serial,
-mensaje varchar(350),
+mensaje varchar(1100),
 pagina_id integer,
 usuario_id integer,
 muro_id integer,
@@ -434,7 +434,7 @@ notificacion_id integer,
 tipo_destino_id integer,
 entidad_id integer,
 usuario_id integer,
-fecha_difusion timestamp without time zone,
+fecha_difusion date,
 grupo_id integer,
 enviado boolean,
  PRIMARY KEY (id),
@@ -494,7 +494,7 @@ CREATE TABLE admin_faqs(
 id serial,
 tipo_pregunta_id integer,
 pregunta varchar(500),
-respuesta varchar(500),
+respuesta varchar(2000),
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_pregunta_id) REFERENCES admin_tipo_pregunta (id));
 
@@ -644,4 +644,22 @@ leido boolean,
 fecha_creacion timestamp without time zone,
  PRIMARY KEY (id),
  FOREIGN KEY (tipo_alarma_id) REFERENCES admin_tipo_alarma (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_tipo_correo(
+-- Attributes --
+id serial,
+nombre varchar(100),
+ PRIMARY KEY (id));
+
+CREATE TABLE admin_correo(
+-- Attributes --
+id serial,
+tipo_correo_id integer,
+entidad_id integer,
+usuario_id integer,
+correo varchar(100),
+fecha timestamp without time zone,
+ PRIMARY KEY (id),
+ FOREIGN KEY (tipo_correo_id) REFERENCES admin_tipo_correo (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));

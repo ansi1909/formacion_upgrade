@@ -1,3 +1,5 @@
+a continuación te presento los detalles: a continuación te presento los detalles
+A la publicación de: A la publicación de
 académicas: académicas
 Acceso: Acceso
 Acceso a la página: Acceso a la página
@@ -12,6 +14,7 @@ Activar muro: Activar muro
 Activar para ordenar la columna de manera ascendente: Activar para ordenar la columna de manera ascendente
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activar webinar: Activar webinar
+Actividad en muro: Actividad en muro
 Actividades en curso: Actividades en curso
 Actividades Recientes: Actividades Recientes
 Activo: Activo
@@ -62,8 +65,11 @@ Atrás: Atrás
 Aún no has respondido las preguntas: Aún no has respondido las preguntas
 Aún no se han creado las opciones: Aún no se han creado las opciones
 Aún no se han creado las preguntas: Aún no se han creado las preguntas
+Aún sin presentar la evaluación: Aún sin presentar la evaluación
 Aún sin publicar: Aún sin publicar
 Autor: Autor
+Avance en el módulo: Avance en el módulo
+Avance en el programa: Avance en el programa
 Avance en programas: Avance en programas
 Aviso de cierre de sesión: Aviso de cierre de sesión
 Avisos programados de: Avisos programados de
@@ -84,6 +90,7 @@ Calificación: Calificación
 Cambiar contraseña: Cambiar contraseña
 Cambiar imagen: Cambiar imagen
 Cancelar: Cancelar
+Cantidad: Cantidad
 Cantidad de conexiones: Cantidad de conexiones
 Cantidad de filas: Cantidad de filas
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
@@ -142,6 +149,7 @@ Contacte al Administrador del Sistema para mayor información: Contacte al Admin
 Constancia de Notas: Constancia de Notas
 Consultar: Consultar
 Contenido: Contenido
+Contenido del: Contenido del
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Contenido Relacionado: Contenido Relacionado
 Continuar: Continuar
@@ -149,15 +157,17 @@ Continuar al siguiente contenido: Continuar al siguiente contenido
 Continuar en la Evaluación: Continuar en la Evaluación
 Contraseña: Contraseña
 Copia: Copia
+Cordial saludo, tienes una solicitud de soporte técnico proveniente de la plataforma Formación Smart, a continuación te presento los detalles: Cordial saludo, tienes una solicitud de soporte técnico proveniente de la plataforma Formación Smart, a continuación te presento los detalles
 Correcta: Correcta
 Correo: Correo
 Correo adicional: Correo adicional
+Correo del participante: Correo del participante
 Correo electrónico: Correo electrónico
 Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
-Correo secundario: Correo Secundario
+Correo secundario: Correo secundario
 Creado el: Creado el
 Crear evento: Crear evento
 Crear nuevo tema: Crear nuevo tema
@@ -186,7 +196,8 @@ de la evaluación: de la evaluación
 de un total de: de un total de
 Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe escribir su respuesta: Debe escribir su respuesta
-Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
+Debes ingresar el correo electrónico: Debes ingresar el correo electrónico
+Debe seleccionar al menos un programa: Debe seleccionar al menos un programa
 Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
 Debe seleccionar el grupo: Debe seleccionar el grupo
 Debe seleccionar el tipo de pregunta o agregar una nueva: Debe seleccionar el tipo de pregunta o agregar una nueva
@@ -214,6 +225,7 @@ Detalle de la Biblioteca Virtual:
 Detalle de la Noticia y Novedad: Detalle de la Noticia y Novedad
 Detalles de la página: Detalles de la página
 Detalle del Certificado y Constancia: Detalle del Certificado y Constancia
+Detalle del participante: Detalle del participante
 Día/Hora: Día/Hora
 días: días
 Dimensiones recomendadas: Dimensiones recomendadas
@@ -228,6 +240,8 @@ Editar perfil: Editar perfil
 Editar tema: Editar tema
 El archivo seleccionado no se cargo correctamente.: El archivo seleccionado no se cargo correctamente.
 Elegir empresa: Elegir empresa
+Elementos seleccionados: Elementos seleccionados
+Elementos sin seleccionar: Elementos sin seleccionar
 Elija el destino de la página: Elija el destino de la página
 Eliminado: Eliminado
 Eliminar: Eliminar
@@ -245,10 +259,10 @@ El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser m�
 El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
 El correo es requerido: El correo es requerido
-El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
+El correo corporativo tiene un formato inválido: El correo corporativo tiene un formato inválido
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.
-El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
+El correo personal tiene un formato inválido: El correo personal tiene un formato inválido
 El Encabezado es requerido.: El Encabezado es requerido.
 El Encabezado debe ser mínimo de 3 caracteres.: El Encabezado debe ser mínimo de 3 caracteres.
 El enlace de la encuesta no es un válido URL: El enlace de la encuesta no es un válido URL
@@ -278,11 +292,13 @@ El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario d
 El nombre del usuario es requerido.: El nombre del usuario es requerido.
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
+El participante: El participante
 El programa es requerido: El programa es requerido
 El puntaje con que se aprueba es requerido.: El puntaje con que se aprueba es requerido.
 El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema
 El recurso es requerido: El recurso es requerido
 El rol ha sido almacenada con éxito: El rol ha sido almacenada con éxito
+El tema es requerido: El tema es requerido
 El tiempo de duración es requerido.: El tiempo de duración es requerido.
 El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión: El tiempo de inactividad dentro de la aplicación ha superado el límite máximo de conexión
 El Tipo de Certificado es requerido.: El Tipo de Certificado es requerido.
@@ -321,6 +337,7 @@ Empresas registradas: Empresas registradas
 En curso: En curso
 En evaluación: En evaluación
 En el módulo administrativo de Certificados y Constancias se puede agregar certificados: En el módulo administrativo de Certificados y Constancias se puede agregar certificados
+En estos momentos se están realizando optimizaciones en nuestros servidores: En estos momentos se están realizando optimizaciones en nuestros servidores
 en la biblioteca: en la biblioteca
 Encabezado: Encabezado
 Enlace de la encuesta: Enlace de la encuesta
@@ -338,6 +355,7 @@ Error al obtener el historial.: Error al obtener el historial.
 Error al obtener la repuesta: Error al obtener la repuesta
 Error al obtener las notificaciones programadas: Error al obtener las notificaciones programadas
 Error al obtener las páginas asignadas.: Error al obtener las páginas asignadas.
+Error al obtener los programas: Error al obtener los programas
 Error al obtener las subaplicaciones.: Error al obtener las subaplicaciones.
 Error al obtener los thumbnails: Error al obtener los thumbnails
 Error de Excepción: Error de Excepción
@@ -358,11 +376,12 @@ Esta evaluación no tiene preguntas configuradas: Esta evaluación no tiene preg
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
 Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee thumbnails en la base de datos
-¿Estás list@?: ¿Estás list@?
+¿Estás listo/a?: ¿Estás listo/a?
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
 ¿Estás Segur@ que deseas salir de la evaluación?: ¿Estás Segur@ que deseas salir de la evaluación?
 ¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?: ¿Estás Segur@ que deseas volver al contenido sin realizar la evaluación?
+Estas son tus credenciales de acceso a la plataforma: Estas son tus credenciales de acceso a la plataforma
 Estado: Estado
 Estatus: Estatus
 Estatus del programa: Estatus del programa
@@ -370,9 +389,11 @@ Estatus de las sub-paginas: Estatus de las sub-paginas
 Estatus de los participantes de la empresa: Estatus de los participantes de la empresa
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
+Este correo no puede ser igual al corporativo: Este correo no puede ser igual al corporativo
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
-Este usuario tiene una sesión activa: Este usuario tiene una sesión activa
+Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.
+Estimado: Estimado
 ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.
 Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora: Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora
 Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos: Estimado participante, si usted decide salir antes de terminar la evaluación perderá todas las respuestas que haya contestado hasta los momentos
@@ -380,11 +401,14 @@ Estos son los resultados que has obtenido: Estos son los resultados que has obte
 Estructura: Estructura
 Evaluación: Evaluación
 Evaluación activa: Evaluación activa
+Evaluación del módulo: Evaluación del módulo
 Evaluación no encontrada: Evaluación no encontrada
+Evaluaciones de las materias: Evaluaciones de las materias
 Evaluaciones por módulo: Evaluaciones por módulo
 Evento guardado: Evento guardado
 Evento no guardado: Evento no guardado
 Excelente: Excelente
+Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles: Existe actividad en uno de los muros monitoreados por ti, a continuación te presento los detalles
 Experimenta la potencialidad de la capacitación online: Experimenta la potencialidad de la capacitación online
 Extensiones aceptadas: Extensiones aceptadas
 Extensiones aceptadas para el campo PDF: Extensiones aceptadas para el campo PDF
@@ -394,9 +418,10 @@ Fecha: Fecha
 Fecha Creación: Fecha Creación
 Fecha fin: Fecha fin
 Fecha inicio: Fecha inicio
+Fecha de creación: Fecha de creación
 Fecha de difusión: Fecha de difusión
 Fecha de nacimiento: Fecha de nacimiento
-Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
+Fecha de nacimiento es requerida: Fecha de nacimiento es requerida
 Fecha de Publicación: Fecha de Publicación
 Fecha de registro: Fecha de registro
 Fecha de Vencimiento: Fecha de Vencimiento
@@ -443,11 +468,12 @@ Has aprobado con éxito la evaluación: Has aprobado con éxito la evaluación
 Has completado con éxito los contenidos: Has completado con éxito los contenidos
 Has ganado: Has ganado
 Hasta: Hasta
+Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma : Hemos detectado que estás usando un navegador no recomendado, te invitamos a usar Google Chrome, Mozilla Firefox o Microsoft Edge en sus últimas versiones para garantizar una correcta funcionalidad de la plataforma 
 Historial de programaciones de: Historial de programaciones de
 Hizo un comentario: Hizo un comentario
 Hola: Hola
-Hora inicio: Start Time
-Hora fin: End time
+Hora inicio: Hora inicio
+Hora fin: Hora fin
 Horas académicas: Horas académicas
 Horas de conexión: Horas de conexión
 Horas de conexión de la empresa: Horas de conexión de la empresa
@@ -457,6 +483,8 @@ Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
 Imagen lado: Imagen lado
+Imprimir certificado: Imprimir certificado
+Imprimir constancia de notas: Imprimir constancia de notas
 Inactivos: Inactivos
 Índice: Índice
 Ingrese un correo valido: Ingrese un correo valido
@@ -467,6 +495,7 @@ Ingrese el mensaje que desea enviar: Ingrese el mensaje que desea enviar
 Ingresa tu usuario: Ingresa tu usuario
 Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa: Ingrese el Url de acceso al sistema recibido por el usuario autorizado de su empresa
 Ingrese lo que desea buscar: Ingrese lo que desea buscar
+Ingresos al sistema: Ingresos al sistema
 Iniciado: Iniciado
 Inicia el: Inicia el
 Iniciar: Iniciar
@@ -478,8 +507,6 @@ tu usuario y clave. Ingresa tu correo.: tu usuario y clave. Ingresa tu correo.
 Interacción: Interacción
 Interacción en los muros: Interacción en los muros
 Interacción en los muros por empresa: Interacción en los muros por empresa
-Imprimir certificado: Imprimir certificado
-Imprimir constancia de notas: Imprimir constancia de notas
 Ir a detalles de la página: Ir a detalles de la página
 Ir al inicio: Ir al inicio
 Ir al listado: Ir al listado
@@ -536,7 +563,9 @@ La recuperación de tus credenciales se realizó correctamente, revisa tu correo
 La respuesta es requerida: La respuesta es requerida
 La sesión se cerrará automáticamente en: La sesión se cerrará automáticamente en
 Lado: Lado
+Lección: Lección
 Lecciones: Lecciones
+Lecciones vistas: Lecciones vistas
 Leidos: Leidos
 Libro: Libro
 Libros: Libros
@@ -565,6 +594,7 @@ Listado de Tipos de Destinos: Listado de Tipos de Destinos
 Listado de Tipos de Notificaciones: Listado de Tipos de Notificaciones
 Listado de tutoriales: Listado de tutoriales
 Listado de usuarios: Listado de usuarios
+Listado de participantes por empresa: Listado de participantes por empresa
 Lo sentimos. Sesión expirada.: Lo sentimos. Sesión expirada.
 Login repetido: Login repetido
 Login requerido: Login requerido
@@ -590,6 +620,7 @@ Mis Programas: Mis Programas
 Modificado el: Modificado el
 Modificado por: Modificado por
 Modificar evento: Modificar evento
+Módulo: Módulo
 Módulos: Módulos
 Módulos vistos: Módulos vistos
 Mostrando registros del: Mostrando registros del
@@ -597,6 +628,7 @@ Mostrar: Mostrar
 Mostrar los resultados de la evaluación: Mostrar los resultados de la evaluación
 Mostrar preferencia: Mostrar preferencia
 Mostrar resultados: Mostrar resultados
+Mostrar contraseña: Mostrar contraseña 
 Mover: Mover
 Mover página: Mover página
 Muro: Muro
@@ -606,19 +638,19 @@ Nivel no existente para esta empresa: Nivel no existente para esta empresa
 Niveles: Niveles
 Niveles por empresas: Niveles por empresas
 no existe: no existe
-No has elegido el tipo de pregunta: No has elegido el tipo de pregunta
-no posee participantes registrados: no posee participantes registrados
 No existe destino al que se pueda mover la página: No existe destino al que se pueda mover la página
 No existe evaluación para esta página: No existe evaluación para esta página
 No existen páginas: No existen páginas
 No existen registros para esta consulta: No existen registros para esta consulta
 No existen usuarios conectados en este momento: No existen usuarios conectados en este momento
-No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
-No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No has alcanzado la aprobación de la evaluación: No has alcanzado la aprobación de la evaluación
 No has alcanzado la calificación para la aprobación de: No has alcanzado la calificación para la aprobación de
+No has elegido el tipo de pregunta: No has elegido el tipo de pregunta
+No hay problema, te enviaremos un correo con: No hay problema, te enviaremos un correo con
+No hay Programas disponibles para la empresa. Contacte al administrador del sistema.: No hay Programas disponibles para la empresa. Contacte al administrador del sistema.
 No iniciados: No iniciados
 No Iniciado: No Iniciado
+no posee participantes registrados: no posee participantes registrados
 No se encontraron resultados: No se encontraron resultados
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se mostrará en la página de login: No se mostrará en la página de login
@@ -631,17 +663,19 @@ No se pudo filtrar el listado.: No se pudo filtrar el listado.
 No se pudo guardar el evento. Inténtalo de nuevo.: No se pudo guardar el evento. Inténtalo de nuevo.
 No se pudo habilitar/inhabilitar el acceso a esta página.: No se pudo habilitar/inhabilitar el acceso a esta página.
 No te rindas: No te rindas
+No tiene evaluación: No tiene evaluación
 No tiene sub-páginas: No tiene sub-páginas
 Nombre: Nombre
 Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
-Nombre del participante: Nombre del partcipante
+Nombre del participante: Nombre del participante
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Nota: Nota
 Notas: Notas
 Noticia: Noticia
 Noticias: Noticias
+Notificación: Notificación
 Noticias y Novedades: Noticias y Novedades
 Notificaciones: Notificaciones
 Notificaciones programadas: Notificaciones programadas
@@ -656,6 +690,7 @@ Nuevo nivel de la empresa: Nuevo nivel de la empresa
 Nuevo registro: Nuevo registro
 Nuevo tipo de pregunta: Nuevo tipo de pregunta
 Nuevos registros almacenados: Nuevos registros almacenados
+Ofrecemos disculpas por las molestias ocasionadas: Ofrecemos disculpas por las molestias ocasionadas
 Opción: Opción
 Opción correcta (Lado B): Opción correcta (Lado B)
 Opciones: Opciones
@@ -668,6 +703,7 @@ Página a mover: Página a mover
 Página movida: Página movida
 Página seleccionada: Página seleccionada
 Página asociada a la evaluación: Página asociada a la evaluación
+Página en mantenimiento: Página en mantenimiento
 Página padre: Página padre
 Páginas: Páginas
 Páginas asignadas a: Páginas asignadas a
@@ -676,8 +712,10 @@ Páginas por niveles: Páginas por niveles
 Panel de acceso: Panel de acceso
 Paso: Paso
 País: País
+Para una correcta visualización de los recursos disponbles en: Para una correcta visualización de los recursos disponbles en
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
+Participante: Participante
 participantes: participantes
 Participantes: Participantes
 Particpante: participante
@@ -685,7 +723,6 @@ Participantes activos: Participantes activos
 Participantes inactivos: Participantes inactivos
 Participantes no iniciados: Participantes no iniciados
 Participantes registrados: Participantes registrados
-Participantes de la empresa: Participantes de la empresa
 Participantes cursando: Participants taking part
 Participantes culminados: Finished participants
 Participantes conectados: Connected participants
@@ -700,7 +737,6 @@ Participantes seleccionados: Participantes seleccionados
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
-Perfil de participante: Perfil de participante
 Perfil del participante: Perfil del participante
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
@@ -724,6 +760,7 @@ Preguntas no encontradas: Preguntas no encontradas
 Prelación: Prelación
 Prelada por: Prelada por
 Presiona el botón finalizar para completar: Presiona el botón finalizar para completar
+Primera conexión: Primera conexión
 Procesando: Procesando
 Procesar: Procesar
 Programa: Programa
@@ -731,24 +768,31 @@ Programación del aviso: Programación del aviso
 Programado para: Programado para
 Programar nuevo aviso: Programar nuevo aviso
 Programas: Programas
+Programas asignados: Programas asignados
+Programas en curso: Programas en curso
 Programas Finalizados: Programas Finalizados
+Programas no iniciados: Programas no iniciados
 Prog. asociados: Prog. asociados
+Promedio: Promedio
+Promedio de conexión: Promedio de conexión
 Promedio evaluación módulo: Promedio evaluación módulo
-Promedio de conexiones: Promedio de conexiones
 Publicar: Publicar
 Puede acceder a este espacio a través del siguiente enlace: Puede acceder a este espacio a través del siguiente enlace
 Puede cerrar y reiniciar sesión para restablecer los permisos de acceso: Puede cerrar y reiniciar sesión para restablecer los permisos de acceso
 Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo: Puede contactar con el Administrador del Sistema para otorgarle permisos de acceso a este módulo
 Puede ingresar de nuevo desde la pantalla de login: Puede ingresar de nuevo desde la pantalla de login
-Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0: Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación 2.0
+Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart: Puede solicitar crear una evaluación para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Puntaje: Puntaje
 Puntaje con que se aprueba: Puntaje con que se aprueba
 Puntaje definitivo del programa: Puntaje definitivo del programa
 que aún no han ingresado a la plataforma: que aún no han ingresado a la plataforma
 QR: QR
 realizó una publicación en el muro de: realizó una publicación en el muro de
+formación smart, recomendamos utilizar la ultima versión del: formación smart, recomendamos utilizar la ultima versión del
+Recomendación: Recomendación
 Recordarme: Recordarme
-Recordar mi contaseña: Recordar mi contaseña
+Recordar mi contraseña: Recordar mi contaseña
+Recuperación de contraseña: Recuperación de contraseña
 Recursos: Recursos
 Recursos del programa: Recursos del programa
 Registrar Empresa: Registrar Empresa
@@ -768,14 +812,19 @@ Reporte de participantes registrados por programas: Reporte de participantes reg
 Reporte de participantes por empresa: Reporte de participantes por empresa
 Reportar un problema: Reportar un problema
 Responder: Responder
+Responder comentario: Responder comentario
 Responder publicación: Responder publicación
 respondió en el muro al comentario de: Respondió en el muro al comentario de
 respondió a tu comentario en el muro de: respondió a tu comentario en el muro de
+respondió a uno de tus comentarios en el muro de: respondió a uno de tus comentarios en el muro de
 Respuesta: Respuesta
+Respuesta creada con éxito: Respuesta creada con éxito
+Respuestas: Respuestas
 Respuestas comentario seleccionado: Respuestas comentario seleccionado
 Resultado del archivo procesado: Resultado del archivo procesado
 Resultados: Resultados
 Resumen: Resumen
+Resumen de registros de participantes del: Resumen de registros de participantes del
 Resumen de registros de participantes en el: Resumen de registros de participantes en el
 Resumen general de registros: Resumen general de registros
 Resumen general de registros por empresa: Resumen general de registros por empresa
@@ -810,6 +859,7 @@ Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta pá
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
 Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
+Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de
 Si presionas: Si presionas
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los participantes de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
@@ -818,8 +868,9 @@ Si un participante ya está registrado en la base de datos solo se actualizarán
 Sigue aprendiendo: Sigue aprendiendo
 Sigue intentándolo: Sigue intentándolo
 Siguiente: Siguiente
+Sin correo: Sin correo
 Sin leer: Sin leer
-Sistema Formación: Sistema Formación
+Sistema Formación Smart: Sistema Formación Smart
 Sólo archivo en PDF: Sólo archivo en PDF
 Sólo archivos con extensión xls, xlsx o csv.: Sólo archivos con extensión xls, xlsx o csv.
 Sólo archivos con extensión .jpg o .png: Sólo archivos con extensión .jpg o .png: 
@@ -833,7 +884,7 @@ Subir Archivo de participantes: Subir Archivo de participantes
 Sub-Aplicación de: Sub-Aplicación de
 Sub-Aplicaciones de: Sub-Aplicaciones de
 Sub-páginas: Sub-páginas
-También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0: También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación 2.0
+También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Teléfono de contacto: Teléfono de Contacto
 Tema: Tema
 Tendrás: Tendrás
@@ -863,10 +914,12 @@ Todos los derechos reservados: Todos los derechos reservados
 Todos los empleados de la empresa: Todos los empleados de la empresa
 Todos los niveles: Todos los niveles
 Tomar evaluación: Tomar evaluación
+Total aprobados: Total aprobados
 Tu calificación: Tu calificación
 Tu comentario: Tu comentario
 Tu respuesta: Tu respuesta
 Tutoriales: Tutoriales
+Última conexión: Última conexión
 Últimos 12: Últimos 12
 Url de la empresa no existe: Url de la empresa no existe
 Url no encontrada: Url no encontrada

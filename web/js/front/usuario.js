@@ -52,7 +52,7 @@ $(document).ready(function() {
 		        data: $("#form-clave").serialize(),
 		        dataType: "json",
 		        success: function(data) {
-		        	$('#clave').val('');
+		        	$('#password').val('');
 		        	$('#confirmar').val('');
 		        	$('.boton').show();
 		            $('#wait_password').hide(1000);

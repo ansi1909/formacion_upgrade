@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Link\ComunBundle\Entity\AdminNotificacion;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
 use Link\ComunBundle\Entity\AdminNotificacionProgramada;
+use Link\ComunBundle\Entity\AdminCorreo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -301,9 +302,12 @@ class NotificacionController extends Controller
         $notificacion = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacion')->find($notificacion_id);
         
         $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np 
-                                    WHERE np.notificacion = :notificacion_id AND np.grupo IS NULL 
+                                    WHERE np.notificacion = :notificacion_id 
+                                    AND np.grupo IS NULL 
+                                    AND np.fechaDifusion >= :hoy 
                                     ORDER BY np.fechaDifusion ASC")
-                    ->setParameter('notificacion_id', $notificacion_id);
+                    ->setParameters(array('notificacion_id' => $notificacion_id,
+                                          'hoy' => date('Y-m-d')));
         $nps = $query->getResult();
 
         $html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps));
@@ -329,48 +333,145 @@ class NotificacionController extends Controller
         switch ($notificacion_programada->getTipoDestino()->getId())
         {
             case $yml['parameters']['tipo_destino']['todos']:
-                $return[] = array('text' => 'N/A',
+                $query = $em->getConnection()->prepare('SELECT
+                                                        fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                        resultado;');
+                $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['todos'], \PDO::PARAM_INT);
+                $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                $query->bindValue(':pentidad_id', 0, \PDO::PARAM_INT);
+                $query->execute();
+                $r = $query->fetchAll();
+                $cantidad = $r[0]['resultado'];
+                $return[] = array('text' => $this->get('translator')->trans('Todos los empleados de la empresa').' '.$notificacion_programada->getNotificacion()->getEmpresa()->getNombre(),
+                                  'state' => array('opened' => true),
+                                  'icon' => 'fa fa-angle-double-right');
+                $return[] = array('text' => '('.$cantidad.' '.$this->get('translator')->trans('usuarios').')',
                                   'state' => array('opened' => true),
                                   'icon' => 'fa fa-angle-double-right');
                 break;
             case $yml['parameters']['tipo_destino']['nivel']:
                 $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($notificacion_programada->getEntidadId());
+                $query = $em->getConnection()->prepare('SELECT
+                                                        fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                        resultado;');
+                $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['nivel'], \PDO::PARAM_INT);
+                $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                $query->bindValue(':pentidad_id', $notificacion_programada->getEntidadId(), \PDO::PARAM_INT);
+                $query->execute();
+                $r = $query->fetchAll();
+                $cantidad = $r[0]['resultado'];
                 $return[] = array('text' => $entidad->getNombre(),
+                                  'state' => array('opened' => true),
+                                  'icon' => 'fa fa-angle-double-right');
+                $return[] = array('text' => '('.$cantidad.' '.$this->get('translator')->trans('usuarios').')',
                                   'state' => array('opened' => true),
                                   'icon' => 'fa fa-angle-double-right');
                 break;
             case $yml['parameters']['tipo_destino']['programa']:
-                $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
-                $return[] = array('text' => $entidad->getNombre(),
-                                  'state' => array('opened' => true),
-                                  'icon' => 'fa fa-angle-double-right');
-                break;
-            case $yml['parameters']['tipo_destino']['grupo']:
                 $nps = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
                 foreach ($nps as $np)
                 {
-                    $participante = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($np->getEntidadId());
-                    $return[] = array('text' => $participante->getNombre().' '.$participante->getApellido(),
+                    $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($np->getEntidadId());
+                    $query = $em->getConnection()->prepare('SELECT
+                                                            fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                            resultado;');
+                    $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['programa'], \PDO::PARAM_INT);
+                    $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                    $query->bindValue(':pentidad_id', $np->getEntidadId(), \PDO::PARAM_INT);
+                    $query->execute();
+                    $r = $query->fetchAll();
+                    $cantidad = $r[0]['resultado'];
+                    $return[] = array('text' => $programa->getNombre().' ('.$cantidad.' '.$this->get('translator')->trans('participantes').')',
                                       'state' => array('opened' => true),
                                       'icon' => 'fa fa-angle-double-right');
                 }
                 break;
+            case $yml['parameters']['tipo_destino']['grupo']:
+                $query = $em->getConnection()->prepare('SELECT
+                                                        fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                        resultado;');
+                $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['grupo'], \PDO::PARAM_INT);
+                $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                $query->bindValue(':pentidad_id', $notificacion_programada->getId(), \PDO::PARAM_INT);
+                $query->execute();
+                $r = $query->fetchAll();
+                $cantidad = $r[0]['resultado'];
+                $return[] = array('text' => '('.$cantidad.' '.$this->get('translator')->trans('participantes').')',
+                                  'state' => array('opened' => true),
+                                  'icon' => 'fa fa-angle-double-right');
+                break;
             case $yml['parameters']['tipo_destino']['no_ingresado']:
-                $return[] = array('text' => 'N/A',
+                $query = $em->getConnection()->prepare('SELECT
+                                                        fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                        resultado;');
+                $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['no_ingresado'], \PDO::PARAM_INT);
+                $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                $query->bindValue(':pentidad_id', 0, \PDO::PARAM_INT);
+                $query->execute();
+                $r = $query->fetchAll();
+                $cantidad = $r[0]['resultado'];
+                $return[] = array('text' => $this->get('translator')->trans('Aquellos empleados de la empresa').' '.$notificacion_programada->getNotificacion()->getEmpresa()->getNombre().' '.$this->get('translator')->trans('que aún no han ingresado a la plataforma').'.',
+                                  'state' => array('opened' => true),
+                                  'icon' => 'fa fa-angle-double-right');
+                $return[] = array('text' => '('.$cantidad.' '.$this->get('translator')->trans('participantes').')',
                                   'state' => array('opened' => true),
                                   'icon' => 'fa fa-angle-double-right');
                 break;
             case $yml['parameters']['tipo_destino']['no_ingresado_programa']:
                 $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
+                $query = $em->getConnection()->prepare('SELECT
+                                                        fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                        resultado;');
+                $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['no_ingresado_programa'], \PDO::PARAM_INT);
+                $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                $query->bindValue(':pentidad_id', $notificacion_programada->getEntidadId(), \PDO::PARAM_INT);
+                $query->execute();
+                $r = $query->fetchAll();
+                $cantidad = $r[0]['resultado'];
                 $return[] = array('text' => $entidad->getNombre(),
+                                  'state' => array('opened' => true),
+                                  'icon' => 'fa fa-angle-double-right');
+                $return[] = array('text' => '('.$cantidad.' '.$this->get('translator')->trans('participantes').')',
                                   'state' => array('opened' => true),
                                   'icon' => 'fa fa-angle-double-right');
                 break;
             case $yml['parameters']['tipo_destino']['aprobados']:
-                $entidad = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
-                $return[] = array('text' => $entidad->getNombre(),
-                                  'state' => array('opened' => true),
-                                  'icon' => 'fa fa-angle-double-right');
+                $nps = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                foreach ($nps as $np)
+                {
+                    $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($np->getEntidadId());
+                    $query = $em->getConnection()->prepare('SELECT
+                                                            fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                            resultado;');
+                    $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['aprobados'], \PDO::PARAM_INT);
+                    $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                    $query->bindValue(':pentidad_id', $np->getEntidadId(), \PDO::PARAM_INT);
+                    $query->execute();
+                    $r = $query->fetchAll();
+                    $cantidad = $r[0]['resultado'];
+                    $return[] = array('text' => $programa->getNombre().' ('.$cantidad.' '.$this->get('translator')->trans('participantes').')',
+                                      'state' => array('opened' => true),
+                                      'icon' => 'fa fa-angle-double-right');
+                }
+                break;
+            case $yml['parameters']['tipo_destino']['en_curso']:
+                $nps = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                foreach ($nps as $np)
+                {
+                    $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($np->getEntidadId());
+                    $query = $em->getConnection()->prepare('SELECT
+                                                            fncantidad_programados(:ptipo_destino_id, :pempresa_id, :pentidad_id) as
+                                                            resultado;');
+                    $query->bindValue(':ptipo_destino_id', $yml['parameters']['tipo_destino']['en_curso'], \PDO::PARAM_INT);
+                    $query->bindValue(':pempresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId(), \PDO::PARAM_INT);
+                    $query->bindValue(':pentidad_id', $np->getEntidadId(), \PDO::PARAM_INT);
+                    $query->execute();
+                    $r = $query->fetchAll();
+                    $cantidad = $r[0]['resultado'];
+                    $return[] = array('text' => $programa->getNombre().' ('.$cantidad.' '.$this->get('translator')->trans('participantes').')',
+                                      'state' => array('opened' => true),
+                                      'icon' => 'fa fa-angle-double-right');
+                }
                 break;
         }
 
@@ -425,6 +526,12 @@ class NotificacionController extends Controller
                                        'valores' => $valores);
                     break;
                 case $yml['parameters']['tipo_destino']['programa']:
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    $programas_id = array();
+                    foreach ($nps as $np)
+                    {
+                        $programas_id[] = $np->getEntidadId();
+                    }
                     $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                                 JOIN pe.pagina p 
                                                 WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
@@ -436,10 +543,10 @@ class NotificacionController extends Controller
                     {
                         $valores[] = array('id' => $pe->getPagina()->getId(),
                                            'nombre' => $pe->getPagina()->getNombre(),
-                                           'selected' => $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '');
+                                           'selected' => in_array($pe->getPagina()->getId(), $programas_id) ? 'selected' : '');
                     }
                     $entidades = array('tipo' => 'select',
-                                       'multiple' => false,
+                                       'multiple' => true,
                                        'valores' => $valores);
                     break;
                 case $yml['parameters']['tipo_destino']['grupo']:
@@ -455,6 +562,7 @@ class NotificacionController extends Controller
                        ->leftJoin('ru.usuario', 'u')
                        ->andWhere('u.empresa = :empresa_id')
                        ->andWhere('ru.rol = :participante')
+                       ->orderBy('u.nombre', 'ASC')
                        ->setParameters(array('empresa_id' => $notificacion_programada->getNotificacion()->getEmpresa()->getId(),
                                              'participante' => $yml['parameters']['rol']['participante']));
                     $query = $qb->getQuery();
@@ -462,8 +570,9 @@ class NotificacionController extends Controller
                     $valores = array();
                     foreach ($rus as $ru)
                     {
+                        $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
                         $valores[] = array('id' => $ru->getUsuario()->getId(),
-                                           'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido(),
+                                           'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
                                            'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
                     }
                     $entidades = array('tipo' => 'select',
@@ -494,6 +603,12 @@ class NotificacionController extends Controller
                                        'valores' => $valores);
                     break;
                 case $yml['parameters']['tipo_destino']['aprobados']:
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    $programas_id = array();
+                    foreach ($nps as $np)
+                    {
+                        $programas_id[] = $np->getEntidadId();
+                    }
                     $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                                 JOIN pe.pagina p 
                                                 WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
@@ -505,10 +620,34 @@ class NotificacionController extends Controller
                     {
                         $valores[] = array('id' => $pe->getPagina()->getId(),
                                            'nombre' => $pe->getPagina()->getNombre(),
-                                           'selected' => $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '');
+                                           'selected' => in_array($pe->getPagina()->getId(), $programas_id) ? 'selected' : '');
                     }
                     $entidades = array('tipo' => 'select',
-                                       'multiple' => false,
+                                       'multiple' => true,
+                                       'valores' => $valores);
+                    break;
+                case $yml['parameters']['tipo_destino']['en_curso']:
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    $programas_id = array();
+                    foreach ($nps as $np)
+                    {
+                        $programas_id[] = $np->getEntidadId();
+                    }
+                    $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                                JOIN pe.pagina p 
+                                                WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                                ORDER BY pe.orden ASC")
+                                ->setParameter('empresa_id', $notificacion_programada->getNotificacion()->getEmpresa()->getId());
+                    $pes = $query->getResult();
+                    $valores = array();
+                    foreach ($pes as $pe)
+                    {
+                        $valores[] = array('id' => $pe->getPagina()->getId(),
+                                           'nombre' => $pe->getPagina()->getNombre(),
+                                           'selected' => in_array($pe->getPagina()->getId(), $programas_id) ? 'selected' : '');
+                    }
+                    $entidades = array('tipo' => 'select',
+                                       'multiple' => true,
                                        'valores' => $valores);
                     break;
             }
@@ -545,7 +684,7 @@ class NotificacionController extends Controller
                 $grupos = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
                 foreach ($grupos as $grupo)
                 {
-                    if ($tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'])
+                    if ($tipo_destino_id == $yml['parameters']['tipo_destino']['programa'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['aprobados'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['en_curso'])
                     {
                         if (!in_array($grupo->getEntidadId(), $entidades_seleccionadas))
                         {
@@ -564,7 +703,7 @@ class NotificacionController extends Controller
             }
 
             $notificacion_programada->setTipoDestino($tipo_destino);
-            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['todos'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['no_ingresado'])
+            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['todos'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['programa'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['no_ingresado'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['aprobados'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['en_curso'])
             {
                 $notificacion_programada->setEntidadId(null);
             }
@@ -578,7 +717,7 @@ class NotificacionController extends Controller
             $em->persist($notificacion_programada);
             $em->flush();
 
-            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'])
+            if ($tipo_destino_id == $yml['parameters']['tipo_destino']['programa'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['grupo'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['aprobados'] || $tipo_destino_id == $yml['parameters']['tipo_destino']['en_curso'])
             {
                 // Creación del grupo de participantes seleccionados
                 foreach ($entidades_seleccionadas as $entidad)
@@ -596,6 +735,15 @@ class NotificacionController extends Controller
                         $em->persist($np);
                         $em->flush();
                     }
+                    else {
+                        $np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findOneBy(array('notificacion' => $notificacion_programada->getNotificacion()->getId(),
+                                                                                                                 'entidadId' => $entidad,
+                                                                                                                 'grupo' => $notificacion_programada->getId()));
+                        $np->setFechaDifusion(new \DateTime($fecha_difusion));
+                        $np->setEnviado(false);
+                        $em->persist($np);
+                        $em->flush();
+                    }
                 }
             }
 
@@ -609,11 +757,20 @@ class NotificacionController extends Controller
                 $r = $query->fetchAll();
 
                 $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-                $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                //$logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                $logo = ''; // Por ahora no se colocará el logo de formación en el header del correo
                 $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
+                $j = 0; // Contador de correos exitosos
+                $np_id = 0; // notificacion_programada_id
 
                 for ($i = 0; $i < count($r); $i++) 
                 {
+
+                    if ($j == 100)
+                    {
+                        // Cantidad tope de correos en una corrida
+                        break;
+                    }
 
                     // Limpieza de resultados
                     $reg = substr($r[$i]['resultado'], strrpos($r[$i]['resultado'], '{"')+2);
@@ -625,38 +782,92 @@ class NotificacionController extends Controller
                     if ($correo != '')
                     {
 
-                        // Sustitución de variables en el texto
-                        $comodines = array('%%usuario%%', '%%clave%%');
-                        $reemplazos = array($login, $clave);
-                        $mensaje = str_replace($comodines, $reemplazos, $mensaje);
+                        // Validar que no se haya enviado el correo a este destinatario
+                        $correo_bd = $em->getRepository('LinkComunBundle:AdminCorreo')->findOneBy(array('tipoCorreo' => $yml['parameters']['tipo_correo']['notificacion_programada'],
+                                                                                                        'entidadId' => $np_id,
+                                                                                                        'usuario' => $usuario_id,
+                                                                                                        'correo' => $correo));
 
-                        $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
-                                                   'datos' => array('nombre' => $nombre,
-                                                                    'apellido' => $apellido,
-                                                                    'mensaje' => $mensaje,
-                                                                    'background' => $background,
-                                                                    'logo' => $logo,
-                                                                    'link_plataforma' => $link_plataforma),
-                                                   'asunto' => $asunto,
-                                                   'remitente' => $this->container->getParameter('mailer_user'),
-                                                   'destinatario' => $correo);
-                        $correo = $f->sendEmail($parametros_correo);
-
-                        $notificacion_programada->setEnviado(true);
-                        $em->persist($notificacion_programada);
-                        $em->flush();
-
-                        if ($notificacion_programada->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
+                        if (!$correo_bd)
                         {
-                            $npgs = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
-                            foreach ($npgs as $npg)
+
+                            // Sustitución de variables en el texto
+                            $comodines = array('%%usuario%%', '%%clave%%', '%%nombre%%', '%%apellido%%');
+                            $reemplazos = array($login, $clave, $nombre, $apellido);
+                            $mensaje = str_replace($comodines, $reemplazos, $mensaje);
+
+                            $parametros_correo = array('twig' => 'LinkBackendBundle:Notificacion:emailCommand.html.twig',
+                                                       'datos' => array('nombre' => $nombre,
+                                                                        'apellido' => $apellido,
+                                                                        'mensaje' => $mensaje,
+                                                                        'background' => $background,
+                                                                        'logo' => $logo,
+                                                                        'link_plataforma' => $link_plataforma),
+                                                       'asunto' => $asunto,
+                                                       'remitente' => $this->container->getParameter('mailer_user'),
+                                                       'destinatario' => $correo);
+                            $ok = $f->sendEmail($parametros_correo);
+
+                            if ($ok)
                             {
-                                $npg->setEnviado(true);
-                                $em->persist($npg);
+
+                                $j++;
+
+                                // Si es una notificación para un grupo de participantes, se marca como enviado
+                                $r_np = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+
+                                if ($r_np->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['grupo'])
+                                {
+                                    $r_np->setEnviado(true);
+                                    $em->persist($r_np);
+                                    $em->flush();
+                                }
+
+                                // Registro del correo recien enviado
+                                $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['notificacion_programada']);
+                                $r_usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+                                $email = new AdminCorreo();
+                                $email->setTipoCorreo($tipo_correo);
+                                $email->setEntidadId($np_id);
+                                $email->setUsuario($r_usuario);
+                                $email->setCorreo($correo);
+                                $email->setFecha(new \DateTime('now'));
+                                $em->persist($email);
                                 $em->flush();
+
                             }
+
+                            /*return $this->render('LinkBackendBundle:Notificacion:emailCommand.html.twig', array('nombre' => $nombre,
+                                                                        'apellido' => $apellido,
+                                                                        'mensaje' => $mensaje,
+                                                                        'background' => $background,
+                                                                        'logo' => $logo,
+                                                                        'link_plataforma' => $link_plataforma));*/
+
                         }
 
+                    }
+                    
+                }
+
+                // Si se enviaron todos los correos, se coloca la notificación como enviada
+                if ($np_id)
+                {
+
+                    $np_main = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($np_id);
+
+                    $query = $em->createQuery('SELECT COUNT(c.id) FROM LinkComunBundle:AdminCorreo c 
+                                                WHERE c.tipoCorreo = :notificacion_programada 
+                                                AND c.entidadId = :np_id')
+                                ->setParameters(array('notificacion_programada' => $yml['parameters']['tipo_correo']['notificacion_programada'],
+                                                      'np_id' => $np_id));
+                    $emails = $query->getSingleScalarResult();
+
+                    if (!($np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['todos'] || $np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['nivel'] || $np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['no_ingresado'] || $np_main->getTipoDestino()->getId() == $yml['parameters']['tipo_destino']['no_ingresado_programa']) && $emails >= count($r))
+                    {
+                        $np_main->setEnviado(true);
+                        $em->persist($np_main);
+                        $em->flush();
                     }
                     
                 }
@@ -717,6 +928,15 @@ class NotificacionController extends Controller
                                    'valores' => $valores);
                 break;
             case $yml['parameters']['tipo_destino']['programa']:
+                $programas_id = array();
+                if ($notificacion_programada_id)
+                {
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    foreach ($nps as $np)
+                    {
+                        $programas_id[] = $np->getEntidadId();
+                    }
+                }
                 $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                             JOIN pe.pagina p 
                                             WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
@@ -728,10 +948,10 @@ class NotificacionController extends Controller
                 {
                     $valores[] = array('id' => $pe->getPagina()->getId(),
                                        'nombre' => $pe->getPagina()->getNombre(),
-                                       'selected' => $notificacion_programada_id ? $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
+                                       'selected' => in_array($pe->getPagina()->getId(), $programas_id) ? 'selected' : '');
                 }
                 $entidades = array('tipo' => 'select',
-                                   'multiple' => false,
+                                   'multiple' => true,
                                    'valores' => $valores);
                 break;
             case $yml['parameters']['tipo_destino']['grupo']:
@@ -750,6 +970,7 @@ class NotificacionController extends Controller
                    ->leftJoin('ru.usuario', 'u')
                    ->andWhere('u.empresa = :empresa_id')
                    ->andWhere('ru.rol = :participante')
+                   ->orderBy('u.nombre', 'ASC')
                    ->setParameters(array('empresa_id' => $notificacion->getEmpresa()->getId(),
                                          'participante' => $yml['parameters']['rol']['participante']));
                 $query = $qb->getQuery();
@@ -757,8 +978,9 @@ class NotificacionController extends Controller
                 $valores = array();
                 foreach ($rus as $ru)
                 {
+                    $correo = !$ru->getUsuario()->getCorreoPersonal() ? !$ru->getUsuario()->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $ru->getUsuario()->getCorreoCorporativo() : $ru->getUsuario()->getCorreoPersonal();
                     $valores[] = array('id' => $ru->getUsuario()->getId(),
-                                       'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido(),
+                                       'nombre' => $ru->getUsuario()->getNombre().' '.$ru->getUsuario()->getApellido().' ('.$correo.')',
                                        'selected' => in_array($ru->getUsuario()->getId(), $usuarios_id) ? 'selected' : '');
                 }
                 $entidades = array('tipo' => 'select',
@@ -789,6 +1011,15 @@ class NotificacionController extends Controller
                                    'valores' => $valores);
                 break;
             case $yml['parameters']['tipo_destino']['aprobados']:
+                $programas_id = array();
+                if ($notificacion_programada_id)
+                {
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    foreach ($nps as $np)
+                    {
+                        $programas_id[] = $np->getEntidadId();
+                    }
+                }
                 $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
                                             JOIN pe.pagina p 
                                             WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
@@ -800,10 +1031,37 @@ class NotificacionController extends Controller
                 {
                     $valores[] = array('id' => $pe->getPagina()->getId(),
                                        'nombre' => $pe->getPagina()->getNombre(),
-                                       'selected' => $notificacion_programada_id ? $pe->getPagina()->getId() == $notificacion_programada->getEntidadId() ? 'selected' : '' : '');
+                                       'selected' => in_array($pe->getPagina()->getId(), $programas_id) ? 'selected' : '');
                 }
                 $entidades = array('tipo' => 'select',
-                                   'multiple' => false,
+                                   'multiple' => true,
+                                   'valores' => $valores);
+                break;
+            case $yml['parameters']['tipo_destino']['en_curso']:
+                $programas_id = array();
+                if ($notificacion_programada_id)
+                {
+                    $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                    foreach ($nps as $np)
+                    {
+                        $programas_id[] = $np->getEntidadId();
+                    }
+                }
+                $query = $em->createQuery("SELECT pe FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                            JOIN pe.pagina p 
+                                            WHERE pe.empresa = :empresa_id AND p.pagina IS NULL 
+                                            ORDER BY pe.orden ASC")
+                            ->setParameter('empresa_id', $notificacion->getEmpresa()->getId());
+                $pes = $query->getResult();
+                $valores = array();
+                foreach ($pes as $pe)
+                {
+                    $valores[] = array('id' => $pe->getPagina()->getId(),
+                                       'nombre' => $pe->getPagina()->getNombre(),
+                                       'selected' => in_array($pe->getPagina()->getId(), $programas_id) ? 'selected' : '');
+                }
+                $entidades = array('tipo' => 'select',
+                                   'multiple' => true,
                                    'valores' => $valores);
                 break;
         }
@@ -851,9 +1109,15 @@ class NotificacionController extends Controller
                                    'valor' => $entidad->getNombre());
                 break;
             case $yml['parameters']['tipo_destino']['programa']:
-                $entidad = $em->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
-                $entidades = array('tipo' => 'text',
-                                   'valor' => $entidad->getNombre());
+                $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                $valores = array();
+                foreach ($nps as $np)
+                {
+                    $programa = $em->getRepository('LinkComunBundle:CertiPagina')->find($np->getEntidadId());
+                    $valores[] = $programa->getNombre();
+                }
+                $entidades = array('tipo' => 'table',
+                                   'valores' => $valores);
                 break;
             case $yml['parameters']['tipo_destino']['grupo']:
                 $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
@@ -861,7 +1125,8 @@ class NotificacionController extends Controller
                 foreach ($nps as $np)
                 {
                     $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($np->getEntidadId());
-                    $valores[] = $usuario->getNombre().' '.$usuario->getApellido();
+                    $correo = !$usuario->getCorreoPersonal() ? !$usuario->getCorreoCorporativo() ? $this->get('translator')->trans('Sin correo') : $usuario->getCorreoCorporativo() : $usuario->getCorreoPersonal();
+                    $valores[] = $usuario->getNombre().' '.$usuario->getApellido().' ('.$correo.')';
                 }
                 $entidades = array('tipo' => 'table',
                                    'valores' => $valores);
@@ -876,9 +1141,26 @@ class NotificacionController extends Controller
                                    'valor' => $entidad->getNombre());
                 break;
             case $yml['parameters']['tipo_destino']['aprobados']:
-                $entidad = $em->getRepository('LinkComunBundle:CertiPagina')->find($notificacion_programada->getEntidadId());
-                $entidades = array('tipo' => 'text',
-                                   'valor' => $entidad->getNombre());
+                $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                $valores = array();
+                foreach ($nps as $np)
+                {
+                    $programa = $em->getRepository('LinkComunBundle:CertiPagina')->find($np->getEntidadId());
+                    $valores[] = $programa->getNombre();
+                }
+                $entidades = array('tipo' => 'table',
+                                   'valores' => $valores);
+                break;
+            case $yml['parameters']['tipo_destino']['en_curso']:
+                $nps = $em->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion_programada->getId());
+                $valores = array();
+                foreach ($nps as $np)
+                {
+                    $programa = $em->getRepository('LinkComunBundle:CertiPagina')->find($np->getEntidadId());
+                    $valores[] = $programa->getNombre();
+                }
+                $entidades = array('tipo' => 'table',
+                                   'valores' => $valores);
                 break;
         }
 

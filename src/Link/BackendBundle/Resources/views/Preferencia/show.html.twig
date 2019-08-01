@@ -166,7 +166,7 @@
             				<div class="row">
                                 <div class="col-md-auto col-sm-auto col-xl-auto col-lg-auto">
                                     <label for="logo" class="col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;Logo</label>
-                                    {% set img = preferencia.logo ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion.png') %}
+                                    {% set img = preferencia.logo ? uploads~preferencia.logo : asset('front/assets/img/logo_formacion_smart.png') %}
                                     {% set imgCss = preferencia.tipoLogo ? preferencia.tipoLogo.css : 'imgLogoHor' %}
                                     <div id="figure_logo"><img src="{{ img }}" alt="{{ 'Logo de la empresa'|trans }}" class="{{ imgCss }}"></div>
                                 </div>

@@ -1146,7 +1146,7 @@ class UsuarioController extends Controller
                        ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
                        ->setTitle("CSV Autogenerado")
                        ->setSubject("CSV Autogenerado")
-                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla tempral de BD.")
+                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla temporal de BD.")
                        ->setKeywords("office 2005 openxml php")
                        ->setCategory("Archivo temporal");
         $phpExcelObject->setActiveSheetIndex(0);
@@ -1320,7 +1320,7 @@ class UsuarioController extends Controller
         if (file_exists($csv))
         {
 
-            chmod($csv,0777);
+            chmod($csv,0755);
             // Llamada a la función que importa el CSV a la BD
             $query = $em->getConnection()->prepare('SELECT
                                                     fnimportar_participantes(:pcsv) as
@@ -1329,7 +1329,7 @@ class UsuarioController extends Controller
             $query->execute();
             $r = $query->fetchAll();
 
-            // Llamada a la función de BD que duplica la página
+            // Llamada a la función de BD que realiza la carga de participantes
             $query = $em->getConnection()->prepare('SELECT
                                                     fncarga_participantes(:pempresa_id, :ptransaccion) as
                                                     resultado;');

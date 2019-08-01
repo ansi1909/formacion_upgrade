@@ -1,4 +1,4 @@
--- Function: fnavance_programa(refcursor, integer, integer, timestamp, timestamp)
+﻿-- Function: fnavance_programa(refcursor, integer, integer, timestamp, timestamp)
 
 -- DROP FUNCTION fnavance_programa(refcursor, integer, integer, timestamp, timestamp);
 
@@ -67,7 +67,9 @@ begin
     FROM admin_usuario u INNER JOIN (admin_empresa e INNER JOIN admin_pais c ON e.pais_id = c.id) ON u.empresa_id = e.id 
     INNER JOIN admin_nivel n ON u.nivel_id = n.id 
     WHERE u.empresa_id = pempresa_id 
-    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
+    AND u.login NOT LIKE 'temp%'
+    AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
+    AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s) 
     AND u.nivel_id IN 
         (SELECT np.nivel_id FROM certi_nivel_pagina np WHERE np.pagina_empresa_id IN 
             (SELECT pe.id FROM certi_pagina_empresa pe WHERE pe.empresa_id = u.empresa_id AND pe.pagina_id = ppagina_id)

@@ -18,8 +18,8 @@
     <nav class="navbar justify-content-between py-0 fixed-top bg-white">
         <div class="logo d-sm-block d-md-block">
             <a class="navbar-brand" href="{{ path('_inicio') }}">
-                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion.png') : asset('front/assets/img/logo_formacion.png') %}
-                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación 2.0">
+                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
+                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
             </a>
         </div>
         <div class="wraper-title-lesson d-flex flex-column align-items-center">
@@ -42,7 +42,7 @@
                         <li class="mark"></li>
                         <a href="{{ path('_usuariop') }}">
                             <li class="opcList">
-                                <span>{{ 'Preferencias de participante'|trans }} <i class="material-icons icMenu">style</i></span>
+                                <span>{{ 'Perfil del participante'|trans }} <i class="material-icons icMenu">style</i></span>
                             </li>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modalCs">
@@ -183,7 +183,7 @@
         <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
         <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
             <div class="form-group">
-                <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="340" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
+                <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="1000" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
             </div>
             <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-comment">{{ 'Comentar'|trans }}</button>
         </form>
