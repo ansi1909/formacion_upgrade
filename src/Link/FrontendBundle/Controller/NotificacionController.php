@@ -446,7 +446,9 @@ class NotificacionController extends Controller
 
         $categoria = $pagina->getCategoria();
 
-        return ['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
+        return ['categoria' => $categoria->getNombre(), 
+                'nombre' => $pagina->getNombre(),
+                'programa_id' => $pagina->getId() ];
 
     }
     
