@@ -273,67 +273,62 @@ class Functions
         foreach ($tutores as $tutor) 
         {
 
-            $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
+            $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo() : ($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
 
             // El usuario debe estar dentro del nivel asignado para ver el contenido de la página
             $query = $em->createQuery('SELECT count(np.id) FROM LinkComunBundle:CertiNivelPagina np
                                        JOIN np.paginaEmpresa pe 
                                        WHERE pe.pagina = :pagina_id 
                                        AND np.nivel = :nivel_id')
-                        ->setParameters(array('pagina_id' => $muro->getPagina()->getId(),
+                        ->setParameters(array('pagina_id' => $categoria['programa_id'],
                                               'nivel_id' => $tutor->getNivel()->getId()));
             $nivel_asignado = $query->getSingleScalarResult();
 
             //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
-            if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado) 
+            if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado && $correo) 
             {
 
-                if ($correo) 
+                $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.mb_strtolower($tipoMensaje, 'UTF-8').' lo siguiente: ';
+
+                $parametros_correo = ['twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
+                                      'datos' => ['leccion' => $muro->getPagina()->getNombre(),
+                                                  'categoria' => $categoria['categoria'],
+                                                  'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
+                                                  'nombrePrograma' => $categoria['nombre'],
+                                                  'encabezadoUsuario' => $encabezadoUsuario,
+                                                  'mensaje' => $muro->getMensaje(),
+                                                  'usuarioPadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido() : null,
+                                                  'mensajePadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getMensaje() : null,
+                                                  'empresa' => $tutor->getEmpresa()->getNombre(),
+                                                  'background' => $background,
+                                                  'logo' => $logo,
+                                                  'link_plataforma' => $link_plataforma
+                                                 ],
+                                        'asunto' => $this->translator->trans('Actividad en el muro').': '.$categoria['nombre'],
+                                        'remitente' => $this->container->getParameter('mailer_user'),
+                                        'destinatario' => $correo
+                                     ];
+
+                $ok = $this->sendEmail($parametros_correo);
+
+                if ($ok)
                 {
-                    
-                    $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.mb_strtolower($tipoMensaje, 'UTF-8').' lo siguiente: ';
 
-                    $parametros_correo = ['twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
-                                          'datos' => ['leccion' => $muro->getPagina()->getNombre(),
-                                                      'categoria' => $categoria['categoria'],
-                                                      'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
-                                                      'nombrePrograma' => $categoria['nombre'],
-                                                      'encabezadoUsuario' => $encabezadoUsuario,
-                                                      'mensaje' => $muro->getMensaje(),
-                                                      'usuarioPadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido() : null,
-                                                      'mensajePadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getMensaje() : null,
-                                                      'empresa' => $tutor->getEmpresa()->getNombre(),
-                                                      'background' => $background,
-                                                      'logo' => $logo,
-                                                      'link_plataforma' => $link_plataforma
-                                                     ],
-                                            'asunto' => $this->translator->trans('Actividad en el muro').': '.$categoria['nombre'],
-                                            'remitente' => $this->container->getParameter('mailer_user'),
-                                            'destinatario' => $correo
-                            			 ];
-
-                    $ok = $this->sendEmail($parametros_correo);
-
-                    if ($ok)
-                    {
-
-                        // Nuevo registro en la tabla de admin_correo
-                        $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['muro']);
-                        $email = new AdminCorreo();
-                        $email->setTipoCorreo($tipo_correo);
-                        $email->setEntidadId($muro->getId());
-                        $email->setUsuario($tutor);
-                        $email->setCorreo($correo);
-                        $email->setFecha(new \DateTime('now'));
-                        $em->persist($email);
-                        $em->flush();
-                            
-                        //crea la notificacion para el usuario cuando el usuario que publica
-                        $descripcion = $this->tipoDescripcion($tipoMensaje, $muro, $parametros_correo['datos']['usuarioPadre']);
-                        $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
-                        $this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor, $muro->getId());
-
-                    }
+                    // Nuevo registro en la tabla de admin_correo
+                    $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['muro']);
+                    $email = new AdminCorreo();
+                    $email->setTipoCorreo($tipo_correo);
+                    $email->setEntidadId($muro->getId());
+                    $email->setUsuario($tutor);
+                    $email->setCorreo($correo);
+                    $email->setFecha(new \DateTime('now'));
+                    $em->persist($email);
+                    $em->flush();
+                        
+                    //crea la notificacion para el usuario cuando el usuario que publica
+                    $descripcion = $this->tipoDescripcion($tipoMensaje, $muro, $parametros_correo['datos']['usuarioPadre']);
+                    $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+                    $this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor, $muro->getId());
 
                 }
 
