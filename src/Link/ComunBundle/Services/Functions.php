@@ -3442,4 +3442,159 @@ class Functions
 
     }
 
+    // Retorna la estructura de las actividades recientes en los programas para el Dashboard y Mis Programas
+    public function getActividadesRecientes($usuario_id, $paginas_sesion, $empresa_id, $yml)
+    {
+
+        $em = $this->em;
+
+        // buscando las últimas 3 interacciones del usuario donde la página no esté completada
+        $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
+                                    JOIN pl.pagina p 
+                                    JOIN LinkComunBundle:CertiPaginaEmpresa pe 
+                                    WHERE pl.usuario = :usuario_id
+                                        AND pl.estatusPagina != :completada
+                                        AND p.pagina IS NULL 
+                                        AND pe.pagina = p.id 
+                                        AND pe.activo = :activo 
+                                    ORDER BY pl.id DESC')
+                    ->setParameters(array('usuario_id' => $usuario_id,
+                                          'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                          'activo' => true));
+        $actividadreciente_padre = $query->getResult();
+
+        $actividad_reciente = array();
+        $reciente = 0;
+        
+        foreach ($actividadreciente_padre as $arp) 
+        {
+
+            if ($reciente == 3)
+            {
+                break;
+            }
+            
+            if (array_key_exists($arp->getPagina()->getId(), $paginas_sesion) && !array_key_exists($arp->getPagina()->getId(), $actividad_reciente)) 
+            {
+                
+                $reciente++;
+                $ar = array();
+                $pagina_sesion = $paginas_sesion[$arp->getPagina()->getId()];
+                $subpaginas_ids = $this->hijas($pagina_sesion['subpaginas']);
+                $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $empresa_id,
+                                                                                                            'pagina' => $arp->getPagina()->getId()));
+
+                $padre_id = $arp->getPagina()->getId();
+                $imagen = $arp->getPagina()->getFoto();
+                $porcentaje = round($arp->getPorcentajeAvance());
+                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+                $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Vencido');
+                $titulo_padre = $arp->getPagina()->getNombre();
+
+                if (count($subpaginas_ids))
+                {
+
+                    $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
+                                                WHERE pl.usuario = :usuario_id
+                                                    AND pl.estatusPagina != :completada
+                                                    AND pl.pagina IN (:hijas)
+                                                ORDER BY pl.id DESC')
+                                ->setParameters(array('usuario_id' => $usuario_id,
+                                                      'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                                      'hijas' => $subpaginas_ids))
+                                ->setMaxResults(1);
+                    $ar = $query->getResult();
+                }
+
+
+                if ($ar)
+                {
+
+                    $id =  $ar[0]->getPagina()->getId();
+                    $titulo_hijo = $ar[0]->getPagina()->getNombre();
+                    $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
+                    
+                    if ($ar[0]->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                    {
+                        $avanzar = 2;
+                        $evaluacion_pagina = $id;
+                        $evaluacion_programa = $padre_id;
+                    }
+                    else {
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
+
+                }
+                else {
+
+                    $id = 0;
+                    $titulo_hijo = '';
+                    $categoria = $arp->getPagina()->getCategoria()->getNombre();
+                    
+                    // buscando registros de la pagina para validar si esta en evaluación
+                    $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
+                                                                                                        'pagina' => $padre_id));
+                    if ($arp->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                    {
+                        $avanzar = 2;
+                        $evaluacion_pagina = $padre_id;
+                        $evaluacion_programa = $padre_id;
+                    }
+                    else {
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
+
+                }
+
+                $porcentaje_finalizacion = $this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                if ($link_enabled)
+                {
+                    if ($porcentaje_finalizacion >= 70)
+                    {
+                       $class_finaliza = 'alertTimeGood';
+                    }
+                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
+                    {
+                        $class_finaliza = 'alertTimeWarning';
+                    }
+                    elseif ($porcentaje_finalizacion <= 30) 
+                    {
+                        $class_finaliza = 'alertTimeDanger';
+                    }
+                    else {
+                        $class_finaliza = '';
+                    }
+                }
+                else {
+                    $class_finaliza = '';
+                }
+
+                $actividad_reciente[$arp->getPagina()->getId()] = array('id' => $id,
+                                                                        'padre_id' => $padre_id,
+                                                                        'titulo_padre' => $titulo_padre,
+                                                                        'titulo_hijo' => $titulo_hijo,
+                                                                        'imagen' => $imagen,
+                                                                        'categoria' => $categoria,
+                                                                        'dias_vencimiento' => $dias_vencimiento,
+                                                                        'class_finaliza' => $class_finaliza,
+                                                                        'porcentaje' => $porcentaje,
+                                                                        'avanzar' => $avanzar,
+                                                                        'evaluacion_pagina' => $evaluacion_pagina,
+                                                                        'evaluacion_programa' => $evaluacion_programa,
+                                                                        'link_enabled' => $link_enabled,
+                                                                        'porcentaje_finalizacion' => $porcentaje_finalizacion);
+
+            }
+
+        }
+
+        return array('actividad_reciente' => $actividad_reciente,
+                     'reciente' => $reciente);
+
+    }
+
 }
