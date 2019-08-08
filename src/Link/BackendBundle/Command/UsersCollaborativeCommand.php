@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\RequestContext;
+use Link\ComunBundle\Entity\AdminCorreo;
 
 class UsersCollaborativeCommand extends ContainerAwareCommand
 {
