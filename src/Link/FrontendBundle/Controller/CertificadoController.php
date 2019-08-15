@@ -99,8 +99,8 @@ class CertificadoController extends Controller
                                             		<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 		                                            <div style="text-align:center; font-size:24px; margin-top:25px; ">'.$descripcion.'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
-		                                            <div style="text-align:center; margin-top:40px; font-size:14px;">Fecha Inicio:'.$pagina_log->getFechaInicio()->format("d/m/y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin:'.$pagina_log->getFechaFin()->format("d/m/y").' </div>
-		                                            <div style="text-align:center; margin-top:15px; font-size:14px;">Equivalente a: '.$pagina->getHorasAcademicas().' hrs. académicas </div>
+		                                            <div style="text-align:center; margin-top:40px; font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').':'.$pagina_log->getFechaInicio()->format("d/m/Y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').':'.$pagina_log->getFechaFin()->format("d/m/Y").' </div>
+		                                            <div style="text-align:center; margin-top:15px; font-size:14px;">'.$this->get('translator')->trans('Equivalente a').': '.$pagina->getHorasAcademicas().' hrs. '.$this->get('translator')->trans('académicas').'</div>
 		                                        </page>');
 
 		            $certificado_pdf->writeHtml('<page title="prueba" pageset="new"  backimgw="90%" backimgx="center">'
@@ -265,6 +265,11 @@ class CertificadoController extends Controller
 							    padding: 4px;
 								cellpadding: 0; 
 								cellspacing: 0; }
+							hr {
+								color: #99c51b;
+								background-color: #99c51b;
+								height: 5px;
+							}
 					    </style>
 			        </head>
 				    <body class='detalle-noticias'>
@@ -309,14 +314,12 @@ class CertificadoController extends Controller
 			                            <thead>
 			                                <tr>
 			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
-			                                    
 			                                    <th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
 			                                </tr>
 			                            </thead>
 			                            <tbody>
 											<tr style='font-size: 14px; font-weight: 300;'>
 								               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-								               
 								               <td class='center'>".$nota."</td>
 								            </tr>";
 									foreach ($programa_aprobado as $programa)
@@ -350,9 +353,15 @@ class CertificadoController extends Controller
 										}
 	        							$html .= "<tr ".$style.">
 							               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
-									               	
 									               	<td class='center'>".number_format($nota, 2, ',', '.')."</td>
 									            </tr>";
+									}
+									if ($indice > 0)
+									{
+										$html .= "<tr style='font-size:16px; font-weight:300; font-color:#000000;'>
+								               		<td style='color:#000000;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
+								               		<td style='color:#000000;' class='center'>".number_format($puntaje/$indice, 2, ',', '.')."</td>
+								            	</tr>";
 									}
 									$margin = '50';
 									$html .= "</tbody>
@@ -365,35 +374,25 @@ class CertificadoController extends Controller
 										$nota = $programa_aprobado['nota'];
 									}
 									else {
-										$nota="N/A";
+										$nota = "N/A";
 									}
 									$margin = '200';
 									$html .= "<table class='table-notas' cellpadding='0' cellspacing='0'>
 				                            	<thead>
 				                                	<tr>
 				                                    	<th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
-				                                    	<th style='width: 100;'>".$this->get('translator')->trans('Veces cursadas')."</th>
 				                                    	<th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
 				                                	</tr>
 				                            	</thead>
 				                            	<tbody>
 													<tr style='font-size: 14px; font-weight: 300;'>
 									               		<td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-									               		
 									               		<td class='center'>".number_format($nota, 2, ',', '.')."</td>
 									            	</tr>
 												</tbody>
 						                	</table>";
 								}
         					$html .= "</div>
-		                	<div class='row'>		                        
-								<table class='table-notas' cellpadding='0' cellspacing='0'>
-									<tr style='font-size: 16px; font-weight: 300;'>
-					               		<td style='width: 500;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
-					               		<td style='width: 170;' class='center'>".number_format($puntaje/$indice, 2, ',', '.')."</td>
-					            	</tr>
-			                	</table>
-		                	</div>
 		                	<div class='row' style='margin-top:".$margin."px;'>
 								<table text-align='center' width='600' border=0' height='50'>
 									<tr>
@@ -407,6 +406,9 @@ class CertificadoController extends Controller
 										<td width='150' class='center'>".$this->get('translator')->trans('Firma del Supervisor')."</td>
 									</tr>
 								</table>
+							</div>
+							<div class='row' style='margin-top:".$margin."px;'>
+								<hr>
 							</div>
 				        </div>
 				    </body>

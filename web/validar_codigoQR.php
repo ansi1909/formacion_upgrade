@@ -51,15 +51,15 @@ $connect = pg_connect("host=$host port=$port dbname=$dbname user=$user password=
 if(!$connect)
 {	
 	echo "<p><i>No me conecte</i></p>";
-}else
-{
+}
+else {
 
-	$url= $_SERVER["REQUEST_URI"];
+	$url = $_SERVER["REQUEST_URI"];
 	$url_pos = strrpos($url, "validar_codigoQR");
 	$url_web = substr($url, 0, $url_pos);
 	$ruta = explode("/", $url);
 
-	$sql = "select u.nombre, u.apellido, p.nombre as programa
+	$sql = "select u.nombre, u.apellido, p.nombre as programa, pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
@@ -69,9 +69,13 @@ if(!$connect)
 
 	while($row = pg_fetch_array($resultado)) 
 	{
-		$usuario = $row["nombre"]." ".$row["apellido"]; 
-		$programa = $row["programa"]; 		
+		$usuario = $row["nombre"]." ".$row["apellido"];
+		$programa = $row["programa"];
+		$fecha_inicio = $row["fecha_inicio"];
+		$fecha_fin = $row["fecha_fin"];
+		$horas_academicas = $row["horas_academicas"];
 	}
+	
 	if(isset($resultado))
 	{
 ?>
@@ -85,14 +89,14 @@ if(!$connect)
 	        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	        <link rel="stylesheet" href="<?php echo $url_web ?>front/base_styles/css/bootstrap/bootstrap.css">
 	        <link rel="stylesheet" href="<?php echo $url_web ?>front/client_styles/formacion/css/main.css">
-	        <title>Verificacion del codigoQR</title>
+	        <title>Verificación del codigo QR</title>
 	    </head>
 	    <body class="codigoQR">
 	        <section class="cQR">
 	            <div class="container">
 	                <div class="row">
 	                    <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto">
-	                        <img class="imgForm" src="<?php echo $url_web ?>front/assets/img/formacion2.0.svg" alt="">
+	                        <img class="imgForm" src="<?php echo $url_web ?>front/assets/img/formacion2.0_smart.svg" alt="">
 	                    </div> 
 	                </div>
 	                <div class="row">
@@ -114,6 +118,19 @@ if(!$connect)
 	                    <div class="col-xs-10 col-sm-10 col-md-10 col-10 col-lg-10 col-xl-10">
 	                        <h1 class="progA-cQR"><?php echo $programa; ?></h1>
 	                    </div>
+	                </div>
+	                <div class="row align-items-center justify-content-between mt-12v">
+	                    <div class="col-sm-6 col-md-6 col-6 col-lg-6 col-xl-6">
+	                        <span class="text-cQR">Fecha inicio: <?php echo $fecha_inicio ?></span>
+	                    </div>
+	                    <div class="col-sm-6 col-md-6 col-6 col-lg-6 col-xl-6">
+	                        <span class="text-cQR">Fecha fin: <?php echo $fecha_fin ?></span>
+	                    </div>
+	                </div>
+	                <div class="row align-items-center justify-content-between mt-12v">
+	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
+	                        <span class="text-cQR">Equivalente a: <?php echo $horas_academicas ?> hrs. académicas</span>
+	                    </div> 
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
