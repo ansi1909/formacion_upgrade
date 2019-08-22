@@ -14,7 +14,7 @@ Activar muro: Enable wall
 Activar para ordenar la columna de manera ascendente: Enable to order column ascending
 Activar para ordenar la columna de manera descendente: Enable to order column descending
 Activar webinar: Activate webinar
-Actividad en muro: Wall activity
+Actividad en el muro: Wall activity
 Actividades en curso: Activities in progress
 Actividades Recientes: Recents Activities
 Activo: Active
@@ -149,6 +149,7 @@ Contacte al Administrador del Sistema para mayor información: Contact to System
 Constancia de Notas: Proof of Notes
 Consultar: Search
 Contenido: Content
+Contenido del: Content of
 Contenido que debe ser aprobado previamente: Content that must be approved before
 Contenido Relacionado: Related Content
 Continuar: Continue
@@ -195,7 +196,7 @@ de la evaluación: of the test
 de un total de: of total of
 Debe coincidir con la contraseña: It must be equal to password
 Debe escribir su respuesta: You must write your response
-Debe ingresar el correo electrónico.: You must enter the email.
+Debes ingresar el correo electrónico: You must enter the email
 Debe seleccionar al menos un programa: You must select at least one program
 Debe seleccionar al menos un rol.: You must select at least one role.
 Debe seleccionar el grupo: You must select the group
@@ -258,10 +259,10 @@ El campo usuario debe ser mínimo de 3 caracteres.: User field must have at leas
 El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
 El correo es requerido: Mail is required
-El correo corporativo tiene un formato inválido.: Company email has invalid format.
+El correo corporativo tiene un formato inválido: Company email has invalid format
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
-El correo personal tiene un formato inválido.: Personal email has invalid format.
+El correo personal tiene un formato inválido: Personal email has invalid format
 El Encabezado es requerido.: The Header is required
 El Encabezado debe ser mínimo de 3 caracteres.: The Header must be at least 3 characters.
 El enlace de la encuesta no es un válido URL: Poll link is not a valid URL
@@ -388,6 +389,7 @@ Estatus de las sub-paginas: Sub-pages status
 Estatus de los participantes de la empresa: Participants status of the company
 este archivo descargable: this downloadable file
 Este campo es requerido.: This field is required.
+Este correo no puede ser igual al corporativo: This email can't be the same as corporate
 Este logo se mostrará en la página de login: This logo will be shown in login page
 Este rol aún no tiene permisos de acceso: This role does not have access permissions yet
 Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: This user has an active session. Wait 5 minutes and try again.
@@ -419,7 +421,7 @@ Fecha inicio: Start date
 Fecha de creación: Creation date
 Fecha de difusión: Broadcasting date
 Fecha de nacimiento: Birthday
-Fecha de nacimiento es requerida.: Birthday is required.
+Fecha de nacimiento es requerida: Birthday is required
 Fecha de Publicación: Publication date
 Fecha de registro: Registration date
 Fecha de Vencimiento: Due date
@@ -667,7 +669,7 @@ Nombre: Name
 Nombre de usuario: Username
 Nombre para esta página: Name for this page
 Nombre requerido: Name required
-Nombre del partcipante: Name of the participant
+Nombre del participante: Name of the participant
 Nombres deben ser solo alfabéticos: Names must be alphabetical
 Nota: Score
 Notas: Scores
@@ -735,7 +737,6 @@ Participantes seleccionados: Sele participants
 Pdf: Pdf
 PDF requerido: PDF is required
 Perfil de usuario: User profile
-Perfil de participante: Participant profile
 Perfil del participante: Participant profile
 Perfil Empresarial: Company Profile
 Periodo: Period

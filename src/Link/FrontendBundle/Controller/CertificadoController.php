@@ -16,7 +16,6 @@ class CertificadoController extends Controller
     {
     	
         $session = new Session();
-        $modulo=2;
         $f = $this->get('funciones');
         
         if (!$session->get('iniFront') || $f->sesionBloqueda($session->get('sesion_id')))
@@ -31,67 +30,27 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->findOneById($programa_id);
-        $query = $em->createQuery('SELECT cp FROM LinkComunBundle:CertiPagina cp
-                                   WHERE cp.pagina= :programa_id AND cp.categoria= :categoria ')
-                    ->setParameters(
-                    				array('programa_id' => $programa_id,
-                                          'categoria' => $modulo)
-                    			   );
+        $pagina = $em->getRepository('LinkComunBundle:CertiPagina')->find($programa_id);
+        $categoria = $pagina->getCategoria()->getNombre();
 
-        $modulos=$query->getResult();
-        $categoria= ($pagina->getCategoria()->getId()==1) ? 'Programa':'Curso';
-
-        $contenidoMod='<div style="font-size:21px;text-align:center"> <h1>Contenido del '.$categoria.': '.$pagina->getNombre().'</h1>';
-        $item=1;
+        $contenidoMod = '<div style="font-size:21px;text-align:center"> <h1>'.$this->get('translator')->trans('Contenido del').' '.$categoria.': '.$pagina->getNombre().'</h1>';
         
-        foreach ($modulos as $modulo) 
+        $item = 1;
+        foreach ($session->get('paginas')[$programa_id]['subpaginas'] as $modulo) 
         {
-        	$contenidoMod.='<h2> * Módulo '.$item.': '.$modulo->getNombre().'</h2>';
-        	$item+=1;
+        	$contenidoMod .= '<h2> * '.$this->get('translator')->trans('Módulo').' '.$item.': '.$modulo['nombre'].'</h2>';
+        	$item += 1;
         }
-        $contenidoMod.='</div>';
+        $contenidoMod .= '</div>';
 
-
-
-		if($pagina)
+		if ($pagina)
 		{
 
-			$certificado=false;
-			//consultamos el certificado por pagina
-	        $certificado_pagina = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-	        																							  'tipoCertificado' => '2',
-                                                                                               			  'entidadId' => $pagina->getId()));
+			$certificado = $f->getCertificado($session->get('empresa')['id'], $values['parameters']['tipo_certificado'], $pagina->getId());
 
-        	if($certificado_pagina)
-        	{
-        		$certificado = $certificado_pagina;
-        	}
-        	else {
-        		//consultamos el certificado por grupo de paginas
-		        $certificado_grupos = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-		        																							  'tipoCertificado' => 3,
-	                                                                                               			  'entidadId' => $pagina->getId()));
-				if($certificado_grupos)
-	        	{
-	        		$certificado = $certificado_grupos;
-
-	        	}else
-	        	{
-	        		//consultamos el certificado por empresa     'entidadId' => 0
-			        $certificado_empresas = $em->getRepository('LinkComunBundle:CertiCertificado')->findOneBy(array('empresa' => $session->get('empresa')['id'],
-		        					     																		    'tipoCertificado' => 1
-		                                                                                               			    ));
-			        if($certificado_empresas)
-		        	{
-		        		$certificado = $certificado_empresas;
-
-		        	}
-	        	}
-        	}
-
-	        if($certificado)//si existe certificado imprimimos el documento
+	        if ($certificado)//si existe certificado imprimimos el documento
 	        {
+
 	        	//cambiamos la fecha al formato aaaa-mm-dd
 	            $fn_array = explode("/", $session->get('paginas')[$pagina->getId()]['vencimiento']);
 	            $d = $fn_array[0];
@@ -104,30 +63,30 @@ class CertificadoController extends Controller
 				$pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                 	'pagina' => $pagina->getId() ));
 
-		        $size =2;
+		        $size = 2;
 				$contenido = $uploads['parameters']['folders']['verificar_codigo_qr'].'/'.$pagina_log->getId();
 
 		        $nombre = $pagina->getId().'_'.$session->get('usuario')['id'].'.png';
 
  				$directorio = $uploads['parameters']['folders']['dir_uploads'].'recursos/qr/'.$session->get('empresa')['id'].'/'.$nombre;
 
-		       \PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
+		       	\PHPQRCode\QRcode::png($contenido, $directorio, 'H', $size, 4);
 
 		        $ruta ='<img src="'.$directorio.'">';
 
 				$file = $uploads['parameters']['folders']['dir_uploads'].$certificado->getImagen();
 
-		        if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
+		        if ($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['certificado'] )
 		        {
+		           
 		            /*certificado numero 2*/
-
 		            if ($pagina_log->getPagina()->getCategoria()->getNombre() == 'Curso') {
 		            	
 		            	$comodines = array('%%categoria%%');
 			            $reemplazos = array('Curso');
 			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
-		            }else{
-
+		            }
+		            else{
 		            	$comodines = array('%%categoria%%');
 			            $reemplazos = array('Programa');
 			            $descripcion = str_replace($comodines, $reemplazos, $certificado->getDescripcion());
@@ -140,30 +99,20 @@ class CertificadoController extends Controller
                                             		<div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'].'</div>
 		                                            <div style="text-align:center; font-size:24px; margin-top:25px; ">'.$descripcion.'</div>
 		                                            <div style="text-align:center; font-size:40px; margin-top:25px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
-		                                            <div style="text-align:center; margin-top:40px; font-size:14px;">Fecha Inicio:'.$pagina_log->getFechaInicio()->format("d/m/y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha Fin:'.$pagina_log->getFechaFin()->format("d/m/y").' </div>
-		                                            <div style="text-align:center; margin-top:15px; font-size:14px;">Equivalente a: '.$pagina->getHorasAcademicas().' hrs. académicas </div>
+		                                            <div style="text-align:center; margin-top:40px; font-size:14px;">'.$this->get('translator')->trans('Fecha inicio').':'.$pagina_log->getFechaInicio()->format("d/m/Y").'   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$this->get('translator')->trans('Fecha fin').':'.$pagina_log->getFechaFin()->format("d/m/Y").' </div>
+		                                            <div style="text-align:center; margin-top:15px; font-size:14px;">'.$this->get('translator')->trans('Equivalente a').': '.$pagina->getHorasAcademicas().' hrs. '.$this->get('translator')->trans('académicas').'</div>
 		                                        </page>');
-
 
 		            $certificado_pdf->writeHtml('<page title="prueba" pageset="new"  backimgw="90%" backimgx="center">'
 		            								.$contenidoMod.'
 											   	</page>');
 
-		            /*certificado numero 3
-		            $certificado_pdf = new Html2Pdf('L','A4','es','true','UTF-8',array(48, 60, 0, 0));
-		            $certificado_pdf->writeHTML('<page pageset="new" backimg="'.$file.'" backtop="0mm" backbottom="0mm" backleft="0mm" backright="0mm"> 
-		                                            <div style="text-align:center; font-size:24px;">'.$certificado->getEncabezado().'</div>
-		                                            <div style="text-align:center; font-size:40px; margin-top:60px; text-transform:uppercase;">'.$session->get('usuario')['apellido'].' '.$session->get('usuario')['nombre'].'</div>
-		                                            <div style="text-align:center; font-size:24px; margin-top:50px; ">'.$certificado->getDescripcion().'</div>
-		                                            <div style="text-align:center; font-size:30px; margin-top:50px; text-transform:uppercase;">'.$pagina->getNombre().'</div>
-		                                            <div style="text-align:center; font-size:18px; margin-top:10px;">'.$fecha.'</div>
-		                                            <div style="margin-top:100px; margin-left:950px; ">'.$ruta.'</div>
-		                                        </page>');*/
 		            //Generamos el PDF
 		            $certificado_pdf->output('certificado.pdf');
+
 		        }
 		        else {
-		            if($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['constancia'] )
+		            if ($certificado->getTipoImagenCertificado()->getId() == $values['parameters']['tipo_imagen_certificado']['constancia'] )
 		            {                 
                 		$constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(5, 60, 10, 5));
 		                $constancia_pdf->writeHTML('<page  orientation="portrait" format="A4" pageset="new" backimg="'.$file.'" backtop="20mm" backbottom="20mm" backleft="0mm" backright="0mm">
@@ -181,7 +130,9 @@ class CertificadoController extends Controller
 		    else {
 		    	return $this->redirectToRoute('_authExceptionEmpresa', array('tipo' => 'certificado'));
 		    }
+
 		}
+
     }
 
 	public function notasAction($programa_id)
@@ -232,7 +183,7 @@ class CertificadoController extends Controller
 
 		$programa_aprobado = array('id' => $session->get('paginas')[$programa_id]['id'],
 							       'nombre' => $session->get('paginas')[$programa_id]['nombre'],
-							       'categoria' => 1,
+							       'categoria' => $values['parameters']['categoria']['programa'],
 							       'nota' => $nota,
 								   'cantidad_intentos' => $cantidad_intentos ? $cantidad_intentos : '');
 
@@ -314,6 +265,11 @@ class CertificadoController extends Controller
 							    padding: 4px;
 								cellpadding: 0; 
 								cellspacing: 0; }
+							hr {
+								color: #99c51b;
+								background-color: #99c51b;
+								height: 5px;
+							}
 					    </style>
 			        </head>
 				    <body class='detalle-noticias'>
@@ -358,32 +314,30 @@ class CertificadoController extends Controller
 			                            <thead>
 			                                <tr>
 			                                    <th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
-			                                    
 			                                    <th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
 			                                </tr>
 			                            </thead>
 			                            <tbody>
 											<tr style='font-size: 14px; font-weight: 300;'>
 								               <td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-								               
 								               <td class='center'>".$nota."</td>
 								            </tr>";
 									foreach ($programa_aprobado as $programa)
 							        {
 							        	
-							        	if ($programa['categoria'] == 2)
+							        	if ($programa['categoria'] == $values['parameters']['categoria']['modulo'])
 							        	{
 							        		$valor = 20;
 							        		$guion = '';
 							        	}
 							        	else {
-								        	if ($programa['categoria'] == 3)
+								        	if ($programa['categoria'] == $values['parameters']['categoria']['materia'])
 								        	{
 								        		$valor = 30;
 								        		$guion = '+ ';
 								        	}
 								        	else {
-								        		if ($programa['categoria'] == 4)
+								        		if ($programa['categoria'] == $values['parameters']['categoria']['leccion'])
 								        		{
 								        			$valor = 40;
 								        			$guion = '- ';
@@ -399,9 +353,15 @@ class CertificadoController extends Controller
 										}
 	        							$html .= "<tr ".$style.">
 							               			<td style='padding-left:".$valor."px;'>".$guion.$programa['nombre']."</td>
-									               	
 									               	<td class='center'>".number_format($nota, 2, ',', '.')."</td>
 									            </tr>";
+									}
+									if ($indice > 0)
+									{
+										$html .= "<tr style='font-size:16px; font-weight:300; font-color:#000000;'>
+								               		<td style='color:#000000;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
+								               		<td style='color:#000000;' class='center'>".number_format($puntaje/$indice, 2, ',', '.')."</td>
+								            	</tr>";
 									}
 									$margin = '50';
 									$html .= "</tbody>
@@ -414,35 +374,25 @@ class CertificadoController extends Controller
 										$nota = $programa_aprobado['nota'];
 									}
 									else {
-										$nota="N/A";
+										$nota = "N/A";
 									}
 									$margin = '200';
 									$html .= "<table class='table-notas' cellpadding='0' cellspacing='0'>
 				                            	<thead>
 				                                	<tr>
 				                                    	<th style='width: 380;'>".$this->get('translator')->trans('Módulos')."</th>
-				                                    	<th style='width: 100;'>".$this->get('translator')->trans('Veces cursadas')."</th>
 				                                    	<th style='width: 100;'>".$this->get('translator')->trans('Puntaje')."</th>
 				                                	</tr>
 				                            	</thead>
 				                            	<tbody>
 													<tr style='font-size: 14px; font-weight: 300;'>
 									               		<td style='padding-left:10px;'>".$session->get('paginas')[$programa_id]['nombre']."</td>
-									               		
 									               		<td class='center'>".number_format($nota, 2, ',', '.')."</td>
 									            	</tr>
 												</tbody>
 						                	</table>";
 								}
         					$html .= "</div>
-		                	<div class='row'>		                        
-								<table class='table-notas' cellpadding='0' cellspacing='0'>
-									<tr style='font-size: 16px; font-weight: 300;'>
-					               		<td style='width: 500;'>".$this->get('translator')->trans('Puntaje definitivo del programa').":</td>
-					               		<td style='width: 170;' class='center'>".number_format($puntaje/$indice, 2, ',', '.')."</td>
-					            	</tr>
-			                	</table>
-		                	</div>
 		                	<div class='row' style='margin-top:".$margin."px;'>
 								<table text-align='center' width='600' border=0' height='50'>
 									<tr>
@@ -456,6 +406,9 @@ class CertificadoController extends Controller
 										<td width='150' class='center'>".$this->get('translator')->trans('Firma del Supervisor')."</td>
 									</tr>
 								</table>
+							</div>
+							<div class='row' style='margin-top:".$margin."px;'>
+								<hr>
 							</div>
 				        </div>
 				    </body>
