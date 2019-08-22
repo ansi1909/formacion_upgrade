@@ -133,7 +133,7 @@ class TutorialController extends Controller
         $f = $this->get('funciones');
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'].'recursos/tutoriales';
         $em = $this->getDoctrine()->getManager();
-
+        //return new response('aqui');
         $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
         $tutorial_id = $request->request->get('tutorial_id');
@@ -258,9 +258,11 @@ class TutorialController extends Controller
     {
         $session = new Session();
         $auxTut=$request->request->get('tutorial_id');
+        //return new response($auxTut);
         $tutorial_id = ($auxTut>0) ? $auxTut.'/' : ''; 
-
+        //return new response($tutorial_id);
         $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        //return new response($dir_uploads);
         $uploads = $this->container->getParameter('folders')['uploads'];
         $upload_dir = $dir_uploads.'recursos/tutoriales/'.$tutorial_id;
         $upload_url = $uploads.'recursos/tutoriales/'.$tutorial_id;
