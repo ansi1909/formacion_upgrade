@@ -305,7 +305,9 @@ class Functions
                                                   'link_plataforma' => $link_plataforma
                                                  ],
                                         'asunto' => $this->translator->trans('Actividad en el muro').': '.$categoria['nombre'],
-                                        'remitente' => $this->container->getParameter('mailer_user'),
+										'remitente' => $this->container->getParameter('mailer_user'),
+										'remitente_name' => $this->container->getParameter('mailer_user_name'),
+										'mailer' => 'soporte_mailer',
                                         'destinatario' => $correo
                                      ];
 
@@ -371,15 +373,16 @@ class Functions
 		$ok = 0;
 
 		if ($this->container->getParameter('sendMail'))
-		{
+		{	
+			$mailer = $this->container->get('swiftmailer.mailer.'.$parametros["mailer"]);
 			// ->setBody($this->render($parametros['twig'], $parametros['datos']), 'text/html');
 			$body = $this->templating->render($parametros['twig'],$parametros['datos']);
 			$message = \Swift_Message::newInstance()
 	            ->setSubject($parametros['asunto'])
-	            ->setFrom($parametros['remitente'])
+	            ->setFrom([$parametros['remitente'] => $parametros['remitente_name']])
 	            ->setTo($parametros['destinatario'])
 	            ->setBody($body, 'text/html');
-	        $ok = $this->mailer->send($message);
+	        $ok = $mailer->send($message);
 		}
 		
         return $ok;

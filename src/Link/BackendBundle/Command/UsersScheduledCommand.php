@@ -88,8 +88,10 @@ class UsersScheduledCommand extends ContainerAwareCommand
                                                                 'logo' => $logo,
                                                                 'link_plataforma' => $base.$empresa_id),
                                                'asunto' => $asunto,
-                                               'remitente' => $yml['parameters']['mailer_user'],
-                                               'destinatario' => $correo);
+                                               'remitente' => $yml['parameters']['mailer_user_tutor'],
+                                               'remitente' => $yml['parameters']['mailer_user_tutor_name'],
+                                               'destinatario' => $correo,
+                                               'mailer' => 'tutor_mailer');
                     $ok = $f->sendEmail($parametros_correo);
                     if ($ok)
                     {

@@ -326,8 +326,10 @@ class DefaultController extends Controller
                             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                                'remitente' => array($this->container->getParameter('mailer_user')),
+                                                'remitente' => $this->container->getParameter('mailer_user'),
+                                                'remitente_name' => $this->container->getParameter('mailer_user_name'),
                                                 'destinatario' => $correo,
+                                                'mailer' => 'soporte_mailer',
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave(),
