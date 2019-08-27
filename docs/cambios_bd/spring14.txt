@@ -1,3 +1,5 @@
 1. Nuevo registro en la tabla admin_tipo_correo:
 	SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_correo', 'id'), 4, false);
 	INSERT INTO admin_tipo_correo (id, nombre) VALUES (3, 'Muro');
+
+2. Modificación en función de BD fnreporte_general.sql

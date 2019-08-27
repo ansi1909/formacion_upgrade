@@ -60,7 +60,7 @@ class ReportesController extends Controller
             $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
             $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
             $query->execute();
-            $r = $query->fetchAll();
+            $res = $query->fetchAll();
 
             // Solicita el servicio de excel
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantes.xlsx';
@@ -77,7 +77,7 @@ class ReportesController extends Controller
             {
                 $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
             }
-            if (!count($r))
+            if (!count($res))
             {
                 $objWorksheet->mergeCells('A5:S5');
                 $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
@@ -99,7 +99,7 @@ class ReportesController extends Controller
                 $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
                 $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
 
-                foreach ($r as $re)
+                foreach ($res as $re)
                 {
 
                     $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
@@ -181,7 +181,7 @@ class ReportesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-        $pagina_id = $request->query->get('pagina_previa');
+        $pagina_id = $request->query->get('pagina_selected');
 
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p

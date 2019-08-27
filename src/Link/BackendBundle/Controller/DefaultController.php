@@ -241,10 +241,10 @@ class DefaultController extends Controller
                         <td >'. $re['nombre'] .'</td>
                         <td >'. $re['fecha_inicio'] .'</td>
                         <td >'. $re['fecha_vencimiento'].'</td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>
-                        <td class="text-center"><a href="#"><span>'. $re['activos'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesNoIniciados', array('app_id' => 34, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['no_iniciados'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesCursando', array('app_id' => 21, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['cursando'] .'<i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><a href="'.$this->generateUrl('_participantesAprobados', array('app_id' => 22, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['culminado'] .' <i class="fa fa-user"></i></span></a></td>
+                        <td class="text-center"><span>'. $re['activos'] .'<i class="fa fa-user"></i></span></td>
                         <td class="text-center"><a href="'.$this->generateUrl('_participantesRegistrados', array('app_id' => 20, 'pagina_id' => $re['id'], 'empresa_id' => $empresa_id )).'"><span>'. $re['registrados'] .'<i class="fa fa-user"></i></span></a></td>
                       </tr>';
         }
