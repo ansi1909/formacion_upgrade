@@ -77,13 +77,13 @@ else {
 		$pagina_id = $row["id"];
 	}
 
-	$sql1 = "Select prl.nota 
-			from certi_prueba_log prl 
-			inner join ( certi_prueba pr
+	/*$sql1 = "select prl.nota 
+			 from certi_prueba_log prl 
+			 inner join ( certi_prueba pr
 						 inner join certi_pagina p on pr.pagina_id = p.id)
-			on prl.prueba_id = pr.id
-			where p.pagina_id =".$pagina_id."
-			and prl.estado = 'APROBADO'";
+			 on prl.prueba_id = pr.id
+			 where p.pagina_id =".$pagina_id."
+			 and prl.estado = 'APROBADO'";
 	
 	$resultado1 = pg_query($connect, $sql1);
 
@@ -96,7 +96,7 @@ else {
 		$contador++;
 	}
 
-	$promedio = $notas / $contador;
+	$promedio = $notas / $contador;*/
 	
 	if(isset($resultado))
 	{
