@@ -77,7 +77,7 @@ else {
 		$pagina_id = $row["id"];
 	}
 
-	$sql = "Select prl.nota 
+	$sql1 = "Select prl.nota 
 			from certi_prueba_log prl 
 			inner join ( certi_prueba pr
 						 inner join certi_pagina p on pr.pagina_id = p.id)
@@ -85,14 +85,14 @@ else {
 			where p.pagina_id =".$pagina_id."
 			and prl.estado = 'APROBADO'";
 	
-	$resultado = pg_query($connect, $sql);
+	$resultado1 = pg_query($connect, $sql1);
 
 	$promedio = 0;
 	$notas = 0;
 	$contador = 0;
-	while($row = pg_fetch_array($resultado))
+	while($row1 = pg_fetch_array($resultado1))
 	{
-		$notas = $notas + $row["nota"];
+		$notas = $notas + $row1["nota"];
 		$contador++;
 	}
 
