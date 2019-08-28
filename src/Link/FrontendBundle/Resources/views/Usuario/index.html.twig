@@ -28,6 +28,11 @@
               position: relative;
               z-index: 2;
             }
+            .blocked{
+                background-image: linear-gradient(-180deg, #8E8C8F 4%, #8E8C8F 95%) !important;
+                color: #ffffff !important;
+                pointer-events: none;
+            }
         </style>
 {% endblock %}
 
@@ -166,7 +171,7 @@
             </div>
             <div class="row aling-item-center justify-content-center">
                 <div class="col-6 text-center">
-                    <button type="button" class="btn btn-primary boton" id="modificar">{{ 'Guardar'|trans }}</button>
+                    <button type="button" class="btn btn-primary boton blocked" id="modificar">{{ 'Guardar'|trans }}</button>
                 </div>
             </div>
             <div class="row justify-content-center" style="display:none;" id="wait_profile">
@@ -217,7 +222,7 @@
             <span id="error_clave" class="row aling-item-center justify-content-center mt-5"></span>
             <div class="row aling-item-center justify-content-center mt-5">
                 <div class="col-auto">
-                    <button type="button" class="btn btn-primary boton" id="cambio">{{ 'Cambiar contraseña'|trans }}</button>
+                    <button type="button" class="btn btn-primary boton blocked" id="cambio">{{ 'Cambiar contraseña'|trans }}</button>
                 </div>
             </div>
             <div class="row justify-content-center" style="display:none;" id="wait_password">
@@ -247,27 +252,15 @@
     <script type="text/javascript">
         $("#form").validate({
             rules: {
-                'correo_personal': {
-                    required: true,
+                
+                'correo_secundario': {
                     email: true
-                },
-                'correo_corporativo': {
-                    email: true
-                },
-                'fecha_nacimiento': {
-                    required: true
                 }
             },
             messages: {
-                'correo_personal': {
-                    required: "{{ 'Debes ingresar el correo electrónico'|trans }}.",
-                    email: "{{ 'El correo personal tiene un formato inválido'|trans }}."
-                },
-                'correo_corporativo': {
-                    email: "{{ 'El correo corporativo tiene un formato inválido'|trans }}."
-                },
-                'fecha_nacimiento': {
-                    required: "{{ 'Fecha de nacimiento es requerida'|trans }}."
+                
+                'correo_secundario': {
+                    email: "{{ 'El correo secundario tiene un formato inválido'|trans }}."
                 }
             }
         });
@@ -333,5 +326,34 @@
                  }
                  
             });
+        
+            $("#confirmar").keyup(function(){
+				var password = $('#password').val();
+				var confirmar = $('#confirmar').val();
+				if (password == confirmar){
+					var valid = $("#form-clave").valid();
+					if (!valid) 
+					{
+						$("#cambio").addClass( "blocked" );
+					}
+					else {
+						$("#cambio").removeClass( "blocked" );
+					}
+				}
+				else {
+					$("#cambio").addClass( "blocked" );
+				}
+            });
+
+            $("#correo_secundario").keyup(function(){
+                var valid = $("#form").valid();
+                if (!valid) 
+                {
+                    $("#modificar").addClass( "blocked" );
+                }
+                else {
+                    $("#modificar").removeClass( "blocked" );
+                }
+			});
     </script>
 {% endblock %}

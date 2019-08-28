@@ -59,7 +59,7 @@ else {
 	$url_web = substr($url, 0, $url_pos);
 	$ruta = explode("/", $url);
 
-	$sql = "select u.nombre, u.apellido, p.nombre as programa, pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
+	$sql = "select u.nombre, u.apellido, p.nombre as programa, p.id as id pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
@@ -74,7 +74,29 @@ else {
 		$fecha_inicio = $row["fecha_inicio"];
 		$fecha_fin = $row["fecha_fin"];
 		$horas_academicas = $row["horas_academicas"];
+		$pagina_id = $row["id"];
 	}
+
+	$sql = "Select prl.nota 
+			from certi_prueba_log prl 
+			inner join ( certi_prueba pr
+						 inner join certi_pagina p on pr.pagina_id = p.id)
+			on prl.prueba_id = pr.id
+			where p.pagina_id =".$pagina_id."
+			and prl.estado = 'APROBADO'";
+	
+	$resultado = pg_query($connect, $sql);
+
+	$promedio = 0;
+	$notas = 0;
+	$contador = 0;
+	while($row = pg_fetch_array($resultado))
+	{
+		$notas = $notas + $row["nota"];
+		$contador++;
+	}
+
+	$promedio = $notas / $contador;
 	
 	if(isset($resultado))
 	{
@@ -131,6 +153,11 @@ else {
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
 	                        <span class="text-cQR">Equivalente a: <?php echo $horas_academicas ?> hrs. académicas</span>
 	                    </div> 
+					</div>
+					<div class="row align-items-center justify-content-between mt-12v">
+	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
+	                        <span class="text-cQR">Promedio de nota: <?php echo $promedio ?></span>
+	                    </div> 
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
@@ -139,7 +166,7 @@ else {
 	                </div>
 	                <div class="row align-items-center justify-content-center mt-3">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12 text-center">
-	                        <a class="link" href="https://www.formacion2puntocero.com/" target="_blank">https://www.formacion2puntocero.com/</a>
+	                        <a class="link" href="https://www.formacion2puntocero.com/" target="_blank">https://wwwformacionsmart.com/</a>
 	                    </div> 
 	                </div>
 	            </div>

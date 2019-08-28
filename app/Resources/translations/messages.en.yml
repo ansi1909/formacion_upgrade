@@ -260,6 +260,7 @@ El campo usuario es requerido.: User field is required.
 El contenido es requerido.: Content is required.
 El correo es requerido: Mail is required
 El correo corporativo tiene un formato inválido: Company email has invalid format
+El correo secundario tiene un formato inválido: Secondary mail has an invalid format
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
 El correo personal tiene un formato inválido: Personal email has invalid format
@@ -858,7 +859,7 @@ Si marca SI, la página tendrá una sección en el que los participantes podrán
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: If check YES, users of this company can access to this page content, even if they have approved.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: If check YES, users of this company can view this page link.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: If check YES, all of sub-pages have same start and expiration date.
-Si necesitas ayuda escribenos a: If you need help email us to
+Si necesitas ayuda escríbenos a: If you need help email us to
 Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: If you did not make the credential request, contact the support team through
 Si presionas: If you press
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: If you check YES, company participants can view the link on this page.

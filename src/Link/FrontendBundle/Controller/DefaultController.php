@@ -295,7 +295,7 @@ class DefaultController extends Controller
 
             if (!$usuario)//validamos que el correo exista
             {
-                $error = $this->get('translator')->trans('El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com');
+                $error = $this->get('translator')->trans('El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacionsmart.com');
             }
             else{
                 if (!$usuario->getActivo()) //validamos que el usuario este activo

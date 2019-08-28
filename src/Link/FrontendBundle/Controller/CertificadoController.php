@@ -200,6 +200,7 @@ class CertificadoController extends Controller
 	        if($session->get('empresa')['logo']!='')
 	        {
             	$file = $uploads['parameters']['folders']['dir_uploads'].$session->get('empresa')['logo'];
+				
 	        }
             else {
             	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion_smart.png'; 

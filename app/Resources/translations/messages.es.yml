@@ -260,6 +260,7 @@ El campo usuario es requerido.: El campo usuario es requerido.
 El contenido es requerido.: El contenido es requerido.
 El correo es requerido: El correo es requerido
 El correo corporativo tiene un formato inválido: El correo corporativo tiene un formato inválido
+El correo secundario tiene un formato inválido: El correo secundario tiene un formato inválido
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.
 El correo personal tiene un formato inválido: El correo personal tiene un formato inválido
@@ -858,7 +859,7 @@ Si marca SI, la página tendrá una sección en el que los particiantes podrán 
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
-Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
+Si necesitas ayuda escríbenos a: Si necesitas ayuda escribenos a
 Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de
 Si presionas: Si presionas
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.
