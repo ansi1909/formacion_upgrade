@@ -156,8 +156,7 @@ else {
 					</div>
 					<div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-	                        <span class="text-cQR">Promedio de nota: <?php echo $
-							 ?></span>
+	                        <span class="text-cQR">Promedio de nota: <?php echo $pagina_id	 ?></span>
 	                    </div> 
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
