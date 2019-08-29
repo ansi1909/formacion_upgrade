@@ -59,7 +59,7 @@ else {
 	$url_web = substr($url, 0, $url_pos);
 	$ruta = explode("/", $url);
 
-	$sql = "select u.nombre, u.apellido, p.nombre as programa, p.id as id pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
+	$sql = "select u.nombre, u.apellido, p.nombre as programa, p.id as id, pl.fecha_inicio as fecha_inicio, pl.fecha_fin as fecha_fin, p.horas_academicas as horas_academicas 
 			from certi_pagina_log pl 
 			inner join admin_usuario u on (u.id=pl.usuario_id)
 			inner join certi_pagina p on (p.id=pl.pagina_id)
@@ -156,7 +156,8 @@ else {
 					</div>
 					<div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-	                        <span class="text-cQR">Promedio de nota: <?php echo $promedio ?></span>
+	                        <span class="text-cQR">Promedio de nota: <?php echo $
+							 ?></span>
 	                    </div> 
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
