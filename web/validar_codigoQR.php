@@ -77,7 +77,7 @@ else {
 		$pagina_id = $row["id"];
 	}
 
-	/*$sql1 = "select prl.nota 
+	$sql1 = "select prl.nota 
 			 from certi_prueba_log prl 
 			 inner join ( certi_prueba pr
 						 inner join certi_pagina p on pr.pagina_id = p.id)
@@ -96,7 +96,7 @@ else {
 		$contador++;
 	}
 
-	$promedio = $notas / $contador;*/
+	$promedio = $notas / $contador;
 	
 	if(isset($resultado))
 	{
@@ -156,7 +156,7 @@ else {
 					</div>
 					<div class="row align-items-center justify-content-between mt-12v">
 	                    <div class="col-sm-12 col-md-12 col-12 col-lg-12 col-xl-12">
-	                        <span class="text-cQR">Promedio de nota: <?php echo $pagina_id	 ?></span>
+	                        <span class="text-cQR">Promedio de nota: <?php echo $promedio	 ?></span>
 	                    </div> 
 	                </div>
 	                <div class="row align-items-center justify-content-between mt-12v">
