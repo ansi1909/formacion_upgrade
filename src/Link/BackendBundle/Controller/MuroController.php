@@ -34,9 +34,11 @@ class MuroController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
+
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $roles=$session->get('usuario')['roles'];
-        $answer_delete= (in_array(3,$roles) || in_array(5,$roles)) ? 1:0;//verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
+        $answer_delete= (in_array($yml['parameters']['rol']['tutor'],$roles) || in_array($yml['parameters']['rol']['empresa'],$roles)) ? 1 : 0; //verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
         $usuario_empresa = 0;
         $empresas = array();
         $paginas = array();
@@ -102,14 +104,13 @@ class MuroController extends Controller
             $coments = $query2->getResult();
         }
 
-         foreach ($coments as $coment)
+        foreach ($coments as $coment)
         {
+
             $query3 = $em->createQuery("SELECT COUNT (m.id) FROM LinkComunBundle:CertiMuro m
                                        WHERE m.muro = :muro_id")
                          ->setParameters(array('muro_id' => $coment->getId()));
             $hijos = $query3->getSingleScalarResult();
-
-
 
             $comentarios[]= array('id'=>$coment->getId(),
                                   'mensaje'=>$coment->getMensaje(),
@@ -122,7 +123,6 @@ class MuroController extends Controller
                                   'hijos'=>$hijos);
 
         }
-
 
         if ($empresa_id)
         {
@@ -198,12 +198,17 @@ class MuroController extends Controller
     public function ajaxComentariosMuroAction(Request $request)
     {
         
+        $session = new Session();
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $empresa_id = $request->query->get('empresa_id');
         $pagina_id = $request->query->get('pagina_id');
         $usuario_id = $request->query->get('usuario_id');
         $html = '';
+
+        $roles = $session->get('usuario')['roles'];
+        $answer_delete= (in_array($yml['parameters']['rol']['tutor'],$roles) || in_array($yml['parameters']['rol']['empresa'],$roles)) ? 1:0; //verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
 
         if($pagina_id == 0){
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiMuro m
@@ -260,12 +265,15 @@ class MuroController extends Controller
                         <td>'.$coment->getFechaRegistro()->format("d/m/Y").'</td>
                         <td>'. $hijos .' </td>
                         <td class="center">';
-                          if($coment->getUsuario()->getId() == $usuario_id){
-                             $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
-                          }
-                           $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>
-                            <a href="#history_programation" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>
-                            <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
+                            if($coment->getUsuario()->getId() == $usuario_id){
+                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
+                            }
+                            if ($answer_delete == 1)
+                            {
+                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>';
+                            }
+                            $html .= '<a href="#history_programation" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>
+                                      <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
         }
@@ -327,9 +335,6 @@ class MuroController extends Controller
         $html .= '</tbody>
                 </table>
                 <input type="hidden" id="comentario_padre_muro_id" name="comentario_padre_muro_id" value="'.$muro_id.'">';
-        $html .= '<div class="col text-right ">
-                    <button type="button" class="bttn__nr add" data-toggle="modal" data-target="#formModal"><span class="fa fa-plus"></span><span class="text__nr">Responder</span></button>
-                  </div>';
 
         $return = array('html' => $html);
 
@@ -359,15 +364,14 @@ class MuroController extends Controller
         }else{
             $muro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->find($muro_id);
             $new_respuesta = new CertiMuro();
+            $new_respuesta->setPagina($muro_padre->getPagina());
+            $new_respuesta->setEmpresa($muro_padre->getEmpresa());
         }
         
         $new_respuesta->setMensaje($respuesta);
         $new_respuesta->setFechaRegistro(new \DateTime($fecha_actual));
-        $new_respuesta->setPagina($muro_padre->getPagina());
         $new_respuesta->setUsuario($usuario);
         $new_respuesta->setMuro($muro_padre);
-        $new_respuesta->setEmpresa($muro_padre->getEmpresa());
-        
         $em->persist($new_respuesta);
         $em->flush();
 

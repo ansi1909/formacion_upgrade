@@ -131,9 +131,9 @@
                                     <td>{{ comentario.hijos }}</td>
                                     <td class="center">
                                         {% if comentario.usuarioId == usuario.id %}
-                                            <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
+                                            <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-pencil"></span></a>
                                         {% endif %}
-                                        {% if comentario.answer_delete==0 %}
+                                        {% if comentario.answer_delete==1 %}
                                               <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm add " data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus" ></span></a>
                                         {% endif %}
 
@@ -194,7 +194,7 @@
         <input type="hidden" id="comentario_id" name="comentario_id" value="">
         <div class="row">
             <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
-                <label for="asunto" class="form-control-label">{{ 'Respuesta'|trans }}:</label>
+                <label for="asunto" class="form-control-label" id="asunto">{{ 'Respuesta'|trans }}:</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
                     <textarea type="text" class="form-control form_sty1" rows="4" id="respuesta" name="respuesta" placeholder="{{ 'Respuesta'|trans }}..."></textarea>
                 </div>
@@ -218,7 +218,8 @@
             $('#muro_id').val(muro_id);
             $('#respuesta').val('');
             $('#comentario_id').val('');
-
+            $('#exampleModalLongTitle').html("{{ 'Responder comentario'|trans }}");
+            $('#asunto').html("{{ 'Respuesta'|trans }}");
         });
 
         $('.edit').click(function(){
@@ -226,7 +227,8 @@
             var respuesta = $('.respuesta' + comentario_id).html();
             $('#comentario_id').val(comentario_id);
             $('#respuesta').val(respuesta);
-
+            $('#exampleModalLongTitle').html("{{ 'Editar comentario'|trans }}");
+            $('#asunto').html("{{ 'Comentario'|trans }}");
         });
 
         $('.see').click(function(){

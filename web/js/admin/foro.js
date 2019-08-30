@@ -16,8 +16,6 @@ $(document).ready(function() {
 	});
 
 	$('#guardar').click(function(){
-		var foro_id = $('#comentario_padre_foro_id').val();
-		$('#foro_id').val(foro_id);
 		$('#guardar').hide();
 		$('#cancelar').hide();
 		saveComentario();
@@ -25,8 +23,6 @@ $(document).ready(function() {
 
 	$('#form').submit(function(e)
 	{
-		var foro_id = $('#comentario_padre_foro_id').val();
-		$('#foro_id').val(foro_id);
 		$('#guardar').hide();
 		$('#cancelar').hide();
 		e.preventDefault();
@@ -43,37 +39,6 @@ $(document).ready(function() {
 	segundaTabla();
 });
 
-
-function linkArchivos()
-{
-	$( ".fileList").unbind( "click" );
-
-	$('.fileList').click(function()
-	{
-			$('#loadingFiles').show();
-			var comentarioId = $(this).attr('data-comentario');
-			$.ajax({
-			type: "POST",
-			url: $('#url_files_foroList').val(),
-			async: true,
-			data: $('#comentario'+comentarioId).serialize(),
-			dataType: "json",
-			success: function(data) {
-				title(data.usuario);
-				$('#listOfFiles').html(data.html);
-				$('#loadingFiles').hide();
-				$('#filesModal').modal('show');
-			},
-			error: function(){
-				$('#loadingFiles').hide();
-				$('#div-error-files').html($('#error-msg-files').val());
-			    notify($('#div-error-files').html());
-				
-			}
-		});
-		
-	});
-}
 
 function getPaginas(empresa_id){
 	$.ajax({
@@ -157,7 +122,10 @@ function editComentario(){
         $('#foro_id').val(foro_id);
         $('#respuesta').val('');
         $('#comentario_id').val('');
-
+        $('#exampleModalLongTitle').html('Agregar respuesta');
+        $('#asunto').html('Respuesta');
+        $('#guardar').show();
+        $('#guardar').prop('disabled', false);
     });
 
 	$('.edit').unbind('click');
@@ -166,7 +134,10 @@ function editComentario(){
         var respuesta = $('.respuesta' + comentario_id).html();
         $('#comentario_id').val(comentario_id);
         $('#respuesta').val(respuesta);
-
+        $('#exampleModalLongTitle').html('Editar tema');
+        $('#asunto').html('Tema');
+        $('#guardar').show();
+        $('#guardar').prop('disabled', false);
     });
 
 	$('.delete').unbind('click');
@@ -174,6 +145,34 @@ function editComentario(){
 		var comentario_id = $(this).attr('data');
 		sweetAlertDelete(comentario_id, 'CertiForo');
 	});
+
+	$( ".fileList").unbind( "click" );
+	$('.fileList').click(function()
+	{
+			$('#loadingFiles').show();
+			var foro_id = $(this).attr('data');
+			$.ajax({
+			type: "POST",
+			url: $('#url_files_foroList').val(),
+			async: true,
+			data: { foro_id: foro_id },
+			dataType: "json",
+			success: function(data) {
+				title(data.tema);
+				$('#listOfFiles').html(data.html);
+				$('#loadingFiles').hide();
+				$('#filesModal').modal('show');
+			},
+			error: function(){
+				$('#loadingFiles').hide();
+				$('#div-error-files').html($('#error-msg-files').val());
+			    notify($('#div-error-files').html());
+				
+			}
+		});
+		
+	});
+
 }
 
 function saveComentario()
@@ -284,7 +283,6 @@ function afterPaginate(){
                 $('#tbody_history_programation').html(data.html);
                 $('#tbody_history_programation').show();
                 $('#loading').hide();
-                linkArchivos();
                 segundaTabla();
                 editComentario();
                 clearTimeout( timerId );

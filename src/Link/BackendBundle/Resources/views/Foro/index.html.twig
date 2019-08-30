@@ -19,6 +19,7 @@
 <input type="hidden" id="usuario_id" name="usuario_id" value="{{ usuario.id }}">
 {% if usuario_empresa %}
     <input type="hidden" id="empresa_id" name="empresa_id" value="{{ empresa_id }}">
+    <input type="hidden" id="select_empresa_id" name="select_empresa_id" value="{{ empresa_id }}">
 {% endif %}
 <input type="hidden" id="error-msg-files" name="error-msg-files" value="{{ 'Ha ocurrido un error al cargar los archivos, verifique su conexión a internet o contacte al administrador del sistema'|trans }}">
 
@@ -70,7 +71,7 @@
                             <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_pagina_id" name="select_pagina_id">
                                 <option value="0"></option>
                                 {% for pagina in paginas %}
-                                    <option value="{{ pagina.id }}" >{{ pagina.nombre }}</option>
+                                    <option value="{{ pagina.id }}" >{{ pagina.nombre }} ({{pagina.cantidad_temas }})</option>
                                 {% endfor %}
                             </select>
                             <span class="fa fa-industry"></span>
@@ -108,7 +109,7 @@
                         <thead class="sty__title">
                             <tr>
                                 <th>{{ 'Tema'|trans }}</th>
-                                <th>{{ 'Particpante'|trans }}</th>
+                                <th>{{ 'Participante'|trans }}</th>
                                 <th>{{ 'Fecha'|trans }}</th>
                                 <th>{{ 'Acciones'|trans }}</th>
                             </tr>
@@ -121,14 +122,15 @@
                                     <td>{{ comentario.fecharegistro }}</td>
                                     <td class="center">
                                         {% if comentario.usuarioId == usuario.id %}
-                                            <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
+                                            <a href="#" title="{{'Editar'| trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
                                         {% endif %}
                                         {% if comentario.answer_delete!=0 %}  
-                                               <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm " data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
+                                               <a href="#" title="{{'Responder'| trans}}" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
                                         {% endif %}
-
                                         <a href="#" title="{{ 'Ver'|trans }}" class="btn btn-link btn-sm see" data="{{ comentario.id }}"><span class="fa fa-eye"></span></a>
-
+                                        {% if comentario.archivos %}
+                                            <a href="#" title="{{ 'Archivos'|trans }}" class="btn btn-link btn-sm fileList" data="{{ comentario.id }}"><span class="fa fa-archive"></span></a>
+                                        {% endif %}
                                         {% if comentario.answer_delete!=0 %}
                                              <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm {% if comentario.delete_disabled == '' %}delete{% endif %} {{ comentario.delete_disabled }}" data="{{ comentario.id }}"><span class="fa fa-trash"></span></a>
                                         {% endif %}
@@ -183,7 +185,7 @@
         <input type="hidden" id="comentario_id" name="comentario_id" value="">
         <div class="row">
             <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
-                <label for="asunto" class="form-control-label">{{ 'Respuesta'|trans }}:</label>
+                <label for="asunto" class="form-control-label" id="asunto">{{ 'Respuesta'|trans }}:</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
                     <textarea type="text" class="form-control form_sty1" rows="4" id="respuesta" name="respuesta" placeholder="{{ 'Respuesta'|trans }}..."></textarea>
                 </div>
@@ -218,7 +220,10 @@
             $('#foro_id').val(foro_id);
             $('#respuesta').val('');
             $('#comentario_id').val('');
-
+            $('#exampleModalLongTitle').html("{{ 'Agregar respuesta'|trans }}");
+            $('#asunto').html("{{ 'Respuesta'|trans }}");
+            $('#guardar').show();
+            $('#guardar').prop('disabled', false);
         });
 
         $('.edit').click(function(){
@@ -226,7 +231,10 @@
             var respuesta = $('.respuesta' + comentario_id).html();
             $('#comentario_id').val(comentario_id);
             $('#respuesta').val(respuesta);
-
+            $('#exampleModalLongTitle').html("{{ 'Editar tema'|trans }}");
+            $('#asunto').html("{{ 'Tema'|trans }}");
+            $('#guardar').show();
+            $('#guardar').prop('disabled', false);
         });
 
         $('.see').click(function(){
@@ -274,12 +282,11 @@
             }
         });
 
-        function title(usuario)
+        function title(tema)
         {
-            $('#ModalLongTitle').html("{{'Lista de archivos'|trans}}"+" : "+usuario );
-            
+            $('#ModalLongTitle').html("{{'Lista de archivos'|trans}}: "+tema);
             return 0;
         }
 
-        </script>
+    </script>
 {% endblock %}

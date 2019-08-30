@@ -120,7 +120,8 @@ function editComentario(){
         $('#muro_id').val(muro_id);
         $('#respuesta').val('');
         $('#comentario_id').val('');
-
+        $('#exampleModalLongTitle').html('Responder comentario');
+        $('#asunto').html('Respuesta');
     });
 
 	$('.edit').unbind('click');
@@ -129,7 +130,8 @@ function editComentario(){
         var respuesta = $('.respuesta' + comentario_id).html();
         $('#comentario_id').val(comentario_id);
         $('#respuesta').val(respuesta);
-
+        $('#exampleModalLongTitle').html('Editar comentario');
+        $('#asunto').html('Comentario');
     });
 
 	$('.delete').unbind('click');
