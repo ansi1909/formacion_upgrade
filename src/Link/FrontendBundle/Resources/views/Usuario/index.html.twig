@@ -121,13 +121,13 @@
             <a href="{{ path('_misProgramas', { 'activo': 1 }) }}"><button type="button" class="btn btn-primary">{{ 'Ver mis certificados'|trans }}</button></a>
         </div>
         <div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary">{{ 'Editar perfil'|trans }}</button></a>
+            <a href="#" data-toggle="modal" data-target="#modaledit"><button type="button" class="btn btn-primary" id="editar">{{ 'Editar perfil'|trans }}</button></a>
         </div>
         {#<div class="col-xs-auto col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
             <a href="{{ path('_ranking') }}"><button type="button" class="btn btn-primary">{{ 'Ver ranking'|trans }}</button></a>
         </div>#}
         <div class="col-sm-auto col-md-auto col-auto col-lg-auto col-xl-auto text-center">
-            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary">{{ 'Cambiar contraseña'|trans }}</button></a>
+            <a href="#" data-toggle="modal" data-target="#modalpwd"><button type="button" class="btn btn-primary" id="cambiar">{{ 'Cambiar contraseña'|trans }}</button></a>
         </div>
     </div>
 </section>
@@ -354,6 +354,36 @@
                 else {
                     $("#modificar").removeClass( "blocked" );
                 }
-			});
+            });
+
+            $("#password").keyup(function(){
+                $('#error_clave').html("");
+                var password = $('#password').val();
+				var confirmar = $('#confirmar').val();
+				if (password == confirmar){
+					var valid = $("#form-clave").valid();
+					if (!valid) 
+					{
+						$("#cambio").addClass( "blocked" );
+					}
+					else {
+						$("#cambio").removeClass( "blocked" );
+					}
+				}
+				else {
+					$("#cambio").addClass( "blocked" );
+				}
+            });
+            
+            $("#editar").click(function(){
+                $("#modificar").addClass( "blocked" );
+            });
+
+            $("#cambiar").click(function(){
+                $("#cambio").addClass( "blocked" );
+                $("#password").val("");
+                $("#confirmar").val("");
+                $('#error_clave').hide();
+            });
     </script>
 {% endblock %}

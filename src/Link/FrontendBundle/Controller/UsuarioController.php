@@ -55,11 +55,19 @@ class UsuarioController extends Controller
         $clave = $request->request->get('password');
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        if( $clave == $usuario->getClave())
+        {
+            $return = array('ok' => 2,
+                            'mensaje' => 'La contraseña debe ser distinta a la actual');
+            $return = json_encode($return);
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
+        }
         $usuario->setClave($clave);
         $em->persist($usuario);
         $em->flush();
 
-        $return = array('ok' => 1);
+        $return = array('ok' => 1,
+                        'mensaje' => 'Cambio de contraseña realizado');
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         

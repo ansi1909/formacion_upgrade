@@ -6,6 +6,12 @@
         .disabled {
             cursor: default;
         }
+        .card-footer {
+            transform: translateY(0);
+        }
+        .card .badge-wrap {
+            transform: translateY(0);
+        }
     </style>
 {% endblock %}
 
@@ -117,17 +123,17 @@
                                                 <i class="material-icons d-block">aspect_ratio</i>
                                                 <small class="d-block">{{ 'Certificado'|trans }}</small>
                                             </a>
+                                            {% if pagina.prueba != null %}
                                             <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
                                                 <i class="material-icons d-block">content_copy</i>
                                                 <small class=" d-block">{{ 'Notas'|trans }}</small>
                                             </a>
+                                            {% endif %}
                                             {% if pagina.continuar == 2 %}
                                                 <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
-                                            {% else %}
-                                                <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-ver disabled">
-                                            {% endif %}
                                                 <i class="material-icons d-block">visibility</i>
                                                 <small class=" d-block">{{ 'Ver'|trans }}</small>
+                                            {% endif %}
                                             </a>
                                         </div>
                                     {% endif %}

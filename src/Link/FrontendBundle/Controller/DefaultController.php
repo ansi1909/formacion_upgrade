@@ -103,6 +103,9 @@ class DefaultController extends Controller
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
 
+                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
+                    $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
+
                     if ($pagina_log)
                     {
                         if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
@@ -160,12 +163,14 @@ class DefaultController extends Controller
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
-                                       'link_enabled' => $link_enabled);
+                                       'link_enabled' => $link_enabled,
+                                       'prueba' => $prueba);
+                    
 
                 }
 
             }
-
+            
             $grupos[] = array('id' => $grupo_id,
                               'nombre' => $nombre_grupo,
                               'paginas' => $paginas);

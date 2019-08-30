@@ -75,8 +75,8 @@ class UsersEventoCommand extends ContainerAwareCommand
                                                                 'logo' => $logo,
                                                                 'link_plataforma' => $link_plataforma.$usuario->getEmpresa()->getId()),
                                                'asunto' => 'Formación Smart: Recordatorio de evento corporativo.',
-                                               'remitente' => $yml['parameters']['mailer_user_tutor'],
-                                               'remitente_name' => $yml['parameters']['mailer_user_tutor_name'],
+                                               'remitente' => $yml2['parameters']['mailer_user_tutor'],
+                                               'remitente_name' => $yml2['parameters']['mailer_user_tutor_name'],
                                                'destinatario' => $correo_usuario,
                                                'mailer' => 'tutor_mailer');
                     $correo = $f->sendEmail($parametros_correo);

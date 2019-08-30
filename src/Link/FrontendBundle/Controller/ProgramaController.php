@@ -364,6 +364,9 @@ class ProgramaController extends Controller
                 $pagina_empresa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $session->get('empresa')['id'],
                                                                                                                              'pagina' => $pl->getPagina()->getId()));
 
+                $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $pagina_empresa->getPagina()->getId()));                                                                                                
+                $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));
+
                 $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
 
                 if ($pagina_empresa->getAcceso() && $link_enabled)
@@ -384,7 +387,8 @@ class ProgramaController extends Controller
                                    'descripcion' => $pl->getPagina()->getDescripcion(),
                                    'dias_vencimiento' => $dias_vencimiento,
                                    'continuar' => $continuar,
-                                   'link_enabled' => $link_enabled);
+                                   'link_enabled' => $link_enabled,
+                                   'prueba' => $prueba);
                 
             }
             
@@ -476,6 +480,10 @@ class ProgramaController extends Controller
 
                     $pagina_log = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $session->get('usuario')['id'],
                                                                                                                          'pagina' => $grupo->getPagina()->getId()));
+                    
+                    $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->findOneBy(array('pagina' => $grupo->getPagina()->getId()));                                                                                                
+                    $prueba = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPrueba')->findOneBy(array('pagina' => $modulo->getId()));                                                                                                   
+
                     if ($pagina_log)
                     {
                         if ($pagina_log->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['completada'])
@@ -533,7 +541,8 @@ class ProgramaController extends Controller
                                        'class_finaliza' => $class_finaliza,
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
-                                       'link_enabled' => $link_enabled);
+                                       'link_enabled' => $link_enabled,
+                                       'prueba' => $prueba);
 
                 }
 
