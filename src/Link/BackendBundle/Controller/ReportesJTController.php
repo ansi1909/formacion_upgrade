@@ -518,32 +518,43 @@ class ReportesJTController extends Controller
         $empresa_id = $request->request->get('empresa_id');
         $login = $request->request->get('username');
 
+        // Condiciones iniciales
+        $data_found = 0;
+        $dataUsuario = array();
+        $html = '';
+
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneBy(array('login' => $login, 
                                                                                                         'empresa' => $empresa_id));
 
-        $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
-        $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml);
+        if ($usuario)
+        {
 
-        $dataUsuario = array('foto' => trim($usuario->getFoto()) ? trim($usuario->getFoto()) : 0,
-                             'login' => $usuario->getLogin(),
-                             'nombre' => $usuario->getNombre(),
-                             'apellido' => $usuario->getApellido(),
-                             'correoPersonal' => $usuario->getCorreoPersonal(),
-                             'fechaNacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
-                             'activo' => $usuario->getActivo() ? $this->get('translator')->trans('Sí') : 'No',
-                             'correoCorporativo' => $usuario->getCorreoCorporativo(),
-                             'campo1' => $usuario->getCampo1(),
-                             'campo2' => $usuario->getCampo2(),
-                             'campo3' => $usuario->getCampo3(),
-                             'campo4' => $usuario->getCampo4(),
-                             'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
-                             'ingresos' => $reporte['ingresos']);
+            $data_found = 1;
+            $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
+            $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml);
 
-        $return = array('usuario' => $dataUsuario);
+            $dataUsuario = array('foto' => trim($usuario->getFoto()) ? trim($usuario->getFoto()) : 0,
+                                 'login' => $usuario->getLogin(),
+                                 'nombre' => $usuario->getNombre(),
+                                 'apellido' => $usuario->getApellido(),
+                                 'correoPersonal' => $usuario->getCorreoPersonal(),
+                                 'fechaNacimiento' => $usuario->getFechaNacimiento() ? $usuario->getFechaNacimiento()->format('d/m/Y') : '',
+                                 'activo' => $usuario->getActivo() ? $this->get('translator')->trans('Sí') : 'No',
+                                 'correoCorporativo' => $usuario->getCorreoCorporativo(),
+                                 'campo1' => $usuario->getCampo1(),
+                                 'campo2' => $usuario->getCampo2(),
+                                 'campo3' => $usuario->getCampo3(),
+                                 'campo4' => $usuario->getCampo4(),
+                                 'nivel' => $usuario->getNivel() ? $usuario->getNivel()->getNombre() : '',
+                                 'ingresos' => $reporte['ingresos']);
 
-        $html = $this->renderView('LinkBackendBundle:Reportes:detalleParticipanteProgramas.html.twig', array('programas' => $reporte['programas']));
+            $html = $this->renderView('LinkBackendBundle:Reportes:detalleParticipanteProgramas.html.twig', array('programas' => $reporte['programas']));
 
-        $return['html'] = $html;
+        }
+
+        $return = array('usuario' => $dataUsuario,
+                        'data_found' => $data_found,
+                        'html' => $html);
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
