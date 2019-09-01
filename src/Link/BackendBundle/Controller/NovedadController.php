@@ -42,6 +42,7 @@ class NovedadController extends Controller
            ->from('LinkComunBundle:AdminNoticia', 'n')
            ->orderBy('n.fechaRegistro', 'ASC');
         
+        $parametros['tipo_noticia_id'] = $yml['parameters']['tipo_noticias']['biblioteca_virtual'];
         if ($app_id == $yml['parameters']['aplicacion']['biblioteca'])
         {
             $qb->andWhere('n.tipoNoticia = :tipo_noticia_id');
@@ -49,7 +50,12 @@ class NovedadController extends Controller
         else {
             $qb->andWhere('n.tipoNoticia != :tipo_noticia_id');
         }
-        $qb->setParameter('tipo_noticia_id', $yml['parameters']['tipo_noticias']['biblioteca_virtual']);
+        if ($usuario->getEmpresa())
+        {
+            $qb->andWhere('n.empresa = :empresa_id');
+            $parametros['empresa_id'] = $usuario->getEmpresa()->getId();
+        }
+        $qb->setParameters($parametros);
         $query = $qb->getQuery();
         $noticiasdb = $query->getResult();
 
