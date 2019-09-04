@@ -948,7 +948,7 @@ class UsuarioController extends Controller
                         $clave = trim($cell->getValue());
                         if (!$clave)
                         {
-                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La clave es requerida').'.';
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La contraseña es requerida').'.';
                         }
                         else {
                             $hay_data++;
