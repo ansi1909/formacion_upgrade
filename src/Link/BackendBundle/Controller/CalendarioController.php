@@ -100,6 +100,12 @@ class CalendarioController extends Controller
                 $selected = $nivel->getId() == $id_nivel ? 'selected' : '';
                 $options .= '<option value="'.$nivel->getId().'" '.$selected.'>'.$nivel->getNombre().'</option>';
             }
+            if($selected)
+            {
+                $options .= '<option value="">'.$this->get('translator')->trans('Todos los niveles').'</option>';
+            }else{
+                $options .= '<option value="" selected>'.$this->get('translator')->trans('Todos los niveles').'</option>';
+            }
         
             $e = array('id' => $evento->getId(),
                        'title' => $evento->getNombre(),
@@ -160,6 +166,7 @@ class CalendarioController extends Controller
         $evento->setEmpresa($empresa);
         $evento->setNivel($nivel);
         $evento->setUsuario($usuario);
+        $evento->setFechaCreacion(new \DateTime());
         $em->persist($evento);
         $em->flush();
 

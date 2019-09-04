@@ -15,7 +15,6 @@ begin
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-               AND u.activo = true
                AND u.login NOT LIKE 'temp%'
                AND u.empresa_id = pempresa_id
        ) as registrados,
@@ -24,7 +23,6 @@ begin
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-               AND u.activo = true
                AND u.login NOT LIKE 'temp%'
                AND u.empresa_id = pempresa_id
                AND u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id AND pl.estatus_pagina_id != 3)        
@@ -34,7 +32,6 @@ begin
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-               AND u.activo = true
                AND u.login NOT LIKE 'temp%'
                AND u.empresa_id = pempresa_id
                AND u.id IN (SELECT pl.usuario_id FROM certi_pagina_log pl WHERE pl.pagina_id = pe.pagina_id AND pl.estatus_pagina_id = 3)
@@ -43,8 +40,7 @@ begin
            (admin_nivel n INNER JOIN certi_nivel_pagina np ON n.id = np.nivel_id) 
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id 
-               AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-               AND u.activo = true 
+               AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                AND u.login NOT LIKE 'temp%'
                AND u.empresa_id = pempresa_id 
                AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s) 
@@ -55,7 +51,6 @@ begin
            ON u.nivel_id = n.id 
            WHERE np.pagina_empresa_id = pe.id
                AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2)
-               AND u.activo = true
                AND u.login NOT LIKE 'temp%'
                AND u.empresa_id = pempresa_id 
                AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )

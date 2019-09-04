@@ -35,12 +35,12 @@ class UsersEventoCommand extends ContainerAwareCommand
         $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
         $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
-        $tomorrow_start = date('Y-m-d', strtotime('tomorrow')).' 00:00:00';
-        $tomorrow_end = date('Y-m-d', strtotime('tomorrow')).' 23:59:59';
+        $tomorrow_start = date('Y-m-d', strtotime('now')).' 00:00:00';
+        $tomorrow_end = date('Y-m-d', strtotime('now')).' 23:59:59';
 
         $query = $em->createQuery("SELECT ev FROM LinkComunBundle:AdminEvento ev 
                                     JOIN ev.empresa e 
-                                    WHERE ev.fechaInicio BETWEEN :tomorrow_start AND :tomorrow_end 
+                                    WHERE ev.fechaCreacion BETWEEN :tomorrow_start AND :tomorrow_end 
                                     AND e.activo = :activo 
                                     ORDER BY ev.id ASC")
                     ->setParameters(array('tomorrow_start' => $tomorrow_start,
@@ -48,6 +48,7 @@ class UsersEventoCommand extends ContainerAwareCommand
                                           'activo' => true));
         $eventos = $query->getResult();
 
+    
         foreach ($eventos as $evento)
         {
 

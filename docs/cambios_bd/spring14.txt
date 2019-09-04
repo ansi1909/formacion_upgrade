@@ -3,3 +3,5 @@
 	INSERT INTO admin_tipo_correo (id, nombre) VALUES (3, 'Muro');
 
 2. Modificación en función de BD fnreporte_general.sql
+
+3. Agregar columna en la tabla Admin_evento, fecha_creacion,  tipo timestamp without time zone
