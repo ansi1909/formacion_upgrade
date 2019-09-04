@@ -197,15 +197,16 @@ de un total de: of total of
 Debe coincidir con la contraseña: It must be equal to password
 Debe escribir su respuesta: You must write your response
 Debes ingresar el correo electrónico: You must enter the email
+Debes ingresar el correo personal o el correo corporativo: You must enter either personal email or corporate email
 Debe seleccionar al menos un programa: You must select at least one program
-Debe seleccionar al menos un rol.: You must select at least one role.
+Debe seleccionar al menos un rol: You must select at least one role
 Debe seleccionar el grupo: You must select the group
 Debe seleccionar el tipo de pregunta o agregar una nueva: You must select the question type or add a new one
 Debe seleccionar la fecha inicial: You must select the initial date
 Debe seleccionar la fecha final: You must select the final date
 Debe seleccionar la página.: You must select the page.
 Debe seleccionar la página destino: You must select the destination page
-Debe seleccionar tanto la empresa como el nivel.: You must select both the company and the level.
+Debes seleccionar tanto la empresa como el nivel: You must select both the company and the level
 Debe seleccionar una fecha de publicación.: You must select a publication date.
 Debe seleccionar una fecha de vencimiento.: You must select a due date.
 Debe ser mínimo de 3 caracteres.: This field must have at least 3 characters.
@@ -245,8 +246,8 @@ Elementos sin seleccionar: Unselected items
 Elija el destino de la página: Choose target of the page
 Eliminado: Deleted
 Eliminar: Remove
-El apellido del usuario debe ser mínimo de 3 caracteres.: User last name must have at least 3 characters.
-El apellido del usuario es requerido.: User last name is required.
+El apellido del usuario debe ser mínimo de 3 caracteres: User last name must have at least 3 characters
+El apellido del usuario es requerido: User last name is required
 El archivo: The file
 El archivo debe tener al menos una fila con datos: File must have at least one row with data
 El archivo es requerido.: File is required.
@@ -255,8 +256,8 @@ El asunto debe ser mínimo de 3 caracteres: The subject must have at least 3 cha
 El asunto es requerido: The subject is required
 El autor es requerido.: The author is required.
 El autor debe ser mínimo de 3 caracteres.: The author must be at least 3 characters.
-El campo usuario debe ser mínimo de 3 caracteres.: User field must have at least 3 characters.
-El campo usuario es requerido.: User field is required.
+El campo usuario debe ser mínimo de 3 caracteres: User field must have at least 3 characters
+El campo usuario es requerido: User field is required
 El contenido es requerido.: Content is required.
 El correo es requerido: Mail is required
 El correo corporativo tiene un formato inválido: Company email has invalid format
@@ -274,7 +275,7 @@ El logo de la empresa se mostrará en la página de login: Will this logo be sho
 El título es requerido.: The title is required.
 El título debe ser mínimo de 3 caracteres.: The title must be at least 3 characters.
 El grupo ha sido almacenada con éxito: The group has been stored successfully
-El login ya existe.: Login already exists.
+El login ya existe: Login already exists
 El lugar es requerido.: The place is required.
 El material complementario debe ser sólo archivo con extensión pdf.: Complementary content must be a pdf file extension.
 El mensaje es requerido.: The message is required.
@@ -289,8 +290,8 @@ El nombre de la página es requerido.: Page name is required.
 El nombre del archivo no debe contener acentos o caracteres especiales: File name must not have neither accents nor special characters
 El nombre del tutorial debe ser mínimo de 3 caracteres: Tutorial name must have at least 3 characters
 El nombre del tutorial es requerido: Tutorial name is required
-El nombre del usuario debe ser mínimo de 3 caracteres.: User first name must have at least 3 characters.
-El nombre del usuario es requerido.: User first name is required.
+El nombre del usuario debe ser mínimo de 3 caracteres: User first name must have at least 3 characters
+El nombre del usuario es requerido: User first name is required
 El país es requerido.: Country is required.
 El país no existe en la base de datos: Country does not exist in database
 El participante: The participant
@@ -422,7 +423,6 @@ Fecha inicio: Start date
 Fecha de creación: Creation date
 Fecha de difusión: Broadcasting date
 Fecha de nacimiento: Birthday
-Fecha de nacimiento es requerida: Birthday is required
 Fecha de Publicación: Publication date
 Fecha de registro: Registration date
 Fecha de Vencimiento: Due date
@@ -458,7 +458,7 @@ Ha ocurrido un error al generar el archivo de participantes, verifique su conexi
 Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: An error ocurred into query processing. Contact your system administrator.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: An error ocurred on the server. Contact your system administrator.
 Ha ocurrido un error en la eliminación de este registro: An error ocurred deleting this item
-Ha ocurrido un error en la validación del usuario.: An error ocurred validating user login.
+Ha ocurrido un error en la validación del usuario: An error ocurred validating user login
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: An error ocurred getting the programs. Contact your system administrator.
 Ha ocurrido un error reordenando de este registro: An error ocurred reordering this item
 Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.: An error occurred when loading the connected participants, check your internet connection or contact the system administrator.
@@ -529,7 +529,7 @@ La cantidad máxima de intentos debe ser un valor entero.: The max number of att
 La cantidad máxima de intentos es requerida.: The max number of attempts is required.
 La categoría es requerida.: Category is required.
 La categoría ha sido almacenada con éxito: Category has been saved successfully
-La clave es requerida.: Password is required.
+La clave es requerida: Password is required
 La columna Activo debe ser un valor entero: The Active column must be an integer value
 La columna Activo debe tener como valor 0 o 1: The Active column must be 1 or 0
 La contraseña es requerida: Password is required

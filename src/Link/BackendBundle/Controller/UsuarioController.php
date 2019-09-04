@@ -331,12 +331,18 @@ class UsuarioController extends Controller
             $usuario->setCorreoPersonal($correo_personal);
             $usuario->setCorreoCorporativo($correo_corporativo);
             $usuario->setActivo($activo ? true : false);
-            $fn_array = explode("/", $fecha_nacimiento);
-            $d = $fn_array[0];
-            $m = $fn_array[1];
-            $a = $fn_array[2];
-            $fecha_nacimiento = "$a-$m-$d";
-            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            if ($fecha_nacimiento)
+            {
+                $fn_array = explode("/", $fecha_nacimiento);
+                $d = $fn_array[0];
+                $m = $fn_array[1];
+                $a = $fn_array[2];
+                $fecha_nacimiento = "$a-$m-$d";
+                $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            }
+            else {
+                $usuario->setFechaNacimiento(null);
+            }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
             $usuario->setCampo2($campo2);
@@ -669,12 +675,18 @@ class UsuarioController extends Controller
             $usuario->setCorreoPersonal($correo_personal);
             $usuario->setCorreoCorporativo($correo_corporativo);
             $usuario->setActivo($activo ? true : false);
-            $fn_array = explode("/", $fecha_nacimiento);
-            $d = $fn_array[0];
-            $m = $fn_array[1];
-            $a = $fn_array[2];
-            $fecha_nacimiento = "$a-$m-$d";
-            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            if ($fecha_nacimiento)
+            {
+                $fn_array = explode("/", $fecha_nacimiento);
+                $d = $fn_array[0];
+                $m = $fn_array[1];
+                $a = $fn_array[2];
+                $fecha_nacimiento = "$a-$m-$d";
+                $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            }
+            else {
+                $usuario->setFechaNacimiento(null);
+            }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
             $usuario->setCampo2($campo2);
@@ -936,7 +948,7 @@ class UsuarioController extends Controller
                         $clave = trim($cell->getValue());
                         if (!$clave)
                         {
-                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La clave es requerida.');
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La clave es requerida').'.';
                         }
                         else {
                             $hay_data++;

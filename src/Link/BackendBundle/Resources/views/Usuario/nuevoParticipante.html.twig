@@ -372,7 +372,7 @@
                             if (data.ok != 0)
                             {
                                 $('#finish').show();
-                                $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
+                                $('#div-error ul').html("<li>- {{ 'El login ya existe'|trans }}.</li>");
                                 $('#div-error ul').show();
                                 notify($('#div-error').html());
                             }
@@ -381,7 +381,7 @@
                             }
                         },
                         error: function(){
-                            $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
+                            $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario'|trans }}.</li>");
                             $('#div-error ul').show();
                             notify($('#div-error').html());
                             $('#finish').show();
@@ -423,9 +423,6 @@
                 'correo_personal': {
                     email: true
                 },
-                'fecha_nacimiento': {
-                    required: true
-                },
                 'empresa_id': {
                     required: true
                 },
@@ -438,25 +435,22 @@
             },
             messages: {
                 'nombre': {
-                    required: "- {{ 'El nombre del usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El nombre del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'El nombre del usuario es requerido'|trans }}.",
+                    minlength: "- {{ 'El nombre del usuario debe ser mínimo de 3 caracteres'|trans }}."
                 },
                 'apellido': {
-                    required: "- {{ 'El apellido del usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'El apellido del usuario es requerido'|trans }}",
+                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres'|trans }}."
                 },
                 'login': {
-                    required: "- {{ 'El campo usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El campo usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'El campo usuario es requerido'|trans }}.",
+                    minlength: "- {{ 'El campo usuario debe ser mínimo de 3 caracteres'|trans }}."
                 },
                 'clave': {
-                    required: "- {{ 'La clave es requerida.'|trans }}"
+                    required: "- {{ 'La clave es requerida'|trans }}."
                 },
                 'correo_personal': {
-                    email: "- {{ 'El correo personal tiene un formato inválido.'|trans }}"
-                },
-                'fecha_nacimiento': {
-                    required: "- {{ 'Fecha de nacimiento es requerida.'|trans }}"
+                    email: "- {{ 'El correo personal tiene un formato inválido'|trans }}."
                 },
                 'empresa_id': {
                     required: "- {{ 'La empresa es requerida.'|trans }}"
@@ -465,7 +459,7 @@
                     required: "- {{ 'El nivel es requerido.'|trans }}"
                 },
                 'correo_corporativo': {
-                    email: "- {{ 'El correo corporativo tiene un formato inválido.'|trans }}"
+                    email: "- {{ 'El correo corporativo tiene un formato inválido'|trans }}."
                 }
             }
         });

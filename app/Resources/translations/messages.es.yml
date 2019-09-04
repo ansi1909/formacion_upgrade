@@ -197,15 +197,16 @@ de un total de: de un total de
 Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe escribir su respuesta: Debe escribir su respuesta
 Debes ingresar el correo electrónico: Debes ingresar el correo electrónico
+Debes ingresar el correo personal o el correo corporativo: Debes ingresar el correo personal o el correo corporativo
 Debe seleccionar al menos un programa: Debe seleccionar al menos un programa
-Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
+Debe seleccionar al menos un rol: Debe seleccionar al menos un rol
 Debe seleccionar el grupo: Debe seleccionar el grupo
 Debe seleccionar el tipo de pregunta o agregar una nueva: Debe seleccionar el tipo de pregunta o agregar una nueva
 Debe seleccionar la fecha inicial: Debe seleccionar la fecha inicial
 Debe seleccionar la fecha final: Debe seleccionar la fecha final
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar la página destino: Debe seleccionar la página destino
-Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
+Debes seleccionar tanto la empresa como el nivel: Debe seleccionar tanto la empresa como el nivel
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
@@ -245,8 +246,8 @@ Elementos sin seleccionar: Elementos sin seleccionar
 Elija el destino de la página: Elija el destino de la página
 Eliminado: Eliminado
 Eliminar: Eliminar
-El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
-El apellido del usuario es requerido.: El apellido del usuario es requerido.
+El apellido del usuario debe ser mínimo de 3 caracteres: El apellido del usuario debe ser mínimo de 3 caracteres
+El apellido del usuario es requerido: El apellido del usuario es requerido
 El archivo: El archivo
 El archivo debe tener al menos una fila con datos: El archivo debe tener al menos una fila con datos
 El archivo es requerido.: El archivo es requerido.
@@ -255,8 +256,8 @@ El asunto debe ser mínimo de 3 caracteres: El asunto debe ser mínimo de 3 cara
 El asunto es requerido: El asunto es requerido
 El autor es requerido.: El autor es requerido.
 El autor debe ser mínimo de 3 caracteres.: El autor debe ser mínimo de 3 caracteres.
-El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
-El campo usuario es requerido.: El campo usuario es requerido.
+El campo usuario debe ser mínimo de 3 caracteres: El campo usuario debe ser mínimo de 3 caracteres
+El campo usuario es requerido: El campo usuario es requerido
 El contenido es requerido.: El contenido es requerido.
 El correo es requerido: El correo es requerido
 El correo corporativo tiene un formato inválido: El correo corporativo tiene un formato inválido
@@ -274,7 +275,7 @@ El logo de la empresa se mostrará en la página de login: El logo de la empresa
 El título es requerido.: El título es requerido.
 El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
 El grupo ha sido almacenada con éxito: El grupo ha sido almacenada con éxito
-El login ya existe.: El login ya existe.
+El login ya existe: El login ya existe
 El lugar es requerido.: El lugar es requerido.
 El material complementario debe ser sólo archivo con extensión pdf.: El material complementario debe ser sólo archivo con extensión pdf.
 El mensaje es requerido.: El mensaje es requerido.
@@ -289,8 +290,8 @@ El nombre de la página es requerido.: El nombre de la página es requerido.
 El nombre del archivo no debe contener acentos o caracteres especiales: El nombre del archivo no debe contener acentos o caracteres especiales
 El nombre del tutorial debe ser mínimo de 3 caracteres: El nombre del tutorial debe ser mínimo de 3 caracteres
 El nombre del tutorial es requerido: El nombre del tutorial es requerido
-El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
-El nombre del usuario es requerido.: El nombre del usuario es requerido.
+El nombre del usuario debe ser mínimo de 3 caracteres: El nombre del usuario debe ser mínimo de 3 caracteres
+El nombre del usuario es requerido: El nombre del usuario es requerido
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
 El participante: El participante
@@ -422,7 +423,6 @@ Fecha inicio: Fecha inicio
 Fecha de creación: Fecha de creación
 Fecha de difusión: Fecha de difusión
 Fecha de nacimiento: Fecha de nacimiento
-Fecha de nacimiento es requerida: Fecha de nacimiento es requerida
 Fecha de Publicación: Fecha de Publicación
 Fecha de registro: Fecha de registro
 Fecha de Vencimiento: Fecha de Vencimiento
@@ -458,7 +458,7 @@ Ha ocurrido un error al generar el archivo de participantes, verifique su conexi
 Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
-Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
+Ha ocurrido un error en la validación del usuario: Ha ocurrido un error en la validación del usuario
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
 Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.: Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.
@@ -529,7 +529,7 @@ La cantidad máxima de intentos debe ser un valor entero.: La cantidad máxima d
 La cantidad máxima de intentos es requerida.: La cantidad máxima de intentos es requerida.
 La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
-La clave es requerida.: La clave es requerida.
+La clave es requerida: La clave es requerida
 La columna Activo debe ser un valor entero: La columna Activo debe ser un valor entero
 La columna Activo debe tener como valor 0 o 1: La columna Activo debe tener como valor 0 o 1
 La contraseña es requerida: La contraseña es requerida
