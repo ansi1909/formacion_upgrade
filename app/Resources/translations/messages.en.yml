@@ -93,6 +93,7 @@ Cancelar: Cancel
 Cantidad: Quantity
 Cantidad de conexiones: Number of connections
 Cantidad de filas: Number of rows
+Cantidad de participantes por programa: Number of participants per program
 Cantidad de preguntas a mostrar: Number of questions to show
 Cantidad de preguntas de la evaluación: Number of test questions
 Cantidad de registros creados: Number of records created
@@ -809,7 +810,7 @@ Repetir evaluación: Repeat evaluation
 Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
-Reporte de participantes no iniciados en programas: Report of participants not initiated in programs
+Reporte de participantes no iniciados en programa: Report of participants not initiated in program
 Reporte de participantes registrados por programas: Report of participants registered by programs
 Reporte de participantes por empresa: Participant report by company
 Reportar un problema: Report a problem

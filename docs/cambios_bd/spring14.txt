@@ -5,3 +5,6 @@
 2. Modificación en función de BD fnreporte_general.sql
 
 3. Agregar columna en la tabla Admin_evento, fecha_creacion,  tipo timestamp without time zone
+
+4. Modificación en la función de DB fnlistado_participantes.sql
+

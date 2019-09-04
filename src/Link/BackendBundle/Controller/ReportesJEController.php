@@ -118,9 +118,10 @@ class ReportesJEController extends Controller
 
             // Crea el writer
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+            $empresaName = strtoupper($empresaName);
             $hoy = date('d-m-Y');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/horasConexion_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/HORAS CONEXION '.$empresaName.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -224,9 +225,10 @@ class ReportesJEController extends Controller
         $pdf->writeHtml('<page>'.$header_footer.$tabla.'</page>');
         $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
         $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+        $empresaName = strtoupper($empresaName);
 
         //Generamos el PDF
-        $pdf->output('horasConexion_'.$empresaName.'.pdf');
+        $pdf->output('HORAS CONEXION '.$empresaName.'.pdf');
 
     }
 

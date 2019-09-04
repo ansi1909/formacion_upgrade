@@ -41,7 +41,8 @@ begin
             WHERE u.empresa_id = pempresa_id 
                 AND u.login NOT LIKE 'temp%'
                 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-            GROUP BY u.competencia,u.clave,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
+            GROUP BY u.competencia,u.clave,u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo
+            ORDER BY u.nombre ASC;
 
     ElsIf pnivel_id > 0 AND ppagina_id = 0 Then 
 
@@ -69,7 +70,8 @@ begin
             WHERE u.empresa_id = pempresa_id AND u.nivel_id = pnivel_id 
                 AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                 AND u.login NOT LIKE 'temp%'
-            GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
+            GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo
+            ORDER BY u.nombre ASC;
 
     ElsIf pnivel_id = 0 AND ppagina_id > 0 Then 
 
@@ -102,7 +104,8 @@ begin
                 WHERE u.empresa_id = pempresa_id AND pe.pagina_id = ppagina_id 
                     AND u.login NOT LIKE 'temp%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
+                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo
+                ORDER BY u.nombre ASC;
 
         ElsIf preporte = 3 Then 
 
@@ -132,7 +135,8 @@ begin
                         WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id != 3 ) 
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                     AND u.login NOT LIKE 'temp%'
-                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
+                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo
+                ORDER BY u.nombre ASC;
 
         ElsIf preporte = 4 Then
 
@@ -187,7 +191,8 @@ begin
                             WHERE pl.pagina_id = ppagina_id AND pl.estatus_pagina_id = 3 ) 
                     AND u.login NOT LIKE 'temp%'
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
-                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo,promedio,fecha_inicio_programa,hora_inicio_programa,fecha_fin_programa,hora_fin_programa;
+                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo,promedio,fecha_inicio_programa,hora_inicio_programa,fecha_fin_programa,hora_fin_programa
+                ORDER BY u.nombre ASC;
 
         ElsIf preporte = 5 Then
 
@@ -223,7 +228,8 @@ begin
                     AND u.id IN (SELECT ru.usuario_id FROM admin_rol_usuario ru WHERE ru.rol_id = 2) 
                     AND u.id IN (SELECT DISTINCT(s.usuario_id) FROM admin_sesion s )
                     AND pe.pagina_id = ppagina_id
-                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo;
+                GROUP BY u.nombre,u.apellido,u.login,u.correo_personal,u.correo_corporativo,u.activo,fecha_registro,fecha_nacimiento,u.pais_id,n.nombre,u.campo1,u.campo2,u.campo3,u.campo4,u.id,u.codigo
+                ORDER BY u.nombre ASC;
 
         End If;
 

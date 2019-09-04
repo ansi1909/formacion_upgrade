@@ -93,6 +93,7 @@ Cancelar: Cancelar
 Cantidad: Cantidad
 Cantidad de conexiones: Cantidad de conexiones
 Cantidad de filas: Cantidad de filas
+Cantidad de participantes por programa: Cantidad de participantes por programa
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
 Cantidad de registros creados: Cantidad de registros creados
@@ -809,7 +810,7 @@ Repetir evaluación: Repetir evaluación
 Reportar problema: Reportar problema
 Reporte de participantes aprobados por programas: Reporte de participantes aprobados por programas
 Reporte de participantes cursando por programas: Reporte de participantes cursando por programas
-Reporte de participantes no iniciados en programas: Reporte de participantes no iniciados en programas
+Reporte de participantes no iniciados en programa: Reporte de participantes no iniciados en programa
 Reporte de participantes registrados por programas: Reporte de participantes registrados por programas
 Reporte de participantes por empresa: Reporte de participantes por empresa
 Reportar un problema: Reportar un problema

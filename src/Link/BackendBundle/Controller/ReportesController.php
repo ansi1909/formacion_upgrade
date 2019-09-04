@@ -44,7 +44,33 @@ class ReportesController extends Controller
             $nivel_id = $nivel_id ? $nivel_id : 0;
             $pagina_id = $pagina_id ? $pagina_id : 0;
             $i = 1;
+            $pagina = array();
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+            //$nombre_reporte = $r;
+
+            if($reporte == 1)
+            {
+                $encabezado = 'empresa';
+                
+            }
+            elseif($reporte == 2)
+            {
+                $encabezado = 'registrados';
+
+            }
+            elseif($reporte == 3)
+            {
+                $encabezado = 'cursando';
+            }
+            elseif($reporte == 4)
+            {
+                $encabezado = 'aprobados';
+            }
+            elseif($reporte == 5)
+            {
+                $encabezado = 'no iniciados';
+            }
 
             if ($pagina_id)
             {
@@ -69,10 +95,10 @@ class ReportesController extends Controller
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').'. ');
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').' '.$this->get('translator')->trans($encabezado).'.');
             if ($pagina_id)
             {
-                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'.');
             }else
             {
                 $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
@@ -139,15 +165,27 @@ class ReportesController extends Controller
             // Crea el writer
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
             $empresaName = $f->eliminarAcentos($empresa->getNombre());
+            $empresaName = strtoupper($empresaName);
+            $encabezado = strtoupper($encabezado);
             $hoy = date('d-m-Y');
             
             // Envia la respuesta del controlador
             $response = $this->get('phpexcel')->createStreamedResponse($writer);
             // Agrega los headers requeridos
-            $dispositionHeader = $response->headers->makeDisposition(
-                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                'ListadoDeParticipantes_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xlsx'
-            );
+            if($pagina)
+            {   
+                $programaName = $f->eliminarAcentos($pagina->getNombre());
+                $programaName = strtoupper($programaName);
+                $dispositionHeader = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                        $encabezado.' '.$programaName.' '.$empresaName.'.xlsx'
+                );
+            }else{
+                $dispositionHeader = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                        $encabezado.' '.$empresaName.'.xlsx'
+                );
+            }
 
             $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
             $response->headers->set('Pragma', 'public');
@@ -186,7 +224,8 @@ class ReportesController extends Controller
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
                                    WHERE pe.empresa = :empresa_id
-                                   AND p.pagina IS NULL')
+                                   AND p.pagina IS NULL
+                                   ORDER BY p.nombre ASC')
                     ->setParameter('empresa_id', $empresa_id);
         $paginas = $query->getResult();
 
@@ -220,7 +259,8 @@ class ReportesController extends Controller
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
                                    WHERE pe.empresa = :empresa_id
-                                   AND p.pagina IS NULL')
+                                   AND p.pagina IS NULL
+                                   ORDER BY p.nombre ASC')
                     ->setParameter('empresa_id', $empresa_id);
         $paginas = $query->getResult();
 
@@ -466,16 +506,16 @@ class ReportesController extends Controller
 
         // Crea el writer
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);
+        /*$longitud = strlen($empresaName);
+        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);*/
         $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/listadoAprobados_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/APROBADOS '.$empresaName.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'listadoAprobados_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $document_name = 'APROBADOS '.$empresaName.'.xls';
         $bytes = filesize($xls);
         $document_size = $f->fileSizeConvert($bytes);
         
@@ -750,7 +790,7 @@ class ReportesController extends Controller
                                         JOIN pe.pagina p
                                         WHERE p.pagina IS NULL
                                         AND pe.empresa = :empresa_id 
-                                        ORDER BY p.id ASC")
+                                        ORDER BY p.nombre ASC")
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
 
@@ -960,7 +1000,7 @@ class ReportesController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').'. ');
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Cantidad de participantes por programa').'. ');
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
         
         if (!count($r))
@@ -987,13 +1027,15 @@ class ReportesController extends Controller
 
             foreach ($r1 as $re)
             {
-                
+                $objWorksheet->getStyle("A$row:H$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A8:H8")->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A$row:H$row")->getFont()->setSize($font_size); // Tamaño de las letras
                 $objWorksheet->getStyle("A$row:H$row")->getFont()->setName($font); // Tipo de letra
                 $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                 $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(30); // Altura de la fila
-            
+                $objWorksheet->getStyle("A6:C6")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A5:C5")->applyFromArray($styleThinBlackBorderOutline); //bordes
 
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A6', $usuarios_registrados);
@@ -1016,6 +1058,7 @@ class ReportesController extends Controller
         // Crea el writer
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
+        $empresaName = strtoupper($empresaName);
         $hoy = date('d-m-Y');
         
         // Envia la respuesta del controlador
@@ -1023,7 +1066,7 @@ class ReportesController extends Controller
         // Agrega los headers requeridos
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'ReporteGeneral_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xlsx'
+            'RESUMEN PROGRAMAS '.$empresaName.'.xlsx'
         );
 
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
@@ -1045,7 +1088,7 @@ class ReportesController extends Controller
                                     JOIN pe.pagina p 
                                     WHERE pe.empresa = :empresa_id
                                     AND p.pagina IS NULL 
-                                    ORDER BY pe.orden')
+                                    ORDER BY p.nombre ASC')
                     ->setParameter('empresa_id', $empresa_id);
         $paginas = $query->getResult();
 
@@ -1071,7 +1114,8 @@ class ReportesController extends Controller
         $query = $em->createQuery('SELECT f FROM LinkComunBundle:CertiForo f  
                                     WHERE f.empresa = :empresa_id
                                     AND f.foro IS NULL 
-                                    AND f.pagina = :pagina_id')
+                                    AND f.pagina = :pagina_id
+                                    ORDER BY f.tema ASC')
                     ->setParameters(array('empresa_id' => $empresa_id,
                                           'pagina_id' => $pagina_id));
         $temas = $query->getResult();
