@@ -663,16 +663,16 @@ class ReportesController extends Controller
 
         // Encabezado
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de espacio colaborativo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
-        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'. '.$this->get('translator')->trans('Tema').': '.$tema->getTema().'.');
-
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+        $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Tema').': '.$tema->getTema() );
         if (!count($listado))
         {
-            $objWorksheet->mergeCells('A5:S5');
-            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+            $objWorksheet->mergeCells('A6:S6');
+            $objWorksheet->setCellValue('A6', $this->get('translator')->trans('No existen registros para esta consulta'));
         }
         else {
 
-            $row = 5;
+            $row = 6;
             $i = 0;
             $styleThinBlackBorderOutline = array(
                 'borders' => array(
@@ -691,7 +691,7 @@ class ReportesController extends Controller
             {
 
                 $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
-                
+                $mensaje = strip_tags($participante['mensaje']);
                 $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
                 $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
@@ -714,7 +714,7 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
                 $objWorksheet->setCellValue('M'.$row, $participante['fecha_mensaje']);
-                $objWorksheet->setCellValue('N'.$row, $participante['mensaje']);
+                $objWorksheet->setCellValue('N'.$row, $mensaje);
                 $row++;
 
             }
@@ -723,17 +723,17 @@ class ReportesController extends Controller
 
         // Crea el writer
         $empresaName = $fn->eliminarAcentos($empresa->getNombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);
+        $empresaName = strtoupper($empresaName);
         $paginaName = $fn->eliminarAcentos($pagina->getNombre());
+        $paginaName = strtoupper($paginaName);
         $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/interaccionColaborativo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/ESPACIO COLABORATIVO '.$paginaName.' '.$empresaName.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'interaccionColaborativo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $document_name = 'ESPACIO COLABORATIVO '.$empresaName.' '.$paginaName.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         
@@ -751,6 +751,8 @@ class ReportesController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
+        $hoy = date('Y-m-d h:i:s');
+        //return new response($hoy);
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -798,7 +800,7 @@ class ReportesController extends Controller
             {
                 $tiene++;
                 $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
-                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
+                $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
                 if ($subPaginas['tiene'] > 0)
                 {
                     $str .= '<ul>';
@@ -825,6 +827,58 @@ class ReportesController extends Controller
 
     }
 
+    public function subPaginasEmpresa($pagina_id, $empresa_id)
+	{
+
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+		$subpaginas = array();
+		$tiene = 0;
+		$return = null;
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $hoy = date('Y-m-d 23:59:59');
+        //return new response($hoy);
+		$query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                    JOIN pe.pagina p 
+                                    WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                                    ORDER BY p.orden ASC")
+                    ->setParameters(array('empresa_id' => $empresa_id,
+                    					  'pagina_id' => $pagina_id));
+        $subpages = $query->getResult();
+		
+		foreach ($subpages as $subpage)
+		{
+			$tiene++;
+                if($subpage->getPagina()->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'])
+                {   
+                    $desde = $subpage->getPagina()->getFechaCreacion();
+                    $desde = $desde->format('Y-m-d h:i:s');
+                    
+                    $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId(),$desde , $hoy);
+                    
+                    $cantidad = count($listado);
+                    $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .'" >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.')';
+                }else{
+                    $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .' " >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre();
+                }
+				$subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId());
+				if ($subPaginas['tiene'] > 0)
+				{
+					$return .= '<ul>';
+					$return .= $subPaginas['return'];
+					$return .= '</ul>';
+				}
+				$return .= '</li>';
+			
+		}
+
+		$subpaginas = array('tiene' => $tiene,
+							'return' => $return);
+
+		return $subpaginas;
+
+	}
+
     public function ajaxInteraccionMuroAction(Request $request)
     {
         
@@ -846,8 +900,11 @@ class ReportesController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-
+        $leccion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        $materia = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($leccion->getPagina());
+        $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($materia->getPagina());
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
+        
         $listado = $rs->interaccionMuro($empresa_id, $pagina_id, $desde, $hasta);
 
 
@@ -858,8 +915,9 @@ class ReportesController extends Controller
 
         // Encabezado
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
-        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
-
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$programa->getNombre() .'.');
+        $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Módulo').': '.$modulo->getNombre().'. '.$this->get('translator')->trans('Materia').': '.$materia->getNombre() .'.');
+        $objWorksheet->setCellValue('A4', $this->get('translator')->trans('Lección').': '.$leccion->getNombre().'.');
         if (!count($listado))
         {
             $objWorksheet->mergeCells('A5:S5');
@@ -867,7 +925,7 @@ class ReportesController extends Controller
         }
         else {
 
-            $row = 5;
+            $row = 8;
             $i = 0;
             $styleThinBlackBorderOutline = array(
                 'borders' => array(
@@ -885,6 +943,8 @@ class ReportesController extends Controller
             foreach ($listado as $participante)
             {
                $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
+               $fecha = explode(" ",$participante['fecha_mensaje']);
+
                 
                 $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
@@ -907,8 +967,9 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
                 $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('M'.$row, $participante['fecha_mensaje']);
-                $objWorksheet->setCellValue('N'.$row, $participante['mensaje']);
+                $objWorksheet->setCellValue('M'.$row, $fecha[0]);
+                $objWorksheet->setCellValue('N'.$row, $fecha[1]);
+                $objWorksheet->setCellValue('o'.$row, $participante['mensaje']);
                 $row++;
 
             }
@@ -917,17 +978,17 @@ class ReportesController extends Controller
 
         // Crea el writer
         $empresaName = $fn->eliminarAcentos($empresa->getNombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
-        $paginaName = $fn->eliminarAcentos($pagina->getNombre());
+        $empresaName = strtoupper($empresaName);
+        $paginaName = $fn->eliminarAcentos($programa->getNombre());
+        $paginaName = strtoupper($paginaName);
         $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/interaccionMuro_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/MURO '.$paginaName.' '.$empresaName.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'interaccionMuro_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $document_name = 'MURO '.$paginaName.' '.$empresaName.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         

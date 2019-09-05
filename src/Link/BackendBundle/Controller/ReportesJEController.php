@@ -383,16 +383,16 @@ class ReportesJEController extends Controller
         // Crea el writer
         $empresaName = $fn->eliminarAcentos($empresa->getNombre());
         $paginaName =  $fn->eliminarAcentos($pagina->getnombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
+        $empresaName = strtoupper($empresaName);
+        $paginaName = strtoupper($paginaName);
         $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
+        $path = 'recursos/reportes/EVALUACIONES '.$paginaName.'_'.$empresaName.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
+        $document_name = 'EVALUACIONES '.$paginaName.'_'.$empresaName.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         

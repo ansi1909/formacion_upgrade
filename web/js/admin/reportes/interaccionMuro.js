@@ -19,8 +19,13 @@ $(document).ready(function() {
 		var id = data.node.id;
 		var pagina_id = $('#'+id).attr('p_id');
 		var pagina_str = $('#'+id).attr('p_str');
-		$('#pagina_str').val(pagina_str);
-		$('#pagina_id').val(pagina_id);
+		var tipo_recurso_id = $('#'+id).attr('tipo_recurso_id');
+		if(tipo_recurso_id == 4)
+		{
+			$('#pagina_str').val(pagina_str);
+			$('#pagina_id').val(pagina_id);
+		}
+		
 	});
 
 	$('#form').submit(function(e) {

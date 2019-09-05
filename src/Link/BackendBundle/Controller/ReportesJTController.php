@@ -215,11 +215,11 @@ class ReportesJTController extends Controller
 
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
-            $longitud = strlen($empresaName);
-            $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
+            $empresaName = strtoupper($empresaName);
             $hoy = date('d-m-Y');
             $paginaName =  $fun->eliminarAcentos($pagina->getNombre());
-            $path = 'recursos/reportes/avance_'.$paginaName.'_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+            $paginaName = strtoupper($paginaName);
+            $path = 'recursos/reportes/AVANCE '.$paginaName.' '.$empresaName.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -400,7 +400,7 @@ class ReportesJTController extends Controller
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $hoy = date('d-m-Y');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/conexionesUsuario_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'xls';
+            $path = 'recursos/reportes/CONEXIONES POR USUARIO '.$empresaName.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
