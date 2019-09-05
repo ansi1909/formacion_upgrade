@@ -122,6 +122,9 @@ Código del empleado repetido: Employee code repeated
 Columna: Column
 ¡Comencemos! Elige tu programa: Let's start! Choose your program
 Comentar: Comment
+Comentario: Comment
+Comentario seleccionado: Selected comment
+comentarios: comments
 Comentarios: Comments
 Comparativo hasta el: Comparative until
 Competencia debe ser un valor entero: Competition must be an integer value
@@ -236,6 +239,7 @@ Domingo: Sunday
 Duplicar página y sub-páginas: Duplicate page and sub-pages
 Editar: Edit
 Editar asignación: Edit assignment
+Editar comentario: Edit comment
 Editar evaluación: Edit test
 Editar página: Edit page
 Editar perfil: Edit profile
@@ -627,10 +631,11 @@ Módulos: Modules
 Módulos vistos: Modules seen
 Mostrando registros del: Showing items of
 Mostrar: Show
+Mostrar contraseña: Show password
 Mostrar los resultados de la evaluación: Show evaluation results
 Mostrar preferencia: Show preference
 Mostrar resultados: Show results
-Mostrar contraseña : Show password
+MOSTRAR TODOS LOS COMENTARIOS: SHOW ALL COMMENTS
 Mover: Move
 Muro: Wall
 Mover página: Move page
@@ -718,10 +723,10 @@ País: Country
 Para una correcta visualización de los recursos disponbles en : For a correct visualization of the resources available in 
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: To send the notification immediately select today
 Para ver el detalle del evento puede entrar al siguiente enlace: To see the detail of the event you can enter the following link
+participante: participant
 Participante: Participant
 participantes: participants
 Participantes: Participants
-participante: participant
 Participantes activos: Active participants
 Participantes inactivos: Inactive participants
 Participantes no iniciados: Uninitiated participants

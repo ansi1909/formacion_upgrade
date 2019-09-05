@@ -122,6 +122,9 @@ Código del empleado repetido: Código del empleado repetido
 Columna: Columna
 ¡Comencemos! Elige tu programa: ¡Comencemos! Elige tu programa
 Comentar: Comentar
+Comentario: Comentario
+Comentario seleccionado: Comentario seleccionado
+comentarios: comentarios
 Comentarios: Comentarios
 Comparativo hasta el: Comparativo hasta el
 Competencia debe ser un valor entero: Competencia debe ser un valor entero
@@ -236,6 +239,7 @@ Domingo: Domingo
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
 Editar asignación: Editar asignación
+Editar comentario: Editar comentario
 Editar evaluación: Editar evaluación
 Editar página: Editar página
 Editar perfil: Editar perfil
@@ -627,10 +631,11 @@ Módulos: Módulos
 Módulos vistos: Módulos vistos
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
+Mostrar contraseña: Mostrar contraseña
 Mostrar los resultados de la evaluación: Mostrar los resultados de la evaluación
 Mostrar preferencia: Mostrar preferencia
 Mostrar resultados: Mostrar resultados
-Mostrar contraseña: Mostrar contraseña 
+MOSTRAR TODOS LOS COMENTARIOS: MOSTRAR TODOS LOS COMENTARIOS
 Mover: Mover
 Mover página: Mover página
 Muro: Muro
@@ -718,10 +723,10 @@ País: País
 Para una correcta visualización de los recursos disponbles en: Para una correcta visualización de los recursos disponbles en
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
+participante: participante
 Participante: Participante
 participantes: participantes
 Participantes: Participantes
-Particpante: participante
 Participantes activos: Participantes activos
 Participantes inactivos: Participantes inactivos
 Participantes no iniciados: Participantes no iniciados
