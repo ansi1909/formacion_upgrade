@@ -8,3 +8,6 @@
 
 4. Modificación en la función de DB fnlistado_participantes.sql
 
+5. Modificación en la función de DB fnavance_programa.sql
+
+6.Modificación en la función de DB fnconexion_usuario.sql
