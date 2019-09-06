@@ -14,7 +14,7 @@
 {% set encabezado = 'Avance en programas'|trans %}
 
 <form id="form" name="form" action="{{ path ('_ajaxAvanceProgramas') }}" method="POST">
-    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 ,'filtro_fecha': 1 ,'filtro_username': 0 }) }}
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 ,'resumen_registro':0, 'filtro_fecha': 1 ,'filtro_username': 0 }) }}
 </form>
 
 {# Sección de resultados del reporte #}

@@ -47,7 +47,6 @@ class ReportesController extends Controller
             $pagina = array();
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
 
-            //$nombre_reporte = $r;
 
             if($reporte == 1)
             {
@@ -129,8 +128,9 @@ class ReportesController extends Controller
                 {
 
                     $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
-                    $activo = $re['activo'] = "TRUE" ? '1' : '0';
+                    $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                     $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
+                    $fecha = explode(" ", $re['fecha_registro']);
                     
                     $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
                     $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
@@ -145,16 +145,17 @@ class ReportesController extends Controller
                     $objWorksheet->setCellValue('B'.$row, $re['login']);
                     $objWorksheet->setCellValue('C'.$row, $re['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $re['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $re['fecha_registro']);
-                    $objWorksheet->setCellValue('F'.$row, $correo);
-                    $objWorksheet->setCellValue('G'.$row, $activo);
-                    $objWorksheet->setCellValue('H'.$row, $logueado);
-                    $objWorksheet->setCellValue('I'.$row, $re['pais']);
-                    $objWorksheet->setCellValue('J'.$row, $re['nivel']);
-                    $objWorksheet->setCellValue('K'.$row, $re['campo1']);
-                    $objWorksheet->setCellValue('L'.$row, $re['campo2']);
-                    $objWorksheet->setCellValue('M'.$row, $re['campo3']);
-                    $objWorksheet->setCellValue('N'.$row, $re['campo4']);
+                    $objWorksheet->setCellValue('E'.$row, $fecha['0']);
+                    $objWorksheet->setCellValue('F'.$row, $fecha['1'].$fecha[2]);
+                    $objWorksheet->setCellValue('G'.$row, $correo);
+                    $objWorksheet->setCellValue('H'.$row, $acceso);
+                    $objWorksheet->setCellValue('I'.$row, $logueado);
+                    $objWorksheet->setCellValue('J'.$row, $re['pais']);
+                    $objWorksheet->setCellValue('K'.$row, $re['nivel']);
+                    $objWorksheet->setCellValue('L'.$row, $re['campo1']);
+                    $objWorksheet->setCellValue('M'.$row, $re['campo2']);
+                    $objWorksheet->setCellValue('N'.$row, $re['campo3']);
+                    $objWorksheet->setCellValue('O'.$row, $re['campo4']);
                     $row++;
 
                 }
@@ -204,7 +205,8 @@ class ReportesController extends Controller
             $usuario_empresa = 1; 
         }
         else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                   array('nombre' => 'ASC' ));
         } 
 
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
@@ -234,11 +236,11 @@ class ReportesController extends Controller
         {
             if ($pagina->getPagina()->getId() == $pagina_id) 
             {
-                $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getNombre().'  </option>';
+                $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().'  </option>';
             }
             else
             {
-                 $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().' </option>';
+                 $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().' </option>';
             }
            
         }
@@ -268,7 +270,7 @@ class ReportesController extends Controller
         foreach ($paginas as $pe)
         {
             $valores[] = array('id' => $pe->getPagina()->getId(),
-                               'nombre' => $pe->getPagina()->getNombre(),
+                               'nombre' => $pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre(),
                                'selected' => $pe->getPagina()->getId() == $pagina_selected ? 'selected' : '');
         }
         
@@ -348,7 +350,7 @@ class ReportesController extends Controller
 
         // Estilizar las celdas de los nombres de los programas antes del merge
         $p = 0;
-        $col = 14; // Columna O
+        $col = 15; // Columna O
 
         foreach ($listado['paginas'] as $pagina_id => $pagina)
         {
@@ -427,7 +429,8 @@ class ReportesController extends Controller
 
             foreach ($listado['participantes'] as $participante)
             {
-
+                $fecha = explode(" ", $participante['fecha_registro']);
+                $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                 // Estilizar toda la fila, excepto el bgcolor de las celdas de los programas
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->getFont()->setSize($font_size); // Tamaño de las letras
@@ -441,19 +444,20 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
-                $objWorksheet->setCellValue('G'.$row, $participante['activo']);
-                $objWorksheet->setCellValue('H'.$row, $participante['logueado']);
-                $objWorksheet->setCellValue('I'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('E'.$row, $fecha[0]);
+                $objWorksheet->setCellValue('F'.$row, $fecha[1].$fecha[2]);
+                $objWorksheet->setCellValue('G'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('H'.$row, $acceso);
+                $objWorksheet->setCellValue('I'.$row, $participante['logueado']);
+                $objWorksheet->setCellValue('J'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('K'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('N'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('O'.$row, $participante['campo4']);
                 
                 // Datos de cada programa
-                $col = 14; // Columna O
+                $col = 15; // Columna O
                 $aprobados = 0;
                 foreach ($listado['paginas'] as $pagina_id => $pagina)
                 {
@@ -469,6 +473,13 @@ class ReportesController extends Controller
                     }
                     $col += 5;
                 }
+
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getAlignment()->setHorizontal($horizontal_left); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+
                 $objWorksheet->setCellValue($columnNames[$col].$row, $aprobados);
 
                 $row++;
@@ -487,7 +498,7 @@ class ReportesController extends Controller
             );
 
             // Estilizar las celdas de los totales de los programas antes del merge
-            $col = 14; // Columna O
+            $col = 15; // Columna O
 
             foreach ($listado['paginas'] as $pagina_id => $pagina)
             {
@@ -506,8 +517,7 @@ class ReportesController extends Controller
 
         // Crea el writer
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
-        /*$longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);*/
+        $empresaName = strtoupper($empresaName);
         $hoy = date('d-m-Y');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
         $path = 'recursos/reportes/APROBADOS '.$empresaName.'.xls';
@@ -556,13 +566,12 @@ class ReportesController extends Controller
                     <thead class="sty__title">
                         <tr>
                             <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Apellido').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Login').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
                             <th class="hd__title">'.$this->get('translator')->trans('País').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                            <th class="hd__title">'.$this->get('translator')->trans('Logueado').'</th>
                         </tr>
                     </thead>
                     <tbody style="font-size: .7rem;">';
@@ -571,14 +580,13 @@ class ReportesController extends Controller
         {
             $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
             $html .= '<tr>
-                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$ru['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$ru['nombre'].'</a></td>
-                        <td>'.$ru['apellido'].'</td>
+                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$ru['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$ru['nombre'].' '.$ru['apellido'] .'</a></td>
                         <td>'.$ru['login'].'</td>
+                        <td>'.$ru['nivel'].'</td>
                         <td>'.$ru['correo'].'</td>
-                        <td>'.$activo.'</td>
                         <td>'.$ru['fecha_registro'].'</td>
                         <td>'.$ru['pais'].'</td>
-                        <td>'.$ru['nivel'].'</td>
+                        <td>'.$activo.'</td>
                     </tr>';
         }
 
@@ -653,8 +661,6 @@ class ReportesController extends Controller
 
         $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta);
 
-        //return new response(var_dump($listado));
-
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionColaborativo.xlsx';
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
@@ -692,6 +698,7 @@ class ReportesController extends Controller
 
                 $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
                 $mensaje = strip_tags($participante['mensaje']);
+                $fecha = explode(" ",$participante['fecha_mensaje']);
                 $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
                 $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
@@ -713,8 +720,9 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
                 $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('M'.$row, $participante['fecha_mensaje']);
-                $objWorksheet->setCellValue('N'.$row, $mensaje);
+                $objWorksheet->setCellValue('M'.$row, $fecha[0]);
+                $objWorksheet->setCellValue('N'.$row, $fecha[1]);
+                $objWorksheet->setCellValue('O'.$row, $mensaje);
                 $row++;
 
             }
@@ -1156,7 +1164,7 @@ class ReportesController extends Controller
         $options = '<option value=""></option>';
         foreach ($paginas as $pagina)
         {
-            $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().'</option>';
+            $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().'</option>';
         }
         
         $return = array('options' => $options);
