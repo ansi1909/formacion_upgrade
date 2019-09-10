@@ -34,13 +34,19 @@ $(document).ready(function() {
 		sweetAlertDelete(comentario_id, 'CertiForo');
 	});
 
+	$('#aceptar').click(function(){
+        location.reload();
+    });
+
 	observe();
-	editComentario();
 	segundaTabla();
+
 });
 
 
 function getPaginas(empresa_id){
+	$('#select_pagina_id').hide();
+	$('#pagina-loader').show();
 	$.ajax({
 		type: "GET",
 		url: $('#url_paginas_foro').val(),
@@ -48,6 +54,8 @@ function getPaginas(empresa_id){
 		data: { empresa_id: empresa_id },
 		dataType: "json",
 		success: function(data) {
+			$('#select_pagina_id').show();
+			$('#pagina-loader').hide();
 			$('#select_pagina_id').html(data.options);
 		},
 		error: function(){
@@ -58,6 +66,11 @@ function getPaginas(empresa_id){
 }
 
 function getListadoComentarios(empresa_id,pagina_id,usuario_id){
+	$('#list_comentarios').hide();
+	$('#loader').show();
+	$('#tbody_history_programation').hide();
+	$('#loading').show();
+	$('#panel_espacio').hide();
 	$.ajax({
 		type: "GET",
 		url: $('#url_comentarios_foro').val(),
@@ -65,7 +78,10 @@ function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 		data: { pagina_id: pagina_id, empresa_id: empresa_id, usuario_id: usuario_id },
 		dataType: "json",
 		success: function(data) {
+			$('#list_comentarios').show();
+			$('#loader').hide();
 			$('#list_comentarios').html(data.html);
+			$('#loading').hide();
 			applyDataTable();
 			observe();
 			clearTimeout( timerId );
@@ -110,111 +126,49 @@ function observe(){
 		afterPaginate();
 	});
 
-	editComentario();
-
 }
 
-function editComentario(){
-
-	$('.add').unbind('click');
-	$('.add').click(function(){
-        var foro_id = $(this).attr('data');
-        $('#foro_id').val(foro_id);
-        $('#respuesta').val('');
-        $('#comentario_id').val('');
-        $('#exampleModalLongTitle').html('Agregar respuesta');
-        $('#asunto').html('Respuesta');
-        $('#guardar').show();
-        $('#guardar').prop('disabled', false);
-    });
-
-	$('.edit').unbind('click');
-	$('.edit').click(function(){
-        var comentario_id = $(this).attr('data');
-        var respuesta = $('.respuesta' + comentario_id).html();
-        $('#comentario_id').val(comentario_id);
-        $('#respuesta').val(respuesta);
-        $('#exampleModalLongTitle').html('Editar tema');
-        $('#asunto').html('Tema');
-        $('#guardar').show();
-        $('#guardar').prop('disabled', false);
-    });
-
-	$('.delete').unbind('click');
-	$('.delete').click(function(){
-		var comentario_id = $(this).attr('data');
-		sweetAlertDelete(comentario_id, 'CertiForo');
-	});
-
-	$( ".fileList").unbind( "click" );
-	$('.fileList').click(function()
-	{
-			$('#loadingFiles').show();
-			var foro_id = $(this).attr('data');
-			$.ajax({
-			type: "POST",
-			url: $('#url_files_foroList').val(),
-			async: true,
-			data: { foro_id: foro_id },
-			dataType: "json",
-			success: function(data) {
-				title(data.tema);
-				$('#listOfFiles').html(data.html);
-				$('#loadingFiles').hide();
-				$('#filesModal').modal('show');
-			},
-			error: function(){
-				$('#loadingFiles').hide();
-				$('#div-error-files').html($('#error-msg-files').val());
-			    notify($('#div-error-files').html());
-				
-			}
-		});
-		
-	});
-
-}
 
 function saveComentario()
 {
 	$('#div-alert').hide();
-		if ($("#form").valid())
-		{
-			$('#guardar').prop('disabled', true);
-			$.ajax({
-				type: "POST",
-				url: $('#form').attr('action'),
-				async: true,
-				data: $("#form").serialize(),
-				dataType: "json",
-				success: function(data) {
-					$( "#detail-edit" ).attr( "data", data.id );
-					if (data.delete_disabled != '') 
-					{
-						$("#detail-delete").hide();
-						$("#detail-delete").removeClass( "delete" );
-					}
-					else
-					{
-						$( "#detail-delete" ).attr("data",data.id);
-						$( "#detail-delete" ).addClass("delete");
-						$( "#detail-delete" ).show();
-					}
-					$('#form').hide();
-					$('#alert-success').show();
-					$('#detail').show();
-					$('#aceptar').show();
-					$('#guardar').hide();
-					$('#cancelar').hide();
-					clearTimeout( timerId );
-				},
-				error: function(){
-					$('#guardar').prop('disabled', false);
-					$('#alert-error').html($('#error_msg-save').val());
-					$('#div-alert').show();
+	if ($("#form").valid())
+	{
+		$('#guardar').prop('disabled', true);
+		$.ajax({
+			type: "POST",
+			url: $('#form').attr('action'),
+			async: true,
+			data: $("#form").serialize(),
+			dataType: "json",
+			success: function(data) {
+				$( "#detail-edit" ).attr( "data", data.id );
+				if (data.delete_disabled != '') 
+				{
+					$("#detail-delete").hide();
+					$("#detail-delete").removeClass( "delete" );
 				}
-			});
-		}
+				else
+				{
+					$( "#detail-delete" ).attr("data",data.id);
+					$( "#detail-delete" ).addClass("delete");
+					$( "#detail-delete" ).show();
+				}
+				$('#form').hide();
+				$('#alert-success').show();
+				$('#detail').show();
+				$('#aceptar').show();
+				$('#guardar').hide();
+				$('#cancelar').hide();
+				clearTimeout( timerId );
+			},
+			error: function(){
+				$('#guardar').prop('disabled', false);
+				$('#alert-error').html($('#error_msg-save').val());
+				$('#div-alert').show();
+			}
+		});
+	}
 }
 
 function segundaTabla()
@@ -272,6 +226,7 @@ function afterPaginate(){
         var usuario_id = $('#usuario_id').val();
         $('#div-active-alert').hide();
         $('#tbody_history_programation').hide();
+        $('#panel_espacio').hide();
         $('#loading').show();
         $.ajax({
             type: "GET",
@@ -283,6 +238,8 @@ function afterPaginate(){
                 $('#tbody_history_programation').html(data.html);
                 $('#tbody_history_programation').show();
                 $('#loading').hide();
+                $('#panel_espacio').html(data.panel);
+                $('#panel_espacio').show();
                 segundaTabla();
                 editComentario();
                 clearTimeout( timerId );
@@ -292,6 +249,6 @@ function afterPaginate(){
                 $('#div-active-alert').show();
             }
         });
-        
     });
+
 }

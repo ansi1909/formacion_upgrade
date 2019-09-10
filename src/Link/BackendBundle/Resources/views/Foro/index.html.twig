@@ -53,13 +53,14 @@
                                 <option value="0"></option>
                             </select>
                             <span class="fa fa-industry"></span>
-                            <span class="bttn_d"><img src="{{asset ('img/down-arrowbck.png')}}"></span>
+                            <span class="bttn_d"><img src="{{ asset('img/down-arrowbck.png')}}"></span>
+                            <img id="pagina-loader" class="img-loader descargable" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" style="display:none;">
+                        </div>
+                        <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4" id="loadingPaginas" style="width:20px;display:none;">
+                            <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
                         </div>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8 alert alert-danger" role="alert" id="div-error-files" style="display:none;">
-                    </div>
-                    <div id="loadingFiles" style="width:20px;display:none">
-                            <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
                     </div>
                     <br>
                 </div>
@@ -69,7 +70,7 @@
                     <div class="row">
                         <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                             <select class="form_sty_sel form-control" style="border-radius: 5px" id="select_pagina_id" name="select_pagina_id">
-                                <option value="0"></option>
+                                <option value="0">{{ 'TODOS LOS TEMAS'|trans }}</option>
                                 {% for pagina in paginas %}
                                     <option value="{{ pagina.id }}" >{{ pagina.nombre }} ({{pagina.cantidad_temas }})</option>
                                 {% endfor %}
@@ -103,6 +104,11 @@
                     <div class="col-sm-2">
                         &nbsp;
                     </div>
+                </div>
+                <div class="load1 load-wrapper" id="loader" style="display: none;">
+                    <div class="loader">
+                        Loading...
+                    </div>  
                 </div>
                 <div id="list_comentarios">
                     <table class="table" id="dt">
@@ -144,9 +150,11 @@
         </div>
     </div>
     <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+        <div id="panel_espacio">
+        </div>
         <div class="card" id="history_programation">
             <div class="card-header gradiente">
-                <h5 class="card-title">{{ 'Respuestas comentario seleccionado'|trans }}</h5>
+                <h5 class="card-title">{{ 'Respuestas del tema seleccionado'|trans }}</h5>
             </div>
             <div class="card-block">
                 <div id="tbody_history_programation">
@@ -154,7 +162,7 @@
                         <thead class="sty__title">
                             <tr>
                                 <th>{{ 'Mensaje'|trans }}</th>
-                                <th>{{ 'Particpante'|trans }}</th>
+                                <th>{{ 'Participante'|trans }}</th>
                                 <th>{{ 'Fecha'|trans }}</th>
                                 <th>{{ 'Acciones'|trans }}</th>
                             </tr>
@@ -163,8 +171,10 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="loading" style="width:24px;display:none">
-                    <img src="{{ asset('fancybox/fancybox_loading.gif') }}">
+                <div class="load1 load-wrapper" id="loading" style="display: none;">
+                    <div class="loader">
+                        Loading...
+                    </div>  
                 </div>
             </div>
         </div>
@@ -215,59 +225,65 @@
     <script type="text/javascript" src="{{ asset('js/admin/foro.js') }}"></script>
     <script type="text/javascript">
 
-        $('.add').click(function(){
-            var foro_id = $(this).attr('data');
-            $('#foro_id').val(foro_id);
-            $('#respuesta').val('');
-            $('#comentario_id').val('');
-            $('#exampleModalLongTitle').html("{{ 'Agregar respuesta'|trans }}");
-            $('#asunto').html("{{ 'Respuesta'|trans }}");
-            $('#guardar').show();
-            $('#guardar').prop('disabled', false);
-        });
+        function editComentario(){
 
-        $('.edit').click(function(){
-            var comentario_id = $(this).attr('data');
-            var respuesta = $('.respuesta' + comentario_id).html();
-            $('#comentario_id').val(comentario_id);
-            $('#respuesta').val(respuesta);
-            $('#exampleModalLongTitle').html("{{ 'Editar tema'|trans }}");
-            $('#asunto').html("{{ 'Tema'|trans }}");
-            $('#guardar').show();
-            $('#guardar').prop('disabled', false);
-        });
-
-        $('.see').click(function(){
-            var foro_id = $(this).attr('data');
-            var usuario_id = $('#usuario_id').val();
-            $('#div-active-alert').hide();
-            $('#tbody_history_programation').hide();
-            $('#loading').show();
-            $.ajax({
-                type: "GET",
-                url: $('#url_respuestas_comentarios_foro').val(),
-                async: true,
-                data: { foro_id: foro_id, usuario_id: usuario_id },
-                dataType: "json",
-                success: function(data) {
-                    $('#tbody_history_programation').html(data.html);
-                    $('#tbody_history_programation').show();
-                    $('#loading').hide();
-                    segundaTabla();
-                    afterPaginate();
-                    clearTimeout( timerId );
-                },
-                error: function(){
-                    $('#active-error').html($('#error_msg_history').val());
-                    $('#div-active-alert').show();
-                }
+            $('.add').unbind('click');
+            $('.add').click(function(){
+                var foro_id = $(this).attr('data');
+                $('#foro_id').val(foro_id);
+                $('#respuesta').val('');
+                $('#comentario_id').val('');
+                $('#exampleModalLongTitle').html("{{ 'Agregar respuesta'|trans }}");
+                $('#asunto').html("{{ 'Respuesta'|trans }}");
+                $('#guardar').show();
+                $('#guardar').prop('disabled', false);
             });
-            
-        });
 
-        $('#aceptar').click(function(){
-                location.reload();
+            $('.edit').unbind('click');
+            $('.edit').click(function(){
+                var comentario_id = $(this).attr('data');
+                var respuesta = $('.respuesta' + comentario_id).html();
+                $('#comentario_id').val(comentario_id);
+                $('#respuesta').val(respuesta);
+                $('#exampleModalLongTitle').html("{{ 'Editar tema'|trans }}");
+                $('#asunto').html("{{ 'Tema'|trans }}");
+                $('#guardar').show();
+                $('#guardar').prop('disabled', false);
             });
+
+            $('.delete').unbind('click');
+            $('.delete').click(function(){
+                var comentario_id = $(this).attr('data');
+                sweetAlertDelete(comentario_id, 'CertiForo');
+            });
+
+            $( ".fileList").unbind( "click" );
+            $('.fileList').click(function(){
+                $('#loadingFiles').show();
+                var foro_id = $(this).attr('data');
+                $.ajax({
+                    type: "POST",
+                    url: $('#url_files_foroList').val(),
+                    async: true,
+                    data: { foro_id: foro_id },
+                    dataType: "json",
+                    success: function(data) {
+                        title(data.tema);
+                        $('#listOfFiles').html(data.html);
+                        $('#loadingFiles').hide();
+                        $('#filesModal').modal('show');
+                    },
+                    error: function(){
+                        $('#loadingFiles').hide();
+                        $('#div-error-files').html($('#error-msg-files').val());
+                        notify($('#div-error-files').html());
+                        
+                    }
+                });
+                
+            });
+
+        }
 
         $("#form").validate({
             rules: {

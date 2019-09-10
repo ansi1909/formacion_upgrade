@@ -48,7 +48,8 @@ class ForoController extends Controller
         $comentarios = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
-        if ($usuario->getEmpresa()) {
+        if ($usuario->getEmpresa()) 
+        {
             
             $usuario_empresa = 1;
             
@@ -157,7 +158,7 @@ class ForoController extends Controller
                                           'activo' => true));
         $paginas_bd = $query->getResult();
         
-        $options = '<option value="0"></option>';
+        $options = '<option value="0">'.$this->get('translator')->trans('TODOS LOS TEMAS').'</option>';
         foreach ($paginas_bd as $pagina_bd)
         {
             
@@ -292,6 +293,9 @@ class ForoController extends Controller
         $foro_id = $request->query->get('foro_id');
         $usuario_id = $request->query->get('usuario_id');
         $html = '';
+        $panel = '';
+
+        $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
 
         $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
                                    WHERE m.foro = :foro_id
@@ -334,7 +338,15 @@ class ForoController extends Controller
         $html .= '</tbody>
                 </table>';
 
-        $return = array('html' => $html);
+        $panel = '<div class="card">
+                    <div class="card-header gradiente">
+                        <h5 class="card-title">'.$this->get('translator')->trans("Tema seleccionado").'</h5>
+                    </div>
+                    <div class="card-block">'.$foro->getTema().'</div>
+                </div>';
+
+        $return = array('html' => $html,
+                        'panel' => $panel);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

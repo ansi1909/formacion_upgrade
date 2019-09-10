@@ -24,6 +24,7 @@ Advertencia: Warning
 Agregar: Add
 Agregar opción: Add option
 Agregar pregunta: Add question
+Agregar respuesta: Add answer
 Agregar sub-página: Add sub-page
 Agregar tipo de pregunta: Add question type
 Agrupación de páginas: Grouping pages
@@ -428,9 +429,9 @@ Fecha inicio: Start date
 Fecha de creación: Creation date
 Fecha de difusión: Broadcasting date
 Fecha de nacimiento: Birthday
-Fecha de Publicación: Publication date
+Fecha de publicación: Publication date
 Fecha de registro: Registration date
-Fecha de Vencimiento: Due date
+Fecha de vencimiento: Due date
 FELICITACIONES: CONGRATULATIONS
 Fila: Row
 filtrado de un total de: filtered of a total of
@@ -829,7 +830,8 @@ respondió a uno de tus comentarios en el muro de: answered to one of your comme
 Respuesta: Answer
 Respuesta creada con éxito: Response created successfully
 Respuestas: Answers
-Respuestas comentario seleccionado: Answers selected comment
+Respuestas comentario seleccionado: Selected comment answers
+Respuestas del tema seleccionado: Selected subject answers
 Resultado del archivo procesado: Result of the processed file
 Resultados: Results
 Resumen: Summary
@@ -897,6 +899,7 @@ Sub-páginas: Sub-pages
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: You can also request the upload of this certificate through the Content Manager of Formación Smart team
 Teléfono de contacto: Contact Number
 Tema: Theme
+Tema seleccionado: Selected subject
 Tendrás: You will have
 Thumbnails de la plantilla: Thumbnails of template
 Thumbnails inexistentes: No thumbnails
@@ -923,6 +926,7 @@ Todos: All
 Todos los derechos reservados: All rights reserved
 Todos los empleados de la empresa: All of the employees of the company
 Todos los niveles: All levels
+TODOS LOS TEMAS: ALL SUBJECTS
 Tomar evaluación: Take test
 Total aprobados: Total approved
 Tu calificación: Your score
