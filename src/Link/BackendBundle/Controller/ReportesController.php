@@ -222,6 +222,7 @@ class ReportesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
         $pagina_id = $request->query->get('pagina_selected');
+        $reporte_id = $request->query->get('reporte_id');
 
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
@@ -232,6 +233,10 @@ class ReportesController extends Controller
         $paginas = $query->getResult();
 
         $options = '<option value=""></option>';
+        if($reporte_id){
+            $options .= '<option value="0">Todos los programas</option>';
+        }
+        
         foreach ($paginas as $pagina)
         {
             if ($pagina->getPagina()->getId() == $pagina_id) 

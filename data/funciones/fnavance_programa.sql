@@ -17,7 +17,7 @@ begin
 
     SELECT u.id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.activo AS activo, u.correo_personal AS correo_personal, 
         u.correo_corporativo AS correo_corporativo, e.nombre AS empresa, c.nombre AS pais, n.nombre AS nivel, 
-        TO_CHAR(u.fecha_registro, 'DD/MM/YYYY') AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
+        TO_CHAR(u.fecha_registro, 'DD/MM/YYYY HH:MI am') AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
         (SELECT COUNT(pl.id) AS modulos FROM certi_pagina_log pl INNER JOIN certi_pagina p ON pl.pagina_id = p.id 
             WHERE pl.estatus_pagina_id = 3 
             AND pl.usuario_id = u.id 

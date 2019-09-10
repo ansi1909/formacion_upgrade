@@ -185,6 +185,7 @@ class ReportesJTController extends Controller
 
                     $promedio = $participante['promedio'] ? $participante['promedio'] : 0;
                     $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
+                    $fecha = explode(" ", $participante['fecha_registro']);
 
                     // Datos de las columnas del reporte
                     $correo = trim($participante['correo_corporativo']) != '' ? $participante['correo_corporativo'] : $participante['correo_personal'];
@@ -192,23 +193,24 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('B'.$row, $participante['login']);
                     $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                    $objWorksheet->setCellValue('F'.$row, $acceso);
-                    $objWorksheet->setCellValue('G'.$row, $correo);
-                    $objWorksheet->setCellValue('H'.$row, $participante['pais']);
-                    $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
-                    $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
-                    $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
-                    $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
-                    $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
-                    $objWorksheet->setCellValue('N'.$row, $participante['modulos']);
-                    $objWorksheet->setCellValue('O'.$row, $participante['materias']);
-                    $objWorksheet->setCellValue('P'.$row, $promedio);
-                    $objWorksheet->setCellValue('Q'.$row, $estatusProragama[$status]);
-                    $objWorksheet->setCellValue('R'.$row, $participante['fecha_inicio_programa']);
-                    $objWorksheet->setCellValue('S'.$row, $participante['hora_inicio_programa']);
-                    $objWorksheet->setCellValue('T'.$row, $participante['fecha_fin_programa']);
-                    $objWorksheet->setCellValue('U'.$row, $participante['hora_fin_programa']);
+                    $objWorksheet->setCellValue('E'.$row, $fecha['0']);
+                    $objWorksheet->setCellValue('F'.$row, $fecha['1'].$fecha['2']);
+                    $objWorksheet->setCellValue('G'.$row, $acceso);
+                    $objWorksheet->setCellValue('H'.$row, $correo);
+                    $objWorksheet->setCellValue('I'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
+                    $objWorksheet->setCellValue('O'.$row, $participante['modulos']);
+                    $objWorksheet->setCellValue('P'.$row, $participante['materias']);
+                    $objWorksheet->setCellValue('Q'.$row, $promedio);
+                    $objWorksheet->setCellValue('R'.$row, $estatusProragama[$status]);
+                    $objWorksheet->setCellValue('S'.$row, $participante['fecha_inicio_programa']);
+                    $objWorksheet->setCellValue('T'.$row, $participante['hora_inicio_programa']);
+                    $objWorksheet->setCellValue('U'.$row, $participante['fecha_fin_programa']);
+                    $objWorksheet->setCellValue('V'.$row, $participante['hora_fin_programa']);
 
                     $row++;
 

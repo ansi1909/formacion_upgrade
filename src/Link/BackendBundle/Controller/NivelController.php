@@ -189,7 +189,7 @@ class NivelController extends Controller
         $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
                                                                                              array('nombre' => 'ASC'));
 
-        $options = '<option value=""></option>';
+        $options = '<option value="0">Todos los niveles</option>';
         foreach ($niveles as $nivel)
         {
             $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';

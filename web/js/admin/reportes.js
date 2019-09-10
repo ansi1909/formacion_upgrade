@@ -39,7 +39,27 @@ $(document).ready(function() {
 		
 		if (empresa_id != '0') 
 		{
-			getProgramas(empresa_id,pagina_selected);
+			$('#div-active-alert').hide();
+			var empresa_id = $(this).val();
+			var reporte_id = $('#reporte_id').val();
+			$('#programa_id').hide();
+			$('#pagina-loader').show();
+			$.ajax({
+				type: "GET",
+				url: $('#url_programas').val(),
+				async: true,
+				data: { empresa_id: empresa_id,reporte_id: reporte_id },
+				dataType: "json",
+				success: function(data) {
+					$('#programa_id').html(data.options);
+					$('#programa_id').show();
+					$('#pagina-loader').hide();
+				},
+				error: function(){
+					$('#active-error').html($('#error_msg-filter').val());
+					$('#div-active-alert').show();
+				}
+			});
 			if (pagina_selected!=0) 
 			{
 				getListadoParticipantes(empresa_id, nivel_id, pagina_selected, reporte);
@@ -47,14 +67,51 @@ $(document).ready(function() {
 		}
 
 		if (empresa_selected != '0') {
-			getProgramas(empresa_selected,pagina_selected);
+			$('#div-active-alert').hide();
+			var reporte_id = $('#reporte_id').val();
+			$('#programa_id').hide();
+			$('#pagina-loader').show();
+			$.ajax({
+				type: "GET",
+				url: $('#url_programas').val(),
+				async: true,
+				data: { empresa_id: empresa_selected, pagina_selected: pagina_selected, reporte_id: reporte_id},
+				dataType: "json",
+				success: function(data) {
+					$('#programa_id').html(data.options);
+					$('#programa_id').show();
+					$('#pagina-loader').hide();
+				},
+				error: function(){
+					$('#active-error').html($('#error_msg-filter').val());
+					$('#div-active-alert').show();
+				}
+			});
 			getListadoParticipantes(empresa_selected, nivel_id, pagina_selected, reporte);
 		}
 
 		$('#empresa_id').change(function(){
 			$('#div-active-alert').hide();
-    		var empresa_id = $(this).val();
-			getProgramas(empresa_id,pagina_id);
+			var empresa_id = $(this).val();
+			var reporte_id = $('#reporte_id').val();
+			$('#programa_id').hide();
+			$('#pagina-loader').show();
+			$.ajax({
+				type: "GET",
+				url: $('#url_programas').val(),
+				async: true,
+				data: { empresa_id: empresa_id,reporte_id: reporte_id },
+				dataType: "json",
+				success: function(data) {
+					$('#programa_id').html(data.options);
+					$('#programa_id').show();
+					$('#pagina-loader').hide();
+				},
+				error: function(){
+					$('#active-error').html($('#error_msg-filter').val());
+					$('#div-active-alert').show();
+				}
+			});
 		});
 
 		$('#programa_id').change(function(){
