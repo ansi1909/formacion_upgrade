@@ -9,6 +9,7 @@ $(document).ready(function() {
 	
 	if (reporte == '1') 
 	{
+		
 		if (empresa_id != '0'){
 			getNiveles(empresa_id);
 			getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte);
@@ -333,7 +334,7 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 		data: { empresa_id: empresa_id, nivel_id: nivel_id, pagina_id: pagina_id, reporte: reporte },
 		dataType: "json",
 		success: function(data) {
-			if(pagina_id == ' ')
+			if(pagina_id == ' ' && reporte > 1)
 			{
 				$('#loader').hide();
 				$('#active-error').html(data.html);
