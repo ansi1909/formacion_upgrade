@@ -123,7 +123,7 @@
 {% elseif reporte == '2' %}
 
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
-        {% set encabezado =  'Reporte de participantes registrados por programas'|trans %}
+        {% set encabezado =  'Reporte de participantes registrados en programas'|trans %}
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">

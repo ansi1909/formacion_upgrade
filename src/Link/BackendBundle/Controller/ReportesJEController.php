@@ -119,9 +119,9 @@ class ReportesJEController extends Controller
             // Crea el writer
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
-            $hoy = date('d-m-Y');
+            $hoy = date('y-m-d h i');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/HORAS CONEXION '.$empresaName.'.xls';
+            $path = 'recursos/reportes/HORAS CONEXION '.$empresaName.''.$hoy.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -385,9 +385,9 @@ class ReportesJEController extends Controller
         $paginaName =  $fn->eliminarAcentos($pagina->getnombre());
         $empresaName = strtoupper($empresaName);
         $paginaName = strtoupper($paginaName);
-        $hoy = date('d-m-Y');
+        $hoy = date('y-m-d h i');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/EVALUACIONES '.$paginaName.'_'.$empresaName.'.xls';
+        $path = 'recursos/reportes/EVALUACIONES '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 

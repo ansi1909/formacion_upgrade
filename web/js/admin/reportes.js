@@ -47,12 +47,13 @@ $(document).ready(function() {
 				type: "GET",
 				url: $('#url_programas').val(),
 				async: true,
-				data: { empresa_id: empresa_selected, pagina_selected: pagina_selected, reporte_id: reporte_id},
+				data: { empresa_id: empresa_id, pagina_selected: pagina_selected, reporte_id: reporte_id},
 				dataType: "json",
 				success: function(data) {
 					$('#programa_id').html(data.options);
 					$('#programa_id').show();
 					$('#pagina-loader').hide();
+					
 				},
 				error: function(){
 					$('#active-error').html($('#error_msg-filter').val());
@@ -80,6 +81,7 @@ $(document).ready(function() {
 					$('#programa_id').html(data.options);
 					$('#programa_id').show();
 					$('#pagina-loader').hide();
+					
 				},
 				error: function(){
 					$('#active-error').html($('#error_msg-filter').val());
@@ -93,24 +95,34 @@ $(document).ready(function() {
 			$('#div-active-alert').hide();
 			var empresa_id = $(this).val();
 			var reporte_id = $('#reporte_id').val();
-			$('#programa_id').hide();
-			$('#pagina-loader').show();
-			$.ajax({
-				type: "GET",
-				url: $('#url_programas').val(),
-				async: true,
-				data: { empresa_id: empresa_id,reporte_id: reporte_id },
-				dataType: "json",
-				success: function(data) {
-					$('#programa_id').html(data.options);
-					$('#programa_id').show();
-					$('#pagina-loader').hide();
-				},
-				error: function(){
-					$('#active-error').html($('#error_msg-filter').val());
-					$('#div-active-alert').show();
-				}
-			});
+			
+			
+				$('#programa_id').hide();
+				$('#pagina-loader').show();
+				$.ajax({
+					type: "GET",
+					url: $('#url_programas').val(),
+					async: true,
+					data: { empresa_id: empresa_id,reporte_id: reporte_id },
+					dataType: "json",
+					success: function(data) {
+						$('#programa_id').html(data.options);
+						$('#programa_id').show();
+						$('#pagina-loader').hide();
+						if(empresa_id == 0)
+						{
+							$('#usuarios').hide();
+							$('#excel').hide();
+						}
+						
+					},
+					error: function(){
+						$('#active-error').html($('#error_msg-filter').val());
+						$('#div-active-alert').show();
+					}
+				});
+			
+			
 		});
 
 		$('#programa_id').change(function(){
@@ -272,6 +284,11 @@ function getProgramas(empresa_id,pagina_selected){
 			$('#programa_id').html(data.options);
 			$('#programa_id').show();
 			$('#pagina-loader').hide();
+			if(empresa_id == 0)
+			{
+				$('#usuarios').hide();
+				$('#excel').hide();
+			}
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());
@@ -316,13 +333,22 @@ function getListadoParticipantes(empresa_id, nivel_id, pagina_id, reporte){
 		data: { empresa_id: empresa_id, nivel_id: nivel_id, pagina_id: pagina_id, reporte: reporte },
 		dataType: "json",
 		success: function(data) {
-			$('#loader').hide();
-			$('#usuarios').show();
-			$('#usuarios').html(data.html);
-			$('#excel').show();
-			applyDataTableDetail();
-			observeList();
-			clearTimeout( timerId );
+			if(pagina_id == ' ')
+			{
+				$('#loader').hide();
+				$('#active-error').html(data.html);
+				$('#div-active-alert').show();
+				$('#excel').hide();
+			}else
+			{
+				$('#loader').hide();
+				$('#usuarios').show();
+				$('#usuarios').html(data.html);
+				$('#excel').show();
+				applyDataTableDetail();
+				observeList();
+				clearTimeout( timerId );
+			}
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());

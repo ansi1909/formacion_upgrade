@@ -157,12 +157,12 @@ class ReportesJTController extends Controller
                  // Estilizar las celdas antes de insertar los datos
                 for ($f=$row; $f<=$last_row; $f++)
                 {
-                        $objWorksheet->getStyle("A$f:U$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:U$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:U$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:U$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:U$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getStyle("A$f:U$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
+                        $objWorksheet->getStyle("A$f:V$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:V$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:V$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:V$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
                 
@@ -220,10 +220,10 @@ class ReportesJTController extends Controller
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
             $empresaName = strtoupper($empresaName);
-            $hoy = date('d-m-Y');
+            $hoy = date('y-m-d h i');
             $paginaName =  $fun->eliminarAcentos($pagina->getNombre());
             $paginaName = strtoupper($paginaName);
-            $path = 'recursos/reportes/AVANCE '.$paginaName.' '.$empresaName.'.xls';
+            $path = 'recursos/reportes/AVANCE '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -403,9 +403,10 @@ class ReportesJTController extends Controller
             }
 
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
-            $hoy = date('d-m-Y');
+            $empresaName = strtoupper($empresaName);
+            $hoy = date('y-m-d h i');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/CONEXIONES POR USUARIO '.$empresaName.'.xls';
+            $path = 'recursos/reportes/CONEXIONES POR USUARIO '.$empresaName.' '.$hoy.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 

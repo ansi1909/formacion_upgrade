@@ -4,6 +4,8 @@ $(document).ready(function() {
 		var desde = $('#desde').val() ? $('#desde').val().replace(/\//g, '-') : 0;
 		var hasta = $('#hasta').val() ? $('#hasta').val().replace(/\//g, '-') : 0;
 		window.location.replace($('#url_auto').val()+'/'+$('#empresa_id').val()+'/'+desde+'/'+hasta);
+		$('#paginas').hide();
+		$('#pagina-loader').show();
 	});
 
     $('.datePicker').datepicker({

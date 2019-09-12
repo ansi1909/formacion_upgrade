@@ -58,7 +58,7 @@ begin
        FROM certi_pagina_empresa pe INNER JOIN certi_pagina p ON pe.pagina_id = p.id 
        WHERE p.pagina_id IS NULL
            AND pe.empresa_id = pempresa_id
-       ORDER BY pe.orden ASC;
+       ORDER BY p.nombre ASC;
     
     RETURN resultado;
 
