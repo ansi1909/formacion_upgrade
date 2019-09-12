@@ -138,7 +138,7 @@ class CalendarioController extends Controller
         $fecha_fin = $request->request->get('end');
         $empresa_id = $request->request->get("empresa_id");
         $nivel_id = $request->request->get("nivel_id");
-        $hoy('Y-m-d h:i:s');
+        $hoy = date('Y-m-d h:i:s');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if ($nivel_id != 0)
@@ -167,7 +167,6 @@ class CalendarioController extends Controller
         $evento->setEmpresa($empresa);
         $evento->setNivel($nivel);
         $evento->setUsuario($usuario);
-        $evento->setFechaCreacion(new \DateTime($hoy));
         $em->persist($evento);
         $em->flush();
 
