@@ -36,6 +36,7 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
         $base = $yml2['parameters']['base_url'];
         $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
         $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion_smart.png';
+        $footer = $yml2['parameters']['folders']['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
 
         $query = $em->createQuery("SELECT f FROM LinkComunBundle:CertiForo f 
@@ -129,6 +130,7 @@ class UsersCollaborativeCommand extends ContainerAwareCommand
                                                                     'href' => $base.$ruta,
                                                                     'background' => $background,
                                                                     'logo' => $logo,
+                                                                    'footer' => $footer,
                                                                     'link_plataforma' => $link_plataforma.$usuario_nivel->getEmpresa()->getId()),
                                                    'asunto' => 'Formación Smart: '.$translator->trans('Nuevo espacio colaborativo').'.',
                                                    'remitente' => $yml['parameters']['mailer_user_tutor'],

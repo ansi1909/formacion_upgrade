@@ -68,7 +68,8 @@ class LoginController extends Controller
                                                                  'nombre' => $usuario->getNombre().' '.$usuario->getApellido(),
                                                                  'correo_soporte' => $yml['parameters']['correo_soporte']['remitente'],
                                                                  'background' => $background,
-                                                                 'logo' => $logo,
+																 'logo' => $logo,
+																 'footer' =>$footer,
                                                                  'link_plataforma' => $link_plataforma));
 				            $correoRecuperacion = $f->sendEmail($parametros, $this);
 	               			return $this->redirectToRoute('_login');

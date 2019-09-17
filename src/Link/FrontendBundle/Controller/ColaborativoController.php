@@ -435,6 +435,7 @@ class ColaborativoController extends Controller
         // Generación de alarmas
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
+        $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
         if ($foro_main->getUsuario()->getId() != $usuario->getId() && $foro_main->getId() == $foro->getForo()->getId())
         {
@@ -449,6 +450,7 @@ class ColaborativoController extends Controller
                                            'datos' => array('mensaje' => $mensaje,
                                                             'background' => $background,
                                                             'logo' => $logo,
+                                                            'footer' => $footer,
                                                             'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación Smart: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
@@ -738,6 +740,7 @@ class ColaborativoController extends Controller
         $href = $this->container->getParameter('folders')['uploads'].$archivo_arr['archivo'];
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
+        $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro->getUsuario()->getEmpresa()->getId();
 
         // Generación de alarmas
@@ -755,6 +758,7 @@ class ColaborativoController extends Controller
                                                             'descarga' => $href,
                                                             'background' => $background,
                                                             'logo' => $logo,
+                                                            'footer' => $footer,
                                                             'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación Smart: '.$descripcion_alarma,
                                            'remitente' => $this->container->getParameter('mailer_user'),

@@ -328,6 +328,7 @@ class DefaultController extends Controller
                             $f = $this->get('funciones');
                             $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
                             $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
+                            $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
                             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
                             // Envío de correo con los datos de acceso, usuario y clave
                             $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
@@ -342,6 +343,7 @@ class DefaultController extends Controller
                                                                  'correo_soporte' => $yml['parameters']['correo_soporte']['remitente'],
                                                                  'background' => $background,
                                                                  'logo' => $logo,
+                                                                 'footer' => $footer,
                                                                  'link_plataforma' => $link_plataforma));
                             $correoRecuperacion = $f->sendEmail($parametros);
                             //return $this->redirectToRoute('_login', array('empresa_id'=> $empresa_id));
