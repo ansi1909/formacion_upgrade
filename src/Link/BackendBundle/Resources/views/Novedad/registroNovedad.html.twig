@@ -153,7 +153,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Publicación'|trans }}</label>
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de publicación'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_publicacion = noticia.fechaPublicacion ? noticia.fechaPublicacion|date('d/m/Y') : '' %}
                                             <input type="text" class="form-control form_sty1 date_picker" name="fecha_publicacion" id="fecha_publicacion" value="{{ fecha_publicacion }}" placeholder="DD/MM/YYYY">
@@ -161,7 +161,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-md-8 col-lg-8">                                            
-                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Vencimiento'|trans }}</label>
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de vencimiento'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_vencimiento = noticia.fechaVencimiento ? noticia.fechaVencimiento|date('d/m/Y') : '' %}
                                             <input type="text" class="form-control form_sty1 date_picker" name="fecha_vencimiento" id="fecha_vencimiento" value="{{ fecha_vencimiento }}" placeholder="DD/MM/YYYY">
@@ -268,7 +268,7 @@
                                     <div class="col-sm-8 col-lg-8 col-md-8">
                                         <label for="imagen" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Recurso'|trans }}</label>
                                         <div class="col-sm-16 col-md-16 col-lg-16">
-                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión pdf.'|trans }}">
+                                            <input type="text" class="form-control form_sty1" name="pdf" id="pdf" value="{{ noticia.pdf }}" readonly="readonly" placeholder="{{ 'Sólo archivos con extensión .pdf'|trans }}">
                                             <span class="fa fa-file-pdf-o"></span>
                                         </div>
                                     </div>

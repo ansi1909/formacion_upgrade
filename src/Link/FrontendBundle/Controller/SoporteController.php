@@ -36,6 +36,7 @@ class SoporteController extends Controller
 		$background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
 		$link_plataforma = $this->container->getParameter('link_plataforma').$session->get('empresa')['id'];
+		$footer = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
 
 		$datosCorreo =
 		[
@@ -44,7 +45,7 @@ class SoporteController extends Controller
 			'remitente' => $this->container->getParameter('mailer_user'),
 			'remitente_name' => $this->container->getParameter('mailer_user_name'),
 			'mailer' => 'soporte_mailer',
-			'destinatario' => 'yasaacisaias@gmail.com',
+			'destinatario' => $yml['parameters']['correo_soporte']['destinatario'],
 			'datos' =>
 			[
 				'nombreUsuario' => $nombreUsuario,
@@ -54,7 +55,8 @@ class SoporteController extends Controller
 				'background' => $background,
 				'logo' => $logo,
 				'link_plataforma' => $link_plataforma,
-				'empresa' => $session->get('empresa')['nombre']
+				'empresa' => $session->get('empresa')['nombre'],
+				'footer' => $footer;
 			]
 		];
 
