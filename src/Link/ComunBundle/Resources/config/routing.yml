@@ -12,6 +12,12 @@ _ajaxServicioInteractivo:
     requirements:
         _method: POST
 
+_ajaxUpload:
+    path:     /ajaxUpload
+    defaults: { _controller: LinkComunBundle:Default:ajaxUpload }
+    requirements:
+        _method: POST
+
 #_logoutEmpresa:
 #    path:     /logoutEmpresa
 #    defaults: { _controller: LinkComunBundle:Default:logoutEmpresa }
