@@ -123,7 +123,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Publicación'|trans }}</label>
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de publicación'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_publicacion = biblioteca.fechaPublicacion ? biblioteca.fechaPublicacion|date('d/m/Y') : '' %}
                                             <input type="text" class="form-control form_sty1 date_picker" name="fecha_publicacion" id="fecha_publicacion" value="{{ fecha_publicacion }}" placeholder="DD/MM/YYYY">
@@ -131,7 +131,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-8 col-md-8 col-lg-8">                                            
-                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de Vencimiento'|trans }}</label>
+                                        <label for="texto" class="col-6 col-form-label">{{ 'Fecha de vencimiento'|trans }}</label>
                                         <div class="col-14">
                                             {% set fecha_vencimiento = biblioteca.fechaVencimiento ? biblioteca.fechaVencimiento|date('d/m/Y') : '' %}
                                             <input type="text" class="form-control form_sty1 date_picker" name="fecha_vencimiento" id="fecha_vencimiento" value="{{ fecha_vencimiento }}" placeholder="DD/MM/YYYY">

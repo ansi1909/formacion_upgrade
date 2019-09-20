@@ -59,7 +59,7 @@ class CalendarioDeEventosController extends Controller
                 $id_nivel = $evento->getNivel()->getId();
             }
             else{
-                $nombre_nivel = 'Todos los niveles';
+                $nombre_nivel = 'Todos los participantes';
                 $id_nivel = 0;
             }
         

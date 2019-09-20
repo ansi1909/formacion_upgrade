@@ -34,7 +34,16 @@ $(document).ready(function() {
 				dataType: "json",
 				success: function(data) {
 					$('#search').show();
-					setDetails(data);
+					if (data.data_found == 1)
+					{
+						setDetails(data);
+					}
+					else {
+						$('#div-error-server').html($('#error-msg-nodata').val());
+						notify($('#div-error-server').html());
+						$('#reporteDetail').hide();
+			        	$('#loadDetail').hide();
+					}
 					$('#form').safeform('complete');
 					return false;
 				},

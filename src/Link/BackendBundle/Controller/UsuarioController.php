@@ -331,12 +331,18 @@ class UsuarioController extends Controller
             $usuario->setCorreoPersonal($correo_personal);
             $usuario->setCorreoCorporativo($correo_corporativo);
             $usuario->setActivo($activo ? true : false);
-            $fn_array = explode("/", $fecha_nacimiento);
-            $d = $fn_array[0];
-            $m = $fn_array[1];
-            $a = $fn_array[2];
-            $fecha_nacimiento = "$a-$m-$d";
-            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            if ($fecha_nacimiento)
+            {
+                $fn_array = explode("/", $fecha_nacimiento);
+                $d = $fn_array[0];
+                $m = $fn_array[1];
+                $a = $fn_array[2];
+                $fecha_nacimiento = "$a-$m-$d";
+                $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            }
+            else {
+                $usuario->setFechaNacimiento(null);
+            }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
             $usuario->setCampo2($campo2);
@@ -669,12 +675,18 @@ class UsuarioController extends Controller
             $usuario->setCorreoPersonal($correo_personal);
             $usuario->setCorreoCorporativo($correo_corporativo);
             $usuario->setActivo($activo ? true : false);
-            $fn_array = explode("/", $fecha_nacimiento);
-            $d = $fn_array[0];
-            $m = $fn_array[1];
-            $a = $fn_array[2];
-            $fecha_nacimiento = "$a-$m-$d";
-            $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            if ($fecha_nacimiento)
+            {
+                $fn_array = explode("/", $fecha_nacimiento);
+                $d = $fn_array[0];
+                $m = $fn_array[1];
+                $a = $fn_array[2];
+                $fecha_nacimiento = "$a-$m-$d";
+                $usuario->setFechaNacimiento(new \DateTime($fecha_nacimiento));
+            }
+            else {
+                $usuario->setFechaNacimiento(null);
+            }
             $usuario->setPais($pais);
             $usuario->setCampo1($campo1);
             $usuario->setCampo2($campo2);
@@ -936,7 +948,7 @@ class UsuarioController extends Controller
                         $clave = trim($cell->getValue());
                         if (!$clave)
                         {
-                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La clave es requerida.');
+                            $particulares[$this->get('translator')->trans('Línea').' '.$row][$this->get('translator')->trans('Columna').' '.$col_name] = $this->get('translator')->trans('La contraseña es requerida').'.';
                         }
                         else {
                             $hay_data++;
@@ -1146,7 +1158,7 @@ class UsuarioController extends Controller
                        ->setLastModifiedBy($usuario->getNombre().' '.$usuario->getApellido())
                        ->setTitle("CSV Autogenerado")
                        ->setSubject("CSV Autogenerado")
-                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla tempral de BD.")
+                       ->setDescription("Documento generado para la importación del XLS a formato CSV y posteriormente a la tabla temporal de BD.")
                        ->setKeywords("office 2005 openxml php")
                        ->setCategory("Archivo temporal");
         $phpExcelObject->setActiveSheetIndex(0);
@@ -1329,7 +1341,7 @@ class UsuarioController extends Controller
             $query->execute();
             $r = $query->fetchAll();
 
-            // Llamada a la función de BD que duplica la página
+            // Llamada a la función de BD que realiza la carga de participantes
             $query = $em->getConnection()->prepare('SELECT
                                                     fncarga_participantes(:pempresa_id, :ptransaccion) as
                                                     resultado;');

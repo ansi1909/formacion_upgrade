@@ -5,6 +5,11 @@ $(document).ready(function() {
     	var empresa_id = $(this).val();
     	var pagina_id = 0;
     	var usuario_id = $('#usuario_id').val();
+    	$('#div-active-alert').hide();
+    	$('#loader').show();
+		$('#list_comentarios').hide();
+        $('#tbody_history_programation').hide();
+        $('#loader2').show();
     	window.location.replace($('#url_auto').val()+'/'+$('#empresa_id').val());
 	});
 
@@ -53,6 +58,10 @@ $(document).ready(function() {
 function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 	$('#loader').show();
 	$('#list_comentarios').hide();
+	$('#div-active-alert').hide();
+    $('#panel_muro').hide();
+    $('#tbody_history_programation').hide();
+    $('#loading').show();
 	$.ajax({
 		type: "GET",
 		url: $('#url_comentarios_muro').val(),
@@ -120,7 +129,8 @@ function editComentario(){
         $('#muro_id').val(muro_id);
         $('#respuesta').val('');
         $('#comentario_id').val('');
-
+        $('#exampleModalLongTitle').html('Responder comentario');
+        $('#asunto').html('Respuesta');
     });
 
 	$('.edit').unbind('click');
@@ -129,7 +139,8 @@ function editComentario(){
         var respuesta = $('.respuesta' + comentario_id).html();
         $('#comentario_id').val(comentario_id);
         $('#respuesta').val(respuesta);
-
+        $('#exampleModalLongTitle').html('Editar comentario');
+        $('#asunto').html('Comentario');
     });
 
 	$('.delete').unbind('click');
@@ -142,43 +153,43 @@ function editComentario(){
 function saveComentario()
 {
 	$('#div-alert').hide();
-		if ($("#form").valid())
-		{
-			$('#guardar').prop('disabled', true);
-			$.ajax({
-				type: "POST",
-				url: $('#form').attr('action'),
-				async: true,
-				data: $("#form").serialize(),
-				dataType: "json",
-				success: function(data) {
-					$( "#detail-edit" ).attr( "data", data.id );
-					if (data.delete_disabled != '') 
-					{
-						$("#detail-delete").hide();
-						$("#detail-delete").removeClass( "delete" );
-					}
-					else
-					{
-						$( "#detail-delete" ).attr("data",data.id);
-						$( "#detail-delete" ).addClass("delete");
-						$( "#detail-delete" ).show();
-					}
-					$('#form').hide();
-					$('#alert-success').show();
-					$('#detail').show();
-					$('#aceptar').show();
-					$('#guardar').hide();
-					$('#cancelar').hide();
-					clearTimeout( timerId );
-				},
-				error: function(){
-					$('#guardar').prop('disabled', false);
-					$('#alert-error').html($('#error_msg-save').val());
-					$('#div-alert').show();
+	if ($("#form").valid())
+	{
+		$('#guardar').prop('disabled', true);
+		$.ajax({
+			type: "POST",
+			url: $('#form').attr('action'),
+			async: true,
+			data: $("#form").serialize(),
+			dataType: "json",
+			success: function(data) {
+				$( "#detail-edit" ).attr( "data", data.id );
+				if (data.delete_disabled != '') 
+				{
+					$("#detail-delete").hide();
+					$("#detail-delete").removeClass( "delete" );
 				}
-			});
-		}
+				else
+				{
+					$( "#detail-delete" ).attr("data",data.id);
+					$( "#detail-delete" ).addClass("delete");
+					$( "#detail-delete" ).show();
+				}
+				$('#form').hide();
+				$('#alert-success').show();
+				$('#detail').show();
+				$('#aceptar').show();
+				$('#guardar').hide();
+				$('#cancelar').hide();
+				clearTimeout( timerId );
+			},
+			error: function(){
+				$('#guardar').prop('disabled', false);
+				$('#alert-error').html($('#error_msg-save').val());
+				$('#div-alert').show();
+			}
+		});
+	}
 }
 
 function segundaTabla()
@@ -236,6 +247,7 @@ function afterPaginate(){
         var muro_id = $(this).attr('data');
         var usuario_id = $('#usuario_id').val();
         $('#div-active-alert').hide();
+        $('#panel_muro').hide();
         $('#tbody_history_programation').hide();
         $('#loader2').show();
         $.ajax({
@@ -245,6 +257,8 @@ function afterPaginate(){
             data: { muro_id: muro_id, usuario_id: usuario_id },
             dataType: "json",
             success: function(data) {
+            	$('#panel_muro').html(data.panel);
+                $('#panel_muro').show();
                 $('#tbody_history_programation').html(data.html);
                 $('#tbody_history_programation').show();
                 $('#loader2').hide();

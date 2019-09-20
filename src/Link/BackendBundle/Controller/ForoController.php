@@ -34,10 +34,12 @@ class ForoController extends Controller
             }
         }
         $f->setRequest($session->get('sesion_id'));
+
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
 
         $roles=$session->get('usuario')['roles'];
-        $answer_delete= (in_array(3,$roles) || in_array(5,$roles)) ? 1:0;//verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
+        $answer_delete= (in_array($yml['parameters']['rol']['tutor'],$roles) || in_array($yml['parameters']['rol']['empresa'],$roles)) ? 1 : 0; //verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
         
 
         $usuario_empresa = 0;
@@ -46,37 +48,62 @@ class ForoController extends Controller
         $comentarios = array();
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
 
-        if ($usuario->getEmpresa()) {
+        if ($usuario->getEmpresa()) 
+        {
+            
             $usuario_empresa = 1;
+            
             $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                        JOIN LinkComunBundle:CertiPaginaEmpresa e
-                                       WHERE e.activo = 'true'
-                                       AND e.colaborativo = 'true'
+                                       WHERE e.activo = :activo
+                                       AND e.colaborativo = :activo
                                        AND e.pagina = p.id
                                        AND p.pagina IS NULL
                                        AND e.empresa = :empresa_id
-                                       ORDER BY p.id ASC")
-                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
-            $paginas = $query->getResult();
+                                       ORDER BY p.nombre ASC")
+                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId(),
+                                              'activo' => true));
+            $paginas_bd = $query->getResult();
+            foreach ($paginas_bd as $pagina_bd)
+            {
+                
+                $query = $em->createQuery("SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f
+                                           JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                           WHERE e.activo = :activo
+                                           AND e.pagina = f.pagina
+                                           AND e.empresa = f.empresa
+                                           AND f.foro IS NULL
+                                           AND f.empresa = :empresa_id
+                                           AND f.pagina = :pagina_id")
+                             ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId(),
+                                                   'pagina_id' => $pagina_bd->getId(),
+                                                   'activo' => true));
+                $cantidad_temas = $query->getSingleScalarResult();
+
+                $paginas[] = array('id' => $pagina_bd->getId(),
+                                   'nombre' => $pagina_bd->getNombre(),
+                                   'cantidad_temas' => $cantidad_temas);
+
+            }
 
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
                                        JOIN LinkComunBundle:CertiPaginaEmpresa e
-                                       WHERE e.activo = 'true'
+                                       WHERE e.activo = :activo
                                        AND e.pagina = m.pagina
                                        AND e.empresa = m.empresa
                                        AND m.foro IS NULL
                                        AND m.empresa = :empresa_id
                                        ORDER BY m.id ASC")
-                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId()));
+                        ->setParameters(array('empresa_id' => $usuario->getEmpresa()->getId(),
+                                              'activo' => true));
             $coments = $query2->getResult();
 
         }
         else {
             $query = $em->createQuery("SELECT e FROM LinkComunBundle:AdminEmpresa e
                                        WHERE e.activo = 'true'
-                                       ORDER BY e.id ASC");
+                                       ORDER BY e.nombre ASC");
             $empresas = $query->getResult();
-
 
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
                                        WHERE m.foro IS NULL
@@ -84,21 +111,27 @@ class ForoController extends Controller
             $coments = $query2->getResult();
         }
 
-         foreach ($coments as $coment)
+        foreach ($coments as $coment)
         {
-            $comentarios[]= array('id'=>$coment->getId(),
-                                  'asunto'=>$coment->getTema(),
-                                  'mensaje'=>$coment->getMensaje(),
-                                  'usuarioId'=>$coment->getUsuario()->getId(),
-                                  'nombreUsuario'=>$coment->getUsuario()->getNombre(),
-                                  'apellidoUsuario'=>$coment->getUsuario()->getApellido(),
-                                  'fecharegistro'=>$coment->getFechaRegistro()->format("d/m/Y"),
-                                  'delete_disabled'=>$f->linkEliminar($coment->getId(),'CertiForo'),
-                                  'answer_delete'=>$answer_delete,
+
+            $query = $em->createQuery("SELECT COUNT(fa.id) FROM LinkComunBundle:CertiForoArchivo fa
+                                       WHERE fa.foro = :foro_id")
+                     ->setParameter('foro_id', $coment->getId());
+            $archivos = $query->getSingleScalarResult();
+
+            $comentarios[] = array('id' => $coment->getId(),
+                                   'asunto' => $coment->getTema(),
+                                   'mensaje' => $coment->getMensaje(),
+                                   'usuarioId' => $coment->getUsuario()->getId(),
+                                   'nombreUsuario' => $coment->getUsuario()->getNombre(),
+                                   'apellidoUsuario' => $coment->getUsuario()->getApellido(),
+                                   'fecharegistro' => $coment->getFechaRegistro()->format("d/m/Y"),
+                                   'delete_disabled' => $f->linkEliminar($coment->getId(),'CertiForo'),
+                                   'answer_delete' => $answer_delete,
+                                   'archivos' => $archivos
                                  );
 
         }
-        /*return new Response(var_dump($comentarios));*/
 
         return $this->render('LinkBackendBundle:Foro:index.html.twig', array('empresas' => $empresas,
                                                                              'paginas' => $paginas,
@@ -115,19 +148,35 @@ class ForoController extends Controller
 
         $query = $em->createQuery("SELECT p FROM LinkComunBundle:CertiPagina p
                                        JOIN LinkComunBundle:CertiPaginaEmpresa e
-                                       WHERE e.activo = 'true'
-                                       AND e.colaborativo = 'true'
+                                       WHERE e.activo = :activo
+                                       AND e.colaborativo = :activo
                                        AND e.pagina = p.id
                                        AND p.pagina IS NULL
                                        AND e.empresa = :empresa_id
                                        ORDER BY p.nombre ASC")
-                    ->setParameters(array('empresa_id' => $empresa_id));
-        $paginas = $query->getResult();
-
-        $options = '<option value=""></option>';
-        foreach ($paginas as $pagina)
+                    ->setParameters(array('empresa_id' => $empresa_id,
+                                          'activo' => true));
+        $paginas_bd = $query->getResult();
+        
+        $options = '<option value="0">'.$this->get('translator')->trans('TODOS LOS TEMAS').'</option>';
+        foreach ($paginas_bd as $pagina_bd)
         {
-            $options .= '<option value="'.$pagina->getId().'">'.$pagina->getNombre().'</option>';
+            
+            $query = $em->createQuery("SELECT COUNT(f.id) FROM LinkComunBundle:CertiForo f
+                                       JOIN LinkComunBundle:CertiPaginaEmpresa e
+                                       WHERE e.activo = :activo
+                                       AND e.pagina = f.pagina
+                                       AND e.empresa = f.empresa
+                                       AND f.foro IS NULL
+                                       AND f.empresa = :empresa_id
+                                       AND f.pagina = :pagina_id")
+                         ->setParameters(array('empresa_id' => $empresa_id,
+                                               'pagina_id' => $pagina_bd->getId(),
+                                               'activo' => true));
+            $cantidad_temas = $query->getSingleScalarResult();
+
+            $options .= '<option value="'.$pagina_bd->getId().'">'.$pagina_bd->getNombre().' ('.$cantidad_temas.')</option>';
+
         }
         
         $return = array('options' => $options);
@@ -140,6 +189,7 @@ class ForoController extends Controller
     public function ajaxComentariosForoAction(Request $request)
     {
         
+        $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $empresa_id = $request->query->get('empresa_id');
@@ -147,20 +197,27 @@ class ForoController extends Controller
         $usuario_id = $request->query->get('usuario_id');
         $html = '';
 
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+
+        $roles=$session->get('usuario')['roles'];
+        $answer_delete= (in_array($yml['parameters']['rol']['tutor'],$roles) || in_array($yml['parameters']['rol']['empresa'],$roles)) ? 1 : 0; //verifica si el usuario posee el rol tutor virtual(3) o empresa(5)
+
         if($pagina_id == 0){
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
                                        JOIN LinkComunBundle:CertiPaginaEmpresa e
-                                       WHERE e.activo = 'true'
+                                       WHERE e.activo = :activo 
                                        AND e.pagina = m.pagina
                                        AND e.empresa = m.empresa
                                        AND m.foro IS NULL
                                        AND m.empresa = :empresa_id
                                        ORDER BY m.id ASC")
-                         ->setParameters(array('empresa_id' => $empresa_id));
-        }else{
+                         ->setParameters(array('empresa_id' => $empresa_id,
+                                               'activo' => true));
+        }
+        else {
             $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
                                        JOIN LinkComunBundle:CertiPaginaEmpresa e
-                                       WHERE e.activo = 'true'
+                                       WHERE e.activo = :activo
                                        AND e.pagina = m.pagina
                                        AND e.empresa = m.empresa
                                        AND m.foro IS NULL
@@ -168,17 +225,17 @@ class ForoController extends Controller
                                        AND m.pagina = :pagina_id
                                        ORDER BY m.id ASC")
                          ->setParameters(array('empresa_id' => $empresa_id,
-                                               'pagina_id' => $pagina_id));
+                                               'pagina_id' => $pagina_id,
+                                               'activo' => true));
         }
-        
         
         $comentarios = $query2->getResult();
 
         $html .= '<table class="table" id="dt">
                         <thead class="sty__title">
                             <tr>
-                                <th>'.$this->get('translator')->trans('Mensaje').'</th>
-                                <th>'.$this->get('translator')->trans('usuario').'</th>
+                                <th>'.$this->get('translator')->trans('Tema').'</th>
+                                <th>'.$this->get('translator')->trans('Participante').'</th>
                                 <th>'.$this->get('translator')->trans('Fecha').'</th>
                                 <th>'.$this->get('translator')->trans('Acciones').'</th>
                             </tr>
@@ -187,20 +244,33 @@ class ForoController extends Controller
 
         foreach ($comentarios as $coment)
         {
+
             $delete_disabled = $f->linkEliminar($coment->getId(), 'CertiForo');
             $delete = $delete_disabled=='' ? 'delete' : '';
+
+            $query = $em->createQuery("SELECT COUNT(fa.id) FROM LinkComunBundle:CertiForoArchivo fa
+                                       WHERE fa.foro = :foro_id")
+                     ->setParameter('foro_id', $coment->getId());
+            $archivos = $query->getSingleScalarResult();
             
             $html .= '<tr>
-                        <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
+                        <td class="respuesta'.$coment->getId().'">'.$coment->getTema().'</td>
                         <td>'.$coment->getUsuario()->getNombre().' '.$coment->getUsuario()->getApellido().'</td>
                         <td>'.$coment->getFechaRegistro()->format("d/m/Y").'</td>
                         <td class="center">';
-                          if($coment->getUsuario()->getId() == $usuario_id){
-                             $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
-                          }
-                           $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>
-                            <a href="#" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>
-                            <a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
+                            if($coment->getUsuario()->getId() == $usuario_id){
+                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Editar").'" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-pencil"></span></a>';
+                            }
+                            if ($answer_delete == 1)
+                            {
+                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Responder").'" class="btn btn-link btn-sm add" data-toggle="modal" data-target="#formModal" data="'.$coment->getId().'"><span class="fa fa-plus"></span></a>';
+                            }
+                            $html .= '<a href="#" title="'.$this->get('translator')->trans("Ver").'" class="btn btn-link btn-sm see" data="'.$coment->getId().'"><span class="fa fa-eye"></span></a>';
+                            if ($archivos)
+                            {
+                                $html .= '<a href="#" title="'.$this->get('translator')->trans("Archivos").'" class="btn btn-link btn-sm fileList" data="'.$coment->getId().'"><span class="fa fa-archive"></span></a>';
+                            }
+                            $html .= '<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>';
         }
@@ -223,6 +293,9 @@ class ForoController extends Controller
         $foro_id = $request->query->get('foro_id');
         $usuario_id = $request->query->get('usuario_id');
         $html = '';
+        $panel = '';
+
+        $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
 
         $query2 = $em->createQuery("SELECT m FROM LinkComunBundle:CertiForo m
                                    WHERE m.foro = :foro_id
@@ -231,12 +304,11 @@ class ForoController extends Controller
         
         $comentarios = $query2->getResult();
 
-        
         $html .= '<table class="table" id="dtSub">
                         <thead class="sty__title">
                             <tr>
                                 <th>'.$this->get('translator')->trans('Mensaje').'</th>
-                                <th>'.$this->get('translator')->trans('usuario').'</th>
+                                <th>'.$this->get('translator')->trans('Participante').'</th>
                                 <th>'.$this->get('translator')->trans('Fecha').'</th>
                                 <th>'.$this->get('translator')->trans('Acciones').'</th>
                             </tr>
@@ -245,14 +317,9 @@ class ForoController extends Controller
 
         foreach ($comentarios as $coment)
         {
+
             $delete_disabled = $f->linkEliminar($coment->getId(), 'CertiForo');
             $delete = $delete_disabled=='' ? 'delete' : '';
-            $consulta = $em->createQuery("SELECT file FROM LinkComunBundle:CertiForoArchivo file
-                                   WHERE file.foro = :foro_id
-                                   AND file.usuario = :usuario_id
-                                   ORDER BY file.id ASC")
-                     ->setParameters(array('foro_id' => $foro_id, 'usuario_id'=> $coment->getUsuario()->getId()));
-            $archivos = $consulta->getResult();
             
             $html .= '<tr>
                         <td class="respuesta'.$coment->getId().'">'.$coment->getMensaje().'</td>
@@ -264,28 +331,22 @@ class ForoController extends Controller
                           }
                           
                            $html .='<a href="#" title="'.$this->get('translator')->trans("Eliminar").'" class="btn btn-link btn-sm '.$delete.' '.$delete_disabled.'" data="'.$coment->getId().'"><span class="fa fa-trash"></span></a>';
-                           if($archivos)
-                           {
-                               $html .= '<a href="#" title="'.$this->get('translator')->trans("Archivos").'" class="btn btn-link btn-sm fileList" data-comentario="'.$coment->getId().' " ><span class="fa fa-archive "></span></a>';
-
-                              $html .='<form id="comentario'.$coment->getId().'" >
-                                          <input type="hidden" name="usuario_id" value="'.$coment->getUsuario()->getId().'">
-                                          <input type="hidden" name="foro_id" value="'.$foro_id.'">
-                                       </form>';
-                           }
-
                            $html .='
                         </td>
                     </tr>';
         }
         $html .= '</tbody>
-                </table>
-                <input type="hidden" id="comentario_padre_foro_id" name="comentario_padre_foro_id" value="'.$foro_id.'">';
-        $html .= '<div class="col text-right ">
-                    <button type="button" class="bttn__nr add" data-toggle="modal" data-target="#filesModal"><span class="fa fa-plus"></span><span class="text__nr">Responder</span></button>
-                  </div>';
+                </table>';
 
-        $return = array('html' => $html);
+        $panel = '<div class="card">
+                    <div class="card-header gradiente">
+                        <h5 class="card-title">'.$this->get('translator')->trans("Tema seleccionado").'</h5>
+                    </div>
+                    <div class="card-block">'.$foro->getTema().'</div>
+                </div>';
+
+        $return = array('html' => $html,
+                        'panel' => $panel);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -294,53 +355,53 @@ class ForoController extends Controller
 
     public function ajaxFilesForoListAction(Request $request)
     {
+
        $em = $this->getDoctrine()->getManager();
        $f = $this->get('funciones');
-       $usuario_id = $request->request->get('usuario_id');
        $foro_id = $request->request->get('foro_id');
-       $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
        $html ='';
        
-
-       $consulta = $em->createQuery("SELECT file FROM LinkComunBundle:CertiForoArchivo file
-                                   WHERE file.foro = :foro_id
-                                   AND file.usuario = :usuario_id
-                                   ORDER BY file.id ASC")
-                     ->setParameters(array('foro_id' => $foro_id, 'usuario_id'=> $usuario_id));
-       $archivos = $consulta->getResult();
+       $foro = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
        
-       if($archivos)
+       $query = $em->createQuery("SELECT fa FROM LinkComunBundle:CertiForoArchivo fa
+                                   WHERE fa.foro = :foro_id
+                                   ORDER BY fa.id ASC")
+                     ->setParameter('foro_id', $foro_id);
+       $archivos = $query->getResult();
+       
+       if ($archivos)
        {
-          $total = count($archivos);
-          $mod = $total%2;
-          $filas = ($mod==0)? ($total/2):(($total-1)/2)+1;
-          $e = 0;
-
-         foreach ($archivos as $archivo) 
-         {
-            $ruta = $this->container->getParameter('folders')['uploads'].$archivo->getArchivo();
-            $extension = explode('.',$archivo->getArchivo());
-            $iconoExtension = $this->getWebDirectory().'/front/assets/img/'.$extension[1].'.svg';
-
-            $html .= ($e%2==0)? ($e==0)? '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">':'</div><div class="row" style="margin-top: 15px; border-bottom: 2px solid #EEE8E7;">':'';
-
-            $html .= '
-                      <div class ="col-md-1" style="margin-bottom:5px"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
-                      <div class ="col-md-7" style="margin-bottom:5px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().'</a></div>
-                      ';
-
-            $e++;
           
-         }
+            $total = count($archivos);
+            $mod = $total%2;
+            $filas = ($mod==0)? ($total/2):(($total-1)/2)+1;
+            $e = 0;
+
+            foreach ($archivos as $archivo) 
+            {
+
+                $ruta = $this->container->getParameter('folders')['uploads'].$archivo->getArchivo();
+                $extension = explode('.',$archivo->getArchivo());
+                $iconoExtension = $f->getWebDirectory().'/front/assets/img/'.$extension[1].'.svg';
+
+                $html .= ($e%2==0)? ($e==0)? '<div class="row" style="margin-top: 15px;  border-bottom: 2px solid #EEE8E7;">':'</div><div class="row" style="margin-top: 15px; border-bottom: 2px solid #EEE8E7;">':'';
+
+                $html .= '
+                          <div class ="col-md-1" style="margin-bottom:5px"> <img src="'.$iconoExtension.'" width=35  height=35 > </div>
+                          <div class ="col-md-7" style="margin-bottom:5px"><a href ="'.$ruta.'"  class="btn btn-link btn-sm " download>'.$archivo->getDescripcion().'</a></div>
+                          ';
+
+                $e++;
+
+            }
          
-         $html .= '</div>';
+            $html .= '</div>';
 
        }
        
-       $usuario_id = $request->request->get('usuario_id');
-       $foro_id = $request->request->get('foro_id');
+       $return = ['html'=>$html,
+                  'tema' => $foro->getTema()];
 
-       $return = ['html'=>$html,'usuario' => $usuario->getNombre().' '.$usuario->getApellido()];
        $return = json_encode($return);
        return new Response($return, 200, array('Content-Type' => 'application/json'));
 

@@ -44,7 +44,32 @@ class ReportesController extends Controller
             $nivel_id = $nivel_id ? $nivel_id : 0;
             $pagina_id = $pagina_id ? $pagina_id : 0;
             $i = 1;
+            $pagina = array();
             $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+
+            if($reporte == 1)
+            {
+                $encabezado = 'empresa';
+                
+            }
+            elseif($reporte == 2)
+            {
+                $encabezado = 'registrados';
+
+            }
+            elseif($reporte == 3)
+            {
+                $encabezado = 'cursando';
+            }
+            elseif($reporte == 4)
+            {
+                $encabezado = 'aprobados';
+            }
+            elseif($reporte == 5)
+            {
+                $encabezado = 'no iniciados';
+            }
 
             if ($pagina_id)
             {
@@ -60,7 +85,7 @@ class ReportesController extends Controller
             $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
             $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
             $query->execute();
-            $r = $query->fetchAll();
+            $res = $query->fetchAll();
 
             // Solicita el servicio de excel
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantes.xlsx';
@@ -69,15 +94,15 @@ class ReportesController extends Controller
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').'. ');
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').' '.$this->get('translator')->trans($encabezado).'.');
             if ($pagina_id)
             {
-                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+                $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'.');
             }else
             {
                 $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
             }
-            if (!count($r))
+            if (!count($res))
             {
                 $objWorksheet->mergeCells('A5:S5');
                 $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
@@ -99,18 +124,19 @@ class ReportesController extends Controller
                 $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
                 $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
 
-                foreach ($r as $re)
+                foreach ($res as $re)
                 {
 
                     $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
-                    $activo = $re['activo'] = "TRUE" ? '1' : '0';
+                    $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                     $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
+                    $fecha = explode(" ", $re['fecha_registro']);
                     
-                    $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                    $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                    $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
-                    $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                    $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                     $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
                 
 
@@ -119,16 +145,17 @@ class ReportesController extends Controller
                     $objWorksheet->setCellValue('B'.$row, $re['login']);
                     $objWorksheet->setCellValue('C'.$row, $re['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $re['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $re['fecha_registro']);
-                    $objWorksheet->setCellValue('F'.$row, $correo);
-                    $objWorksheet->setCellValue('G'.$row, $activo);
-                    $objWorksheet->setCellValue('H'.$row, $logueado);
-                    $objWorksheet->setCellValue('I'.$row, $re['pais']);
-                    $objWorksheet->setCellValue('J'.$row, $re['nivel']);
-                    $objWorksheet->setCellValue('K'.$row, $re['campo1']);
-                    $objWorksheet->setCellValue('L'.$row, $re['campo2']);
-                    $objWorksheet->setCellValue('M'.$row, $re['campo3']);
-                    $objWorksheet->setCellValue('N'.$row, $re['campo4']);
+                    $objWorksheet->setCellValue('E'.$row, $fecha['0']);
+                    $objWorksheet->setCellValue('F'.$row, $fecha['1'].$fecha[2]);
+                    $objWorksheet->setCellValue('G'.$row, $correo);
+                    $objWorksheet->setCellValue('H'.$row, $acceso);
+                    $objWorksheet->setCellValue('I'.$row, $logueado);
+                    $objWorksheet->setCellValue('J'.$row, $re['pais']);
+                    $objWorksheet->setCellValue('K'.$row, $re['nivel']);
+                    $objWorksheet->setCellValue('L'.$row, $re['campo1']);
+                    $objWorksheet->setCellValue('M'.$row, $re['campo2']);
+                    $objWorksheet->setCellValue('N'.$row, $re['campo3']);
+                    $objWorksheet->setCellValue('O'.$row, $re['campo4']);
                     $row++;
 
                 }
@@ -139,15 +166,27 @@ class ReportesController extends Controller
             // Crea el writer
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
             $empresaName = $f->eliminarAcentos($empresa->getNombre());
-            $hoy = date('d-m-Y');
+            $empresaName = strtoupper($empresaName);
+            $encabezado = strtoupper($encabezado);
+            $hoy = date('y-m-d');
             
             // Envia la respuesta del controlador
             $response = $this->get('phpexcel')->createStreamedResponse($writer);
             // Agrega los headers requeridos
-            $dispositionHeader = $response->headers->makeDisposition(
-                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                'ListadoDeParticipantes_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xlsx'
-            );
+            if($pagina)
+            {   
+                $programaName = $f->eliminarAcentos($pagina->getNombre());
+                $programaName = strtoupper($programaName);
+                $dispositionHeader = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                        $encabezado.' '.$programaName.' '.$empresaName.'.xlsx'
+                );
+            }else{
+                $dispositionHeader = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                        $encabezado.' '.$empresaName.'.xlsx'
+                );
+            }
 
             $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
             $response->headers->set('Pragma', 'public');
@@ -166,7 +205,8 @@ class ReportesController extends Controller
             $usuario_empresa = 1; 
         }
         else {
-            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findAll();
+            $empresas = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->findBy(array('activo' => true),
+                                                                                                   array('nombre' => 'ASC' ));
         } 
 
         return $this->render('LinkBackendBundle:Reportes:index.html.twig', array('empresas' => $empresas,
@@ -181,28 +221,43 @@ class ReportesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-        $pagina_id = $request->query->get('pagina_previa');
+        $pagina_id = $request->query->get('pagina_selected');
+        $reporte_id = $request->query->get('reporte_id');
 
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
                                    WHERE pe.empresa = :empresa_id
-                                   AND p.pagina IS NULL')
+                                   AND p.pagina IS NULL
+                                   ORDER BY p.nombre ASC')
                     ->setParameter('empresa_id', $empresa_id);
         $paginas = $query->getResult();
 
-        $options = '<option value=""></option>';
-        foreach ($paginas as $pagina)
+        if($empresa_id == 0)
         {
-            if ($pagina->getPagina()->getId() == $pagina_id) 
-            {
-                $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getNombre().'  </option>';
-            }
-            else
-            {
-                 $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().' </option>';
-            }
-           
+            $options = '<option value="0">Debes elegir una empresa</option>';
         }
+        else{
+
+            $options = '<option value=" "></option>';
+            if($reporte_id){
+                $options .= '<option value="0">Todos los programas</option>';
+            }
+            
+            foreach ($paginas as $pagina)
+            {
+                if ($pagina->getPagina()->getId() == $pagina_id) 
+                {
+                    $options .= '<option value="'.$pagina->getPagina()->getId().'" selected >'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().'  </option>';
+                }
+                else
+                {
+                    $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().' </option>';
+                }
+            
+            }
+        }
+
+        
         
         $return = array('options' => $options);
         
@@ -220,7 +275,8 @@ class ReportesController extends Controller
         $query = $em->createQuery('SELECT pe,p FROM LinkComunBundle:CertiPaginaEmpresa pe
                                    JOIN pe.pagina p
                                    WHERE pe.empresa = :empresa_id
-                                   AND p.pagina IS NULL')
+                                   AND p.pagina IS NULL
+                                   ORDER BY p.nombre ASC')
                     ->setParameter('empresa_id', $empresa_id);
         $paginas = $query->getResult();
 
@@ -228,7 +284,7 @@ class ReportesController extends Controller
         foreach ($paginas as $pe)
         {
             $valores[] = array('id' => $pe->getPagina()->getId(),
-                               'nombre' => $pe->getPagina()->getNombre(),
+                               'nombre' => $pe->getPagina()->getCategoria()->getNombre().': '.$pe->getPagina()->getNombre(),
                                'selected' => $pe->getPagina()->getId() == $pagina_selected ? 'selected' : '');
         }
         
@@ -308,7 +364,7 @@ class ReportesController extends Controller
 
         // Estilizar las celdas de los nombres de los programas antes del merge
         $p = 0;
-        $col = 14; // Columna O
+        $col = 15; // Columna O
 
         foreach ($listado['paginas'] as $pagina_id => $pagina)
         {
@@ -387,7 +443,8 @@ class ReportesController extends Controller
 
             foreach ($listado['participantes'] as $participante)
             {
-
+                $fecha = explode(" ", $participante['fecha_registro']);
+                $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                 // Estilizar toda la fila, excepto el bgcolor de las celdas de los programas
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->getFont()->setSize($font_size); // Tamaño de las letras
@@ -401,19 +458,20 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
-                $objWorksheet->setCellValue('G'.$row, $participante['activo']);
-                $objWorksheet->setCellValue('H'.$row, $participante['logueado']);
-                $objWorksheet->setCellValue('I'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('E'.$row, $fecha[0]);
+                $objWorksheet->setCellValue('F'.$row, $fecha[1].$fecha[2]);
+                $objWorksheet->setCellValue('G'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('H'.$row, $acceso);
+                $objWorksheet->setCellValue('I'.$row, $participante['logueado']);
+                $objWorksheet->setCellValue('J'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('K'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('N'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('O'.$row, $participante['campo4']);
                 
                 // Datos de cada programa
-                $col = 14; // Columna O
+                $col = 15; // Columna O
                 $aprobados = 0;
                 foreach ($listado['paginas'] as $pagina_id => $pagina)
                 {
@@ -429,6 +487,13 @@ class ReportesController extends Controller
                     }
                     $col += 5;
                 }
+
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getAlignment()->setHorizontal($horizontal_left); // Alineado horizontal
+                $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col].$row)->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+
                 $objWorksheet->setCellValue($columnNames[$col].$row, $aprobados);
 
                 $row++;
@@ -447,7 +512,7 @@ class ReportesController extends Controller
             );
 
             // Estilizar las celdas de los totales de los programas antes del merge
-            $col = 14; // Columna O
+            $col = 15; // Columna O
 
             foreach ($listado['paginas'] as $pagina_id => $pagina)
             {
@@ -466,16 +531,15 @@ class ReportesController extends Controller
 
         // Crea el writer
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);
-        $hoy = date('d-m-Y');
+        $empresaName = strtoupper($empresaName);
+        $hoy = date('y-m-d h i');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/listadoAprobados_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/APROBADOS '.$empresaName.' '.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'listadoAprobados_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $document_name = 'APROBADOS '.$empresaName.' '.$hoy.'.xls';
         $bytes = filesize($xls);
         $document_size = $f->fileSizeConvert($bytes);
         
@@ -499,52 +563,56 @@ class ReportesController extends Controller
         $pagina_id = $request->query->get('pagina_id');
         $reporte = $request->query->get('reporte');
 
-        // Llamada a la función de BD que trae el listado de participantes
-        $query = $em->getConnection()->prepare('SELECT
-                                                fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
-                                                resultado; fetch all from re;');
-        $re = 're';
-        $query->bindValue(':re', $re, \PDO::PARAM_STR);
-        $query->bindValue(':preporte', $reporte, \PDO::PARAM_INT);
-        $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
-        $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
-        $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
-        $query->execute();
-        $r = $query->fetchAll();
-        
-        $html = '<table class="table" id="dt">
-                    <thead class="sty__title">
-                        <tr>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Apellido').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Login').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Activo').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('País').'</th>
-                            <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: .7rem;">';
-        
-        foreach ($r as $ru)
+        if($pagina_id == " ")
         {
-            $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
-            $html .= '<tr>
-                        <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$ru['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$ru['nombre'].'</a></td>
-                        <td>'.$ru['apellido'].'</td>
-                        <td>'.$ru['login'].'</td>
-                        <td>'.$ru['correo'].'</td>
-                        <td>'.$activo.'</td>
-                        <td>'.$ru['fecha_registro'].'</td>
-                        <td>'.$ru['pais'].'</td>
-                        <td>'.$ru['nivel'].'</td>
-                    </tr>';
-        }
+            $html = 'Debe elegir un programa';
+        }else
+        {
 
-        $html .= '</tbody>
-                </table>';
-        
+            // Llamada a la función de BD que trae el listado de participantes
+            $query = $em->getConnection()->prepare('SELECT
+                                                    fnlistado_participantes(:re, :preporte, :pempresa_id, :pnivel_id, :ppagina_id) as
+                                                    resultado; fetch all from re;');
+            $re = 're';
+            $query->bindValue(':re', $re, \PDO::PARAM_STR);
+            $query->bindValue(':preporte', $reporte, \PDO::PARAM_INT);
+            $query->bindValue(':pempresa_id', $empresa_id, \PDO::PARAM_INT);
+            $query->bindValue(':pnivel_id', $nivel_id, \PDO::PARAM_INT);
+            $query->bindValue(':ppagina_id', $pagina_id, \PDO::PARAM_INT);
+            $query->execute();
+            $r = $query->fetchAll();
+            
+            $html = '<table class="table" id="dt">
+                        <thead class="sty__title">
+                            <tr>
+                                <th class="hd__title">'.$this->get('translator')->trans('Nombre').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Login').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Nivel').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Correo').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Fecha de registro').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('País').'</th>
+                                <th class="hd__title">'.$this->get('translator')->trans('Logueado').'</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: .7rem;">';
+            
+            foreach ($r as $ru)
+            {
+                $activo = $ru['logueado'] > 0 ? $this->get('translator')->trans('Sí') : 'No';
+                $html .= '<tr>
+                            <td><a class="detail" data-toggle="modal" data-target="#detailModal" data="'.$ru['login'].'" empresa_id="'.$empresa_id.'" href="#">'.$ru['nombre'].' '.$ru['apellido'] .'</a></td>
+                            <td>'.$ru['login'].'</td>
+                            <td>'.$ru['nivel'].'</td>
+                            <td>'.$ru['correo'].'</td>
+                            <td>'.$ru['fecha_registro'].'</td>
+                            <td>'.$ru['pais'].'</td>
+                            <td>'.$activo.'</td>
+                        </tr>';
+            }
+
+            $html .= '</tbody>
+                    </table>';
+        }
         $return = array('html' => $html);
  
         $return = json_encode($return);
@@ -613,8 +681,6 @@ class ReportesController extends Controller
 
         $listado = $rs->interaccionColaborativo($empresa_id, $pagina_id, $tema_id, $desde, $hasta);
 
-        //return new response(var_dump($listado));
-
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/interaccionColaborativo.xlsx';
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
@@ -623,16 +689,16 @@ class ReportesController extends Controller
 
         // Encabezado
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de espacio colaborativo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
-        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'. '.$this->get('translator')->trans('Tema').': '.$tema->getTema().'.');
-
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
+        $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Tema').': '.$tema->getTema() );
         if (!count($listado))
         {
-            $objWorksheet->mergeCells('A5:S5');
-            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+            $objWorksheet->mergeCells('A6:S6');
+            $objWorksheet->setCellValue('A6', $this->get('translator')->trans('No existen registros para esta consulta'));
         }
         else {
 
-            $row = 5;
+            $row = 6;
             $i = 0;
             $styleThinBlackBorderOutline = array(
                 'borders' => array(
@@ -651,12 +717,13 @@ class ReportesController extends Controller
             {
 
                 $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
-                
-                $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $mensaje = strip_tags($participante['mensaje']);
+                $fecha = explode(" ",$participante['fecha_mensaje']);
+                $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
             
 
@@ -673,8 +740,9 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
                 $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('M'.$row, $participante['fecha_mensaje']);
-                $objWorksheet->setCellValue('N'.$row, $participante['mensaje']);
+                $objWorksheet->setCellValue('M'.$row, $fecha[0]);
+                $objWorksheet->setCellValue('N'.$row, $fecha[1]);
+                $objWorksheet->setCellValue('O'.$row, $mensaje);
                 $row++;
 
             }
@@ -683,17 +751,17 @@ class ReportesController extends Controller
 
         // Crea el writer
         $empresaName = $fn->eliminarAcentos($empresa->getNombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName:substr($empresaName,0,4);
+        $empresaName = strtoupper($empresaName);
         $paginaName = $fn->eliminarAcentos($pagina->getNombre());
-        $hoy = date('d-m-Y');
+        $paginaName = strtoupper($paginaName);
+        $hoy = date('y-m-d h i');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/interaccionColaborativo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/ESPACIO COLABORATIVO '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'interaccionColaborativo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $document_name = 'ESPACIO COLABORATIVO '.$empresaName.' '.$paginaName.' '.$hoy.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         
@@ -711,6 +779,8 @@ class ReportesController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $em = $this->getDoctrine()->getManager();
+        $hoy = date('Y-m-d h:i:s');
+        //return new response($hoy);
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -750,7 +820,7 @@ class ReportesController extends Controller
                                         JOIN pe.pagina p
                                         WHERE p.pagina IS NULL
                                         AND pe.empresa = :empresa_id 
-                                        ORDER BY p.id ASC")
+                                        ORDER BY p.nombre ASC")
                         ->setParameter('empresa_id', $empresa_id);
             $pages = $query->getResult();
 
@@ -758,7 +828,7 @@ class ReportesController extends Controller
             {
                 $tiene++;
                 $str .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$page->getPagina()->getId().'" p_str="'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre().'">'.$page->getPagina()->getCategoria()->getNombre().': '.$page->getPagina()->getNombre();
-                $subPaginas = $f->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
+                $subPaginas = $this->subPaginasEmpresa($page->getPagina()->getId(), $empresa_id);
                 if ($subPaginas['tiene'] > 0)
                 {
                     $str .= '<ul>';
@@ -785,6 +855,58 @@ class ReportesController extends Controller
 
     }
 
+    public function subPaginasEmpresa($pagina_id, $empresa_id)
+	{
+
+        $em = $this->getDoctrine()->getManager();
+        $rs = $this->get('reportes');
+		$subpaginas = array();
+		$tiene = 0;
+		$return = null;
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $hoy = date('Y-m-d 23:59:59');
+        //return new response($hoy);
+		$query = $em->createQuery("SELECT pe, p FROM LinkComunBundle:CertiPaginaEmpresa pe 
+                                    JOIN pe.pagina p 
+                                    WHERE pe.empresa = :empresa_id AND p.pagina = :pagina_id 
+                                    ORDER BY p.orden ASC")
+                    ->setParameters(array('empresa_id' => $empresa_id,
+                    					  'pagina_id' => $pagina_id));
+        $subpages = $query->getResult();
+		
+		foreach ($subpages as $subpage)
+		{
+			$tiene++;
+                if($subpage->getPagina()->getCategoria()->getId() == $yml['parameters']['categoria']['leccion'])
+                {   
+                    $desde = $subpage->getPagina()->getFechaCreacion();
+                    $desde = $desde->format('Y-m-d h:i:s');
+                    
+                    $listado = $rs->interaccionMuro($subpage->getEmpresa()->getId(), $subpage->getPagina()->getId(),$desde , $hoy);
+                    
+                    $cantidad = count($listado);
+                    $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .'" >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().' ('.$cantidad.')';
+                }else{
+                    $return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .' " >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre();
+                }
+				$subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId());
+				if ($subPaginas['tiene'] > 0)
+				{
+					$return .= '<ul>';
+					$return .= $subPaginas['return'];
+					$return .= '</ul>';
+				}
+				$return .= '</li>';
+			
+		}
+
+		$subpaginas = array('tiene' => $tiene,
+							'return' => $return);
+
+		return $subpaginas;
+
+	}
+
     public function ajaxInteraccionMuroAction(Request $request)
     {
         
@@ -806,8 +928,11 @@ class ReportesController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
-
+        $leccion = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
+        $materia = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($leccion->getPagina());
+        $modulo = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($materia->getPagina());
+        $programa = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($modulo->getPagina());
+        
         $listado = $rs->interaccionMuro($empresa_id, $pagina_id, $desde, $hasta);
 
 
@@ -818,16 +943,17 @@ class ReportesController extends Controller
 
         // Encabezado
         $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Interacciones de muro').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
-        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$pagina->getNombre().'.');
-
+        $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$this->get('translator')->trans('Programa').': '.$programa->getNombre() .'.');
+        $objWorksheet->setCellValue('A3', $this->get('translator')->trans('Módulo').': '.$modulo->getNombre().'. '.$this->get('translator')->trans('Materia').': '.$materia->getNombre() .'.');
+        $objWorksheet->setCellValue('A4', $this->get('translator')->trans('Lección').': '.$leccion->getNombre().'.');
         if (!count($listado))
         {
-            $objWorksheet->mergeCells('A5:S5');
-            $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
+            $objWorksheet->mergeCells('A8:O8');
+            $objWorksheet->setCellValue('A8', $this->get('translator')->trans('No existen registros para esta consulta'));
         }
         else {
 
-            $row = 5;
+            $row = 8;
             $i = 0;
             $styleThinBlackBorderOutline = array(
                 'borders' => array(
@@ -845,12 +971,14 @@ class ReportesController extends Controller
             foreach ($listado as $participante)
             {
                $correo = trim($participante['correo_personal']) ? trim($participante['correo_personal']) : trim($participante['correo_corporativo']);
+               $fecha = explode(" ",$participante['fecha_mensaje']);
+
                 
-                $objWorksheet->getStyle("A$row:N$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:N$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:N$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:N$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
             
 
@@ -867,8 +995,9 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
                 $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
                 $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('M'.$row, $participante['fecha_mensaje']);
-                $objWorksheet->setCellValue('N'.$row, $participante['mensaje']);
+                $objWorksheet->setCellValue('M'.$row, $fecha[0]);
+                $objWorksheet->setCellValue('N'.$row, $fecha[1]);
+                $objWorksheet->setCellValue('o'.$row, $participante['mensaje']);
                 $row++;
 
             }
@@ -877,17 +1006,17 @@ class ReportesController extends Controller
 
         // Crea el writer
         $empresaName = $fn->eliminarAcentos($empresa->getNombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
-        $paginaName = $fn->eliminarAcentos($pagina->getNombre());
-        $hoy = date('d-m-Y');
+        $empresaName = strtoupper($empresaName);
+        $paginaName = $fn->eliminarAcentos($programa->getNombre());
+        $paginaName = strtoupper($paginaName);
+        $hoy = date('y-m-d h i');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/interaccionMuro_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $path = 'recursos/reportes/MURO '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'interaccionMuro_'.$empresaName.'_'.$paginaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+        $document_name = 'MURO '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         
@@ -960,7 +1089,7 @@ class ReportesController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Listado de participantes').'. ');
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Cantidad de participantes por programa').'. ');
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. ');
         
         if (!count($r))
@@ -987,13 +1116,15 @@ class ReportesController extends Controller
 
             foreach ($r1 as $re)
             {
-                
+                $objWorksheet->getStyle("A$row:H$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A8:H8")->applyFromArray($styleThinBlackBorderOutline); //bordes
                 $objWorksheet->getStyle("A$row:H$row")->getFont()->setSize($font_size); // Tamaño de las letras
                 $objWorksheet->getStyle("A$row:H$row")->getFont()->setName($font); // Tipo de letra
                 $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                 $objWorksheet->getStyle("A$row:H$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                 $objWorksheet->getRowDimension($row)->setRowHeight(30); // Altura de la fila
-            
+                $objWorksheet->getStyle("A6:C6")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                $objWorksheet->getStyle("A5:C5")->applyFromArray($styleThinBlackBorderOutline); //bordes
 
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A6', $usuarios_registrados);
@@ -1016,6 +1147,7 @@ class ReportesController extends Controller
         // Crea el writer
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');
         $empresaName = $f->eliminarAcentos($empresa->getNombre());
+        $empresaName = strtoupper($empresaName);
         $hoy = date('d-m-Y');
         
         // Envia la respuesta del controlador
@@ -1023,7 +1155,7 @@ class ReportesController extends Controller
         // Agrega los headers requeridos
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'ReporteGeneral_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xlsx'
+            'RESUMEN PROGRAMAS '.$empresaName.'.xlsx'
         );
 
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
@@ -1045,14 +1177,14 @@ class ReportesController extends Controller
                                     JOIN pe.pagina p 
                                     WHERE pe.empresa = :empresa_id
                                     AND p.pagina IS NULL 
-                                    ORDER BY pe.orden')
+                                    ORDER BY p.nombre ASC')
                     ->setParameter('empresa_id', $empresa_id);
         $paginas = $query->getResult();
 
         $options = '<option value=""></option>';
         foreach ($paginas as $pagina)
         {
-            $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getNombre().'</option>';
+            $options .= '<option value="'.$pagina->getPagina()->getId().'">'.$pagina->getPagina()->getCategoria()->getNombre().': ' .$pagina->getPagina()->getNombre().'</option>';
         }
         
         $return = array('options' => $options);
@@ -1071,7 +1203,8 @@ class ReportesController extends Controller
         $query = $em->createQuery('SELECT f FROM LinkComunBundle:CertiForo f  
                                     WHERE f.empresa = :empresa_id
                                     AND f.foro IS NULL 
-                                    AND f.pagina = :pagina_id')
+                                    AND f.pagina = :pagina_id
+                                    ORDER BY f.tema ASC')
                     ->setParameters(array('empresa_id' => $empresa_id,
                                           'pagina_id' => $pagina_id));
         $temas = $query->getResult();

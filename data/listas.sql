@@ -381,10 +381,12 @@ INSERT INTO admin_tipo_logo (id, nombre, css) VALUES (3, 'Circular/Cuadrado', 'i
 -- Name: idadmin_tipo_correo_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
-SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_correo', 'id'), 2, false);
+SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_correo', 'id'), 4, false);
 
 --
 -- Data for Name: admin_social; Type: TABLE DATA; Schema: public;
 --
 
 INSERT INTO admin_tipo_correo (id, nombre) VALUES (1, 'Notificación programada');
+INSERT INTO admin_tipo_correo (id, nombre) VALUES (2, 'Espacio colaborativo');
+INSERT INTO admin_tipo_correo (id, nombre) VALUES (3, 'Muro');

@@ -14,7 +14,7 @@ begin
 
     OPEN resultado FOR 
 
-    SELECT u.id AS id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.correo_personal AS correo_personal, 
+    SELECT u.id AS id, u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.activo AS activo, u.correo_personal AS correo_personal, 
         u.correo_corporativo AS correo_corporativo, e.nombre AS empresa, c.nombre AS pais, n.nombre AS nivel, 
         TO_CHAR(u.fecha_registro, 'DD/MM/YYYY') AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
     CAST (SUM(EXTRACT(minutes from s.fecha_request - s.fecha_ingreso)) as bigint) * interval '1 min' AS promedio, COUNT(s.usuario_id) AS visitas 

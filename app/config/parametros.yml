@@ -58,6 +58,8 @@ parameters:
         aporte_muro: 8
     tipo_correo:
         notificacion_programada: 1
+        espacio_colaborativo: 2
+        muro: 3
     estatus_pagina:
         iniciada: 1
         en_evaluacion: 2
@@ -78,11 +80,11 @@ parameters:
         bienvenida: 1
     correo_recuperacion:
         asunto: 'Formación Smart - Recuperación de usuario y clave.'
-        remitente: 'soporte@formacion2puntocero.com'
+        remitente: 'soporte@formacionsmart.com'
     correo_soporte:
         asunto: 'Formación Smart - Solicitud de soporte virtual. '
-        remitente: 'soporte@formacion2puntocero.com'
-        destinatario: 'soporte@formacion2puntocero.com'
+        remitente: 'soporte@formacionsmart.com'
+        destinatario: 'soporte@formacionsmart.com'
         plantilla: 'LinkFrontendBundle:Soporte:EmailSoporte.html.twig'
     ponderacion:
         evaluacion: 0.2

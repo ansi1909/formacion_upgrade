@@ -452,6 +452,8 @@ class ColaborativoController extends Controller
                                                             'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación Smart: '.$descripcion,
                                            'remitente' => $this->container->getParameter('mailer_user'),
+                                           'remitente_name' => $this->container->getParameter('mailer_user_name'),
+                                           'mailer' => 'soporte_mailer',
                                            'destinatario' => $correo_tutor);
                 $correo = $f->sendEmail($parametros_correo);
             }
@@ -756,6 +758,8 @@ class ColaborativoController extends Controller
                                                             'link_plataforma' => $link_plataforma),
                                            'asunto' => 'Formación Smart: '.$descripcion_alarma,
                                            'remitente' => $this->container->getParameter('mailer_user'),
+                                           'remitente_name' => $this->container->getParameter('mailer_user_name'),
+                                           'mailer' => 'soporte_mailer',
                                            'destinatario' => $correo_tutor);
                 $correo = $f->sendEmail($parametros_correo);
             }

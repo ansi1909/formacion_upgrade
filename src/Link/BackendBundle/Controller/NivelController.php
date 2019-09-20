@@ -189,7 +189,7 @@ class NivelController extends Controller
         $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
                                                                                              array('nombre' => 'ASC'));
 
-        $options = '<option value=""></option>';
+        $options = '<option value="0">Todos los niveles</option>';
         foreach ($niveles as $nivel)
         {
             $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
@@ -206,19 +206,40 @@ class NivelController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $empresa_id = $request->query->get('empresa_id');
-        
-        $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
+        $calendario = $request->query->get('calendario');
+
+        if($calendario)
+        {
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
                                                                                              array('nombre' => 'ASC'));
 
-        $options = '<option value=""></option>';
-        foreach ($niveles as $nivel)
-        {
-            $nivel_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByNivel($nivel->getId());
-            if ($nivel_usuario)
+            $options = '<option value=""></option>';
+            foreach ($niveles as $nivel)
             {
-                $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+                $nivel_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByNivel($nivel->getId());
+                if ($nivel_usuario)
+                {
+                    $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+                }
+            }
+
+            $options .= '<option value="">'.$this->get('translator')->trans('Todos los niveles').'</option>';
+        }
+        else{
+            $niveles = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->findBy(array('empresa' => $empresa_id),
+                                                                                             array('nombre' => 'ASC'));
+
+            $options = '<option value=""></option>';
+            foreach ($niveles as $nivel)
+            {
+                $nivel_usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->findOneByNivel($nivel->getId());
+                if ($nivel_usuario)
+                {
+                    $options .= '<option value="'.$nivel->getId().'">'.$nivel->getNombre().'</option>';
+                }
             }
         }
+        
         
         $return = array('options' => $options);
         
