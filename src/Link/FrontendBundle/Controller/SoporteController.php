@@ -35,13 +35,16 @@ class SoporteController extends Controller
 
 		$background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
-        $link_plataforma = $this->container->getParameter('link_plataforma').$session->get('empresa')['id'];
+		$link_plataforma = $this->container->getParameter('link_plataforma').$session->get('empresa')['id'];
+
 		$datosCorreo =
 		[
 			'twig' => $yml['parameters']['correo_soporte']['plantilla'],
 			'asunto' => $yml['parameters']['correo_soporte']['asunto'],
 			'remitente' => $this->container->getParameter('mailer_user'),
-			'destinatario' => $yml['parameters']['correo_soporte']['destinatario'],
+			'remitente_name' => $this->container->getParameter('mailer_user_name'),
+			'mailer' => 'soporte_mailer',
+			'destinatario' => 'yasaacisaias@gmail.com',
 			'datos' =>
 			[
 				'nombreUsuario' => $nombreUsuario,

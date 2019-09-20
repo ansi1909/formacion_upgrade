@@ -116,7 +116,7 @@
                         <thead class="sty__title">
                             <tr>
                                 <th>{{ 'Mensaje'|trans }}</th>
-                                <th>{{ 'Particpante'|trans }}</th>
+                                <th>{{ 'Participante'|trans }}</th>
                                 <th>{{ 'Fecha'|trans }}</th>
                                 <th>{{ 'Respuestas'|trans }}</th>
                                 <th>{{ 'Acciones'|trans }}</th>
@@ -131,9 +131,9 @@
                                     <td>{{ comentario.hijos }}</td>
                                     <td class="center">
                                         {% if comentario.usuarioId == usuario.id %}
-                                            <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus"></span></a>
+                                            <a href="#" title="{{'Editar' | trans}}" class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-pencil"></span></a>
                                         {% endif %}
-                                        {% if comentario.answer_delete==0 %}
+                                        {% if comentario.answer_delete==1 %}
                                               <a href="#" title="{{'Responder' | trans}}" class="btn btn-link btn-sm add " data-toggle="modal" data-target="#formModal" data="{{ comentario.id }}"><span class="fa fa-plus" ></span></a>
                                         {% endif %}
 
@@ -152,6 +152,8 @@
         </div>
     </div>
     <div class="col-md-8 col-sm-8 col-lg-8 col-xl-8">
+        <div id="panel_muro">
+        </div>
         <div class="card" id="history_programation">
             <div class="card-header gradiente">
                 <h5 class="card-title">{{ 'Respuestas comentario seleccionado'|trans }}</h5>
@@ -162,7 +164,7 @@
                         <thead class="sty__title">
                             <tr>
                                 <th>{{ 'Mensaje'|trans }}</th>
-                                <th>{{ 'Particpante'|trans }}</th>
+                                <th>{{ 'Participante'|trans }}</th>
                                 <th>{{ 'Fecha'|trans }}</th>
                                 <th>{{ 'Acciones'|trans }}</th>
                             </tr>
@@ -194,7 +196,7 @@
         <input type="hidden" id="comentario_id" name="comentario_id" value="">
         <div class="row">
             <div class="form-group col-sm-16 col-md-16 col-lg-16 col-xl-16">
-                <label for="asunto" class="form-control-label">{{ 'Respuesta'|trans }}:</label>
+                <label for="asunto" class="form-control-label" id="asunto">{{ 'Respuesta'|trans }}:</label>
                 <div class="col-sm-16 col-md-16 col-lg-16 col-xl-16" style="margin-top: 2rem; margin-bottom: 2rem">
                     <textarea type="text" class="form-control form_sty1" rows="4" id="respuesta" name="respuesta" placeholder="{{ 'Respuesta'|trans }}..."></textarea>
                 </div>
@@ -218,7 +220,8 @@
             $('#muro_id').val(muro_id);
             $('#respuesta').val('');
             $('#comentario_id').val('');
-
+            $('#exampleModalLongTitle').html("{{ 'Responder comentario'|trans }}");
+            $('#asunto').html("{{ 'Respuesta'|trans }}");
         });
 
         $('.edit').click(function(){
@@ -226,13 +229,15 @@
             var respuesta = $('.respuesta' + comentario_id).html();
             $('#comentario_id').val(comentario_id);
             $('#respuesta').val(respuesta);
-
+            $('#exampleModalLongTitle').html("{{ 'Editar comentario'|trans }}");
+            $('#asunto').html("{{ 'Comentario'|trans }}");
         });
 
         $('.see').click(function(){
             var muro_id = $(this).attr('data');
             var usuario_id = $('#usuario_id').val();
             $('#div-active-alert').hide();
+            $('#panel_muro').hide();
             $('#tbody_history_programation').hide();
             $('#loading').show();
             $.ajax({
@@ -242,6 +247,8 @@
                 data: { muro_id: muro_id, usuario_id: usuario_id },
                 dataType: "json",
                 success: function(data) {
+                    $('#panel_muro').html(data.panel);
+                    $('#panel_muro').show();
                     $('#tbody_history_programation').html(data.html);
                     $('#tbody_history_programation').show();
                     $('#loading').hide();

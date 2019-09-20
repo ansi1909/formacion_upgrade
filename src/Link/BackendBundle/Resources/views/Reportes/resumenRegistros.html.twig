@@ -56,7 +56,7 @@
 {% set encabezado = usuario.empresa ? 'Resumen general de registros'|trans : 'Resumen general de registros por empresa'|trans %}
 
 <form id="form" name="form" action="{{ path ('_ajaxResumenRegistros') }}" method="POST">
-    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 , 'filtro_fecha': 1 ,'filtro_username': 0 }) }}
+    {{ include('LinkBackendBundle:Reportes:filtro.html.twig', { 'encabezado': encabezado, 'usuario': usuario, 'empresas': empresas, 'filtro_programas': 1 ,'filtro_tema': 0 , 'filtro_fecha': 1 ,'resumen_registro': 1, 'filtro_username': 0 }) }}
 </form>
 
 {# Sección de resultados del reporte #}

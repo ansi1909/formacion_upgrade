@@ -804,8 +804,10 @@ class NotificacionController extends Controller
                                                                         'logo' => $logo,
                                                                         'link_plataforma' => $link_plataforma),
                                                        'asunto' => $asunto,
-                                                       'remitente' => $this->container->getParameter('mailer_user'),
-                                                       'destinatario' => $correo);
+                                                       'remitente' => $this->container->getParameter('mailer_user_tutor'),
+                                                       'remitente_name' => $this->container->getParameter('mailer_user_tutor_name'),
+                                                       'destinatario' => $correo,
+                                                       'mailer' => 'tutor_mailer');
                             $ok = $f->sendEmail($parametros_correo);
 
                             if ($ok)

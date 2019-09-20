@@ -4,6 +4,8 @@ $(document).ready(function() {
 		var desde = $('#desde').val() ? $('#desde').val().replace(/\//g, '-') : 0;
 		var hasta = $('#hasta').val() ? $('#hasta').val().replace(/\//g, '-') : 0;
 		window.location.replace($('#url_auto').val()+'/'+$('#empresa_id').val()+'/'+desde+'/'+hasta);
+		$('#paginas').hide();
+		$('#pagina-loader').show();
 	});
 
     $('.datePicker').datepicker({
@@ -19,8 +21,13 @@ $(document).ready(function() {
 		var id = data.node.id;
 		var pagina_id = $('#'+id).attr('p_id');
 		var pagina_str = $('#'+id).attr('p_str');
-		$('#pagina_str').val(pagina_str);
-		$('#pagina_id').val(pagina_id);
+		var tipo_recurso_id = $('#'+id).attr('tipo_recurso_id');
+		if(tipo_recurso_id == 4)
+		{
+			$('#pagina_str').val(pagina_str);
+			$('#pagina_id').val(pagina_id);
+		}
+		
 	});
 
 	$('#form').submit(function(e) {

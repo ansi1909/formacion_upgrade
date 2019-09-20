@@ -293,11 +293,12 @@
             function getNiveles(empresa_id){
                 $('#div-niveles').hide();
                 $('.img-loader').show();
+                var calendario = 'true';
                 $.ajax({
                     type: "GET",
                     url: $('#url_niveles').val(),
                     async: true,
-                    data: { empresa_id: empresa_id },
+                    data: { empresa_id: empresa_id, calendario: calendario },
                     dataType: "json",
                     success: function(data) {
                         $('.img-loader').hide();

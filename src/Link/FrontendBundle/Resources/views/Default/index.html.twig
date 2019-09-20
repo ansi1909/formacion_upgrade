@@ -1,5 +1,20 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .disabled {
+            cursor: default;
+        }
+        .card-footer {
+            transform: translateY(0);
+        }
+        .card .badge-wrap {
+            transform: translateY(0);
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 
 <input type="hidden" id="url_servicio" name="url_servicio" value="{{ path('_ajaxServicioInteractivo') }}">
@@ -27,30 +42,7 @@
         <div class="container d-flex flex-column justify-content-center align-items-center ">
             
             {% for ar in actividad_reciente %}
-                <div class="card-hrz card-current">
-                    <img class="card-hrz-img  rounded-left" src="{{ uploads ~ ar.imagen }}" alt="">
-                    <div class="card-hrz-body">
-                        <h5 class="title-grey "> {{ ar.titulo_padre }} </h5>
-                        <span class="text-sm title-grey d-none d-lg-block"> {{ ar.categoria }} </span>
-                        <span class="text-sm color-light-grey d-none d-lg-block"> {{ ar.titulo_hijo }} </span>
-                        <div class="progress mt-2">
-                            <div class="progress-bar" role="progressbar" style="width: {{ ar.porcentaje }}%" aria-valuenow="{{ ar.porcentaje }}" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="card-hrz-right float-right px-2 d-flex flex-wrap align-items-center justify-content-center ">
-                        <div class="percent text-center mt-3">
-                            <h2 class="color-light-grey mb-0 pb-0"> {{ ar.porcentaje }}% </h2>
-                            <span class="count mt-0 mb-2 text-xs d-none d-lg-block  color-light-grey {{ ar.class_finaliza }}">{{ ar.dias_vencimiento }}</span>
-                        </div>
-                        {% if ar.link_enabled %}
-                            {% if ar.avanzar == 2 %}
-                                <a href="{{ path('_test', { 'pagina_id':  ar.evaluacion_pagina, 'programa_id': ar.evaluacion_programa }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3">{{ 'Continuar'|trans }}</a>
-                            {% else %}
-                                <a href="{{ path('_lecciones', { 'programa_id':  ar.padre_id, 'subpagina_id': ar.id }) }}" class="btn btn-sm btn-continuar mt-0 px-3 mb-3">{{ 'Continuar'|trans }}</a>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                </div>
+                {{ include('LinkFrontendBundle:Default:actividadReciente.html.twig', { 'ar': ar }) }}
             {% endfor %}
 
         </div>
@@ -131,17 +123,17 @@
                                                 <i class="material-icons d-block">aspect_ratio</i>
                                                 <small class="d-block">{{ 'Certificado'|trans }}</small>
                                             </a>
+                                            {% if pagina.prueba != null %}
                                             <a href="{{ path('_generarNotas', { 'programa_id': pagina.id }) }}" target="_blank" class="flex-column align-items-center col-4 btn-edge btn-notas">
                                                 <i class="material-icons d-block">content_copy</i>
                                                 <small class=" d-block">{{ 'Notas'|trans }}</small>
                                             </a>
+                                            {% endif %}
                                             {% if pagina.continuar == 2 %}
                                                 <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
-                                            {% else %}
-                                                <a href="#iconos" class="flex-column align-items-center col-4 btn-edge btn-ver disabled">
-                                            {% endif %}
                                                 <i class="material-icons d-block">visibility</i>
                                                 <small class=" d-block">{{ 'Ver'|trans }}</small>
+                                            {% endif %}
                                             </a>
                                         </div>
                                     {% endif %}

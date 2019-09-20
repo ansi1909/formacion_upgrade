@@ -52,14 +52,22 @@ class UsuarioController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
 
-        $clave = $request->request->get('clave');
+        $clave = $request->request->get('password');
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']); 
+        if( $clave == $usuario->getClave())
+        {
+            $return = array('ok' => 2,
+                            'mensaje' => 'La contraseña debe ser distinta a la actual');
+            $return = json_encode($return);
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
+        }
         $usuario->setClave($clave);
         $em->persist($usuario);
         $em->flush();
 
-        $return = array('ok' => 1);
+        $return = array('ok' => 1,
+                        'mensaje' => 'Cambio de contraseña realizado');
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
         
@@ -113,32 +121,29 @@ class UsuarioController extends Controller
 
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        
-        
+               
         $correo_secundario = trim($request->request->get('correo_secundario'));
         
-
         // Actualización del correo en la BD
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        if ($usuario->getCorreoPersonal() == $correo_secundario || $usuario->getCorreoCorporativo() == $correo_secundario) {
+        if ($correo_secundario != '' && $usuario->getCorreoPersonal() == $correo_secundario) {
 
-            $existe=1;
+            $existe = 1;
             
-        }else{
+        }
+        else {
 
-            $existe=0;
-            $usuario->setCorreoCorporativo($correo_secundario);
+            $existe = 0;
+            $usuario->setCorreoCorporativo($correo_secundario && $correo_secundario != '' ? $correo_secundario : null);
     
             $em->persist($usuario);
             $em->flush();
 
             // Actualización en la sesión
             $datosUsuario = $session->get('usuario');
-            $datosUsuario['correo'] = $usuario->getCorreoPersonal();
             $datosUsuario['correo_corporativo'] = $usuario->getCorreoCorporativo();
-            $datosUsuario['fecha_nacimiento'] = $usuario->getFechaNacimiento()->format('Y-m-d');
-            $datosUsuario['fecha_nacimiento_formateada'] = $usuario->getFechaNacimiento()->format('d/m/Y');
             $session->set('usuario', $datosUsuario);
+            
         }
 
         $return = array('correo' => $usuario->getCorreoPersonal(),

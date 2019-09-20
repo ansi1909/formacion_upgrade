@@ -123,11 +123,12 @@
 {% elseif reporte == '2' %}
 
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
-        {% set encabezado =  'Reporte de participantes registrados por programas'|trans %}
+        {% set encabezado =  'Reporte de participantes registrados en programas'|trans %}
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
         <input type="hidden" id="pagina_selected" name="pagina_selected" value="{{ pagina_id }}">
+        <input type="hidden" id="reporte_id" name="reporte_id" value="1">
         <input type="hidden" id="empresa_selected" name="empresa_selected" value="{{ empresa_dashboard }}">
         <input type="hidden" id="reporte" name="reporte" value="{{ reporte }}">
         <div class="row">
@@ -394,7 +395,7 @@
 {% elseif reporte == '5' %}
 
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
-        {% set encabezado =  'Reporte de participantes no iniciados en programas'|trans %}
+        {% set encabezado =  'Reporte de participantes no iniciados en programa'|trans %}
 
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
@@ -411,7 +412,6 @@
                     <div class="card-block">
                         {% if not usuario_empresa %}
                          <label for="texto" class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">{{'Empresa' | trans }}</label>
-
                             <div class="row">
                                 <div class="col-sm-7 col-md-7 col-lg-7 offset-sm-4 offset-md-4 offset-lg-4">
                                     <select class="form_sty_sel form-control" style="border-radius: 5px" id="empresa_id" name="empresa_id">

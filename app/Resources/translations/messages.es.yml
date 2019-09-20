@@ -14,7 +14,7 @@ Activar muro: Activar muro
 Activar para ordenar la columna de manera ascendente: Activar para ordenar la columna de manera ascendente
 Activar para ordenar la columna de manera descendente: Activar para ordenar la columna de manera descendente
 Activar webinar: Activar webinar
-Actividad en muro: Actividad en muro
+Actividad en el muro: Actividad en el muro
 Actividades en curso: Actividades en curso
 Actividades Recientes: Actividades Recientes
 Activo: Activo
@@ -24,6 +24,7 @@ Advertencia: Advertencia
 Agregar: Agregar
 Agregar opción: Agregar opción
 Agregar pregunta: Agregar pregunta
+Agregar respuesta: Agregar respuesta
 Agregar sub-página: Agregar sub-página
 Agregar tipo de pregunta: Agregar tipo de pregunta
 Agrupación de páginas: Agrupación de páginas
@@ -93,6 +94,7 @@ Cancelar: Cancelar
 Cantidad: Cantidad
 Cantidad de conexiones: Cantidad de conexiones
 Cantidad de filas: Cantidad de filas
+Cantidad de participantes por programa: Cantidad de participantes por programa
 Cantidad de preguntas a mostrar: Cantidad de preguntas a mostrar
 Cantidad de preguntas de la evaluación: Cantidad de preguntas de la evaluación
 Cantidad de registros creados: Cantidad de registros creados
@@ -121,6 +123,9 @@ Código del empleado repetido: Código del empleado repetido
 Columna: Columna
 ¡Comencemos! Elige tu programa: ¡Comencemos! Elige tu programa
 Comentar: Comentar
+Comentario: Comentario
+Comentario seleccionado: Comentario seleccionado
+comentarios: comentarios
 Comentarios: Comentarios
 Comparativo hasta el: Comparativo hasta el
 Competencia debe ser un valor entero: Competencia debe ser un valor entero
@@ -149,6 +154,7 @@ Contacte al Administrador del Sistema para mayor información: Contacte al Admin
 Constancia de Notas: Constancia de Notas
 Consultar: Consultar
 Contenido: Contenido
+Contenido del: Contenido del
 Contenido que debe ser aprobado previamente: Contenido que debe ser aprobado previamente
 Contenido Relacionado: Contenido Relacionado
 Continuar: Continuar
@@ -166,7 +172,7 @@ Correo electrónico repetido: Correo electrónico repetido
 Correo electrónico requerido: Correo electrónico requerido
 Correo corporativo: Correo corporativo
 Correo personal: Correo personal
-Correo secundario: Correo Secundario
+Correo secundario: Correo secundario
 Creado el: Creado el
 Crear evento: Crear evento
 Crear nuevo tema: Crear nuevo tema
@@ -195,16 +201,17 @@ de la evaluación: de la evaluación
 de un total de: de un total de
 Debe coincidir con la contraseña: Debe coincidir con la contraseña
 Debe escribir su respuesta: Debe escribir su respuesta
-Debe ingresar el correo electronico.: Debe ingresar el correo electronico.
+Debes ingresar el correo electrónico: Debes ingresar el correo electrónico
+Debes ingresar el correo personal o el correo corporativo: Debes ingresar el correo personal o el correo corporativo
 Debe seleccionar al menos un programa: Debe seleccionar al menos un programa
-Debe seleccionar al menos un rol.: Debe seleccionar al menos un rol.
+Debe seleccionar al menos un rol: Debe seleccionar al menos un rol
 Debe seleccionar el grupo: Debe seleccionar el grupo
 Debe seleccionar el tipo de pregunta o agregar una nueva: Debe seleccionar el tipo de pregunta o agregar una nueva
 Debe seleccionar la fecha inicial: Debe seleccionar la fecha inicial
 Debe seleccionar la fecha final: Debe seleccionar la fecha final
 Debe seleccionar la página.: Debe seleccionar la página.
 Debe seleccionar la página destino: Debe seleccionar la página destino
-Debe seleccionar tanto la empresa como el nivel.: Debe seleccionar tanto la empresa como el nivel.
+Debes seleccionar tanto la empresa como el nivel: Debe seleccionar tanto la empresa como el nivel
 Debe seleccionar una fecha de publicación.: Debe seleccionar una fecha de publicación.
 Debe seleccionar una fecha de vencimiento.: Debe seleccionar una fecha de vencimiento.
 Debe ser mínimo de 3 caracteres.: Debe ser mínimo de 3 caracteres.
@@ -233,6 +240,7 @@ Domingo: Domingo
 Duplicar página y sub-páginas: Duplicar página y sub-páginas
 Editar: Editar
 Editar asignación: Editar asignación
+Editar comentario: Editar comentario
 Editar evaluación: Editar evaluación
 Editar página: Editar página
 Editar perfil: Editar perfil
@@ -244,8 +252,8 @@ Elementos sin seleccionar: Elementos sin seleccionar
 Elija el destino de la página: Elija el destino de la página
 Eliminado: Eliminado
 Eliminar: Eliminar
-El apellido del usuario debe ser mínimo de 3 caracteres.: El apellido del usuario debe ser mínimo de 3 caracteres.
-El apellido del usuario es requerido.: El apellido del usuario es requerido.
+El apellido del usuario debe ser mínimo de 3 caracteres: El apellido del usuario debe ser mínimo de 3 caracteres
+El apellido del usuario es requerido: El apellido del usuario es requerido
 El archivo: El archivo
 El archivo debe tener al menos una fila con datos: El archivo debe tener al menos una fila con datos
 El archivo es requerido.: El archivo es requerido.
@@ -254,14 +262,15 @@ El asunto debe ser mínimo de 3 caracteres: El asunto debe ser mínimo de 3 cara
 El asunto es requerido: El asunto es requerido
 El autor es requerido.: El autor es requerido.
 El autor debe ser mínimo de 3 caracteres.: El autor debe ser mínimo de 3 caracteres.
-El campo usuario debe ser mínimo de 3 caracteres.: El campo usuario debe ser mínimo de 3 caracteres.
-El campo usuario es requerido.: El campo usuario es requerido.
+El campo usuario debe ser mínimo de 3 caracteres: El campo usuario debe ser mínimo de 3 caracteres
+El campo usuario es requerido: El campo usuario es requerido
 El contenido es requerido.: El contenido es requerido.
 El correo es requerido: El correo es requerido
-El correo corporativo tiene un formato inválido.: El correo corporativo tiene un formato inválido.
+El correo corporativo tiene un formato inválido: El correo corporativo tiene un formato inválido
+El correo secundario tiene un formato inválido: El correo secundario tiene un formato inválido
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.
-El correo personal tiene un formato inválido.: El correo personal tiene un formato inválido.
+El correo personal tiene un formato inválido: El correo personal tiene un formato inválido
 El Encabezado es requerido.: El Encabezado es requerido.
 El Encabezado debe ser mínimo de 3 caracteres.: El Encabezado debe ser mínimo de 3 caracteres.
 El enlace de la encuesta no es un válido URL: El enlace de la encuesta no es un válido URL
@@ -272,7 +281,7 @@ El logo de la empresa se mostrará en la página de login: El logo de la empresa
 El título es requerido.: El título es requerido.
 El título debe ser mínimo de 3 caracteres.: El título debe ser mínimo de 3 caracteres.
 El grupo ha sido almacenada con éxito: El grupo ha sido almacenada con éxito
-El login ya existe.: El login ya existe.
+El login ya existe: El login ya existe
 El lugar es requerido.: El lugar es requerido.
 El material complementario debe ser sólo archivo con extensión pdf.: El material complementario debe ser sólo archivo con extensión pdf.
 El mensaje es requerido.: El mensaje es requerido.
@@ -287,8 +296,8 @@ El nombre de la página es requerido.: El nombre de la página es requerido.
 El nombre del archivo no debe contener acentos o caracteres especiales: El nombre del archivo no debe contener acentos o caracteres especiales
 El nombre del tutorial debe ser mínimo de 3 caracteres: El nombre del tutorial debe ser mínimo de 3 caracteres
 El nombre del tutorial es requerido: El nombre del tutorial es requerido
-El nombre del usuario debe ser mínimo de 3 caracteres.: El nombre del usuario debe ser mínimo de 3 caracteres.
-El nombre del usuario es requerido.: El nombre del usuario es requerido.
+El nombre del usuario debe ser mínimo de 3 caracteres: El nombre del usuario debe ser mínimo de 3 caracteres
+El nombre del usuario es requerido: El nombre del usuario es requerido
 El país es requerido.: El país es requerido.
 El país no existe en la base de datos: El país no existe en la base de datos
 El participante: El participante
@@ -375,7 +384,7 @@ Esta evaluación no tiene preguntas configuradas: Esta evaluación no tiene preg
 Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy: Esta notificación será enviada por el sistema de forma automática, puede dejar la fecha de hoy
 Esta página no tiene evaluación asignada: Esta página no tiene evaluación asignada
 Esta plantilla no posee thumbnails en la base de datos: Esta plantilla no posee thumbnails en la base de datos
-¿Estás list@?: ¿Estás list@?
+¿Estás listo/a?: ¿Estás listo/a?
 ¿Estás segur@ de que deseas cerrar la sesión?: ¿Estás segur@ de que deseas cerrar la sesión?
 ¿Estás segur@ de que deseas eliminar este registro?: ¿Estás segur@ de que deseas eliminar este registro?
 ¿Estás Segur@ que deseas salir de la evaluación?: ¿Estás Segur@ que deseas salir de la evaluación?
@@ -388,9 +397,10 @@ Estatus de las sub-paginas: Estatus de las sub-paginas
 Estatus de los participantes de la empresa: Estatus de los participantes de la empresa
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
+Este correo no puede ser igual al corporativo: Este correo no puede ser igual al corporativo
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
-Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.: Este usuario tiene una sesión activa. Espere 5 minutos e intente ingresar de nuevo.
+Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.
 Estimado: Estimado
 ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.: ¡Estimado participante! Envía tus comentarios o dudas sobre cualquier aspecto relacionado con los programas de certificación.
 Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora: Estimado participante, si decides salir de la evaluación en este momento, perderás las respuestas que hayas marcado hasta ahora
@@ -419,10 +429,9 @@ Fecha inicio: Fecha inicio
 Fecha de creación: Fecha de creación
 Fecha de difusión: Fecha de difusión
 Fecha de nacimiento: Fecha de nacimiento
-Fecha de nacimiento es requerida.: Fecha de nacimiento es requerida.
-Fecha de Publicación: Fecha de Publicación
+Fecha de publicación: Fecha de publicación
 Fecha de registro: Fecha de registro
-Fecha de Vencimiento: Fecha de Vencimiento
+Fecha de vencimiento: Fecha de vencimiento
 FELICITACIONES: FELICITACIONES
 Fila: Fila
 filtrado de un total de: filtrado de un total de
@@ -455,7 +464,7 @@ Ha ocurrido un error al generar el archivo de participantes, verifique su conexi
 Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.: Ha ocurrido un error en el procesamiento de la consulta. Contacte al administrador del sistema.
 Ha ocurrido un error en el servidor. Contacte al administrador del sistema.: Ha ocurrido un error en el servidor. Contacte al administrador del sistema.
 Ha ocurrido un error en la eliminación de este registro: Ha ocurrido un error en la eliminación de este registro
-Ha ocurrido un error en la validación del usuario.: Ha ocurrido un error en la validación del usuario.
+Ha ocurrido un error en la validación del usuario: Ha ocurrido un error en la validación del usuario
 Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.: Ha ocurrido un error obteniendo los programas. Contacte al administrador del sistema.
 Ha ocurrido un error reordenando de este registro: Ha ocurrido un error reordenando de este registro
 Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.: Ha ocurrido un error al cargar los participantes conectados, verifique su conexión a internet o contacte al administrador del sistema.
@@ -477,6 +486,7 @@ Horas de conexión: Horas de conexión
 Horas de conexión de la empresa: Horas de conexión de la empresa
 Horas de conexión por empresa: Horas de conexión por empresa
 Hoy a las: Hoy a las
+Huso horario: Huso horario
 Icono: Icono
 Icono de la empresa: Icono de la empresa
 Imagen: Imagen
@@ -526,7 +536,7 @@ La cantidad máxima de intentos debe ser un valor entero.: La cantidad máxima d
 La cantidad máxima de intentos es requerida.: La cantidad máxima de intentos es requerida.
 La categoría es requerida.: La categoría es requerida.
 La categoría ha sido almacenada con éxito: La categoría ha sido almacenada con éxito
-La clave es requerida.: La clave es requerida.
+La clave es requerida: La clave es requerida
 La columna Activo debe ser un valor entero: La columna Activo debe ser un valor entero
 La columna Activo debe tener como valor 0 o 1: La columna Activo debe tener como valor 0 o 1
 La contraseña es requerida: La contraseña es requerida
@@ -594,6 +604,7 @@ Listado de tutoriales: Listado de tutoriales
 Listado de usuarios: Listado de usuarios
 Listado de participantes por empresa: Listado de participantes por empresa
 Lo sentimos. Sesión expirada.: Lo sentimos. Sesión expirada.
+Logueado: Logueado
 Login repetido: Login repetido
 Login requerido: Login requerido
 Logo de la empresa: Logo de la empresa
@@ -623,10 +634,11 @@ Módulos: Módulos
 Módulos vistos: Módulos vistos
 Mostrando registros del: Mostrando registros del
 Mostrar: Mostrar
+Mostrar contraseña: Mostrar contraseña
 Mostrar los resultados de la evaluación: Mostrar los resultados de la evaluación
 Mostrar preferencia: Mostrar preferencia
 Mostrar resultados: Mostrar resultados
-Mostrar contraseña: Mostrar contraseña 
+MOSTRAR TODOS LOS COMENTARIOS: MOSTRAR TODOS LOS COMENTARIOS
 Mover: Mover
 Mover página: Mover página
 Muro: Muro
@@ -650,6 +662,7 @@ No iniciados: No iniciados
 No Iniciado: No Iniciado
 no posee participantes registrados: no posee participantes registrados
 No se encontraron resultados: No se encontraron resultados
+No se encontró información para este usuario: No se encontró información para este usuario
 No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos: No se ha registrado ninguna actividad... Se cerrará su sesión en los próximos 5 segundos
 No se mostrará en la página de login: No se mostrará en la página de login
 No se permiten espacios en blanco.: No se permiten espacios en blanco.
@@ -667,7 +680,7 @@ Nombre: Nombre
 Nombre de usuario: Nombre de usuario
 Nombre para esta página: Nombre para esta página
 Nombre requerido: Nombre requerido
-Nombre del participante: Nombre del partcipante
+Nombre del participante: Nombre del participante
 Nombres deben ser solo alfabéticos: Nombres deben ser solo alfabéticos
 Nota: Nota
 Notas: Notas
@@ -713,10 +726,10 @@ País: País
 Para una correcta visualización de los recursos disponbles en: Para una correcta visualización de los recursos disponbles en
 Para enviar la notificación inmediatamente seleccione la fecha de hoy: Para enviar la notificación inmediatamente seleccione la fecha de hoy
 Para ver el detalle del evento puede entrar al siguiente enlace: Para ver el detalle del evento puede entrar al siguiente enlace
+participante: participante
 Participante: Participante
 participantes: participantes
 Participantes: Participantes
-Particpante: participante
 Participantes activos: Participantes activos
 Participantes inactivos: Participantes inactivos
 Participantes no iniciados: Participantes no iniciados
@@ -735,7 +748,6 @@ Participantes seleccionados: Participantes seleccionados
 Pdf: Pdf
 PDF requerido: PDF requerido
 Perfil de usuario: Perfil de usuario
-Perfil de participante: Perfil de participante
 Perfil del participante: Perfil del participante
 Perfil Empresarial: Perfil Empresarial
 Periodo: Periodo
@@ -806,8 +818,8 @@ Repetir evaluación: Repetir evaluación
 Reportar problema: Reportar problema
 Reporte de participantes aprobados por programas: Reporte de participantes aprobados por programas
 Reporte de participantes cursando por programas: Reporte de participantes cursando por programas
-Reporte de participantes no iniciados en programas: Reporte de participantes no iniciados en programas
-Reporte de participantes registrados por programas: Reporte de participantes registrados por programas
+Reporte de participantes no iniciados en programa: Reporte de participantes no iniciados en programa
+Reporte de participantes registrados en programas: Reporte de participantes registrados en programas
 Reporte de participantes por empresa: Reporte de participantes por empresa
 Reportar un problema: Reportar un problema
 Responder: Responder
@@ -820,6 +832,7 @@ Respuesta: Respuesta
 Respuesta creada con éxito: Respuesta creada con éxito
 Respuestas: Respuestas
 Respuestas comentario seleccionado: Respuestas comentario seleccionado
+Respuestas del tema seleccionado: Respuestas del tema seleccionado
 Resultado del archivo procesado: Resultado del archivo procesado
 Resultados: Resultados
 Resumen: Resumen
@@ -847,6 +860,7 @@ Seleccione la empresa para mostrar las páginas asignadas: Seleccione la empresa
 Seleccione la fecha difusión: Seleccione la fecha difusión
 Sesión expirada: Sesión expirada
 Si: Si
+Sí: Sí
 Si acepta no puede revertir el cambio: Si acepta no puede revertir el cambio
 Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.: Si desea que la notificación se difunda al guardar los cambios, seleccione la fecha de hoy.
 Si deseas, puedes realizar la evaluación haciendo clic en el botón: Si deseas, puedes realizar la evaluación haciendo clic en el botón
@@ -857,7 +871,7 @@ Si marca SI, la página tendrá una sección en el que los particiantes podrán 
 Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.: Si marca SI, los usuarios de la empresa podrán acceder al contenido de esta página, incluso si ellos han aprobado.
 Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los usuarios de la empresa podrán visualizar el enlace de esta página.
 Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.: Si marca SI, todas las sub-página tendrán la misma fecha de inicio y vencimiento.
-Si necesitas ayuda escribenos a: Si necesitas ayuda escribenos a
+Si necesitas ayuda escríbenos a: Si necesitas ayuda escribenos a
 Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de: Si no realizaste la solicitud de credenciales, comunícate con el equipo de soporte a traves de
 Si presionas: Si presionas
 Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.: Si marca SI, los participantes de la empresa podrán visualizar el enlace de esta página.
@@ -886,6 +900,7 @@ Sub-páginas: Sub-páginas
 También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart: También puede solicitar la carga del certificado para esta página a través del Administrador de Contenido del equipo de Formación Smart
 Teléfono de contacto: Teléfono de Contacto
 Tema: Tema
+Tema seleccionado: Tema seleccionado
 Tendrás: Tendrás
 Thumbnails de la plantilla: Thumbnails de la plantilla
 Thumbnails inexistentes: Thumbnails inexistentes
@@ -912,6 +927,7 @@ Todos: Todos
 Todos los derechos reservados: Todos los derechos reservados
 Todos los empleados de la empresa: Todos los empleados de la empresa
 Todos los niveles: Todos los niveles
+TODOS LOS TEMAS: TODOS LOS TEMAS
 Tomar evaluación: Tomar evaluación
 Total aprobados: Total aprobados
 Tu calificación: Tu calificación
