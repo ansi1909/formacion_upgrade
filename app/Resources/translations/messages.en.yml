@@ -202,6 +202,8 @@ de la: of the
 de la evaluación: of the test
 de un total de: of total of
 Debe coincidir con la contraseña: It must be equal to password
+Debe elegir una empresa: You must choose a company
+Debe elegir un programa: You must choose a program
 Debe escribir su respuesta: You must write your response
 Debes ingresar el correo electrónico: You must enter the email
 Debes ingresar el correo personal o el correo corporativo: You must enter either personal email or corporate email
@@ -229,7 +231,7 @@ Desde: Since
 Destinado a: Target
 Destino: Destination
 Detalle: Detail
-Detalles de la Biblioteca Virtual: Virtual Library Details
+Detalles de la biblioteca virtual: Virtual library details
 Detalle de la Noticia y Novedad: Detail of the News and New
 Detalles de la página: Page details
 Detalle del certificado y constancia: Certificate Detail and Certificate
@@ -826,7 +828,7 @@ Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
 Reporte de participantes no iniciados en programa: Report of participants not initiated in program
-Reporte de participantes registrados por programas: Report of registered participants
+Reporte de participantes registrados en programas: Report of registered participants
 Reporte de participantes por empresa: Participant report by company
 Reportar un problema: Report a problem
 Responder: Answer

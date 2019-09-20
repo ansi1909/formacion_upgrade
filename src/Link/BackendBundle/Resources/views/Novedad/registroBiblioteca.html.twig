@@ -60,7 +60,7 @@
         <div class="card">
             <div class="card-header gradiente">
                 <div class="card-title">
-                    <h6>{{ 'Detalle de la biblioteca virtual'|trans }}</h6>
+                    <h6>{{ 'Detalles de la biblioteca virtual'|trans }}</h6>
                 </div>
             </div>
             <div class="card-block">
@@ -250,8 +250,8 @@
                                     <div class="col-sm-3 col-md-3 col-lg-3">
                                        <div class="input-group">
                                            <span class="input-group-addon">
-                                                <a href="#" class="iframe-btn uploadFileHref" data-etiqueta="pdf" id="btn_pdf">
-                                                    <button type="button" class="btn_addImg">
+                                                <a href="#" class="iframe-btn uploadFileHref" data-etiqueta="video" id="btn_video">
+                                                    <button type="button" class="btn_addImg fileinput-button">
                                                         <span class="fa fa-file-video-o"></span>
                                                         <input class="fileupload" type="file" name="files[]" multiple>
                                                     </button>
@@ -278,15 +278,12 @@
                                     <div class="col-sm-3 col-md-3 col-lg-3">
                                        <div class="input-group">
                                            <span class="input-group-addon">
-                                                {% if usuario_empresa %}
-                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=audio&rootFolder=recursos/noticias/{{ usuario_empresa }}" class="btn iframe-btn" type="button"></div>
-                                                {% else %}
-                                                    <div id="recurso"><a href="{{ uri }}/jq/ResponsiveFilemanager/filemanager/dialog.php?type=2&field_id=audio&rootFolder=recursos/noticias" class="btn iframe-btn" type="button"></div>
-                                                {% endif %}
-                                                        <button type="button" class="btn_addImg">
-                                                            <span class="fa fa-file-audio-o"></span>
-                                                        </button>
-                                                    </a>
+                                            <a href="#" class="iframe-btn uploadFileHref" data-etiqueta="audio" id="btn_audio">
+                                                <button type="button" class="btn_addImg fileinput-button">
+                                                    <span class="fa fa-file-audio-o"></span>
+                                                    <input class="fileupload" type="file" name="files[]" multiple>
+                                                </button>
+                                            </a>
                                            </span>
                                            <span class="input-group-addon">
                                                <button id="btn_clear_audio" class="btn_clearImg2" type="button">
@@ -403,6 +400,11 @@
                     }
                 },
                 'imagen': {
+                    required: {
+                        depends: function(element) {
+                            return $('#tipo_biblioteca_id').val() == 3 || $('#tipo_biblioteca_id').val() == 4;
+                        }
+                    },
                     extension: "jpg|png"
                 },
                 'pdf': {

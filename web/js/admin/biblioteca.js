@@ -59,14 +59,24 @@ $(document).ready(function() {
             var goUpload = true;
             var uploadFile = data.files[0];
             var file_input = $('#file_input').val();
-            if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(uploadFile.name) && file_input == 'imagen') {
+            if (!(/\.(jpg|jpeg|tiff|png)$/i).test(uploadFile.name) && file_input == 'imagen') {
                 $('#div-error ul').html("<li>- Debes seleccionar sólo archivo de imagen</li>");
                 goUpload = false;
             }
             if (!(/\.(pdf)$/i).test(uploadFile.name) && file_input == 'pdf') {
                 $('#div-error ul').html("<li>- Debes seleccionar sólo archivo PDF</li>");
                 goUpload = false;
-            }
+			}
+			if(!(/\.(mp3)$/i).test(uploadFile.name) && file_input == 'audio')
+			{
+				$('#div-error ul').html("<li>- Debes seleccionar sólo archivo MP3</li>");
+                goUpload = false;
+			}
+			if(!(/\.(mp4|webm|ogv)$/i).test(uploadFile.name) && file_input == 'video')
+			{
+				$('#div-error ul').html("<li>- Debes seleccionar sólo archivo mp4|webm|ogv</li>");
+                goUpload = false;
+			}
             if (goUpload == true) {
                 data.submit();
             }
