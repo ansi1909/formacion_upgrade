@@ -125,7 +125,13 @@ function editComentario(){
 
 	$('.add').unbind('click');
 	$('.add').click(function(){
-        var muro_id = $(this).attr('data');
+		var muro_id = $(this).attr('data');
+		$('#form').show();
+		$('#alert-success').hide();
+		$('#detail').hide();
+		$('#aceptar').hide();
+		$('#guardar').show();
+		$('#cancelar').show();
         $('#muro_id').val(muro_id);
         $('#respuesta').val('');
         $('#comentario_id').val('');

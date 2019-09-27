@@ -716,6 +716,7 @@ class ColaborativoController extends Controller
         $archivo = $request->request->get('archivo');
         $edit = $request->request->get('edit');
 
+        
         if (!$foro_id)
         {
             $foro_id = $session->get('upload_foro_id');
