@@ -5,7 +5,10 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/loumultiselect/css/multi-select.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/chosen_v1.5.1/docsupport/prism.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/chosen_v1.5.1/chosen.css') }}" type="text/css">
     <style>
+        .chosen-rtl .chosen-drop { left: -9000px; }
         .sty__title {
             padding: 2px 5px;
             box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.5);
@@ -120,15 +123,66 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/loumultiselect/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/quicksearch-master/jquery.quicksearch.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-selectv-12/dist/js/i18n/defaults-es_ES.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/chosen_v1.5.1/chosen.jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/chosen_v1.5.1/docsupport/prism.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/notificacion_programada.js') }}"></script>
     <script type="text/javascript">
+
+function observeSelectChosen()
+        {
+            var config = {
+            '.chosen-select'           : {},
+            '.chosen-select-deselect'  : {allow_single_deselect:true},
+            '.chosen-select-no-single' : {disable_search_threshold:10},
+            '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+            '.chosen-select-width'     : {width:"95%"}
+            }
+            for (var selector in config) {
+            $(selector).chosen(config[selector]);
+            }
+            console.log('entrando aca');
+        }    
 
         function observeMultiSelect()
         {
             $('.multiple').multiSelect({
-                selectableHeader: "<div class='sty__title'>{{ 'Elementos sin seleccionar'|trans }}</div>",
-                selectionHeader: "<div class='sty__title'>{{ 'Elementos seleccionados'|trans }}</div>"
+                selectableHeader: "<div class='sty__title'>{{ 'Elementos sin seleccionar'|trans }}</div> <input type='text' class='search-input' autocomplete='off' placeholder='buscar'>",
+                selectionHeader: "<div class='sty__title'>{{ 'Elementos seleccionados'|trans }}</div> <input type='text' class='search-input' autocomplete='off' placeholder='buscar'>",
+                afterInit: function(ms){
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                .on('keydown', function(e){
+                if (e.which === 40){
+                    that.$selectableUl.focus();
+                    return false;
+                }
+                });
+
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                .on('keydown', function(e){
+                if (e.which == 40){
+                    that.$selectionUl.focus();
+                    return false;
+                }
+                });
+            },
+            afterSelect: function(){
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function(){
+                this.qs1.cache();
+                this.qs2.cache();
+            }
             });
         }
 
