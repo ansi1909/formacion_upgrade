@@ -145,8 +145,10 @@ class NoticiasController extends Controller
            ->from('LinkComunBundle:AdminNoticia', 'n')
            ->where('n.tipoNoticia != :biblioteca')
            ->andWhere('LOWER(n.titulo) LIKE :term')
+           ->andWhere('n.fechaVencimiento > :hoy')
            ->setParameters(array('biblioteca' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
-                           'term' => '%'.$term.'%'));
+                                'term' => '%'.$term.'%',
+                                'hoy' => $hoy = new \DateTime()));
 
         $query = $qb->getQuery();
         $noticias_db = $query->getResult();

@@ -164,7 +164,6 @@ class CalendarioController extends Controller
         $evento->setLugar($request->request->get("lugar"));
         $evento->setFechaInicio(new \DateTime($fecha_inicio));
         $evento->setFechaFin(new \DateTime($fecha_fin));
-        $evento->setFechaCreacion(new \DateTime($hoy));
         $evento->setEmpresa($empresa);
         $evento->setNivel($nivel);
         $evento->setUsuario($usuario);

@@ -453,6 +453,7 @@
                     required: "- {{ 'El autor es requerido.'|trans }}"
                 },
                 'imagen': {
+                    required: "- {{ 'La imagen es requerida.'|trans }}",
                     extension: "- {{ 'Sólo archivos con extensión .jpg o .png'|trans }}"
                 },
                 'pdf': {
@@ -468,10 +469,10 @@
                     extension: "- {{ 'Sólo archivos con extensión .mp4 o .webm o .ogv'|trans }}"
                 },
                 'fecha_publicacion': {
-                    required: "- {{ 'La fecha de publicación es requerida'}}"
+                    required: "- {{ 'La fecha de inicio es requerida.'|trans}}"
                 },
                 'fecha_vencimiento': {
-                    required: "- {{ 'La fecha de vencimiento es requerida'}}"
+                    required: "- {{ 'La fecha de fin es requerida.'|trans}}"
                 }
             }
         });
