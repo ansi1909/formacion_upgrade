@@ -757,8 +757,9 @@ class NotificacionController extends Controller
                 $r = $query->fetchAll();
 
                 $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
-                //$logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
-                $logo = ''; // Por ahora no se colocará el logo de formación en el header del correo
+                $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion.png';
+                $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
+                //$logo = ''; // Por ahora no se colocará el logo de formación en el header del correo
                 $link_plataforma = $this->container->getParameter('link_plataforma').$notificacion_programada->getNotificacion()->getEmpresa()->getId();
                 $j = 0; // Contador de correos exitosos
                 $np_id = 0; // notificacion_programada_id
@@ -802,10 +803,13 @@ class NotificacionController extends Controller
                                                                         'mensaje' => $mensaje,
                                                                         'background' => $background,
                                                                         'logo' => $logo,
+                                                                        'footer' => $footer,
                                                                         'link_plataforma' => $link_plataforma),
                                                        'asunto' => $asunto,
-                                                       'remitente' => $this->container->getParameter('mailer_user'),
-                                                       'destinatario' => $correo);
+                                                       'remitente' => $this->container->getParameter('mailer_user_tutor'),
+                                                       'remitente_name' => $this->container->getParameter('mailer_user_tutor_name'),
+                                                       'destinatario' => $correo,
+                                                       'mailer' => 'tutor_mailer');
                             $ok = $f->sendEmail($parametros_correo);
 
                             if ($ok)

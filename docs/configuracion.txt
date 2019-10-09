@@ -110,7 +110,7 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
 
 18. Los cron jobs deben programarse bajo las siguientes frecuencia
 	a. php bin/console link:cerrar-sesiones				--> Cada hora
-	b. php bin/console link:espacio-colaborativo		--> Diariamente a las 01:00
+	b. php bin/console link:espacio-colaborativo		--> Cada hora
 	c. php bin/console link:evento						--> Diariamente a las 02:00
 	d. php bin/console link:recordatorio-programados	--> Diariamente a las 03:00
 

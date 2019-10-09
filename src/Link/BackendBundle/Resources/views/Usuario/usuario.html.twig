@@ -258,7 +258,7 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="campo1" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo1'|trans }}</label>
+                                            <label for="campo1" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo'|trans }}1</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
                                                 <input type="text" class="form-control form_sty1" name="campo1" id="campo1" value="{{ usuario.campo1 }}">
                                                 <span class="fa fa-map-marker"></span>
@@ -267,7 +267,7 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="campo2" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo2'|trans }}</label>
+                                            <label for="campo2" class="col-sm-6 col-md-6 col-lg-6 col-form-label">{{ 'Campo'|trans }}2</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
                                                 <input type="text" class="form-control form_sty1" name="campo2" id="campo2" value="{{ usuario.campo2 }}">
                                                 <span class="fa fa-map-signs"></span>
@@ -310,7 +310,7 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="campo3" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo3'|trans }}</label>
+                                            <label for="campo3" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo'|trans }}3</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
                                                 <input type="text" class="form-control form_sty1" name="campo3" id="campo3" value="{{ usuario.campo3 }}">
                                                 <span class="fa fa-cubes"></span>
@@ -319,7 +319,7 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
-                                            <label for="campo4" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo4'|trans }}</label>
+                                            <label for="campo4" class="col-sm-16 col-md-16 col-lg-16 col-form-label">{{ 'Campo'|trans }}4</label>
                                             <div class="col-sm-16 col-md-16 col-lg-16">
                                                 <input type="text" class="form-control form_sty1" name="campo4" id="campo4" value="{{ usuario.campo4 }}">
                                                 <span class="fa fa-id-badge"></span>
@@ -404,17 +404,28 @@
                 var roles_empresa_str = $('#roles_empresa_str').val();
                 var usuario_id = $('#usuario_id').val();
                 var login = $('#login').val();
+                var correo_personal = $('#correo_personal').val();
+                var correo_corporativo = $('#correo_corporativo').val();
+                var html = '';
 
                 for (i=0; i<roles.length; i++)
                 {
                     if ((roles_empresa_str.indexOf(roles[i]) >= 0) && (empresa_id == 0 || nivel_id == 0))
                     {
                         valid = false;
+                        html += "<li>- {{ 'Debes seleccionar tanto la empresa como el nivel'|trans }}.</li>";
                     }
                 }
 
+                // Validar que uno de los correos sea ingresado
+                if (correo_personal == '' && correo_corporativo == '')
+                {
+                    valid = false;
+                    html += "<li>- {{ 'Debes ingresar el correo personal o el correo corporativo'|trans }}.</li>";
+                }
+
                 if (!valid){
-                    $('#div-error ul').html("<li>- {{ 'Debe seleccionar tanto la empresa como el nivel.'|trans }}</li>");
+                    $('#div-error ul').html(html);
                     $('#div-error ul').show();
                     notify($('#div-error').html());
                     $('#finish').show();
@@ -433,7 +444,7 @@
                             success: function(data) {
                                 if (data.ok != 0)
                                 {
-                                    $('#div-error ul').html("<li>- {{ 'El login ya existe.'|trans }}</li>");
+                                    $('#div-error ul').html("<li>- {{ 'El login ya existe'|trans }}.</li>");
                                     $('#div-error ul').show();
                                     notify($('#div-error').html());
                                     $('#finish').show();
@@ -443,7 +454,7 @@
                                 }
                             },
                             error: function(){
-                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario.'|trans }}</li>");
+                                $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario'|trans }}.</li>");
                                 $('#div-error ul').show();
                                 notify($('#div-error').html());
                                 $('#finish').show();
@@ -454,6 +465,7 @@
                         $('#finish').hide();
                         $('#form').submit();
                     }
+
                 }
 
             }
@@ -486,9 +498,6 @@
                 'correo_personal': {
                     email: true
                 },
-                'fecha_nacimiento': {
-                    required: true
-                },
                 'correo_corporativo': {
                     email: true
                 },
@@ -499,32 +508,29 @@
             },
             messages: {
                 'nombre': {
-                    required: "- {{ 'El nombre del usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El nombre del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'El nombre del usuario es requerido'|trans }}.",
+                    minlength: "- {{ 'El nombre del usuario debe ser mínimo de 3 caracteres'|trans }}."
                 },
                 'apellido': {
-                    required: "- {{ 'El apellido del usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'El apellido del usuario es requerido'|trans }}.",
+                    minlength: "- {{ 'El apellido del usuario debe ser mínimo de 3 caracteres'|trans }}."
                 },
                 'login': {
-                    required: "- {{ 'El campo usuario es requerido.'|trans }}",
-                    minlength: "- {{ 'El campo usuario debe ser mínimo de 3 caracteres.'|trans }}"
+                    required: "- {{ 'El campo usuario es requerido'|trans }}.",
+                    minlength: "- {{ 'El campo usuario debe ser mínimo de 3 caracteres'|trans }}."
                 },
                 'clave': {
-                    required: "- {{ 'La clave es requerida.'|trans }}"
+                    required: "- {{ 'La clave es requerida'|trans }}."
                 },
                 'correo_personal': {
-                    email: "- {{ 'El correo personal tiene un formato inválido.'|trans }}"
-                },
-                'fecha_nacimiento': {
-                    required: "- {{ 'Fecha de nacimiento es requerida.'|trans }}"
+                    email: "- {{ 'El correo personal tiene un formato inválido'|trans }}"
                 },
                 'correo_corporativo': {
-                    email: "- {{ 'El correo corporativo tiene un formato inválido.'|trans }}"
+                    email: "- {{ 'El correo corporativo tiene un formato inválido'|trans }}."
                 },
                 'roles[]': {
-                    required: "- {{ 'Debe seleccionar al menos un rol.'|trans }}",
-                    minlength: "- {{ 'Debe seleccionar al menos un rol.'|trans }}"
+                    required: "- {{ 'Debe seleccionar al menos un rol'|trans }}.",
+                    minlength: "- {{ 'Debe seleccionar al menos un rol'|trans }}."
                 }
             }
         });

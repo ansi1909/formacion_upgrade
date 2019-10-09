@@ -163,7 +163,7 @@
                     </div>
                     <div class="card" id="detail">
                         <div class="card-header" style="background: linear-gradient(to right, #0084db 0%, #00558D 100%);">
-                            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos Evento'|trans}}</h4>
+                            <h4 class="card-title" style="color: #fff; text-transform: uppercase">{{'Datos evento'|trans}}</h4>
                         </div>
                         <div class="card-block">
                             <div class="container">
@@ -234,7 +234,7 @@
                 </div>
                 <div class="modal-body" id="detail-error" style="display:none;">
                     <div class="alert alert-danger" role="alert" id="alert-error"> 
-                        <strong>{{ 'Error'|trans }}!</strong> {{ 'No se pudo guardar el evento. Inténtalo de nuevo.'|trans }}. 
+                        <strong>Error!</strong> {{ 'No se pudo guardar el evento. Inténtalo de nuevo.'|trans }}. 
                     </div>
                 </div>
                 <div class="modal-footer" id="save_create" style="display:none;">
@@ -293,11 +293,12 @@
             function getNiveles(empresa_id){
                 $('#div-niveles').hide();
                 $('.img-loader').show();
+                var calendario = 'true';
                 $.ajax({
                     type: "GET",
                     url: $('#url_niveles').val(),
                     async: true,
-                    data: { empresa_id: empresa_id },
+                    data: { empresa_id: empresa_id, calendario: calendario },
                     dataType: "json",
                     success: function(data) {
                         $('.img-loader').hide();
@@ -390,7 +391,6 @@
                     $('#save_error').hide();
                     $('#Modal').modal('show');
                     $('#guardar_save_create').click(function(){
-                        $('#save_create').hide();
                         $('#form').submit();
                     });
                 },

@@ -149,8 +149,11 @@ class EmpresaController extends Controller
     public function registradosEmpresaAction( Request $request )
     {
         $session = new Session();
+        $a = $this->get('funciones');
+        
         $empresa_id = $request->request->get('empresa_id');
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        
 
         $em = $this->getDoctrine()->getManager();
         $query = $em->getConnection()->prepare('SELECT
@@ -211,8 +214,8 @@ class EmpresaController extends Controller
                 {
 
                     $correo = ($participante['correo'])? $participante['correo']:$participante['correo2'];
-                    $activo = ($participante['activo'])? 1:0;
-                    $competencia = ($participante['competencia'])? 1:0;
+                    $activo = ($participante['activo'])? 'Sí' : 'No';
+                    $competencia = ($participante['competencia'])? 'Sí' : 'No';
 
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
@@ -238,8 +241,13 @@ class EmpresaController extends Controller
                 $ok = 1;
         }
 
+        
+        
+         $empresaName = $a->eliminarAcentos($empresa->getNombre());
+         $empresaName = strtoupper($empresaName);
+         $hoy = date('y-m-d h i');
          $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-         $path = 'recursos/reportes/participantesEmpresa'.$session->get('sesion_id').'.xls';
+         $path = 'recursos/reportes/PARTICIPANTES '.$empresaName.' '.$hoy.'.xls';
          $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
          $writer->save($xls);
 

@@ -40,15 +40,17 @@ class NotificacionController extends Controller
             $mostrar = 0;
 
             if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_muro']) {
-
+                
                 $muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($notificacion->getEntidadId());
-
+                
                 if ($muro)
                 {
                     // Se verifica si el programa al que pertenece el muro está vencido
                     $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id']);
+                    
                     if (!$vencido)
                     {
+                        
                         $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().' titulo="'.$this->get('translator')->trans('Muro').': '.$muro->getPagina()->getNombre().'.">
                                 <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
                     }
@@ -401,12 +403,12 @@ class NotificacionController extends Controller
         $em->persist($comentario);
         $em->flush();
 
-        $categoria = $this->obtenerProgramaCurso_($comentario->getPagina()->getId());
+        $categoria = $this->obtenerProgramaCurso_($comentario->getPagina());
         $tutores = $f->getTutoresEmpresa($usuario->getEmpresa()->getId(), $yml);
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $session->get('empresa')['id'];
-        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $comentario->getPagina(),  $comentario, $categoria, $usuario->getEmpresa(), 'Respondió',$background,$logo,$link_plataforma);
+        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $comentario, $categoria, 'Respondió', $background, $logo, $link_plataforma);
 
         $img = $usuario->getFoto() ? $upload.$usuario->getFoto() : $f->getWebDirectory().'/front/assets/img/user-default.png';
         $autor = $this->get('translator')->trans('Yo');
@@ -437,18 +439,19 @@ class NotificacionController extends Controller
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    public function obtenerProgramaCurso_($paginaId)
+    public function obtenerProgramaCurso_($pagina)
     {
-        $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
         while ($pagina->getPagina())
         {
-            $paginaId = $pagina->getPagina()->getId();
-            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
+            $pagina = $pagina->getPagina();
         }
 
-        $categoria = $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->find($pagina->getCategoria()->getId());
+        $categoria = $pagina->getCategoria();
 
-        return ['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
+        return ['categoria' => $categoria->getNombre(), 
+                'nombre' => $pagina->getNombre(),
+                'programa_id' => $pagina->getId() ];
 
     }
+    
 }

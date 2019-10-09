@@ -158,9 +158,10 @@
                         <a href="#" class="close link_ri" id="close_link_ri" data-dismiss="modal">{{ 'Regresar al inicio'|trans }}</a>
                     </div>
                 </div>
+                <br>
                 <div class="row align-items-end justify-content-center">
                     <div class="col-8 col-md-8 col-sm-8 col-xs-8 col-lg-8 col-xl-8 text-center">
-                        <p class="txt-modal txt-modal-footer">{{ 'Si necesitas ayuda escribenos a'|trans }}<br/><strong>{{ email_soporte }}</p>
+                        <p class="txt-modal txt-modal-footer" style="margin-top:auto;">{{ 'Si necesitas ayuda escríbenos a'|trans }}<br/><strong>{{ email_soporte }}</p>
                     </div>
                 </div>
             </div>
@@ -199,7 +200,7 @@
             $('#check_mostrar').click(function(event)
             {
                  event.preventDefault();
-                 var check= document.getElementById('password');
+                 var check= document.getElementById('password_pre');
                  if(check.type=="password")
                  {
                     check.type="text";

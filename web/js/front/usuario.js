@@ -52,12 +52,28 @@ $(document).ready(function() {
 		        data: $("#form-clave").serialize(),
 		        dataType: "json",
 		        success: function(data) {
-		        	$('#password').val('');
-		        	$('#confirmar').val('');
-		        	$('.boton').show();
-		            $('#wait_password').hide(1000);
-		            $( ".close" ).trigger( "click" );
-		            console.log('cambio de contraseña realizado'); // Hay que implementar los mensajes de error para el frontend
+					if(data.ok == 1)
+					{
+						$('#password').val('');
+						$('#confirmar').val('');
+						$('.boton').show();
+						$('#wait_password').hide(1000);
+						//$( ".close" ).trigger( "click" );
+						console.log('Cambio de contraseña realizado'); // Hay que implementar los mensajes de error para el frontend
+						$('#error_clave').html(data.mensaje);
+						$('#error_clave').show();
+						$("#cambio").addClass( "blocked" );
+					}else{
+						$('#password').val('');
+						$('#confirmar').val('');
+						$('.boton').show();
+						$('#wait_password').hide(1000);
+						//$( ".close" ).trigger( "click" );
+						console.log('la contrasena debe ser distinta a la actual'); // Hay que implementar los mensajes de error para el frontend
+						$('#error_clave').html(data.mensaje);
+						$('#error_clave').show();
+						$("#cambio").addClass( "blocked" );
+					}
 		        },
 		        error: function(){
 		            console.log('Error cambiando la contraseña'); // Hay que implementar los mensajes de error para el frontend

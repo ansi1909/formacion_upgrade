@@ -83,6 +83,7 @@
 {% block body %}
 
     <input type="hidden" id="foro_main_id" name="foro_main_id" value="{{ foro.id }}">
+    <input type="hidden" id="usuario_name" name="usuario_name" value="{{ app.session.get('usuario').nombre }}">
     <input type="hidden" id="foro_id" name="foro_id" value="0">
     <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
     <input type="hidden" id="mensaje_content" name="mensaje_content" value="">
@@ -205,7 +206,10 @@
             </div>
         </div>
         <div class="row">
-            <ul class="table-card-det margin1 ">
+            <div class="lesson-container container py-4 text-center">
+                <h2>{{ foro.tema }}</h2>
+            </div>
+            <ul class="table-card-det margin1">
                 <li class="f-card-det ">
                     <div class="cont-det">
                         <div class="row justify-content-between">

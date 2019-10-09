@@ -58,15 +58,18 @@ class LoginController extends Controller
 
 	   			            // Envío de correo con los datos de acceso, usuario y clave
 	   			            $parametros = array('asunto' => $yml['parameters']['correo_recuperacion']['asunto'],
-                                                'remitente' => array($this->container->getParameter('mailer_user')),
-                                                'destinatario' => $correo,
+												'remitente' => $this->container->getParameter('mailer_user'),
+												'remitente_name' => $this->container->getParameter('mailer_user_name'),
+												'destinatario' => $correo,
+												'mailer' => 'soporte_mailer',
                                                 'twig' => 'LinkComunBundle:Default:emailRecuperacion.html.twig',
                                                 'datos' => array('usuario' => $usuario->getLogin(),
                                                                  'clave' => $usuario->getClave(),
                                                                  'nombre' => $usuario->getNombre().' '.$usuario->getApellido(),
                                                                  'correo_soporte' => $yml['parameters']['correo_soporte']['remitente'],
                                                                  'background' => $background,
-                                                                 'logo' => $logo,
+																 'logo' => $logo,
+																 'footer' =>$footer,
                                                                  'link_plataforma' => $link_plataforma));
 				            $correoRecuperacion = $f->sendEmail($parametros, $this);
 	               			return $this->redirectToRoute('_login');

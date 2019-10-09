@@ -18,6 +18,7 @@ use Link\ComunBundle\Entity\CertiOpcion;
 use Link\ComunBundle\Entity\CertiEmpresa;
 use Link\ComunBundle\Entity\CertiPreguntaOpcion;
 use Link\ComunBundle\Entity\CertiPreguntaAsociacion;
+use Link\ComunBundle\Entity\AdminCorreo;
 
 
 class Functions
@@ -228,14 +229,14 @@ class Functions
         return $text;
     }
 
-	protected function tipoDescripcion($tipoMensaje, $usuario, $pagina, $author)
+	public function tipoDescripcion($tipoMensaje, $muro, $author)
     {
        
-        $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('realizó una publicación en el muro de').' '.$pagina->getNombre().'.';
+        $mensaje = $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().' '.$this->translator->trans('realizó una publicación en el muro de').' '.$muro->getPagina()->getNombre().'.';
 
-        if($tipoMensaje=='Respondió')
+        if($tipoMensaje == 'Respondió')
         {
-           $mensaje = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->translator->trans('respondió en el muro al comentario de').' '.$author.'.';
+           $mensaje = $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().' '.$this->translator->trans('respondió en el muro al comentario de').' '.$author.'.';
         }
 
         return $mensaje;
@@ -243,7 +244,7 @@ class Functions
     }
 
 	//Obtiene la informacion de los tutores asignados a una empresa 
-	public function getTutoresEmpresa($empresaId, $yml)
+	public function getTutoresEmpresa($empresa_id, $yml)
 	{
 		 $em = $this->em;
 
@@ -255,14 +256,16 @@ class Functions
                 ";
 
         $query = $em->createQuery($dql);
-        $query->setParameters(['rol'=>$yml['parameters']['rol']['tutor'], 'empresa'=>$empresaId]);
+        $query->setParameters(['rol' => $yml['parameters']['rol']['tutor'], 
+                               'empresa' => $empresa_id]);
         $tutores = $query->getResult();
 
         return $tutores;
+
 	}
 
 	////// Envia los correo y notificaciones a los tutores indicando actividad en el muro
-    public function sendMailNotificationsMuro($tutores, $yml, $pagina,  $muro, $categoria, $empresa, $tipoMensaje, $background, $logo, $link_plataforma)
+    public function sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma)
     {
 
         $em = $this->em;
@@ -270,62 +273,66 @@ class Functions
         foreach ($tutores as $tutor) 
         {
 
-            $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo():($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
+            $correo = ($tutor->getCorreoCorporativo()) ? $tutor->getCorreoCorporativo() : ($tutor->getCorreoPersonal()) ? $tutor->getCorreoPersonal() : null;
+
+            // El usuario debe estar dentro del nivel asignado para ver el contenido de la página
+            $query = $em->createQuery('SELECT count(np.id) FROM LinkComunBundle:CertiNivelPagina np
+                                       JOIN np.paginaEmpresa pe 
+                                       WHERE pe.pagina = :pagina_id 
+                                       AND np.nivel = :nivel_id')
+                        ->setParameters(array('pagina_id' => $categoria['programa_id'],
+                                              'nivel_id' => $tutor->getNivel()->getId()));
+            $nivel_asignado = $query->getSingleScalarResult();
 
             //verificar si el usuario es tutor, en caso de ser falso envia el correo al tutor
-            if($muro->getUsuario()->getId()!= $tutor->getId()) 
+            if($muro->getUsuario()->getId()!= $tutor->getId() && $nivel_asignado && $correo) 
             {
-                if ($correo) 
+
+                $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.mb_strtolower($tipoMensaje, 'UTF-8').' lo siguiente: ';
+
+                $parametros_correo = ['twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
+                                      'datos' => ['leccion' => $muro->getPagina()->getNombre(),
+                                                  'categoria' => $categoria['categoria'],
+                                                  'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
+                                                  'nombrePrograma' => $categoria['nombre'],
+                                                  'encabezadoUsuario' => $encabezadoUsuario,
+                                                  'mensaje' => $muro->getMensaje(),
+                                                  'usuarioPadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido() : null,
+                                                  'mensajePadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getMensaje() : null,
+                                                  'empresa' => $tutor->getEmpresa()->getNombre(),
+                                                  'background' => $background,
+                                                  'logo' => $logo,
+                                                  'link_plataforma' => $link_plataforma
+                                                 ],
+                                        'asunto' => $this->translator->trans('Actividad en el muro').': '.$categoria['nombre'],
+										'remitente' => $this->container->getParameter('mailer_user'),
+										'remitente_name' => $this->container->getParameter('mailer_user_name'),
+										'mailer' => 'soporte_mailer',
+                                        'destinatario' => $correo
+                                     ];
+
+                $ok = $this->sendEmail($parametros_correo);
+
+                if ($ok)
                 {
-                    
-                    $encabezadoUsuario = 'El usuario: '.$muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido().', '.mb_strtolower($tipoMensaje, 'UTF-8').' lo siguiente: ';
 
-                    $parametros_correo = ['twig' => 'LinkFrontendBundle:Leccion:emailMuroTutor.html.twig',
-                                          'datos' => ['leccion' => $pagina->getNombre(),
-                                                      'categoria' => $categoria['categoria'],
-                                                      'nombre' => $tutor->getNombre().' '.$tutor->getApellido(),
-                                                      'nombrePrograma' => $categoria['nombre'],
-                                                      'leccion' => $pagina->getNombre(),
-                                                      'encabezadoUsuario' => $encabezadoUsuario,
-                                                      'mensaje' => $muro->getMensaje(),
-                                                      'usuarioPadre' => ($tipoMensaje == 'Respondió') ? $muro->getMuro()->getUsuario()->getNombre().' '.$muro->getMuro()->getUsuario()->getApellido() : null,
-                                                      'mensajePadre' => ($tipoMensaje =='Respondió') ? $muro->getMuro()->getMensaje() : null,
-                                                      'empresa' => $empresa->getNombre(),
-                                                      'background' => $background,
-                                                      'logo' => $logo,
-                                                      'link_plataforma' => $link_plataforma
-                                                     ],
-                                            'asunto' => 'Actividad en el muro: '.$empresa->getNombre(),
-                                            'remitente' => $this->container->getParameter('mailer_user'),
-                                            'destinatario' => $correo
-                            			 ];
-
-                    $ok = $this->sendEmail($parametros_correo);
-
-                    if ($ok)
-                    {
-
-                        // Nuevo registro en la tabla de admin_correo
-                        $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['muro']);
-                        $email = new AdminCorreo();
-                        $email->setTipoCorreo($tipo_correo);
-                        $email->setEntidadId($muro->getId());
-                        $email->setUsuario($tutor);
-                        $email->setCorreo($correo);
-                        $email->setFecha(new \DateTime('now'));
-                        $em->persist($email);
-                        $em->flush();
-                            
-                        //crea la notificacion para el usuario cuando el usuario que publica
-                        $descripcion = $this->tipoDescripcion($tipoMensaje, $muro->getUsuario(), $pagina, $parametros_correo['datos']['usuarioPadre']);
-                        $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
-                        $this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor,$muro->getId());
-
-                    }
+                    // Nuevo registro en la tabla de admin_correo
+                    $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['muro']);
+                    $email = new AdminCorreo();
+                    $email->setTipoCorreo($tipo_correo);
+                    $email->setEntidadId($muro->getId());
+                    $email->setUsuario($tutor);
+                    $email->setCorreo($correo);
+                    $email->setFecha(new \DateTime('now'));
+                    $em->persist($email);
+                    $em->flush();
+                        
+                    //crea la notificacion para el usuario cuando el usuario que publica
+                    $descripcion = $this->tipoDescripcion($tipoMensaje, $muro, $parametros_correo['datos']['usuarioPadre']);
+                    $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+                    $this->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $tutor, $muro->getId());
 
                 }
-
-               
 
            	}
 
@@ -366,15 +373,16 @@ class Functions
 		$ok = 0;
 
 		if ($this->container->getParameter('sendMail'))
-		{
+		{	
+			$mailer = $this->container->get('swiftmailer.mailer.'.$parametros["mailer"]);
 			// ->setBody($this->render($parametros['twig'], $parametros['datos']), 'text/html');
 			$body = $this->templating->render($parametros['twig'],$parametros['datos']);
 			$message = \Swift_Message::newInstance()
 	            ->setSubject($parametros['asunto'])
-	            ->setFrom($parametros['remitente'])
+	            ->setFrom([$parametros['remitente'] => $parametros['remitente_name']])
 	            ->setTo($parametros['destinatario'])
 	            ->setBody($body, 'text/html');
-	        $ok = $this->mailer->send($message);
+	        $ok = $mailer->send($message);
 		}
 		
         return $ok;
@@ -879,7 +887,7 @@ class Functions
 			$tiene++;
 			if (!$json)
 			{
-				$return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'">'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre();
+				$return .= '<li data-jstree=\'{ "icon": "fa fa-angle-double-right" }\' p_id="'.$subpage->getPagina()->getId().'" p_str="'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre().'" tipo_recurso_id="'. $subpage->getPagina()->getCategoria()->getId() .' " >'.$subpage->getPagina()->getCategoria()->getNombre().': '.$subpage->getPagina()->getNombre();
 				$subPaginas = $this->subPaginasEmpresa($subpage->getPagina()->getId(), $subpage->getEmpresa()->getId());
 				if ($subPaginas['tiene'] > 0)
 				{
@@ -3352,6 +3360,7 @@ class Functions
 			if ($pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d'))
 			{
 				$vencido = true;
+				
 			}
 			elseif ($pagina_empresa->getPagina()->getPagina()) {
 				// Verificación de programa vencido del padre
@@ -3434,6 +3443,161 @@ class Functions
         }
 
         return $r;
+
+    }
+
+    // Retorna la estructura de las actividades recientes en los programas para el Dashboard y Mis Programas
+    public function getActividadesRecientes($usuario_id, $paginas_sesion, $empresa_id, $yml)
+    {
+
+        $em = $this->em;
+
+        // buscando las últimas 3 interacciones del usuario donde la página no esté completada
+        $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl
+                                    JOIN pl.pagina p 
+                                    JOIN LinkComunBundle:CertiPaginaEmpresa pe 
+                                    WHERE pl.usuario = :usuario_id
+                                        AND pl.estatusPagina != :completada
+                                        AND p.pagina IS NULL 
+                                        AND pe.pagina = p.id 
+                                        AND pe.activo = :activo 
+                                    ORDER BY pl.id DESC')
+                    ->setParameters(array('usuario_id' => $usuario_id,
+                                          'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                          'activo' => true));
+        $actividadreciente_padre = $query->getResult();
+
+        $actividad_reciente = array();
+        $reciente = 0;
+        
+        foreach ($actividadreciente_padre as $arp) 
+        {
+
+            if ($reciente == 3)
+            {
+                break;
+            }
+            
+            if (array_key_exists($arp->getPagina()->getId(), $paginas_sesion) && !array_key_exists($arp->getPagina()->getId(), $actividad_reciente)) 
+            {
+                
+                $reciente++;
+                $ar = array();
+                $pagina_sesion = $paginas_sesion[$arp->getPagina()->getId()];
+                $subpaginas_ids = $this->hijas($pagina_sesion['subpaginas']);
+                $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $empresa_id,
+                                                                                                            'pagina' => $arp->getPagina()->getId()));
+
+                $padre_id = $arp->getPagina()->getId();
+                $imagen = $arp->getPagina()->getFoto();
+                $porcentaje = round($arp->getPorcentajeAvance());
+                $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
+                $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Vencido');
+                $titulo_padre = $arp->getPagina()->getNombre();
+
+                if (count($subpaginas_ids))
+                {
+
+                    $query = $em->createQuery('SELECT pl FROM LinkComunBundle:CertiPaginaLog pl 
+                                                WHERE pl.usuario = :usuario_id
+                                                    AND pl.estatusPagina != :completada
+                                                    AND pl.pagina IN (:hijas)
+                                                ORDER BY pl.id DESC')
+                                ->setParameters(array('usuario_id' => $usuario_id,
+                                                      'completada' => $yml['parameters']['estatus_pagina']['completada'],
+                                                      'hijas' => $subpaginas_ids))
+                                ->setMaxResults(1);
+                    $ar = $query->getResult();
+                }
+
+
+                if ($ar)
+                {
+
+                    $id =  $ar[0]->getPagina()->getId();
+                    $titulo_hijo = $ar[0]->getPagina()->getNombre();
+                    $categoria = $ar[0]->getPagina()->getCategoria()->getNombre();
+                    
+                    if ($ar[0]->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                    {
+                        $avanzar = 2;
+                        $evaluacion_pagina = $id;
+                        $evaluacion_programa = $padre_id;
+                    }
+                    else {
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
+
+                }
+                else {
+
+                    $id = 0;
+                    $titulo_hijo = '';
+                    $categoria = $arp->getPagina()->getCategoria()->getNombre();
+                    
+                    // buscando registros de la pagina para validar si esta en evaluación
+                    $pagina_log = $em->getRepository('LinkComunBundle:CertiPaginaLog')->findOneBy(array('usuario' => $usuario_id,
+                                                                                                        'pagina' => $padre_id));
+                    if ($arp->getEstatusPagina()->getId() == $yml['parameters']['estatus_pagina']['en_evaluacion'])
+                    {
+                        $avanzar = 2;
+                        $evaluacion_pagina = $padre_id;
+                        $evaluacion_programa = $padre_id;
+                    }
+                    else {
+                        $avanzar = 0;
+                        $evaluacion_pagina = 0;
+                        $evaluacion_programa = 0;
+                    }
+
+                }
+
+                $porcentaje_finalizacion = $this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                if ($link_enabled)
+                {
+                    if ($porcentaje_finalizacion >= 70)
+                    {
+                       $class_finaliza = 'alertTimeGood';
+                    }
+                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
+                    {
+                        $class_finaliza = 'alertTimeWarning';
+                    }
+                    elseif ($porcentaje_finalizacion <= 30) 
+                    {
+                        $class_finaliza = 'alertTimeDanger';
+                    }
+                    else {
+                        $class_finaliza = '';
+                    }
+                }
+                else {
+                    $class_finaliza = '';
+                }
+
+                $actividad_reciente[$arp->getPagina()->getId()] = array('id' => $id,
+                                                                        'padre_id' => $padre_id,
+                                                                        'titulo_padre' => $titulo_padre,
+                                                                        'titulo_hijo' => $titulo_hijo,
+                                                                        'imagen' => $imagen,
+                                                                        'categoria' => $categoria,
+                                                                        'dias_vencimiento' => $dias_vencimiento,
+                                                                        'class_finaliza' => $class_finaliza,
+                                                                        'porcentaje' => $porcentaje,
+                                                                        'avanzar' => $avanzar,
+                                                                        'evaluacion_pagina' => $evaluacion_pagina,
+                                                                        'evaluacion_programa' => $evaluacion_programa,
+                                                                        'link_enabled' => $link_enabled,
+                                                                        'porcentaje_finalizacion' => $porcentaje_finalizacion);
+
+            }
+
+        }
+
+        return array('actividad_reciente' => $actividad_reciente,
+                     'reciente' => $reciente);
 
     }
 

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Link\ComunBundle\Entity\CertiPaginaLog;
 use Link\ComunBundle\Entity\CertiMuro;
+use Link\ComunBundle\Entity\AdminCorreo;
 use Symfony\Component\Yaml\Yaml;
 
 class LeccionController extends Controller
@@ -317,7 +318,9 @@ class LeccionController extends Controller
 
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
+        $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
+        $correo = 0;
 
         if ($muro_id)
         {
@@ -350,9 +353,11 @@ class LeccionController extends Controller
             $correo_tutor = (!$muro_padre->getUsuario()->getCorreoPersonal() || $muro_padre->getUsuario()->getCorreoPersonal() == '') ? (!$muro_padre->getUsuario()->getCorreoCorporativo() || $muro_padre->getUsuario()->getCorreoCorporativo() == '') ? 0 : $muro_padre->getUsuario()->getCorreoCorporativo() : $muro_padre->getUsuario()->getCorreoPersonal();
             if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor)
             {
-                $categoria = $this->obtenerProgramaCurso($pagina_id);
+
+                $categoria = $this->obtenerProgramaCurso($pagina);
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
                                            'datos' => array('logo'=> $logo,
+                                                            'footer' => $footer,
                                                             'background' => $background, 
                                                             'nombre' => $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido(),
                                                             'usuario'=> $usuario->getNombre().' '.$usuario->getApellido(),
@@ -367,6 +372,7 @@ class LeccionController extends Controller
                                            'remitente' => $this->container->getParameter('mailer_user'),
                                            'destinatario' => $correo_tutor);
                 $correo = $f->sendEmail($parametros_correo);
+
             }             
 
         }
@@ -380,14 +386,35 @@ class LeccionController extends Controller
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
-        $categoria = $this->obtenerProgramaCurso($pagina->getId());
+        $categoria = $this->obtenerProgramaCurso($pagina);
         $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
-        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $pagina, $muro, $categoria, $empresa,$tipoMensaje ,$background, $logo,$link_plataforma);
+        $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma);
 
         $puntos = $pagina_log->getPuntos() + $puntos_agregados;
         $pagina_log->setPuntos($puntos);
         $em->persist($pagina_log);
         $em->flush();
+
+        if ($correo && $muro_id)
+        {
+
+            // Nuevo registro en la tabla de admin_correo
+            $tipo_correo = $em->getRepository('LinkComunBundle:AdminTipoCorreo')->find($yml['parameters']['tipo_correo']['muro']);
+            $email = new AdminCorreo();
+            $email->setTipoCorreo($tipo_correo);
+            $email->setEntidadId($muro_padre->getId());
+            $email->setUsuario($muro_padre->getUsuario());
+            $email->setCorreo($correo_tutor);
+            $email->setFecha(new \DateTime('now'));
+            $em->persist($email);
+            $em->flush();
+                
+            //crea la notificacion para el usuario cuando el usuario que publica
+            $descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido());
+            $tipoAlarma = ($tipoMensaje=='Respondió') ? 'respuesta_muro' : 'aporte_muro';
+            $f->newAlarm($yml['parameters']['tipo_alarma'][$tipoAlarma], $descripcion, $muro_padre->getUsuario(), $muro->getId());
+
+        }
 
         // HTML para anexar al muro
         $uploads = $this->container->getParameter('folders')['uploads'];
@@ -428,24 +455,20 @@ class LeccionController extends Controller
 
     }
 
-    
-
-    
-    public function obtenerProgramaCurso($paginaId)
+    public function obtenerProgramaCurso($pagina)
+    {
+        while ($pagina->getPagina())
         {
-            $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
-            while ($pagina->getPagina())
-            {
-                $paginaId = $pagina->getPagina()->getId();
-                $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($paginaId);
-            }
-
-            $categoria = $this->getDoctrine()->getRepository('LinkComunBundle:CertiCategoria')->find($pagina->getCategoria()->getId());
-
-           
-
-            return ['categoria' => $categoria->getNombre(),'nombre' => $pagina->getNombre()];
+            $pagina = $pagina->getPagina();
         }
+
+        $categoria = $pagina->getCategoria();
+
+        return ['categoria' => $categoria->getNombre(), 
+                'nombre' => $pagina->getNombre(),
+                'programa_id' => $pagina->getId() ];
+
+    }
 
 
     public function ajaxDivResponseAction(Request $request)

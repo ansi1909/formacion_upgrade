@@ -47,6 +47,10 @@ Link\ComunBundle\Entity\AdminEvento:
             type: datetime
             nullable: true
             column: fecha_fin
+        fechaCreacion:
+            type: datetimetz
+            nullable: true
+            column: fecha_creacion
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa

@@ -84,7 +84,7 @@ class ReportesJEController extends Controller
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': Caracas, Venezuela (GMT-4)');
 
             // Primera columna
             for ($f=0; $f<=8; $f++)
@@ -118,9 +118,10 @@ class ReportesJEController extends Controller
 
             // Crea el writer
             $empresaName = $fun->eliminarAcentos($empresa->getNombre());
-            $hoy = date('d-m-Y');
+            $empresaName = strtoupper($empresaName);
+            $hoy = date('y-m-d h i');
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-            $path = 'recursos/reportes/horasConexion_'.$empresaName.'_'.$hoy.'_'.$session->get('sesion_id').'.xls';
+            $path = 'recursos/reportes/HORAS CONEXION '.$empresaName.''.$hoy.'.xls';
             $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
             $writer->save($xls);
 
@@ -224,9 +225,10 @@ class ReportesJEController extends Controller
         $pdf->writeHtml('<page>'.$header_footer.$tabla.'</page>');
         $pdf->writeHtml('<page pageset="old">'.$grafica.'</page>');
         $empresaName = $fun->eliminarAcentos($empresa->getNombre());
+        $empresaName = strtoupper($empresaName);
 
         //Generamos el PDF
-        $pdf->output('horasConexion_'.$empresaName.'.pdf');
+        $pdf->output('HORAS CONEXION '.$empresaName.'.pdf');
 
     }
 
@@ -381,16 +383,16 @@ class ReportesJEController extends Controller
         // Crea el writer
         $empresaName = $fn->eliminarAcentos($empresa->getNombre());
         $paginaName =  $fn->eliminarAcentos($pagina->getnombre());
-        $longitud = strlen($empresaName);
-        $empresaName = ($longitud<=4) ? $empresaName : substr($empresaName,0,4);
-        $hoy = date('d-m-Y');
+        $empresaName = strtoupper($empresaName);
+        $paginaName = strtoupper($paginaName);
+        $hoy = date('y-m-d h i');
         $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/reportes/evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
+        $path = 'recursos/reportes/EVALUACIONES '.$paginaName.' '.$empresaName.' '.$hoy.'.xls';
         $xls = $this->container->getParameter('folders')['dir_uploads'].$path;
         $writer->save($xls);
 
         $archivo = $this->container->getParameter('folders')['uploads'].$path;
-        $document_name = 'evaluacionesModulo_'.$empresaName.'_'.$paginaName.'_'.$hoy.'.xls';
+        $document_name = 'EVALUACIONES '.$paginaName.'_'.$empresaName.'.xls';
         $bytes = filesize($xls);
         $document_size = $fn->fileSizeConvert($bytes);
         

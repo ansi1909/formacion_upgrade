@@ -48,17 +48,29 @@ class CertificadoController extends Controller
 
         $certificados = $em->getRepository('LinkComunBundle:CertiCertificado')->findAll();
 
-        $certificadodb= array();
-        if($certificados)
+        $certificadodb = array();
+        
+        foreach ($certificados as $certificado)
         {
-            foreach ($certificados as $certificado)
+            if ($usuario_empresa)
             {
-                $certificadodb[]= array('id' => $certificado->getId(),
-                                        'empresa' => $certificado->getEmpresa()->getNombre(),
-                                        'tipoCertificado' => $certificado->getTipoCertificado()->getNombre(),
-                                        'tipoImagenCertificado' => $certificado->getTipoImagenCertificado()->getNombre(),
-                                        'delete_disabled' => $f->linkEliminar($certificado->getId(),'CertiCertificado'));
+                if ($certificado->getEmpresa()->getId() == $usuario_empresa)
+                {
+                    $certificadodb[] = array('id' => $certificado->getId(),
+                                             'empresa' => $certificado->getEmpresa()->getNombre(),
+                                             'tipoCertificado' => $certificado->getTipoCertificado()->getNombre(),
+                                             'tipoImagenCertificado' => $certificado->getTipoImagenCertificado()->getNombre(),
+                                             'delete_disabled' => $f->linkEliminar($certificado->getId(),'CertiCertificado'));
+                }
             }
+            else {
+                $certificadodb[] = array('id' => $certificado->getId(),
+                                         'empresa' => $certificado->getEmpresa()->getNombre(),
+                                         'tipoCertificado' => $certificado->getTipoCertificado()->getNombre(),
+                                         'tipoImagenCertificado' => $certificado->getTipoImagenCertificado()->getNombre(),
+                                         'delete_disabled' => $f->linkEliminar($certificado->getId(),'CertiCertificado'));
+            }
+            
         }
 
         return $this->render('LinkBackendBundle:Certificado:index.html.twig', array('aplicacion' => $aplicacion,

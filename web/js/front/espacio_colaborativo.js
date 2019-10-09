@@ -94,7 +94,9 @@ $(document).ready(function() {
 	            $('.btn-modalDelete').show();
 	        }
 	    });
-    });
+	});
+	
+	console.log($('#fileupload').val());
 
     $('#fileupload').fileupload({
         url: $('#url_upload').val(),
@@ -102,7 +104,14 @@ $(document).ready(function() {
         done: function (e, data) {
         	$.each(data.result.response.files, function (index, file) {
         		$('#archivo_input').val(file.name);
-        		$('#archivo').val($('#base_upload').val()+file.name);
+				$('#archivo').val($('#base_upload').val()+file.name);
+            });
+		},
+		submit: function (e, data) {
+        	$.each(data.files, function (index, file) {
+				var hola = $('#archivo_input').val(file.name);
+				conlose.log(hola);
+				$('#archivo').val($('#base_upload').val()+file.name);
             });
         },
         progressall: function (e, data) {
