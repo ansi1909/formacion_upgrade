@@ -144,7 +144,7 @@ class NoticiasController extends Controller
         $qb->select('n')
            ->from('LinkComunBundle:AdminNoticia', 'n')
            ->where('n.tipoNoticia != :biblioteca')
-           ->andWhere('LOWER(n.titulo) LIKE :term')
+           ->andWhere('n.titulo LIKE :term')
            ->setParameters(array('biblioteca' => $yml['parameters']['tipo_noticias']['biblioteca_virtual'],
                            'term' => '%'.$term.'%'));
 
