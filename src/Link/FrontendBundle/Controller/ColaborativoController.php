@@ -712,10 +712,11 @@ class ColaborativoController extends Controller
 
         // Recepción de parámetros del request
         $foro_id = $request->request->get('foro_id');
-        $descripcion = $request->request->get('descripcion');
+        $descripcion = $request->request->get('descripcion').'-'.$session->get('usuario')['nombre'].' '.$session->get('usuario')['apellido'];
         $archivo = $request->request->get('archivo');
         $edit = $request->request->get('edit');
 
+        
         if (!$foro_id)
         {
             $foro_id = $session->get('upload_foro_id');

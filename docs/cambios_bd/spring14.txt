@@ -18,4 +18,4 @@
 
 9. modificar el registro en menu de participantes registrados en programa  quality y develop
 
-10. modificar el registro en menu de participantes aprobados en programa  quality y develop
+10. modificar el registro en menu de participantes aprobados en programas  quality y develop

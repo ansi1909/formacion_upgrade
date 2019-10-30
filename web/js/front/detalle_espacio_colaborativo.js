@@ -156,7 +156,7 @@ $(document).ready(function() {
         		$('#archivo_input').val(file.name);
         		$('#archivo').val($('#base_upload').val()+file.name);
             });
-        },
+		},
         progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $('#progress .progress-bar').css(

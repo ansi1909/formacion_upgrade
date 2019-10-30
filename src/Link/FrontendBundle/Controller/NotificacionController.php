@@ -40,15 +40,17 @@ class NotificacionController extends Controller
             $mostrar = 0;
 
             if ($notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['respuesta_muro'] || $notificacion->getTipoAlarma()->getId() == $yml['parameters']['tipo_alarma']['aporte_muro']) {
-
+                
                 $muro = $em->getRepository('LinkComunBundle:CertiMuro')->find($notificacion->getEntidadId());
-
+                
                 if ($muro)
                 {
                     // Se verifica si el programa al que pertenece el muro está vencido
                     $vencido = $f->programaVencido($muro->getPagina()->getId(), $session->get('empresa')['id']);
+                    
                     if (!$vencido)
                     {
+                        
                         $html .= '<a href="#" data-toggle="modal" data-target="#modalMn" class="click" data='. $notificacion->getId().' titulo="'.$this->get('translator')->trans('Muro').': '.$muro->getPagina()->getNombre().'.">
                                 <input type="hidden" id="muro_id'.$notificacion->getId().'" value="'. $notificacion->getEntidadId().'">';
                     }

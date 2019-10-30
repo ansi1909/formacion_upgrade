@@ -391,10 +391,8 @@
                     $('#save_error').hide();
                     $('#Modal').modal('show');
                     $('#guardar_save_create').click(function(){
-                        if ($("#form").valid()){
-                            $('#save_create').hide();
-                            $('#form').submit();
-                        }
+                        $('#save_create').hide();
+                        $('#form').submit();
                     });
                 },
                 eventRender: function(event, element) {
