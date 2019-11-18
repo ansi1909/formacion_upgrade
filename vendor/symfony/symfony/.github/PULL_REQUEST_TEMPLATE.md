@@ -1,20 +1,21 @@
 | Q             | A
 | ------------- | ---
-| Branch?       | 3.4 or master / 2.7, 2.8, 3.2 or 3.3 <!-- see comment below -->
+| Branch?       | 4.4 for features / 3.4 or 4.3 for bug fixes <!-- see below -->
 | Bug fix?      | yes/no
-| New feature?  | yes/no <!-- don't forget updating src/**/CHANGELOG.md files -->
-| BC breaks?    | yes/no
-| Deprecations? | yes/no <!-- don't forget updating UPGRADE-*.md files -->
-| Tests pass?   | yes/no
-| Fixed tickets | #... <!-- #-prefixed issue number(s), if any -->
+| New feature?  | yes/no <!-- please update src/**/CHANGELOG.md files -->
+| Deprecations? | yes/no <!-- please update UPGRADE-*.md and src/**/CHANGELOG.md files -->
+| Tickets       | Fix #... <!-- prefix each issue number with "Fix #", if any -->
 | License       | MIT
-| Doc PR        | symfony/symfony-docs#... <!--highly recommended for new features-->
-
+| Doc PR        | symfony/symfony-docs#... <!-- required for new features -->
 <!--
-- Bug fixes must be submitted against the lowest branch where they apply
-  (lowest branches are regularly merged to upper ones so they get the fixes too).
-- Features and deprecations must be submitted against the 3.4,
-  legacy code removals go to the master branch.
-- Please fill in this template according to the PR you're about to submit.
-- Replace this comment by a description of what your PR is solving.
+Replace this notice by a short README for your feature/bugfix. This will help people
+understand your PR and can be used as a start for the documentation.
+
+Additionally (see https://symfony.com/roadmap):
+ - Always add tests and ensure they pass.
+ - Never break backward compatibility (see https://symfony.com/bc).
+ - Bug fixes must be submitted against the lowest maintained branch where they apply
+   (lowest branches are regularly merged to upper ones so they get the fixes too.)
+ - Features and deprecations must be submitted against branch 4.4.
+ - Legacy code removals go to the master branch.
 -->
