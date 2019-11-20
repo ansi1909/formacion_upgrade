@@ -310,7 +310,7 @@
 
             $('.close').unbind('click');
             
-            $("#form").validate({
+            $('#form').validate({
                 rules: {
                     'title': {
                         required: true,
@@ -391,7 +391,10 @@
                     $('#save_error').hide();
                     $('#Modal').modal('show');
                     $('#guardar_save_create').click(function(){
-                        $('#form').submit();
+                        if ($("#form").valid()){
+                            $('#save_create').hide();
+                            $('#form').submit();
+                        }
                     });
                 },
                 eventRender: function(event, element) {

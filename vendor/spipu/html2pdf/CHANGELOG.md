@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.2.1](https://github.com/spipu/html2pdf/compare/v5.2.0...5.2.1) - 2018-10-26
+
+  * add `cert` tag - thanks to @LittleBigFox
+  * add `balloon` example - issue #385
+  * change the name of all the examples from `exemple` to `example`
+  * fix tag parser - css style corruption
+  * fix issue on relative margin calculation
+  * fix issue on border radius calculation
+  * fix issue on page background image width - issue #394
+  * fix issue on qrcode value with multi lines - issue #390
+  * fix issue on colspan usage when all the columns don't really exist - issue #360
+  * fix documentation - thanks to @noxlux and @tpohchai
+
+## [5.2.0](https://github.com/spipu/html2pdf/compare/v5.1.0...v5.2.0) - 2018-07-31
+
+  * change the name of `CoreExtension` to `Core\HtmlExtension`
+  * change the namespace of all the html tags from `Tag\` to `Tag\Html`
+  * change all the svg tag from internal methods to new external tags
+  * add the extension `Core\SvgExtension`
+  * add locale fi - thanks to @RWAP
+  * add `$marginTop` parameter on the `createIndex` method - issue #333
+  * add `xx-large` to `xx-small` font-size management - issue #320
+  * add `colgoup` html tag - issue #306
+  * fix locale pt - thanks to @marcoshenzel
+  * fix issue on testing the filename when asking for string output
+  * fix issue - clean locale before PDF generation - thanks to @quimcalpe
+  * fix issue on radio/checkbow width - thanks to @Ohda
+  * fix issue on line number when using style tag - issue #338
+  * fix issue on svg draw path - relative move was not implemented
+  * fix issue on svg draw path when Z directive is not separate from the next directive - issue #308
+  * fix issue on justify text with an inline html tag at the end of a line - issue #258
+  * fix better doc
+
 ## [5.1.0](https://github.com/spipu/html2pdf/compare/v5.0.1...v5.1.0) - 2018-01-23
 
   * add support of css `page-break-before:always` and `page-break-after:always` on `DIV` tag, based on PR #190 and PR #204
@@ -10,7 +43,7 @@ All notable changes to this project will be documented in this file.
   * add some unit tests, better coverage
   * fix lots of bad method names and minor improvements, from PR #147
   * fix bad cleaning after output or exception
-  * fix bad format detecting on page` tag - issue #260
+  * fix bad format detecting on `page` tag - issue #260
   * fix changelog file
   
 ## [5.0.1](https://github.com/spipu/html2pdf/compare/v5.0.0...v5.0.1) - 2017-06-15

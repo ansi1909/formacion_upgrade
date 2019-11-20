@@ -42,11 +42,6 @@ class TwigExtractor extends AbstractFileExtractor implements ExtractorInterface
      */
     private $prefix = '';
 
-    /**
-     * The twig environment.
-     *
-     * @var Environment
-     */
     private $twig;
 
     public function __construct(Environment $twig)
@@ -59,19 +54,14 @@ class TwigExtractor extends AbstractFileExtractor implements ExtractorInterface
      */
     public function extract($resource, MessageCatalogue $catalogue)
     {
-        $files = $this->extractFiles($resource);
-        foreach ($files as $file) {
+        foreach ($this->extractFiles($resource) as $file) {
             try {
                 $this->extractTemplate(file_get_contents($file->getPathname()), $catalogue);
             } catch (Error $e) {
                 if ($file instanceof \SplFileInfo) {
                     $path = $file->getRealPath() ?: $file->getPathname();
                     $name = $file instanceof SplFileInfo ? $file->getRelativePathname() : $path;
-                    if (method_exists($e, 'setSourceContext')) {
-                        $e->setSourceContext(new Source('', $name, $path));
-                    } else {
-                        $e->setTemplateName($name);
-                    }
+                    $e->setSourceContext(new Source('', $name, $path));
                 }
 
                 throw $e;
@@ -112,9 +102,7 @@ class TwigExtractor extends AbstractFileExtractor implements ExtractorInterface
     }
 
     /**
-     * @param string|array $directory
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function extractFromDirectory($directory)
     {

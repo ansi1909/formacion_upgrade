@@ -60,6 +60,10 @@ class TagParser
         }
 
         $param = array_merge($defaultParams, $this->extractTagAttributes($code));
+        $param['style'] = trim($param['style']);
+        if (strlen($param['style']) > 0 && substr($param['style'], -1) !== ';') {
+            $param['style'].= ';';
+        }
 
         // compliance of each parameter
         $color  = "#000000";
@@ -177,7 +181,8 @@ class TagParser
 
         // prepare the parameters
         if (isset($param['value'])) {
-            $param['value']  = $this->textParser->prepareTxt($param['value']);
+            $keepSpaces = in_array($name, array('qrcode', 'barcode'));
+            $param['value']  = $this->textParser->prepareTxt($param['value'], !$keepSpaces);
         }
         if (isset($param['alt'])) {
             $param['alt']    = $this->textParser->prepareTxt($param['alt']);
