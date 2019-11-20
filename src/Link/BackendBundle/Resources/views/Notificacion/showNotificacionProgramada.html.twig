@@ -54,7 +54,7 @@
                                                 <tr>
                                             {% endif %}
                                             <td>{{ loop.index }}.- {{ entidad }}</td>
-                                            {% if loop.index is divisibleby(2) %}
+                                            {% if loop.index is divisible by(2) %}
                                                 </tr>
                                                 {% if not loop.last %}
                                                     <tr>
