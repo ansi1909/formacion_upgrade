@@ -1,0 +1,1 @@
+[20-Feb-2019 18:02:26 America/Caracas] PHP Fatal error:  Class 'Symfony\Bundle\FrameworkBundle\Test\WebTestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/tests/LinkComunBundle/Controller/DefaultControllerTest.php on line 8

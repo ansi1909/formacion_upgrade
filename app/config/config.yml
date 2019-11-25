@@ -44,15 +44,12 @@ twig:
     globals:
         minlenght_bienvenida: 5
         root_path: %kernel.root_dir%
-        #uploads: 'http://localhost/uploads/'
-        #uploads: 'http://develop.formacion2puntocero.com/uploads/'
-        #uploads: 'http://quality.formacion2puntocero.com/uploads/'
-        uploads: 'https://www.formacion2puntocero.com/uploads/'
+        uploads: 'https://www.formacionsmart.com/uploads/'
         sesion_time: 6000000
         sesion_front_time: 6000000
         remaining_time: 10
         tipo_elemento_imagen: 2
-        email_soporte: soporte@formacion2puntocero.com
+        email_soporte: soporte@formacionsmart.com
         global_app:
             noticias: 17
             biblioteca: 26
@@ -85,11 +82,23 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:  "%mailer_transport%"
-    encryption: "%mailer_encryption%"
-    auth_mode:  "%mailer_auth_mode%"
-    host:       "%mailer_host%"
-    port:       "%mailer_port%"
-    username:   "%mailer_user%"
-    password:   "%mailer_password%"
-    #spool:     { type: memory }
+    default_mailer: soporte_mailer
+    mailers:
+        soporte_mailer:
+            transport:  "%mailer_transport%"
+            encryption: "%mailer_encryption%"
+            auth_mode:  "%mailer_auth_mode%"
+            host:       "%mailer_host%"
+            port:       "%mailer_port%"
+            username:   "%mailer_user%"
+            password:   "%mailer_password%"
+            #spool:     { type: memory }
+        tutor_mailer:
+            transport:  "%mailer_transport%"
+            encryption: "%mailer_encryption%"
+            auth_mode:  "%mailer_auth_mode%"
+            host:       "%mailer_host%"
+            port:       "%mailer_port%"
+            username:   "%mailer_user_tutor%"
+            password:   "%mailer_password_tutor%"
+            #spool:     { type: memory }

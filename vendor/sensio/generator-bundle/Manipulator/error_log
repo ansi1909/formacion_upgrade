@@ -1,0 +1,1 @@
+[18-Oct-2019 10:40:08 America/Caracas] PHP Fatal error:  Class 'Sensio\Bundle\GeneratorBundle\Manipulator\Manipulator' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/sensio/generator-bundle/Manipulator/ConfigurationManipulator.php on line 25

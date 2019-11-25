@@ -1,0 +1,1 @@
+[16-Oct-2019 23:11:35 America/Caracas] PHP Fatal error:  Class 'Doctrine\Bundle\DoctrineCacheBundle\Tests\TestCase' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/doctrine/doctrine-cache-bundle/Tests/DependencyInjection/SymfonyBridgeAdapterTest.php on line 36

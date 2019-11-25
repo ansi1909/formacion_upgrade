@@ -1,0 +1,2 @@
+[21-Feb-2019 06:58:54 America/Caracas] PHP Fatal error:  Class 'PHPUnit\Framework\BaseTestListener' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/symfony/phpunit-bridge/CoverageListener.php on line 31
+[21-Feb-2019 07:55:42 America/Caracas] PHP Fatal error:  Class 'PHPUnit\Framework\BaseTestListener' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/symfony/phpunit-bridge/SymfonyTestsListener.php on line 32

@@ -1,0 +1,2 @@
+[18-Oct-2019 07:59:44 America/Caracas] PHP Fatal error:  Class 'Sensio\Bundle\GeneratorBundle\Generator\Generator' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/sensio/generator-bundle/Generator/DoctrineEntityGenerator.php on line 31
+[18-Oct-2019 18:14:41 America/Caracas] PHP Fatal error:  Class 'Sensio\Bundle\GeneratorBundle\Generator\Generator' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/sensio/generator-bundle/Generator/DoctrineFormGenerator.php on line 25

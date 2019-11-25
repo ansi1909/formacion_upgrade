@@ -1,0 +1,1 @@
+[21-Feb-2019 05:05:18 America/Caracas] PHP Fatal error:  Class 'Symfony\Component\HttpKernel\Bundle\Bundle' not found in /home/smrtfrmcn/public_html/aulavirtual/vendor/sensio/distribution-bundle/SensioDistributionBundle.php on line 24
