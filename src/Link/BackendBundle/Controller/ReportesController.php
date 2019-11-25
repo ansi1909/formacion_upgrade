@@ -234,7 +234,7 @@ class ReportesController extends Controller
 
         if($empresa_id == 0)
         {
-            $options = '<option value="0">Debes elegir una empresa</option>';
+            $options = '<option value="0">'.$this->get('translator')->trans('Debe elegir una empresa').'</option>';
         }
         else{
 
@@ -565,7 +565,7 @@ class ReportesController extends Controller
 
         if($pagina_id == " ")
         {
-            $html = 'Debe elegir un programa';
+            $html = $this->get('translator')->trans('Debe elegir un programa');
         }else
         {
 

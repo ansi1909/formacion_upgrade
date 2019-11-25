@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Cookie;
+use Link\ComunBundle\Model\UploadHandler;
 
 class DefaultController extends Controller
 {
@@ -90,6 +91,25 @@ class DefaultController extends Controller
                         'msg' => $msg);
 
         $return = json_encode($return);
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function ajaxUploadAction(Request $request)
+    {
+        
+        // Parámetro adicional
+        $base_upload = $request->request->get('base_upload');      
+
+        $dir_uploads = $this->container->getParameter('folders')['dir_uploads'];
+        $uploads = $this->container->getParameter('folders')['uploads'];
+        $upload_dir = $dir_uploads.$base_upload;
+        $upload_url = $uploads.$base_upload;
+        $options = array('upload_dir' => $upload_dir,
+                         'upload_url' => $upload_url);
+        $upload_handler = new UploadHandler($options);
+
+        $return = json_encode($upload_handler);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }

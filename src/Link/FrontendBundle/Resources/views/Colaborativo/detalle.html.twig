@@ -83,6 +83,7 @@
 {% block body %}
 
     <input type="hidden" id="foro_main_id" name="foro_main_id" value="{{ foro.id }}">
+    <input type="hidden" id="usuario_name" name="usuario_name" value="{{ app.session.get('usuario').nombre }}">
     <input type="hidden" id="foro_id" name="foro_id" value="0">
     <input type="hidden" id="pagina_id" name="pagina_id" value="{{ programa.id }}">
     <input type="hidden" id="mensaje_content" name="mensaje_content" value="">

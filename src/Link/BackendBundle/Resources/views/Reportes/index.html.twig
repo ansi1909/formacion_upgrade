@@ -123,7 +123,7 @@
 {% elseif reporte == '2' %}
 
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
-        {% set encabezado =  'Reporte de participantes registrados en programas'|trans %}
+        {% set encabezado =  'Reporte de participantes registrados en programa'|trans %}
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
@@ -214,7 +214,7 @@
 {% elseif reporte == '3' %}
 
     <form id="form" name="form" action="{{ path( '_excelReporte', { 'app_id': app.session.get('app_id') })}}"  method="POST">
-        {% set encabezado =  'Reporte de participantes cursando por programas'|trans %}
+        {% set encabezado =  'Reporte de participantes cursando el programa'|trans %}
         <br><br>
         <input type="hidden" id="url_programas" name="url_programas" value="{{ path('_ajaxProgramasE') }}">
         <input type="hidden" id="url_participantes" name="url_participantes" value="{{ path ('_ajaxListadoParticipantes') }}">
@@ -303,7 +303,7 @@
 
 {% elseif reporte == '4' %}
 
-    {% set encabezado =  'Reporte de participantes aprobados por programas'|trans %}
+    {% set encabezado =  'Reporte de participantes aprobados en programas'|trans %}
     <form id="form" name="form" action="{{ path ('_ajaxListadoAprobados') }}" method="POST">
 
         <br><br>

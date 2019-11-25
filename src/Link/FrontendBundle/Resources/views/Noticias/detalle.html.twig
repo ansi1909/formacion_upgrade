@@ -2,7 +2,22 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    
+    <style>
+        .lnk-volver{
+            color: #fff !important;
+            background: linear-gradient(to right,#80CCFF 0%,#3D93CC 100%);
+            font-weight: 500;
+            position: relative;
+            top: calc(2rem + 3px);
+            right: 1.5rem;
+            /* color: #5CAEE6; */
+            font-family: "Open Sans";
+            font-size: 0.87rem;
+            line-height: 1rem;
+            padding: 1rem 1rem;
+            border-radius: 25rem;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}

@@ -434,10 +434,11 @@ class MuroController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $session = new Session();
-
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $comentario_id = $request->request->get('comentario_id');
         $muro_id = $request->request->get('muro_id');
         $respuesta = $request->request->get('respuesta');
+        $tipoMensaje = 'Respondió';
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
@@ -460,6 +461,9 @@ class MuroController extends Controller
         $new_respuesta->setMuro($muro_padre);
         $em->persist($new_respuesta);
         $em->flush();
+
+        $descripcion = $f->tipoDescripcion($tipoMensaje, $new_respuesta, $muro_padre->getUsuario()->getLogin());
+        $f->newAlarm($yml['parameters']['tipo_alarma']['respuesta_muro'], $descripcion, $muro_padre->getUsuario(), $muro_padre->getId());
 
         $return = array('id' => $new_respuesta->getId(),
                         'delete_disabled' =>$f->linkEliminar($new_respuesta->getId(),'CertiMuro'));

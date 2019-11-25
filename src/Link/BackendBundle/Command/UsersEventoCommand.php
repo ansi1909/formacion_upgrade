@@ -34,6 +34,7 @@ class UsersEventoCommand extends ContainerAwareCommand
         $base = $yml2['parameters']['base_url'];
         $background = $yml2['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
         $logo = $yml2['parameters']['folders']['uploads'].'recursos/logo_formacion_smart.png';
+        $footer = $yml2['parameters']['folders']['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $yml2['parameters']['link_plataforma'];
         $tomorrow_start = date('Y-m-d', strtotime('now')).' 00:00:00';
         $tomorrow_end = date('Y-m-d', strtotime('now')).' 23:59:59';
@@ -74,6 +75,7 @@ class UsersEventoCommand extends ContainerAwareCommand
                                                                 'href' => $base.$ruta,
                                                                 'background' => $background,
                                                                 'logo' => $logo,
+                                                                'footer' => $footer,
                                                                 'link_plataforma' => $link_plataforma.$usuario->getEmpresa()->getId()),
                                                'asunto' => 'Formación Smart: Recordatorio de evento corporativo.',
                                                'remitente' => $yml2['parameters']['mailer_user_tutor'],

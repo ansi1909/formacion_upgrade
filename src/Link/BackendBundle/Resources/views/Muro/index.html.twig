@@ -265,8 +265,16 @@
         });
 
         $('#aceptar').click(function(){
-                location.reload();
-            });
+           
+                var usuario_id = $('#usuario_id').val();
+                var empresa_id = $('#empresa_id').val();
+                var pagina_id = $('#pagina_id').val();
+                $('#div-active-alert').hide();
+                $('#panel_muro').hide();
+                $('#tbody_history_programation').hide();
+                getListadoComentarios(empresa_id,pagina_id,usuario_id)
+            
+        });
 
         $("#form").validate({
             rules: {

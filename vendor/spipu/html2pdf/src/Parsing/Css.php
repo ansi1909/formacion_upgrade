@@ -144,7 +144,7 @@ class Css
         $this->value['font-overline']    = false;
         $this->value['font-linethrough'] = false;
         $this->value['text-transform']   = 'none';
-        $this->value['font-size']        = $this->cssConverter->convertToMM('10pt');
+        $this->value['font-size']        = $this->cssConverter->convertFontSize('10pt');
         $this->value['text-indent']      = 0;
         $this->value['text-align']       = 'left';
         $this->value['vertical-align']   = 'middle';
@@ -717,7 +717,7 @@ class Css
                     break;
 
                 case 'font-size':
-                    $val = $this->cssConverter->convertToMM($val, $this->value['font-size']);
+                    $val = $this->cssConverter->convertFontSize($val, $this->value['font-size']);
                     if ($val) {
                         $this->value['font-size'] = $val;
                     }
@@ -837,26 +837,26 @@ class Css
                     }
                     $val = array_values($val);
                     $this->duplicateBorder($val);
-                    $this->value['margin']['t'] = $this->cssConverter->convertToMM($val[0], 0);
-                    $this->value['margin']['r'] = $this->cssConverter->convertToMM($val[1], 0);
-                    $this->value['margin']['b'] = $this->cssConverter->convertToMM($val[2], 0);
-                    $this->value['margin']['l'] = $this->cssConverter->convertToMM($val[3], 0);
+                    $this->value['margin']['t'] = $this->cssConverter->convertToMM($val[0], $this->getLastHeight());
+                    $this->value['margin']['r'] = $this->cssConverter->convertToMM($val[1], $this->getLastWidth());
+                    $this->value['margin']['b'] = $this->cssConverter->convertToMM($val[2], $this->getLastHeight());
+                    $this->value['margin']['l'] = $this->cssConverter->convertToMM($val[3], $this->getLastWidth());
                     break;
 
                 case 'margin-top':
-                    $this->value['margin']['t'] = $this->cssConverter->convertToMM($val, 0);
+                    $this->value['margin']['t'] = $this->cssConverter->convertToMM($val, $this->getLastHeight());
                     break;
 
                 case 'margin-right':
-                    $this->value['margin']['r'] = $this->cssConverter->convertToMM($val, 0);
+                    $this->value['margin']['r'] = $this->cssConverter->convertToMM($val, $this->getLastWidth());
                     break;
 
                 case 'margin-bottom':
-                    $this->value['margin']['b'] = $this->cssConverter->convertToMM($val, 0);
+                    $this->value['margin']['b'] = $this->cssConverter->convertToMM($val, $this->getLastHeight());
                     break;
 
                 case 'margin-left':
-                    $this->value['margin']['l'] = $this->cssConverter->convertToMM($val, 0);
+                    $this->value['margin']['l'] = $this->cssConverter->convertToMM($val, $this->getLastWidth());
                     break;
 
                 case 'border':
@@ -1714,7 +1714,7 @@ class Css
 
         // extract the style tags des tags style, and remove them in the html code
         preg_match_all('/<style[^>]*>(.*)<\/style[^>]*>/isU', $html, $match);
-        $html = preg_replace('/<style[^>]*>(.*)<\/style[^>]*>/isU', '', $html);
+        $html = preg_replace_callback('/<style[^>]*>(.*)<\/style[^>]*>/isU', [$this, 'removeStyleTag'], $html);
 
         // analyse each style tags
         foreach ($match[1] as $code) {
@@ -1728,5 +1728,17 @@ class Css
         $this->analyseStyle($style);
 
         return $html;
+    }
+
+    /**
+     * put the same line number for the lexer
+     * @param string[] $match
+     * @return string
+     */
+    private function removeStyleTag(array $match)
+    {
+        $nbLines = count(explode("\n", $match[0]))-1;
+
+        return str_pad('', $nbLines, "\n");
     }
 }

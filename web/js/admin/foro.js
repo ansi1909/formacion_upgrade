@@ -35,7 +35,10 @@ $(document).ready(function() {
 	});
 
 	$('#aceptar').click(function(){
-        location.reload();
+        var pagina_id = $('#select_pagina_id').val();
+		var empresa_id = $('#select_empresa_id').val();
+		var usuario_id = $('#usuario_id').val();
+		getListadoComentarios(empresa_id,pagina_id,usuario_id);
     });
 
 	observe();
@@ -85,6 +88,7 @@ function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 			applyDataTable();
 			observe();
 			clearTimeout( timerId );
+			editComentario();
 		},
 		error: function(){
 			$('#active-error').html($('#error_msg-filter').val());

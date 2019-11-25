@@ -48,6 +48,7 @@ Aquí podrás acceder a tus últimas actividades, y ver tu progreso en ellas.: H
 Aquí podrás ver tus actividades finalizadas: Here you can see your finished activities
 Archivo procesado con éxito: File processed successfully
 Archivos: Files
+Archivo: File
 Archivos de este espacio: Files of this space
 Artículo: Article
 Artículos: Articles
@@ -90,6 +91,7 @@ Calendario: Calendar
 Calificación: Qualification
 Cambiar contraseña: Change password
 Cambiar imagen: Change image
+Campo: Camp
 Cancelar: Cancel
 Cantidad: Quantity
 Cantidad de conexiones: Number of connections
@@ -200,6 +202,8 @@ de la: of the
 de la evaluación: of the test
 de un total de: of total of
 Debe coincidir con la contraseña: It must be equal to password
+Debe elegir una empresa: You must choose a company
+Debe elegir un programa: You must choose a program
 Debe escribir su respuesta: You must write your response
 Debes ingresar el correo electrónico: You must enter the email
 Debes ingresar el correo personal o el correo corporativo: You must enter either personal email or corporate email
@@ -227,10 +231,10 @@ Desde: Since
 Destinado a: Target
 Destino: Destination
 Detalle: Detail
-Detalle de la Biblioteca Virtual: Detail of the Virtual Library
+Detalles de la biblioteca virtual: Virtual library details
 Detalle de la Noticia y Novedad: Detail of the News and New
 Detalles de la página: Page details
-Detalle del Certificado y Constancia: Certificate and Certificate Detail
+Detalle del certificado y constancia: Certificate Detail and Certificate
 Detalle del participante: Participant detail
 Día/Hora: Day/Time
 días: days
@@ -260,6 +264,7 @@ El archivo es requerido.: File is required.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
 El asunto debe ser mínimo de 3 caracteres: The subject must have at least 3 characters
 El asunto es requerido: The subject is required
+El asunto de la notificación debe ser mínimo de 3 caracteres: The subject of the notification must be a minimum of 3 characters
 El autor es requerido.: The author is required.
 El autor debe ser mínimo de 3 caracteres.: The author must be at least 3 characters.
 El campo usuario debe ser mínimo de 3 caracteres: User field must have at least 3 characters
@@ -305,6 +310,8 @@ El programa es requerido: Program is required
 El puntaje con que se aprueba es requerido.: The score with it is approved is required.
 El servidor a tardado mucho en responder, verifique su conexión a internet o comuníquese con el administrador del sistema: The server has been slow to respond, verify your internet connection or contact the system administrator
 El recurso es requerido: The resource is required
+El resumen es requerido.: The summary is required.
+El resumen debe ser mínimo de 3 caracteres.: The abstract must be a minimum of 3 characters.
 El rol ha sido almacenada con éxito: The rol has been stored successfully
 El tema es requerido: Subject is required
 El tiempo de duración es requerido.: Duration is required.
@@ -583,6 +590,7 @@ Archivos para el comentario de: Files for the comment of
 Listado de: List of
 Listado de Aplicaciones: List of Applications
 Listado de categorías: Category List
+Listado de certificados y constancias: List of certificates and certificates
 Listado de comentarios: List of comments
 Listado de Empresas: List of Companies
 Listado de empresas activas: List of active companies
@@ -734,9 +742,9 @@ Participantes activos: Active participants
 Participantes inactivos: Inactive participants
 Participantes no iniciados: Uninitiated participants
 Participantes registrados: Registered participants
-Participantes cursando: Participantes cursando
-Participantes culminados: Participantes culminados
-Participantes conectados: Participantes conectados
+Participantes cursando: Participants taking part
+Participantes culminados: Finished participants
+Participantes conectados: Connected participants
 Participantes que aunque tienen usuario y clave nunca se han logueado en la plataforma: Participants who, although they have username and password, have never logged on the platform
 Participantes que han aprobado el último módulo del programa o curso: Participants who have approved the last module of the program or course
 Participantes que han ingresado al programa o curso asignado: Participants who have entered the assigned program or course
@@ -750,7 +758,7 @@ PDF requerido: PDF is required
 Perfil de usuario: User profile
 Perfil del participante: Participant profile
 Perfil Empresarial: Company Profile
-Periodo: Period
+Período: Period
 Permisos: Permissions
 Permisos de Acceso: Access Permissions
 Permisos de Acceso para el rol: Access Permissions for role
@@ -804,6 +812,7 @@ Recomendación: Recommendation
 Recordarme: Remember me
 Recordar mi contraseña: Remember my password
 Recuperación de contraseña: Password recovery
+Recurso: Resource
 Recursos: Resources
 Recursos del programa: Program resources
 Registrar Empresa: Add/Edit Company
@@ -819,7 +828,7 @@ Reportar problema: Report issue
 Reporte de participantes aprobados por programas: Report of participants approved by programs
 Reporte de participantes cursando por programas: Report of participants studying through programs
 Reporte de participantes no iniciados en programa: Report of participants not initiated in program
-Reporte de participantes registrados por programas: Report of registered participants
+Reporte de participantes registrados en programas: Report of registered participants
 Reporte de participantes por empresa: Participant report by company
 Reportar un problema: Report a problem
 Responder: Answer
@@ -888,6 +897,9 @@ Sólo archivo en PDF: Only PDF file
 Sólo archivos con extensión xls, xlsx o csv.: Only xls, xlsx or csv extension
 Sólo archivos con extensión .jpg o .png: Only files with extension .jpg or .png
 Sólo archivos con extensión .pdf: Only files with .pdf extension
+Sólo archivos con extensión .mp4 o .webm o .ogv: Only files with extension .mp4 or .webm or .ogv
+Sólo archivos con extensión .mp3: Only files with extension .mp3
+Sólo archivos con extensión mp4 o webm.: Only files with mp4 or webm extension.
 Solo es necesaria una columna que tendrá los nombres de los niveles: Only it is necessary one column for levels name
 Soporte virtual: Virtual support
 Su registro ha sido eliminado: The item has been deleted
@@ -916,6 +928,7 @@ Tipo de elemento: Element type
 Tipo de Imagen: Type of Image
 Tipo de Imagen Certificado: Type of Image Certified
 Tipo de logo: Type of logo
+Tipo de recurso: Resource Type
 Tipo de pregunta: Question type
 Tipo de Noticia: Type of News
 Tipo de notificación: Notification type

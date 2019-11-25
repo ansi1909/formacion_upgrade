@@ -25,7 +25,7 @@
 <br>
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
-        <h3>Listado de {{ aplicacion.nombre }}</h3>
+        <h3>{{'Listado de certificados y constancias'|trans}}</h3>
     </div>
     <div class="col text-right">
         <a href="{{ path('_registroCertificado')}}" class="bttn__nr"><span class="fa fa-plus" style="margin-top: 8px;"></span><span class="text__nr">{{ 'Nuevo registro'|trans }}</span></a>
@@ -35,7 +35,7 @@
     <div class="col-sm-16 col-md-16 col-lg-16">
         <div class="card">
             <div class="card-header gradiente">
-                <h5 class="card-title">Listado de {{ aplicacion.nombre }}</h5>
+                <h5 class="card-title">{{'Listado de certificados y constancias'|trans}}</h5>
             </div>
             <div class="card-block">
                 <div class="row" id="div-active-alert" style="display:none;">
@@ -72,7 +72,7 @@
                                 <td>{{ certificado.tipoImagenCertificado }}</td>
                                  <td class="center">
                                     <a href="{{ path('_registroCertificado', { 'certificado_id': certificado.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
-                                    <a href="{{ path('_generarPdf', { 'id_certificado': certificado.id }) }}" target="_blank" title="{{ 'Vista Previa'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-file-pdf-o"></span></a>
+                                    <a href="{{ path('_generarPdf', { 'id_certificado': certificado.id }) }}" target="_blank" title="{{ 'Vista previa'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-file-pdf-o"></span></a>
                                     <a href="#" class="btn btn-link btn-sm {% if certificado.delete_disabled == '' %}delete{% endif %} {{ certificado.delete_disabled }}" data="{{ certificado.id }}"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>

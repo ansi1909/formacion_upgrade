@@ -29,8 +29,7 @@ class SingleStateMarkingStore implements MarkingStoreInterface
     private $propertyAccessor;
 
     /**
-     * @param string                         $property
-     * @param PropertyAccessorInterface|null $propertyAccessor
+     * @param string $property
      */
     public function __construct($property = 'marking', PropertyAccessorInterface $propertyAccessor = null)
     {
@@ -49,7 +48,7 @@ class SingleStateMarkingStore implements MarkingStoreInterface
             return new Marking();
         }
 
-        return new Marking(array($placeName => 1));
+        return new Marking([$placeName => 1]);
     }
 
     /**
@@ -58,5 +57,13 @@ class SingleStateMarkingStore implements MarkingStoreInterface
     public function setMarking($subject, Marking $marking)
     {
         $this->propertyAccessor->setValue($subject, $this->property, key($marking->getPlaces()));
+    }
+
+    /**
+     * @return string
+     */
+    public function getProperty()
+    {
+        return $this->property;
     }
 }
