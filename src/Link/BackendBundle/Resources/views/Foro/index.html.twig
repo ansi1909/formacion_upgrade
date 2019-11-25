@@ -230,6 +230,12 @@
             $('.add').unbind('click');
             $('.add').click(function(){
                 var foro_id = $(this).attr('data');
+                $('#form').show();
+				$('#alert-success').hide();
+				$('#detail').hide();
+				$('#aceptar').hide();
+				$('#guardar').show();
+				$('#cancelar').show();
                 $('#foro_id').val(foro_id);
                 $('#respuesta').val('');
                 $('#comentario_id').val('');

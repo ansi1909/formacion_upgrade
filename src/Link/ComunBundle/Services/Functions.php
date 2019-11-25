@@ -3360,6 +3360,7 @@ class Functions
 			if ($pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d'))
 			{
 				$vencido = true;
+				
 			}
 			elseif ($pagina_empresa->getPagina()->getPagina()) {
 				// Verificación de programa vencido del padre

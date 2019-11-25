@@ -84,6 +84,7 @@ class NovedadController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $nuevo = false;
       
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -124,6 +125,7 @@ class NovedadController extends Controller
         else {
             $biblioteca = new AdminNoticia();
             $biblioteca->setFechaRegistro(new \DateTime('now'));
+            $nuevo = true;
         }
 
         if ($request->getMethod() == 'POST')
@@ -185,7 +187,10 @@ class NovedadController extends Controller
             $descripcion = $this->get('translator')->trans('Ha sido publicado').' '.$titulo.' '.$this->get('translator')->trans('en la biblioteca').'.';
             
             foreach ($usuarios as $usuario){
-                $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $biblioteca->getFechaPublicacion());
+                if($nuevo == true)
+                {
+                    $f->newAlarm($yml['parameters']['tipo_alarma']['biblioteca'], $descripcion, $usuario, $biblioteca->getId(), $biblioteca->getFechaPublicacion());
+                }
             }
 
             return $this->redirectToRoute('_showBiblioteca', array('biblioteca_id' => $biblioteca->getId()));
@@ -230,6 +235,7 @@ class NovedadController extends Controller
         $session = new Session();
         $f = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
+        $nuevo = false;
 
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -271,6 +277,7 @@ class NovedadController extends Controller
         else {
             $noticia = new AdminNoticia();
             $noticia->setFechaRegistro(new \DateTime('now'));
+            $nuevo = true;
         }
 
         if ($request->getMethod() == 'POST')
@@ -331,14 +338,18 @@ class NovedadController extends Controller
             foreach($usuarios as $usuario){
 
                 if ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['noticia'] ) {
-                   
-                   $descripcion= 'Ha sido publicado una nueva noticia:  '. $titulo;
-                   $f->newAlarm($yml['parameters']['tipo_alarma']['noticia'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                   if($nuevo == true)
+                   {
+                        $descripcion= 'Ha sido publicado una nueva noticia:  '. $titulo;
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['noticia'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                   }
                 }
                 elseif ($tipoNoticia->getId() == $yml['parameters']['tipo_noticias']['novedad'] ) {
-                    
-                    $descripcion= 'Ha sido publicado una nueva novedad:  '. $titulo;
-                    $f->newAlarm($yml['parameters']['tipo_alarma']['novedad'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                    if($nuevo == true)
+                    {
+                        $descripcion= 'Ha sido publicado una nueva novedad:  '. $titulo;
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['novedad'], $descripcion, $usuario, $noticia->getId(), $noticia->getFechaPublicacion()); 
+                    }
                 }
                 
             }

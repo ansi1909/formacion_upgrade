@@ -42,8 +42,9 @@ class UsersScheduledCommand extends ContainerAwareCommand
         $output->writeln('CANTIDAD: '.count($r));
 
         $background = $yml['parameters']['folders']['uploads'].'recursos/decorate_certificado.png';
-        //$logo = $yml['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
-        $logo = ''; // Solo por requerimiento para BANFONDESA
+        $logo = $yml['parameters']['folders']['uploads'].'recursos/logo_formacion.png';
+        $footer = $yml['parameters']['folders']['uploads'].'recursos/footer.bg.form.png';
+        //$logo = ''; // Solo por requerimiento para BANFONDESA
         $j = 0; // Contador de correos exitosos
         $np_id = 0; // notificacion_programada_id
 
@@ -86,6 +87,7 @@ class UsersScheduledCommand extends ContainerAwareCommand
                                                                 'mensaje' => $mensaje,
                                                                 'background' => $background,
                                                                 'logo' => $logo,
+                                                                'footer' => $footer,
                                                                 'link_plataforma' => $base.$empresa_id),
                                                'asunto' => $asunto,
                                                'remitente' => $yml['parameters']['mailer_user_tutor'],

@@ -318,6 +318,7 @@ class LeccionController extends Controller
 
         $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
+        $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
         $correo = 0;
 
@@ -356,6 +357,7 @@ class LeccionController extends Controller
                 $categoria = $this->obtenerProgramaCurso($pagina);
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
                                            'datos' => array('logo'=> $logo,
+                                                            'footer' => $footer,
                                                             'background' => $background, 
                                                             'nombre' => $muro_padre->getUsuario()->getNombre().' '.$muro_padre->getUsuario()->getApellido(),
                                                             'usuario'=> $usuario->getNombre().' '.$usuario->getApellido(),

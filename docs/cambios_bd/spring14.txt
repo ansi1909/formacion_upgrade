@@ -11,3 +11,11 @@
 5. Modificación en la función de DB fnavance_programa.sql
 
 6.Modificación en la función de DB fnconexion_usuario.sql
+
+7. Eliminar de quality y develop el rol prueba.
+
+8. modificar el registro en menu de participantes no iniciados en programa quality y develop
+
+9. modificar el registro en menu de participantes registrados en programa  quality y develop
+
+10. modificar el registro en menu de participantes aprobados en programas  quality y develop

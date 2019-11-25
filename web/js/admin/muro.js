@@ -75,6 +75,8 @@ function getListadoComentarios(empresa_id,pagina_id,usuario_id){
 			clearTimeout( timerId );
 			$('#loader').hide();
 			$('#list_comentarios').show();
+			observe();
+		
 		},
 		error: function(){
 			$('#loader').hide();
@@ -117,20 +119,30 @@ function observe(){
 		afterPaginate();
 	});
 
+	
+
 	editComentario();
 
+	
 }
 
 function editComentario(){
 
 	$('.add').unbind('click');
 	$('.add').click(function(){
-        var muro_id = $(this).attr('data');
+		var muro_id = $(this).attr('data');
+		$('#form').show();
+		$('#alert-success').hide();
+		$('#detail').hide();
+		$('#aceptar').hide();
+		$('#guardar').show();
+		$('#cancelar').show();
         $('#muro_id').val(muro_id);
         $('#respuesta').val('');
         $('#comentario_id').val('');
         $('#exampleModalLongTitle').html('Responder comentario');
-        $('#asunto').html('Respuesta');
+		$('#asunto').html('Respuesta');
+		$('#guardar').prop('disabled', false);
     });
 
 	$('.edit').unbind('click');
@@ -148,6 +160,7 @@ function editComentario(){
 		var comentario_id = $(this).attr('data');
 		sweetAlertDelete(comentario_id, 'CertiMuro');
 	});
+	
 }
 
 function saveComentario()
@@ -182,6 +195,8 @@ function saveComentario()
 				$('#guardar').hide();
 				$('#cancelar').hide();
 				clearTimeout( timerId );
+				
+			
 			},
 			error: function(){
 				$('#guardar').prop('disabled', false);

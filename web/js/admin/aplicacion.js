@@ -209,6 +209,10 @@ function observe()
 		});
 	});
 
+	$('.paginate_button').click(function(){
+		afterPaginate();
+	});
+
 	$('.delete').unbind('click');
 	$('.delete').click(function(){
 		var app_id = $(this).attr('data');

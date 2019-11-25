@@ -152,7 +152,7 @@ class CertificadoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-		$nota = '';
+		$nota = 0;
 		
 		//se consulta la informacion de la pagina padre
 		$query = $em->createQuery('SELECT pl.nota as nota FROM LinkComunBundle:CertiPruebaLog pl
@@ -164,11 +164,14 @@ class CertificadoController extends Controller
                 						  'pagina' => $session->get('paginas')[$programa_id]['id'],
                                           'estado' => $values['parameters']['estado_prueba']['aprobado']))
                     ->setMaxResults(1);
-        $nota_programa = $query->getResult();
+		$nota_programa = $query->getResult();
+		
+		//return new response(var_dump($nota_programa));
 
 		foreach ($nota_programa as $n)
 		{
 			$nota = (double)$n['nota'];
+			//return new response($nota.'aqui');
 		}
 
 		$cantidad_intentos = '';
@@ -205,6 +208,8 @@ class CertificadoController extends Controller
             else {
             	$file =  $uploads['parameters']['folders']['dir_project'].'web/img/logo_formacion_smart.png'; 
             }
+
+			//return new response($file);
 
 		    $constancia_pdf = new Html2Pdf('P','A4','es','true','UTF-8',array(15, 10, 15, 5));
 
@@ -309,7 +314,8 @@ class CertificadoController extends Controller
 									$valor = '';
 									$style = '';
 									$guion = '';
-									$puntaje = $puntaje+$nota;
+									//return new response($nota);
+									$puntaje = $puntaje + $nota;
 									$nota = $cantidad_intentos != '' ? number_format((double)$nota, 2, ',', '.') : '';
 		                    		$html .= "<table class='table-notas'>
 			                            <thead>
