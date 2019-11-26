@@ -1,0 +1,1 @@
+[08-Aug-2019 12:13:06 America/Caracas] PHP Fatal error:  Class 'Link\BackendBundle\Command\AdminCorreo' not found in /home/develo/public_html/formacion2.0/src/Link/BackendBundle/Command/UsersCollaborativeCommand.php on line 146
