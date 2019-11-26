@@ -1,0 +1,2 @@
+[26-Nov-2019 13:52:21 UTC] PHP Warning:  require_once(/home/smrtfrmcn/public_html/aulavirtual/bin/./SymfonyRequirements.php): failed to open stream: No such file or directory in /home/smrtfrmcn/public_html/aulavirtual/bin/symfony_requirements on line 4
+[26-Nov-2019 13:52:21 UTC] PHP Fatal error:  require_once(): Failed opening required '/home/smrtfrmcn/public_html/aulavirtual/bin/./SymfonyRequirements.php' (include_path='.:/opt/cpanel/ea-php73/root/usr/share/pear') in /home/smrtfrmcn/public_html/aulavirtual/bin/symfony_requirements on line 4
