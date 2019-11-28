@@ -8,6 +8,9 @@ $(document).ready(function() {
         sPaginationType: "full_numbers",
         lengthChange: false,
         info: false,
+        fnDrawCallback: function(){
+         observe();
+        },
         oLanguage: {
             "sProcessing":    "Procesando...",
             "sLengthMenu":    "'Mostrar _MENU_ registros",
@@ -44,6 +47,7 @@ $(document).ready(function() {
         }
  
     });
+
 
     $( ".columorden" )
       .mouseover(function() {
