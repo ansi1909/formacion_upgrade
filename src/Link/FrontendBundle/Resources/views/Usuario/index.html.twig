@@ -161,7 +161,7 @@
                     <div class="form-group text-left">
                         <label for="correo_corporativo">{{ 'Correo secundario'|trans }}</label>
                         <input type="mail" class="form-control " id="correo_secundario" name="correo_secundario" value="{{ correo_corporativo }}">
-                        <p id="correo_usado" style="display:none; font-size: 1rem;" class="error__style">{{ 'Este correo no puede ser igual al corporativo'|trans }}</p>
+                        <p id="correo_usado" style="display:none; font-size: 1.05rem;" class="error__style"></p>
                     </div>
                     <div class="form-group text-left">
                         <label for="fecha_nacimiento">{{ 'Fecha de nacimiento'|trans }}</label>
@@ -350,6 +350,7 @@
                 if (!valid) 
                 {
                     $("#modificar").addClass( "blocked" );
+                    $('#correo_usado').html('');
                 }
                 else {
                     $("#modificar").removeClass( "blocked" );

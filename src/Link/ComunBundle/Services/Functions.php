@@ -3601,4 +3601,19 @@ class Functions
 
     }
 
+    public function searchMail($mail,$empresa_id,$usuario_id=0){
+        //usuario_id = 0 cuando no se que quiere comprobar los datos de correo para un usuario en especifico
+        $em = $this->em;
+        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                    WHERE u.correoCorporativo =:mail
+                                    AND (u.correoPersonal =:mail OR u.correoCorporativo =:mail)
+                                    AND u.empresa =:empresa_id 
+                                    AND u.id !=:usuario_id')
+                ->setParameters(['mail'=> $mail,'empresa_id'=>$empresa_id,'usuario_id'=>$usuario_id]);
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+
 }
