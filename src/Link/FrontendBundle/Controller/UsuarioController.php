@@ -127,7 +127,7 @@ class UsuarioController extends Controller
         // Actualización del correo en la BD
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
         $html = '';
-        $validarCorreo = ($correo_secundario!='')? $f->searchMail($correo_secundario,$usuario->getEmpresa()): false;
+        $validarCorreo = ($correo_secundario!='')? $f->searchMail($correo_secundario,$usuario->getEmpresa(),$usuario->getId()): false;
 
         if ($correo_secundario != '' && $usuario->getCorreoPersonal() == $correo_secundario) {
 
