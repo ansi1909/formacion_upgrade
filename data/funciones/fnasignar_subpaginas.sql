@@ -16,6 +16,7 @@ BEGIN
   SELECT array_length(padres, 1) INTO length_padres;
   WHILE length_padres > 0  LOOP
 		FOR i IN 1..length_padres LOOP
+      orden_pag:=0;
 			IF retorno = '' THEN
 				retorno:=padres[i];
 			ELSE
@@ -31,7 +32,8 @@ BEGIN
             	 WHERE cp.pagina_id= padres[i] AND cp.estatus_contenido_id = pestatus_contenido
             	 ORDER BY cp.orden ASC
             LOOP
-                --verifica si la subpagina tiene hijos
+              orden_pag:=orden_pag+1;
+              --verifica si la subpagina tiene hijos
                 SELECT COUNT(cp.id) INTO is_padre FROM certi_pagina as cp
                 WHERE cp.pagina_id = subpagina.id;
             	--se verifica si esas sub paginas estan asginadas 
