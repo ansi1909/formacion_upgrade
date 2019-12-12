@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     $('#modificar').click(function(){
     	var valid = $("#form").valid();
     	if (valid)
@@ -14,7 +13,7 @@ $(document).ready(function() {
 		        data: $("#form").serialize(),
 		        dataType: "json",
 		        success: function(data) {
-		        	if (data.existe == 0) 
+		        	if (data.html =='') 
 		        	{
 			        	$('#label-correo').html(data.correo);
 			        	$('#label-correo_corporativo').html(data.correo_corporativo);
@@ -25,7 +24,9 @@ $(document).ready(function() {
 
 			        }else
 			        {
+			        	$('#correo_usado').html(data.html);
 			        	$('#correo_usado').show();
+			        	$('#correo_secundario').focus();
 			        	$('.boton').show();
 			            $('#wait_profile').hide(1000);
 			        }

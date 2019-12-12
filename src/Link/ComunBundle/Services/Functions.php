@@ -922,66 +922,29 @@ class Functions
 
 	}
 
+
 	// Crea o actualiza asignaciones de sub-páginas con los mismos valores de la página padre
 	public function asignacionSubPaginas($pagina_empresa, $yml, $onlyDates = 0, $onlyMuro = 0)
 	{
-
-		$em = $this->em;
-		$orden = 0;
-		
-		$subpages = $em->getRepository('LinkComunBundle:CertiPagina')->findBy(array('pagina' => $pagina_empresa->getPagina()->getId(),
-																					'estatusContenido' => $yml['parameters']['estatus_contenido']['activo']),
-																			  array('orden' => 'ASC'));
-		
-		foreach ($subpages as $subpage)
-		{
-
-			$orden++;
-			$subpagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $subpage->getId(),
-                                                                                                    	   'empresa' => $pagina_empresa->getEmpresa()->getId()));
-
-			$query = $em->createQuery('SELECT COUNT(p.id) FROM LinkComunBundle:CertiPrueba p 
-			                                        WHERE p.pagina = :pagina_id AND p.estatusContenido = :activo')
-			            ->setParameters(array('pagina_id' => $subpage->getId(),
-			                        		  'activo' => $yml['parameters']['estatus_contenido']['activo']));
-			$tiene_prueba = $query->getSingleScalarResult();
-
-			if (!$subpagina_empresa)
-            {
-                // Nueva asignación
-                $subpagina_empresa = new CertiPaginaEmpresa();
-                $subpagina_empresa->setEmpresa($pagina_empresa->getEmpresa());
-	            $subpagina_empresa->setPagina($subpage);
-	            $subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
-	            $subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
-	            $subpagina_empresa->setActivo($pagina_empresa->getActivo());
-	            $subpagina_empresa->setAcceso($pagina_empresa->getAcceso());
-	            $subpagina_empresa->setPruebaActiva($tiene_prueba ? $pagina_empresa->getPruebaActiva() : false);
-	            $subpagina_empresa->setMaxIntentos($pagina_empresa->getMaxIntentos());
-	            $subpagina_empresa->setPuntajeAprueba($pagina_empresa->getPuntajeAprueba());
-	            $subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
-	            $subpagina_empresa->setColaborativo($pagina_empresa->getColaborativo());
-            }
-            else {
-            	if ($onlyDates)
-	            {
-	            	$subpagina_empresa->setFechaInicio($pagina_empresa->getFechaInicio());
-	            	$subpagina_empresa->setFechaVencimiento($pagina_empresa->getFechaVencimiento());
-	            }
-	            if ($onlyMuro)
-	            {
-	            	$subpagina_empresa->setMuroActivo($pagina_empresa->getMuroActivo());
-	            }
-            }
-            
-            $subpagina_empresa->setOrden($orden);
-            $em->persist($subpagina_empresa);
-            $em->flush();
-			
-			$this->asignacionSubPaginas($subpagina_empresa, $yml, $onlyDates, $onlyMuro);
-
-		}
-
+        $em = $this->em;
+        $only_muro = ($onlyMuro!=0)? 'TRUE':'FALSE';
+        $only_dates = ($onlyDates!=0)? 'TRUE':'FALSE';
+        $query = $em->getConnection()->prepare('SELECT
+                                                    fnasignar_subpaginas
+                                                    (:ppadres_id,
+                                                     :pempresa_id,
+                                                     :pestatus_contenido,
+                                                     :only_dates,
+                                                     :only_muro) as
+                                                    resultado;');
+        $query->bindValue(':ppadres_id', '{'.$pagina_empresa->getId().'}', \PDO::PARAM_STR);
+        $query->bindValue(':pempresa_id', $pagina_empresa->getEmpresa()->getId(), \PDO::PARAM_INT);
+        $query->bindValue(':pestatus_contenido', $yml['parameters']['estatus_contenido']['activo'], \PDO::PARAM_INT);
+        $query->bindValue(':only_dates', $only_dates, \PDO::PARAM_STR);
+        $query->bindValue(':only_muro', $only_muro, \PDO::PARAM_STR);
+        $query->execute();
+        $gc = $query->fetchAll();
+        $indices = $gc[0]['resultado'];
 	}
 
 	// Permite crear la carpeta empresa_id en cada sub-directorio de uploads/
@@ -3600,5 +3563,19 @@ class Functions
                      'reciente' => $reciente);
 
     }
+
+    public function searchMail($mail,$empresa_id,$usuario_id=0){
+        //usuario_id = 0 cuando no se que quiere comprobar los datos de correo para un usuario en especifico
+        $em = $this->em;
+        $query = $em->createQuery('SELECT COUNT(u.id) FROM LinkComunBundle:AdminUsuario u 
+                                    WHERE (u.correoCorporativo =:mail OR u.correoPersonal=:mail)
+                                    AND u.empresa =:empresa_id 
+                                    AND u.id !=:usuario_id')
+                ->setParameters(['mail'=> $mail,'empresa_id'=>$empresa_id,'usuario_id'=>$usuario_id]);
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
 
 }
