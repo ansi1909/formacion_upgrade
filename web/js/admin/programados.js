@@ -6,11 +6,16 @@ $(document).ready(function() {
 		afterPaginate();
 	});
 
+	$( "#programados" ).on( "click",".delete" , function (){
+        var programada_id = $(this).attr('data');
+		sweetAlertDelete(programada_id,'AdminNotificacionProgramada');	
+	});
+
 });
+
 
 function observe()
 {
-
 	$('#tbody-programados tr').each(function(){
 		var tr = $(this).attr('id');
 		if (!(typeof tr === 'undefined' || tr === null)){
