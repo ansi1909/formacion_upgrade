@@ -464,44 +464,6 @@
                                 $('#finish').show();
                             }
                         });
-
-                    // // Validar si el login no existe cuando es un usuario nuevo
-                    // if (!usuario_id)
-                    // {
-                    //     $.ajax({
-                    //         type: "POST",
-                    //         url: $('#url_login').val(),
-                    //         async: true,
-                    //         data: { login: login },
-                    //         dataType: "json",
-                    //         success: function(data) {
-                    //             if (data.ok != 0)
-                    //             {
-                    //                 $('#div-error ul').html("<li>- {{ 'El login ya existe'|trans }}.</li>");
-                    //                 $('#div-error ul').show();
-                    //                 notify($('#div-error').html());
-                    //                 $('#finish').show();
-                    //             }
-                    //             else {
-                    //                 $('#form').submit();
-                    //             }
-                    //         },
-                    //         error: function(){
-                    //             $('#div-error ul').html("<li>- {{ 'Ha ocurrido un error en la validación del usuario'|trans }}.</li>");
-                    //             $('#div-error ul').show();
-                    //             notify($('#div-error').html());
-                    //             $('#finish').show();
-                    //         }
-                    //     });
-                    // }
-                    // else {
-                    //     $('#finish').hide();
-                    //     $('#form').submit();
-                    // }
-
-
-
-
                 }
 
             }
