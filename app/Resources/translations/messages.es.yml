@@ -271,6 +271,8 @@ El campo usuario debe ser mínimo de 3 caracteres: El campo usuario debe ser mí
 El campo usuario es requerido: El campo usuario es requerido
 El contenido es requerido.: El contenido es requerido.
 El correo es requerido: El correo es requerido
+El correo corporativo ya existe para la empresa seleccionada: El correo corporativo ya existe para la empresa seleccionada
+El correo personal ya existe para la empresa seleccionada: El correo personal ya existe para la empresa seleccionada
 El correo corporativo tiene un formato inválido: El correo corporativo tiene un formato inválido
 El correo secundario tiene un formato inválido: El correo secundario tiene un formato inválido
 El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com
@@ -405,6 +407,7 @@ Estatus de los participantes de la empresa: Estatus de los participantes de la e
 este archivo descargable: este archivo descargable
 Este campo es requerido.: Este campo es requerido.
 Este correo no puede ser igual al corporativo: Este correo no puede ser igual al corporativo
+Este correo se encuentra registrado: Este correo se encuentra registrado
 Este logo se mostrará en la página de login: Este logo se mostrará en la página de login
 Este rol aún no tiene permisos de acceso: Este rol aún no tiene permisos de acceso
 Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.: Este usuario tiene una sesión activa. Espera 5 minutos e intenta ingresar de nuevo.
