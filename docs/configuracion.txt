@@ -52,6 +52,7 @@
 	- indices.sql
 	- listas.sql
 	- data_prueba.sql
+	- funciones/fnasignar_subpaginas
 	- funciones/fnavance_programa.sql
 	- funciones/fncantidad_programados.sql
 	- funciones/fncarga_participantes.sql
@@ -114,5 +115,6 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
 	b. php bin/console link:espacio-colaborativo		--> Cada hora
 	c. php bin/console link:evento						--> Diariamente a las 02:00
 	d. php bin/console link:recordatorio-programados	--> Diariamente a las 03:00
+	e. php bin/console link:correos-fallidos            --> Diariamente a las 04:00
 
 19. Para la configuración del CKFinder, ajustar los valores en web/assets/vendor/ckfinder/config.php
