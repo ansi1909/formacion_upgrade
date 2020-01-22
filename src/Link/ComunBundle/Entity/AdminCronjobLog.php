@@ -2,13 +2,12 @@
 
 namespace Link\ComunBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * AdminCronjobLog
- *
  * @ORM\Table(name="admin_cronjob_log")
  * @ORM\Entity
  */
-
 class AdminCronjobLog
 {
     /**
@@ -27,19 +26,9 @@ class AdminCronjobLog
     private $mensaje;
 
     /**
-     * @var integer
-     */
-    private $entidadId;
-
-    /**
      * @var \DateTime
      */
     private $fecha;
-
-    /**
-     * @var boolean
-     */
-    private $disponible;
 
 
     /**
@@ -101,30 +90,6 @@ class AdminCronjobLog
     }
 
     /**
-     * Set entidadId
-     *
-     * @param integer $entidadId
-     *
-     * @return AdminCronjobLog
-     */
-    public function setEntidadId($entidadId)
-    {
-        $this->entidadId = $entidadId;
-    
-        return $this;
-    }
-
-    /**
-     * Get entidadId
-     *
-     * @return integer
-     */
-    public function getEntidadId()
-    {
-        return $this->entidadId;
-    }
-
-    /**
      * Set fecha
      *
      * @param \DateTime $fecha
@@ -147,28 +112,5 @@ class AdminCronjobLog
     {
         return $this->fecha;
     }
-
-    /**
-     * Set disponible
-     *
-     * @param boolean $disponible
-     *
-     * @return AdminCronjobLog
-     */
-    public function setDisponible($disponible)
-    {
-        $this->disponible = $disponible;
-    
-        return $this;
-    }
-
-    /**
-     * Get disponible
-     *
-     * @return boolean
-     */
-    public function getDisponible()
-    {
-        return $this->disponible;
-    }
 }
+

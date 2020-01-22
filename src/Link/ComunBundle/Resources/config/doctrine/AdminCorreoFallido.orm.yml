@@ -1,0 +1,47 @@
+Link\ComunBundle\Entity\AdminCorreoFallido:
+    type: entity
+    table: admin_correo_fallido
+    indexes:
+        IDX_10C72B1ADB38439E:
+            columns:
+                - usuario_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        correo:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        entidadId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: entidad_id
+        fecha:
+            type: datetime
+            nullable: true
+        reenviado:
+            type: boolean
+            nullable: true
+    manyToOne:
+        usuario:
+            targetEntity: AdminUsuario
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

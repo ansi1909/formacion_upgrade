@@ -55,9 +55,7 @@ class bouncingEmailsCommand extends ContainerAwareCommand
             $log = new AdminCronjobLog();
             $log->setNombre('link:correos-fallidos');
             $log->setMensaje('Prueba');
-            $log->setEntidadId(1);
             $log->setFecha(new \DateTime('now'));
-            $log->setDisponible(true);
             $em->persist($log);
             $em->flush();
                             

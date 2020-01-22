@@ -14,25 +14,16 @@ Link\ComunBundle\Entity\AdminCronjobLog:
         nombre:
             type: string
             nullable: true
-            length: 50
+            length: 100
             options:
                 fixed: false
         mensaje:
-            type: text
+            type: string
             nullable: true
-            length: null
+            length: 500
             options:
                 fixed: false
-        entidadId:
-            type: integer
-            nullable: true
-            options:
-                unsigned: false
-            column: entidad_id
         fecha:
             type: date
-            nullable: true
-        disponible:
-            type: boolean
             nullable: true
     lifecycleCallbacks: {  }

@@ -665,12 +665,22 @@ fecha timestamp without time zone,
  FOREIGN KEY (tipo_correo_id) REFERENCES admin_tipo_correo (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
 
+CREATE TABLE admin_correo_fallido(
+-- Attributes --
+id serial,
+correo varchar(100),
+usuario_id integer,
+entidad_id integer,
+fecha timestamp without time zone,
+reenviado boolean,
+ PRIMARY KEY (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
 CREATE TABLE admin_cronjob_log(
 -- Attributes --
 id serial,
-nombre varchar(50),
-mensaje text,
-entidad_id integer,
+nombre varchar(100),
+mensaje varchar(500),
 fecha date,
-disponible boolean,
- PRIMARY KEY (id));
+ PRIMARY KEY (id)
+ );
