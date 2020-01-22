@@ -100,3 +100,12 @@ parameters:
     search_locale: 0
     mailer_user: tutorvirtual@formacion2puntocero.com
     servidor_mantenimiento: 0
+    fallidos:
+        inbox: "{imap.formacionsmart.com:993/imap/ssl/novalidate-cert}INBOX"
+        from: Mail Delivery System
+        mail_notification: josetayupo@gmail.com
+        subject: Mail delivery failed
+        subject2: Warning
+        separador: 'Action: failed'
+        separador2: Status
+        separador3: ;
