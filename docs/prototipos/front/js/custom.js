@@ -146,13 +146,12 @@ $(document).ready(function() {
 
     });
 
-    $(".iconComments").click(function(e){
-        event.preventDefault();
+    $("#iconComments").click(function(){
         $("#comments").toggleClass("open-comments");
-        $('html, body').animate({scrollTop: $('#comments').offset().top -100 }, 'slow');
-        $('#ocultarComent').toggle();
-        $('#verComent').toggle();
-        
+        $("#main").toggleClass("ml-comments");
+        if (!$(".main-sidenav-close")[0]){
+             closeNav();
+        }
     });
     
     $("#iconDownloads").click(function(){
