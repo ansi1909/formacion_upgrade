@@ -42,10 +42,11 @@
                             $ms2 = explode("The following address(es) failed:",$ms[0]);
                             $ms3 =explode("--",$ms2[1]);
                             $cadena2 = explode("Warning",$cadena[1]);
+                            $mensaje = trim($ms3[0]);
                             $correo = explode("Action: failed",$cadena2[0]);
-
-                            print_r($ms3[0]);
-                            echo"<BR>FIN<BR>";
+                            //print_r(strstr($ms3[0]," "));
+                            print_r(strstr($mensaje," "));
+                            echo"<BR><BR>FIN<BR><BR>";
                             // if(!in_array($correo[1], $correos)){
                             //   array_push($correos,$correo[1]);
                             // }
