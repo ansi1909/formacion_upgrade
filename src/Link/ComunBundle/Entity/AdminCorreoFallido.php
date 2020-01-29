@@ -34,6 +34,11 @@ class AdminCorreoFallido
     private $reenviado;
 
     /**
+     * @var string
+     */
+    private $mensaje;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminUsuario
      */
     private $usuario;
@@ -143,6 +148,30 @@ class AdminCorreoFallido
     public function getReenviado()
     {
         return $this->reenviado;
+    }
+
+    /**
+     * Set mensaje
+     *
+     * @param string $mensaje
+     *
+     * @return AdminCorreoFallido
+     */
+    public function setMensaje($mensaje)
+    {
+        $this->mensaje = $mensaje;
+    
+        return $this;
+    }
+
+    /**
+     * Get mensaje
+     *
+     * @return string
+     */
+    public function getMensaje()
+    {
+        return $this->mensaje;
     }
 
     /**

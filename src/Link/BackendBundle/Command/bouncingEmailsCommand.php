@@ -23,7 +23,26 @@ class bouncingEmailsCommand extends ContainerAwareCommand
         $this->setName('link:correos-fallidos')
         	 ->setDescription('Revisa en el buzon de tutorvirtual@formacionsmart.com si existen notificaciones por correo que no se entregaron a los usuarios de la plataforma');
     }
-    public function fix_text_subject($str)
+
+    public function transformMailArray($array){
+       $string = '{';
+       $len = count($array);
+
+       for ($i=0; $i <$len ; $i++) { 
+         $string.=$array[$i];
+         if($i!=$len-2){
+          $string.=',';
+         }
+         $i++;
+       }
+       $string.='}';
+       return $string;
+    }
+
+
+
+
+    public function fixTextSubject($str)
     {
         $subject = '';
         $subject_array = imap_mime_header_decode($str);
@@ -47,38 +66,46 @@ class bouncingEmailsCommand extends ContainerAwareCommand
 
       //obtener fechas para filtrar  correos 
       //$fechaActual = date('d-M-Y');
-      $fechaAyer = '17-Jan-2020';//date('d-M-Y',strtotime($fechaActual."- 1 days"));
+      $fechaAyer = '20-Jan-2020';//date('d-M-Y',strtotime($fechaActual."- 1 days"));
+      $fechaDB = '2020-01-20 00:00:000';
       $number = 1;
 
       try{
             //$em->getRepository('LinkComunBundle:AdminCronjobLog')->findAll();
-            $log = new AdminCronjobLog();
-            $log->setNombre('link:correos-fallidos');
-            $log->setMensaje('Prueba');
-            $log->setFecha(new \DateTime('now'));
-            $em->persist($log);
-            $em->flush();
-                            
+            // $log = new AdminCronjobLog();
+            // $log->setNombre('link:correos-fallidos');
+            // $log->setMensaje('Prueba');
+            // $log->setFecha(new \DateTime('now'));
+            // $em->persist($log);
+            // $em->flush();             
             //conectarse al buzon de correo
             $inbox = imap_open($yml['parameters']['fallidos']['inbox'],$yml2['parameters']['mailer_user_tutor'],$yml2['parameters']['mailer_password_tutor']) or die('Cannot connect to mail: ' . imap_last_error());
             //filtrar correos
             $emails=imap_search($inbox,'FROM "'.$yml['parameters']['fallidos']['from'].'"'.'SINCE "'.$fechaAyer.'"');
             if($emails){
+              $lenCorreos = count($emails);
+               //$output->writeln(count($emails));
+               $c = 1;
                 foreach ($emails as $email_number) {
                    //enviando el identificdor del mail
                    $overview=imap_fetch_overview($inbox,$email_number);
                    foreach($overview as $over){
                       if(isset($over->subject) ){
-                        $asunto=$this->fix_text_subject($over->subject);
+                        $asunto=$this->fixTextSubject($over->subject);
                         $auxAsunto = explode(":",$asunto);
                         //contar la cantidad de correos 
                         if($auxAsunto[0]==$yml['parameters']['fallidos']['subject']){
                             $tiposCorreo['failed']++;//correos rebote
-                            $cadena = explode($yml['parameters']['fallidos']['separador'],imap_body($inbox, $email_number));
-                            $cadena2 = explode($yml['parameters']['fallidos']['separador2'],$cadena[1]);
+                            $messageBody = explode($yml['parameters']['fallidos']['separador'],imap_body($inbox, $email_number));
+                            $cadena2 = explode($yml['parameters']['fallidos']['separador2'],$messageBody[1]);
                             $correo = explode($yml['parameters']['fallidos']['separador3'],$cadena2[0]);
-                           $output->writeln($number.' -'.utf8_decode($correo[1]));
+                            if(!in_array($correo[1], $correos)){
+                              array_push($correos,$correo[1]);
+                            }
+                            
+                            $output->writeln($correo[1]);
 
+                           
                         }
                         else if($auxAsunto[0]==$yml['parameters']['fallidos']['subject2']){
                             $tiposCorreo['warning']++;//correos en espera
@@ -90,7 +117,8 @@ class bouncingEmailsCommand extends ContainerAwareCommand
                    }
                  $number++;
                 }
-
+                $correos = $this->transformMailArray($correos);
+               // $output->writeln($correos);
             }else{
                 /*Enviar notificacion de exito en la ejecucion del cron crear una tabla*/
             }

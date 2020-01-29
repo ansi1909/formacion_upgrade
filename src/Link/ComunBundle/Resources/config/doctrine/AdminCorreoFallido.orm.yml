@@ -33,6 +33,12 @@ Link\ComunBundle\Entity\AdminCorreoFallido:
         reenviado:
             type: boolean
             nullable: true
+        mensaje:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
     manyToOne:
         usuario:
             targetEntity: AdminUsuario

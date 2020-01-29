@@ -673,6 +673,7 @@ usuario_id integer,
 entidad_id integer,
 fecha timestamp without time zone,
 reenviado boolean,
+mensaje text,
  PRIMARY KEY (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
 
