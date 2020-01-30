@@ -1,6 +1,6 @@
 <?php 
 	
-   function fix_text_subject($str)
+   function fixTextSubject($str)
     {
         $subject = '';
         $subject_array = imap_mime_header_decode($str);
@@ -10,13 +10,39 @@
  
         return $subject;
     }
+
+    function getMail($messageBody,$yml){
+
+    }
     
+    function transformArray($parameters){
+      //=> separador de correos y mensajes
+      // ++ separador de mensajes
+      // | separador de elementos del array
+      $string ='';
+
+      foreach ($parameters as $key => $messages) {
+        $string.=$key.'=>';
+        for ($i=0; $i <count($messages) ; $i++) { 
+          $string.=$messages[$i];
+          if( $i<count($messages)-1){
+            $string.='++';
+          }
+        }
+
+        $string.='|';
+      }
+
+      $string = substr($string,0,strlen($string)-1);
+      return $string;
+    }
+
 
     $tiposCorreo = array('warning'=>0,'failed'=>0,'tutor'=>0);
-    $fechaAyer = '14-Jan-2020';//date('d-M-Y',strtotime($fechaActual."- 1 days"));
+    $fechaAyer = '20-Jan-2020';//date('d-M-Y',strtotime($fechaActual."- 1 days"));
     $fechaDB = '2020-01-20 00:00:000';
     $number = 1;
-    
+    $parameters = array();
     $inbox = imap_open("{imap.formacionsmart.com:993/imap/ssl/novalidate-cert}INBOX","tutorvirtual@formacionsmart.com","S{NlRk,ExZ]]") or die('Cannot connect to mail: ' . imap_last_error());
     
 
@@ -31,7 +57,7 @@
                    $overview=imap_fetch_overview($inbox,$email_number);
                    foreach($overview as $over){
                       if(isset($over->subject) ){
-                        $asunto=fix_text_subject($over->subject);
+                        $asunto=fixTextSubject($over->subject);
                         $auxAsunto = explode(":",$asunto);
                         //contar la cantidad de correos 
                         if($auxAsunto[0]=='Mail delivery failed'){
@@ -44,9 +70,23 @@
                             $cadena2 = explode("Warning",$cadena[1]);
                             $mensaje = trim($ms3[0]);
                             $correo = explode("Action: failed",$cadena2[0]);
+
+                            $message = strstr(trim($mensaje)," ");//mensaje
+                            $em = strstr(trim($mensaje)," ",true);//coreo
+
+                            if(!array_key_exists($em, $parameters)){
+                                $parameters[$em] = [$message];
+
+                            }else{
+                                array_push($parameters[$em],$message);
+                            }
+                            
+
+                           //print_r($correo);
                             //print_r(strstr($ms3[0]," "));
-                            print_r(strstr($mensaje," "));
-                            echo"<BR><BR>FIN<BR><BR>";
+                            //print_r($message.'   -----   '.$em);
+                            //print_r($correo[1]);
+                           // echo"<BR><BR>FIN<BR><BR>";
                             // if(!in_array($correo[1], $correos)){
                             //   array_push($correos,$correo[1]);
                             // }
@@ -65,6 +105,7 @@
                    }
                  $number++;
                 }
+                print_r(transformArray($parameters));
                 //$correos = $this->transform_mail_array($correos);
                // $output->writeln($correos);
             }else{

@@ -18,127 +18,105 @@ use Link\ComunBundle\Entity\AdminCronjobLog;
 
 class bouncingEmailsCommand extends ContainerAwareCommand
 {
-    protected function configure()
-    {
+    protected function configure(){
         $this->setName('link:correos-fallidos')
         	 ->setDescription('Revisa en el buzon de tutorvirtual@formacionsmart.com si existen notificaciones por correo que no se entregaron a los usuarios de la plataforma');
     }
-
-    public function transformMailArray($array){
-       $string = '{';
-       $len = count($array);
-
-       for ($i=0; $i <$len ; $i++) { 
-         $string.=$array[$i];
-         if($i!=$len-2){
-          $string.=',';
-         }
-         $i++;
-       }
-       $string.='}';
-       return $string;
+    
+    public function transformArray($parameters,$yml){
+      $string ='';
+      foreach ($parameters as $key => $messages) {
+        $string.=$key.$yml['parameters']['fallidos']['separador7'];
+        for ($i=0; $i <count($messages) ; $i++) { 
+          $string.=$messages[$i];
+          if( $i<count($messages)-1){
+            $string.=$yml['parameters']['fallidos']['separador8'];
+          }
+        }
+        $string.=$yml['parameters']['fallidos']['separador9'];
+      }
+      $string = substr($string,0,strlen($string)-1);
+      return $string;
     }
 
+    public function fixTextSubject($str){
+      $subject = '';
+      $subject_array = imap_mime_header_decode($str);
+      foreach ($subject_array AS $obj)
+        $subject .= utf8_encode(rtrim($obj->text, "t"));
+      return $subject;
+    }
 
+    public function getMail($messageBody,$yml){
+      $cad1 = explode($yml['parameters']['fallidos']['separador2'],$messageBody[1]);
+      $mail = explode($yml['parameters']['fallidos']['separador3'],$cad1[0]);
+      return $mail[1];
+    }
 
-
-    public function fixTextSubject($str)
-    {
-        $subject = '';
-        $subject_array = imap_mime_header_decode($str);
- 
-        foreach ($subject_array AS $obj)
-            $subject .= utf8_encode(rtrim($obj->text, "t"));
- 
-        return $subject;
+    public function getMessage($messaBody,$yml){
+      $cd1 = explode($yml['parameters']['fallidos']['separador4'],$messaBody[0]);
+      $cd2 = explode($yml['parameters']['fallidos']['separador5'],$cd1[0]);
+      $cd3 =explode($yml['parameters']['fallidos']['separador6'],$cd2[1]);
+      $message = trim($cd3[0]);
+      return array('mail'=>strstr(trim($message)," ",true),'message'=>strstr(trim($message)," "));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
       $em = $this->getContainer()->get('doctrine')->getManager();
       $tiposCorreo = array('warning'=>0,'failed'=>0,'tutor'=>0);
-      $correos = array();
-
+      $parameters = array();
       //obtener parametros de conexion al buzon de correo
       $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
       $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
-
-
       //obtener fechas para filtrar  correos 
       //$fechaActual = date('d-M-Y');
       $fechaAyer = '20-Jan-2020';//date('d-M-Y',strtotime($fechaActual."- 1 days"));
       $fechaDB = '2020-01-20 00:00:000';
       $number = 1;
-
       try{
-            //$em->getRepository('LinkComunBundle:AdminCronjobLog')->findAll();
-            // $log = new AdminCronjobLog();
-            // $log->setNombre('link:correos-fallidos');
-            // $log->setMensaje('Prueba');
-            // $log->setFecha(new \DateTime('now'));
-            // $em->persist($log);
-            // $em->flush();             
-            //conectarse al buzon de correo
             $inbox = imap_open($yml['parameters']['fallidos']['inbox'],$yml2['parameters']['mailer_user_tutor'],$yml2['parameters']['mailer_password_tutor']) or die('Cannot connect to mail: ' . imap_last_error());
             //filtrar correos
             $emails=imap_search($inbox,'FROM "'.$yml['parameters']['fallidos']['from'].'"'.'SINCE "'.$fechaAyer.'"');
             if($emails){
-              $lenCorreos = count($emails);
-               //$output->writeln(count($emails));
-               $c = 1;
-                foreach ($emails as $email_number) {
-                   //enviando el identificdor del mail
-                   $overview=imap_fetch_overview($inbox,$email_number);
-                   foreach($overview as $over){
-                      if(isset($over->subject) ){
-                        $asunto=$this->fixTextSubject($over->subject);
-                        $auxAsunto = explode(":",$asunto);
-                        //contar la cantidad de correos 
-                        if($auxAsunto[0]==$yml['parameters']['fallidos']['subject']){
-                            $tiposCorreo['failed']++;//correos rebote
-                            $messageBody = explode($yml['parameters']['fallidos']['separador'],imap_body($inbox, $email_number));
-                            $cadena2 = explode($yml['parameters']['fallidos']['separador2'],$messageBody[1]);
-                            $correo = explode($yml['parameters']['fallidos']['separador3'],$cadena2[0]);
-                            if(!in_array($correo[1], $correos)){
-                              array_push($correos,$correo[1]);
-                            }
-                            
-                            $output->writeln($correo[1]);
-
-                           
+              foreach ($emails as $email_number) {
+                $overview=imap_fetch_overview($inbox,$email_number);
+                foreach($overview as $over){
+                  if(isset($over->subject) ){
+                      $asunto=$this->fixTextSubject($over->subject);
+                      $auxAsunto = explode(":",$asunto);
+                      if($auxAsunto[0]==$yml['parameters']['fallidos']['subject']){
+                         $tiposCorreo['failed']++;//correos rebote
+                         $messageBody = explode($yml['parameters']['fallidos']['separador'],imap_body($inbox, $email_number));
+                         $message = $this->getMessage($messageBody,$yml);
+                         if(!array_key_exists($message['mail'], $parameters)){
+                            $parameters[$message['mail']] = [$message['message']];
+                          }else{
+                            array_push($parameters[$message['mail']],$messaje['message']);
+                          }
                         }
                         else if($auxAsunto[0]==$yml['parameters']['fallidos']['subject2']){
                             $tiposCorreo['warning']++;//correos en espera
                         }
                         else{
-                            $tiposCorreo['tutor']++;//rsto de correos 
+                            $tiposCorreo['tutor']++;//resto de correos 
                         }
                       }
                    }
-                 $number++;
                 }
-                $correos = $this->transformMailArray($correos);
-               // $output->writeln($correos);
+                /* llamar funcion de base de datos */
+                /* crear registro de ejecucion del cron en la tabla admin_cronjob_log*/
             }else{
-                /*Enviar notificacion de exito en la ejecucion del cron crear una tabla*/
+                /*Crear registro de ejecucion de l cron en la la tabla admin_cronjob_log*/
             }
 
-
-      } catch (\Exception $ex){//try 1 conectarse y filtrar
-         $output->writeln($ex->getMessage());
+      } catch (\Exception $ex){
+        /*registrar en la tabla admin_cronjob_log la excepcion durante la ejecucion*/ 
+       //$output->writeln($ex->getMessage());
       }
       //$output->writeln('Warnings: '.$tiposCorreo['warning'].' Failed: '.$tiposCorreo['failed']);
-      $output->writeln('Fecha Ayer: '.$fechaAyer);
-
-
-      
-
-
-
+      //$output->writeln('Fecha Ayer: '.$fechaAyer);
       $closeSession = imap_close($inbox);
-      $output->writeln($closeSession);
-
-
-
+     // $output->writeln($closeSession);
     }
 }
