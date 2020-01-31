@@ -685,3 +685,12 @@ mensaje varchar(500),
 fecha date,
  PRIMARY KEY (id)
  );
+
+CREATE TABLE admin_introduccion(
+-- Attributes --
+id serial,
+usuario_id integer,
+paso_actual integer,
+cancelado boolean,
+ PRIMARY KEY (id),
+ FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
