@@ -112,7 +112,7 @@ parameters:
         separador4: Reporting-MTA
         separador5: 'The following address(es) failed:'
         separador6: --
-        separador7: '=>'
-        separador8: '++'
-        separador9: '|'
+        separadorMailMessage: '=>'
+        separadorMessages: '++'
+        separadorMails: '|'
         

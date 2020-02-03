@@ -26,19 +26,19 @@ class bouncingEmailsCommand extends ContainerAwareCommand
     public function transformArray($parameters,$yml){
       $string ='';
       foreach ($parameters as $key => $messages) {
-        $string.=trim($key).'=>';
+        $string.=trim($key).$yml['parameters']['fallidos']['separadorMailMessage'];
         for ($i=0; $i <count($messages) ; $i++) { 
           $string.=$messages[$i];
           if( $i<count($messages)-1){
-            $string.='++';
+            $string.=$yml['parameters']['fallidos']['separadorMessages'];
           }
         }
-        $string.='|';
+        $string.=$yml['parameters']['fallidos']['separadorMails'];
       }
       $string = substr($string,0,strlen($string)-1);
       return $string;
     }
-
+    
     public function fixTextSubject($str){
       $subject = '';
       $subject_array = imap_mime_header_decode($str);
@@ -46,7 +46,7 @@ class bouncingEmailsCommand extends ContainerAwareCommand
         $subject .= utf8_encode(rtrim($obj->text, "t"));
       return $subject;
     }
-	
+
     public function getMessage($messaBody,$yml){
       $cd1 = explode($yml['parameters']['fallidos']['separador4'],$messaBody[0]);
       $cd2 = explode($yml['parameters']['fallidos']['separador5'],$cd1[0]);
@@ -57,18 +57,23 @@ class bouncingEmailsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-      $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
-      $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
-	    $em = $this->getContainer()->get('doctrine')->getManager();
-      $mailTypes = array('warning'=>0,'failed'=>0,'tutor'=>0);
-      $parameters = array();
-      $dateFilterMail = '22-Jan-2020';//date('d-M-Y',strtotime($fechaActual."- 1 days"));
-      $dateFilterDb = '2020-01-22 00:00:000';
-      $dateCron = '2020-01-22 23:59:000';
+
       try{
-            $resultado = new AdminCronjobLog();
-            $resultado->setNombre('link:correos-fallidos');
-            $resultado->setFecha(new \DateTime('now'));
+            
+            $yml = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parametros.yml'));
+            $yml2 = Yaml::parse(file_get_contents($this->getApplication()->getKernel()->getRootDir().'/config/parameters.yml'));
+            $em = $this->getContainer()->get('doctrine')->getManager();
+            $mailTypes = array('warning'=>0,'failed'=>0,'tutor'=>0);
+            $parameters = array();
+            //$dateFilterMail = '21-Jan-2020';
+            //$dateFilterDbBegin = '2020-01-21 00:00:00';
+            //$dateFilterDbEnd = '2020-01-21 23:59:00';
+            $dateFilterMail = date('d-M-Y',strtotime(date('d-M-Y')."- 1 days"));
+            $dateFilterDbBegin = date('Y-m-d 00:00:00',strtotime(date('Y-m-d 00:00:00')."- 1 days"));
+            $dateFilterDbEnd = date('Y-m-d 23:59:00',strtotime(date('Y-m-d 23:59:00')."- 1 days"));
+            $cronJob = new AdminCronjobLog();
+            $cronJob->setNombre('link:correos-fallidos') ;
+            $cronJob->setFecha(new \DateTime('now'));
             $inbox = imap_open($yml['parameters']['fallidos']['inbox'],$yml2['parameters']['mailer_user_tutor'],$yml2['parameters']['mailer_password_tutor']) or die('Cannot connect to mail: ' . imap_last_error());
       		  $emails=imap_search($inbox,'FROM "'.$yml['parameters']['fallidos']['from'].'"'.'ON "'.$dateFilterMail.'"');
       		  if($emails){
@@ -87,7 +92,6 @@ class bouncingEmailsCommand extends ContainerAwareCommand
       								  }else{
       									  array_push($parameters[$message['mail']],$message['message']);
       							    }
-      								//$output->writeln($message['mail']);
                     }
       						else if($auxAsunto[0]==$yml['parameters']['fallidos']['subject2']){
       							$mailTypes['warning']++;
@@ -97,27 +101,23 @@ class bouncingEmailsCommand extends ContainerAwareCommand
                   }
                 }
               }
-      				//$output->writeln(count($parameters));
       				$parameters = $this->transformArray($parameters,$yml);
-      				//$output->writeln($parameters);
       				$query = $em->getConnection()->prepare('SELECT fncorreos_fallidos(:fechaAyer,:pfechaCron,:pcorreos) AS resultado;');
-      				$query->bindValue(':fechaAyer', $dateFilterDb, \PDO::PARAM_STR);
-      				$query->bindValue(':pfechaCron', $dateCron, \PDO::PARAM_STR);
+      				$query->bindValue(':fechaAyer', $dateFilterDbBegin, \PDO::PARAM_STR);
+      				$query->bindValue(':pfechaCron', $dateFilterDbEnd, \PDO::PARAM_STR);
       				$query->bindValue(':pcorreos', $parameters, \PDO::PARAM_STR);
       				$query->execute();
       				$r = $query->fetchAll();
-              $resultado->setMensaje('Successful execution, failed emails: '.$mailTypes['failed'].', Warnings: '.$mailTypes['warning'].'.');
-      				//$output->writeln($r[0]);
+              $cronJob->setMensaje('Successful execution, failed emails: '.$mailTypes['failed'].', Warnings: '.$mailTypes['warning'].'.');
               }else{
-                $resultado->setMensaje('Successful execution: NO FAILED EMAILS');
+                $cronJob->setMensaje('Successful execution: NO FAILED EMAILS');
               }
+          $closeSession = imap_close($inbox);
 
         } catch (\Exception $ex){
-       $output->writeln($ex->getMessage());
+         $cronJob->setMensaje('Execution failed: '.$ex->getMessage().' - '.$ex->getFile().'  '.$ex->getLine());
       }
-      $em->persist($resultado);
+      $em->persist($cronJob);
       $em->flush();
-      $closeSession = imap_close($inbox);
-      //$output->writeln($closeSession);
     }
 }
