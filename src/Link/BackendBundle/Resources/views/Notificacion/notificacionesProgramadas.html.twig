@@ -19,6 +19,9 @@
                 <td class="center">
                     <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': np.notificacion.id, 'notificacion_programada_id': np.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ np.id }}"><span class="fa fa-trash"></span></a>
+                    {% if failed[np.id] is defined %}
+                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" data="{{ np.id }}"><span class="fa fa-file-excel-o"></span></a>
+                    {% endif%}
                 </td>
             </tr>
         {% endfor %}

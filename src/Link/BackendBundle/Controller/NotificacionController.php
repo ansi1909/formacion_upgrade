@@ -1,7 +1,6 @@
 <?php
 
 namespace Link\BackendBundle\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +10,7 @@ use Link\ComunBundle\Entity\AdminNotificacion;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
 use Link\ComunBundle\Entity\AdminNotificacionProgramada;
 use Link\ComunBundle\Entity\AdminCorreo;
+use Link\ComunBundle\Entity\AdminCorreoFallido;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -292,6 +292,26 @@ class NotificacionController extends Controller
 
     }
 
+    public function failedEmails($notificaciones){
+        $em = $this->getDoctrine()->getManager();
+        $notificacionesId = array ();
+        foreach ($notificaciones as $notificacion) {
+            $query = $em->createQuery("SELECT cf.id FROM LinkComunBundle:AdminCorreoFallido cf 
+                                      WHERE cf.entidadId = :notificacion_id 
+                                      AND cf.reenviado = :reenviado ")
+                    ->setParameters(array('notificacion_id' => $notificacion->getId(),'reenviado'=>FALSE));
+            $cfll = $query->getResult();
+          
+            if(count($cfll)>0){
+                $notificacionesId[$notificacion->getId()] = count($cfll);
+                //array_push($notificacionesId,$notificacion->getId());
+            }
+
+         
+        }
+        return $notificacionesId;
+    }
+
     public function ajaxProgramadosAction(Request $request)
     {
         
@@ -304,13 +324,13 @@ class NotificacionController extends Controller
         $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np 
                                     WHERE np.notificacion = :notificacion_id 
                                     AND np.grupo IS NULL 
-                                    AND np.fechaDifusion >= :hoy 
                                     ORDER BY np.fechaDifusion ASC")
-                    ->setParameters(array('notificacion_id' => $notificacion_id,
-                                          'hoy' => date('Y-m-d')));
+                    ->setParameters(array('notificacion_id' => $notificacion_id));
         $nps = $query->getResult();
+        
+        $failed = $this->failedEmails($nps);
 
-        $html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps));
+        $html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps,'failed'=>$failed));
 
         $return = array('html' => $html,
                         'notificacion' => $notificacion->getAsunto());
