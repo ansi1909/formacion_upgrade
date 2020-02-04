@@ -25,6 +25,36 @@ function observe()
 		}
 	});
 
+	$('.failedEmails').click(function(e){
+		e.preventDefault();
+		var npId =  $(this).attr('data');
+		var excel = $('#excelLoader'+npId);
+	    $(this).hide();
+		excel.show();
+		$.ajax({
+			type: "POST",
+			url: $('#url_correos_excel').val(),
+			async: true,
+			data: { notificacion_id: npId },
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+               
+				//observe();
+			},
+			error: function(){
+				console.log('Error de comunicacion');
+				// $('.load1').hide();
+				// $('#programados').hide();
+				// $('#div-programados-alert').show();
+			}
+		});
+
+
+		//alert(nfpId);
+	});
+
+
 }
 
 

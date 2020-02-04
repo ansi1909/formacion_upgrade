@@ -20,7 +20,9 @@
                     <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': np.notificacion.id, 'notificacion_programada_id': np.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ np.id }}"><span class="fa fa-trash"></span></a>
                     {% if failed[np.id] is defined %}
-                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" data="{{ np.id }}"><span class="fa fa-file-excel-o"></span></a>
+                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" id="{{'excel'~np.id}}" data="{{ np.id }}"><span class="fa fa-file-excel-o" style=""></span></a>
+                        <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'excelLoader'~np.id }}" style="display:none">
+                        <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm "  id="{{ 'descargarExcel'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
                     {% endif%}
                 </td>
             </tr>

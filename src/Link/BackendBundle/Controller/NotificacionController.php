@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class NotificacionController extends Controller
 {
@@ -296,22 +297,67 @@ class NotificacionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $notificacionesId = array ();
         foreach ($notificaciones as $notificacion) {
+            $chijos = 0;
             $query = $em->createQuery("SELECT cf.id FROM LinkComunBundle:AdminCorreoFallido cf 
-                                      WHERE cf.entidadId = :notificacion_id 
-                                      AND cf.reenviado = :reenviado ")
+                                      WHERE cf.reenviado = :reenviado 
+                                      AND cf.entidadId = :notificacion_id")
                     ->setParameters(array('notificacion_id' => $notificacion->getId(),'reenviado'=>FALSE));
             $cfll = $query->getResult();
-          
-            if(count($cfll)>0){
-                $notificacionesId[$notificacion->getId()] = count($cfll);
-                //array_push($notificacionesId,$notificacion->getId());
+
+            $hijos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion->getId());
+            
+            if(count($hijos)>0)
+            { 
+                foreach ($hijos as $hijo){
+                    $mails = $this->getDoctrine()->getRepository('LinkComunBundle:AdminCorreoFallido')->findBy(array('entidadId'=>$hijo->getId()));
+                    $chijos = $chijos + count($mails);
+                }
             }
 
-         
+            $total = $chijos +count($cfll);
+            if($total>0){
+                $notificacionesId[$notificacion->getId()] = $total;
+            }
+
         }
         return $notificacionesId;
     }
 
+    
+    public function ajaxExcelCorreosAction(Request $request)
+    {
+        try{
+            $em = $this->getDoctrine()->getManager();
+            $f = $this->get('funciones');
+            $npId = (int)$request->request->get('notificacion_id');
+            $ids = array($npId);
+            $np = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($npId);
+            $npChilds = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($np->getId());
+
+            foreach ($npChilds as $child) {
+                array_push($ids,$child->getId());
+            }
+            
+            $query = $em->createQuery("SELECT cf FROM LinkComunBundle:AdminCorreoFallido cf 
+                                      WHERE cf.reenviado = :reenviado 
+                                      AND cf.entidadId IN (:indices)")
+                    ->setParameters(array('indices' => $ids,'reenviado'=>FALSE));
+            $mails = $query->getResult();
+
+            
+
+            $return = array('html' => $mails,
+                        'notificacion' => 'prueba de comunicacion');
+            $return = json_encode($return);
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
+        } catch(\Exception $ex){
+            $return = array('ok'=>0,'msg'=>$ex->getMessage());
+            return new JsonResponse($return);
+        }
+
+        
+    }
+    
     public function ajaxProgramadosAction(Request $request)
     {
         
