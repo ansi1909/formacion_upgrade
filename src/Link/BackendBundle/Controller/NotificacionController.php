@@ -295,6 +295,8 @@ class NotificacionController extends Controller
 
     public function failedEmails($notificaciones){
         $em = $this->getDoctrine()->getManager();
+
+
         $notificacionesId = array ();
         foreach ($notificaciones as $notificacion) {
             $chijos = 0;
@@ -327,12 +329,15 @@ class NotificacionController extends Controller
     public function ajaxExcelCorreosAction(Request $request)
     {
         try{
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
             $em = $this->getDoctrine()->getManager();
             $f = $this->get('funciones');
             $npId = (int)$request->request->get('notificacion_id');
             $ids = array($npId);
             $np = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($npId);
             $npChilds = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($np->getId());
+
+            $pex=$this->get('phpexcel');
 
             foreach ($npChilds as $child) {
                 array_push($ids,$child->getId());
@@ -344,11 +349,10 @@ class NotificacionController extends Controller
                     ->setParameters(array('indices' => $ids,'reenviado'=>FALSE));
             $mails = $query->getResult();
 
-            
+            $excel = $f->ExcelMails($mails,'PruebaEntidad',$pex,$yml);
 
-            $return = array('html' => $mails,
-                        'notificacion' => 'prueba de comunicacion');
-            $return = json_encode($return);
+            //$return = array('excel' => $excel);
+            $return = json_encode($excel);
             return new Response($return, 200, array('Content-Type' => 'application/json'));
         } catch(\Exception $ex){
             $return = array('ok'=>0,'msg'=>$ex->getMessage());
