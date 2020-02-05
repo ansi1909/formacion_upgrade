@@ -3601,7 +3601,7 @@ class Functions
 
          $row = 5;
          foreach ($mails as $mail){
-            $objWorksheet->getStyle("A$row:E$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+            $objWorksheet->getStyle("A$row:D$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
             // Datos de las columnas comunes
             $objWorksheet->setCellValue('A'.$row, $mail->getUsuario()->getNombre());
             $objWorksheet->setCellValue('B'.$row, $mail->getUsuario()->getApellido());

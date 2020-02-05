@@ -681,7 +681,7 @@ CREATE TABLE admin_cronjob_log(
 -- Attributes --
 id serial,
 nombre varchar(100),
-mensaje varchar(500),
+mensaje text,
 fecha date,
  PRIMARY KEY (id)
  );

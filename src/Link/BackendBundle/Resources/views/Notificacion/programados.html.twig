@@ -1,5 +1,4 @@
 {% extends '::admin.html.twig' %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
@@ -26,13 +25,11 @@
         }
     </style>
 {% endblock %}
-
 {% block body %}
 <br>
 <input type="hidden" id="url_programados" name="url_programados" value="{{ path('_ajaxProgramados') }}">
 <input type="hidden" id="url_correos_excel" name="url_correos_excel" value="{{ path('_ajaxExcelCorreos') }}">
 <input type="hidden" id="url_tree" name="url_tree" value="{{ path('_ajaxTreeGrupoProgramado') }}">
-
 <div class="row align-items-center justify-content-between">
     <div class="col-12 col-sm-12 page-title">
         <h3>{{ 'Notificaciones programadas'|trans }}</h3>
@@ -45,7 +42,7 @@
                 <h5 class="card-title">{{ 'Listado de notificaciones'|trans }}</h5>
             </div>
             <div class="card-block">
-                <table class="table" id="dt">
+                <table class="table" id="t-programados-index">
                     <thead class="sty__title">
                         <tr>
                             {% if not usuario.empresa %}
@@ -84,7 +81,7 @@
                 <h5 class="card-title">{{ 'Avisos programados de'|trans }} <span id="notificacionTitle"></span></h5>
             </div>
             <div class="card-block">
-                <div class="row" id="div-programados-alert" style="display:none;">
+                <div class="row" id="div-programados-alert" style="display: none">
                     <div class="col-sm-2">
                         &nbsp;
                     </div>
@@ -117,14 +114,14 @@
     <script type="text/javascript">
              function applyDataTableProgramados()
                 {
-                    $('#t-programados').DataTable({
+                    $('#t-programados,#t-programados-index').DataTable({
                         destroy: true,
                         rowReorder: true,
                         responsive: false,
                         pageLength:10,
                         sPaginationType: "full_numbers",
                         lengthChange: false,
-                        info: false,
+                        info: true,
                         fnDrawCallback: function(){
                             observe();
                         },
@@ -133,7 +130,7 @@
                             "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
                             "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
                             "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
-                            "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                            "sInfo":          "{{ 'Total de registros'|trans }} _TOTAL_.",
                             "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
                             "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
                             "sInfoPostFix":   "",

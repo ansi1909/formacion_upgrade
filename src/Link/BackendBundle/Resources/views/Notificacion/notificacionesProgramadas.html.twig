@@ -15,7 +15,7 @@
                 <td class="alignment" id="td-{{ np.id }}">&nbsp;</td>
                 <td class="alignment_" style="text-align: center">{{ np.fechaDifusion|date('d/m/Y') }}</td>
                 {% set enviado = np.enviado ? 'Sí'|trans : 'No' %}
-                <td class="alignment alignment">{{ enviado }}</td>
+                <td class="alignment alignment" style="text-align: center;">{{ enviado }}</td>
                 <td class="center">
                     <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': np.notificacion.id, 'notificacion_programada_id': np.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ np.id }}"><span class="fa fa-trash"></span></a>

@@ -65,9 +65,9 @@ class bouncingEmailsCommand extends ContainerAwareCommand
             $em = $this->getContainer()->get('doctrine')->getManager();
             $mailTypes = array('warning'=>0,'failed'=>0,'tutor'=>0);
             $parameters = array();
-            //$dateFilterMail = '21-Jan-2020';
-            //$dateFilterDbBegin = '2020-01-21 00:00:00';
-            //$dateFilterDbEnd = '2020-01-21 23:59:00';
+            //$dateFilterMail = '28-Jan-2020';
+            //$dateFilterDbBegin = '2020-01-28 00:00:00';
+            //$dateFilterDbEnd = '2020-01-28 23:59:00';
             $dateFilterMail = date('d-M-Y',strtotime(date('d-M-Y')."- 1 days"));
             $dateFilterDbBegin = date('Y-m-d 00:00:00',strtotime(date('Y-m-d 00:00:00')."- 1 days"));
             $dateFilterDbEnd = date('Y-m-d 23:59:00',strtotime(date('Y-m-d 23:59:00')."- 1 days"));
@@ -102,7 +102,7 @@ class bouncingEmailsCommand extends ContainerAwareCommand
                 }
               }
       				$parameters = $this->transformArray($parameters,$yml);
-      				$query = $em->getConnection()->prepare('SELECT fncorreos_fallidos(:fechaAyer,:pfechaCron,:pcorreos) AS resultado;');
+      				$query = $em->getConnection()->prepare('SELECT fncorreos_noentregados(:fechaAyer,:pfechaCron,:pcorreos) AS resultado;');
       				$query->bindValue(':fechaAyer', $dateFilterDbBegin, \PDO::PARAM_STR);
       				$query->bindValue(':pfechaCron', $dateFilterDbEnd, \PDO::PARAM_STR);
       				$query->bindValue(':pcorreos', $parameters, \PDO::PARAM_STR);

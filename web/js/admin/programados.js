@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    applyDataTableProgramados();
 	afterPaginate();
 
 	$('.paginate_button').click(function(){
@@ -13,11 +13,9 @@ $(document).ready(function() {
 
 });
 
-
 function observe()
 {
-
-
+	afterPaginate();
 	$('#tbody-programados tr').each(function(){
 		var tr = $(this).attr('id');
 		if (!(typeof tr === 'undefined' || tr === null)){
@@ -39,30 +37,18 @@ function observe()
 			data: { notificacion_id: npId },
 			dataType: "json",
 			success: function(data) {
-				console.log(data);
 				$('#downloadExcel'+npId).attr('data-href',data.archivo);
 				$('#excelLoader'+npId).hide();
 				$('#downloadExcel'+npId).show();
 			},
 			error: function(){
 				console.log('Error de comunicacion');
-				// $('.load1').hide();
-				// $('#programados').hide();
-				// $('#div-programados-alert').show();
 			}
 		});
-
-
-		//alert(nfpId);
 	});
 
 	   $('.downloadExcel').click(function(event) {
 	   	window.location.href = $(this).attr('data-href');
-		//$('#btn-descarga').hide();
-		//$('#alert-success').hide();
-		//$('#generar-excel').show();
-
-
    });
 
 
