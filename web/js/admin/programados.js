@@ -16,6 +16,8 @@ $(document).ready(function() {
 
 function observe()
 {
+
+
 	$('#tbody-programados tr').each(function(){
 		var tr = $(this).attr('id');
 		if (!(typeof tr === 'undefined' || tr === null)){
@@ -27,10 +29,9 @@ function observe()
 
 	$('.failedEmails').click(function(e){
 		e.preventDefault();
-		var npId =  $(this).attr('data');
-		var excel = $('#excelLoader'+npId);
-	    $(this).hide();
-		excel.show();
+		var npId = $(this).attr('data');
+        $('#excel'+npId).hide();
+        $('#excelLoader'+npId).show();
 		$.ajax({
 			type: "POST",
 			url: $('#url_correos_excel').val(),
@@ -39,8 +40,9 @@ function observe()
 			dataType: "json",
 			success: function(data) {
 				console.log(data);
-               
-				//observe();
+				$('#downloadExcel'+npId).attr('data-href',data.archivo);
+				$('#excelLoader'+npId).hide();
+				$('#downloadExcel'+npId).show();
 			},
 			error: function(){
 				console.log('Error de comunicacion');
@@ -53,6 +55,15 @@ function observe()
 
 		//alert(nfpId);
 	});
+
+	   $('.downloadExcel').click(function(event) {
+	   	window.location.href = $(this).attr('data-href');
+		//$('#btn-descarga').hide();
+		//$('#alert-success').hide();
+		//$('#generar-excel').show();
+
+
+   });
 
 
 }
@@ -89,6 +100,7 @@ function afterPaginate()
 				$('#programados').html(data.html);
 				$('#notificacionTitle').html(data.notificacion);
 				$('#programados').show();
+				applyDataTableProgramados();
 				observe();
 			},
 			error: function(){

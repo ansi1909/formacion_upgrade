@@ -3577,73 +3577,46 @@ class Functions
         return $result;
     }
 
+
        
-  public function ExcelMails($mails,$entidad,$pex,$yml){
-
+  public function ExcelMails($mails,$encabezado,$pex,$yml,$sufijo){
         $em = $this->em;
-        //$libro = $em->getRepository('ActualidadComunBundle:EaPagina')->find($pagina_id);
-        //$grado = $em->getRepository('ActualidadComunBundle:AdminGrado')->find($grado_id);
-
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/correosFallidos.xlsx';
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
         $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $styleThinBlackBorderOutline = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('argb' => 'FF000000'),
+                        ),
+                    ),
+        );
 
         // Encabezado
-        //$objWorksheet->setCellValue('A1', $this->translator->trans('Libro').': '.$libro->getTitulo().'.');
-        //$objWorksheet->setCellValue('A2', $this->translator->trans('Grado').': '.$grado->getNombre().'.'.$grado->getDescripcion());
+         $objWorksheet->setCellValue('A1', $encabezado['titulo']);
+         $objWorksheet->setCellValue('A2', $encabezado['empresa']);
+         $objWorksheet->setCellValue('A3', $encabezado['fecha']);
 
+         $row = 5;
+         foreach ($mails as $mail){
+            $objWorksheet->getStyle("A$row:E$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
+            // Datos de las columnas comunes
+            $objWorksheet->setCellValue('A'.$row, $mail->getUsuario()->getNombre());
+            $objWorksheet->setCellValue('B'.$row, $mail->getUsuario()->getApellido());
+            $objWorksheet->setCellValue('C'.$row, $mail->getCorreo());
+            $objWorksheet->setCellValue('D'.$row, $mail->getMensaje());
+            $row++;
 
-            $row = 5;
-            $i = 0;
-            $styleThinBlackBorderOutline = array(
-                'borders' => array(
-                    'allborders' => array(
-                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                        'color' => array('argb' => 'FF000000'),
-                    ),
-                ),
-            );
-            $font_size = 11;
-            $font = 'Arial';
-            $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
-            $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
-
-            foreach ($mails as $mail)
-            {
-                
-                $objWorksheet->getStyle("A$row:E$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                $objWorksheet->getStyle("A$row:E$row")->getFont()->setSize($font_size); // Tamaño de las letras
-                $objWorksheet->getStyle("A$row:E$row")->getFont()->setName($font); // Tipo de letra
-                $objWorksheet->getStyle("A$row:E$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                $objWorksheet->getStyle("A$row:E$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                $objWorksheet->getRowDimension($row)->setRowHeight(25); // Altura de la fila
-            
-                // Datos de las columnas comunes
-                $objWorksheet->setCellValue('A'.$row, $mail->getUsuario()->getNombre());
-                $objWorksheet->setCellValue('B'.$row, $mail->getUsuario()->getApellido());
-                $objWorksheet->setCellValue('C'.$row, $mail->getCorreo());
-                $objWorksheet->setCellValue('D'.$row, $mail->getMensaje());
-                $objWorksheet->setCellValue('E'.$row, $mail->getFecha()->format('d/m/Y H:i:s'));
-                $row++;
-
-            }
-
-        
-
-        // Crea el writer
-        //$libroTitulo = $this->eliminarAcentos($libro->getTitulo());
-        //$longitud = strlen($libroTitulo);
-        //$libroTitulo = ($longitud<=4) ? $libroTitulo : substr($libroTitulo,0,4);
-        //$grado = $this->eliminarAcentos($grado->getNombre());
-        //$hoy = date('d-m-Y');
+        }
+        $hoy = date('d-m-Y');
         $writer = $pex->createWriter($objPHPExcel, 'Excel5');
-        $path = 'recursos/notificaciones/'.'prueba'.'.xls';
+        $path = 'recursos/notificaciones/'.'correosNoentregados_'.$encabezado['empresa'].'_'.$hoy.'_'.$sufijo.'.xls';
         $xls = $yml['parameters']['folders']['dir_uploads'].$path;
         $writer->save($xls);
-
         $archivo = $yml['parameters']['folders']['uploads'].$path;
-        $document_name = 'codigos_'.'Probando'.'_'.'hoy'.'.xls';
+        $document_name = 'correosNoEntregados_'.$encabezado['empresa'].'_'.$hoy.'_'.$sufijo.'.xls';
         $bytes = filesize($xls);
         $document_size = $this->fileSizeConvert($bytes);
 

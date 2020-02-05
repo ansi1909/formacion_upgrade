@@ -295,8 +295,6 @@ class NotificacionController extends Controller
 
     public function failedEmails($notificaciones){
         $em = $this->getDoctrine()->getManager();
-
-
         $notificacionesId = array ();
         foreach ($notificaciones as $notificacion) {
             $chijos = 0;
@@ -348,10 +346,8 @@ class NotificacionController extends Controller
                                       AND cf.entidadId IN (:indices)")
                     ->setParameters(array('indices' => $ids,'reenviado'=>FALSE));
             $mails = $query->getResult();
-
-            $excel = $f->ExcelMails($mails,'PruebaEntidad',$pex,$yml);
-
-            //$return = array('excel' => $excel);
+            $encabezado = array('titulo'=>'Correos no entregados ('.count($mails).') : '.$np->getNotificacion()->getAsunto(),'fecha'=>$np->getFechaDifusion()->format('d/m/Y'),'empresa'=>$np->getNotificacion()->getEmpresa()->getNombre());
+            $excel = $f->ExcelMails($mails,$encabezado,$pex,$yml,$np->getId());
             $return = json_encode($excel);
             return new Response($return, 200, array('Content-Type' => 'application/json'));
         } catch(\Exception $ex){

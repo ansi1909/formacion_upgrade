@@ -3,6 +3,28 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/vendor/jstree/dist/themes/default/style.min.css') }}" type="text/css">
+    <style type="text/css" media="screen">
+        .alignment{
+            padding: 4%;
+            text-align: left;
+        }
+        .alignment_{
+            padding: 4%;
+            text-align: center;
+        }
+        .smallth{
+            width: 12%;
+        }
+        .small_th{
+            width: 16%;
+        }
+        .big_th{
+            width: 20%;
+        }
+        .bigth{
+            width: 40%;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -92,4 +114,46 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/vendor/jstree/dist/jstree.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/programados.js') }}"></script>
+    <script type="text/javascript">
+             function applyDataTableProgramados()
+                {
+                    $('#t-programados').DataTable({
+                        destroy: true,
+                        rowReorder: true,
+                        responsive: false,
+                        pageLength:10,
+                        sPaginationType: "full_numbers",
+                        lengthChange: false,
+                        info: false,
+                        fnDrawCallback: function(){
+                            observe();
+                        },
+                        oLanguage: {
+                            "sProcessing":    "{{ 'Procesando'|trans }}...",
+                            "sLengthMenu":    "{{ 'Mostrar'|trans }} _MENU_ {{ 'registros'|trans }}",
+                            "sZeroRecords":   "{{ 'No se encontraron resultados'|trans }}",
+                            "sEmptyTable":    "{{ 'Ningún dato disponible en esta tabla'|trans }}",
+                            "sInfo":          "{{ 'Mostrando registros del'|trans }} _START_ {{ 'al'|trans }} _END_ {{ 'de un total de'|trans }} _TOTAL_.",
+                            "sInfoEmpty":     "{{ 'Mostrando registros del'|trans }} 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":  "({{ 'filtrado de un total de'|trans }} _MAX_ {{ 'registros'|trans }})",
+                            "sInfoPostFix":   "",
+                            "sSearch":        "{{ 'Buscar'|trans }}:",
+                            "sUrl":           "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "{{ 'Cargando..'|trans }}.",
+                            oPaginate: {
+                                sFirst: "<<",
+                                sPrevious: "<",
+                                sNext: ">", 
+                                sLast: ">>" 
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": {{ 'Activar para ordenar la columna de manera ascendente'|trans }}",
+                                "sSortDescending": ": {{ 'Activar para ordenar la columna de manera descendente'|trans }}"
+                            }
+                        }
+                    });
+                }
+       
+    </script>
 {% endblock %}
