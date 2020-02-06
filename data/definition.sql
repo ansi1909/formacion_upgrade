@@ -694,3 +694,14 @@ paso_actual integer,
 cancelado boolean,
  PRIMARY KEY (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_zona_horaria(
+-- Attributes --
+id serial,
+pais_id character(3),
+nombre varchar(300),
+ PRIMARY KEY (id),
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
+
+
+
