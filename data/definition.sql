@@ -700,7 +700,7 @@ CREATE TABLE admin_zona_horaria(
 id serial,
 pais_id character(3),
 nombre varchar(300),
-orden integer,
+orden varchar(1),
  PRIMARY KEY (id),
  FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
 

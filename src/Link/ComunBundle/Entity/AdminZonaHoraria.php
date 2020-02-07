@@ -18,6 +18,11 @@ class AdminZonaHoraria
     private $nombre;
 
     /**
+     * @var string
+     */
+    private $orden;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminPais
      */
     private $pais;
@@ -58,6 +63,30 @@ class AdminZonaHoraria
     }
 
     /**
+     * Set orden
+     *
+     * @param string $orden
+     *
+     * @return AdminZonaHoraria
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return string
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
      * Set pais
      *
      * @param \Link\ComunBundle\Entity\AdminPais $pais
@@ -80,33 +109,5 @@ class AdminZonaHoraria
     {
         return $this->pais;
     }
-    /**
-     * @var integer
-     */
-    private $orden;
-
-
-    /**
-     * Set orden
-     *
-     * @param integer $orden
-     *
-     * @return AdminZonaHoraria
-     */
-    public function setOrden($orden)
-    {
-        $this->orden = $orden;
-    
-        return $this;
-    }
-
-    /**
-     * Get orden
-     *
-     * @return integer
-     */
-    public function getOrden()
-    {
-        return $this->orden;
-    }
 }
+

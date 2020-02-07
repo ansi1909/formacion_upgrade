@@ -22,10 +22,11 @@ Link\ComunBundle\Entity\AdminZonaHoraria:
             options:
                 fixed: false
         orden:
-            type: integer
+            type: string
             nullable: true
+            length: 1
             options:
-                unsigned: false
+                fixed: false
     manyToOne:
         pais:
             targetEntity: AdminPais
