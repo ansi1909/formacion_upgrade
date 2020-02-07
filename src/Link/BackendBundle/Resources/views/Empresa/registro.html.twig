@@ -3,6 +3,7 @@
 
 {% set uri = app.request.getbasepath %}
 <input type="hidden" id="root_site" name="root_site" value="{{ uri }}" />
+<input type="hidden" id="url_horarios" name="url_horarios" value="{{ path('_ajaxZonaHoraria') }}">
 <input type="hidden" id="deslen" name="deslen" value="0" />
 <br><br>
 <div class="row align-items-center justify-content-start">
@@ -81,6 +82,15 @@
                                                     {% endfor %}
 	                                            </select>
                                                 <span class="fa fa-globe"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="texto" class="col-6 col-form-label">{{ 'Zona horaria'|trans }}</label>
+                                            <div class="col-14">
+                                                <select class="form-control form_sty_select" name="zona_id" id="zona_id">
+                                                    <option value=""></option>
+                                                </select>
+                                                <span class="fa fa-clock-o"></span>
                                             </div>
                                         </div>
                                 	</div>

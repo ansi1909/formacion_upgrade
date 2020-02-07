@@ -53,8 +53,10 @@ bienvenida text,
 pais_id character(3),
 chat_activo boolean,
 webinar boolean, 
+ zona_horaria_id integer,
  PRIMARY KEY (id),
- FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id),
+ FOREIGN KEY (zona_horaria_id) REFERENCES admin_zona_horaria (id));
 
 CREATE TABLE admin_nivel(
 -- Attributes --

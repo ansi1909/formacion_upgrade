@@ -145,6 +145,19 @@ class EmpresaController extends Controller
         return $this->render('LinkBackendBundle:Empresa:mostrar.html.twig', array('empresa' => $empresa));
 
     }
+    public function ajaxZonaHorariaAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+        $a = $this->get('funciones');
+        $pais_id = $request->request->get('pais_id');
+        $horarios = $em->getRepository('LinkComunBundle:AdminZonaHoraria')->findBy(array('pais'=>$pais_id));
+        
+         $return = array('horarios'=>$pais_id);
+         $return = json_encode($return);
+         return new Response($return, 200, array('Content-Type' => 'application/json'));  
+
+
+    }
 
     public function registradosEmpresaAction( Request $request )
     {

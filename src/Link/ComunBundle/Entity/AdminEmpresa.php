@@ -377,4 +377,33 @@ class AdminEmpresa
     {
         return $this->pais;
     }
+    /**
+     * @var \Link\ComunBundle\Entity\AdminZonaHoraria
+     */
+    private $zonaHoraria;
+
+
+    /**
+     * Set zonaHoraria
+     *
+     * @param \Link\ComunBundle\Entity\AdminZonaHoraria $zonaHoraria
+     *
+     * @return AdminEmpresa
+     */
+    public function setZonaHoraria(\Link\ComunBundle\Entity\AdminZonaHoraria $zonaHoraria = null)
+    {
+        $this->zonaHoraria = $zonaHoraria;
+    
+        return $this;
+    }
+
+    /**
+     * Get zonaHoraria
+     *
+     * @return \Link\ComunBundle\Entity\AdminZonaHoraria
+     */
+    public function getZonaHoraria()
+    {
+        return $this->zonaHoraria;
+    }
 }

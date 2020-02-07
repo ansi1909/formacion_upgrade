@@ -38,4 +38,23 @@ $(document).ready(function() {
 
 	});
 
+    $("#pais_id").change(function(){
+		alert("The text has been changed.");
+	});
+
+	$.ajax({
+		type: "POST",
+		url: $('#url_horarios').val(),
+		async: true,
+	    data: { pais_id: $("#pais_id:selected" ).val() },
+	    dataType: "json",
+		success: function(data) {
+			console.log(data);
+		},
+		error: function(){
+			$('#active-error').html($('#error_msg-active').val());
+			$('#div-active-alert').show();
+			}
+		});
+
 });
