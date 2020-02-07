@@ -80,5 +80,33 @@ class AdminZonaHoraria
     {
         return $this->pais;
     }
-}
+    /**
+     * @var integer
+     */
+    private $orden;
 
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return AdminZonaHoraria
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+}

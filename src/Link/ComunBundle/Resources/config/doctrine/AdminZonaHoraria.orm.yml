@@ -21,6 +21,11 @@ Link\ComunBundle\Entity\AdminZonaHoraria:
             length: 300
             options:
                 fixed: false
+        orden:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
     manyToOne:
         pais:
             targetEntity: AdminPais
