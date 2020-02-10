@@ -89,6 +89,9 @@
                                             <div class="col-14">
                                                 <select class="form-control form_sty_select" name="zona_id" id="zona_id">
                                                     <option value=""></option>
+                                                      {% for horario in zonas %}
+                                                         <option value="{{ horario.id }}" {{horario.selected}} >{{ horario.zona|trim }}</option>   
+                                                      {% endfor %}
                                                 </select>
                                                 <span class="fa fa-clock-o"></span>
                                             </div>
