@@ -115,4 +115,5 @@ parameters:
         separadorMailMessage: '=>'
         separadorMessages: '++'
         separadorMails: '|'
-        
+    time_zone:
+        default: 'UTC'

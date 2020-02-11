@@ -18,6 +18,7 @@ class ReportesController extends Controller
     {
         $session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -108,7 +109,6 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('A5', $this->get('translator')->trans('No existen registros para esta consulta'));
             }
             else {
-
                 $row = 5;
                 $i = 0;
                 $styleThinBlackBorderOutline = array(
@@ -123,30 +123,28 @@ class ReportesController extends Controller
                 $font = 'Arial';
                 $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
                 $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
-
                 foreach ($res as $re)
                 {
 
                     $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
                     $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                     $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
-                    $fecha = explode(" ", $re['fecha_registro']);
-                    
+                    $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parametros']['time_zone']['default'];
+                    $fecha = $f->transformDate($re['fecha_registro'],$timeZoneEmpresa,$yml);
+
                     $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
                     $objWorksheet->getStyle("A$row:O$row")->getFont()->setSize($font_size); // Tamaño de las letras
                     $objWorksheet->getStyle("A$row:O$row")->getFont()->setName($font); // Tipo de letra
                     $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
                     $objWorksheet->getStyle("A$row:O$row")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                     $objWorksheet->getRowDimension($row)->setRowHeight(40); // Altura de la fila
-                
-
                     // Datos de las columnas comunes
                     $objWorksheet->setCellValue('A'.$row, $re['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $re['login']);
                     $objWorksheet->setCellValue('C'.$row, $re['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $re['apellido']);
                     $objWorksheet->setCellValue('E'.$row, $fecha['0']);
-                    $objWorksheet->setCellValue('F'.$row, $fecha['1'].$fecha[2]);
+                    $objWorksheet->setCellValue('F'.$row, $fecha['1']);
                     $objWorksheet->setCellValue('G'.$row, $correo);
                     $objWorksheet->setCellValue('H'.$row, $acceso);
                     $objWorksheet->setCellValue('I'.$row, $logueado);
@@ -1033,6 +1031,7 @@ class ReportesController extends Controller
         
         $session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {

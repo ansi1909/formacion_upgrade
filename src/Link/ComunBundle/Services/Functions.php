@@ -3627,6 +3627,20 @@ class Functions
         return $return;
         
     }
+
+    public function transformDate($dateDbfn,$timeZone,$yml,$am_pm=true){
+        if ($am_pm) {
+            $dateUtc = new \DateTime(date('d/m/Y g:i a',strtotime($dateDbfn)),new \DateTimeZone($yml['parameters']['time_zone']['default']));
+            if($timeZone!=$yml['parameters']['time_zone']['default']){
+                $dateUtc->setTimeZone(new \DateTimeZone($timeZone));
+            }
+            $date = $dateUtc->format('d/m/Y g:i a');
+            $date = explode(" ",$date);
+            $return = array($date[0],$date[1].$date[2]);
+        }
+
+        return $return;
+    }
    
 
 }
