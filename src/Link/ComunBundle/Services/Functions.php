@@ -3629,16 +3629,14 @@ class Functions
     }
 
     public function transformDate($dateDbfn,$timeZone,$yml,$am_pm=true){
-        if ($am_pm) {
-            $dateUtc = new \DateTime(date('d/m/Y g:i a',strtotime($dateDbfn)),new \DateTimeZone($yml['parameters']['time_zone']['default']));
-            if($timeZone!=$yml['parameters']['time_zone']['default']){
-                $dateUtc->setTimeZone(new \DateTimeZone($timeZone));
-            }
-            $date = $dateUtc->format('d/m/Y g:i a');
-            $date = explode(" ",$date);
-            $return = array($date[0],$date[1].$date[2]);
+        $hrs = ($am_pm)? 'g:i a':'H:i';
+        $dateUtc = new \DateTime(date('d-m-Y '.$hrs,strtotime($dateDbfn)),new \DateTimeZone($yml['parameters']['time_zone']['utc']));
+        if($timeZone!=$yml['parameters']['time_zone']['utc']){
+            $dateUtc->setTimeZone(new \DateTimeZone($timeZone));
         }
-
+        $date = $dateUtc->format('d/m/Y '.$hrs);
+        $date = explode(" ",$date);
+        $return =($am_pm)? array($date[0],$date[1].$date[2]):array($date[0],$date[1]);
         return $return;
     }
    

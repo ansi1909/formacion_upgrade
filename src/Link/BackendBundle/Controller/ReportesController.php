@@ -123,13 +123,13 @@ class ReportesController extends Controller
                 $font = 'Arial';
                 $horizontal_aligment = \PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
                 $vertical_aligment = \PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
                 foreach ($res as $re)
                 {
 
                     $correo = trim($re['correo']) ? trim($re['correo']) : trim($re['correo2']);
                     $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                     $logueado = $re['logueado'] > 0 ? 'Sí' : 'No';
-                    $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parametros']['time_zone']['default'];
                     $fecha = $f->transformDate($re['fecha_registro'],$timeZoneEmpresa,$yml);
 
                     $objWorksheet->getStyle("A$row:O$row")->applyFromArray($styleThinBlackBorderOutline); //bordes
@@ -143,8 +143,8 @@ class ReportesController extends Controller
                     $objWorksheet->setCellValue('B'.$row, $re['login']);
                     $objWorksheet->setCellValue('C'.$row, $re['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $re['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $fecha['0']);
-                    $objWorksheet->setCellValue('F'.$row, $fecha['1']);
+                    $objWorksheet->setCellValue('E'.$row, $fecha[0]);
+                    $objWorksheet->setCellValue('F'.$row, $fecha[1]);
                     $objWorksheet->setCellValue('G'.$row, $correo);
                     $objWorksheet->setCellValue('H'.$row, $acceso);
                     $objWorksheet->setCellValue('I'.$row, $logueado);
@@ -159,7 +159,16 @@ class ReportesController extends Controller
                 }
 
             }
-           
+            //indicar zona horaria
+            if ($yml['parameters']['time_zone']['show_time_zone']  AND  $timeZoneEmpresa!=$yml['parameters']['time_zone']['utc']) {
+                $row++;
+                $timeZone = explode("/",$timeZoneEmpresa);
+                $objWorksheet->getStyle("A$row:G$row")->getFont()->setSize($font_size); // Tamaño de las letras
+                $objWorksheet->getStyle("A$row:G$row")->getFont()->setName($font); // Tipo de letra
+                $objWorksheet->mergeCells("A$row:G$row");
+                $objWorksheet->setCellValue("A$row", '    '.$this->get('translator')->trans('Huso horario: ').trim($empresa->getPais()->getNombre()).'/'.$timeZone[count($timeZone)-1]);
+            }
+            
 
             // Crea el writer
             $writer = $this->get('phpexcel')->createWriter($objPHPExcel, 'Excel2007');

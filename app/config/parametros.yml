@@ -117,3 +117,5 @@ parameters:
         separadorMails: '|'
     time_zone:
         default: 'UTC'
+        utc: 'UTC'
+        show_time_zone: 1
