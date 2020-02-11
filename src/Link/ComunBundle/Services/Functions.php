@@ -3636,7 +3636,7 @@ class Functions
         }
         $date = $dateUtc->format('d/m/Y '.$hrs);
         $date = explode(" ",$date);
-        $return =($am_pm)? array($date[0],$date[1].$date[2]):array($date[0],$date[1]);
+        $return =($am_pm)? (object)array('fecha'=>$date[0],'hora'=>$date[1].$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
         return $return;
     }
    

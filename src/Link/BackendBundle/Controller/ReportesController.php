@@ -143,8 +143,8 @@ class ReportesController extends Controller
                     $objWorksheet->setCellValue('B'.$row, $re['login']);
                     $objWorksheet->setCellValue('C'.$row, $re['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $re['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $fecha[0]);
-                    $objWorksheet->setCellValue('F'.$row, $fecha[1]);
+                    $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
+                    $objWorksheet->setCellValue('F'.$row, $fecha->hora);
                     $objWorksheet->setCellValue('G'.$row, $correo);
                     $objWorksheet->setCellValue('H'.$row, $acceso);
                     $objWorksheet->setCellValue('I'.$row, $logueado);
@@ -311,6 +311,7 @@ class ReportesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $f = $this->get('funciones');
         $rs = $this->get('reportes');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $empresa_id = $request->request->get('empresa_id');
         $paginas_id = $request->request->get('programas');
@@ -323,7 +324,7 @@ class ReportesController extends Controller
         }
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml○['parameters']['time_zone']['default'];
         $listado = $rs->participantesAprobados($empresa_id, $paginas_id);
 
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/ListadoParticipantesAprobados.xlsx';
@@ -450,7 +451,8 @@ class ReportesController extends Controller
 
             foreach ($listado['participantes'] as $participante)
             {
-                $fecha = explode(" ", $participante['fecha_registro']);
+                //$fecha = explode(" ", $participante['fecha_registro']);
+                $fecha = $f->transformDate($participante['fecha_registro'],$timeZoneEmpresa,$yml);
                 $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                 // Estilizar toda la fila, excepto el bgcolor de las celdas de los programas
                 $objWorksheet->getStyle("A".$row.":".$lastColumn.$row)->applyFromArray($styleThinBlackBorderOutline); //bordes
@@ -465,8 +467,8 @@ class ReportesController extends Controller
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                $objWorksheet->setCellValue('E'.$row, $fecha[0]);
-                $objWorksheet->setCellValue('F'.$row, $fecha[1].$fecha[2]);
+                $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
+                $objWorksheet->setCellValue('F'.$row, $fecha->hora);
                 $objWorksheet->setCellValue('G'.$row, $participante['correo']);
                 $objWorksheet->setCellValue('H'.$row, $acceso);
                 $objWorksheet->setCellValue('I'.$row, $participante['logueado']);
@@ -485,12 +487,15 @@ class ReportesController extends Controller
                     $objWorksheet->getStyle($columnNames[$col].$row.":".$columnNames[$col+4].$row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB($pagina['bgcolor']);
                     if (array_key_exists($pagina_id, $participante['paginas']))
                     {
+                        $fecha_inicio = $f->transformDate($participante['paginas'][$pagina_id]['fecha_inicio'],$timeZoneEmpresa,$yml);
+                        $fecha_fin = $f->transformDate($participante['paginas'][$pagina_id]['fecha_fin'],$timeZoneEmpresa,$yml);
+                       
                         $aprobados++;
                         $objWorksheet->setCellValue($columnNames[$col].$row, $participante['paginas'][$pagina_id]['promedio']);
-                        $objWorksheet->setCellValue($columnNames[$col+1].$row, $participante['paginas'][$pagina_id]['fecha_inicio']);
-                        $objWorksheet->setCellValue($columnNames[$col+2].$row, $participante['paginas'][$pagina_id]['hora_inicio']);
-                        $objWorksheet->setCellValue($columnNames[$col+3].$row, $participante['paginas'][$pagina_id]['fecha_fin']);
-                        $objWorksheet->setCellValue($columnNames[$col+4].$row, $participante['paginas'][$pagina_id]['hora_fin']);
+                        $objWorksheet->setCellValue($columnNames[$col+1].$row, $fecha_inicio->fecha);
+                        $objWorksheet->setCellValue($columnNames[$col+2].$row, $fecha_inicio->hora);
+                        $objWorksheet->setCellValue($columnNames[$col+3].$row, $fecha_fin->fecha);
+                        $objWorksheet->setCellValue($columnNames[$col+4].$row, $fecha_fin->hora);
                     }
                     $col += 5;
                 }
