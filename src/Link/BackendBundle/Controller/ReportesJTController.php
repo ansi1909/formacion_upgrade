@@ -309,6 +309,7 @@ class ReportesJTController extends Controller
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fun = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         $empresa_id = $request->request->get('empresa_id');
         $desdef = $request->request->get('desde');
@@ -323,6 +324,7 @@ class ReportesJTController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
        
 
         $listado = $rs->conexionesUsuario($empresa_id,$desde,$hasta);//
@@ -367,6 +369,7 @@ class ReportesJTController extends Controller
                  // Estilizar las celdas antes de insertar los datos
                 for ($f=$row; $f<=$last_row; $f++)
                 {
+                        
                         $objWorksheet->getStyle("A$f:O$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
                         $objWorksheet->getStyle("A$f:O$f")->getFont()->setSize($font_size); // Tamaño de las letras
                         $objWorksheet->getStyle("A$f:O$f")->getFont()->setName($font); // Tipo de letra
@@ -379,13 +382,14 @@ class ReportesJTController extends Controller
                 foreach ($listado as $participante)
                 {
 
+                    $fecha = $fun->transformDate($participante['fecha_registro'],$timeZoneEmpresa,$yml);
                     $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
                     // Datos de las columnas del reporte
                     $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
                     $objWorksheet->setCellValue('B'.$row, $participante['login']);
                     $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
+                    $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
                     $objWorksheet->setCellValue('F'.$row, $participante['correo_corporativo']);
                     $objWorksheet->setCellValue('G'.$row, $acceso);
                     $objWorksheet->setCellValue('H'.$row, $participante['pais']);
