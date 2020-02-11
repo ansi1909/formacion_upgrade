@@ -101,7 +101,7 @@ class ReportesJTController extends Controller
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fun = $this->get('funciones');
-
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
         $desdef = $request->request->get('desde');
@@ -115,6 +115,7 @@ class ReportesJTController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->avanceProgramas($empresa_id, $pagina_id, $desde, $hasta);
@@ -185,7 +186,10 @@ class ReportesJTController extends Controller
 
                     $promedio = $participante['promedio'] ? $participante['promedio'] : 0;
                     $acceso = $re['activo'] = "TRUE" ? 'Sí' : 'No';
-                    $fecha = explode(" ", $participante['fecha_registro']);
+                   // $fecha = explode(" ", $participante['fecha_registro']);
+                    $fecha_registro = $fun->transformDate($participante['fecha_registro'],$timeZoneEmpresa,$yml);
+                    $fecha_inicio = $fun->transformDate($participante['fecha_inicio_programa'],$timeZoneEmpresa,$yml);
+                    $fecha_fin = $fun->transformDate($participante['fecha_fin_programa'],$timeZoneEmpresa,$yml);
 
                     // Datos de las columnas del reporte
                     $correo = trim($participante['correo_corporativo']) != '' ? $participante['correo_corporativo'] : $participante['correo_personal'];
@@ -193,8 +197,8 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('B'.$row, $participante['login']);
                     $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                    $objWorksheet->setCellValue('E'.$row, $fecha['0']);
-                    $objWorksheet->setCellValue('F'.$row, $fecha['1'].$fecha['2']);
+                    $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
+                    $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
                     $objWorksheet->setCellValue('G'.$row, $acceso);
                     $objWorksheet->setCellValue('H'.$row, $correo);
                     $objWorksheet->setCellValue('I'.$row, $participante['pais']);
@@ -207,10 +211,10 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('P'.$row, $participante['materias']);
                     $objWorksheet->setCellValue('Q'.$row, $promedio);
                     $objWorksheet->setCellValue('R'.$row, $estatusProragama[$status]);
-                    $objWorksheet->setCellValue('S'.$row, $participante['fecha_inicio_programa']);
-                    $objWorksheet->setCellValue('T'.$row, $participante['hora_inicio_programa']);
-                    $objWorksheet->setCellValue('U'.$row, $participante['fecha_fin_programa']);
-                    $objWorksheet->setCellValue('V'.$row, $participante['hora_fin_programa']);
+                    $objWorksheet->setCellValue('S'.$row, $fecha_inicio->fecha);
+                    $objWorksheet->setCellValue('T'.$row, $fecha_inicio->hora);
+                    $objWorksheet->setCellValue('U'.$row, $fecha_fin->fecha);
+                    $objWorksheet->setCellValue('V'.$row, $fecha_fin->hora);
 
                     $row++;
 
