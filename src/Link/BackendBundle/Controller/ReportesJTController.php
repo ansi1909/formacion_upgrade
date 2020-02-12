@@ -374,12 +374,12 @@ class ReportesJTController extends Controller
                 for ($f=$row; $f<=$last_row; $f++)
                 {
                         
-                        $objWorksheet->getStyle("A$f:O$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                        $objWorksheet->getStyle("A$f:O$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                        $objWorksheet->getStyle("A$f:O$f")->getFont()->setName($font); // Tipo de letra
-                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
-                        $objWorksheet->getStyle("A$f:O$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
+                        $objWorksheet->getStyle("A$f:P$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                        $objWorksheet->getStyle("A$f:P$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                        $objWorksheet->getStyle("A$f:P$f")->getFont()->setName($font); // Tipo de letra
+                        $objWorksheet->getStyle("A$f:P$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                        $objWorksheet->getStyle("A$f:P$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                        $objWorksheet->getStyle("A$f:P$f")->getAlignment()->setWrapText(true);//ajustar texto a la columna
                         $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
                 
@@ -394,16 +394,17 @@ class ReportesJTController extends Controller
                     $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                     $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
                     $objWorksheet->setCellValue('E'.$row, $fecha->fecha);
-                    $objWorksheet->setCellValue('F'.$row, $participante['correo_corporativo']);
-                    $objWorksheet->setCellValue('G'.$row, $acceso);
-                    $objWorksheet->setCellValue('H'.$row, $participante['pais']);
-                    $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
-                    $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
-                    $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
-                    $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
-                    $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
-                    $objWorksheet->setCellValue('N'.$row, $participante['promedio']);
-                    $objWorksheet->setCellValue('O'.$row, $participante['visitas']);
+                    $objWorksheet->setCellValue('F'.$row, $fecha->hora);
+                    $objWorksheet->setCellValue('G'.$row, $participante['correo_corporativo']);
+                    $objWorksheet->setCellValue('H'.$row, $acceso);
+                    $objWorksheet->setCellValue('I'.$row, $participante['pais']);
+                    $objWorksheet->setCellValue('J'.$row, $participante['nivel']);
+                    $objWorksheet->setCellValue('K'.$row, $participante['campo1']);
+                    $objWorksheet->setCellValue('L'.$row, $participante['campo2']);
+                    $objWorksheet->setCellValue('M'.$row, $participante['campo3']);
+                    $objWorksheet->setCellValue('N'.$row, $participante['campo4']);
+                    $objWorksheet->setCellValue('O'.$row, $participante['promedio']);
+                    $objWorksheet->setCellValue('P'.$row, $participante['visitas']);
 
                   
                     $row++;
