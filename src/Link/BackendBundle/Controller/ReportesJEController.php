@@ -274,6 +274,7 @@ class ReportesJEController extends Controller
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fn = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
@@ -287,6 +288,7 @@ class ReportesJEController extends Controller
         $hasta = "$a-$m-$d 23:59:59";
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
@@ -331,11 +333,11 @@ class ReportesJEController extends Controller
                 // Estilizar las celdas antes de un posible merge
                 for ($f=$row; $f<=$limit_row; $f++)
                 {
-                    $objWorksheet->getStyle("A$f:S$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
-                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setSize($font_size); // Tamaño de las letras
-                    $objWorksheet->getStyle("A$f:S$f")->getFont()->setName($font); // Tipo de letra
-                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
-                    $objWorksheet->getStyle("A$f:S$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
+                    $objWorksheet->getStyle("A$f:T$f")->applyFromArray($styleThinBlackBorderOutline); //bordes
+                    $objWorksheet->getStyle("A$f:T$f")->getFont()->setSize($font_size); // Tamaño de las letras
+                    $objWorksheet->getStyle("A$f:T$f")->getFont()->setName($font); // Tipo de letra
+                    $objWorksheet->getStyle("A$f:T$f")->getAlignment()->setHorizontal($horizontal_aligment); // Alineado horizontal
+                    $objWorksheet->getStyle("A$f:T$f")->getAlignment()->setVertical($vertical_aligment); // Alineado vertical
                     $objWorksheet->getRowDimension($f)->setRowHeight(35); // Altura de la fila
                 }
 
@@ -348,31 +350,34 @@ class ReportesJEController extends Controller
                         $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
                     }
                 }
-
+                $fecha_registro = $fn->transformDate($participante['fecha_registro'],$timeZoneEmpresa,$yml);
+                $fecha_inicio = $fn->transformDate($participante['fecha_inicio_programa'],$timeZoneEmpresa,$yml);
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
                 $objWorksheet->setCellValue('C'.$row, $participante['nombre']);
                 $objWorksheet->setCellValue('D'.$row, $participante['apellido']);
-                $objWorksheet->setCellValue('E'.$row, $participante['fecha_registro']);
-                $objWorksheet->setCellValue('F'.$row, $participante['correo']);
-                $objWorksheet->setCellValue('G'.$row, $participante['pais']);
-                $objWorksheet->setCellValue('H'.$row, $participante['nivel']);
-                $objWorksheet->setCellValue('I'.$row, $participante['campo1']);
-                $objWorksheet->setCellValue('J'.$row, $participante['campo2']);
-                $objWorksheet->setCellValue('K'.$row, $participante['campo3']);
-                $objWorksheet->setCellValue('L'.$row, $participante['campo4']);
-                $objWorksheet->setCellValue('M'.$row, $participante['fecha_inicio_programa']);
-                $objWorksheet->setCellValue('N'.$row, $participante['hora_inicio_programa']);
+                $objWorksheet->setCellValue('E'.$row, $fecha_registro->fecha);
+                $objWorksheet->setCellValue('F'.$row, $fecha_registro->hora);
+                $objWorksheet->setCellValue('G'.$row, $participante['correo']);
+                $objWorksheet->setCellValue('H'.$row, $participante['pais']);
+                $objWorksheet->setCellValue('I'.$row, $participante['nivel']);
+                $objWorksheet->setCellValue('J'.$row, $participante['campo1']);
+                $objWorksheet->setCellValue('K'.$row, $participante['campo2']);
+                $objWorksheet->setCellValue('L'.$row, $participante['campo3']);
+                $objWorksheet->setCellValue('M'.$row, $participante['campo4']);
+                $objWorksheet->setCellValue('N'.$row, $fecha_inicio->fecha);
+                $objWorksheet->setCellValue('O'.$row, $fecha_inicio->hora);
 
                 // Datos de las evaluaciones
                 foreach ($participante['evaluaciones'] as $evaluacion)
                 {
-                    $objWorksheet->setCellValue('O'.$row, $evaluacion['evaluacion']);
-                    $objWorksheet->setCellValue('P'.$row, $evaluacion['estado']);
-                    $objWorksheet->setCellValue('Q'.$row, $evaluacion['nota']);
-                    $objWorksheet->setCellValue('R'.$row, $evaluacion['fecha_inicio_prueba']);
-                    $objWorksheet->setCellValue('S'.$row, $evaluacion['hora_inicio_prueba']);
+                    $fecha_evaluacion = $fn->transformDate($evaluacion['fecha_inicio_prueba'],$timeZoneEmpresa,$yml);
+                    $objWorksheet->setCellValue('P'.$row, $evaluacion['evaluacion']);
+                    $objWorksheet->setCellValue('Q'.$row, $evaluacion['estado']);
+                    $objWorksheet->setCellValue('R'.$row, $evaluacion['nota']);
+                    $objWorksheet->setCellValue('S'.$row, $fecha_evaluacion->fecha);
+                    $objWorksheet->setCellValue('T'.$row, $fecha_evaluacion->hora);
                     $row++;
                 }
 
