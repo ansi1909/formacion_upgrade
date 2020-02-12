@@ -483,6 +483,7 @@ class ReportesJTController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fun = $this->get('funciones');
 
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
@@ -527,10 +528,13 @@ class ReportesJTController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fn = $this->get('funciones');
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $empresa_id = $request->request->get('empresa_id');
         $login = $request->request->get('username');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
 
         // Condiciones iniciales
         $data_found = 0;
@@ -546,6 +550,12 @@ class ReportesJTController extends Controller
             $data_found = 1;
             $nivel_id = $usuario->getNivel() ? $usuario->getNivel()->getId() : 0;
             $reporte = $rs->detalleParticipanteProgramas($usuario->getId(), $empresa_id, $nivel_id, $yml);
+            //tomar los valores devueltos por la consulta, transformarlos segun la zona horaria y actualizarlos en el array 
+            $primeraConexion = $fn->transformDate($reporte['ingresos']['primeraConexion'],$timeZoneEmpresa,$yml);
+            $ultimaConexion = $fn->transformDate($reporte['ingresos']['ultimaConexion'],$timeZoneEmpresa,$yml);
+            $reporte['ingresos']['primeraConexion'] = $primeraConexion->fecha.' '.$primeraConexion->hora;
+            $reporte['ingresos']['ultimaConexion'] = $ultimaConexion->fecha.' '.$ultimaConexion->hora;
+
 
             $dataUsuario = array('foto' => trim($usuario->getFoto()) ? trim($usuario->getFoto()) : 0,
                                  'login' => $usuario->getLogin(),
