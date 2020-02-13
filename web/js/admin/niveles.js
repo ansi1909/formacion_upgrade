@@ -39,6 +39,8 @@ $(document).ready(function() {
            success: function(data){
                 enableSubmit();
                $('#nombre').val(data.nombre);
+               $('#fechaInicio').val(data.fechaInicio);
+               $('#fechaFin').val(data.fechaFin);
            },
            error: function(){
                $('#alert-error').html($('#error_msg-edit').val());

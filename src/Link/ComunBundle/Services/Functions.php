@@ -781,7 +781,7 @@ class Functions
         
         foreach ($pages as $page)
         {
-
+			
         	$subpaginas = $this->subPaginas($page->getId());
 
             $paginas[] = array('id' => $page->getId(),

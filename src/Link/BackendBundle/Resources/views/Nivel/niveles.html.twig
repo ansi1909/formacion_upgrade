@@ -1,5 +1,10 @@
 {% extends '::admin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.css') }}" type="text/css">
+{% endblock %}
+
 {% block body %}
 <input type="hidden" id="url_edit" name="url_edit" value="{{ path('_ajaxEditNivel') }}">
 <input type="hidden" id="url_list" name="url_list" value="{{ path('_niveles',{ 'empresa_id': empresa.id }) }}">
@@ -62,6 +67,16 @@
             <input type="text" class="form-control form_sty_modal" id="nombre" name="nombre" value="">
             <span class="fa fa-cube"></span>
         </div>
+        <div class="form-group">
+            <label for="inicio" class="form-control-label">{{ 'Fecha inicio'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal date_picker" id="fechaInicio" name="fechaInicio" value="">
+            <span class="fa fa-cube"></span>
+        </div>
+        <div class="form-group">
+            <label for="vencimiento" class="form-control-label">{{ 'Fecha fin'|trans }}:</label>
+            <input type="text" class="form-control form_sty_modal date_picker" id="fechaFin" name="fechaFin" value="">
+            <span class="fa fa-cube"></span>
+        </div>
     </form>
     <div class="alert alert-success" role="alert" id="alert-success" style="display:none;"> 
         <strong>{{ 'Bien hecho'|trans }}!</strong> {{ 'El nivel ha sido almacenado con éxito'|trans }}. 
@@ -98,20 +113,41 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('jq/jquery-validation-1.15.0/dist/jquery.validate.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.es.min.js') }}" charset="UTF-8"></script>
     <script type="text/javascript" src="{{ asset('js/admin/niveles.js') }}"></script>
     <script type="text/javascript">
+
+        $(".date_picker").datepicker({
+            startView: 1,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'es'
+        });
 
         $("#form").validate({
             rules: {
                 'nombre': {
                     required: true,
                     minlength: 3
+                },
+                'fechaInicio': {
+                    required: true
+                },
+                'fechaFin': {
+                    required: true
                 }
             },
             messages: {
                 'nombre': {
                     required: "{{ 'Este campo es requerido.'|trans }}",
                     minlength: "{{ 'Debe ser mínimo de 3 caracteres.'|trans }}"
+                },
+                'fechaInicio': {
+                    required: "{{ 'Este campo es requerido.'|trans }}"
+                },
+                'fechaFin': {
+                    required: "{{ 'Este campo es requerido.'|trans }}"
                 }
             }
         });
