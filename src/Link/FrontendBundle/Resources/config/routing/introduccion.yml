@@ -1,0 +1,5 @@
+_ajaxCambiarEstado:
+    path:     /ajaxCambiarEstado
+    defaults: { _controller: LinkFrontendBundle:Introduccion:cambiarEstado}
+    requirements:
+        _method: POST
