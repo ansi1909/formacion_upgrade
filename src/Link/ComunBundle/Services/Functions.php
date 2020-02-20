@@ -3579,7 +3579,7 @@ class Functions
 
 
        
-  public function ExcelMails($mails,$encabezado,$pex,$yml,$sufijo){
+    public function ExcelMails($mails,$encabezado,$pex,$yml,$sufijo){
         $em = $this->em;
         $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/correosFallidos.xlsx';
         $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
@@ -3623,22 +3623,32 @@ class Functions
         $return = array('archivo' => $archivo,
                         'document_name' => $document_name,
                         'document_size' => $document_size);
-
         return $return;
         
     }
 
-    public function transformDate($dateDbfn,$timeZone,$yml,$am_pm=true){
-        $hrs = ($am_pm)? 'g:i a':'H:i';
-        $dateUtc = new \DateTime(date('d-m-Y '.$hrs,strtotime($dateDbfn)),new \DateTimeZone($yml['parameters']['time_zone']['utc']));
-        if($timeZone!=$yml['parameters']['time_zone']['utc']){
-            $dateUtc->setTimeZone(new \DateTimeZone($timeZone));
-        }
-        $date = $dateUtc->format('d/m/Y '.$hrs);
+    public function converDate($date,$initialTimeZone,$finalTimeZone,$reportDate=true){
+        $format = ($reportDate)? 'd/m/Y g:i a':'Y-m-d H:i:s';
+        $date = new \DateTime(date('Y-m-d H:i:s',strtotime($date)),new \DateTimeZone($initialTimeZone));
+        $date->setTimeZone(new \DateTimeZone($finalTimeZone));
+        $date = $date->format($format);
         $date = explode(" ",$date);
-        $return =($am_pm)? (object)array('fecha'=>$date[0],'hora'=>$date[1].$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
+        $return = ($reportDate)? (object)array('fecha'=>$date[0],'hora'=>$date[1].$date[2]):(object)array('fecha'=>$date[0],'hora'=>$date[1]);
         return $return;
     }
-   
+    
+    public function clearNameTimeZone($timeZone,$pais,$yml){
+        if ($timeZone!=$yml['parameters']['time_zone']['utc']) {
+            $nameArray = explode($yml['parameters']['time_zone']['name_separator'],$timeZone);
+            $lengthArray = count($nameArray);
+            $zone = str_replace("_"," ",$nameArray[$lengthArray-1]);
+            return ($zone == $pais)? $zone:$zone.', '.$pais.'.';
+        }else{
+            return $timeZone.'.';
+        }
+       
+    }
+
+
 
 }

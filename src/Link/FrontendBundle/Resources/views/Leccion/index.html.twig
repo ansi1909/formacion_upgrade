@@ -1,257 +1,334 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
-
 {% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .menu{
-            width: 60%;
-            height: 300px;
-        }
-    </style>
+{{ parent() }}
+<style>
+   .menu{
+   width: 60%;
+   height: 300px;
+   }
+</style>
 {% endblock %}
-
 {% block clbody %}
-    lesson-body
+lesson-body
 {% endblock %}
-
 {% block header %}
-    <nav class="navbar justify-content-between py-0 fixed-top bg-white">
-        <div class="logo d-sm-block d-md-block">
-            <a class="navbar-brand" href="{{ path('_inicio') }}">
-                {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
-                <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
+<nav class="navbar justify-content-between py-0 fixed-top bg-white">
+   <div class="logo d-sm-block d-md-block">
+      <a class="navbar-brand" href="{{ path('_inicio') }}">
+      {% set img_logo = app.session.get('empresa').logo is defined ? app.session.get('empresa').logo is not null and app.session.get('empresa').logo != '' ? uploads~app.session.get('empresa').logo : asset('front/assets/img/logo_formacion_smart.png') : asset('front/assets/img/logo_formacion_smart.png') %}
+      <img class="img-fluid py-1 {{ app.session.get('empresa').tipo_logo }}" src="{{ img_logo }}" alt="logo formación smart">
+      </a>
+   </div>
+   <div class="wraper-title-lesson d-flex flex-column align-items-center">
+      <h4 class="my-1 color-grey" >{{ titulo }} </h4>
+      <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
+   </div>
+   <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+      {% set display = lecciones.muro_activo ? '' : 'display:none;' %}
+      {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
+      <div class="d-flex flex-column">
+         <div class="wrapperDdMenu" title="{{ 'Perfil del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
+            <a href="#" class="perfil no-decorate" id="config">
+            {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
+            <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
             </a>
-        </div>
-        <div class="wraper-title-lesson d-flex flex-column align-items-center">
-            <h4 class="my-1 color-grey" >{{ titulo }} </h4>
-            <h6 class="mt-0 color-grey" >{{ subtitulo }}</h6>
-        </div>
-        <div class="navbar-brand d-flex justify-content-center align-items-center" href="#">
-            {% set display = lecciones.muro_activo ? '' : 'display:none;' %}
-            <a id="iconComments" href="javascript:void(0)" title="" data-toggle="tooltip" data-original-title="Muro" data-placement="bottom"  style="{{ display }}"  >
-                <i class="material-icons mx-3 color-light-grey">comment</i>
-            </a>
-            {{ include('LinkFrontendBundle:Default:notificaciones.html.twig') }}
-            <div class="d-flex flex-column">
-                <div class="wrapperDdMenu" title="{{ 'Perfil del participante'|trans }}" data-toggle="tooltip" data-placement="bottom">
-                    <a href="#" class="perfil no-decorate" id="config">
-                        {% set img = app.session.get('usuario').foto is defined ? app.session.get('usuario').foto is not null and app.session.get('usuario').foto != '' ? uploads~app.session.get('usuario').foto : asset('front/assets/img/user.svg') : asset('front/assets/img/user.svg') %}
-                        <img class="img-fluid mx-auto avatar-img" src="{{ img }}" alt="usuario"><span class="material-icons color-light-grey icDown">expand_more</span>
-                    </a>
-                    <ul class="dropDownMenu">
-                        <li class="mark"></li>
-                        <a href="{{ path('_usuariop') }}">
-                            <li class="opcList">
-                                <span>{{ 'Perfil del participante'|trans }} <i class="material-icons icMenu">style</i></span>
-                            </li>
-                        </a>
-                        <a href="#" data-toggle="modal" data-target="#modalCs">
-                            <li class="opcList markOpc">
-                                <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
-                            </li>
-                        </a>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+            <ul class="dropDownMenu">
+               <li class="mark"></li>
+               <a href="{{ path('_usuariop') }}">
+                  <li class="opcList">
+                     <span>{{ 'Perfil del participante'|trans }} <i class="material-icons icMenu">style</i></span>
+                  </li>
+               </a>
+               <a href="#" data-toggle="modal" data-target="#modalCs">
+                  <li class="opcList markOpc">
+                     <span>{{ 'Cerrar sesión'|trans }}<i class="material-icons icMenu">exit_to_app</i></span>
+                  </li>
+               </a>
+            </ul>
+         </div>
+      </div>
+   </div>
+</nav>
 {% endblock %}
-
 {% block sidemenu %}
-    {{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina_id, 'active': 'lecciones' })) }}
+{{ render(controller('LinkFrontendBundle:Leccion:menu', { 'programa_id': programa.id, 'subpagina_id': subpagina_id, 'active': 'lecciones' })) }}
 {% endblock %}
-
 {% block bg %}
-    bg-white
+bg-white
 {% endblock %}
-
 {% block body %}
-
-    <input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
-    <input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
-    <input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
-    <input type="hidden" id="pagina_id_viendo" name="pagina_id_viendo" value="{{ wizard ? lecciones.subpaginas[0].id : lecciones.id }}">
-    <input type="hidden" id="wizard" name="wizard" value="{{ wizard and lecciones.subpaginas|length > 1 ? '1' : '0' }}">
-    <input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id }) }}">
-    <input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}">
-    <input type="hidden" id="url_procesar" name="url_procesar" value="{{ path('_ajaxProcesarPagina') }}">
-    <input type="hidden" id="url_iniciar" name="url_iniciar" value="{{ path('_ajaxIniciarPagina') }}">
-    <input type="hidden" id="url_response" name="url_response" value="{{ path('_ajaxDivResponse') }}">
-    <input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
-    <input type="hidden" id="url_refresh" name="url_refresh" value="{{ path('_ajaxRefreshMuro') }}">
-    <input type="hidden" id="url_more" name="url_more" value="{{ path('_ajaxMasMuro') }}">
-    <input type="hidden" id="puntos_agregados" name="puntos_agregados" value="{{ puntos }}">
-    <input type="hidden" id="prefix" name="prefix" value="recientes">
-    {% if wizard and lecciones.subpaginas|length > 1 %}
-        <input type="hidden" id="tab_activo" name="tab_activo" value="one-tab">
-        {# NAVEGACION LECCION #}
-        {# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
-        <div class="wraper-nav-less" id="wraperNavLess">
-            <h4 class="text-center mt-4 mb-0 color-grey">{{ 'Lecciones'|trans }}</h4>
-            <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
-            <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
-            <div class=" nav-less-container text-center lesson-nav py-0 mb-1 mt-0" id="NavLess">
-                <ul class="nav nav-tabs" id="navlesson" role="tablist">
-                    {% for subpagina in lecciones.subpaginas %}
-                        <input type="hidden" id="muroActivo{{ subpagina.id }}" name="muroActivo{{ subpagina.id }}" value="{{ subpagina.muro_activo ? '1' : '0' }}">
-                        {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
-                        {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
-                        <li class="nav-item">
-                            <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data="{{ subpagina.id }}" data-tooltip="{{ subpagina.nombre }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
-                            <span class="tooltip-titulo">{{ subpagina.nombre }}</span>
-                        </li>
-                    {% endfor %}
-                </ul>
+<input type="hidden" id="usuario_id" name="usuario_id" value="{{ app.session.get('usuario').id }}">
+<input type="hidden" id="programa_id" name="programa_id" value="{{ programa.id }}">
+<input type="hidden" id="subpagina_id" name="subpagina_id" value="{{ subpagina_id }}">
+<input type="hidden" id="pagina_id_viendo" name="pagina_id_viendo" value="{{ wizard ? lecciones.subpaginas[0].id : lecciones.id }}">
+<input type="hidden" id="wizard" name="wizard" value="{{ wizard and lecciones.subpaginas|length > 1 ? '1' : '0' }}">
+<input type="hidden" id="url_next" name="url_next" value="{{ path('_lecciones', { 'programa_id': programa.id }) }}">
+<input type="hidden" id="url_fin" name="url_fin" value="{{ path('_finLecciones', { 'programa_id': programa.id, 'subpagina_id': lecciones.id }) }}">
+<input type="hidden" id="url_procesar" name="url_procesar" value="{{ path('_ajaxProcesarPagina') }}">
+<input type="hidden" id="url_iniciar" name="url_iniciar" value="{{ path('_ajaxIniciarPagina') }}">
+<input type="hidden" id="url_response" name="url_response" value="{{ path('_ajaxDivResponse') }}">
+<input type="hidden" id="url_like" name="url_like" value="{{ path('_ajaxLike') }}">
+<input type="hidden" id="url_refresh" name="url_refresh" value="{{ path('_ajaxRefreshMuro') }}">
+<input type="hidden" id="url_more" name="url_more" value="{{ path('_ajaxMasMuro') }}">
+<input type="hidden" id="puntos_agregados" name="puntos_agregados" value="{{ puntos }}">
+<input type="hidden" id="prefix" name="prefix" value="recientes">
+<input type="hidden" id="ver_comentarios" name="ver_comentarios" value="{{'Ver Comentarios' |trans}}">
+{% if wizard and lecciones.subpaginas|length > 1 %}
+<input type="hidden" id="tab_activo" name="tab_activo" value="one-tab">
+{# NAVEGACION LECCION #}
+{# La clase .circle-less-viendo es por donde va el usuario y coloca el scroll en esa posicion con el JS ScrollTo #}
+<div class="wraper-nav-less" id="wraperNavLess">
+   <h4 class="text-center mt-4 mb-0 color-grey">{{ 'Lecciones'|trans }}</h4>
+   <div  name="button" class="btn-lessons" id="btnLessLeft"><i class="material-icons">keyboard_arrow_left</i></div>
+   <div  name="button" class="btn-lessons" id="btnLessRight"><i class="material-icons">keyboard_arrow_right</i></div>
+   <div class=" nav-less-container text-center lesson-nav py-0 mb-1 mt-0" id="NavLess">
+      <ul class="nav nav-tabs" id="navlesson" role="tablist">
+         {% for subpagina in lecciones.subpaginas %}
+         <input type="hidden" id="muroActivo{{ subpagina.id }}" name="muroActivo{{ subpagina.id }}" value="{{ subpagina.muro_activo ? '1' : '0' }}">
+         {% set vista = subpagina.vista ? ' circle-less-vista' : '' %}
+         {% set disabled = subpagina.bloqueada ? ' less-disabled' : '' %}
+         <li class="nav-item">
+            <a class="circle-nav {{ vista~disabled }} tab-{{ loop.index }}" id="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}" data="{{ subpagina.id }}" data-tooltip="{{ subpagina.nombre }}" data-toggle="tab" href="#href-{{ subpagina.id }}" role="tab" aria-controls="href-{{ subpagina.id }}" aria-selected="{{ loop.index==1 ? 'true' : 'false' }}">{{ loop.index }}</a>
+            <span class="tooltip-titulo">{{ subpagina.nombre }}</span>
+         </li>
+         {% endfor %}
+      </ul>
+   </div>
+</div>
+{% endif %}
+{# CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL CK-EDITOR #}
+<div class="tab-content" id="myTabContent">
+   {% if not wizard %}
+   <input type="hidden" id="muroActivo{{ lecciones.id }}" name="muroActivo{{ lecciones.id }}" value="{{ lecciones.muro_activo ? '1' : '0' }}">
+   <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
+      <div class="lesson-container container py-4 text-center">
+         <h2>{{ lecciones.nombre }}</h2>
+         {% if lecciones.foto %}
+         {% set img = uploads~lecciones.foto %}
+         <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
+         {% endif %}
+         {{ lecciones.contenido|raw }}
+         {% if lecciones.pdf != '' %}
+         {% set pdf = uploads~lecciones.pdf %}
+         <div class="row justify-content-center">
+            <div class="col-auto text-center">
+               <a href="{{ pdf }}" target="_blank">
+                  <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
+                  <div class="tooltipN">
+                     <div class="tiparrow"></div>
+                     <p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p>
+                  </div>
+               </a>
             </div>
-        </div>
-    {% endif %}
-
-    {# CONTENIDO DE LA LECCION ESTILOS Y ESTRUCTURA PARA EL CK-EDITOR #}
-    <div class="tab-content" id="myTabContent">
-        {% if not wizard %}
-            <input type="hidden" id="muroActivo{{ lecciones.id }}" name="muroActivo{{ lecciones.id }}" value="{{ lecciones.muro_activo ? '1' : '0' }}">
-            <div class="tab-pane fade show active" id="unico" role="tabpanel" aria-labelledby="one-tab">
-                <div class="lesson-container container py-4 text-center">
-                    <h2>{{ lecciones.nombre }}</h2>
-                    {% if lecciones.foto %}
-                        {% set img = uploads~lecciones.foto %}
-                        <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
-                    {% endif %}
-                    {{ lecciones.contenido|raw }}
-                    {% if lecciones.pdf != '' %}
-                        {% set pdf = uploads~lecciones.pdf %}
-                        <div class="row justify-content-center">
-                            <div class="col-auto text-center">
-                                <a href="{{ pdf }}" target="_blank">
-                                    <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
-                                    <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p></div>
-                                </a>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-                <nav class="container text-center">
-                    <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ 'Continuar'|trans }}</div>
-                </nav>
+         </div>
+         {% endif %}
+      </div>
+      <nav class="container text-center">
+         <div class="btn-primary btn" id="next_subpage" data="{{ programa.id }}-{{ lecciones.id }}-{{ lecciones.next_subpage }}">{{ 'Continuar'|trans }}</div>
+      </nav>
+   </div>
+   {% else %}
+   {% for subpagina in lecciones.subpaginas %}
+   <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}">
+      <div class="lesson-container container py-4 text-center">
+         <h2>{{ subpagina.nombre }}</h2>
+         {% if subpagina.foto %}
+         {% set img = uploads~subpagina.foto %}
+         <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
+         {% endif %}
+         {{ subpagina.contenido|raw }}
+         {% if subpagina.pdf != '' %}
+         {% set pdf = uploads~subpagina.pdf %}
+         <div class="row justify-content-center">
+            <div class="col-auto text-center mt-4">
+               <a href="{{ pdf }}" target="_blank">
+                  <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
+                  <div class="tooltipN">
+                     <div class="tiparrow"></div>
+                     <p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p>
+                  </div>
+               </a>
             </div>
-        {% else %}
-            {% for subpagina in lecciones.subpaginas %}
-                <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="href-{{ subpagina.id }}" role="tabpanel" aria-labelledby="{% if loop.index==1 %}one-tab{% else %}tab-{{ subpagina.id }}{% endif %}">
-                    <div class="lesson-container container py-4 text-center">
-                        <h2>{{ subpagina.nombre }}</h2>
-                        {% if subpagina.foto %}
-                            {% set img = uploads~subpagina.foto %}
-                            <img src="{{ img }}" alt="" class="img-fluid my-5 rounded">
-                        {% endif %}
-                        {{ subpagina.contenido|raw }}
-                        {% if subpagina.pdf != '' %}
-                            {% set pdf = uploads~subpagina.pdf %}
-                            <div class="row justify-content-center">
-                                <div class="col-auto text-center mt-4">
-                                    <a href="{{ pdf }}" target="_blank">
-                                        <button type="button" class="btn btn-primary bttnDownl"><i class="material-icons">cloud_download</i></button>
-                                        <div class="tooltipN"><div class="tiparrow"></div><p class="textTooltip">{{ 'Descargue material complementario'|trans }}</p></div>
-                                    </a>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <nav class="container text-center">
-                        {% set last = loop.last ? 1 : 0 %}
-                        {% if not loop.first %}
-                            <div class="btn-warning btn before_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Anterior'|trans }}</div>
-                        {% endif %}
-                        <div class="btn-primary btn next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Continuar'|trans }}</div>
-                    </nav>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
-    <div class="row justify-content-center" style="display:none;" id="wait">
-        <div class="col-auto px-0 py-0">
-            <div class="contenedor">
-                <div class="radar"></div>
-            </div>
-        </div>
-    </div>
-
-{% endblock %}
-
-{% block comments %}
-
-    <div id="comments" class="px-3 pt-3"  >
-        <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
-        <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
+         </div>
+         {% endif %}
+      </div>
+      <nav class="container text-center">
+         {% set last = loop.last ? 1 : 0 %}
+         {% if not loop.first %}
+         <div class="btn-warning btn before_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Anterior'|trans }}</div>
+         {% endif %}
+         <div class="btn-primary btn next_lesson" data="{{ programa.id }}-{{ subpagina.id }}-{{ loop.index }}-{{ last }}">{{ 'Continuar'|trans }}</div>
+      </nav>
+   </div>
+   {% endfor %}
+   {% endif %}
+</div>
+{% if lecciones.muro_activo %}
+<div class="row justify-content-center my-6">
+   <div class="col-8 d-flex justify-content-between border-top pt-4"  id="div-botones">
+      <a  id="iconComments" href="" class="mr-0 links iconComments d-flex align-items-center text-md">
+      <i class="material-icons mr-1 ml-4 flip-hor color-light-grey">speaker_notes</i> 
+      <span id="ocultarComent" style="display: none;">{{ 'Ocultar'|trans }} </span> 
+      <span id="verComent">{{ 'Ver Comentarios'|trans }}</span>
+      </a>
+      <a href=""  class=" iconComments links d-flex align-items-center text-md">
+      <i style="width: 30px;" class="material-icons color-light-grey">comments</i> 
+      {{ 'Contestar'|trans }}
+      </a>
+   </div>
+</div>
+{% endif %}
+<!-- COMENTARIOS -->
+{# COMENTARIOS #}
+<div class="row ml-5 justify-content-center">
+   <div class="col-11" style="background-color: #F7FAFC;">
+      <div id="comments" >
+         <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
             <div class="form-group">
-                <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="1000" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
+               <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="1000" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
             </div>
-            <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-comment">{{ 'Comentar'|trans }}</button>
-        </form>
-        <div class="tab mt-6 d-flex justify-content-around text-xs ">
-            <a href="#" class="active-line color-light-grey mt-3 tab_rv" id="mas_recientes">{{ 'Más recientes'|trans }}</a>
-            <a href="#" class="color-light-grey mt-3 tab_rv" id="mas_valorados">{{ 'Más valorados'|trans }} </a>
-        </div>
-
-        {% if not wizard %}
-            <input type="hidden" id="dirty_{{ lecciones.id }}" name="dirty_{{ lecciones.id }}" value="0">
-            <div id="mas_recientes_comments-{{ lecciones.id }}">
-                {% set total_comentarios = lecciones.muros_recientes.total_comentarios %}
-                {% set total_muro = lecciones.muros_recientes.muros|length %}
-                {% for muro in lecciones.muros_recientes.muros %}
-                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
-                {% endfor %}
-                {% if total_comentarios > total_muro %}
-                    <input type="hidden" id="more_comments_recientes-{{ lecciones.id }}" name="more_comments_recientes-{{ lecciones.id }}" value="0">
-                    <a href="#" class="links text-center d-block more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
-                {% endif %}
-            </div>
-            <div id="mas_valorados_comments-{{ lecciones.id }}" style="display:none;">
-                {% set total_comentarios = lecciones.muros_valorados.total_comentarios %}
-                {% set total_muro = lecciones.muros_valorados.muros|length %}
-                {% for muro in lecciones.muros_valorados.muros %}
-                    {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
-                {% endfor %}
-                {% if total_comentarios > total_muro %}
-                    <input type="hidden" id="more_comments_valorados-{{ lecciones.id }}" name="more_comments_valorados-{{ lecciones.id }}" value="0">
-                    <a href="#" class="links text-center d-block more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
-                {% endif %}
-            </div>
-        {% else %}
-            {% for subpagina in lecciones.subpaginas %}
-                <input type="hidden" id="dirty_{{ subpagina.id }}" name="dirty_{{ subpagina.id }}" value="0">
-                <div id="mas_recientes_comments-{{ subpagina.id }}" {{ loop.index==1 ? '' : 'style="display:none;"' }}>
-                    {% set total_comentarios = subpagina.muros_recientes.total_comentarios %}
-                    {% set total_muro = subpagina.muros_recientes.muros|length %}
-                    {% for muro in subpagina.muros_recientes.muros %}
-                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
-                    {% endfor %}
-                    {% if total_comentarios > total_muro %}
-                        <input type="hidden" id="more_comments_recientes-{{ subpagina.id }}" name="more_comments_recientes-{{ subpagina.id }}" value="0">
-                        <a href="#" class="links text-center d-block more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
-                    {% endif %}
-                </div>
-                <div id="mas_valorados_comments-{{ subpagina.id }}" style="display:none;">
-                    {% set total_comentarios = subpagina.muros_valorados.total_comentarios %}
-                    {% set total_muro = subpagina.muros_valorados.muros|length %}
-                    {% for muro in subpagina.muros_valorados.muros %}
-                        {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
-                    {% endfor %}
-                    {% if total_comentarios > total_muro %}
-                        <input type="hidden" id="more_comments_valorados-{{ subpagina.id }}" name="more_comments_valorados-{{ subpagina.id }}" value="0">
-                        <a href="#" class="links text-center d-block more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
-                    {% endif %}
-                </div>
+            <button type="button" name="button" class="btn btn-sm btn-primary float-right mt-4" id="button-comment">{{ 'Comentar'|trans }}</button>
+         </form>
+         <div class="tab mt-6 d-flex justify-content-center ">
+            <a href="#" class="active-line color-light-grey mt-3  mx-4 tab_rv" id="mas_recientes">{{ 'Más recientes'|trans }} </a>
+            <a href="#" class="color-light-grey mt-3 mx-4 tab_rv" id="mas_valorados">{{ 'Más valorados'|trans }}</a>
+         </div>
+         {% if not wizard %}
+         <input type="hidden" id="dirty_{{ lecciones.id }}" name="dirty_{{ lecciones.id }}" value="0">
+         <div id="mas_recientes_comments-{{ lecciones.id }}">
+            {% set total_comentarios = lecciones.muros_recientes.total_comentarios %}
+            {% set total_muro = lecciones.muros_recientes.muros|length %}
+            {% for muro in lecciones.muros_recientes.muros %}
+            {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
             {% endfor %}
-        {% endif %}
+            {% if total_comentarios > total_muro %}
+                <input type="hidden" id="more_comments_recientes-{{ lecciones.id }}" name="more_comments_recientes-{{ lecciones.id }}" value="0">
+                <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
+            {% endif %}
+         </div>
+         <div id="mas_valorados_comments-{{ lecciones.id }}" style="display:none;">
+            {% set total_comentarios = lecciones.muros_valorados.total_comentarios %}
+            {% set total_muro = lecciones.muros_valorados.muros|length %}
+            {% for muro in lecciones.muros_valorados.muros %}
+            {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
+            {% endfor %}
+            {% if total_comentarios > total_muro %}
+            <input type="hidden" id="more_comments_valorados-{{ lecciones.id }}" name="more_comments_valorados-{{ lecciones.id }}" value="0">
+            <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
+            {% endif %}
+         </div>
+         {% else %}
+         {% for subpagina in lecciones.subpaginas %}
+         <input type="hidden" id="dirty_{{ subpagina.id }}" name="dirty_{{ subpagina.id }}" value="0">
+         <div id="mas_recientes_comments-{{ subpagina.id }}" {{ loop.index==1 ? '' : 'style="display:none;"' }}>
+         {% set total_comentarios = subpagina.muros_recientes.total_comentarios %}
+         {% set total_muro = subpagina.muros_recientes.muros|length %}
+         {% for muro in subpagina.muros_recientes.muros %}
+         {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
+         {% endfor %}
+         {% if total_comentarios > total_muro %}
+         <input type="hidden" id="more_comments_recientes-{{ subpagina.id }}" name="more_comments_recientes-{{ subpagina.id }}" value="0">
+         <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
+         {% endif %}
+      </div>
+      <div id="mas_valorados_comments-{{ subpagina.id }}" style="display:none;">
+         {% set total_comentarios = subpagina.muros_valorados.total_comentarios %}
+         {% set total_muro = subpagina.muros_valorados.muros|length %}
+         {% for muro in subpagina.muros_valorados.muros %}
+         {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
+         {% endfor %}
+         {% if total_comentarios > total_muro %}
+         <input type="hidden" id="more_comments_valorados-{{ subpagina.id }}" name="more_comments_valorados-{{ subpagina.id }}" value="0">
+         <a href="#" class="links text-center d-block more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
+         {% endif %}
+      </div>
+      {% endfor %}
+      {% endif %}
 
-    </div>
-
+   </div>
+</div>
+</div>
+<!-- COMENTARIOS -->
+<div class="row justify-content-center" style="display:none;" id="wait">
+   <div class="col-auto px-0 py-0">
+      <div class="contenedor">
+         <div class="radar"></div>
+      </div>
+   </div>
+</div>
 {% endblock %}
-
+{% block comments %}
+<!-- 
+   <div id="comments" class="px-3 pt-3"  >
+       <h5 class="color-grey text-center">{{ 'Comentarios'|trans }}</h5>
+       <form class="mt-4 mb-6" id="form-comment" method="POST" action="{{ path('_ajaxEnviarComentario') }}">
+           <div class="form-group">
+               <textarea class="form-control" id="comentario" name="comentario" rows="3" maxlength="1000" placeholder="{{ 'Escriba su comentario'|trans }}..."></textarea>
+           </div>
+           <button type="button" name="button" class="btn btn-sm btn-primary float-right" id="button-comment">{{ 'Comentar'|trans }}</button>
+       </form>
+       <div class="tab mt-6 d-flex justify-content-around text-xs ">
+           <a href="#" class="active-line color-light-grey mt-3 tab_rv" id="mas_recientes">{{ 'Más recientes'|trans }}</a>
+           <a href="#" class="color-light-grey mt-3 tab_rv" id="mas_valorados">{{ 'Más valorados'|trans }} </a>
+       </div>
+   
+       {% if not wizard %}
+           <input type="hidden" id="dirty_{{ lecciones.id }}" name="dirty_{{ lecciones.id }}" value="0">
+           <div id="mas_recientes_comments-{{ lecciones.id }}">
+               {% set total_comentarios = lecciones.muros_recientes.total_comentarios %}
+               {% set total_muro = lecciones.muros_recientes.muros|length %}
+               {% for muro in lecciones.muros_recientes.muros %}
+                   {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
+               {% endfor %}
+               {% if total_comentarios > total_muro %}
+                   <input type="hidden" id="more_comments_recientes-{{ lecciones.id }}" name="more_comments_recientes-{{ lecciones.id }}" value="0">
+                   <a href="#" class="links text-center d-block more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
+               {% endif %}
+           </div>
+           <div id="mas_valorados_comments-{{ lecciones.id }}" style="display:none;">
+               {% set total_comentarios = lecciones.muros_valorados.total_comentarios %}
+               {% set total_muro = lecciones.muros_valorados.muros|length %}
+               {% for muro in lecciones.muros_valorados.muros %}
+                   {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
+               {% endfor %}
+               {% if total_comentarios > total_muro %}
+                   <input type="hidden" id="more_comments_valorados-{{ lecciones.id }}" name="more_comments_valorados-{{ lecciones.id }}" value="0">
+                   <a href="#" class="links text-center d-block more_comments" data="{{ lecciones.id }}">{{ 'Ver más comentarios'|trans }}</a>
+               {% endif %}
+           </div>
+       {% else %}
+           {% for subpagina in lecciones.subpaginas %}
+               <input type="hidden" id="dirty_{{ subpagina.id }}" name="dirty_{{ subpagina.id }}" value="0">
+               <div id="mas_recientes_comments-{{ subpagina.id }}" {{ loop.index==1 ? '' : 'style="display:none;"' }}>
+                   {% set total_comentarios = subpagina.muros_recientes.total_comentarios %}
+                   {% set total_muro = subpagina.muros_recientes.muros|length %}
+                   {% for muro in subpagina.muros_recientes.muros %}
+                       {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'recientes' }) }}
+                   {% endfor %}
+                   {% if total_comentarios > total_muro %}
+                       <input type="hidden" id="more_comments_recientes-{{ subpagina.id }}" name="more_comments_recientes-{{ subpagina.id }}" value="0">
+                       <a href="#" class="links text-center d-block more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                   {% endif %}
+               </div>
+               <div id="mas_valorados_comments-{{ subpagina.id }}" style="display:none;">
+                   {% set total_comentarios = subpagina.muros_valorados.total_comentarios %}
+                   {% set total_muro = subpagina.muros_valorados.muros|length %}
+                   {% for muro in subpagina.muros_valorados.muros %}
+                       {{ include('LinkFrontendBundle:Leccion:muro.html.twig', { 'muro': muro, 'prefix': 'valorados' }) }}
+                   {% endfor %}
+                   {% if total_comentarios > total_muro %}
+                       <input type="hidden" id="more_comments_valorados-{{ subpagina.id }}" name="more_comments_valorados-{{ subpagina.id }}" value="0">
+                       <a href="#" class="links text-center d-block more_comments" data="{{ subpagina.id }}">{{ 'Ver más comentarios'|trans }}</a>
+                   {% endif %}
+               </div>
+           {% endfor %}
+       {% endif %} -->
+</div>
+{% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
-    <script src="{{ asset('front/js/jquery.scrollTo.min.js') }}" charset="utf-8"></script>
-    <script src="{{ asset('front/js/navLecciones.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/front/lecciones.js') }}"></script>
+{{ parent() }}
+<script src="{{ asset('front/js/popper.min.js') }}" charset="utf-8"></script>
+<script src="{{ asset('front/js/jquery.scrollTo.min.js') }}" charset="utf-8"></script>
+<script src="{{ asset('front/js/navLecciones.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/front/lecciones.js') }}"></script>
 {% endblock %}

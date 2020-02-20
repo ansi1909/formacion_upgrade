@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Link\ComunBundle\Entity\AdminSesion;
+use Link\ComunBundle\Entity\AdminEmpresa;
+use Link\ComunBundle\Entity\AdminPais;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Yaml\Yaml;
 use Spipu\Html2Pdf\Html2Pdf;
@@ -19,6 +21,7 @@ class ReportesJEController extends Controller
         
         $session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('ini') || $f->sesionBloqueda($session->get('sesion_id')))
         {
@@ -44,6 +47,7 @@ class ReportesJEController extends Controller
                                                                                                     array('nombre' => 'ASC'));
         }
 
+
         return $this->render('LinkBackendBundle:Reportes:horasConexion.html.twig', array('usuario' => $usuario,
                                                                                          'empresas' => $empresas));
 
@@ -56,19 +60,28 @@ class ReportesJEController extends Controller
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
         $fun = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         $empresa_id = $request->request->get('empresa_id');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneEmpresaView = ($timeZoneEmpresa != $yml['parameters']['time_zone']['utc'])? $fun->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml):$timeZoneEmpresa;
+
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
         $excel = $request->request->get('excel');
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
+        $desdeUtc = $fun->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
 
         list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
+        $hastaUtc = $fun->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
-        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta);
+        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta, $yml);
         $conexiones = $reporte['conexiones'];
         $columnas_mayores = $reporte['columnas_mayores'];
         $filas_mayores = $reporte['filas_mayores'];
@@ -76,7 +89,7 @@ class ReportesJEController extends Controller
         if ($excel)
         {
 
-            $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+            
 
             $fileWithPath = $this->container->getParameter('folders')['dir_project'].'docs/formatos/horasConexion.xlsx';
             $objPHPExcel = \PHPExcel_IOFactory::load($fileWithPath);
@@ -84,7 +97,7 @@ class ReportesJEController extends Controller
             $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
             // Encabezado
-            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': Caracas, Venezuela (GMT-4)');
+            $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Horas de conexión de la empresa').' '.$empresa->getNombre().' '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneEmpresaView);
 
             // Primera columna
             for ($f=0; $f<=8; $f++)
@@ -137,7 +150,8 @@ class ReportesJEController extends Controller
                         'filas_mayores' => $filas_mayores,
                         'archivo' => $archivo,
                         'desdef' => $desde,
-                        'hastaf' => $hasta);
+                        'hastaf' => $hasta,
+                        'timeZone' => $timeZoneEmpresaView);
 
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -180,8 +194,9 @@ class ReportesJEController extends Controller
         $rs = $this->get('reportes');
         $session = new Session();
         $fun = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
-        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta);
+        $reporte = $rs->horasConexion($empresa_id, $desde, $hasta, $yml);
         $conexiones = $reporte['conexiones'];
         $columnas_mayores = $reporte['columnas_mayores'];
         $filas_mayores = $reporte['filas_mayores'];
@@ -193,15 +208,17 @@ class ReportesJEController extends Controller
         $hasta_arr = explode(" ", $hasta);
         list($a, $m, $d) = explode("-", $hasta_arr[0]);
         $hasta = "$d/$m/$a";
-
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneEmpresaView = ($timeZoneEmpresa != $yml['parameters']['time_zone']['utc'])? $fun->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml):$timeZoneEmpresa;
 
         $tabla = $this->renderView('LinkBackendBundle:Reportes:horasConexionTabla.html.twig', array('conexiones' => $conexiones,
                                                                                                     'filas_mayores' => $filas_mayores,
                                                                                                     'columnas_mayores' => $columnas_mayores,
                                                                                                     'empresa' => $empresa,
                                                                                                     'desde' => $desde,
-                                                                                                    'hasta' => $hasta));
+                                                                                                    'hasta' => $hasta,
+                                                                                                    'timeZone' => $timeZoneEmpresaView));
 
         $path = 'recursos/reportes/horasConexion'.$session->get('sesion_id').'.png';
         $src = $this->container->getParameter('folders')['dir_uploads'].$path;
@@ -278,17 +295,23 @@ class ReportesJEController extends Controller
         
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
+        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneReport = $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml);
         $desdef = $request->request->get('desde');
         $hastaf = $request->request->get('hasta');
 
         list($d, $m, $a) = explode("/", $desdef);
         $desde = "$a-$m-$d 00:00:00";
+        $desdeUtc = $fn->converDate($desde,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $desde = $desdeUtc->fecha.' '.$desdeUtc->hora;
 
         list($d, $m, $a) = explode("/", $hastaf);
         $hasta = "$a-$m-$d 23:59:59";
+        $hastaUtc = $fn->converDate($hasta,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $hasta = $hastaUtc->fecha.' '.$hastaUtc->hora;
 
-        $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
-        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+       
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $listado = $rs->evaluacionesModulo($empresa_id, $pagina_id, $desde, $hasta);
@@ -299,7 +322,7 @@ class ReportesJEController extends Controller
         $columnNames = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
         // Encabezado
-        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Evaluaciones por módulo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'.');
+        $objWorksheet->setCellValue('A1', $this->get('translator')->trans('Evaluaciones por módulo').'. '.$this->get('translator')->trans('Desde').': '.$desdef.'. '.$this->get('translator')->trans('Hasta').': '.$hastaf.'. '.$this->get('translator')->trans('Huso horario').': '.$timeZoneReport);
         $objWorksheet->setCellValue('A2', $this->get('translator')->trans('Empresa').': '.$empresa->getNombre().'. '.$pagina->getCategoria()->getNombre().': '.$pagina->getNombre().'.');
 
         if (!count($listado))
@@ -350,8 +373,8 @@ class ReportesJEController extends Controller
                         $objWorksheet->mergeCells($col.$row.':'.$col.$limit_row);
                     }
                 }
-                $fecha_registro = $fn->transformDate($participante['fecha_registro'],$timeZoneEmpresa,$yml);
-                $fecha_inicio = $fn->transformDate($participante['fecha_inicio_programa'],$timeZoneEmpresa,$yml);
+                $fecha_registro = $fn->converDate($participante['fecha_registro'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
+                $fecha_inicio = $fn->converDate($participante['fecha_inicio_programa'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                 // Datos de las columnas comunes
                 $objWorksheet->setCellValue('A'.$row, $participante['codigo']);
                 $objWorksheet->setCellValue('B'.$row, $participante['login']);
@@ -372,7 +395,7 @@ class ReportesJEController extends Controller
                 // Datos de las evaluaciones
                 foreach ($participante['evaluaciones'] as $evaluacion)
                 {
-                    $fecha_evaluacion = $fn->transformDate($evaluacion['fecha_inicio_prueba'],$timeZoneEmpresa,$yml);
+                    $fecha_evaluacion = $fn->converDate($evaluacion['fecha_inicio_prueba'],$yml['parameters']['time_zone']['default'],$timeZoneEmpresa);
                     $objWorksheet->setCellValue('P'.$row, $evaluacion['evaluacion']);
                     $objWorksheet->setCellValue('Q'.$row, $evaluacion['estado']);
                     $objWorksheet->setCellValue('R'.$row, $evaluacion['nota']);
@@ -451,6 +474,8 @@ class ReportesJEController extends Controller
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
         $rs = $this->get('reportes');
+        $fn = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
 
         $empresa_id = $request->request->get('empresa_id');
         $pagina_id = $request->request->get('pagina_id');
@@ -459,6 +484,8 @@ class ReportesJEController extends Controller
         $excel = $request->request->get('excel');
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneEmpresaView = ($timeZoneEmpresa != $yml['parameters']['time_zone']['utc'])? $fn->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml):$timeZoneEmpresa;
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $desde_arr = explode(" ", $desde);
@@ -513,7 +540,15 @@ class ReportesJEController extends Controller
         }
         $hastaf = "$a-$m-$d $h:$min:59";
 
-        $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf);
+        $desdeUtc = $fn->converDate($desdef,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $desdeUtc = $desdeUtc->fecha.' '.$desdeUtc->hora;
+
+        $hastaUtc = $fn->converDate($hastaf,$timeZoneEmpresa,$yml['parameters']['time_zone']['default'],false);
+        $hastaUtc = $hastaUtc->fecha.' '.$hastaUtc->hora;
+
+        //print_r($desdef.' '.$hastaf.' '.$desdeUtc.' '.$hastaUtc);
+         $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdeUtc, $hastaUtc);
+        //$reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf); --parametros anteriores 
 
         $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
                                                                                                     'empresa' => $empresa_id));
@@ -522,6 +557,7 @@ class ReportesJEController extends Controller
                         'week_before' => $this->get('translator')->trans('Al').' '.$desde,
                         'now' => $this->get('translator')->trans('Al').' '.$hasta,
                         'week_beforef' => $desdef,
+                        'timeZone' =>$timeZoneEmpresaView,
                         'nowf' => $hastaf,
                         'empresa' => $empresa->getNombre(),
                         'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
@@ -564,14 +600,18 @@ class ReportesJEController extends Controller
 
     }
 
-    public function pdfResumenRegistrosAction($empresa_id, $pagina_id, $desdef, $hastaf, Request $request)
+    public function pdfResumenRegistrosAction($empresa_id,$pagina_id,$desdef,$hastaf, Request $request)
     {
         
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $rs = $this->get('reportes');
         $session = new Session();
         $fun = $this->get('funciones');
 
         $empresa = $this->getDoctrine()->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+        $timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
+        $timeZoneEmpresaView = ($timeZoneEmpresa != $yml['parameters']['time_zone']['utc'])? $fun->clearNameTimeZone($timeZoneEmpresa,$empresa->getPais()->getNombre(),$yml):$timeZoneEmpresa;
+        
         $pagina = $this->getDoctrine()->getRepository('LinkComunBundle:CertiPagina')->find($pagina_id);
 
         $datetime = new \DateTime($desdef);
@@ -579,6 +619,7 @@ class ReportesJEController extends Controller
         
         $datetime = new \DateTime($hastaf);
         $hasta = $datetime->format("d/m/Y h:i a");
+        date_default_timezone_set ( $timeZoneEmpresa ) ;
 
         $reporte = $rs->resumenRegistros($empresa_id, $pagina_id, $desdef, $hastaf);
 
@@ -599,6 +640,7 @@ class ReportesJEController extends Controller
                                                                                                           'now' => $this->get('translator')->trans('Al').' '.$hasta,
                                                                                                           'programa' => $pagina->getCategoria()->getNombre().' '.$pagina->getNombre(),
                                                                                                           'empresa' => $empresa->getNombre(),
+                                                                                                          'timeZone'=>$timeZoneEmpresaView,
                                                                                                           'src' => array('src1' => $src1,
                                                                                                                          'src2' => $src2)));
 

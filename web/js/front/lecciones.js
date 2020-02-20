@@ -5,11 +5,9 @@ $(document).ready(function() {
 	var subpagina_id = $('#subpagina_id').val();
 
 	$('.circle-nav').click(function(){
-
 		var circle_nav = $(this);
 		$('video').trigger('pause');
 		$('audio').trigger('pause');
-
 		// Se suprime el css circle-less-viendo
 		if (circle_nav.attr('id') != $('#tab_activo').val())
 		{
@@ -47,18 +45,29 @@ $(document).ready(function() {
 			}
 		});
 
-		// Activar el muro
 		var muroActivo = $('#muroActivo'+new_pagina_id).val();
 		if (muroActivo == 1)
 		{
+			$("#comments").removeClass("open-comments");
 			$('#iconComments').show();
+			$('#iconComments').prop('disabled',false);
+			$('#verComent').prop('disabled',false);
+			$('#ocultarComent').prop('disabled',false);
+			$('#verComent').show();
+			$('#ocultarComent').hide();
 			$('#mas_valorados_comments-'+new_pagina_id).hide(1000);
 			$('#mas_recientes_comments-'+new_pagina_id).show(1000);
+			$('#div-botones').show();
+
 		}
 		else {
-			$("#comments").removeClass("open-comments");
+		    $('#iconComments').hide();
+			$('#iconComments').prop('disabled',true);
+			$('#verComent').prop('disabled',true);
+			$('#ocultarComent').prop('disabled',true);
 			$("#main").removeClass("ml-comments");
-			$('#iconComments').hide();
+			$("#comments").removeClass("open-comments");
+			$('#div-botones').hide();
 		}
 
 		$('#pagina_id_viendo').val(new_pagina_id);
@@ -222,7 +231,8 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.tab_rv').click(function(){
+	$('.tab_rv').click(function(e){
+		e.preventDefault();
 		var prefix = $('#prefix').val();
 		var pagina_id = $('#pagina_id_viendo').val();
 		var link_tab = $(this);
@@ -302,8 +312,7 @@ function startLesson(programa_id, pagina_id)
 		dataType: "json",
 		success: function(data) {
 			console.log('Logs iniciados:');
-			console.log(data.logs);
-			//clearTimeout( timerId );
+			document.getElementById('verComent').innerHTML= $('#ver_comentarios').val()+' ( '+data.comentarios+' )';
 		},
 		error: function(){
 			console.log('Error iniciando la lección'); // Hay que implementar los mensajes de error para el frontend
@@ -339,7 +348,8 @@ function observeMuroLecciones()
 {
 
 	$('.reply_comment').unbind('click');
-	$('.reply_comment').click(function(){
+	$('.reply_comment').click(function(e){
+		e.preventDefault();
 		var muro_id = $(this).attr('data');
 		var response_container = $('#response-'+muro_id);
 		var prefix = $('#prefix').val();
@@ -395,8 +405,9 @@ function observeReply()
 					observeLikeLecciones();
 					//clearTimeout( timerId );
 				},
-				error: function(){
-					console.log('Error respondiendo al comentario'); // Hay que implementar los mensajes de error para el frontend
+				error: function(data){
+					console.log(data.mensaje);
+					//console.log('Error respondiendo al comentario'); // Hay que implementar los mensajes de error para el frontend
 					$('#button-reply-'+muro_id).show();
 				}
 			});
@@ -407,7 +418,8 @@ function observeReply()
 function observeLikeLecciones()
 {
 	$('.like').unbind('click');
-	$('.like').click(function(){
+	$('.like').click(function(e){
+		e.preventDefault();
 		var muro_id = $(this).attr('data');
 		var prefix = $('#prefix').val();
 		$('#'+prefix+'_i-'+muro_id).removeClass('ic-lke-act');
@@ -439,7 +451,8 @@ function observeLikeLecciones()
 function observeMore()
 {
 	$('.more_comments').unbind('click');
-	$('.more_comments').click(function(){
+	$('.more_comments').click(function(e){
+		e.preventDefault();
 		var a = $(this);
 		var pagina_id = a.attr('data');
 		var prefix = $('#prefix').val();
@@ -461,6 +474,7 @@ function observeMore()
 				observeMuroLecciones();
 				observeLikeLecciones();
 				observeMore();
+				observeMoreResponses();
 				//clearTimeout( timerId );
 			},
 			error: function(){
@@ -473,7 +487,8 @@ function observeMore()
 function observeMoreResponses()
 {
 	$('.more_answers').unbind('click');
-	$('.more_answers').click(function(){
+	$('.more_answers').click(function(e){
+		e.preventDefault();
 		var a = $(this);
 		var muro_id = a.attr('data');
 		var prefix = $('#prefix').val();

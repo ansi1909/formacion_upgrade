@@ -119,3 +119,4 @@ parameters:
         default: 'UTC'
         utc: 'UTC'
         show_time_zone: 1
+        name_separator: '/'
