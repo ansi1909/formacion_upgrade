@@ -51,6 +51,12 @@ class NivelController extends Controller
 
         $nombre = $request->request->get('nombre');
         $empresa_id = $request->request->get('empresa_id');
+        $fecha_inicio = $request->request->get('fechaInicio');
+        $fecha_fin = $request->request->get('fechaFin');
+        $fi = explode("/", $fecha_inicio);
+        $inicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
+        $ff = explode("/", $fecha_fin);
+        $fin = $ff[2].'-'.$ff[1].'-'.$ff[0];
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
     
@@ -58,6 +64,8 @@ class NivelController extends Controller
 
         $nivel->setNombre($nombre);
         $nivel->setEmpresa($empresa);
+        $nivel->setFechaInicio(new \DateTime($inicio));
+        $nivel->setFechaFin(new \DateTime($fin));
                 
         $em->persist($nivel);
         $em->flush();
@@ -142,8 +150,16 @@ class NivelController extends Controller
         $nivel_id = $request->request->get('nivel_id');
         $nombre = $request->request->get('nombre');
         $empresa_id = $request->request->get('empresa_id');
+        $fecha_inicio = $request->request->get('fechaInicio');
+        $fecha_fin = $request->request->get('fechaFin');
+        $fi = explode("/", $fecha_inicio);
+        $inicio = $fi[2].'-'.$fi[1].'-'.$fi[0];
+        $ff = explode("/", $fecha_fin);
+        $fin = $ff[2].'-'.$ff[1].'-'.$ff[0];
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+
+        //return new response(new \DateTime($inicio));
         
         if ($nivel_id){
             $nivel = $em -> getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
@@ -154,6 +170,9 @@ class NivelController extends Controller
 
         $nivel->setNombre($nombre);
         $nivel->setEmpresa($empresa);
+        $nivel->setFechaInicio(new \DateTime($inicio));
+        $nivel->setFechaFin(new \DateTime($fin));
+
                 
         $em->persist($nivel);
         $em->flush();
@@ -173,8 +192,12 @@ class NivelController extends Controller
         $nivel_id = $request->query->get('nivel_id');
         
         $nivel = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNivel')->find($nivel_id);
+
+        //return new response(var_dump($nivel->getFechaInicio()));
         
-        $return = array('nombre' => $nivel->getNombre());
+        $return = array('nombre' => $nivel->getNombre(),
+                        'fechaInicio'=> $nivel->getFechaInicio()->format('Y/m/d'),
+                        'fechaFin'=> $nivel->getFechaFin()->format('Y/m/d'));
         
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

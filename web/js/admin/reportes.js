@@ -6,6 +6,10 @@ $(document).ready(function() {
 	var empresa_selected = $('#empresa_selected').val();
 	var nivel_id = 0;
 	var pagina_id = 0;
+
+	$('#resultado').click(function(){
+		
+	});
 	
 	if (reporte == '1') 
 	{

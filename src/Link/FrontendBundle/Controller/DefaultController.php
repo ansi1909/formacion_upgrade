@@ -44,7 +44,7 @@ class DefaultController extends Controller
         
         // Convertimos los id de las paginas de la sesion en un nuevo array
         $paginas_ids = array();
-        foreach ($session->get('paginas') as $pg) 
+        foreach($session->get('paginas') as $pg) 
         {
             $paginas_ids[] = $pg['id'];
         }
@@ -155,6 +155,32 @@ class DefaultController extends Controller
                     
                     $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
 
+                    $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
+
+                    
+
+                    $query = $em->createQuery('SELECT nivel FROM LinkComunBundle:AdminNivel nivel 
+                                              WHERE nivel.empresa= :empresa_id
+                                              ORDER BY nivel.id ASC')
+                    ->setParameters(array('empresa_id' => $session->get('empresa')['id']));
+                    $niveles = $query->getResult();
+                    foreach ($niveles as $n)
+                    {
+                        if( $n->getId() == $usuario->getNivel()->getId())
+                        {
+                            $nivel_vigente =  date('Y-m-d') < $n->getFechaFin()->format('Y-m-d') ?  true : false;
+                            //return new response(var_dump ($nivel_vencido));
+
+                            if(!$nivel_vigente)
+                            {
+                                $dias_vencimiento = $this->get('translator')->trans('Vencido');
+                            }
+                        }
+                        
+                    }
+                    //return new response(var_dump($usuario->getFechaNacimiento()));
+                    //return new response(var_dump ($ni));
+
                     $paginas[] = array('id' => $grupo->getPagina()->getId(),
                                        'nombre' => $grupo->getPagina()->getNombre(),
                                        'imagen' => $grupo->getPagina()->getFoto(),
@@ -164,6 +190,7 @@ class DefaultController extends Controller
                                        'tiene_subpaginas' => $tiene_subpaginas,
                                        'continuar' => $continuar,
                                        'link_enabled' => $link_enabled,
+                                       'nivel_vigente' => $nivel_vigente,
                                        'prueba' => $prueba);
                     
 

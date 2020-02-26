@@ -23,3 +23,17 @@ _generarVistaPdf:
 _generarPdf:
     path:     /generarPdf/{id_certificado}
     defaults: { _controller: LinkBackendBundle:Certificado:generarPdf }
+
+_GenerarCertificados:
+    path:     /generarCertificados/{app_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:generarCertificados }
+
+_GenerarCertificadosZip:
+    path:     /GenerarCertificadosZip/{app_id}
+    defaults: { _controller: LinkBackendBundle:Certificado:GenerarCertificadosZip }
+    requirements:
+        _method: POST
+
+_DescargarZip:
+    path:     /DescargarZip/{ruta}
+    defaults: { _controller: LinkBackendBundle:Certificado:DescargarZip }
