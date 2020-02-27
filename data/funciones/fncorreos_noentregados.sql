@@ -1,62 +1,72 @@
-CREATE FUNCTION fncorreos_noentregados(pfechaAyer timestamp,pfechaCron timestamp,pcorreos TEXT) RETURNS TEXT AS $$
-DECLARE
-   acorreo RECORD;
-   ntProgramada admin_notificacion_programada%ROWTYPE;
-   notificaciones_id INTEGER[]:='{}'::int[];
-   correos TEXT [];
-   correoMensaje TEXT [];
-   mensajes TEXT[];
-   lengthCorreos INTEGER;
-   lengthNotificaciones INTEGER;
-   lengthMensajes INTEGER;
-   im INTEGER;
-   retorno TEXT :='';
-BEGIN 
-   correos:=string_to_array(pcorreos,'|');
-   SELECT array_length(correos, 1) INTO lengthCorreos;
+--Tipos de errores considerados
+--0A: correo --El correo se encuentra en la tabla admin correo pero esta asociado a una notficacion inexistente 
+--0B: correo --El correo no se encuentra en la tabla admin_correo
 
-   FOR i IN 1..lengthCorreos LOOP
-	  correoMensaje:=string_to_array(correos[i],'=>');--1 correo electronico ,2,3..mensajes
-	  mensajes:=string_to_array(correoMensaje[2],'++');--mensajes del correo
-	  SELECT array_length(mensajes, 1) INTO lengthMensajes;
-	  im:=1;
-	  FOR acorreo
-	  IN SELECT * FROM admin_correo AS ac 
-	  WHERE (ac.fecha BETWEEN pfechaAyer AND pfechaCron)
-	  AND upper(trim(ac.correo)) = upper(trim(correoMensaje[1]))
-	  LOOP
-	    SELECT * INTO ntProgramada FROM admin_notificacion_programada  AS np
-	    WHERE np.id = acorreo.entidad_id;
-	    INSERT INTO admin_correo_fallido(correo,usuario_id,entidad_id,fecha,reenviado,mensaje)
-	    VALUES(acorreo.correo,acorreo.usuario_id,ntProgramada.id,acorreo.fecha,FALSE,mensajes[im]);
-	    --DELETE FROM admin_correo WHERE id=acorreo.id;
-	    IF NOT ARRAY[ntProgramada.id]<@notificaciones_id THEN
-			notificaciones_id=notificaciones_id||ARRAY[ntProgramada.id];
-		END IF;
-		IF im<lengthMensajes THEN
-			im=im+1;
-	    END IF;
-	  END LOOP;--admin_correos	  
-	  --actualizar las notificaciones 
-		SELECT array_length(notificaciones_id, 1) INTO lengthNotificaciones;
-		FOR i IN 1..lengthNotificaciones LOOP
-			IF retorno<>''THEN
-				retorno:=retorno||'-'||notificaciones_id[i];
+CREATE FUNCTION fncorreos_noentregados(pcorreos TEXT) RETURNS TEXT AS $$
+DECLARE
+   admin_correo_db RECORD;
+   notificacion_programada admin_notificacion_programada%ROWTYPE;
+   notificaciones_id INTEGER[]:='{}'::int[];
+   correos_buzon TEXT[];
+   mensajes_correo TEXT[];
+   correo_mensajes TEXT[];
+   cantidad_correos_buzon INTEGER;
+   cantidad_notificaciones_actualizar INTEGER;
+   cantidad_mensajes_correo INTEGER;
+   cantidad_notificaciones_id INTEGER:=0;
+   cantidad_correos_fallidos INTEGER:=0;
+   indice_mensaje INTEGER:=1;--para obtener el primer mensaje del correo 
+   mensajes TEXT:='SUCCES';
+BEGIN
+	--Obtener los correos fallidos
+	correos_buzon := string_to_array(pcorreos,'|');
+	SELECT array_length(correos_buzon,1) INTO cantidad_correos_buzon;
+	FOR i IN 1..cantidad_correos_buzon LOOP
+		correo_mensajes := string_to_array(correos_buzon[i],'=>'); -- obtiene un array donde el indice 1 corresponde al correo electronico. Indice 2 corresponde a los mensajes
+		mensajes_correo := string_to_array(correo_mensajes[2],'++'); -- Crea un array con los mensajes correspondientes al correo
+		SELECT array_length(mensajes_correo,1) INTO cantidad_mensajes_correo;
+		FOR admin_correo_db IN SELECT * FROM admin_correo AS ac
+			WHERE ac.fecha = (SELECT MAX (c.fecha) FROM admin_correo as c WHERE UPPER(TRIM(c.correo)) = UPPER(TRIM(correo_mensajes[1])) ) --buscan en admin_correos el utimo correo registrado para el correo de turno
+			AND UPPER(TRIM(ac.correo)) = UPPER(TRIM(correo_mensajes[1]))
+		LOOP
+			IF admin_correo_db  IS NOT NULL THEN
+				SELECT * INTO notificacion_programada FROM admin_notificacion_programada AS np
+				WHERE np.id = admin_correo_db.entidad_id;
+				IF notificacion_programada.id IS NOT NULL THEN
+					INSERT INTO admin_correo_fallido(correo,usuario_id,entidad_id,fecha,reenviado,mensaje)
+					VALUES(admin_correo_db.correo,admin_correo_db.usuario_id,notificacion_programada.id,admin_correo_db.fecha,FALSE,mensajes_correo[indice_mensaje]);
+					cantidad_correos_fallidos := cantidad_correos_fallidos + 1;
+					--DELETE FROM admin_correo WHERE id=admin_correo_db.id;
+					IF NOT ARRAY[notificacion_programada.id]<@notificaciones_id THEN
+						notificaciones_id := notificaciones_id||ARRAY[notificacion_programada.id];
+					END IF;
+				ELSE
+					IF mensajes = '' THEN
+						mensajes := mensajes||'No esta asociado a una notificacion valida: '||correo_mensajes[1];
+				    ELSE
+						mensajes := mensajes||'/'||'No esta asociado a una notificacion valida: '||correo_mensajes[1]; 
+					END IF;
+				END IF;
 			ELSE
-				retorno:=notificaciones_id[i];
+					IF mensajes '' THEN
+						mensajes := mensajes||'No se encuentra en la tabla admin_correo: '||correo_mensajes[1];
+					ELSE
+						mensajes := mensajes||'/'||'No se encuentra en la tabla admin_correo: '||correo_mensajes[1];
+					END IF;
 			END IF;
-			SELECT * INTO ntProgramada FROM admin_notificacion_programada  AS np
-			WHERE np.id = notificaciones_id[i];
-			UPDATE admin_notificacion_programada SET enviado = TRUE WHERE id = ntProgramada.id;
-			IF ntProgramada.grupo_id IS NOT NULL THEN
-				UPDATE admin_notificacion_programada SET enviado = TRUE  WHERE id = ntprogramada.grupo_id;
-			END IF;
-		END LOOP;
-   END LOOP;--correos parameters
-   
-   
-  RETURN retorno;
+		END LOOP;--admin_correos
+	END LOOP; --correos buzon
+	--actualizar notificaciones programadas
+		SELECT array_length(notificaciones_id,1) INTO cantidad_notificaciones_id;
+		IF cantidad_notificaciones_id >0 THEN
+			FOR i IN 1..cantidad_notificaciones_id LOOP
+				UPDATE admin_notificacion_programada SET enviado = TRUE WHERE id = notificaciones_id[i];
+			END LOOP; --loop actualizacion
+		END IF;
+	
+	RETURN cantidad_notificaciones_id||' - '||cantidad_correos_fallidos||' - '||mensajes;
+	-- cantidad de notificaciones actualizadas - cantidad de correos fallidos insertados - mensajes de error o exito
 END;
 $$ LANGUAGE plpgsql;
 
---SELECT fncorreos_noentregados('2020-01-21 00:00:00','2020-01-21 23:59:00','ypenac@edesur.com.do => host exchange.edesur.com.do [200.88.115.213] SMTP error from remote mail server after initial connection: 451 Spam email. Email Session ID: {5E26FC89-230023-208F00A-C0000000}: retry timeout exceeded++ all hosts for edesur.com.do have been failing for a long time (and retry time not reached)') as resultado;
+--SELECT fncorreos_noentregados('LfernandezA@edesur.com=>retry timeout exceeded|dacostad@edesur.com=>retry timeout exceeded|AMarionLandais@edesur.com=>all hosts for edesur.com have been failing for a long time (and retry time not reached)') as resultado;

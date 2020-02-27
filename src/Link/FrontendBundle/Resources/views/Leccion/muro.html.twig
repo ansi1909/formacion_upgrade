@@ -11,10 +11,10 @@
         <p>{{ muro.mensaje }}</p>
     </div>
     <div class="comm-footer d-flex justify-content-between align-items-center">
-        <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ muro.id }}" >
-            <i id="{{ prefix }}_i-{{ muro.id }}" class="material-icons mr-1 ml-4 text-sm color-light-grey {{ muro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="{{ prefix }}_like-{{ muro.id }}" >{{ muro.likes.cantidad }}</span>
-        </a>
-        <a href="#" class="links text-right reply_comment" data="{{ muro.id }}">{{ 'Responder'|trans }}</a>
+        <div " class="mr-0 text-sm color-light-grey "  >
+            
+        </div>
+        <a href="#" class="links text-right reply_comment" id="href_reply_{{ muro.id }}" data="{{ muro.id }}">{{ 'Responder'|trans }}</a>
     </div>
     <div id="{{ prefix }}_div-response-{{ muro.id }}">
     </div>
@@ -34,7 +34,6 @@
                 </div>
                 <div class="comm-footer d-flex justify-content-between align-items-center">
                     <a href="#" class="mr-0 text-sm color-light-grey like" data="{{ submuro.id }}">
-                        <i id="{{ prefix }}_i-{{ submuro.id }}" class="material-icons mr-1 ml-4 text-sm color-light-grey {{ submuro.likes.ilike ? 'ic-lke-act' : '' }}">thumb_up</i> <span id="{{ prefix }}_like-{{ submuro.id }}">{{ submuro.likes.cantidad }}</span>
                     </a>
                 </div>
             </div>

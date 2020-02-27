@@ -65,12 +65,12 @@ class bouncingEmailsCommand extends ContainerAwareCommand
             $em = $this->getContainer()->get('doctrine')->getManager();
             $mailTypes = array('warning'=>0,'failed'=>0,'tutor'=>0);
             $parameters = array();
-            //$dateFilterMail = '28-Jan-2020';
+            $dateFilterMail = date('d-M-Y',strtotime(date('d-M-Y')."- 1 days"));
+            //$dateFilterMail = '01-Feb-2020';
             //$dateFilterDbBegin = '2020-01-28 00:00:00';
             //$dateFilterDbEnd = '2020-01-28 23:59:00';
-            $dateFilterMail = date('d-M-Y',strtotime(date('d-M-Y')."- 1 days"));
-            $dateFilterDbBegin = date('Y-m-d 00:00:00',strtotime(date('Y-m-d 00:00:00')."- 1 days"));
-            $dateFilterDbEnd = date('Y-m-d 23:59:00',strtotime(date('Y-m-d 23:59:00')."- 1 days"));
+            //$dateFilterDbBegin = date('Y-m-d 00:00:00',strtotime(date('Y-m-d 00:00:00')."- 1 days"));
+            //$dateFilterDbEnd = date('Y-m-d 23:59:00',strtotime(date('Y-m-d 23:59:00')."- 1 days"));
             $cronJob = new AdminCronjobLog();
             $cronJob->setNombre('link:correos-fallidos') ;
             $cronJob->setFecha(new \DateTime('now'));
@@ -102,15 +102,14 @@ class bouncingEmailsCommand extends ContainerAwareCommand
                 }
               }
       				$parameters = $this->transformArray($parameters,$yml);
-      				$query = $em->getConnection()->prepare('SELECT fncorreos_noentregados(:fechaAyer,:pfechaCron,:pcorreos) AS resultado;');
-      				$query->bindValue(':fechaAyer', $dateFilterDbBegin, \PDO::PARAM_STR);
-      				$query->bindValue(':pfechaCron', $dateFilterDbEnd, \PDO::PARAM_STR);
+      				$query = $em->getConnection()->prepare('SELECT fncorreos_noentregados(:pcorreos) AS resultado;');
       				$query->bindValue(':pcorreos', $parameters, \PDO::PARAM_STR);
       				$query->execute();
       				$r = $query->fetchAll();
-              $cronJob->setMensaje('Successful execution, failed emails: '.$mailTypes['failed'].', Warnings: '.$mailTypes['warning'].'.');
+              $output->writeln($r);
+              $cronJob->setMensaje('Successful execution, failed emails: '.$mailTypes['failed'].', Warnings: '.$mailTypes['warning']);
               }else{
-                $cronJob->setMensaje('Successful execution: NO FAILED EMAILS');
+                $cronJob->setMensaje('Successful execution: NO EXISTEN CORREOS DEL TIPO: '.$yml['parameters']['fallidos']['from'].', PARA LA FECHA INDICADA EN EL BUZON');
               }
           $closeSession = imap_close($inbox);
 

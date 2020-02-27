@@ -28,7 +28,7 @@ class LeccionController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$subpagina_id));
-
+        $totalComentarios = count($totalComentarios);
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
         //return new Response(var_dump($indexedPages));
@@ -139,7 +139,8 @@ class LeccionController extends Controller
                                                                                  'titulo' => $titulo,
                                                                                  'subtitulo' => $subtitulo,
                                                                                  'wizard' => $wizard,
-                                                                                 'puntos' => $puntos));
+                                                                                 'puntos' => $puntos,
+                                                                                 'comentarios'=> $totalComentarios));
 
     }
 
@@ -430,12 +431,11 @@ class LeccionController extends Controller
                         <p>'.$mensaje.'</p>
                     </div>
                     <div class="comm-footer d-flex justify-content-between align-items-center">
-                        <a href="#" class="mr-0 text-sm color-light-grey like" data="'.$muro->getId().'">
-                            <i id="'.$prefix.'_i-'.$muro->getId().'" class="material-icons mr-1 text-sm color-light-grey">thumb_up</i> <span id="'.$prefix.'_like-'.$muro->getId().'">0</span>
+                        <a href="#" class="mr-0 text-sm color-light-grey " data="'.$muro->getId().'">
                         </a>';
             if (!$muro_id)
             {
-                $html .= '<a href="#" class="links text-right text-xs reply_comment" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>';
+                $html .= '<a href="#" class="links text-right reply_comment" id="href_reply_'.$muro->getId().'" data="'.$muro->getId().'">'.$this->get('translator')->trans('Responder').'</a>';
             }
             $html .= '</div>';
             if (!$muro_id)
@@ -486,16 +486,22 @@ class LeccionController extends Controller
 
         $uploads = $this->container->getParameter('folders')['uploads'];
         $img_user = $session->get('usuario')['foto'] ? $uploads.$session->get('usuario')['foto'] : $f->getWebDirectory().'/front/assets/img/user-default.png';
-        
-        $html = '<div class="response" id="'.$prefix.'_response-'.$muro_id.'">
+        $html_radar = '<div class="radar-response" style="display:none" id="radar-comment-'.$muro_id.'">
+                                <div class="contenedor" >
+                                    <div class="radar"></div>
+                                </div>
+                        </div>';
+
+        $html = '<div class="response" id="'.$prefix.'_response-'.$muro_id.'" >
                     <img class="img-fluid avatar-img" src="'.$img_user.'" alt="">
                     <form class="ml-3 w-100" method="POST" >
                         <div class="form-group d-inline-block w-100">
                             <textarea class="form-control w-100" id="'.$prefix.'_respuesta_'.$muro_id.'" name="'.$prefix.'_respuesta_'.$muro_id.'" rows="5" maxlength="1000" placeholder="'.$this->get('translator')->trans('Escriba su respuesta').'"></textarea>
                         </div>
-                        <button type="button" name="button" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="'.$prefix.'_button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
-                    </form>
-                </div>';
+                        <button type="button" name="button" style="" class="btn btn-sm btn-primary float-right button-reply" data="'.$muro_id.'" id="'.$prefix.'_button-reply-'.$muro_id.'">'.$this->get('translator')->trans('Responder').'</button>
+                    </form>';
+        $html .= $html_radar;
+        $html .= '</div>';
 
         $return = array('html' => $html);
 
@@ -579,7 +585,7 @@ class LeccionController extends Controller
             if ($total_respuestas > $next_offset)
             {
                 $html .= '<input type="hidden" id="'.$prefix.'_more_answers-'.$muro_id.'" name="'.$prefix.'_more_answers-'.$muro_id.'" value="'.$offset.'">
-                          <a href="#" class="links text-center d-block more_answers" data="'.$muro_id.'">'.$this->get('translator')->trans('Ver más respuestas').'</a>';
+                          <a href="#" class="btn btn-primary btn-sm  text-center mx-auto more_answers" data="'.$muro_id.'">'.$this->get('translator')->trans('Ver más respuestas').'</a>';
             }
 
         }
