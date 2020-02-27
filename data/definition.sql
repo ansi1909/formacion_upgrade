@@ -53,8 +53,10 @@ bienvenida text,
 pais_id character(3),
 chat_activo boolean,
 webinar boolean, 
+ zona_horaria_id integer,
  PRIMARY KEY (id),
- FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id),
+ FOREIGN KEY (zona_horaria_id) REFERENCES admin_zona_horaria (id));
 
 CREATE TABLE admin_nivel(
 -- Attributes --
@@ -681,7 +683,7 @@ CREATE TABLE admin_cronjob_log(
 -- Attributes --
 id serial,
 nombre varchar(100),
-mensaje varchar(500),
+mensaje text,
 fecha date,
  PRIMARY KEY (id)
  );
@@ -694,3 +696,14 @@ paso_actual integer,
 cancelado boolean,
  PRIMARY KEY (id),
  FOREIGN KEY (usuario_id) REFERENCES admin_usuario (id));
+
+CREATE TABLE admin_zona_horaria(
+-- Attributes --
+id serial,
+pais_id character(3),
+nombre varchar(300),
+ PRIMARY KEY (id),
+ FOREIGN KEY (pais_id) REFERENCES admin_pais (id));
+
+
+

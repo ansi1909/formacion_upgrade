@@ -1,24 +1,29 @@
-<table class="table">
+<table class="table" id="t-programados">
     <thead class="sty__title">
         <tr>
-            <th class="hd__title">{{ 'Destinado a'|trans }}</th>
-            <th class="hd__title">{{ 'Grupo seleccionado'|trans }}</th>
-            <th class="hd__title">{{ 'Programado para'|trans }}</th>
-            <th class="hd__title">{{ 'Enviado'|trans }}</th>
-            <th class="hd__title">{{ 'Acciones'|trans }}</th>
+            <th class="hd__title alignment_ big_th">{{ 'Destinado a'|trans }}</th>
+            <th class="hd__title alignment_ bigth">{{ 'Grupo seleccionado'|trans }}</th>
+            <th class="hd__title alignment_ small_th">{{ 'Programado para'|trans }}</th>
+            <th class="hd__title alignment_ smallth">{{ 'Enviado'|trans }}</th>
+            <th class="hd__title alignment_ smallth">{{ 'Acciones'|trans }}</th>
         </tr>
     </thead>
     <tbody id="tbody-programados">
         {% for np in nps %}
             <tr id="tr-{{ np.id }}">
-                <td>{{ np.tipoDestino.nombre }}</td>
-                <td id="td-{{ np.id }}">&nbsp;</td>
-                <td>{{ np.fechaDifusion|date('d/m/Y') }}</td>
+                <td class="alignment">{{ np.tipoDestino.nombre }}</td>
+                <td class="alignment" id="td-{{ np.id }}">&nbsp;</td>
+                <td class="alignment_" style="text-align: center">{{ np.fechaDifusion|date('d/m/Y') }}</td>
                 {% set enviado = np.enviado ? 'Sí'|trans : 'No' %}
-                <td>{{ enviado }}</td>
+                <td class="alignment alignment" style="text-align: center;">{{ enviado }}</td>
                 <td class="center">
                     <a href="{{ path('_editNotificacionProgramada', { 'notificacion_id': np.notificacion.id, 'notificacion_programada_id': np.id }) }}" title="{{ 'Editar'|trans }}" class="btn btn-link btn-sm edit"><span class="fa fa-pencil"></span></a>
                     <a href="#" title="{{ 'Eliminar'|trans }}" class="btn btn-link btn-sm delete" data="{{ np.id }}"><span class="fa fa-trash"></span></a>
+                    {% if failed[np.id] is defined %}
+                        <a href="#" title="{{ 'Correos no enviados'|trans ~ ' ('~failed[np.id]~') '}}" class="btn btn-link btn-sm failedEmails" id="{{'excel'~np.id}}" data="{{ np.id }}"><span class="fa fa-file-excel-o" style=""></span></a>
+                        <img class="img-loader" src="{{ asset('img/ui-anim_basic_16x16.gif') }}" id="{{ 'excelLoader'~np.id }}" style="display:none">
+                        <a href="#" title="{{ 'Descargar Excel'|trans }}" class="btn btn-link btn-sm downloadExcel"  id="{{ 'downloadExcel'~np.id }}" style="display: none"><span class="fa fa-download"></span></a>
+                    {% endif%}
                 </td>
             </tr>
         {% endfor %}

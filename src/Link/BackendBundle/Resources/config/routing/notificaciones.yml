@@ -45,3 +45,9 @@ _ajaxGrupoSeleccion:
 _showNotificacionProgramada:
     path:     /showNotificacionProgramada/{notificacion_programada_id}
     defaults: { _controller: LinkBackendBundle:Notificacion:showNotificacionProgramada }
+
+_ajaxExcelCorreos:
+    path:     /_ajaxExcelCorreos
+    defaults: { _controller: LinkBackendBundle:Notificacion:ajaxExcelCorreos }
+    requirements:
+        _method: POST

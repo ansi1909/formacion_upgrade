@@ -18,4 +18,8 @@ _registradosEmpresa:
     path: /registradosEmpresa
     defaults: {_controller: LinkBackendBundle:Empresa:registradosEmpresa}
 
+_ajaxZonaHoraria:
+    path: /zonaHoraria
+    defaults: {_controller: LinkBackendBundle:Empresa:ajaxZonaHoraria}
+
 

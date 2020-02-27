@@ -22,12 +22,12 @@ begin
     SELECT INTO usr * FROM admin_usuario u WHERE u.id = pusuario_id;
     
     -- Primera conexión
-    SELECT TO_CHAR(s.fecha_ingreso, 'DD/MM/YYYY HH:MI AM') AS fecha_ingreso INTO primeraConexion FROM admin_sesion s 
+    SELECT s.fecha_ingreso AS fecha_ingreso INTO primeraConexion FROM admin_sesion s 
     WHERE s.usuario_id = pusuario_id 
     ORDER BY s.id ASC LIMIT 1;
 
     -- Última conexión
-    SELECT TO_CHAR(s.fecha_ingreso, 'DD/MM/YYYY HH:MI AM') AS fecha_ingreso INTO ultimaConexion FROM admin_sesion s 
+    SELECT s.fecha_ingreso AS fecha_ingreso INTO ultimaConexion FROM admin_sesion s 
     WHERE s.usuario_id = pusuario_id 
     ORDER BY s.id DESC LIMIT 1;
 
