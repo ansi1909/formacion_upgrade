@@ -13,18 +13,15 @@
         .card .badge-wrap {
             transform: translateY(0);
         }
-
-        
     </style>
 {% endblock %}
 
 {% block body %}
 
 <input type="hidden" id="url_servicio" name="url_servicio" value="{{ path('_ajaxServicioInteractivo') }}">
-<input type="hidden" id="url_cambiar_estado" name="url_cambiar_estado" value="{{ path('_ajaxCambiarEstado') }}">
-<input type="hidden" id="paso_actual_intro" name="paso_actual_intro" value="{{ paso_actual_intro }}" data-pasoCorrecto="1">
+<input type="hidden" id="url_cambiar_estado" name="url_cambiar_estado" value="{{ path('_ajaxCambiarEstado') }}">        
+<input type="hidden" id="paso_actual_intro" name="paso_actual_intro" value="{{ paso_actual_intro }}" data-pasoCorrecto="1">     
 <input type="hidden" id="cancelar_intro" name="cancelar_intro" value="{{ cancelar_intro }}">
-
 <div id="message" class="for-message well-message container py-6 px-6 mb-4 bckgd">
     <i id="equis" class="material-icons mr-2" >close</i>
     {{ bienvenida|raw }}    
@@ -116,25 +113,56 @@
                                         <p class="card-text">{{ pagina.descripcion|raw }}</p>
                                         {% if pagina.continuar == 0 %}
                                             {% if pagina.tiene_subpaginas == 1 %}
-                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Nivel Vencido'|trans }}</span>
+                                                {% endif %}
                                             {% else %}
-                                                <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Nivel Vencido'|trans }}</span>
+                                                {% endif %}
                                             {% endif %}
                                         {% elseif pagina.continuar == 1 %}
                                             {% if pagina.tiene_subpaginas == 1 %}
-                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Nivel Vencido'|trans }}</span>
+                                                {% endif%}
                                             {% else %}
-                                                <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Nivel Vencido'|trans }}</span>
+                                                {% endif%}
                                             {% endif %}
-                                        {% elseif  pagina.continuar in [2, 3] %}
+                                        {% elseif  pagina.continuar in [2, 3]  %}
                                             <div class="badge-wrap">
                                                 {% if pagina.link_enabled %}
-                                                    <i class="material-icons badge-aprobado">check_circle</i>
-                                                    <span class="text-badge">{{ 'Aprobado'|trans }}</span>
+                                                    {% if pagina.nivel_vigente %}
+                                                        <i class="material-icons badge-aprobado">check_circle</i>
+                                                        <span class="text-badge">{{ 'Aprobado'|trans }}</span>
+                                                    {% else %}
+                                                        <i class="material-icons badge-aprobado">update</i>
+                                                        <span class="text-badge">{{ 'Nivel Vencido'|trans }}</span>
+                                                    {% endif %}
                                                 {% else %}
-                                                    {# Cambiar el ícono por un relojito #}
-                                                    <i class="material-icons badge-aprobado">update</i>
-                                                    <span class="text-badge">{{ 'Vencido'|trans }}</span>
+                                                    {% if pagina.nivel_vigente %}
+                                                        {# Cambiar el ícono por un relojito #}
+                                                        <i class="material-icons badge-aprobado">update</i>
+                                                        <span class="text-badge">{{ 'Vencido'|trans }}</span>
+                                                
+                                                    {% else %}
+                                                        <i class="material-icons badge-aprobado">update</i>
+                                                        <span class="text-badge">{{ 'Nivel Vencido'|trans }}</span>
+                                                    {% endif %}
                                                 {% endif %}
                                             </div>
                                         {% else %}
@@ -158,7 +186,7 @@
                                                 <small class=" d-block">{{ 'Notas'|trans }}</small>
                                             </a>
                                             {% endif %}
-                                            {% if pagina.continuar == 2 %}
+                                            {% if pagina.continuar == 2 and pagina.nivel_vigente %}
                                                 <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
                                                 <i class="material-icons d-block">visibility</i>
                                                 <small class=" d-block">{{ 'Ver'|trans }}</small>
@@ -205,7 +233,6 @@
                     }
                 });
             });
-
             /////////////////////////////
             const introSteps = [
                 {
