@@ -277,12 +277,17 @@ class DefaultController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-
         $id = $request->request->get('id');
         $entity = $request->request->get('entity');
+        if($entity=='AdminNotificacionProgramada'){
+          //eliminar hijos dentro de la misma tabla
+           $query = $em->createQuery("DELETE  FROM LinkComunBundle:AdminNotificacionProgramada np
+                                      WHERE np.grupo = :padre_id")
+                    ->setParameter('padre_id',$id);
+            $query->getResult();
+        }
 
         $ok = 1;
-
         $object = $em->getRepository('LinkComunBundle:'.$entity)->find($id);
         $em->remove($object);
         $em->flush();

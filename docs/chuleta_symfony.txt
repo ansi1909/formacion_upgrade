@@ -26,6 +26,11 @@ php bin/console doctrine:schema:update --force
 2. php bin/console doctrine:mapping:convert annotation ./src --em=default --force			(--filter="NombreEntidad") => Si se quiere generar una sola entidad
 3. php bin/console doctrine:generate:entities LinkComunBundle --no-backup					(Link/ComunBundle/Entity/NombreEntidad) => Si se quiere generar una sola entidad
 
+- Regenerar una entidad a parti de una base de datos existente
+1-php bin/console doctrine:mapping:convert yml ./src/Link/ComunBundle/Resources/config/doctrine --from-database --force --filter=NombreEntidad
+2-php bin/console doctrine:mapping:import LinkComunBundle yml --filter=NombreEntidad
+3-php bin/console doctrine:generate:entities --path=C:\wamp\www\formacion2.0\src LinkComunBundle:NombreEntidad
+ 
 - Ver las rutas agregadas
 php bin/console debug:router
 

@@ -26,8 +26,8 @@ begin
                     u.correo_personal as correo,
                     u.correo_corporativo as correo2,
                     u.activo as activo,
-                    to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-                    to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
+                    u.fecha_registro as fecha_registro, 
+                    u.fecha_nacimiento as fecha_nacimiento, 
                     u.pais_id as pais, 
                     n.nombre as nivel,
                     u.campo1 as campo1,
@@ -54,8 +54,8 @@ begin
 			u.correo_personal as correo,
 			u.correo_corporativo as correo2,
 			u.activo as activo,
-			to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-			to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
+			u.fecha_registro as fecha_registro, 
+			u.fecha_nacimiento as fecha_nacimiento, 
 			u.pais_id as pais, 
 			n.nombre as nivel,
 			u.campo1 as campo1,
@@ -89,8 +89,8 @@ begin
                 u.correo_personal as correo,
                 u.correo_corporativo as correo2,
                 u.activo as activo,
-                to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-                to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
+                u.fecha_registro as fecha_registro, 
+                u.fecha_nacimiento as fecha_nacimiento, 
                 u.pais_id as pais, 
                 n.nombre as nivel,
                 u.campo1 as campo1,
@@ -119,8 +119,8 @@ begin
                         u.correo_personal as correo,
                         u.correo_corporativo as correo2,
                         u.activo as activo,
-                        to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-                        to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
+                        u.fecha_registro as fecha_registro, 
+                        u.fecha_nacimiento as fecha_nacimiento, 
                         u.pais_id as pais, 
                         n.nombre as nivel,
                         u.campo1 as campo1,
@@ -152,8 +152,8 @@ begin
                     u.correo_personal as correo,
                     u.correo_corporativo as correo2,
                     u.activo as activo,
-                    to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-                    to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
+                    u.fecha_registro as fecha_registro, 
+                    u.fecha_nacimiento as fecha_nacimiento, 
                     u.pais_id as pais, 
                     n.nombre as nivel,
                     u.campo1 as campo1,
@@ -186,8 +186,8 @@ begin
                     u.correo_personal as correo,
                     u.correo_corporativo as correo2,
                     u.activo as activo,
-                    to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-                    to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
+                    u.fecha_registro as fecha_registro, 
+                    u.fecha_nacimiento as fecha_nacimiento, 
                     u.pais_id as pais, 
                     n.nombre as nivel,
                     u.campo1 as campo1,
@@ -204,19 +204,19 @@ begin
                                         AND p.pagina_id = ppagina_id
                                 )
                     ) as promedio, 
-                    (SELECT TO_CHAR(pl.fecha_inicio, 'DD/MM/YYYY') AS fecha_inicio_programa FROM certi_pagina_log pl 
+                    (SELECT pl.fecha_inicio AS fecha_inicio_programa FROM certi_pagina_log pl 
                         WHERE pl.usuario_id = u.id 
                             AND pl.pagina_id = ppagina_id 
                     ) as fecha_inicio_programa, 
-                    (SELECT TO_CHAR(pl.fecha_inicio, 'HH:MI AM') AS hora_inicio_programa FROM certi_pagina_log pl 
+                    (SELECT pl.fecha_inicio AS hora_inicio_programa FROM certi_pagina_log pl 
                         WHERE pl.usuario_id = u.id 
                             AND pl.pagina_id = ppagina_id 
                     )as hora_inicio_programa,
-                    (SELECT TO_CHAR(pl.fecha_fin, 'DD/MM/YYYY') AS fecha_fin_programa FROM certi_pagina_log pl 
+                    (SELECT pl.fecha_fin AS fecha_fin_programa FROM certi_pagina_log pl 
                         WHERE pl.usuario_id = u.id 
                             AND pl.pagina_id = ppagina_id 
                     ) as fecha_fin_programa, 
-                    (SELECT TO_CHAR(pl.fecha_fin, 'HH:MI AM') AS hora_fin_programa FROM certi_pagina_log pl 
+                    (SELECT pl.fecha_fin AS hora_fin_programa FROM certi_pagina_log pl 
                         WHERE pl.usuario_id = u.id 
                             AND pl.pagina_id = ppagina_id 
                     ) as hora_fin_programa
@@ -242,8 +242,8 @@ begin
                     u.correo_personal as correo,
                     u.correo_corporativo as correo2,
                     u.activo as activo,
-                    to_char(u.fecha_registro, 'DD/MM/YYYY HH:MI am') as fecha_registro, 
-                    to_char(u.fecha_nacimiento, 'DD/MM/YYYY') as fecha_nacimiento, 
+                    u.fecha_registro as fecha_registro, 
+                    u.fecha_nacimiento as fecha_nacimiento, 
                     u.pais_id as pais, 
                     n.nombre as nivel,
                     u.campo1 as campo1,

@@ -23,6 +23,7 @@ function setDetails(data)
 	$('#correoPersonal').val(data.usuario.correoPersonal);
 	$('#fechaNacimiento').val(data.usuario.fechaNacimiento);
 	$('#activo').html(data.usuario.activo);
+	$('#time_zone').html(data.usuario.timeZone);
 	$('#correoCorporativo').val(data.usuario.correoCorporativo);
 	$('#campo1').val(data.usuario.campo1);
 	$('#campo2').val(data.usuario.campo2);

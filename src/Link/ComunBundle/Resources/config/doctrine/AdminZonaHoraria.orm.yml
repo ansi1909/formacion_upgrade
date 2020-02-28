@@ -1,0 +1,35 @@
+Link\ComunBundle\Entity\AdminZonaHoraria:
+    type: entity
+    table: admin_zona_horaria
+    indexes:
+        IDX_9F798E7DC604D5C6:
+            columns:
+                - pais_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: SEQUENCE
+    fields:
+        nombre:
+            type: string
+            nullable: true
+            length: 300
+            options:
+                fixed: false
+    manyToOne:
+        pais:
+            targetEntity: AdminPais
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                pais_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

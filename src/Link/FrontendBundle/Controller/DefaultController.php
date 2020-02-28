@@ -10,6 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 use Link\ComunBundle\Entity\AdminSesion;
 use Link\ComunBundle\Entity\AdminLike;
 use Link\ComunBundle\Entity\CertiMuro;
+use Link\ComunBundle\Entity\AdminIntroduccion;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
@@ -204,10 +205,35 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
+         $user_id = $session->get('usuario')['id'];
+         $introduccion = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+             array('id' => $user_id)
+         );
+
+         if (count($introduccion) == 0) {
+            $usuario_a_guardar = $em ->getRepository('LinkComunBundle:AdminUsuario')->findOneById($user_id);
+            $intro_nuevo =  new AdminIntroduccion();
+            $intro_nuevo->setUsuario($usuario_a_guardar);
+            $intro_nuevo->setPasoActual(1);
+            $intro_nuevo->setCancelado(false);
+            
+            $em->persist($intro_nuevo);
+            $em->flush();
+
+            $introduccion = $em->getRepository('LinkComunBundle:AdminIntroduccion')->findByUsuario(
+             array('id' => $user_id)
+            );
+         }
+         
+         $paso_actual_intro = $introduccion[0]->getPasoActual();
+         $cancelar_intro = $introduccion[0]->getCancelado();
+
+         return $this->render('LinkFrontendBundle:Default:index.html.twig', array('bienvenida' => $empresa->getBienvenida(),
                                                                                  'reciente' => $reciente,
                                                                                  'grupos' => $grupos,
-                                                                                 'actividad_reciente' => $actividad_reciente));
+                                                                                 'actividad_reciente' => $actividad_reciente,
+                                                                                 'paso_actual_intro' => $paso_actual_intro,
+                                                                                 'cancelar_intro' => $cancelar_intro));
 
     }
 
