@@ -20,7 +20,7 @@ class bouncingEmailsCommand extends ContainerAwareCommand
 {
     protected function configure(){
         $this->setName('link:correos-fallidos')
-        	 ->setDescription('Revisa en el buzon de tutorvirtual@formacionsmart.com si existen notificaciones por correo que no se entregaron a los usuarios de la plataforma');
+        	 ->setDescription('Revisa en el buzon de tutorvirtual@formacionsmart.com en busca de correos del tipo: Mail delivery failed');
     }
     
     public function transformArray($parameters,$yml){
@@ -66,11 +66,6 @@ class bouncingEmailsCommand extends ContainerAwareCommand
             $mailTypes = array('warning'=>0,'failed'=>0,'tutor'=>0);
             $parameters = array();
             $dateFilterMail = date('d-M-Y',strtotime(date('d-M-Y')."- 1 days"));
-            //$dateFilterMail = '01-Feb-2020';
-            //$dateFilterDbBegin = '2020-01-28 00:00:00';
-            //$dateFilterDbEnd = '2020-01-28 23:59:00';
-            //$dateFilterDbBegin = date('Y-m-d 00:00:00',strtotime(date('Y-m-d 00:00:00')."- 1 days"));
-            //$dateFilterDbEnd = date('Y-m-d 23:59:00',strtotime(date('Y-m-d 23:59:00')."- 1 days"));
             $cronJob = new AdminCronjobLog();
             $cronJob->setNombre('link:correos-fallidos') ;
             $cronJob->setFecha(new \DateTime('now'));
@@ -109,7 +104,7 @@ class bouncingEmailsCommand extends ContainerAwareCommand
               $output->writeln($r);
               $cronJob->setMensaje('Successful execution, failed emails: '.$mailTypes['failed'].', Warnings: '.$mailTypes['warning']);
               }else{
-                $cronJob->setMensaje('Successful execution: NO EXISTEN CORREOS DEL TIPO: '.$yml['parameters']['fallidos']['from'].', PARA LA FECHA INDICADA EN EL BUZON');
+                $cronJob->setMensaje('Successful execution: NO EXISTEN CORREOS DEL TIPO: '.$yml['parameters']['fallidos']['from'].' EN EL BUZON');
               }
           $closeSession = imap_close($inbox);
 
