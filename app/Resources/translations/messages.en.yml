@@ -80,6 +80,7 @@ Ayuda: Help
 Biblioteca: Library
 Biblioteca virtual: Virtual library
 Bienvenida: Welcome
+Bienvenido: Welcome
 Bien hecho: Well done
 Buen trabajo: Good job
 Buscar: Search
@@ -125,6 +126,7 @@ Código del empleado repetido: Employee code repeated
 Columna: Column
 ¡Comencemos! Elige tu programa: Let's start! Choose your program
 Comentar: Comment
+Comenzar: Start
 Comentario: Comment
 Comentario seleccionado: Selected comment
 comentarios: comments
@@ -442,8 +444,10 @@ Fecha de creación: Creation date
 Fecha de difusión: Broadcasting date
 Fecha de nacimiento: Birthday
 Fecha de publicación: Publication date
+Fecha de Publicación: Publication date
 Fecha de registro: Registration date
 Fecha de vencimiento: Due date
+Fecha de Vencimiento: Due date
 FELICITACIONES: CONGRATULATIONS
 Fila: Row
 filtrado de un total de: filtered of a total of
@@ -717,6 +721,7 @@ Nuevo registro: New item
 Nuevo tipo de pregunta: New type of question
 Nuevos registros almacenados: New records added
 Ocultar: answer
+Omitir: Skip
 Ofrecemos disculpas por las molestias ocasionadas: We apologize for the inconvenience caused
 Opción: Option
 Opción correcta (Lado B): Correct option (Side B)
@@ -814,6 +819,7 @@ Puntaje con que se aprueba: Score with which it is approved
 Puntaje definitivo del programa: Definitive score of the program
 que aún no han ingresado a la plataforma: that have not yet entered the platform
 QR: QR
+Quieres hacer un tour guiado: You want to take a guided tour
 realizó una publicación en el muro de: make a publication on the wall of 
 formación smart, recomendamos utilizar la ultima versión del: formación smart, we recommend using the latest version of the
 Recomendación: Recommendation
@@ -1007,6 +1013,7 @@ Volver al contenido: Back to the content
 Volver al inicio del contenido: Back to the begining of the content
 Volver al programa: Back to program page
 Volver al inicio: Back to home
+Volver al listado: Back to list
 y el: and
 y finaliza el: and ends at
 Yo: Me

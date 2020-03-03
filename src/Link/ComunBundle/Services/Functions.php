@@ -931,14 +931,12 @@ class Functions
         $only_dates = ($onlyDates!=0)? 'TRUE':'FALSE';
         $query = $em->getConnection()->prepare('SELECT
                                                     fnasignar_subpaginas
-                                                    (:ppadres_id,
-                                                     :pempresa_id,
+                                                    (:pempresa_id,
                                                      :pestatus_contenido,
                                                      :only_dates,
                                                      :only_muro) as
                                                     resultado;');
-        $query->bindValue(':ppadres_id', '{'.$pagina_empresa->getId().'}', \PDO::PARAM_STR);
-        $query->bindValue(':pempresa_id', $pagina_empresa->getEmpresa()->getId(), \PDO::PARAM_INT);
+        $query->bindValue(':pempresa_id', $pagina_empresa->getId(), \PDO::PARAM_INT);
         $query->bindValue(':pestatus_contenido', $yml['parameters']['estatus_contenido']['activo'], \PDO::PARAM_INT);
         $query->bindValue(':only_dates', $only_dates, \PDO::PARAM_STR);
         $query->bindValue(':only_muro', $only_muro, \PDO::PARAM_STR);

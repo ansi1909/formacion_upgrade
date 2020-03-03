@@ -87,6 +87,7 @@ $(document).ready(function() {
                 $(".markNotify").fadeIn(100).delay(25);
                 $(".opcListNotify").show();
             });
+            clearInterval(timer);
             y = 1;
         }else {
             $(".dropDownNotify").slideUp(500, function(){
@@ -94,6 +95,7 @@ $(document).ready(function() {
             });
             y = 0;
         }
+        getNotificaciones();
     });
 
     $("#apps").on('click',function(e){
@@ -153,14 +155,16 @@ $(document).ready(function() {
         $('html, body').animate({scrollTop: $('#comments').offset().top -100 }, 'slow');
         $('#ocultarComent').toggle();
         $('#verComent').toggle();
+         getNotificaciones();
     });
     
-    $("#iconDownloads").click(function(){
+    $("#iconDownloads,#iconDownloads2").click(function(){
         $(".downloads").toggleClass("open-downloads");
         $("#main").toggleClass("ml-comments");
         if (!$(".main-sidenav-close")[0]){
             closeNav();
         }
+        getNotificaciones();
     });
     
     $("#iconCloseDownloads").click(function(){
