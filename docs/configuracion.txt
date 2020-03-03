@@ -118,4 +118,5 @@ Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffic
 	d. php bin/console link:recordatorio-programados	--> Diariamente a las 03:00
 	e. php bin/console link:correos-fallidos            --> Diariamente a las 04:00
 
+
 19. Para la configuración del CKFinder, ajustar los valores en web/assets/vendor/ckfinder/config.php
