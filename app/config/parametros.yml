@@ -103,7 +103,6 @@ parameters:
     fallidos:
         inbox: "{imap.formacionsmart.com:993/imap/ssl/novalidate-cert}INBOX"
         from: Mail Delivery System
-        mail_notification: josetayupo@gmail.com
         subject: Mail delivery failed
         subject2: Warning
         separador: 'Action: failed'

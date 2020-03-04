@@ -1,14 +1,9 @@
 #comments {
-
+    max-height: 0px;
+    overflow: hidden;
     background-color: $gray-200;
-    height: 100vh;
-    width: 400px;
-    position: fixed;
-    top: 71px;
-    right: -400px;
-    padding: 64px 24px 128px 24px;
-    transition: .8s ease;
-    overflow-y: auto;
+    transition: max-height .9s;
+    
     z-index: 6;
     &::-webkit-scrollbar {
         width: calc(1rem - 8px);
@@ -27,33 +22,53 @@
     // box-shadow: -4px 2px 28px -9px rgba(38,38,38,1);
 
     &.open-comments {
-        right: 0%;
+        max-height: 3000px;
+        padding: 24px 24px 128px 24px;
+    }
+
+    .caja-comentario {
+        max-width: 1000px;
+        margin: 32px auto;
     }
 
     textarea {
         border-radius: 8px;
         border-width: 2px;
-        height: 150px;
+        height: 110px;
         padding: 12px;
-        font-size: 14px;
+        font-size: 16px;
         font-family: Roboto;
+        max-width: 1000px;
+        
+
     }
 
     .comment {
-        margin: 32px 24px;
+        
+       
         background-color: white;
-        padding: 16px;
+        padding: 24px;
         border-radius: 16px;
+        max-width: 1000px;
+        margin: 32px auto;
 
         p {
-            font-size: 12px;
+            font-size: 1rem;
             color: $gray-800;
+            font-family: 'Roboto';
+            margin: .8rem 1.2rem;
+        }
+
+        .response  {
+            display: flex;
+            margin-top: 16px;
+            align-items: flex-start;
         }
     }
 
     #respuesta {
-        width: 240px;
-        height: 40px;
+        width: 100%;
+        
         padding: 8px;
     }
 

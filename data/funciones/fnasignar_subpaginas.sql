@@ -1,4 +1,4 @@
-CREATE FUNCTION fnasignar_subpaginas(ppadres_id varchar,pempresa_id integer,pestatus_contenido integer,only_dates boolean,only_muro boolean) RETURNS TEXT AS $$
+CREATE FUNCTION fnasignar_subpaginas(pempresa_id integer,pestatus_contenido integer,only_dates boolean,only_muro boolean) RETURNS TEXT AS $$
 DECLARE
    padres INT[];
    aux_padres INT[];
@@ -12,31 +12,18 @@ DECLARE
    subpagina RECORD;
    tiene_prueba BOOLEAN;
    retorno TEXT :='';
-   
-   
    subpagina_empresa certi_pagina_empresa%ROWTYPE;
    pagina_padre certi_pagina_empresa%ROWTYPE;
 
 BEGIN
-
-     padres := ppadres_id::int[];
-   pagina_empresa_id := padres[1];
-   padres := '{}'::int[];
-   
-   RAISE NOTICE 'pagina empresa_id: (%)',pagina_empresa_id;
-   RAISE NOTICE 'padre padres clear: (%)',padres;
-   
+   pagina_empresa_id := pempresa_id;
+   padres := '{}'::int[]; 
    --obtener el registro donde se relaciona la pagina principal con la empresa para obtener las subpaginas
    SELECT * INTO pagina_empresa FROM certi_pagina_empresa AS cpe WHERE id = pagina_empresa_id;
-   
    --preparar el primer arreglo de padres
    padres := padres||ARRAY[pagina_empresa.pagina_id];
-   RAISE NOTICE 'Padre inicializado: (%)',padres;
    SELECT array_length(padres, 1) INTO length_padres;
-   
-   RAISE NOTICE 'Longitud de arreglo de padres: (%)',length_padres;
-     WHILE length_padres > 0  LOOP
-    RAISE NOTICE 'Entrando al while';
+   WHILE length_padres > 0  LOOP
     FOR i IN 1..length_padres LOOP
             orden_pag:=0;
       IF retorno = '' THEN
@@ -70,7 +57,6 @@ BEGIN
               END IF;
 
               IF is_assigned = 0 THEN
-          RAISE NOTICE 'Asignando Pagina';
                 INSERT INTO certi_pagina_empresa(
                   empresa_id,
                   pagina_id,
@@ -100,8 +86,7 @@ BEGIN
                   ) RETURNING id INTO subpagina_empresa_id;
 
               ELSE
-                    RAISE NOTICE 'La Pagina se encuentra asignada';
-            SELECT cpe.id INTO subpagina_empresa_id FROM certi_pagina_empresa AS cpe
+                  SELECT cpe.id INTO subpagina_empresa_id FROM certi_pagina_empresa AS cpe
                     WHERE cpe.pagina_id = subpagina.id AND cpe.empresa_id = pagina_padre.empresa_id;
                       
                       IF only_dates = TRUE THEN

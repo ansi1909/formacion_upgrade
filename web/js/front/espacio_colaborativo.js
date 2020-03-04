@@ -110,7 +110,6 @@ $(document).ready(function() {
 		submit: function (e, data) {
         	$.each(data.files, function (index, file) {
 				var hola = $('#archivo_input').val(file.name);
-				conlose.log(hola);
 				$('#archivo').val($('#base_upload').val()+file.name);
             });
         },
