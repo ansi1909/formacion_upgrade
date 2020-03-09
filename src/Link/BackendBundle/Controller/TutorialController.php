@@ -223,7 +223,7 @@ class TutorialController extends Controller
             $enlacePdf = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getPdf().'" target="_blank">'.$tutorial->getPdf().' </a>';
             $enlaceVideo = '<a href="'.$ruta.$tutorial->getId().'/'.$tutorial->getVideo().'" target="_blank">'.$tutorial->getVideo().' </a>';
             $acciones = '<td class="center" >
-                            <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'"><span class="fa fa-pencil"></span></a>
+                            <a href="#" title="'.$this->get('translator')->trans('Editar').'"  class="btn btn-link btn-sm edit button-tutorial" data-toggle="modal" data-target="#formModal" data="'.$tutorial->getId().'"><span class="fa fa-pencil"></span></a>
                             <a href="#" title="'.$this->get('translator')->trans('Eliminar').'" class="btn btn-link btn-sm delete" data="'.$tutorial->getId().'" data-ubicacion="1"><span class="fa fa-trash"></span></a>
                         </td>';
             array_push($data['data'],[$tutorial->getId(),$tutorial->getNombre(),$enlacePdf,$enlaceVideo,$acciones]);

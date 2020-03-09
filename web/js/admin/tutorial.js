@@ -12,6 +12,8 @@ $(document).ready(function() {
 		$('#wait').hide();
 	});
 
+
+
 	$('#guardar').click(function(){
 		$('#form').submit();
 		return false;
@@ -142,6 +144,11 @@ $(document).ready(function() {
 		var ubicacion = $(this).attr('data-ubicacion');
 		sweetAlertDeleteTutorial(tutorial_id,ubicacion);	
      });
+
+	$("#BodyTable,#div-button").on("click",".button-tutorial",function(event) {
+		$('#div-error').hide();
+		$('#nombre,#descripcion,#pdf,#imagen,#video').removeClass('error');
+	});
 
 });
 
