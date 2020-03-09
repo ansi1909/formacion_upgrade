@@ -154,7 +154,7 @@ class DefaultController extends Controller
                         $class_finaliza = '';
                     }
                     
-                    $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
+                    // $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Vencido');
 
                     $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
 
@@ -169,13 +169,28 @@ class DefaultController extends Controller
                     {
                         if( $n->getId() == $usuario->getNivel()->getId())
                         {
-                            $nivel_vigente =  date('Y-m-d') < $n->getFechaFin()->format('Y-m-d') ?  true : false;
+                            $fecha_nivel = $n->getFechaFin() && $n->getFechaInicio() ? true: false;
+                            if ($fecha_nivel) {
+                              $nivel_vigente =  date('Y-m-d') < $n->getFechaFin()->format('Y-m-d') ?  true : false;
+                              if ($nivel_vigente) {
+                                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($n->getFechaFin()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
+                                # code...
+                              }else{
+                                 $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
+                              }
+                              
+                            }else{
+                              $nivel_vigente =  true;
+                              $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
+
+                            }
+                            
                             //return new response(var_dump ($nivel_vencido));
 
-                            if(!$nivel_vigente)
-                            {
-                                $dias_vencimiento = $this->get('translator')->trans('Vencido');
-                            }
+                            // if(!$nivel_vigente)
+                            // {
+                            //     $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
+                            // }
                         }
                         
                     }

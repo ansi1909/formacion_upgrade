@@ -3450,13 +3450,29 @@ class Functions
                 $subpaginas_ids = $this->hijas($pagina_sesion['subpaginas']);
                 $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('empresa' => $empresa_id,
                                                                                                             'pagina' => $arp->getPagina()->getId()));
-
+                $usuario = $em->getRepository('LinkComunBundle:AdminUsuario')->find($usuario_id);
+                $niveles = $em->getRepository('LinkComunBundle:AdminNivel')->findBy(['empresa'=>$empresa_id]);
                 $padre_id = $arp->getPagina()->getId();
                 $imagen = $arp->getPagina()->getFoto();
                 $porcentaje = round($arp->getPorcentajeAvance());
                 $link_enabled = $pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d') ? 0 : 1;
-                $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Vencido');
+                $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
                 $titulo_padre = $arp->getPagina()->getNombre();
+
+
+                foreach ($niveles as $nivel) {
+                  if($nivel->getId() == $usuario->getNivel()->getId()){
+                    if($nivel->getFechaFin() && $nivel->getFechaInicio()){//si el nivel posee un periodo de validez
+                      $nivel_vigente = date('Y-m-d') < $nivel->getFechaFin()->format('Y-m-d')? true : false;
+                      if ($nivel_vigente) {
+                          $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($nivel->getFechaFin()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
+                      }else{
+                        $dias_vencimiento = $this->translator->trans('Programa Vencido');
+                        $link_enabled = 0;
+                      }
+                    }
+                  }
+                }
 
                 if (count($subpaginas_ids))
                 {
