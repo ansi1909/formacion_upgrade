@@ -4946,7 +4946,7 @@ p.up {
   }
 }
 #comments.open-comments {
-  max-height: 3000px;
+  max-height: 30000px;
   padding: 24px 24px 128px 24px;
 }
 #comments .caja-comentario {
