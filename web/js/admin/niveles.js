@@ -1,4 +1,12 @@
 $(document).ready(function() {
+    $('#nuevo-nivel').click(function(event) {
+       $('#nombre').val('');
+       $('#fechaInicio').val('');
+       $('#fechaFin').val('');
+       $('#nombre').removeClass('error');
+       $('#fechaInicio').removeClass('error');
+       $('#fechaFin').removeClass('error');
+    });
 
 	$('.new').click(function(){
         initModalEdit();
