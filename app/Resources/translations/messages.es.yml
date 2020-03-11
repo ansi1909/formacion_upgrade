@@ -263,6 +263,7 @@ Eliminar: Eliminar
 El apellido del usuario debe ser mínimo de 3 caracteres: El apellido del usuario debe ser mínimo de 3 caracteres
 El apellido del usuario es requerido: El apellido del usuario es requerido
 El archivo: El archivo
+El archivo excede el tamaño maximo permitido: El archivo excede tamaño maximo permitido
 El archivo debe tener al menos una fila con datos: El archivo debe tener al menos una fila con datos
 El archivo es requerido.: El archivo es requerido.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.
@@ -1004,6 +1005,7 @@ Ver respuesta: Ver respuesta
 Ver Sub-Aplicaciones: Ver Sub-Aplicaciones
 Ver thumbnails: Ver thumbnails
 Viernes: Viernes
+Vídeo requerido: Video required
 Ver Comentarios: Ver Comentarios
 Vista previa: Vista previa
 Vista previa del dashboard: Vista previa del dashboard

@@ -89,12 +89,16 @@ $(document).ready(function() {
         dataType: 'json',
         done: function (e, data) {
         	var id = $('#fileUpload').val();
+        	if (data.result.response.files[0].error) {
+			     getErrorUploadHandler(data.result.response.files[0].error,id);
+			 }
+        	
         	$.each(data.result.response.files, function (index, file) 
         	{
         		$('#'+id).val(file.name);
             });
             showButtons();
-            $('#div-error').hide();
+           // $('#div-error').hide();
         },
         add: function (e,data ){
         	 hideButtons();

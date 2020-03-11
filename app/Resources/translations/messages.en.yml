@@ -263,6 +263,7 @@ Eliminar: Remove
 El apellido del usuario debe ser mínimo de 3 caracteres: User last name must have at least 3 characters
 El apellido del usuario es requerido: User last name is required
 El archivo: The file
+El archivo excede el tamaño maximo permitido: File exceeds maximum size allowed
 El archivo debe tener al menos una fila con datos: File must have at least one row with data
 El archivo es requerido.: File is required.
 El archivo presentó errores en alguna de sus líneas. Ver los detalles en el cuadro más abajo.: File have errors into some of its lines. See details in table below.
@@ -1004,6 +1005,7 @@ Ver respuesta: See answer
 Ver Sub-Aplicaciones: See Sub-Applications
 Ver thumbnails: See thumbnails
 Ver Comentarios: See comments
+Vídeo requerido: Vídeo requerido
 Viernes: Friday
 Vista previa: Preview
 Vista previa del dashboard: Dashboard preview

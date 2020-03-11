@@ -20,6 +20,7 @@ class TutorialController extends Controller
 
     	$session = new Session();
         $f = $this->get('funciones');
+        $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         
         if (!$session->get('ini'))
         {
@@ -34,7 +35,7 @@ class TutorialController extends Controller
         	}
         }
 
-       return $this->render('LinkBackendBundle:Tutorial:index.html.twig' );
+       return $this->render('LinkBackendBundle:Tutorial:index.html.twig', array('upload_file'=>$yml['parameters']['upload_file']) );
 
     }
 
@@ -269,7 +270,6 @@ class TutorialController extends Controller
         $options = array('upload_dir' => $upload_dir,
                          'upload_url' => $upload_url);
         $upload_handler = new UploadHandler($options);
-
         $return = json_encode($upload_handler);
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }

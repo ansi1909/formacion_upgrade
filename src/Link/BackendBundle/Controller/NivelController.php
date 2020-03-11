@@ -153,8 +153,10 @@ class NivelController extends Controller
         $fecha_inicio = $request->request->get('fechaInicio')? $request->request->get('fechaInicio'):NULL;
         $fecha_fin = $request->request->get('fechaFin')? $request->request->get('fechaFin'):NULL;
         if ($fecha_inicio && $fecha_fin) {
-            $fecha_inicio = new \DateTime(date('Y-m-d',strtotime($fecha_inicio)));
-            $fecha_fin = new \DateTime(date('Y-m-d',strtotime($fecha_fin)));
+            $inicio = explode("/",$fecha_inicio);
+            $fin = explode("/", $fecha_fin);
+            $fecha_inicio = new \DateTime($inicio[2].'-'.$inicio[1].'-'.$inicio[0]);
+            $fecha_fin = new \DateTime($fin[2].'-'.$fin[1].'-'.$fin[0]);
         }
 
         $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
@@ -195,8 +197,8 @@ class NivelController extends Controller
         //return new response(var_dump($nivel->getFechaInicio()));
         
         $return = array('nombre' => $nivel->getNombre(),
-                        'fechaInicio'=> $nivel->getFechaInicio()? $nivel->getFechaInicio()->format('Y/m/d'):NULL,
-                        'fechaFin'=> $nivel->getFechaFin()? $nivel->getFechaFin()->format('Y/m/d'):NULL);
+                        'fechaInicio'=> $nivel->getFechaInicio()? $nivel->getFechaInicio()->format('d/m/Y'):NULL,
+                        'fechaFin'=> $nivel->getFechaFin()? $nivel->getFechaFin()->format('d/m/Y'):NULL);
         
         $return = json_encode($return);
         return new Response($return, 200, array('Content-Type' => 'application/json'));

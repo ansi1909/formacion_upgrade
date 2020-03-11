@@ -82,12 +82,12 @@
         </div>
         <div class="form-group">
             <label for="inicio" class="form-control-label">{{ 'Fecha inicio'|trans }}:</label>
-            <input type="text" class="form-control form_sty_modal date_picker" id="fechaInicio" name="fechaInicio" value="">
+            <input type="text" class="form-control form_sty_modal date_picker" id="fechaInicio" name="fechaInicio"  placeholder="DD/MM/YYYY" data-date-end-date="0d" value="">
             <span class="fa fa-cube"></span>
         </div>
         <div class="form-group">
             <label for="vencimiento" class="form-control-label">{{ 'Fecha fin'|trans }}:</label>
-            <input type="text" class="form-control form_sty_modal date_picker" id="fechaFin" name="fechaFin" value="">
+            <input type="text" class="form-control form_sty_modal date_picker" id="fechaFin" name="fechaFin" placeholder="DD/MM/YYYY" data-date-end-date="0d"  value="">
             <span class="fa fa-cube"></span>
         </div>
     </form>
@@ -103,12 +103,12 @@
     <script type="text/javascript" src="{{ asset('js/admin/empresasNiveles.js') }}"></script>
     <script type="text/javascript">
 
-        $(".date_picker").datepicker({
+      /*    $(".date_picker").datepicker({
             startView: 1,
             autoclose: true,
             format: 'dd/mm/yyyy',
             language: 'es'
-        });
+        });*/
 
         $('#guardar').click(function(){
             var valid = $("#form").valid();
@@ -118,22 +118,22 @@
             }
             else {
 
-                // Validar que la fecha de vencimiento sea mayor que la fecha de inicio
-                var fi_arr = $('#fechaInicio').val().split('/');
-                var fv_arr = $('#fechaFin').val().split('/');
+                // // Validar que la fecha de vencimiento sea mayor que la fecha de inicio
+                // var fi_arr = $('#fechaInicio').val().split('/');
+                // var fv_arr = $('#fechaFin').val().split('/');
                 
-                var date1 = new Date(fi_arr[2], fi_arr[1], fi_arr[0]);
-                var date2 = new Date(fv_arr[2], fv_arr[1], fv_arr[0]);
+                // var date1 = new Date(fi_arr[2], fi_arr[1], fi_arr[0]);
+                // var date2 = new Date(fv_arr[2], fv_arr[1], fv_arr[0]);
 
-                if (date2 < date1) {
-                    $('#div-error ul').html("<li>- {{ 'La fecha de vencimiento no puede ser menor que la fecha de inicio.'|trans }}</li>");
-                    $('#div-error ul').show();
-                    notify($('#div-error').html());
-                }
-                else {
-                    $('#finish').hide();
-                    $('#form').submit();
-                }
+                // if (date2 < date1) {
+                //     $('#div-error ul').html("<li>- {{ 'La fecha de vencimiento no puede ser menor que la fecha de inicio.'|trans }}</li>");
+                //     $('#div-error ul').show();
+                //     notify($('#div-error').html());
+                // }
+                // else {
+                //     $('#finish').hide();
+                //     $('#form').submit();
+                // }
 
             }
         });

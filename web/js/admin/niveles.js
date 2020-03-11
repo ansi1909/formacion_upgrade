@@ -1,4 +1,30 @@
 $(document).ready(function() {
+
+    $('#fechaInicio').datepicker({
+      startView: 1,
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+      language: 'es',
+      startDate: '0d',
+      clearBtn: true
+  })
+  .on( "changeDate", function(selected) {
+    var startDate = new Date(selected.date.valueOf());
+      $('#fechaFin').datepicker('setStartDate', startDate);
+    });
+    
+     $('#fechaFin').datepicker({
+      startView: 1,
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+      language: 'es',
+      startDate: '0d',
+      clearBtn: true
+  })
+  .on( "changeDate", function(selected) {
+    var endDate = new Date(selected.date.valueOf());
+      $('#fechaInicio').datepicker('setEndDate', endDate);
+    });
     $('#nuevo-nivel').click(function(event) {
        $('#nombre').val('');
        $('#fechaInicio').val('');
@@ -7,6 +33,8 @@ $(document).ready(function() {
        $('#fechaInicio').removeClass('error');
        $('#fechaFin').removeClass('error');
     });
+
+    
 
 	$('.new').click(function(){
         initModalEdit();

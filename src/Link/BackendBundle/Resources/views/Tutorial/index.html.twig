@@ -357,7 +357,7 @@
                     extension: "- {{ 'Extensiones aceptadas para el campo PDF'|trans }}: pdf."
                 },
                 'video':{
-                    required: "- {{ 'Video requerido'|trans }}.",
+                    required: "- {{ 'Vídeo requerido'|trans }}.",
                     extension: "- {{ 'Extensiones aceptadas para vídeo'|trans }}: mov,mpeg,m4v,mp4,avi,mpg,wma,flv,webm."
                 },
                 'imagen':{
@@ -371,6 +371,22 @@
             swal(""," {{ 'El archivo seleccionado no se cargo correctamente.'| trans }} ","error");
             showButtons();
             return 0;
+        }
+        function getErrorUploadHandler(error,id){
+            erroresConocidos = {
+                'The uploaded file exceeds the upload_max_filesize directive in php.ini':"{{ 'El archivo excede el tamaño maximo permitido' }}"+": {{ upload_file.upload_max_filesize }}"
+            }
+
+            var mensaje = erroresConocidos[error]? erroresConocidos[error]:error;
+
+            $('#error-messages').html('- '+mensaje);
+            document.getElementById('error-messages').style.display='block';
+            $('#div-error').show();
+            setTimeout(function(){ 
+                    $('#div-error').hide();
+                    $('#error-messages').html('');
+                    $('#'+id).val('');
+                }, 3500);
         }
 
         function sweetAlertDeleteTutorial(id,ubicacion,preg_opt=0)

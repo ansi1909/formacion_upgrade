@@ -119,3 +119,5 @@ parameters:
         utc: 'UTC'
         show_time_zone: 1
         name_separator: '/'
+    upload_file:
+        upload_max_filesize: 80MB
