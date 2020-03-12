@@ -156,7 +156,9 @@ $(document).ready(function() {
         }
     });
     $("#fechaInicio,#fechaFin").click(function(e) {
+      e.preventDefault();
       $(this).val('');
+      $(this).datepicker("show");
     });
 
     disableSubmit();
