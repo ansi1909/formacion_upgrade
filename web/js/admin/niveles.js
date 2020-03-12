@@ -155,6 +155,9 @@ $(document).ready(function() {
             
         }
     });
+    $("#fechaInicio,#fechaFin").click(function(e) {
+      $(this).val('');
+    });
 
     disableSubmit();
 
