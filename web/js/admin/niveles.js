@@ -43,9 +43,20 @@ $(document).ready(function() {
 		$('#nivel_id').val("");
 	});
 
-    $('#guardar').click(function(){
+ $('#guardar').click(function(e){
+      var valid = ($('#fechaFin').val()=='' && $('#fechaInicio').val()=='') || ($('#fechaFin').val()!='' && $('#fechaInicio').val()!='') ? true:false;
+      if (valid) {
         $('#form').submit();
         return false;
+      }else{
+        var label = $('#fechaInicio').val()==''? $('#fechaInicio').data('label'):$('#fechaFin').data('label');
+        $('#'+label).show();
+        setTimeout(function(){ 
+            $('#'+label).hide();
+        }, 3000);
+        $('#form').safeform('complete');
+        return false; // revent real submit
+      }
     });
 
     $('#form').submit(function(e) {
