@@ -3459,13 +3459,16 @@ class Functions
                 $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
                 $titulo_padre = $arp->getPagina()->getNombre();
 
-
+                $fecha_nivel = false;
                 foreach ($niveles as $nivel) {
                   if($nivel->getId() == $usuario->getNivel()->getId()){
                     if($nivel->getFechaFin() && $nivel->getFechaInicio()){//si el nivel posee un periodo de validez
+                      $fecha_nivel = true;
                       $nivel_vigente = date('Y-m-d') < $nivel->getFechaFin()->format('Y-m-d')? true : false;
                       if ($nivel_vigente) {
-                          $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($nivel->getFechaFin()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
+                        $porcentaje_finalizacion = $this->timeAgo($nivel->getFechaFin()->format("Y/m/d"));
+                          $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
+                        $class_finaliza = $this->classFinaliza($porcentaje_finalizacion);
                       }else{
                         $dias_vencimiento = $this->translator->trans('Programa Vencido');
                         $link_enabled = 0;
@@ -3532,29 +3535,18 @@ class Functions
                     }
 
                 }
+                if (!$fecha_nivel) {
+                  $porcentaje_finalizacion = $this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                  if ($link_enabled)
+                  {
+                    $class_finaliza = $this->classFinaliza($porcentaje_finalizacion);
+                  }
+                  else {
+                      $class_finaliza = '';
+                  }
+                }
 
-                $porcentaje_finalizacion = $this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-                if ($link_enabled)
-                {
-                    if ($porcentaje_finalizacion >= 70)
-                    {
-                       $class_finaliza = 'alertTimeGood';
-                    }
-                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                    {
-                        $class_finaliza = 'alertTimeWarning';
-                    }
-                    elseif ($porcentaje_finalizacion <= 30) 
-                    {
-                        $class_finaliza = 'alertTimeDanger';
-                    }
-                    else {
-                        $class_finaliza = '';
-                    }
-                }
-                else {
-                    $class_finaliza = '';
-                }
+
 
                 $actividad_reciente[$arp->getPagina()->getId()] = array('id' => $id,
                                                                         'padre_id' => $padre_id,
@@ -3661,6 +3653,21 @@ class Functions
             return $timeZone.'.';
         }
        
+    }
+
+    public function classFinaliza($porcentaje){
+      if ($porcentaje >= 70){
+        $class_finaliza = 'alertTimeGood';
+      }
+      elseif ($porcentaje >= 31 && $porcentaje <= 69){
+        $class_finaliza = 'alertTimeWarning';
+      }
+      elseif ($porcentaje <= 30) {
+        $class_finaliza = 'alertTimeDanger';
+      }else {
+        $class_finaliza = '';
+      }
+      return $class_finaliza;
     }
 
 

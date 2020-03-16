@@ -232,10 +232,8 @@ INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, ord
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (41, 'Interacción en el espacio colaborativo', '_interaccionColaborativo', 'fa-code-fork', TRUE, 18, 11);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (42, 'Interacción en los muros', '_interaccionMuro', 'fa-comments', TRUE, 18, 12);
 INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (43, 'Detalle del participante', '_detalleParticipante', 'fa-eye', TRUE, 18, 13);
+INSERT INTO admin_aplicacion (id, nombre, url, icono, activo, aplicacion_id, orden) VALUES (44, 'Generar certificados', '_GenerarCertificados', 'fa-file-zip-o', TRUE, 9, 13);
 
-
-------------------------------------------------------------------------------------------------------------------------
--- Name: idadmin_tipo_noticia_seq;; Type: SEQUENCE SET; Schema: public;
 --
 
 SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_noticia', 'id'), 4, false);
