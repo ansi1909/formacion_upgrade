@@ -1,6 +1,7 @@
 {% extends '::'~app.session.get('empresa').plantilla %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('front/js/plugins/introjs/introjs.css') }}">
     {{ parent() }}
     <style type="text/css">
         .disabled {
@@ -12,18 +13,44 @@
         .card .badge-wrap {
             transform: translateY(0);
         }
+        .text-vencido{
+            text-align: center;
+            display: felx;
+            flex-direction:  column;
+            justify-content: center;
+
+        }
     </style>
 {% endblock %}
 
 {% block body %}
 
 <input type="hidden" id="url_servicio" name="url_servicio" value="{{ path('_ajaxServicioInteractivo') }}">
-
+<input type="hidden" id="url_cambiar_estado" name="url_cambiar_estado" value="{{ path('_ajaxCambiarEstado') }}">        
+<input type="hidden" id="paso_actual_intro" name="paso_actual_intro" value="{{ paso_actual_intro }}" data-pasoCorrecto="1">     
+<input type="hidden" id="cancelar_intro" name="cancelar_intro" value="{{ cancelar_intro }}">
 <div id="message" class="for-message well-message container py-6 px-6 mb-4 bckgd">
     <i id="equis" class="material-icons mr-2" >close</i>
     {{ bienvenida|raw }}    
 </div>
-
+<div class="tuto-intro-overlay">
+    <div class="tuto-intro-modal">
+        <h2 class="tuto-intro-title">
+            ¡{{ 'Bienvenido'|trans }}!
+        </h2>
+        <p class="tuto-intro-text">
+            ¿{{ 'Quieres hacer un tour guiado'|trans }}?
+        </p>
+        <div class="tuto-intro-buttons">
+            <div class="tuto-intro-button btn mb-2" id="tuto-btn-start">
+                Comenzar
+            </div>
+            <div class="tuto-intro-skip" id="tuto-btn-skip">
+                {{ 'Omitir'|trans }}
+            </div>
+        </div>
+    </div>
+</div>
 {% if reciente == 0 %}
 
     <div class="for-message es-message container py-5 px-6 mb-4">
@@ -40,9 +67,14 @@
 
         {# CURSANDO #}
         <div class="container d-flex flex-column justify-content-center align-items-center ">
-            
+            {% set cont = 0 %}
             {% for ar in actividad_reciente %}
-                {{ include('LinkFrontendBundle:Default:actividadReciente.html.twig', { 'ar': ar }) }}
+                {% if loop.first %}
+                    {% set cont = 1 %}
+                {% else %}
+                    {% set cont = 0 %}
+                {% endif %}
+                {{ include('LinkFrontendBundle:Default:actividadReciente.html.twig', { 'ar': ar, 'number': cont }) }}
             {% endfor %}
 
         </div>
@@ -72,12 +104,13 @@
     </div>
     <div class="row">
         <ul class="tab__content">
+            {% set card_cont = 0%}
             {% for grupo in grupos %}
                 <li {% if loop.index == 1 %} class="activo" {% endif %}>
                     <div class="content__wrapper">
                         <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
                             {% for pagina in grupo.paginas %}
-                                <div class="card">
+                                <div class="card" {% if loop.first %} id="tuto-step1"  {% endif %}>
                                     <img class="card-img-top" src="{{ uploads ~ pagina.imagen }}" alt="Card image cap">
                                     <div class="card-img-overlay">
                                         <span class="count text-xs {{ pagina.class_finaliza }}">{{ pagina.dias_vencimiento }}</span>
@@ -87,32 +120,63 @@
                                         <p class="card-text">{{ pagina.descripcion|raw }}</p>
                                         {% if pagina.continuar == 0 %}
                                             {% if pagina.tiene_subpaginas == 1 %}
-                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
+                                                {% endif %}
                                             {% else %}
-                                                <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-primary mt-3">{{ 'Iniciar'|trans }}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
+                                                {% endif %}
                                             {% endif %}
                                         {% elseif pagina.continuar == 1 %}
                                             {% if pagina.tiene_subpaginas == 1 %}
-                                                <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
+                                                {% endif%}
                                             {% else %}
-                                                <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% if pagina.nivel_vigente %}
+                                                    <a href="{{ path('_lecciones', { 'programa_id':  pagina.id }) }}" class="btn btn-continuar mt-3">{{ 'Continuar'|trans}}</a>
+                                                {% else %}
+                                                    <i class="material-icons badge-aprobado">update</i>
+                                                    <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
+                                                {% endif%}
                                             {% endif %}
-                                        {% elseif  pagina.continuar in [2, 3] %}
+                                        {% elseif  pagina.continuar in [2, 3]  %}
                                             <div class="badge-wrap">
                                                 {% if pagina.link_enabled %}
-                                                    <i class="material-icons badge-aprobado">check_circle</i>
-                                                    <span class="text-badge">{{ 'Aprobado'|trans }}</span>
+                                                    {% if pagina.nivel_vigente %}
+                                                        <i class="material-icons badge-aprobado">check_circle</i>
+                                                        <span class="text-badge">{{ 'Aprobado'|trans }}</span>
+                                                    {% else %}
+                                                        <i class="material-icons badge-aprobado">update</i>
+                                                        <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
+                                                    {% endif %}
                                                 {% else %}
-                                                    {# Cambiar el ícono por un relojito #}
-                                                    <i class="material-icons badge-aprobado">update</i>
-                                                    <span class="text-badge">{{ 'Vencido'|trans }}</span>
+                                                    {% if pagina.nivel_vigente %}
+                                                        {# Cambiar el ícono por un relojito #}
+                                                        <i class="material-icons badge-aprobado">update</i>
+                                                        <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
+                                                
+                                                    {% else %}
+                                                        <i class="material-icons badge-aprobado">update</i>
+                                                        <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
+                                                    {% endif %}
                                                 {% endif %}
                                             </div>
                                         {% else %}
                                             {# Cambiar el ícono por un relojito #}
                                             <div class="badge-wrap">
                                                 <i class="material-icons badge-aprobado">update</i>
-                                                <span class="text-badge">{{ 'Vencido'|trans }}</span>
+                                                <span class="text-badge">{{ 'Programa Vencido'|trans }}</span>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -129,7 +193,7 @@
                                                 <small class=" d-block">{{ 'Notas'|trans }}</small>
                                             </a>
                                             {% endif %}
-                                            {% if pagina.continuar == 2 %}
+                                            {% if pagina.continuar == 2 and pagina.nivel_vigente %}
                                                 <a href="{{ path('_programa', { 'programa_id':  pagina.id }) }}" class="flex-column align-items-center col-4 btn-edge btn-ver">
                                                 <i class="material-icons d-block">visibility</i>
                                                 <small class=" d-block">{{ 'Ver'|trans }}</small>
@@ -150,7 +214,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('front/js/plugins/introjs/intro.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/front/tabs.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/front/tuto.js') }}"></script>
     <script>
         $(document).ready(function(){
             $('#dashBoard').addClass("active");
@@ -174,6 +240,15 @@
                     }
                 });
             });
+            /////////////////////////////
+            const introSteps = [
+                {
+                    element: document.getElementById('tuto-step1'),
+                    intro: 'Haz clic en iniciar para comenzar la navegacion del contenido.'
+                }
+            ]
+
+            startIntro(introSteps, true);
         });
     </script>
 {% endblock %}

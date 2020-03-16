@@ -30,6 +30,20 @@ class AdminNivel
     private $nombre;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Fecha_inicio", type="date", nullable=true)
+     */
+    private $fechaInicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_fin", type="date", nullable=true)
+     */
+    private $fechaFin;
+
+    /**
      * @var \Link\ComunBundle\Entity\AdminEmpresa
      *
      * @ORM\ManyToOne(targetEntity="Link\ComunBundle\Entity\AdminEmpresa")
@@ -73,6 +87,54 @@ class AdminNivel
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set fechaInicio
+     *
+     * @param \DateTime $fechaInicio
+     *
+     * @return AdminNivel
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaInicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
+    }
+
+    /**
+     * Set fechaFin
+     *
+     * @param \DateTime $fechaFin
+     *
+     * @return AdminNivel
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaFin
+     *
+     * @return \DateTime
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
     }
 
     /**

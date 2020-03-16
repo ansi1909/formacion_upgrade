@@ -18,7 +18,7 @@ begin
     
     SELECT u.codigo AS codigo, u.login AS login, u.nombre AS nombre, u.apellido AS apellido, u.correo_personal AS correo_personal, 
   u.correo_corporativo AS correo_corporativo, e.nombre AS empresa, p.nombre AS pais, n.nombre AS nivel, 
-  TO_CHAR(u.fecha_registro, 'DD/MM/YYYY') AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
+  u.fecha_registro AS fecha_registro, u.campo1 AS campo1, u.campo2 AS campo2, u.campo3 AS campo3, u.campo4 AS campo4, 
   f.mensaje AS mensaje, f.fecha_registro AS fecha_mensaje 
     FROM certi_foro f INNER JOIN 
   (admin_usuario u INNER JOIN admin_nivel n ON u.nivel_id = n.id 

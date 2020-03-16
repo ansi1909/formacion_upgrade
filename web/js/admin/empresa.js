@@ -38,4 +38,43 @@ $(document).ready(function() {
 
 	});
 
+
+    $("#pais_id").change(function(){
+    	var pais_id = $(this).val();
+    	$('#zona_id').empty();
+    	$('#zona_id').prop("disabled",true);
+		if(pais_id){
+		   $.ajax({
+			type: "POST",
+			url: $('#url_horarios').val(),
+			async: true,
+		    data: { pais_id: pais_id },
+		    dataType: "json",
+			success: function(data) {
+				if(data.ok == 1){
+					$('#zona_id').append('<option value></option>');
+					$('#zona_id').prop("disabled",false);
+					//console.log(data.zonaHoraria);
+					var horario = JSON.parse(data.zonaHoraria);
+					var selected;
+					for (var i = 0; i < horario.length; i++) {
+						$('#zona_id').append('<option value= '+horario[i].id+' '+horario[i].selected+'>'+horario[i].zona+'</option>');
+					}	   
+				}else{
+					console.log('Debe asociar husos horarios a este pais');
+				}
+			},
+			error: function(){
+				$('#active-error').html($('#error_msg-active').val());
+				$('#div-active-alert').show();
+				}
+			});
+		}
+		else{
+			alert('Debe seleccionar un id');
+		}
+	});
+
+
+
 });

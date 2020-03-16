@@ -1,7 +1,6 @@
 <?php
 
 namespace Link\BackendBundle\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,10 +10,12 @@ use Link\ComunBundle\Entity\AdminNotificacion;
 use Link\ComunBundle\Entity\AdminTipoNotificacion;
 use Link\ComunBundle\Entity\AdminNotificacionProgramada;
 use Link\ComunBundle\Entity\AdminCorreo;
+use Link\ComunBundle\Entity\AdminCorreoFallido;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class NotificacionController extends Controller
 {
@@ -292,6 +293,71 @@ class NotificacionController extends Controller
 
     }
 
+    public function failedEmails($notificaciones){
+        $em = $this->getDoctrine()->getManager();
+        $notificacionesId = array ();
+        foreach ($notificaciones as $notificacion) {
+            $chijos = 0;
+            $query = $em->createQuery("SELECT cf.id FROM LinkComunBundle:AdminCorreoFallido cf 
+                                      WHERE cf.reenviado = :reenviado 
+                                      AND cf.entidadId = :notificacion_id")
+                    ->setParameters(array('notificacion_id' => $notificacion->getId(),'reenviado'=>FALSE));
+            $cfll = $query->getResult();
+
+            $hijos = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($notificacion->getId());
+            
+            if(count($hijos)>0)
+            { 
+                foreach ($hijos as $hijo){
+                    $mails = $this->getDoctrine()->getRepository('LinkComunBundle:AdminCorreoFallido')->findBy(array('entidadId'=>$hijo->getId()));
+                    $chijos = $chijos + count($mails);
+                }
+            }
+
+            $total = $chijos +count($cfll);
+            if($total>0){
+                $notificacionesId[$notificacion->getId()] = $total;
+            }
+
+        }
+        return $notificacionesId;
+    }
+
+    
+    public function ajaxExcelCorreosAction(Request $request)
+    {
+        try{
+            $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parameters.yml'));
+            $em = $this->getDoctrine()->getManager();
+            $f = $this->get('funciones');
+            $npId = (int)$request->request->get('notificacion_id');
+            $ids = array($npId);
+            $np = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->find($npId);
+            $npChilds = $this->getDoctrine()->getRepository('LinkComunBundle:AdminNotificacionProgramada')->findByGrupo($np->getId());
+
+            $pex=$this->get('phpexcel');
+
+            foreach ($npChilds as $child) {
+                array_push($ids,$child->getId());
+            }
+            
+            $query = $em->createQuery("SELECT cf FROM LinkComunBundle:AdminCorreoFallido cf 
+                                      WHERE cf.reenviado = :reenviado 
+                                      AND cf.entidadId IN (:indices)")
+                    ->setParameters(array('indices' => $ids,'reenviado'=>FALSE));
+            $mails = $query->getResult();
+            $encabezado = array('titulo'=>'Correos no entregados ('.count($mails).') : '.$np->getNotificacion()->getAsunto(),'fecha'=>$np->getFechaDifusion()->format('d/m/Y'),'empresa'=>$np->getNotificacion()->getEmpresa()->getNombre());
+            $excel = $f->ExcelMails($mails,$encabezado,$pex,$yml,$np->getId());
+            $return = json_encode($excel);
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
+        } catch(\Exception $ex){
+            $return = array('ok'=>0,'msg'=>$ex->getMessage());
+            return new JsonResponse($return);
+        }
+
+        
+    }
+    
     public function ajaxProgramadosAction(Request $request)
     {
         
@@ -304,13 +370,13 @@ class NotificacionController extends Controller
         $query = $em->createQuery("SELECT np FROM LinkComunBundle:AdminNotificacionProgramada np 
                                     WHERE np.notificacion = :notificacion_id 
                                     AND np.grupo IS NULL 
-                                    AND np.fechaDifusion >= :hoy 
                                     ORDER BY np.fechaDifusion ASC")
-                    ->setParameters(array('notificacion_id' => $notificacion_id,
-                                          'hoy' => date('Y-m-d')));
+                    ->setParameters(array('notificacion_id' => $notificacion_id));
         $nps = $query->getResult();
+        
+        $failed = $this->failedEmails($nps);
 
-        $html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps));
+        $html = $this->renderView('LinkBackendBundle:Notificacion:notificacionesProgramadas.html.twig', array('nps' => $nps,'failed'=>$failed));
 
         $return = array('html' => $html,
                         'notificacion' => $notificacion->getAsunto());

@@ -84,12 +84,14 @@ class Reportes
     }
 
 	// Cálculo del reporte Horas de Conexión por Empresa en un período determinado
-	public function horasConexion($empresa_id, $desde, $hasta)
+	public function horasConexion($empresa_id, $desde, $hasta, $yml)
 	{
 
 		$em = $this->em;
+        $empresa = $em->getRepository('LinkComunBundle:AdminEmpresa')->find($empresa_id);
+		$timeZoneEmpresa = ($empresa->getZonaHoraria())? $empresa->getZonaHoraria()->getNombre():$yml['parameters']['time_zone']['default'];
 		
-		// Acumuladores
+        // Acumuladores
         $columna_mayor = 0;
         $fila_mayor = 0;
         $columnas_mayores = array();
@@ -187,6 +189,19 @@ class Reportes
                 $h = $c-1;
                 $hora1 = $h<=9 ? '0'.$h.':00:00' : $h.':00:00';
                 $hora2 = $h<=9 ? '0'.$h.':59:59' : $h.':59:59';
+                //echo "Hr1: ".$hora1." Hr2: ".$hora2,"\n";
+                //Objeto DateTime con la hora llevada al uso horario de la empresa
+                $hora1 = new \DateTime(date('H:i:s',strtotime($hora1)),new \DateTimeZone($timeZoneEmpresa));
+                $hora2 = new \DateTime(date('H:i:s',strtotime($hora2)),new \DateTimeZone($timeZoneEmpresa));
+                //Transformar hora1 y hora2 al time zone por defecto (UTC)
+                $hora1->setTimeZone(new \DateTimeZone($yml['parameters']['time_zone']['default']));
+                $hora2->setTimeZone(new \DateTimeZone($yml['parameters']['time_zone']['default']));
+                //preparamos la variable que se pasara a la funcion de base de datos
+                $hora1 = $hora1->format('H:i:s');
+                $hora2 = $hora2->format('H:i:s');
+                //echo "Hr1: ".$hora1." Hr2: ".$hora2."\n";
+                //exit();
+
 
                 // Cálculos desde la función de BD
                 $query = $em->getConnection()->prepare('SELECT

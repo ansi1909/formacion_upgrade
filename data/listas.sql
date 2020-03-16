@@ -390,3 +390,87 @@ SELECT pg_catalog.setval(pg_catalog.pg_get_serial_sequence('admin_tipo_correo', 
 INSERT INTO admin_tipo_correo (id, nombre) VALUES (1, 'Notificación programada');
 INSERT INTO admin_tipo_correo (id, nombre) VALUES (2, 'Espacio colaborativo');
 INSERT INTO admin_tipo_correo (id, nombre) VALUES (3, 'Muro');
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+--- Zonas horarias 
+
+INSERT INTO "admin_zona_horaria" VALUES (2, 'ARG', 'America/Argentina/Buenos_Aires');
+INSERT INTO "admin_zona_horaria" VALUES (3, 'ARG', 'America/Argentina/Catamarcas');
+INSERT INTO "admin_zona_horaria" VALUES (4, 'ARG', 'America/Argentina/Cordoba');
+INSERT INTO "admin_zona_horaria" VALUES (5, 'ARG', 'America/Argentina/Jujuy');
+INSERT INTO "admin_zona_horaria" VALUES (6, 'ARG', 'America/Argentina/La_Rioja');
+INSERT INTO "admin_zona_horaria" VALUES (7, 'ARG', 'America/Argentina/Mendoza');
+INSERT INTO "admin_zona_horaria" VALUES (8, 'ARG', 'America/Argentina/Rio_Gallegos');
+INSERT INTO "admin_zona_horaria" VALUES (9, 'ARG', 'America/Argentina/Salta');
+INSERT INTO "admin_zona_horaria" VALUES (10, 'ARG', 'America/Argentina/San_Juan');
+INSERT INTO "admin_zona_horaria" VALUES (11, 'ARG', 'America/Argentina/San_Luis');
+INSERT INTO "admin_zona_horaria" VALUES (12, 'ARG', 'America/Argentina/Tucuman');
+INSERT INTO "admin_zona_horaria" VALUES (13, 'ARG', 'America/Argentina/Ushuaia');
+INSERT INTO "admin_zona_horaria" VALUES (15, 'BRA', 'America/Rio_branco');
+INSERT INTO "admin_zona_horaria" VALUES (16, 'BRA', 'America/Belem');
+INSERT INTO "admin_zona_horaria" VALUES (17, 'BRA', 'America/Bahia');
+INSERT INTO "admin_zona_horaria" VALUES (18, 'BRA', 'America/Sao_Paulo');
+INSERT INTO "admin_zona_horaria" VALUES (19, 'BRA', 'America/Cuiaba');
+INSERT INTO "admin_zona_horaria" VALUES (21, 'BRA', 'America/Fortaleza');
+INSERT INTO "admin_zona_horaria" VALUES (22, 'BRA', 'America/Recife');
+INSERT INTO "admin_zona_horaria" VALUES (25, 'BRA', 'America/Boa_Vista');
+INSERT INTO "admin_zona_horaria" VALUES (26, 'BRA', 'America/Maceio');
+INSERT INTO "admin_zona_horaria" VALUES (27, 'BRA', 'America/Araguaia');
+INSERT INTO "admin_zona_horaria" VALUES (29, 'BRA', 'America/Manaus');
+INSERT INTO "admin_zona_horaria" VALUES (33, 'BRA', 'America/Campo_Grande');
+INSERT INTO "admin_zona_horaria" VALUES (38, 'BRA', 'America/Porto_Velho');
+INSERT INTO "admin_zona_horaria" VALUES (39, 'CHL', 'America/Santiago');
+INSERT INTO "admin_zona_horaria" VALUES (41, 'COL', 'America/Bogota');
+INSERT INTO "admin_zona_horaria" VALUES (42, 'ECU', 'America/Guayaquil');
+INSERT INTO "admin_zona_horaria" VALUES (43, 'PER', 'America/Lima');
+INSERT INTO "admin_zona_horaria" VALUES (44, 'PRY', 'America/Asuncion');
+INSERT INTO "admin_zona_horaria" VALUES (45, 'URY', 'America/Montevideo');
+INSERT INTO "admin_zona_horaria" VALUES (46, 'VEN', 'America/Caracas');
+INSERT INTO "admin_zona_horaria" VALUES (47, 'ABW', 'America/Aruba');
+INSERT INTO "admin_zona_horaria" VALUES (48, 'BHS', 'America/Nassau');
+INSERT INTO "admin_zona_horaria" VALUES (49, 'BLZ', 'America/Belize');                                
+INSERT INTO "admin_zona_horaria" VALUES (50, 'ATG', 'America/Antigua');    
+INSERT INTO "admin_zona_horaria" VALUES (51, 'BMU', 'Atlantic/Bermuda');      
+INSERT INTO "admin_zona_horaria" VALUES (52, 'BRB', 'Atlantic/Barbados');      
+INSERT INTO "admin_zona_horaria" VALUES (53, 'CAN', 'America/Toronto'); 
+INSERT INTO "admin_zona_horaria" VALUES (54, 'CAN', 'America/Vancouver'); 
+INSERT INTO "admin_zona_horaria" VALUES (55, 'CRI', 'America/Costa_Rica'); 
+INSERT INTO "admin_zona_horaria" VALUES (56, 'CUB', 'America/Havana'); 
+INSERT INTO "admin_zona_horaria" VALUES (57, 'DMA', 'America/Dominica'); 
+INSERT INTO "admin_zona_horaria" VALUES (58, 'DOM', 'America/Santo_Domingo');      
+INSERT INTO "admin_zona_horaria" VALUES (59, 'GTM', 'America/Guatemala');                                                  
+INSERT INTO "admin_zona_horaria" VALUES (60, 'HND', 'America/Tegucigalpa'); 
+INSERT INTO "admin_zona_horaria" VALUES (61, 'MEX', 'America/Mexico_City'); 
+INSERT INTO "admin_zona_horaria" VALUES (62, 'MEX', 'America/Cancun'); 
+INSERT INTO "admin_zona_horaria" VALUES (63, 'MEX', 'America/Hermosillo'); 
+INSERT INTO "admin_zona_horaria" VALUES (64, 'MEX', 'America/Matamoros'); 
+INSERT INTO "admin_zona_horaria" VALUES (65, 'MEX', 'America/Mazatlan'); 
+INSERT INTO "admin_zona_horaria" VALUES (66, 'MEX', 'America/Merida'); 
+INSERT INTO "admin_zona_horaria" VALUES (67, 'MEX', 'America/Monterrey'); 
+INSERT INTO "admin_zona_horaria" VALUES (68, 'NIC', 'America/Managua'); 
+INSERT INTO "admin_zona_horaria" VALUES (69, 'PAN', 'America/Panama'); 
+INSERT INTO "admin_zona_horaria" VALUES (70, 'PRI', 'America/Puerto_Rico'); 
+INSERT INTO "admin_zona_horaria" VALUES (71, 'SLV', 'America/El_Salvador'); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

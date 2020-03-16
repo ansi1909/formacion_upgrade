@@ -21,6 +21,14 @@ Link\ComunBundle\Entity\AdminNivel:
             length: 50
             options:
                 fixed: false
+        fechaInicio:
+            type: date
+            nullable: true
+            column: Fecha_inicio
+        fechaFin:
+            type: date
+            nullable: true
+            column: fecha_fin
     manyToOne:
         empresa:
             targetEntity: AdminEmpresa
