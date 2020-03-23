@@ -33,6 +33,25 @@
                 color: #ffffff !important;
                 pointer-events: none;
             }
+            .exito_clave{
+                color: #5CAEE6;
+            }
+            .error_clave{
+                color: #e60f0f;
+            }
+            #error_clave{
+                font-size: 1.1rem;
+            }
+            #radar-img{
+                position:absolute;
+                z-index:100;
+                top: 3.5rem;
+            }
+            #pic-img{
+                display: flex;
+                justify-content: center;
+
+            }
         </style>
 {% endblock %}
 
@@ -51,7 +70,12 @@
 <section class="card-datos">
     <div class="row align-items-center justify-content-center">
         <div class="col-sm-3 col-md-3 col-3 col-lg-3 col-xl-3 text-right">
-            <div class="pic-img">
+            <div class="pic-img" id="pic-img">
+            <div class="float-right mt-4"  id="radar-img" style="display: none;">
+               <div class="contenedor">
+                  <div class="radar"></div>
+               </div>
+            </div>
                 <form id="form-upload" method="POST">
                     <input type="hidden" id="url_upload" name="url_upload" value="{{ path('_ajaxUploadFotoUsuario') }}">
                     <input type="hidden" id="uploads" name="uploads" value="{{ uploads }}">

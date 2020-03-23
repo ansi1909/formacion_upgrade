@@ -27,8 +27,9 @@ class LeccionController extends Controller
         $f->setRequest($session->get('sesion_id'));
 
         $em = $this->getDoctrine()->getManager();
-        $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$subpagina_id));
-        $totalComentarios = count($totalComentarios);
+
+        //$totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$programa_id,'empresa'=>$empresa_id));
+        //$totalComentarios = count($totalComentarios);
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
         //return new Response(var_dump($indexedPages));
@@ -132,7 +133,8 @@ class LeccionController extends Controller
         $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
         $logs = $f->startLesson($indexedPages, $id_pagina_log, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
         //return new Response(var_dump($lecciones));
-
+        $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$id_pagina_log,'empresa'=>$session->get('empresa')['id']));
+        $totalComentarios = count($totalComentarios);
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
                                                                                  'subpagina_id' => $subpagina_id,
                                                                                  'lecciones' => $lecciones,
@@ -153,7 +155,8 @@ class LeccionController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $programa_id = $request->request->get('programa_id');
         $pagina_id = $request->request->get('pagina_id');
-        $comentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$pagina_id));
+        $empresa_id = $session->get('empresa')['id'];
+        $comentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$pagina_id,'empresa'=>$empresa_id));
         
         // Indexado de páginas descomponiendo estructuras de páginas cada uno en su arreglo
         $indexedPages = $f->indexPages($session->get('paginas')[$programa_id]);
@@ -296,7 +299,7 @@ class LeccionController extends Controller
             $tipoMensaje = 'Publicó';
             $usuarioPadre = '';
             $mensajePadre = '';
-
+            $is_tutor = $session->get('usuario')['tutor']? 1:0;
             $pagina_id = $request->request->get('pagina_id');
             $mensaje = $request->request->get('mensaje');
             $muro_id = $request->request->get('muro_id');
@@ -354,7 +357,7 @@ class LeccionController extends Controller
                 if ($muro_padre->getUsuario()->getId() != $usuario->getId() && $owner_tutor && $correo_tutor)
                 {
 
-                    $categoria = $this->obtenerProgramaCurso($pagina);
+                    $categoria = $f->obtenerProgramaCurso($pagina);
                     $parametros_correo = array('twig' => 'LinkFrontendBundle:Leccion:emailMuro.html.twig',
                                                'datos' => array('logo'=> $logo,
                                                                 'footer' => $footer,
@@ -370,6 +373,8 @@ class LeccionController extends Controller
                                                                 'empresa' => $empresa->getNombre()),
                                                'asunto' => 'Formación Smart: '.$descripcion,
                                                'remitente' => $this->container->getParameter('mailer_user'),
+                                               'remitente_name' => $this->container->getParameter('mailer_user_name'),
+                                               'mailer'=>'soporte_mailer',
                                                'destinatario' => $correo_tutor);
                     $correo = $f->sendEmail($parametros_correo);
 
@@ -386,7 +391,7 @@ class LeccionController extends Controller
             $background = $this->container->getParameter('folders')['uploads'].'recursos/decorate_certificado.png';
             $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
             $link_plataforma = $this->container->getParameter('link_plataforma').$empresa->getId();
-            $categoria = $this->obtenerProgramaCurso($pagina);
+            $categoria = $f->obtenerProgramaCurso($pagina);
             $tutores = $f->getTutoresEmpresa($empresa->getId(), $yml);
             $sendMails = $f->sendMailNotificationsMuro($tutores, $yml, $muro, $categoria, $tipoMensaje, $background, $logo, $link_plataforma);
 
@@ -442,37 +447,36 @@ class LeccionController extends Controller
             {
                 $html .= '<div id="'.$prefix.'_div-response-'.$muro->getId().'"></div>
                           <div id="'.$prefix.'_respuestas-'.$muro->getId().'"></div>';
+                //alarma para participantes al momento de que un tutor haga una entrada en el muro
+
+                if (($is_tutor == 1) and ($yml['parameters']['muro']['alarma_participantes'] !=0 )) {
+                    $descripcion = $f->tipoDescripcion($tipoMensaje, $muro, $muro->getUsuario()->getNombre().' '.$muro->getUsuario()->getApellido());
+                    $fecha = new \DateTime('now');
+                    $fecha = $fecha->format('Y-m-d H:i:s');
+                    $grupo = $f->obtenerProgramaCurso($muro->getPagina());
+                    $alarmaGrupo = $f->alarmasGrupo($yml['parameters']['tipo_alarma']['aporte_muro'],$descripcion,$muro->getId(),$fecha,$grupo['programa_id'],$muro->getUsuario()->getEmpresa()->getId(),$muro->getUsuario()->getId());
+
+
+                }
             }
             $html .= '</div>';
-
+            $total_comentarios = $em->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$pagina_id,'empresa'=>$session->get('empresa')['id']));
+            $total_comentarios = count($total_comentarios);
             $return = array('html' => $html,
                             'muro_id' => $muro->getId(),
-                            'puntos_agregados' => $puntos_agregados);
+                            'puntos_agregados' => $puntos_agregados,
+                            'comentarios'=>$total_comentarios);
 
             $return = json_encode($return);
             return new Response($return, 200, array('Content-Type' => 'application/json'));
         }
         catch(\Exception $ex){
-            $return = json_encode(array('mensaje'=>$ex->getMessage()));
+            $return = json_encode(array('mensaje'=>$ex->getMessage().' - '.$ex->getFile().'  '.$ex->getLine()));
             return new Response($return, 200, array('Content-Type' => 'application/json'));
         }
 
     }
 
-    public function obtenerProgramaCurso($pagina)
-    {
-        while ($pagina->getPagina())
-        {
-            $pagina = $pagina->getPagina();
-        }
-
-        $categoria = $pagina->getCategoria();
-
-        return ['categoria' => $categoria->getNombre(), 
-                'nombre' => $pagina->getNombre(),
-                'programa_id' => $pagina->getId() ];
-
-    }
 
 
     public function ajaxDivResponseAction(Request $request)

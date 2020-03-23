@@ -61,7 +61,7 @@ $(document).ready(function() {
     	source: $('#url_search').val(),
       	minLength: 3,
       	select: function( event, ui ) {
-        	//console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
+        	console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
         	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
       	}
     });
@@ -225,6 +225,7 @@ function observeTopic(newTopic)
 function saveForo()
 {
 	$('label.mensaje-error').hide();
+	$('#subir').hide();
     $('#publicar').hide();
     $('#cancelar').hide();
     $('#wait').show(1000);
@@ -241,6 +242,7 @@ function saveForo()
             console.log('Error guardando el registro de espacio colaborativo'); // Hay que implementar los mensajes de error para el frontend
             $('#publicar').show();
             $('#cancelar').show();
+            $('#subir').show();
             $('#wait').hide(1000);
         }
     });

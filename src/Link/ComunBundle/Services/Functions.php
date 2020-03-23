@@ -3459,15 +3459,20 @@ class Functions
                 $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
                 $titulo_padre = $arp->getPagina()->getNombre();
 
-
+                $fecha_nivel = false;
                 foreach ($niveles as $nivel) {
                   if($nivel->getId() == $usuario->getNivel()->getId()){
                     if($nivel->getFechaFin() && $nivel->getFechaInicio()){//si el nivel posee un periodo de validez
+                      $fecha_nivel = true;
                       $nivel_vigente = date('Y-m-d') < $nivel->getFechaFin()->format('Y-m-d')? true : false;
                       if ($nivel_vigente) {
-                          $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$this->timeAgo($nivel->getFechaFin()->format("Y/m/d")).' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
+                        $porcentaje_finalizacion = $this->timeAgo($nivel->getFechaFin()->format("Y/m/d"));
+                          $dias_vencimiento = $link_enabled ? $this->translator->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->translator->trans('días') : $this->translator->trans('Programa Vencido');
+                        $class_finaliza = $this->classFinaliza($porcentaje_finalizacion);
                       }else{
                         $dias_vencimiento = $this->translator->trans('Programa Vencido');
+                        $class_finaliza ='';
+                        $porcentaje_finalizacion = 0;
                         $link_enabled = 0;
                       }
                     }
@@ -3532,29 +3537,18 @@ class Functions
                     }
 
                 }
+                if (!$fecha_nivel) {
+                  $porcentaje_finalizacion = $this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                  if ($link_enabled)
+                  {
+                    $class_finaliza = $this->classFinaliza($porcentaje_finalizacion);
+                  }
+                  else {
+                      $class_finaliza = '';
+                  }
+                }
 
-                $porcentaje_finalizacion = $this->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
-                if ($link_enabled)
-                {
-                    if ($porcentaje_finalizacion >= 70)
-                    {
-                       $class_finaliza = 'alertTimeGood';
-                    }
-                    elseif ($porcentaje_finalizacion >= 31 && $porcentaje_finalizacion <= 69)
-                    {
-                        $class_finaliza = 'alertTimeWarning';
-                    }
-                    elseif ($porcentaje_finalizacion <= 30) 
-                    {
-                        $class_finaliza = 'alertTimeDanger';
-                    }
-                    else {
-                        $class_finaliza = '';
-                    }
-                }
-                else {
-                    $class_finaliza = '';
-                }
+
 
                 $actividad_reciente[$arp->getPagina()->getId()] = array('id' => $id,
                                                                         'padre_id' => $padre_id,
@@ -3661,6 +3655,65 @@ class Functions
             return $timeZone.'.';
         }
        
+    }
+
+    public function classFinaliza($porcentaje){
+      if ($porcentaje >= 70){
+        $class_finaliza = 'alertTimeGood';
+      }
+      elseif ($porcentaje >= 31 && $porcentaje <= 69){
+        $class_finaliza = 'alertTimeWarning';
+      }
+      elseif ($porcentaje <= 30) {
+        $class_finaliza = 'alertTimeDanger';
+      }else {
+        $class_finaliza = '';
+      }
+      return $class_finaliza;
+    }
+
+    public function obtenerProgramaCurso($pagina)
+    {
+      while ($pagina->getPagina()){
+        $pagina = $pagina->getPagina();
+      }
+
+      $categoria = $pagina->getCategoria();
+      return array(
+        'categoria' => $categoria->getNombre(), 
+        'nombre' => $pagina->getNombre(),
+        'programa_id' => $pagina->getId() 
+      );
+
+    }
+
+    public function alarmasGrupo($tipoAlarma,$descripcion,$entidadId,$fecha,$grupoId,$empresaId,$usuarioId,$rolIn = 2,$rolExc = 3){
+       $em = $this->em;
+       $query = $em->getConnection()->prepare('SELECT fnalarmas_participantes
+                                                            (:ptipo_alarma,
+                                                             :pdescripcion,
+                                                             :pentidad_id,
+                                                             :pfecha,
+                                                             :pgrupo_id,
+                                                             :pempresa_id,
+                                                             :pusuario_id,
+                                                             :prolin_id,
+                                                             :prolex_id) as resultado;');
+                    $query->bindValue(':ptipo_alarma', $tipoAlarma, \PDO::PARAM_INT);
+                    $query->bindValue(':pdescripcion',$descripcion, \PDO::PARAM_STR);
+                    $query->bindValue(':pentidad_id', $entidadId, \PDO::PARAM_INT);
+                    $query->bindValue(':pfecha',$fecha, \PDO::PARAM_STR);
+                    $query->bindValue(':pgrupo_id',$grupoId, \PDO::PARAM_INT);
+                    $query->bindValue(':pempresa_id',$empresaId, \PDO::PARAM_INT);
+                    $query->bindValue(':pusuario_id',$usuarioId , \PDO::PARAM_INT);
+                    $query->bindValue(':prolin_id',$rolIn, \PDO::PARAM_INT);
+                    $query->bindValue(':prolex_id',$rolExc , \PDO::PARAM_INT);
+                    $query->execute();
+                    $gc = $query->fetchAll();
+                    $resultado = $gc[0]['resultado'];
+
+
+      return $resultado;           
     }
 
 

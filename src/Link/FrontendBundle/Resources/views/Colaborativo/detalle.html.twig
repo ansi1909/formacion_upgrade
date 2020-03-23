@@ -31,6 +31,22 @@
             border-bottom: 1px solid #F0F4F7;
             width: 57.25rem;
         }
+        #container-buttons{
+            margin-left: 0%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+        .margin_row{
+            margin-left: -17px;
+            margin-right: -17px;
+        }
+        #nameUpload{
+            top: .5rem;
+            left:-.1rem
+        }
     </style>
 {% endblock %}
 
@@ -151,7 +167,7 @@
                     </div>
                 </div>
                 <form id="form-upload" method="POST">
-                    <input type="hidden" id="upload_foro_id" name="upload_foro_id" value="{{ foro.id }}">
+                    <input type="text" id="upload_foro_id" name="upload_foro_id" value="{{ foro.id }}">
                     <input type="hidden" id="upload_pagina_id" name="upload_pagina_id" value="{{ programa.id }}">
                     <div class="row pl-3 align-items-center justify-content-center">
                         <div class="col-12">
@@ -320,7 +336,7 @@
                 {% endif %}
                 <li class="f-card-det-resp" id="li_responder">
                     <form id="form-response" method="POST">
-                        <div class="row align-items-center justify-content-center">
+                        <div class="row align-items-center justify-content-center margin_row">
                             <div class="form-group">
                                 <div class="col-12">
                                     <label class="mb-2 titulo-form" for="mensaje"> {{ 'Tu respuesta'|trans }}: </label>
@@ -329,16 +345,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-auto text-right">
+                        <div class="row "  id="container-buttons">
+                                <button id="iconDownloads2" type="button" class="btn btn-info" data-toggle="modal" >{{ 'Subir archivo'|trans }}</button>
                                 <button type="button" class="btn btn-primary boton" id="publicar">{{ 'Responder'|trans }}</button>
-                            </div>
+  
                         </div>
                     </form>
-                    <br>
-                    <div class="form-group text-right">
-                        <a id="iconDownloads2" href="#li_responder"><span class="material-icons color-light-grey icUpload" title="{{ 'Subir archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_upload</span></a>
-                    </div>
+
 
 
                 </li>
@@ -354,7 +367,7 @@
         </div>
     </div>
 
-    <div class="downloads">
+    <div class="downloads" >
         <div class="d-flex px-3 row justify-content-between">
             <div class="col-auto col-sm-auto col-md-auto col-xl-auto col-lg-auto">
                 <h5 class="color-grey text-left titulo">{{ 'Descargas'|trans }}</h5>
@@ -370,11 +383,11 @@
                 {% for archivo in archivos %}
                     <li class="element-downloads">
                         <div class="row px-0 d-flex justify-content-between">
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex" >
                                 <img src="{{ archivo.img }}" class="imgdl" alt="">
                                 <p class="nameArch">{{ archivo.descripcion }}</p>
                             </div>
-                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0">
+                            <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0" >
                                 <div class="cont-opc">
                                     {% set file = uploads~archivo.archivo %}
                                     <a href="{{ file }}" target="_blank"><span class="material-icons icDl" title="{{ 'Descargar archivo'|trans }}" data-toggle="tooltip" data-placement="bottom">file_download</span></a>
@@ -383,7 +396,7 @@
                         </div>
                         <div class="row px-0 justify-content-start">
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <p class="nameUpload">{{ archivo.usuario }}</p>
+                                <p class="nameUpload " id="nameUpload">{{ archivo.usuario }}</p>
                             </div>
                         </div>
                     </li>

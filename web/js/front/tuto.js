@@ -19,6 +19,7 @@ function startIntro(introSteps, hasInitialModal = false, isAReview = false) {
     exitOnOverlayClick: false,
     showStepNumbers : false,
     steps: introSteps,
+    scrollToElement: true,
     disableInteraction: isAReview ? true : false
   });
 

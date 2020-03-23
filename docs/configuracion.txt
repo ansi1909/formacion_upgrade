@@ -73,6 +73,8 @@
 	- funciones/fnusuarios_conectados.sql
 	- funciones/fnasignar_subpaginas.sql
 	- funciones/fncorreos_noentregados.sql
+	- funciones/fnalarmas_participantes.sql
+
 
 	OJO: El archivo reserialize_tables.sql se importará solo cuando se haya corrido el comando de symfony:
 		 php bin/console doctrine:schema:update --force

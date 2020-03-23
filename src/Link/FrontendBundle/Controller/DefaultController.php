@@ -173,7 +173,9 @@ class DefaultController extends Controller
                             if ($fecha_nivel) {
                               $nivel_vigente =  date('Y-m-d') < $n->getFechaFin()->format('Y-m-d') ?  true : false;
                               if ($nivel_vigente) {
-                                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($n->getFechaFin()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
+                                $porcentaje_finalizacion = $f->timeAgo($n->getFechaFin()->format("Y/m/d"));
+                                $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
+                                $class_finaliza = $f->classFinaliza($porcentaje_finalizacion);
                                 # code...
                               }else{
                                  $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
@@ -181,16 +183,12 @@ class DefaultController extends Controller
                               
                             }else{
                               $nivel_vigente =  true;
-                              $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d")).' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
+                              //$porcentaje_finalizacion = $f->timeAgo($pagina_empresa->getFechaVencimiento()->format("Y/m/d"));
+                              //$class_finaliza = $f->classFinaliza($porcentaje_finalizacion);
+                              $dias_vencimiento = $link_enabled ? $this->get('translator')->trans('Finaliza en').' '.$porcentaje_finalizacion.' '.$this->get('translator')->trans('días') : $this->get('translator')->trans('Programa Vencido');
 
                             }
                             
-                            //return new response(var_dump ($nivel_vencido));
-
-                            // if(!$nivel_vigente)
-                            // {
-                            //     $dias_vencimiento = $this->get('translator')->trans('Programa Vencido');
-                            // }
                         }
                         
                     }

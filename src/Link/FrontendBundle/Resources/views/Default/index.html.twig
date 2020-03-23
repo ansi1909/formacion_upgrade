@@ -20,6 +20,16 @@
             justify-content: center;
 
         }
+
+        .toolTip {
+            height: 128px;
+            max-width: 278px;
+            padding: 5px;
+        }
+
+        .toolTip .introjs-tooltiptext {
+            font-size: 1.3rem;
+        }
     </style>
 {% endblock %}
 
@@ -110,7 +120,7 @@
                     <div class="content__wrapper">
                         <div class="cards-section container d-flex justify-content-between justify-content-sm-center flex-wrap">
                             {% for pagina in grupo.paginas %}
-                                <div class="card" {% if loop.first %} id="tuto-step1"  {% endif %}>
+                                <div class="card" {% if loop.first %} id="tuto-step1"  {% endif %} data-position="left">
                                     <img class="card-img-top" src="{{ uploads ~ pagina.imagen }}" alt="Card image cap">
                                     <div class="card-img-overlay">
                                         <span class="count text-xs {{ pagina.class_finaliza }}">{{ pagina.dias_vencimiento }}</span>

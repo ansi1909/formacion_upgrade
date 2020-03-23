@@ -182,6 +182,8 @@ class ColaborativoController extends Controller
         $em->persist($foro);
         $em->flush();
 
+
+
         if (!$foro_id)
         {
 
@@ -195,6 +197,11 @@ class ColaborativoController extends Controller
 
         }
 
+        ///Crea alarmas para quienes tienen acceso al espacio colaborativo
+        $fecha = new \DateTime('now');
+        $fecha = $fecha->format('Y-m-d H:i:s');
+        $descripcion = $foro->getUsuario()->getNombre().' '.$foro->getUsuario()->getApellido().' '.$this->get('translator')->trans('realizó una publicación en el espacio colaborativo de').': '.$foro->getPagina()->getNombre().'.';
+        $alarmaGrupo = $f->alarmasGrupo($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'],$descripcion,$foro->getId(),$fecha,$foro->getPagina()->getId(),$foro->getUsuario()->getEmpresa()->getId(),$foro->getUsuario()->getId());
         $return = array('foro_id' => $foro->getId());
 
         $return = json_encode($return);
@@ -408,16 +415,15 @@ class ColaborativoController extends Controller
         $yml = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/parametros.yml'));
         $em = $this->getDoctrine()->getManager();
         $html = '';
-
         // Recepción de parámetros del request
-        $foro_id = $request->request->get('foro_id');
+        $foro_id = $request->request->get('foro_id');//id del foro que se desea responder
         $mensaje = $request->request->get('mensaje');
-        $foro_main_id = $request->request->get('foro_main_id');
+        $foro_main_id = $request->request->get('foro_main_id');//foro padre
 
         // Preparando entidades de almacenamiento
-        $foro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);
+        $foro_padre = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_id);//foro que se desea responder
         $usuario = $this->getDoctrine()->getRepository('LinkComunBundle:AdminUsuario')->find($session->get('usuario')['id']);
-        $foro_main = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_main_id);
+        $foro_main = $this->getDoctrine()->getRepository('LinkComunBundle:CertiForo')->find($foro_main_id);//foro principal
 
         $foro = new CertiForo();
         $foro->setTema($foro_padre->getTema());
@@ -437,14 +443,19 @@ class ColaborativoController extends Controller
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
-        if ($foro_main->getUsuario()->getId() != $usuario->getId() && $foro_main->getId() == $foro->getForo()->getId())
-        {
+        $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha comentado en el espacio colaborativo de').' '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
+        
+        if( $foro_padre->getUsuario()->getId() != $session->get('usuaro')['id'] ){
+                 $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'], $descripcion, $foro_padre->getUsuario(), $foro_main->getId());
+                //alarmas tutores
+                 $fecha = new \DateTime('now');
+                 $fecha = $fecha->format('Y-m-d H:i:s');
+                 $alarmasGrupo = $f->alarmasGrupo($yml['parameters']['tipo_alarma']['espacio_colaborativo'],$descripcion,$foro_main->getId(),$fecha,$foro_main->getPagina()->getId(),$foro_main->getUsuario()->getEmpresa()->getId(),$session->get('usuario')['id'],$yml['parameters']['rol']['tutor'],0);//rol cero para no excluir ninguno de los roles
 
-            $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha comentado en el espacio colaborativo de').' '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
-            $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion, $foro_main->getUsuario(), $foro_main->getId());
+            }
 
             $correo_tutor = (!$foro_main->getUsuario()->getCorreoPersonal() || $foro_main->getUsuario()->getCorreoPersonal() == '') ? (!$foro_main->getUsuario()->getCorreoCorporativo() || $foro_main->getUsuario()->getCorreoCorporativo() == '') ? 0 : $foro_main->getUsuario()->getCorreoCorporativo() : $foro_main->getUsuario()->getCorreoPersonal();
-            if ($correo_tutor)
+            if ($correo_tutor && !$session->get('usuario')['tutor']) //se envia correo al tutor si quien responde no es el tutor
             {
                 $parametros_correo = array('twig' => 'LinkFrontendBundle:Colaborativo:emailColaborativo.html.twig',
                                            'datos' => array('mensaje' => $mensaje,
@@ -460,7 +471,7 @@ class ColaborativoController extends Controller
                 $correo = $f->sendEmail($parametros_correo);
             }
 
-        }
+        //}
 
         // Puntaje obtenido
         if ($session->get('usuario')['participante'])
@@ -800,7 +811,7 @@ class ColaborativoController extends Controller
                         </div>
                         <div class="row px-0 justify-content-start">
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                                <p class="nameUpload" id="nameUpload">'.$archivo_arr['usuario'].'</p>
                             </div>
                         </div>
                     </li>';
@@ -820,7 +831,7 @@ class ColaborativoController extends Controller
                         </div>
                         <div class="row px-0 justify-content-start">
                             <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto px-0 d-flex">
-                                <p class="nameUpload">'.$archivo_arr['usuario'].'</p>
+                                <p class="nameUpload" id="nameUpload">'.$archivo_arr['usuario'].'</p>
                             </div>
                         </div>
                     </li>';
