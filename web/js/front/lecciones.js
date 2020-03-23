@@ -219,6 +219,7 @@ $(document).ready(function() {
 					success: function(data) {
 						$('#comentario').val('');
 						$('#mas_'+prefix+'_comments-'+$('#pagina_id_viendo').val()).prepend(data.html);
+						document.getElementById('verComent').innerHTML= $('#ver_comentarios').val()+' ( '+data.comentarios+' )';
 						var puntos = $('#puntos_agregados').val();
 						puntos = parseInt(puntos) + parseInt(data.puntos_agregados);
 						$('#puntos_agregados').val(puntos);

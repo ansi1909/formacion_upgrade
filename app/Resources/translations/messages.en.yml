@@ -280,7 +280,7 @@ El correo corporativo ya existe para la empresa seleccionada: Corporate mail alr
 El correo personal ya existe para la empresa seleccionada: Personal email already exists for the selected company
 El correo corporativo tiene un formato inválido: Company email has invalid format
 El correo secundario tiene un formato inválido: Secondary mail has an invalid format
-El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacion2puntocero.com: The mail does not exist in the database, please insert a different one or contact support@formacion2puntocero.com
+El correo no existe en la base de datos, por favor inserte uno diferente o comuníquese a soporte@formacionsmart.com: The mail does not exist in the database, please insert a different one or contact soporte@formacionsmart.com
 El correo no pertenece a un Usuario de la empresa. Contacte al administrador del sistema.: The mail does not belong to a User of the company. Contact the system administrator.
 El correo personal tiene un formato inválido: Personal email has invalid format
 El Encabezado es requerido.: The Header is required
@@ -825,6 +825,7 @@ que aún no han ingresado a la plataforma: that have not yet entered the platfor
 QR: QR
 Quieres hacer un tour guiado: You want to take a guided tour
 realizó una publicación en el muro de: make a publication on the wall of 
+realizó una publicación en el en el espacio colaborativo de: made a publication in the in the collaborative space of
 formación smart, recomendamos utilizar la ultima versión del: formación smart, we recommend using the latest version of the
 Recomendación: Recommendation
 Recordarme: Remember me

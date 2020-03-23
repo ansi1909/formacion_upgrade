@@ -323,9 +323,6 @@ class NotificacionController extends Controller
                                     <div class="date text-xs color-grey">'.$fechap.'</div>
                                 </div>
                             </div>
-                            <a href="#" class="mr-0 text-sm color-light-grey">
-                                <span class="like_ft like" data="'.$padre->getId().'"><i id="like'.$padre->getId().'" class="material-icons ic-lke '.$like .'">thumb_up</i> <span id="cantidad_like-'.$padre->getId().'">'. $likes['cantidad'] .'</span></span>
-                            </a>
                         </div>
                         <div class="comm-body text-justify">
                             <p class="textMuroNoti">'. $padre->getMensaje() .'</p>
@@ -359,9 +356,6 @@ class NotificacionController extends Controller
                                     <div class="date text-xs color-grey">'.$fechah.'</div>
                                 </div>
                             </div>
-                            <a href="#" class="mr-0 text-sm color-light-grey">
-                                <span class="like_ft like" data="'.$hijo->getId().'"><i id="like'.$hijo->getId().'" class="material-icons ic-lke '.$like .'">thumb_up</i> <span id="cantidad_like-'.$hijo->getId().'">'. $cantidad.'</span></span>
-                            </a>
                         </div>
                         <div class="comm-body text-justify">
                             <p class="textMuroNoti">'. $hijo->getMensaje() .'</p>

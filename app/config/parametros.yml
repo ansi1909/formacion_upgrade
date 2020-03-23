@@ -121,3 +121,12 @@ parameters:
         name_separator: '/'
     upload_file:
         upload_max_filesize: 80MB
+    muro:
+        alarma_tutor: 0
+        alarma_participantes: 1
+    espacio_colaborativo:
+        alarma_tutor: 0 
+        alarma_participantes: 0
+        
+
+

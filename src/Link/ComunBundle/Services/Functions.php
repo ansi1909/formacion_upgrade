@@ -3471,6 +3471,8 @@ class Functions
                         $class_finaliza = $this->classFinaliza($porcentaje_finalizacion);
                       }else{
                         $dias_vencimiento = $this->translator->trans('Programa Vencido');
+                        $class_finaliza ='';
+                        $porcentaje_finalizacion = 0;
                         $link_enabled = 0;
                       }
                     }
@@ -3668,6 +3670,50 @@ class Functions
         $class_finaliza = '';
       }
       return $class_finaliza;
+    }
+
+    public function obtenerProgramaCurso($pagina)
+    {
+      while ($pagina->getPagina()){
+        $pagina = $pagina->getPagina();
+      }
+
+      $categoria = $pagina->getCategoria();
+      return array(
+        'categoria' => $categoria->getNombre(), 
+        'nombre' => $pagina->getNombre(),
+        'programa_id' => $pagina->getId() 
+      );
+
+    }
+
+    public function alarmasGrupo($tipoAlarma,$descripcion,$entidadId,$fecha,$grupoId,$empresaId,$usuarioId,$rolIn = 2,$rolExc = 3){
+       $em = $this->em;
+       $query = $em->getConnection()->prepare('SELECT fnalarmas_participantes
+                                                            (:ptipo_alarma,
+                                                             :pdescripcion,
+                                                             :pentidad_id,
+                                                             :pfecha,
+                                                             :pgrupo_id,
+                                                             :pempresa_id,
+                                                             :pusuario_id,
+                                                             :prolin_id,
+                                                             :prolex_id) as resultado;');
+                    $query->bindValue(':ptipo_alarma', $tipoAlarma, \PDO::PARAM_INT);
+                    $query->bindValue(':pdescripcion',$descripcion, \PDO::PARAM_STR);
+                    $query->bindValue(':pentidad_id', $entidadId, \PDO::PARAM_INT);
+                    $query->bindValue(':pfecha',$fecha, \PDO::PARAM_STR);
+                    $query->bindValue(':pgrupo_id',$grupoId, \PDO::PARAM_INT);
+                    $query->bindValue(':pempresa_id',$empresaId, \PDO::PARAM_INT);
+                    $query->bindValue(':pusuario_id',$usuarioId , \PDO::PARAM_INT);
+                    $query->bindValue(':prolin_id',$rolIn, \PDO::PARAM_INT);
+                    $query->bindValue(':prolex_id',$rolExc , \PDO::PARAM_INT);
+                    $query->execute();
+                    $gc = $query->fetchAll();
+                    $resultado = $gc[0]['resultado'];
+
+
+      return $resultado;           
     }
 
 
