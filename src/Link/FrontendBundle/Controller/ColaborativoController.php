@@ -269,20 +269,19 @@ class ColaborativoController extends Controller
         
         $session = new Session();
         $em = $this->getDoctrine()->getManager();
-        
-        $term = $request->query->get('term');
+        $empresa_id = (integer) $session->get('empresa')['id'];
+        $term = strtolower($request->query->get('term'));
+        $pagina_id = (integer)$request->query->get('pagina_id');
         $foros = array();
-
-        $qb = $em->createQueryBuilder();
-        $qb->select('f')
-           ->from('LinkComunBundle:CertiForo', 'f')
-           ->where('f.foro IS NULL')
-           ->andWhere('LOWER(f.tema) LIKE :term')
-           ->setParameter('term', '%'.$term.'%');
-
-        $query = $qb->getQuery();
+        $query = $em->createQuery('SELECT f FROM LinkComunBundle:CertiForo f 
+                                    WHERE f.foro IS NULL 
+                                    AND LOWER (f.tema) LIKE :term 
+                                    AND f.empresa= :empresa_id
+                                    AND f.pagina= :pagina_id
+                                    ORDER BY f.fechaPublicacion DESC
+                                    ')
+                    ->setParameters(array( 'term' => '%'.$term.'%','empresa_id'=>$empresa_id,'pagina_id'=>$pagina_id));
         $foros_bd = $query->getResult();
-
         foreach ($foros_bd as $foro)
         {
             $foros[] = array('id' => $foro->getId(),
@@ -443,14 +442,19 @@ class ColaborativoController extends Controller
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro_main->getUsuario()->getEmpresa()->getId();
-        $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha comentado en el espacio colaborativo de').' '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
+        $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió a tu publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
         
         if( $foro_padre->getUsuario()->getId() != $session->get('usuaro')['id'] ){
                  $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'], $descripcion, $foro_padre->getUsuario(), $foro_main->getId());
                 //alarmas tutores
-                 $fecha = new \DateTime('now');
-                 $fecha = $fecha->format('Y-m-d H:i:s');
-                 $alarmasGrupo = $f->alarmasGrupo($yml['parameters']['tipo_alarma']['espacio_colaborativo'],$descripcion,$foro_main->getId(),$fecha,$foro_main->getPagina()->getId(),$foro_main->getUsuario()->getEmpresa()->getId(),$session->get('usuario')['id'],$yml['parameters']['rol']['tutor'],0);//rol cero para no excluir ninguno de los roles
+                $descripcion = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('respondió una publicación en el espacio colaborativo de').': '.$foro_main->getPagina()->getCategoria()->getNombre().' '.$foro_main->getPagina()->getNombre().'.';
+                $tutores = $f->getTutoresEmpresa($session->get('empresa')['id'],$yml);
+                foreach ($tutores as $tutor) {
+                    if((integer)$tutor->getId() != (integer)$foro_padre->getUsuario()->getId()){
+                        $f->newAlarm($yml['parameters']['tipo_alarma']['espacio_colaborativo'],$descripcion,$tutor,$foro_main->getId());
+                    }
+                    
+                }
 
             }
 
@@ -754,13 +758,14 @@ class ColaborativoController extends Controller
         $logo = $this->container->getParameter('folders')['uploads'].'recursos/logo_formacion_smart.png';
         $footer = $this->container->getParameter('folders')['uploads'].'recursos/footer.bg.form.png';
         $link_plataforma = $this->container->getParameter('link_plataforma').$foro->getUsuario()->getEmpresa()->getId();
-
+        $descripcion_alarma = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').': '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
+        $tipo_alarma = $yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'];
         // Generación de alarmas
-        if ($foro->getUsuario()->getId() != $usuario->getId() && $generar_alarma)
+        if ($foro->getUsuario()->getId() != $usuario->getId() && $generar_alarma) //cuando un participante monta un archivo
         {
+            //alarma al tutor
 
-            $descripcion_alarma = $usuario->getNombre().' '.$usuario->getApellido().' '.$this->get('translator')->trans('ha subido un archivo en el espacio colaborativo de').' '.$foro->getPagina()->getCategoria()->getNombre().' '.$foro->getPagina()->getNombre().'.';
-            $f->newAlarm($yml['parameters']['tipo_alarma']['aporte_espacio_colaborativo'], $descripcion_alarma, $foro->getUsuario(), $foro->getId());
+            $f->newAlarm($tipo_alarma,$descripcion_alarma, $foro->getUsuario(), $foro->getId());
 
             $correo_tutor = (!$foro->getUsuario()->getCorreoPersonal() || $foro->getUsuario()->getCorreoPersonal() == '') ? (!$foro->getUsuario()->getCorreoCorporativo() || $foro->getUsuario()->getCorreoCorporativo() == '') ? 0 : $foro->getUsuario()->getCorreoCorporativo() : $foro->getUsuario()->getCorreoPersonal();
             if ($correo_tutor)
@@ -781,6 +786,10 @@ class ColaborativoController extends Controller
             }
 
         }
+        //alarma a los participantes, se ignora el id del usuario que sube el archivo
+        $fecha = new \DateTime('now');
+        $fecha = $fecha->format('Y-m-d H:i:s');
+        $alarmasParticipantes = $f->alarmasGrupo($tipo_alarma,$descripcion_alarma,$foro->getId(),$fecha,$foro->getPagina()->getId(),$session->get('empresa')['id'],$session->get('usuario')['id']);
 
         // Puntaje obtenido
         if ($session->get('usuario')['participante'])
