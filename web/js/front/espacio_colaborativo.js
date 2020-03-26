@@ -57,8 +57,32 @@ $(document).ready(function() {
         }
     });
 
-    $( "#search" ).autocomplete({
-    	source: $('#url_search').val(),
+    // $( "#search" ).autocomplete({
+    // 	source: $('#url_search').val(),
+    //   	minLength: 3,
+    //   	select: function( event, ui ) {
+    //     	console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );
+    //     	window.location.replace($('#url_detalle').val()+'/'+ui.item.id+'/'+subpagina_id);
+    //   	}
+    // });
+
+      $( "#search" ).autocomplete({
+    	source: function(request,response){
+    	 $.ajax({
+          		url: $('#url_search').val(),
+          		dataType: "json",
+          		data: { term:request.term, pagina_id: $('#programa_id').val() },
+          		type:'GET',
+          		beforeSend:function (){
+          			$('#user-loader').show();
+          		},
+          		success:function(data){
+          			$('#user-loader').hide();
+          			console.log(data);
+          			response(data);
+          		}
+          	});
+    	},
       	minLength: 3,
       	select: function( event, ui ) {
         	console.log( "Selected: " + ui.item.value + " AKAA " + ui.item.id );

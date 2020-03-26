@@ -19,6 +19,10 @@ use Link\ComunBundle\Entity\CertiEmpresa;
 use Link\ComunBundle\Entity\CertiPreguntaOpcion;
 use Link\ComunBundle\Entity\CertiPreguntaAsociacion;
 use Link\ComunBundle\Entity\AdminCorreo;
+use Link\ComunBundle\Entity\AdminUsuario;
+use Link\ComunBundle\Entity\AdminEvento;
+use Link\ComunBundle\Entity\AdminNoticia;
+
 
 
 class Functions
@@ -253,6 +257,7 @@ class Functions
                  INNER JOIN LinkComunBundle:AdminRolUsuario ru WITH au.id = ru.usuario
                  WHERE ru.rol = :rol
                  AND au.empresa = :empresa
+                 AND au.activo = TRUE
                 ";
 
         $query = $em->createQuery($dql);
@@ -3309,7 +3314,7 @@ class Functions
   }
 
   // Retorna true si la página o algunos de sus padres está vencido
-  public function programaVencido($pagina_id, $empresa_id)
+  public function programaVencido($pagina_id, $empresa_id ,$usuario)
   {
 
     $em = $this->em;
@@ -3317,22 +3322,45 @@ class Functions
 
     $pagina_empresa = $em->getRepository('LinkComunBundle:CertiPaginaEmpresa')->findOneBy(array('pagina' => $pagina_id,
                                                   'empresa' => $empresa_id));
-
-    if ($pagina_empresa)
-    {
-      if ($pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d'))
-      {
-        $vencido = true;
-        
-      }
-      elseif ($pagina_empresa->getPagina()->getPagina()) {
-        // Verificación de programa vencido del padre
-        $vencido = $this->programaVencido($pagina_empresa->getPagina()->getPagina()->getId(), $empresa_id);
-      }
+    $fecha_nivel = ($usuario->getNivel()->getFechaInicio() && $usuario->getNivel()->getFechaFin())? true:false;
+    if ($fecha_nivel) {
+      $vencido = date('Y-m-d') < $usuario->getNivel()->getFechaFin()->format('Y-m-d')? false:true;
+    }else{
+          if ($pagina_empresa)
+          {
+            if ($pagina_empresa->getFechaVencimiento()->format('Y-m-d') < date('Y-m-d'))
+            {
+              $vencido = true;
+              
+            }
+            elseif ($pagina_empresa->getPagina()->getPagina()) {
+              // Verificación de programa vencido del padre
+              $vencido = $this->programaVencido($pagina_empresa->getPagina()->getPagina()->getId(), $empresa_id,$usuario);
+            }
+          }
     }
 
       return $vencido;
 
+  }
+
+  public function eventoVencido($evento){
+     $fecha_vencimiento = $evento->getFechaFin() ? true:false;
+     $vencido = false;
+     if($fecha_vencimiento){
+      $vencido = date('Y-m-d') < $evento->getFechaFin()->format('Y-m-d')? false:true;
+     }
+
+     return $vencido;
+  }
+
+  public function noticiaVencida($noticia){
+    $fecha_vencimiento = $noticia->getFechaVencimiento()? true:false;
+    $vencido = false;
+    if ($fecha_vencimiento) {
+      $vencido = date('Y-m-d') < $noticia->getFechaVencimiento()->format('Y-m-d')? false:true;
+    }
+    return $vencido;
   }
 
     // Retorna el certificado de la página, sino de un grupo de página, sino de la empresa

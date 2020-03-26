@@ -132,7 +132,7 @@ class LeccionController extends Controller
         // Se reinicia el reinicia el reloj de pagina_log
         $id_pagina_log = $wizard ? $lecciones['subpaginas'][0]['id'] : $lecciones['id'];
         $logs = $f->startLesson($indexedPages, $id_pagina_log, $session->get('usuario')['id'], $yml['parameters']['estatus_pagina']['iniciada']);
-        //return new Response(var_dump($lecciones));
+       // return new Response(var_dump($lecciones));
         $totalComentarios = $this->getDoctrine()->getRepository('LinkComunBundle:CertiMuro')->findBy(array('pagina'=>$id_pagina_log,'empresa'=>$session->get('empresa')['id']));
         $totalComentarios = count($totalComentarios);
         return $this->render('LinkFrontendBundle:Leccion:index.html.twig', array('programa' => $programa,
